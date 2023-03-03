@@ -7,6 +7,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.condition.Conditional
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer;
+import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsPasswordlessConfiguration;
+import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import jakarta.jms.ConnectionFactory;
@@ -32,6 +34,7 @@ import org.springframework.jms.core.JmsTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_PASSWORDLESS_SERVICE_BUS;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
@@ -46,17 +49,27 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
-@Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
+@EnableConfigurationProperties({ JmsProperties.class })
+@Import({ ServiceBusJmsPasswordlessConfiguration.class, ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
+    AzureServiceBusJmsProperties serviceBusJmsProperties(AzureGlobalProperties azureGlobalProperties) {
+        AzureServiceBusJmsProperties properties = new AzureServiceBusJmsProperties();
+        return mergeAzureProperties(azureGlobalProperties, properties);
+    }
+
+    @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
+    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
             properties.put("com.microsoft:is-client-provider", true);
-            properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+            if (azureServiceBusJmsCredentialSupplier.getIfAvailable() != null) {
+                properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
+            } else {
+                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+            }
             //set user agent
             factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                 (connection, uri) -> properties);
@@ -69,5 +82,11 @@ public class ServiceBusJmsAutoConfiguration {
     static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
+    }
+
+    private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azurePasswordlessProperties) {
+        AzureServiceBusJmsProperties mergedProperties = new AzureServiceBusJmsProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        return mergedProperties;
     }
 }

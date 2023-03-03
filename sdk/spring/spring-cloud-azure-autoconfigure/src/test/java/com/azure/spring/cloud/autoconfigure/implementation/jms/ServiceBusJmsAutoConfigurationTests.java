@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Session;
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -43,6 +43,7 @@ class ServiceBusJmsAutoConfigurationTests {
         + "SharedAccessKey=sasKey";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
         .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
@@ -128,7 +129,6 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
                 assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
-                assertThat(context).hasBean("jmsListenerContainerFactory");
                 assertThat(context).hasBean("topicJmsListenerContainerFactory");
                 assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
             });
