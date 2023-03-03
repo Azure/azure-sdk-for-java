@@ -54,15 +54,15 @@ public class EventHubsTracer {
     }
 
     public boolean isEnabled() {
-        return tracer != null;
+        return tracer != null && tracer.isEnabled();
     }
 
     public Context startSpan(String spanName, StartSpanOptions startOptions, Context context) {
-        return tracer == null ? context : tracer.start(spanName, startOptions, context);
+        return isEnabled() ? context : tracer.start(spanName, startOptions, context);
     }
 
     public <T> Mono<T> traceMono(Mono<T> publisher, String spanName) {
-        if (tracer != null) {
+        if (isEnabled()) {
             return publisher
                 .doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
@@ -78,7 +78,7 @@ public class EventHubsTracer {
     }
 
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
-        if (tracer != null) {
+        if (isEnabled()) {
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
@@ -101,7 +101,7 @@ public class EventHubsTracer {
      * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
      */
     public void reportMessageSpan(EventData eventData, Context eventContext) {
-        if (tracer == null || eventContext == null || eventContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+        if (!isEnabled() || eventContext == null || eventContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
             // if message has context (in case of retries), don't start a message span or add a new context
             return;
         }
@@ -185,11 +185,11 @@ public class EventHubsTracer {
     }
 
     public AutoCloseable makeSpanCurrent(Context context) {
-        return tracer == null ? NOOP_AUTOCLOSEABLE : tracer.makeSpanCurrent(context);
+        return isEnabled() ? tracer.makeSpanCurrent(context) : NOOP_AUTOCLOSEABLE;
     }
 
     public Context startProcessSpan(String name, EventData event, Context parent) {
-        if (tracer != null) {
+        if (isEnabled()) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
                 .setRemoteParent(extractContext(event.getProperties()));
 
@@ -205,7 +205,7 @@ public class EventHubsTracer {
     }
 
     public Context startProcessSpan(String name, List<EventData> events, Context parent) {
-        if (tracer != null && events != null) {
+        if (isEnabled() && events != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS);
             startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, events.size());
             for (EventData event : events) {
@@ -219,7 +219,7 @@ public class EventHubsTracer {
     }
 
     public Flux<PartitionEvent> reportSyncReceiveSpan(String name, Instant startTime, Flux<PartitionEvent> events, Context parent) {
-        if (tracer != null) {
+        if (isEnabled()) {
             final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
                 .setStartTimestamp(startTime);
 
