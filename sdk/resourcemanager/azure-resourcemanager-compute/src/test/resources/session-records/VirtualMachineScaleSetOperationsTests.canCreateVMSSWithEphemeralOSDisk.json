@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "56e3b194-bfd0-4d78-aa60-34bf88b5244d",
@@ -51,14 +51,14 @@
       "Content-Length" : "1291",
       "x-ms-request-id" : "940c9c32-49fc-48e5-b59e-8ea68cf1063f",
       "Body" : "{\r\n  \"name\": \"vmssvnet\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet\",\r\n  \"etag\": \"W/\\\"be7d3ea4-7fbd-40d5-a912-719f3b3d6c18\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"73c9f77a-ed29-4ec1-9e75-398930247ca7\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"be7d3ea4-7fbd-40d5-a912-719f3b3d6c18\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Disabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/940c9c32-49fc-48e5-b59e-8ea68cf1063f?api-version=2022-07-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/940c9c32-49fc-48e5-b59e-8ea68cf1063f?api-version=2022-09-01",
       "x-ms-client-request-id" : "56e3b194-bfd0-4d78-aa60-34bf88b5244d",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/940c9c32-49fc-48e5-b59e-8ea68cf1063f?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/940c9c32-49fc-48e5-b59e-8ea68cf1063f?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "ae458643-3482-4d69-873a-4dfe9f055795"
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "e013e4eb-a848-454e-9920-a9a1ad1d6832"
@@ -690,7 +690,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "32104485-bd32-4ebe-9887-0a3803f45c90",
@@ -714,14 +714,14 @@
       "Content-Length" : "1294",
       "x-ms-request-id" : "cc42386e-f503-454c-bc70-84e4bcf204c1",
       "Body" : "{\r\n  \"name\": \"vmssvnet2\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2\",\r\n  \"etag\": \"W/\\\"c64ec689-6c30-45e7-8c8f-b3fa21a11ad6\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"466a282a-e519-49e2-a069-c53f2fbfe07d\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.1.0.0/16\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"c64ec689-6c30-45e7-8c8f-b3fa21a11ad6\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.1.0.0/16\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Disabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cc42386e-f503-454c-bc70-84e4bcf204c1?api-version=2022-07-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cc42386e-f503-454c-bc70-84e4bcf204c1?api-version=2022-09-01",
       "x-ms-client-request-id" : "32104485-bd32-4ebe-9887-0a3803f45c90",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cc42386e-f503-454c-bc70-84e4bcf204c1?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cc42386e-f503-454c-bc70-84e4bcf204c1?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "732afb4f-34d6-4a1f-a5f9-2355914ef77d"
@@ -749,7 +749,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "e0d95601-4095-4b78-b284-b88ff04baeed"
@@ -804,7 +804,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "2236c2e3-1891-401c-970a-52d670660edc",
@@ -828,14 +828,14 @@
       "Content-Length" : "891",
       "x-ms-request-id" : "5a9b0567-6dc3-4afd-ab91-72513ba5114b",
       "Body" : "{\r\n  \"name\": \"pip-extlb1-55581d71\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71\",\r\n  \"etag\": \"W/\\\"36246595-cd57-449a-85ad-f29914d536c0\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"40c54770-fbce-45d7-852a-608df6802efa\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 4,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip-extlb1-55581d71\",\r\n      \"fqdn\": \"pip-extlb1-55581d71.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": [],\r\n    \"ddosSettings\": {\r\n      \"protectionMode\": \"VirtualNetworkInherited\"\r\n    }\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Standard\",\r\n    \"tier\": \"Regional\"\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-07-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-09-01",
       "x-ms-client-request-id" : "2236c2e3-1891-401c-970a-52d670660edc",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "4be6401f-63f1-4411-ba51-3662fa2ea87d"
@@ -863,7 +863,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/5a9b0567-6dc3-4afd-ab91-72513ba5114b?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "7829a6d6-60c1-420e-b29b-8e84d78e0d6e"
@@ -891,7 +891,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "01ff94f1-b16b-4405-b77c-07d6099f1040"
@@ -920,7 +920,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "33e95149-ad49-4e72-8078-df963f2703ba",
@@ -944,14 +944,14 @@
       "Content-Length" : "6636",
       "x-ms-request-id" : "0d2be1af-53b0-4abb-96dc-09ea2aa8747c",
       "Body" : "{\r\n  \"name\": \"extlb1-55581d71\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71\",\r\n  \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n  \"type\": \"Microsoft.Network/loadBalancers\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"01be6612-0725-41b5-90a9-2e8aa4f0788c\",\r\n    \"frontendIPConfigurations\": [\r\n      {\r\n        \"name\": \"extlb1-55581d71-FE1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/frontendIPConfigurations/extlb1-55581d71-FE1\",\r\n        \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n        \"type\": \"Microsoft.Network/loadBalancers/frontendIPConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/publicIPAddresses/pip-extlb1-55581d71\"\r\n          },\r\n          \"loadBalancingRules\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/loadBalancingRules/httpRule\"\r\n            }\r\n          ],\r\n          \"inboundNatPools\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/inboundNatPools/extlb1-55581d71-INP1\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    ],\r\n    \"backendAddressPools\": [\r\n      {\r\n        \"name\": \"extlb1-55581d71-BAP1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/backendAddressPools/extlb1-55581d71-BAP1\",\r\n        \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"loadBalancerBackendAddresses\": [],\r\n          \"loadBalancingRules\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/loadBalancingRules/httpRule\"\r\n            }\r\n          ]\r\n        },\r\n        \"type\": \"Microsoft.Network/loadBalancers/backendAddressPools\"\r\n      }\r\n    ],\r\n    \"loadBalancingRules\": [\r\n      {\r\n        \"name\": \"httpRule\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/loadBalancingRules/httpRule\",\r\n        \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n        \"type\": \"Microsoft.Network/loadBalancers/loadBalancingRules\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"frontendIPConfiguration\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/frontendIPConfigurations/extlb1-55581d71-FE1\"\r\n          },\r\n          \"frontendPort\": 80,\r\n          \"backendPort\": 80,\r\n          \"enableFloatingIP\": false,\r\n          \"idleTimeoutInMinutes\": 4,\r\n          \"protocol\": \"Tcp\",\r\n          \"enableDestinationServiceEndpoint\": false,\r\n          \"enableTcpReset\": false,\r\n          \"allowBackendPortConflict\": false,\r\n          \"loadDistribution\": \"Default\",\r\n          \"disableOutboundSnat\": false,\r\n          \"backendAddressPool\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/backendAddressPools/extlb1-55581d71-BAP1\"\r\n          },\r\n          \"backendAddressPools\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/backendAddressPools/extlb1-55581d71-BAP1\"\r\n            }\r\n          ],\r\n          \"probe\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/probes/httpProbe\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"probes\": [\r\n      {\r\n        \"name\": \"httpProbe\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/probes/httpProbe\",\r\n        \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"protocol\": \"Http\",\r\n          \"port\": 80,\r\n          \"requestPath\": \"/\",\r\n          \"intervalInSeconds\": 15,\r\n          \"numberOfProbes\": 2,\r\n          \"probeThreshold\": 1,\r\n          \"loadBalancingRules\": [\r\n            {\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/loadBalancingRules/httpRule\"\r\n            }\r\n          ]\r\n        },\r\n        \"type\": \"Microsoft.Network/loadBalancers/probes\"\r\n      }\r\n    ],\r\n    \"inboundNatRules\": [],\r\n    \"outboundRules\": [],\r\n    \"inboundNatPools\": [\r\n      {\r\n        \"name\": \"extlb1-55581d71-INP1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/inboundNatPools/extlb1-55581d71-INP1\",\r\n        \"etag\": \"W/\\\"5b759a88-c54c-4a27-9fe3-ff3e09ffd360\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"frontendPortRangeStart\": 5000,\r\n          \"frontendPortRangeEnd\": 5099,\r\n          \"backendPort\": 22,\r\n          \"protocol\": \"Tcp\",\r\n          \"idleTimeoutInMinutes\": 4,\r\n          \"enableFloatingIP\": false,\r\n          \"enableDestinationServiceEndpoint\": false,\r\n          \"enableTcpReset\": false,\r\n          \"allowBackendPortConflict\": false,\r\n          \"frontendIPConfiguration\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71/frontendIPConfigurations/extlb1-55581d71-FE1\"\r\n          }\r\n        },\r\n        \"type\": \"Microsoft.Network/loadBalancers/inboundNatPools\"\r\n      }\r\n    ]\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard\",\r\n    \"tier\": \"Regional\"\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/0d2be1af-53b0-4abb-96dc-09ea2aa8747c?api-version=2022-07-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/0d2be1af-53b0-4abb-96dc-09ea2aa8747c?api-version=2022-09-01",
       "x-ms-client-request-id" : "33e95149-ad49-4e72-8078-df963f2703ba",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/loadBalancers/extlb1-55581d71?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "d67d17bf-a3f3-4729-b1ea-171d1b0fd3e1",
@@ -1207,7 +1207,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/networkInterfaces/nic71570666117?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/networkInterfaces/nic71570666117?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "737a2dff-215d-47b5-aec6-bfa9e44e7532",
@@ -1231,7 +1231,7 @@
       "Content-Length" : "1744",
       "x-ms-request-id" : "fd8b0eee-ce3e-4dca-9d68-56c9e09d62fd",
       "Body" : "{\r\n  \"name\": \"nic71570666117\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/networkInterfaces/nic71570666117\",\r\n  \"etag\": \"W/\\\"c6c32ba0-892d-4f87-91ba-85ce5abdc959\\\"\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"462b5033-a4cd-4574-93f8-d493d9be754b\",\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"primary\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/networkInterfaces/nic71570666117/ipConfigurations/primary\",\r\n        \"etag\": \"W/\\\"c6c32ba0-892d-4f87-91ba-85ce5abdc959\\\"\",\r\n        \"type\": \"Microsoft.Network/networkInterfaces/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAddress\": \"10.1.0.6\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg04037/providers/Microsoft.Network/virtualNetworks/vmssvnet2/subnets/subnet1\"\r\n          },\r\n          \"primary\": true,\r\n          \"privateIPAddressVersion\": \"IPv4\"\r\n        }\r\n      }\r\n    ],\r\n    \"dnsSettings\": {\r\n      \"dnsServers\": [],\r\n      \"appliedDnsServers\": [],\r\n      \"internalDomainNameSuffix\": \"fiugurqz2xretidjyu5s5p5apf.dx.internal.cloudapp.net\"\r\n    },\r\n    \"vnetEncryptionSupported\": false,\r\n    \"enableIPForwarding\": false,\r\n    \"disableTcpStateTracking\": false,\r\n    \"hostedWorkloads\": [],\r\n    \"tapConfigurations\": [],\r\n    \"nicType\": \"Standard\",\r\n    \"allowPort25Out\": true\r\n  },\r\n  \"type\": \"Microsoft.Network/networkInterfaces\",\r\n  \"location\": \"westus\",\r\n  \"kind\": \"Regular\"\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/fd8b0eee-ce3e-4dca-9d68-56c9e09d62fd?api-version=2022-07-01",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/fd8b0eee-ce3e-4dca-9d68-56c9e09d62fd?api-version=2022-09-01",
       "x-ms-client-request-id" : "737a2dff-215d-47b5-aec6-bfa9e44e7532",
       "Content-Type" : "application/json; charset=utf-8"
     },

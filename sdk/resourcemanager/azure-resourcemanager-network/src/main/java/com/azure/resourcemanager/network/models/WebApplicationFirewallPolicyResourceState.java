@@ -30,6 +30,15 @@ public final class WebApplicationFirewallPolicyResourceState
     public static final WebApplicationFirewallPolicyResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of WebApplicationFirewallPolicyResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallPolicyResourceState() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallPolicyResourceState from its string representation.
      *
      * @param name a name to look for.

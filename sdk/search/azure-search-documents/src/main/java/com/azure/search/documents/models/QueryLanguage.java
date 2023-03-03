@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language of the query. */
@@ -229,12 +228,19 @@ public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
     public static final QueryLanguage UR_PK = fromString("ur-pk");
 
     /**
+     * Creates a new instance of QueryLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryLanguage() {}
+
+    /**
      * Creates or finds a QueryLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding QueryLanguage.
      */
-    @JsonCreator
     public static QueryLanguage fromString(String name) {
         return fromString(name, QueryLanguage.class);
     }

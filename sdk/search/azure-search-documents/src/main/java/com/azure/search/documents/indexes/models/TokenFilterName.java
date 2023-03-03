@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines the names of all token filters supported by Azure Cognitive Search. */
@@ -115,12 +114,19 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
     public static final TokenFilterName WORD_DELIMITER = fromString("word_delimiter");
 
     /**
+     * Creates a new instance of TokenFilterName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TokenFilterName() {}
+
+    /**
      * Creates or finds a TokenFilterName from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding TokenFilterName.
      */
-    @JsonCreator
     public static TokenFilterName fromString(String name) {
         return fromString(name, TokenFilterName.class);
     }

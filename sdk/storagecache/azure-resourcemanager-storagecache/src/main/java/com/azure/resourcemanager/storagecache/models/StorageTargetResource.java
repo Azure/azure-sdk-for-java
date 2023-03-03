@@ -24,6 +24,10 @@ public class StorageTargetResource extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of StorageTargetResource class. */
+    public StorageTargetResource() {
+    }
+
     /**
      * Get the location property: Region name string.
      *

@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Improve search recall by spell-correcting individual search query terms. */
@@ -19,12 +18,19 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
     public static final QuerySpellerType LEXICON = fromString("lexicon");
 
     /**
+     * Creates a new instance of QuerySpellerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QuerySpellerType() {}
+
+    /**
      * Creates or finds a QuerySpellerType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding QuerySpellerType.
      */
-    @JsonCreator
     public static QuerySpellerType fromString(String name) {
         return fromString(name, QuerySpellerType.class);
     }

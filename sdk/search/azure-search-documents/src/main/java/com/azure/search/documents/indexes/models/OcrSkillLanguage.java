@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input by OcrSkill. */
@@ -523,12 +522,19 @@ public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguag
     public static final OcrSkillLanguage UNK = fromString("unk");
 
     /**
+     * Creates a new instance of OcrSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OcrSkillLanguage() {}
+
+    /**
      * Creates or finds a OcrSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding OcrSkillLanguage.
      */
-    @JsonCreator
     public static OcrSkillLanguage fromString(String name) {
         return fromString(name, OcrSkillLanguage.class);
     }

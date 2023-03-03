@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdminRuleCollections List. */
 public final class AdminRuleCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerAdminRuleCollectionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRuleCollectionList.json
      */
     /**
      * Sample code: List security admin rule collections.
@@ -22,6 +20,6 @@ public final class AdminRuleCollectionsListSamples {
             .manager()
             .serviceClient()
             .getAdminRuleCollections()
-            .list("rg1", "testNetworkManager", "myTestSecurityConfig", null, null, Context.NONE);
+            .list("rg1", "testNetworkManager", "myTestSecurityConfig", null, null, com.azure.core.util.Context.NONE);
     }
 }

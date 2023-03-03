@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApplicationFirewallPolicies GetByResourceGroup. */
 public final class WebApplicationFirewallPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafPolicyGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyGet.json
      */
     /**
      * Sample code: Gets a WAF policy within a resource group.
@@ -22,6 +20,6 @@ public final class WebApplicationFirewallPoliciesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getWebApplicationFirewallPolicies()
-            .getByResourceGroupWithResponse("rg1", "Policy1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "Policy1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks List. */
 public final class CloudLinksListSamples {
     /*
@@ -17,6 +15,6 @@ public final class CloudLinksListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().list("group1", "cloud1", Context.NONE);
+        manager.cloudLinks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

@@ -352,6 +352,18 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
     }
 
+    protected void onHandlerClose() {
+        // Note: Given the disposition is a generic AMQP feature of brokers that support receive-link with UNSETTLED
+        // settlement mode, in near future we will enable delivery disposition API in amqp-core 'ReceiverLinkHandler'.
+        // Such a future API in 'ReceiverLinkHandler' means the handler will own the 'ReceiverUnsettledDeliveries'
+        // object, and the closing of the handler (i.e., handler.close()) will close 'ReceiverUnsettledDeliveries'.
+        // TODO: anuchan: Remove onHandlerClose
+        // This 'onHandlerClose' method is a temporary internal method for the 'ServiceBusReactorReceiver' to close
+        // the 'ReceiverUnsettledDeliveries' for the interim while we rollout the full disposition API support in
+        // amqp-core. The 'onHandlerClose' method will be removed once ownership of the 'ReceiverUnsettledDeliveries'
+        // is abstracted within 'ReceiverLinkHandler', so 'ServiceBusReactorReceiver' no longer have to own it.
+    }
+
     /**
      * Beings the client side close by initiating local-close on underlying receiver.
      *
@@ -459,6 +471,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         handler.close();
+        onHandlerClose();
         receiver.free();
         try {
             trackPrefetchSeqNoSubscription.close();

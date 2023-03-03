@@ -19,6 +19,15 @@ public final class FirewallPolicyRuleCollectionType extends ExpandableStringEnum
         fromString("FirewallPolicyFilterRuleCollection");
 
     /**
+     * Creates a new instance of FirewallPolicyRuleCollectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyRuleCollectionType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyRuleCollectionType from its string representation.
      *
      * @param name a name to look for.

@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.21.0-beta.1</version>
+    <version>12.21.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -180,12 +180,18 @@ The following sections provide several code snippets covering some of the most c
 - [Upload data to a blob](#upload-data-to-a-blob)
 - [Upload a blob from a stream](#upload-a-blob-from-a-stream)
 - [Upload a blob from local path](#upload-a-blob-from-local-path)
+- [Upload a blob if one does not already exist](#upload-a-blob-if-one-does-not-already-exist)
+- [Upload a blob and overwrite if one already exists](#upload-a-blob-and-overwrite-if-one-already-exists)
+- [Upload a blob via an `OutputStream`](#upload-a-blob-via-an-outputstream)
 - [Download data from a blob](#download-data-from-a-blob)
 - [Download a blob to a stream](#download-a-blob-to-a-stream)
 - [Download a blob to local path](#download-a-blob-to-local-path)
+- [Read a blob via an `InputStream`](#read-a-blob-via-an-inputstream)
 - [Enumerate blobs](#enumerate-blobs)
 - [Copy a blob](#copy-a-blob)
+- [Generate a SAS token](#generate-a-sas-token)
 - [Authenticate with Azure Identity](#authenticate-with-azure-identity)
+- [Set a proxy when building a client](#set-a-proxy-when-building-a-client)
 
 ### Create a `BlobServiceClient`
 

@@ -20,6 +20,15 @@ public final class VMTypeEnum extends ExpandableStringEnum<VMTypeEnum> {
     public static final VMTypeEnum SERVICE = fromString("SERVICE");
 
     /**
+     * Creates a new instance of VMTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMTypeEnum() {
+    }
+
+    /**
      * Creates or finds a VMTypeEnum from its string representation.
      *
      * @param name a name to look for.

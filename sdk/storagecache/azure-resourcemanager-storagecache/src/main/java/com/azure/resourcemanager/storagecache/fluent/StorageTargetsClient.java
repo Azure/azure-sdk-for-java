@@ -116,8 +116,6 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
-     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
-     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,7 +123,7 @@ public interface StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String storageTargetName, String force);
+        String resourceGroupName, String cacheName, String storageTargetName);
 
     /**
      * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
@@ -148,25 +146,6 @@ public interface StorageTargetsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cacheName, String storageTargetName, String force, Context context);
-
-    /**
-     * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
-     * unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy again. Note that if
-     * the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be
-     * deleted.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
-     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
-     *     unwritten-data in the cache instead of flushing it to back-end storage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cacheName, String storageTargetName, String force);
 
     /**
      * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
@@ -212,21 +191,6 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageTargetInner get(String resourceGroupName, String cacheName, String storageTargetName);
-
-    /**
-     * Returns a Storage Target from a Cache.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -238,6 +202,21 @@ public interface StorageTargetsClient {
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
     /**
+     * Returns a Storage Target from a Cache.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return type of the Storage Target.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageTargetInner get(String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
      * Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or unhealthy,
      * the actual creation/modification of the Storage Target may be delayed until the Cache is healthy again.
      *
@@ -304,22 +283,6 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageTargetInner createOrUpdate(String resourceGroupName, String cacheName, String storageTargetName);
-
-    /**
-     * Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or unhealthy,
-     * the actual creation/modification of the Storage Target may be delayed until the Cache is healthy again.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param storageTargetName Name of Storage Target.
      * @param storagetarget Object containing the definition of a Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,4 +297,66 @@ public interface StorageTargetsClient {
         String storageTargetName,
         StorageTargetInner storagetarget,
         Context context);
+
+    /**
+     * Tells a storage target to restore its settings to their default values.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestoreDefaults(
+        String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Tells a storage target to restore its settings to their default values.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestoreDefaults(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context);
+
+    /**
+     * Tells a storage target to restore its settings to their default values.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Tells a storage target to restore its settings to their default values.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restoreDefaults(String resourceGroupName, String cacheName, String storageTargetName, Context context);
 }

@@ -6,8 +6,8 @@ package com.azure.communication.email;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.email.implementation.AzureCommunicationServicesClientImpl;
-import com.azure.core.annotation.Generated;
+import com.azure.communication.email.implementation.AzureCommunicationEmailServiceImpl;
+import com.azure.communication.email.implementation.AzureCommunicationEmailServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -40,13 +40,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the EmailServicesClient type. */
+/**
+ * Builder for creating clients of Azure Communication Service Email
+ */
 @ServiceClientBuilder(
         serviceClients = {EmailClient.class, EmailAsyncClient.class})
 public final class EmailClientBuilder
@@ -56,16 +58,15 @@ public final class EmailClientBuilder
                 EndpointTrait<EmailClientBuilder>,
                 ConnectionStringTrait<EmailClientBuilder>,
                 TokenCredentialTrait<EmailClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    private static final String SDK_VERSION = "version";
 
     private final ClientLogger logger = new ClientLogger(EmailClientBuilder.class);
 
-    @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-communication-email.properties");
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the EmailClientBuilder. */
     public EmailClientBuilder() {
@@ -75,7 +76,7 @@ public final class EmailClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Override
@@ -87,7 +88,7 @@ public final class EmailClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Override
@@ -99,7 +100,7 @@ public final class EmailClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Override
@@ -112,7 +113,7 @@ public final class EmailClientBuilder
      * The client options such as application ID and custom headers to set on a
      * request.
      */
-    @Generated private ClientOptions clientOptions;
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Override
@@ -124,7 +125,7 @@ public final class EmailClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Override
@@ -136,7 +137,7 @@ public final class EmailClientBuilder
     /** {@inheritDoc}. */
     @Override
     public EmailClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        pipelinePolicies.add(customPolicy);
+        this.pipelinePolicies.add(customPolicy);
         return this;
     }
 
@@ -144,7 +145,7 @@ public final class EmailClientBuilder
      * The configuration store that is used during construction of the service
      * client.
      */
-    @Generated private Configuration configuration;
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Override
@@ -156,7 +157,7 @@ public final class EmailClientBuilder
     /*
      * The AzureKeyCredential used for authentication.
      */
-    @Generated private AzureKeyCredential azureKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
 
     /** {@inheritDoc}. */
     @Override
@@ -187,7 +188,7 @@ public final class EmailClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    private String endpoint;
 
     /** {@inheritDoc}. */
     @Override
@@ -199,7 +200,7 @@ public final class EmailClientBuilder
     /*
      * Service version
      */
-    @Generated private EmailServiceVersion serviceVersion;
+    private EmailServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -217,7 +218,7 @@ public final class EmailClientBuilder
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -248,22 +249,25 @@ public final class EmailClientBuilder
     }
 
     /**
-     * Builds an instance of AzureCommunicationServicesClientImpl with the provided parameters.
+     * Builds an instance of AzureCommunicationServicesImpl with the provided parameters.
      *
-     * @return an instance of AzureCommunicationServicesClientImpl.
+     * @return an instance of AzureCommunicationServicesImpl.
      */
-    @Generated
-    private AzureCommunicationServicesClientImpl buildInnerClient() {
+    private AzureCommunicationEmailServiceImpl buildInnerClient() {
         if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
+            pipeline = createHttpPipeline();
         }
         if (serviceVersion == null) {
-            this.serviceVersion = EmailServiceVersion.getLatest();
+            serviceVersion = EmailServiceVersion.getLatest();
         }
-        AzureCommunicationServicesClientImpl client =
-                new AzureCommunicationServicesClientImpl(
-                        this.pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
-        return client;
+
+        AzureCommunicationEmailServiceImpl innerClient = new AzureCommunicationEmailServiceImplBuilder()
+            .endpoint(endpoint)
+            .pipeline(pipeline)
+            .apiVersion(serviceVersion.getVersion())
+            .buildClient();
+
+        return innerClient;
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
@@ -329,7 +333,7 @@ public final class EmailClientBuilder
      * @return an instance of EmailAsyncClient.
      */
     public EmailAsyncClient buildAsyncClient() {
-        return new EmailAsyncClient(buildInnerClient().getEmails());
+        return new EmailAsyncClient(buildInnerClient());
     }
 
     /**
@@ -338,7 +342,6 @@ public final class EmailClientBuilder
      * @return an instance of EmailClient.
      */
     public EmailClient buildClient() {
-        return new EmailClient(
-                new EmailAsyncClient(buildInnerClient().getEmails()));
+        return new EmailClient(new EmailAsyncClient(buildInnerClient()));
     }
 }

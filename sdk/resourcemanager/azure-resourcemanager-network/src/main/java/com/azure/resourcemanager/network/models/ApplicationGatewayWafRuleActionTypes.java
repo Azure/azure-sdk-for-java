@@ -27,6 +27,15 @@ public final class ApplicationGatewayWafRuleActionTypes
     public static final ApplicationGatewayWafRuleActionTypes LOG = fromString("Log");
 
     /**
+     * Creates a new instance of ApplicationGatewayWafRuleActionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayWafRuleActionTypes() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayWafRuleActionTypes from its string representation.
      *
      * @param name a name to look for.

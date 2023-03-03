@@ -213,7 +213,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -264,7 +264,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -330,7 +330,7 @@ public final class BastionHostsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname) {
-        return beginDeleteAsync(resourceGroupName, bastionHostname).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, bastionHostname).getSyncPoller();
     }
 
     /**
@@ -347,7 +347,7 @@ public final class BastionHostsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String bastionHostname, Context context) {
-        return beginDeleteAsync(resourceGroupName, bastionHostname, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, bastionHostname, context).getSyncPoller();
     }
 
     /**
@@ -447,7 +447,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -498,7 +498,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -599,7 +599,7 @@ public final class BastionHostsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -657,7 +657,7 @@ public final class BastionHostsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -736,7 +736,7 @@ public final class BastionHostsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
     }
 
     /**
@@ -754,7 +754,7 @@ public final class BastionHostsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
     }
 
     /**
@@ -870,7 +870,7 @@ public final class BastionHostsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -928,7 +928,7 @@ public final class BastionHostsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1007,7 +1007,7 @@ public final class BastionHostsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
     }
 
     /**
@@ -1025,7 +1025,7 @@ public final class BastionHostsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1123,7 +1123,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1166,7 +1166,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1263,7 +1263,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1318,7 +1318,7 @@ public final class BastionHostsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

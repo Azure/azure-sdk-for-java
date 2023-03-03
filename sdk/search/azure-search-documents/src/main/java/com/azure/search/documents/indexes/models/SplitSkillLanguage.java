@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input text by SplitSkill. */
@@ -40,12 +39,19 @@ public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLan
     public static final SplitSkillLanguage PT = fromString("pt");
 
     /**
+     * Creates a new instance of SplitSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SplitSkillLanguage() {}
+
+    /**
      * Creates or finds a SplitSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding SplitSkillLanguage.
      */
-    @JsonCreator
     public static SplitSkillLanguage fromString(String name) {
         return fromString(name, SplitSkillLanguage.class);
     }

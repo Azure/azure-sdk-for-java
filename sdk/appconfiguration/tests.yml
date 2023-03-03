@@ -4,6 +4,10 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
+      Artifacts:
+        - name: azure-data-appconfiguration
+          groupId: com.azure
+          safeName: azuredataappconfiguration
       TimeoutInMinutes: 90
       SupportedClouds: "Public,UsGov,China"
       EnvVars:

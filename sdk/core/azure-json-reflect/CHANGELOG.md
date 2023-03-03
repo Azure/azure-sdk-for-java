@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 1.0.0-beta.2 (2023-03-02)
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` to `1.0.0-beta.3`.
 
 ## 1.0.0-beta.1 (2023-02-01)
 

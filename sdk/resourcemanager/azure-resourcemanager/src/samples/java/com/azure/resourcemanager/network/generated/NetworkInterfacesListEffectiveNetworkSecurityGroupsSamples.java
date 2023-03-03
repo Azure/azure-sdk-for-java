@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkInterfaces ListEffectiveNetworkSecurityGroups. */
 public final class NetworkInterfacesListEffectiveNetworkSecurityGroupsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkInterfaceEffectiveNSGList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceEffectiveNSGList.json
      */
     /**
      * Sample code: List network interface effective network security groups.
@@ -23,6 +21,6 @@ public final class NetworkInterfacesListEffectiveNetworkSecurityGroupsSamples {
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .listEffectiveNetworkSecurityGroups("rg1", "nic1", Context.NONE);
+            .listEffectiveNetworkSecurityGroups("rg1", "nic1", com.azure.core.util.Context.NONE);
     }
 }

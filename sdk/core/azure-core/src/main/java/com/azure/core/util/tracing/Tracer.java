@@ -297,7 +297,7 @@ public interface Tracer {
     }
 
     /**
-     * Completes the current tracing span for AMQP calls.
+     * Completes span on the context.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -334,8 +334,9 @@ public interface Tracer {
      * </pre>
      * <!-- end com.azure.core.util.tracing.end#exception -->
      *
-     * @param errorMessage The error message that occurred during the call, or {@code null} if no error
-     * occurred.
+     * @param errorMessage The error message that occurred during the call, or {@code null} if no error.
+     *   occurred. Any other non-null string indicates an error with description provided in {@code errorMessage}.
+     *
      * @param throwable {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.

@@ -24,6 +24,15 @@ public final class FirewallPolicyIntrusionDetectionProtocol
     public static final FirewallPolicyIntrusionDetectionProtocol ANY = fromString("ANY");
 
     /**
+     * Creates a new instance of FirewallPolicyIntrusionDetectionProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyIntrusionDetectionProtocol() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyIntrusionDetectionProtocol from its string representation.
      *
      * @param name a name to look for.

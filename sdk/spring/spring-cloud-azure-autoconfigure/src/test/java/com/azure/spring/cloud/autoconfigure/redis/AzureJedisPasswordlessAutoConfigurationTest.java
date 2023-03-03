@@ -11,6 +11,7 @@ import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPass
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -236,6 +237,7 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     }
 
     @Configuration(proxyBeanMethods = false)
+    @EnableConfigurationProperties
     static class CustomConfiguration {
 
         @Bean
