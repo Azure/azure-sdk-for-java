@@ -60,7 +60,7 @@ public class FaultInjectionServerErrorResultInternal {
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
-        long lsn = Long.valueOf(request.getHeaders().getOrDefault(HttpConstants.HttpHeaders.LSN, "0"));
+        long lsn = Long.parseLong(request.getHeaders().getOrDefault(HttpConstants.HttpHeaders.LSN, "0"));
         String partitionKeyRangeId = request.getHeaders().getOrDefault(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, null);
         Map<String, String> responseHeaders = this.getInjectedErrorResponseHeaders(request, lsn, partitionKeyRangeId);
 
