@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleI
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -129,8 +130,10 @@ public final class FaultInjectionRule {
      *
      * @return the list of physical addresses.
      */
-    public List<URI> getAddresses() {
-        return this.effectiveRule == null ? null : this.effectiveRule.getAddresses();
+    public List<String> getAddresses() {
+        return this.effectiveRule == null
+            ? null
+            : this.effectiveRule.getAddresses().stream().map(URI::toString).collect(Collectors.toList());
     }
 
     /***
@@ -138,8 +141,10 @@ public final class FaultInjectionRule {
      *
      * @return the list of region endpoints.
      */
-    public List<URI> getRegionEndpoints() {
-        return this.effectiveRule == null ? null : this.effectiveRule.getRegionEndpoints();
+    public List<String> getRegionEndpoints() {
+        return this.effectiveRule == null
+            ? null
+            : this.effectiveRule.getRegionEndpoints().stream().map(URI::toString).collect(Collectors.toList());
     }
 
     /***

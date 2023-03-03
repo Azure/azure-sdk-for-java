@@ -101,6 +101,29 @@ public class LocationCache {
         return this.locationInfo.writeEndpoints;
     }
 
+
+    /***
+     * Get the list of available read endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableReadEndpoints() {
+        return this.locationInfo.availableReadEndpointByLocation.values().stream().collect(Collectors.toList());
+    }
+
+    /***
+     * Get the list of available write endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableWriteEndpoints() {
+        return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
+    }
+
     /**
      * Marks the current location unavailable for read
      */

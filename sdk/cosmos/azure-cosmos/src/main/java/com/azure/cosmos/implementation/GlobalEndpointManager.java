@@ -86,6 +86,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
+    public List<URI> getAvailableReadEndpoints() {
+        return this.locationCache.getAvailableReadEndpoints();
+    }
+
+    public List<URI> getAvailableWriteEndpoints() {
+        return this.locationCache.getAvailableWriteEndpoints();
+    }
+
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
 

@@ -74,9 +74,7 @@ public class FaultInjectionConditionInternal {
         }
         @Override
         public boolean isApplicable(RxDocumentServiceRequest request) {
-            return this.regionEndpoints
-                .stream()
-                .anyMatch(regionEndpoint -> regionEndpoint == request.requestContext.locationEndpointToRoute);
+            return this.regionEndpoints.contains(request.requestContext.locationEndpointToRoute);
         }
     }
 
@@ -115,8 +113,7 @@ public class FaultInjectionConditionInternal {
         public boolean isApplicable(RxDocumentServiceRequest request) {
             if (addresses != null
                 && addresses.size() > 0) {
-                return this
-                    .addresses
+                return this.addresses
                     .stream()
                     .anyMatch(address -> request.requestContext.storePhysicalAddress.toString().startsWith(address.toString()));
             }

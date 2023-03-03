@@ -290,7 +290,9 @@ public class FaultInjectionRulesProcessor {
             return Arrays.asList(
                 this.globalEndpointManager.resolveFaultInjectionServiceEndpoint(condition.getRegion(), isWriteOnlyEndpoints));
         } else {
-            return isWriteOnlyEndpoints ? this.globalEndpointManager.getWriteEndpoints() : this.globalEndpointManager.getReadEndpoints();
+            return isWriteOnlyEndpoints
+                ? this.globalEndpointManager.getAvailableWriteEndpoints()
+                : this.globalEndpointManager.getAvailableReadEndpoints();
         }
     }
 
