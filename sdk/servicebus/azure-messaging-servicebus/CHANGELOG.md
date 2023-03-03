@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Removed delay in acquiring new link after timeout exception in `ServiceBusSessionManager`. ([#32455](https://github.com/Azure/azure-sdk-for-java/issues/32455))
 
 ### Other Changes
 
