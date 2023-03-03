@@ -31,10 +31,13 @@ if (!(Test-Path -Path $graalVmUnzipName -PathType container)) {
   if ($IsWindows) {
     Expand-Archive -Path $graalVmZipName -Destination "graalvm-temp"
     Move-Item -Path (Join-Path -Path "graalvm-temp" -ChildPath (Get-ChildItem "graalvm-temp")[0].Name) -Destination $graalVmUnzipName
+    Invoke-Expression "$graalVmUnzipName\bin\gu.cmd install native-image"
+
   } else {
     New-Item -Path "graalvm-temp" -ItemType "directory"
     tar -xvf $graalVmZipName -C "graalvm-temp"
     Move-Item -Path (Join-Path -Path "graalvm-temp" -ChildPath (Get-ChildItem "graalvm-temp")[0].Name) -Destination $graalVmUnzipName
+    Invoke-Expression "$graalVmUnzipName/bin/gu install native-image"
   }
 
 }
