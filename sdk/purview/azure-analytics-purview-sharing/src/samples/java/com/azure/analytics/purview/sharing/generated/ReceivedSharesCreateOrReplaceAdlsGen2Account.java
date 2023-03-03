@@ -7,8 +7,8 @@ package com.azure.analytics.purview.sharing.generated;
 import com.azure.analytics.purview.sharing.ReceivedSharesClient;
 import com.azure.analytics.purview.sharing.ReceivedSharesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesCreateOrReplaceAdlsGen2Account {
@@ -23,8 +23,8 @@ public class ReceivedSharesCreateOrReplaceAdlsGen2Account {
                 BinaryData.fromString(
                         "{\"properties\":{\"displayName\":\"updatedReceivedShareNameAdls\",\"sink\":{\"properties\":{\"containerName\":\"receivingContainerAbc\",\"folder\":\"receivingFolderAbc\",\"mountPath\":\"pathAbc\"},\"storeKind\":\"AdlsGen2Account\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/adlsAccount\"}}},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                receivedSharesClient.beginCreateOrReplaceReceivedShare(
+        Response<BinaryData> response =
+                receivedSharesClient.createOrReplaceReceivedShareWithResponse(
                         "35E28F0E-DEA4-472F-84E4-5F1E45FB9937", receivedShare, requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.receivedsharescreateorreplacereceivedshare.receivedsharescreateorreplaceadlsgen2account
     }

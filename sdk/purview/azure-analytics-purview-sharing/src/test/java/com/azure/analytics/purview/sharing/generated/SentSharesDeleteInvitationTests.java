@@ -5,9 +5,8 @@
 package com.azure.analytics.purview.sharing.generated;
 
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,10 +16,25 @@ public final class SentSharesDeleteInvitationTests extends PurviewShareClientTes
     @Disabled
     public void testSentSharesDeleteInvitationTests() {
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                sentSharesClient.beginDeleteSentShareInvitation(
+        Response<BinaryData> response =
+                sentSharesClient.deleteSentShareInvitationWithResponse(
                         "FF4A2AAE-8755-47BB-9C00-A774B5A7006E", "9F154FA4-93D1-426B-A908-A9CAC7192B21", requestOptions);
+        Assertions.assertEquals(202, response.getStatusCode());
+        Assertions.assertEquals("Fri, 17 Feb 2023 23:42:23 GMT", response.getHeaders().get("Date").getValue());
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+                "https://accountName.purview.azure.com/share/operationResults/dad6baec-3a39-41df-a469-843a9ee94213?api-version=2023-02-15-preview",
+                response.getHeaders().get("Operation-Location").getValue());
+        Assertions.assertEquals(
+                "dad6baec-3a39-41df-a469-843a9ee94213", response.getHeaders().get("Operation-Id").getValue());
+        Assertions.assertEquals(
+                "d5496da4-9c52-402f-b067-83cc9ddea888", response.getHeaders().get("x-ms-request-id").getValue());
+        Assertions.assertEquals(
+                "25c78f97-0b0a-4fe9-ad39-883a482265cd",
+                response.getHeaders().get("x-ms-correlation-request-id").getValue());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"endTime\":null,\"error\":null,\"id\":\"dad6baec-3a39-41df-a469-843a9ee94213\",\"startTime\":\"2023-02-17T23:42:25.6688Z\",\"status\":\"NotStarted\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

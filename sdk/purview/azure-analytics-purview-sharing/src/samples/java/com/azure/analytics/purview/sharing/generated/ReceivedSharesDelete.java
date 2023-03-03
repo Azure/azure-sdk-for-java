@@ -7,8 +7,8 @@ package com.azure.analytics.purview.sharing.generated;
 import com.azure.analytics.purview.sharing.ReceivedSharesClient;
 import com.azure.analytics.purview.sharing.ReceivedSharesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesDelete {
@@ -20,8 +20,9 @@ public class ReceivedSharesDelete {
                         .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
+        Response<BinaryData> response =
+                receivedSharesClient.deleteReceivedShareWithResponse(
+                        "0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
     }
 }

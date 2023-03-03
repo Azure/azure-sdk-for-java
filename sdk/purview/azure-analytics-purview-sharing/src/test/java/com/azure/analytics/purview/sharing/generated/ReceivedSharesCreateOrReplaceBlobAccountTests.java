@@ -5,9 +5,8 @@
 package com.azure.analytics.purview.sharing.generated;
 
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,10 +19,29 @@ public final class ReceivedSharesCreateOrReplaceBlobAccountTests extends Purview
                 BinaryData.fromString(
                         "{\"properties\":{\"displayName\":\"updatedReceivedShareName\",\"sink\":{\"properties\":{\"containerName\":\"receivingContainer\",\"folder\":\"receivingFolder\",\"mountPath\":\"path\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/blobAccount\"}}},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                receivedSharesClient.beginCreateOrReplaceReceivedShare(
+        Response<BinaryData> response =
+                receivedSharesClient.createOrReplaceReceivedShareWithResponse(
                         "0D67B9C8-A6C6-4990-9EDE-12EA059D3002", receivedShare, requestOptions);
+        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals("Wed, 13 Sep 2017 18:04:32 GMT", response.getHeaders().get("Date").getValue());
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+                "https://accountName.purview.azure.com/share/operationResults/dad6baec-3a39-41df-a469-843a9ee94213?api-version=2023-02-15-preview",
+                response.getHeaders().get("Operation-Location").getValue());
+        Assertions.assertEquals(
+                "dad6baec-3a39-41df-a469-843a9ee94213", response.getHeaders().get("Operation-Id").getValue());
+        Assertions.assertEquals("true", response.getHeaders().get("x-ms-long-running-operation").getValue());
+        Assertions.assertEquals(
+                "d5496da4-9c52-402f-b067-83cc9ddea888", response.getHeaders().get("x-ms-request-id").getValue());
+        Assertions.assertEquals(
+                "25c78f97-0b0a-4fe9-ad39-883a482265cd",
+                response.getHeaders().get("x-ms-correlation-request-id").getValue());
+        Assertions.assertEquals(
+                "https://accountName.purview.azure.com/share/operationResults/dad6baec-3a39-41df-a469-843a9ee94213?api-version=2023-02-15-preview",
+                response.getHeaders().get("Azure-AsyncOperation").getValue());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"type\":\"receivedShares\",\"id\":\"0D67B9C8-A6C6-4990-9EDE-12EA059D3002\",\"properties\":{\"assetLocation\":\"eastus\",\"assetStoreKind\":\"BlobAccount\",\"createdAt\":\"2022-07-12T18:18:50.7095202Z\",\"displayName\":\"updatedReceivedShareName\",\"receiverEmail\":\"janedoe@fabrikam.com\",\"receiverName\":\"Jane Doe\",\"receiverTenantName\":\"Fabrikam\",\"senderEmail\":\"ali.smith@contoso.com\",\"senderName\":\"Ali Smith\",\"senderTenantName\":\"Contoso\",\"sentShareDescription\":\"description\",\"shareStatus\":\"Attached\",\"sharedAt\":\"2022-07-12T18:17:56.1065304Z\",\"sink\":{\"properties\":{\"containerName\":\"receivingContainer\",\"folder\":\"receivingFolder\",\"location\":\"eastus\",\"mountPath\":\"path\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/blobAccount\"}},\"state\":\"Succeeded\"},\"shareKind\":\"InPlace\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

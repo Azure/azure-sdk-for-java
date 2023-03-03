@@ -11,6 +11,7 @@ generate-tests: true
 artifact-id: azure-analytics-purview-sharing
 generate-samples: true
 namespace: com.azure.analytics.purview.sharing
+enable-sync-stack: true
 service-versions:
 - 2023-02-15-preview
 directive:

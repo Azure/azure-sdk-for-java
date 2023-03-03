@@ -5,9 +5,8 @@
 package com.azure.analytics.purview.sharing.generated;
 
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,10 +19,24 @@ public final class SentSharesCreateOrReplaceBlobAccountTests extends PurviewShar
                 BinaryData.fromString(
                         "{\"properties\":{\"description\":\"description\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"container1\",\"receiverPath\":\"SharedFile.txt\",\"senderPath\":\"directory/file.txt\"}]},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}},\"displayName\":\"sentShare1\"},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                sentSharesClient.beginCreateOrReplaceSentShare(
+        Response<BinaryData> response =
+                sentSharesClient.createOrReplaceSentShareWithResponse(
                         "FF4A2AAE-8755-47BB-9C00-A774B5A7006E", sentShare, requestOptions);
+        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals("Wed, 13 Sep 2017 18:04:32 GMT", response.getHeaders().get("Date").getValue());
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+                "https://accountName.purview.azure.com/share/operationResults/dad6baec-3a39-41df-a469-843a9ee94213?api-version=2023-02-15-preview",
+                response.getHeaders().get("Operation-Location").getValue());
+        Assertions.assertEquals(
+                "dad6baec-3a39-41df-a469-843a9ee94213", response.getHeaders().get("Operation-Id").getValue());
+        Assertions.assertEquals("true", response.getHeaders().get("x-ms-long-running-operation").getValue());
+        Assertions.assertEquals(
+                "25c78f97-0b0a-4fe9-ad39-883a482265cd",
+                response.getHeaders().get("x-ms-correlation-request-id").getValue());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"type\":\"SentShare\",\"id\":\"FF4A2AAE-8755-47BB-9C00-A774B5A7006E\",\"properties\":{\"description\":\"description\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"container1\",\"receiverPath\":\"ShareFile.txt\",\"senderPath\":\"directory/file.txt\"}]},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}},\"createdAt\":\"2021-07-21T23:45:35.3708674Z\",\"dependsOn\":[],\"displayName\":\"sentShare1\",\"senderEmail\":\"johnsmith@contoso.com\",\"senderName\":\"John Smith\",\"senderTenantName\":\"Contoso\",\"state\":\"Succeeded\"},\"shareKind\":\"InPlace\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }
