@@ -34,28 +34,6 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     }
 
     @Test
-    public void startRecordingRelativeUriFails() {
-        validateError(InvalidParameterException.class,
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUrl("/not/absolute/uri")
-        ));
-    }
-
-    @Test
-    public void startRecordingWithFullParamsFails() {
-        StartRecordingOptions startRecordingOptions = new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-            .setRecordingContent(RecordingContent.AUDIO_VIDEO)
-            .setRecordingChannel(RecordingChannel.MIXED)
-            .setRecordingFormat(RecordingFormat.MP4)
-            .setRecordingStateCallbackUrl("/not/absolute/uri")
-            .setAudioChannelParticipantOrdering(new ArrayList<CommunicationIdentifier>(Arrays.asList(
-                new CommunicationUserIdentifier("rawId1"),
-                new CommunicationUserIdentifier("rawId2"))));
-
-        validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(startRecordingOptions));
-    }
-
-    @Test
     public void recordingOperationsTest() {
         CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses

@@ -114,10 +114,6 @@ public class CallRecordingAsync {
 
     Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            String callbackUrl = options.getRecordingStateCallbackUrl();
-            if (callbackUrl != null && !callbackUrl.isEmpty() && !Boolean.TRUE.equals(new URI(callbackUrl).isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
-            }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
             return withContext(contextValue -> {
@@ -131,8 +127,6 @@ public class CallRecordingAsync {
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        } catch (URISyntaxException ex) {
-            return monoError(logger, new RuntimeException(ex));
         }
     }
 
