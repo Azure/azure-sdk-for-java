@@ -12,12 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 
@@ -207,6 +209,8 @@ class AppConfigurationRefreshUtil {
         Instant date = Instant.now();
         if (date.isAfter(state.getNextRefreshCheck())) {
 
+            int watchedKeySize = 0;
+
             for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
                 String keyFilter = FEATURE_STORE_WATCH_KEY;
 
@@ -218,36 +222,36 @@ class AppConfigurationRefreshUtil {
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
-                int watchedKeySize = 0;
-
                 keyCheck: for (ConfigurationSetting currentKey : currentKeys) {
+                    if (currentKey instanceof FeatureFlagConfigurationSetting
+                        && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
 
-                    watchedKeySize += 1;
-                    for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
+                        watchedKeySize += 1;
+                        for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
 
-                        // If there is no result, etag will be considered empty.
-                        // A refresh will trigger once the selector returns a value.
-                        if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())
-                            && watchFlag.getLabel().equals(currentKey.getLabel())) {
-                            checkETag(watchFlag, currentKey, client.getEndpoint(), eventData);
-                            if (eventData.getDoRefresh()) {
-                                break keyCheck;
+                            // If there is no result, etag will be considered empty.
+                            // A refresh will trigger once the selector returns a value.
+                            if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())
+                                && watchFlag.getLabel().equals(currentKey.getLabel())) {
+                                checkETag(watchFlag, currentKey, client.getEndpoint(), eventData);
+                                if (eventData.getDoRefresh()) {
+                                    break keyCheck;
 
+                                }
                             }
                         }
-
                     }
                 }
+            }
 
-                if (watchedKeySize != state.getWatchKeys().size()) {
-                    String eventDataInfo = ".appconfig.featureflag/*";
+            if (watchedKeySize != state.getWatchKeys().size()) {
+                String eventDataInfo = ".appconfig.featureflag/*";
 
-                    // Only one refresh Event needs to be call to update all of the
-                    // stores, not one for each.
-                    LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                // Only one refresh Event needs to be call to update all of the
+                // stores, not one for each.
+                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
 
-                    eventData.setMessage(eventDataInfo);
-                }
+                eventData.setMessage(eventDataInfo);
             }
 
             // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the new

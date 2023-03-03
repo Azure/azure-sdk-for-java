@@ -8,6 +8,7 @@ import static com.azure.spring.cloud.config.implementation.AppConfigurationConst
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
@@ -48,13 +49,6 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
-    /**
-     * App Configuration Feature Filter prefix.
-     */
-    private static final String KEY_FILTER_PREFIX = ".appconfig.featureflag/";
-
-    private static final String KEY_FILTER_DEFAULT = KEY_FILTER_PREFIX + "*";
-
     private final List<ConfigurationSetting> featureConfigurationSettings;
 
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
@@ -85,10 +79,10 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     public void initProperties() {
         SettingSelector settingSelector = new SettingSelector();
 
-        String keyFilter = KEY_FILTER_DEFAULT;
+        String keyFilter = FEATURE_STORE_WATCH_KEY;
 
         if (StringUtils.hasText(this.keyFilter)) {
-            keyFilter = KEY_FILTER_PREFIX + this.keyFilter;
+            keyFilter = FEATURE_FLAG_PREFIX + this.keyFilter;
         }
 
         settingSelector.setKeyFilter(keyFilter);

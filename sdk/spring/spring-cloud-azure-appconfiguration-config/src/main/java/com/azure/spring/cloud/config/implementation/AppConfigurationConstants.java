@@ -28,11 +28,6 @@ public class AppConfigurationConstants {
     public static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/";
 
     /**
-     * Feature Store Prefix
-     */
-    public static final String FEATURE_STORE_SUFFIX = ".appconfig";
-    
-    /**
      * Separator for multiple labels.
      */
     public static final String LABEL_SEPARATOR = ",";
@@ -40,7 +35,7 @@ public class AppConfigurationConstants {
     /**
      * Key for returning all feature flags
      */
-    public static final String FEATURE_STORE_WATCH_KEY = FEATURE_STORE_SUFFIX + "*";
+    public static final String FEATURE_STORE_WATCH_KEY = FEATURE_FLAG_PREFIX + "*";
 
     /**
      * Constant for tracing if the library is being used with a dev profile.
