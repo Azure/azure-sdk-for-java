@@ -179,7 +179,6 @@ public class EventProcessorClient {
         }
         runner.get().cancel(true);
         scheduler.get().shutdown();
-        partitionBasedLoadBalancer.close();
         stopProcessing();
     }
 
