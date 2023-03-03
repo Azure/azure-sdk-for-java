@@ -6,61 +6,37 @@ package com.azure.spring.cloud.service.implementation.passwordless;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Configuration properties for passwordless connections with Azure Redis.
+ * Configuration properties for passwordless connections with Azure ServiceBus.
  */
-public class AzureRedisPasswordlessProperties implements PasswordlessProperties {
+public class AzureKafkaPasswordlessProperties implements PasswordlessProperties {
 
-    private static final String REDIS_SCOPE_AZURE = "https://*.cacheinfra.windows.net:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
-
-    private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
-        {
-            put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, REDIS_SCOPE_AZURE_GERMANY);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
-        }
-    };
+    private boolean passwordlessEnabled = false;
 
     private AzureProfileProperties profile = new AzureProfileProperties();
-
-    private String scopes;
-
-    /**
-     * Whether to enable supporting azure identity token credentials, by default is false.
-     *
-     * If the passwordlessEnabled is true, but the redis password properties is not null, it will still use username/password to authenticate connections.
-     */
-    private boolean passwordlessEnabled = false;
 
     private TokenCredentialProperties credential = new TokenCredentialProperties();
 
     /**
      * Get the scopes required for the access token.
+     * This method is not available in AzureKafkaPasswordlessProperties, will always return null.
      *
-     * @return scopes required for the access token
+     * @return null
      */
     @Override
     public String getScopes() {
-        return this.scopes == null ? getDefaultScopes() : this.scopes;
+        return null;
     }
 
     /**
      * Set the scopes required for the access token.
      *
-     * @param scopes the scopes required for the access token
+     * This method is not available in AzureKafkaPasswordlessProperties
      */
     @Override
     public void setScopes(String scopes) {
-        this.scopes = scopes;
+        throw new RuntimeException("This method is not available in AzureKafkaPasswordlessProperties");
     }
 
     /**
@@ -82,10 +58,6 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
     @Override
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
-    }
-
-    private String getDefaultScopes() {
-        return REDIS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), REDIS_SCOPE_AZURE);
     }
 
     /**

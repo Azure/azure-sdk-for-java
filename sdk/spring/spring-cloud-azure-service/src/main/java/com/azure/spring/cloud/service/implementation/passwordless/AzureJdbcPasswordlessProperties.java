@@ -6,40 +6,40 @@ package com.azure.spring.cloud.service.implementation.passwordless;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Configuration properties for passwordless connections with Azure Redis.
+ * Configuration properties for passwordless connections with Azure Database.
  */
-public class AzureRedisPasswordlessProperties implements PasswordlessProperties {
+public class AzureJdbcPasswordlessProperties implements PasswordlessProperties {
 
-    private static final String REDIS_SCOPE_AZURE = "https://*.cacheinfra.windows.net:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
+    private static final String JDBC_SCOPE_AZURE = "https://ossrdbms-aad.database.windows.net/.default";
+    private static final String JDBC_SCOPE_AZURE_CHINA = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+    private static final String JDBC_SCOPE_AZURE_GERMANY = "https://ossrdbms-aad.database.cloudapi.de/.default";
+    private static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
 
-    private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
+    private static final Map<CloudType, String> JDBC_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
-            put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, REDIS_SCOPE_AZURE_GERMANY);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
+            put(CloudType.AZURE, JDBC_SCOPE_AZURE);
+            put(CloudType.AZURE_CHINA, JDBC_SCOPE_AZURE_CHINA);
+            put(CloudType.AZURE_GERMANY, JDBC_SCOPE_AZURE_GERMANY);
+            put(CloudType.AZURE_US_GOVERNMENT, JDBC_SCOPE_AZURE_US_GOVERNMENT);
         }
     };
-
-    private AzureProfileProperties profile = new AzureProfileProperties();
-
-    private String scopes;
 
     /**
      * Whether to enable supporting azure identity token credentials, by default is false.
      *
-     * If the passwordlessEnabled is true, but the redis password properties is not null, it will still use username/password to authenticate connections.
+     * If the passwordlessEnabled is true, but the 'spring.datasource.password' property is not empty, it will still use username/password to authenticate connections.
+     * To use passwordless connections, you need to remove 'spring.datasource.password' property.
      */
     private boolean passwordlessEnabled = false;
+
+    private AzureProfileProperties profile = new AzureProfileProperties();
+
+    private String scopes;
 
     private TokenCredentialProperties credential = new TokenCredentialProperties();
 
@@ -58,7 +58,6 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
      *
      * @param scopes the scopes required for the access token
      */
-    @Override
     public void setScopes(String scopes) {
         this.scopes = scopes;
     }
@@ -85,7 +84,7 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
     }
 
     private String getDefaultScopes() {
-        return REDIS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), REDIS_SCOPE_AZURE);
+        return JDBC_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), JDBC_SCOPE_AZURE);
     }
 
     /**

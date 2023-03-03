@@ -143,6 +143,11 @@
       <artifactId>netty-codec-http</artifactId>
       <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity-extensions</artifactId>
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
