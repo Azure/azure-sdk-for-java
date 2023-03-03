@@ -29,6 +29,12 @@ public class AzureJdbcPasswordlessProperties implements PasswordlessProperties {
         }
     };
 
+    /**
+     * Whether to enable supporting azure identity token credentials, by default is false.
+     *
+     * If the passwordlessEnabled is true, but the 'spring.datasource.password' property is not empty, it will still use username/password to authenticate connections.
+     * To use passwordless connections, you need to remove 'spring.datasource.password' property.
+     */
     private boolean passwordlessEnabled = false;
 
     private AzureProfileProperties profile = new AzureProfileProperties();

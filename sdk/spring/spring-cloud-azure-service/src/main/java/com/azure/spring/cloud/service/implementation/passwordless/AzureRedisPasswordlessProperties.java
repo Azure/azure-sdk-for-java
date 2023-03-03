@@ -34,6 +34,11 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
 
     private String scopes;
 
+    /**
+     * Whether to enable supporting azure identity token credentials, by default is false.
+     *
+     * If the passwordlessEnabled is true, but the redis password properties is not null, it will still use username/password to authenticate connections.
+     */
     private boolean passwordlessEnabled = false;
 
     private TokenCredentialProperties credential = new TokenCredentialProperties();

@@ -53,6 +53,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
 
     /**
      * Whether to enable supporting azure identity token credentials.
+     *
+     * If the value is true, then 'spring.jms.servicebus.namespace' must be set.
+     * If the passwordlessEnabled is true, it will try to authenticate connections with Azure AD.
      */
     private boolean passwordlessEnabled = false;
 
