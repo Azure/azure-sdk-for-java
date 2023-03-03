@@ -17,7 +17,7 @@ Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
-   End-to-end examples can be viewed [here][sample_readme].
+End-to-end examples can be viewed [here][sample_readme].
 
 ## Next steps
 Start using Azure Purview Sharing Java SDK in your solutions. Our SDK details could be found at [SDK README][SHARE_SDK_README].
