@@ -191,7 +191,7 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
-    <graalvm.enable>false</graalvm.enable>
+    <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
@@ -1551,6 +1551,7 @@
                   <goal>compile-no-fork</goal>
                 </goals>
                 <phase>package</phase>
+                <inherited>false</inherited>
               </execution>
               <execution>
                 <id>test-native</id>

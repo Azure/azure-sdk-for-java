@@ -55,7 +55,7 @@
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <graalvm.enable>true</graalvm.enable>
+    <graalvm.disable>false</graalvm.disable>
   </properties>
 
   <pluginRepositories>
