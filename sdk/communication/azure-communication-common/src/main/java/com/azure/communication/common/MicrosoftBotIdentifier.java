@@ -13,20 +13,22 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     private final boolean isGlobal;
     private boolean rawIdSet = false;
 
-    private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
+    private final CommunicationCloudEnvironment cloudEnvironment;
 
     /**
      * Creates a MicrosoftBotIdentifier object
      *
      * @param botId Id of the Microsoft bot.
+     * @param cloudEnvironment Cloud Environment of the Microsoft bot.
      * @param isGlobal set this to true if the bot is global.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
-    public MicrosoftBotIdentifier(String botId, boolean isGlobal) {
+    public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isGlobal) {
         if (CoreUtils.isNullOrEmpty(botId)) {
             throw new IllegalArgumentException("The initialization parameter [botId] cannot be null or empty.");
         }
         this.botId = botId;
+        this.cloudEnvironment = cloudEnvironment;
         this.isGlobal = isGlobal;
         generateRawId();
     }
@@ -38,7 +40,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId) {
-        this(botId, false);
+        this(botId, CommunicationCloudEnvironment.PUBLIC, false);
     }
 
     /**
@@ -63,18 +65,6 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
         return cloudEnvironment;
-    }
-
-    /**
-     * Set cloud environment of the bot identifier
-     *
-     * @param cloudEnvironment the cloud environment in which this identifier is created
-     * @return this object
-     */
-    public MicrosoftBotIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
-        this.cloudEnvironment = cloudEnvironment;
-        generateRawId();
-        return this;
     }
 
     /**

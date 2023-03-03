@@ -104,7 +104,7 @@ public abstract class CommunicationIdentifier {
         final String[] segments = rawId.split(":");
         if (segments.length != 3) {
             if (segments.length == 2 && rawId.startsWith(BOT_GLOBAL)) {
-                return new MicrosoftBotIdentifier(segments[1], true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+                return new MicrosoftBotIdentifier(segments[1], CommunicationCloudEnvironment.PUBLIC, true);
             }
             return new UnknownIdentifier(rawId);
         }
@@ -123,15 +123,15 @@ public abstract class CommunicationIdentifier {
         } else if (ACS_USER.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         } else if (BOT_GCCH_CLOUD_GLOBAL.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH,true);
         } else if (BOT_PUBLIC_CLOUD.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC, false);
         } else if (BOT_DOD_CLOUD_GLOBAL.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, true).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.DOD, true);
         } else if (BOT_GCCH_CLOUD.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH, false);
         } else if (BOT_DOD_CLOUD.equals(prefix)) {
-            return new MicrosoftBotIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.DOD, false);
         }
 
         return new UnknownIdentifier(rawId);
