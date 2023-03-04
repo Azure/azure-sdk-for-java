@@ -12,7 +12,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class AbstractSummaryOptions extends TextAnalyticsRequestOptions {
     private String displayName;
-    private Integer maxSentenceCount;
+    private Integer sentenceCount;
 
     /**
      * Gets display name of the operation.
@@ -36,22 +36,22 @@ public final class AbstractSummaryOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Get the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @return the maxSentenceCount value.
+     * @return the sentenceCount value.
      */
-    public Integer getMaxSentenceCount() {
-        return this.maxSentenceCount;
+    public Integer getSentenceCount() {
+        return this.sentenceCount;
     }
 
     /**
-     * Set the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @param maxSentenceCount the maxSentenceCount value to set.
+     * @param sentenceCount the sentenceCount value to set.
      * @return the AbstractSummaryOptions object itself.
      */
-    public AbstractSummaryOptions setMaxSentenceCount(Integer maxSentenceCount) {
-        this.maxSentenceCount = maxSentenceCount;
+    public AbstractSummaryOptions setSentenceCount(Integer sentenceCount) {
+        this.sentenceCount = sentenceCount;
         return this;
     }
 }
