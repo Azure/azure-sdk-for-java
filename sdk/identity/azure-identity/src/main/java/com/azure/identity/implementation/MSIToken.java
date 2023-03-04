@@ -61,7 +61,7 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn,
-        @JsonProperty(value = "refrsh_in") String refreshIn) {
+        @JsonProperty(value = "refresh_in") String refreshIn) {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         this.accessToken = token;
         this.expiresOn = expiresOn;

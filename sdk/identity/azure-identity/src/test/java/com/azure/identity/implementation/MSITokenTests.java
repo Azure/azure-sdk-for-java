@@ -3,10 +3,14 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 
+import java.io.IOException;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -20,6 +24,8 @@ import static org.mockito.Mockito.mockStatic;
 
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
+
+    private final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canParseLong() {
@@ -38,7 +44,7 @@ public class MSITokenTests {
 
             offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((ZoneId) any())).thenReturn(expected);
             offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((Clock) any())).thenReturn(expected);
-            offsetDateTimeMockedStatic.when(OffsetDateTime::now).thenReturn(expected.minusHours(2));
+            offsetDateTimeMockedStatic.when(OffsetDateTime::now).thenReturn(expected);
 
             OffsetDateTime now = OffsetDateTime.now();
             OffsetDateTime expiration = now.plusHours(12);
@@ -66,6 +72,29 @@ public class MSITokenTests {
 
         }
 
+    }
+
+    @Test
+    public void canDeserialize() {
+        String json = "{\n" +
+            "  \"access_token\": \"fake_token\",\n" +
+            "  \"refresh_token\": \"\",\n" +
+            "  \"expires_in\": \"3599\",\n" +
+            "  \"expires_on\": \"1506484173\",\n" +
+            "  \"refresh_in\": \"3599\",\n" +
+            "  \"not_before\": \"1506480273\",\n" +
+            "  \"resource\": \"https://management.azure.com/\",\n" +
+            "  \"token_type\": \"Bearer\"\n" +
+            "}";
+        MSIToken token;
+        try {
+            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
+        Assert.assertEquals(3599, token.getRefreshIn());
     }
 
     @Test

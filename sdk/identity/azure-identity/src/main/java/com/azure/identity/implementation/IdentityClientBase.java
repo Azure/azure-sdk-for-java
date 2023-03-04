@@ -340,7 +340,6 @@ public abstract class IdentityClientBase {
                 if (accessToken.getClass().isInstance(MSIToken.class)) {
                     MSIToken msiToken = (MSIToken) accessToken;
                     result.setRefreshInSeconds(msiToken.getRefreshIn());
-
                 }
                 return result;
             }).toFuture();
