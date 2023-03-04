@@ -746,7 +746,7 @@ public class EventProcessorClientBuilder implements
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
-            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
+            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy, eventHubClientBuilder.createTracer());
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

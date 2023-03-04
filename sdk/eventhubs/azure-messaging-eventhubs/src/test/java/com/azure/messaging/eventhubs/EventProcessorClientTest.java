@@ -152,7 +152,7 @@ public class EventProcessorClientTest {
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
 
@@ -251,7 +251,7 @@ public class EventProcessorClientTest {
         //Act
         EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer1);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -334,7 +334,7 @@ public class EventProcessorClientTest {
         //Act
         EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, null, true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            2, null, true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer1);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -401,7 +401,7 @@ public class EventProcessorClientTest {
         //Act
         EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false,  ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
 
         eventProcessorClient.start();
         boolean success = countDownLatch.await(10, TimeUnit.SECONDS);
@@ -468,7 +468,7 @@ public class EventProcessorClientTest {
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
             TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
@@ -523,7 +523,7 @@ public class EventProcessorClientTest {
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
@@ -567,7 +567,7 @@ public class EventProcessorClientTest {
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
@@ -609,7 +609,7 @@ public class EventProcessorClientTest {
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
@@ -649,7 +649,7 @@ public class EventProcessorClientTest {
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
 
         // Act
         eventProcessorClient.start();
@@ -710,7 +710,7 @@ public class EventProcessorClientTest {
 
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, Duration.ofSeconds(1), false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+            1, Duration.ofSeconds(1), false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
         eventProcessorClient.start();
         boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
         eventProcessorClient.stop();
