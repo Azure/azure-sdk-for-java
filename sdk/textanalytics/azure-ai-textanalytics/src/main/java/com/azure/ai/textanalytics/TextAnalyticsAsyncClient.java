@@ -2937,7 +2937,7 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;;
+     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, &quot;en&quot;, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
      *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
@@ -3027,7 +3027,7 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;;
+     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
      *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
