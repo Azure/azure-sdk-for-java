@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed support for Octet Key Pair (OKP) operations.
 
 ### Bugs Fixed
 
