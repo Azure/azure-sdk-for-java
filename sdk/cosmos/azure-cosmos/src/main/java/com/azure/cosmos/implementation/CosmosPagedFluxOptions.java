@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
 import java.time.Duration;
@@ -14,6 +16,8 @@ import java.time.Duration;
  * @see CosmosPagedFlux
  */
 public class CosmosPagedFluxOptions {
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     private String requestContinuation;
     private Integer maxItemCount;
@@ -25,8 +29,9 @@ public class CosmosPagedFluxOptions {
     private ResourceType resourceType;
     private String serviceEndpoint;
     private CosmosAsyncClient cosmosAsyncClient;
-    private Duration thresholdForDiagnosticsOnTracer;
+    private CosmosDiagnosticsThresholds thresholds;
     private String operationId;
+    public ConsistencyLevel effectiveConsistencyLevel;
 
     public CosmosPagedFluxOptions() {}
 
@@ -45,6 +50,8 @@ public class CosmosPagedFluxOptions {
     public CosmosAsyncClient getCosmosAsyncClient() {
         return cosmosAsyncClient;
     }
+
+    public ConsistencyLevel getEffectiveConsistencyLevel() { return this.effectiveConsistencyLevel; }
 
     /**
      * Gets the request continuation token.
@@ -132,32 +139,16 @@ public class CosmosPagedFluxOptions {
      * Gets the service end point
      * @return serviceEndpoint
      */
-    public String getServiceEndpoint() {
+    public String getAccountTag() {
         return serviceEndpoint;
     }
 
-    /**
-     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * Default is 500 ms.
-     *
-     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     */
-    public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return  this.thresholds;
     }
 
-    /**
-     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * Default is 500 ms.
-     *
-     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     */
-    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+    public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
+        this.thresholds = thresholds;
     }
 
     public String getOperationId() {
@@ -168,12 +159,12 @@ public class CosmosPagedFluxOptions {
     public void setTracerInformation(
         DiagnosticsProvider tracerProvider,
         String tracerSpanName,
-        String serviceEndpoint,
+        String accountTagValue,
         String databaseId,
         String operationId) {
 
         this.databaseId = databaseId;
-        this.serviceEndpoint = serviceEndpoint;
+        this.serviceEndpoint = accountTagValue;
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider = tracerProvider;
         this.operationId = operationId;
@@ -185,10 +176,12 @@ public class CosmosPagedFluxOptions {
                                                  OperationType operationType,
                                                  ResourceType resourceType,
                                                  CosmosAsyncClient cosmosAsyncClient,
-                                                 String operationId
+                                                 String operationId,
+                                                 ConsistencyLevel consistencyLevel,
+                                                 CosmosDiagnosticsThresholds thresholds
     ) {
         this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
-        this.serviceEndpoint = BridgeInternal.getServiceEndpoint(cosmosAsyncClient);
+        this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.tracerSpanName = tracerSpanName;
         this.databaseId = databaseId;
         this.containerId = containerId;
@@ -196,5 +189,8 @@ public class CosmosPagedFluxOptions {
         this.resourceType = resourceType;
         this.cosmosAsyncClient = cosmosAsyncClient;
         this.operationId = operationId;
+        this.effectiveConsistencyLevel = clientAccessor
+            .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
+        this.thresholds = thresholds;
     }
 }

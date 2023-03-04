@@ -3,15 +3,19 @@
 
 package com.azure.cosmos.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
@@ -37,9 +41,10 @@ import java.util.function.Function;
  * @see FeedResponse
  */
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
-
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
@@ -81,21 +86,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
@@ -103,7 +108,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     /**
@@ -149,11 +154,13 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return tracerProvider.runUnderSpanInContext(publisher);
     }
 
-    private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions) {
+    private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
-        return  wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
+        Flux<FeedResponse<T>> result =
+            wrapWithTracingIfEnabled(
+                pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
             .doOnSubscribe(ignoredValue -> {
                 startTime.set(Instant.now());
                 feedResponseConsumerLatencyInNanos.set(0);
@@ -209,7 +216,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                             if (isTracerEnabled(tracerProvider)) {
                                 tracerProvider.recordPage(signal, diagnostics);
-                            }
+                             }
 
                             //  If the user has passed feedResponseConsumer, then call it with each feedResponse
                             if (feedResponseConsumer != null) {
@@ -227,10 +234,33 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     default:
                         break;
             }});
+
+        if (isTracerEnabled(pagedFluxOptions.getTracerProvider())) {
+
+            CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+                pagedFluxOptions.getTracerSpanName(),
+                pagedFluxOptions.getAccountTag(),
+                pagedFluxOptions.getDatabaseId(),
+                pagedFluxOptions.getContainerId(),
+                pagedFluxOptions.getResourceType(),
+                pagedFluxOptions.getOperationType(),
+                pagedFluxOptions.getOperationId(),
+                pagedFluxOptions.getEffectiveConsistencyLevel(),
+                pagedFluxOptions.getMaxItemCount(),
+                pagedFluxOptions.getDiagnosticsThresholds());
+
+            return result.contextWrite(DiagnosticsProvider.setContextInReactor(
+                pagedFluxOptions.getTracerProvider().startSpan(
+                    pagedFluxOptions.getTracerSpanName(),
+                    cosmosCtx,
+                    context)));
+        }
+
+        return result;
     }
 
     private boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
-        return tracerProvider != null && tracerProvider.isRealTracer();
+        return tracerProvider != null;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

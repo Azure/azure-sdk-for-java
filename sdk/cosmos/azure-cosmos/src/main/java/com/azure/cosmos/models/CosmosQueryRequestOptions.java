@@ -531,6 +531,18 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions configureDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
+        return this;
+    }
+
+    /**
      * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
@@ -760,6 +772,11 @@ public class CosmosQueryRequestOptions {
                     }
 
                     return requestOptions;
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options) {
+                    return options.thresholds;
                 }
             });
     }

@@ -189,15 +189,16 @@ public final class DiagnosticsProvider {
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
         ctxAccessor.startOperation(cosmosCtx);
+        Context local = Objects
+            .requireNonNull(context, "'context' cannot be null.")
+            .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
 
         if (this.cosmosTracer == null) {
-            return context;
+            return local;
         }
 
-        return this.cosmosTracer.startSpan(spanName, cosmosCtx, context);
+        return this.cosmosTracer.startSpan(spanName, cosmosCtx, local);
     }
-
-
 
     /**
      * Given a context containing the current tracing span the span is marked completed with status info from
@@ -205,6 +206,7 @@ public final class DiagnosticsProvider {
      *
      * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
      */
+
     public <T> void endSpan(
         Signal<T> signal,
         int statusCode,
@@ -212,7 +214,22 @@ public final class DiagnosticsProvider {
         Double requestCharge,
         CosmosDiagnostics diagnostics
     ) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+            this.endSpanCore(signal, statusCode, actualItemCount, requestCharge, diagnostics);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
+            System.exit(9901);
+        }
+    }
 
+    private <T> void endSpanCore(
+        Signal<T> signal,
+        int statusCode,
+        Integer actualItemCount,
+        Double requestCharge,
+        CosmosDiagnostics diagnostics
+    ) {
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
         Context context = getContextFromReactorOrNull(signal.getContextView());
@@ -254,13 +271,21 @@ public final class DiagnosticsProvider {
         }
     }
 
-    /**
-     * Given a context containing the current tracing span the span is marked completed with status info from
-     * {@link Signal}.  For each tracer plugged into the SDK the current tracing span is marked as completed.
-     *
-     * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
-     */
+
     public <T> void recordPage(
+        Signal<T> signal,
+        CosmosDiagnostics diagnostics
+    ) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+            this.recordPageCore(signal, diagnostics);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
+            System.exit(9902);
+        }
+    }
+
+    private <T> void recordPageCore(
         Signal<T> signal,
          CosmosDiagnostics diagnostics
     ) {
@@ -276,12 +301,24 @@ public final class DiagnosticsProvider {
         }
 
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
-
         ctxAccessor
             .addDiagnostics(cosmosCtx, diagnostics);
     }
 
     public <T> void recordFeedResponseConsumerLatency(
+        Signal<T> signal,
+        Duration feedResponseConsumerLatency
+    ) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+            this.recordFeedResponseConsumerLatencyCore(signal, feedResponseConsumerLatency);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
+            System.exit(9902);
+        }
+    }
+
+    private <T> void recordFeedResponseConsumerLatencyCore(
         Signal<T> signal,
         Duration feedResponseConsumerLatency
     ) {
@@ -541,6 +578,7 @@ public final class DiagnosticsProvider {
             containerId,
             resourceType,
             operationType,
+            null,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
             thresholds);
@@ -668,9 +706,7 @@ public final class DiagnosticsProvider {
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
             checkNotNull(spanName, "Argument 'spanName' must not be null.");
             checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
-            Context local = Objects
-                .requireNonNull(context, "'context' cannot be null.")
-                .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
+
 
             // @TODO implement non-legacy
             StartSpanOptions spanOptions = this.startSpanOptions(
@@ -679,7 +715,7 @@ public final class DiagnosticsProvider {
                 cosmosCtx.getAccountName());
 
             // start the span and return the started span
-            return tracer.start(spanName, spanOptions, local);
+            return tracer.start(spanName, spanOptions, context);
         }
 
         private StartSpanOptions startSpanOptions(String methodName, String databaseId, String endpoint) {
@@ -887,11 +923,17 @@ public final class DiagnosticsProvider {
                     .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
                     .setAttribute("db.system", "cosmosdb")
                     .setAttribute("db.operation", spanName)
-                    .setAttribute("net.peer.name", cosmosCtx.getAccountName());
+                    .setAttribute("net.peer.name", cosmosCtx.getAccountName())
+                    .setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType())
+                    .setAttribute("db.name", cosmosCtx.getDatabaseName());
 
-                String databaseId = cosmosCtx.getDatabaseName();
-                if (databaseId != null) {
-                    spanOptions.setAttribute("db.name", databaseId);
+                if (!cosmosCtx.getOperationId().isEmpty()) {
+                    spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
+                }
+
+                String containerName = cosmosCtx.getContainerName();
+                if (containerName != null) {
+                    spanOptions.setAttribute("db.cosmosdb.container", containerName);
                 }
             }
 
@@ -957,8 +999,7 @@ public final class DiagnosticsProvider {
                 }
             }
 
-            tracer.setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType(), context);
-            tracer.setAttribute("db.cosmosdb.container",cosmosCtx.getContainerName(), context);
+
             tracer.setAttribute(
                 "db.cosmosdb.status_code",
                 Integer.toString(cosmosCtx.getStatusCode()),

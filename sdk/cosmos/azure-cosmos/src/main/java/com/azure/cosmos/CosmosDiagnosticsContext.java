@@ -47,6 +47,7 @@ public final class CosmosDiagnosticsContext {
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
+    private final String operationId;
 
     private Throwable finalError;
     private Instant startTime = null;
@@ -66,6 +67,7 @@ public final class CosmosDiagnosticsContext {
         String collectionName,
         ResourceType resourceType,
         OperationType operationType,
+        String operationId,
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
         CosmosDiagnosticsThresholds thresholds) {
@@ -86,6 +88,7 @@ public final class CosmosDiagnosticsContext {
         this.resourceTypeString = resourceType.toString();
         this.operationType = operationType;
         this.operationTypeString = operationType.toString();
+        this.operationId = operationId != null ? operationId : "";
         this.diagnostics = new ConcurrentLinkedDeque<>();
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
@@ -138,6 +141,16 @@ public final class CosmosDiagnosticsContext {
 
     OperationType getOperationTypeInternal() {
         return this.operationType;
+    }
+
+    /**
+     * The operation identifier of the operation - this can be used to
+     * add an additional dimension for feed operations - like queries -
+     * so, metrics and diagnostics can be separated for different query types etc.
+     * @return the operation identifier of the operation
+     */
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**
@@ -383,24 +396,31 @@ public final class CosmosDiagnosticsContext {
         ObjectNode ctxNode = mapper.createObjectNode();
 
         ctxNode.put("spanName", this.spanName);
-        ctxNode.put("spanName", this.accountName);
-        ctxNode.put("spanName", this.databaseName);
-        ctxNode.put("spanName", this.collectionName);
-        ctxNode.put("spanName", this.resourceType.toString());
-        ctxNode.put("spanName", this.operationType.toString());
-        ctxNode.put("spanName", this.consistencyLevel.toString());
-        ctxNode.put("spanName", this.statusCode);
-        ctxNode.put("spanName", this.subStatusCode);
-        ctxNode.put("spanName", this.totalRequestCharge);
-        ctxNode.put("spanName", this.maxRequestSize);
-        ctxNode.put("spanName", this.maxResponseSize);
+        ctxNode.put("account", this.accountName);
+        ctxNode.put("db", this.databaseName);
+        if (!this.collectionName.isEmpty()) {
+            ctxNode.put("container", this.collectionName);
+        }
+        ctxNode.put("resource", this.resourceType.toString());
+        ctxNode.put("operation", this.operationType.toString());
+        if (!this.operationId.isEmpty()) {
+            ctxNode.put("operationId", this.operationId);
+        }
+        ctxNode.put("consistency", this.consistencyLevel.toString());
+        ctxNode.put("status", this.statusCode);
+        if (this.subStatusCode != 0) {
+            ctxNode.put("subStatus", this.subStatusCode);
+        }
+        ctxNode.put("RUs", this.totalRequestCharge);
+        ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
+        ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
         if (this.maxItemCount != null) {
-            ctxNode.put("spanName", this.maxItemCount);
+            ctxNode.put("maxItems", this.maxItemCount);
         }
 
         if (this.actualItemCount != null) {
-            ctxNode.put("spanName", this.actualItemCount);
+            ctxNode.put("actualItems", this.actualItemCount);
         }
 
         if (this.finalError != null) {
@@ -463,6 +483,7 @@ public final class CosmosDiagnosticsContext {
                     public CosmosDiagnosticsContext create(String spanName, String account, String databaseId,
                                                            String containerId, ResourceType resourceType,
                                                            OperationType operationType,
+                                                           String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds) {
 
@@ -473,6 +494,7 @@ public final class CosmosDiagnosticsContext {
                             containerId,
                             resourceType,
                             operationType,
+                            operationId,
                             consistencyLevel,
                             maxItemCount,
                             thresholds);

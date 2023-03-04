@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.clienttelemetry;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -127,40 +128,29 @@ public final class ClientTelemetryMetrics {
 
     public static void recordOperation(
         CosmosAsyncClient client,
-        CosmosDiagnostics cosmosDiagnostics,
-        int statusCode,
-        Integer maxItemCount,
-        Integer actualItemCount,
-        String containerId,
-        String databaseId,
-        OperationType operationType,
-        ResourceType resourceType,
-        ConsistencyLevel consistencyLevel,
-        String operationId,
-        float requestCharge,
-        Duration latency
+        CosmosDiagnosticsContext diagnosticsContext
     ) {
         recordOperation(
             client,
-            cosmosDiagnostics,
-            statusCode,
-            maxItemCount,
-            actualItemCount,
-            containerId,
-            databaseId,
-            operationType.toString(),
-            resourceType.toString(),
-            consistencyLevel,
-            operationId,
-            requestCharge,
-            latency
+            diagnosticsContext,
+            diagnosticsContext.getStatusCode(),
+            diagnosticsContext.getMaxItemCount(),
+            diagnosticsContext.getActualItemCount(),
+            diagnosticsContext.getContainerName(),
+            diagnosticsContext.getDatabaseName(),
+            diagnosticsContext.getOperationType(),
+            diagnosticsContext.getResourceType(),
+            diagnosticsContext.getConsistencyLevel(),
+            diagnosticsContext.getOperationId(),
+            diagnosticsContext.getTotalRequestCharge(),
+            diagnosticsContext.getDuration()
         );
     }
 
 
-    public static void recordOperation(
+    private static void recordOperation(
         CosmosAsyncClient client,
-        CosmosDiagnostics cosmosDiagnostics,
+        CosmosDiagnosticsContext diagnosticsContext,
         int statusCode,
         Integer maxItemCount,
         Integer actualItemCount,
@@ -190,7 +180,7 @@ public final class ClientTelemetryMetrics {
 
         Set<String> contactedRegions = Collections.emptySet();
         if (metricCategories.contains(MetricCategory.OperationDetails)) {
-            contactedRegions = cosmosDiagnostics.getContactedRegionNames();
+            contactedRegions = diagnosticsContext.getContactedRegionNames();
         }
 
         Tags operationTags = createOperationTags(
@@ -215,7 +205,7 @@ public final class ClientTelemetryMetrics {
             latency,
             maxItemCount == null ? -1 : maxItemCount,
             actualItemCount == null ? -1: actualItemCount,
-            cosmosDiagnostics,
+            diagnosticsContext,
             contactedRegions
         );
     }
@@ -371,7 +361,7 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             int maxItemCount,
             int actualItemCount,
-            CosmosDiagnostics diagnostics,
+            CosmosDiagnosticsContext diagnosticsContext,
             Set<String> contactedRegions) {
 
             CosmosMeterOptions callsOptions = clientAccessor.getMeterOptions(
@@ -441,38 +431,40 @@ public final class ClientTelemetryMetrics {
                 latencyMeter.record(latency);
             }
 
-            List<ClientSideRequestStatistics> clientSideRequestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+            for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
+                List<ClientSideRequestStatistics> clientSideRequestStatistics =
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
 
-            if (clientSideRequestStatistics != null) {
-                for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+                if (clientSideRequestStatistics != null) {
+                    for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
 
-                    recordStoreResponseStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getResponseStatisticsList());
-                    recordStoreResponseStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getSupplementalResponseStatisticsList());
-                    recordGatewayStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
-                    recordAddressResolutionStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getAddressResolutionStatistics());
+                        recordStoreResponseStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getResponseStatisticsList());
+                        recordStoreResponseStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getSupplementalResponseStatisticsList());
+                        recordGatewayStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
+                        recordAddressResolutionStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getAddressResolutionStatistics());
+                    }
                 }
+
+                FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
+                    .getFeedResponseDiagnostics(diagnostics);
+
+                if (feedDiagnostics == null) {
+                    continue;
+                }
+
+                QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
+                    feedDiagnostics.getQueryPlanDiagnosticsContext();
+
+                recordQueryPlanDiagnostics(cosmosAsyncClient, queryPlanDiagnostics);
             }
-
-            FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
-                .getFeedResponseDiagnostics(diagnostics);
-
-            if (feedDiagnostics == null) {
-                return;
-            }
-
-            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
-                feedDiagnostics.getQueryPlanDiagnosticsContext();
-
-            recordQueryPlanDiagnostics(cosmosAsyncClient, queryPlanDiagnostics);
         }
 
         private void recordQueryPlanDiagnostics(

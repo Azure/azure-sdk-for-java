@@ -87,6 +87,8 @@ public class CosmosAsyncContainer {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor itemOptionsAccessor =
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cfOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
     private final CosmosAsyncDatabase database;
     private final String id;
     private final String link;
@@ -431,9 +433,11 @@ public class CosmosAsyncContainer {
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName));
+                    .getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
+                options.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
-            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(requestOptions.getThresholdForDiagnosticsOnTracer());
 
             return getDatabase()
                 .getDocClientWrapper()
@@ -688,9 +692,11 @@ public class CosmosAsyncContainer {
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(options, spanName));
+                    .getQueryNameOrDefault(options, spanName),
+                options.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, options, classType)
@@ -720,9 +726,10 @@ public class CosmosAsyncContainer {
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(options, spanName));
+                    .getQueryNameOrDefault(options, spanName),
+                options.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
@@ -792,7 +799,11 @@ public class CosmosAsyncContainer {
                 OperationType.ReadFeed,
                 ResourceType.Document,
                 client,
-                spanName);
+                spanName,
+                null,
+                client.getEffectiveDiagnosticsThresholds(
+                    cfOptionsAccessor.getDiagnosticsThresholds(cosmosChangeFeedRequestOptions)));
+
             getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, cosmosChangeFeedRequestOptions);
 
             final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -1145,7 +1156,10 @@ public class CosmosAsyncContainer {
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName));
+                    .getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName),
+                requestOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()
                 .getDocClientWrapper()

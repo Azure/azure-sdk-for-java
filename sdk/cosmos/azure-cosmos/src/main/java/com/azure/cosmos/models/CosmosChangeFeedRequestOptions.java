@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -43,6 +45,7 @@ public final class CosmosChangeFeedRequestOptions {
     private Map<String, String> customOptions;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Function<JsonNode, ?> itemFactoryMethod;
+    private CosmosDiagnosticsThresholds thresholds;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -173,6 +176,18 @@ public final class CosmosChangeFeedRequestOptions {
      */
     public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
         this.quotaInfoEnabled = quotaInfoEnabled;
+    }
+
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosChangeFeedRequestOptions configureDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
+        return this;
     }
 
     boolean isSplitHandlingDisabled() {
@@ -546,6 +561,11 @@ public final class CosmosChangeFeedRequestOptions {
                     Function<JsonNode, ?> factoryMethod) {
 
                     return options.setItemFactoryMethod(factoryMethod);
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options) {
+                    return options.thresholds;
                 }
             });
     }

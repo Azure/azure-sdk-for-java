@@ -31,18 +31,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
         for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
             ClientTelemetryMetrics.recordOperation(
                 this.client,
-                diagnostics,
-                diagnosticsContext.getStatusCode(),
-                diagnosticsContext.getMaxItemCount(),
-                diagnosticsContext.getActualItemCount(),
-                diagnosticsContext.getContainerName(),
-                diagnosticsContext.getDatabaseName(),
-                diagnosticsContext.getOperationType(),
-                diagnosticsContext.getResourceType(),
-                diagnosticsContext.getConsistencyLevel(),
-                (String)null,
-                diagnosticsContext.getTotalRequestCharge(),
-                diagnostics.getDuration());
+                diagnosticsContext);
         }
     }
 }

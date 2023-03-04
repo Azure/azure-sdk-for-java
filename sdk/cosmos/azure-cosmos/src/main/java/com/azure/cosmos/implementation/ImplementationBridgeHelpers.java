@@ -255,6 +255,7 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
         }
     }
 
@@ -295,6 +296,7 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
+            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
         }
     }
 
@@ -717,6 +719,7 @@ public class ImplementationBridgeHelpers {
                 String containerId,
                 ResourceType resourceType,
                 OperationType operationType,
+                String operationId,
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds);
