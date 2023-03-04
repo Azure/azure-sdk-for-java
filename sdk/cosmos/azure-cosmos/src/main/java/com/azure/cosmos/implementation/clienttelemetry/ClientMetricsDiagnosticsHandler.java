@@ -28,11 +28,9 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
     public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
         checkNotNull(traceContext, "Argument 'traceContext' must not be null.");
 
-        for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-            ClientTelemetryMetrics.recordOperation(
-                this.client,
-                diagnosticsContext);
-        }
+        ClientTelemetryMetrics.recordOperation(
+            this.client,
+            diagnosticsContext);
     }
 }
 

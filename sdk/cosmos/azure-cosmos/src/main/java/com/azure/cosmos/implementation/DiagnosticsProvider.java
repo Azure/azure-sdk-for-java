@@ -15,12 +15,22 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
@@ -41,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,6 +69,9 @@ public final class DiagnosticsProvider {
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    private static final
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -106,7 +120,9 @@ public final class DiagnosticsProvider {
             if (clientTelemetryConfigAccessor.isLegacyTracingEnabled(clientTelemetryConfig)) {
                 this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
             } else {
-                this.cosmosTracer = new OpenTelemetryCosmosTracer(this.tracer);
+                this.cosmosTracer = new OpenTelemetryCosmosTracer(
+                    this.tracer,
+                    clientTelemetryConfig);
             }
         } else {
             this.cosmosTracer = null;
@@ -890,10 +906,17 @@ public final class DiagnosticsProvider {
 
     private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
         private final Tracer tracer;
+        private final CosmosClientTelemetryConfig config;
 
-        public OpenTelemetryCosmosTracer(Tracer tracer) {
+        public OpenTelemetryCosmosTracer(Tracer tracer, CosmosClientTelemetryConfig config) {
             checkNotNull(tracer, "Argument 'tracer' must not be null.");
+            checkNotNull(config, "Argument 'config' must not be null.");
             this.tracer = tracer;
+            this.config = config;
+        }
+
+        private boolean isTransportLevelTracingEnabled() {
+            return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
 
         @Override
@@ -980,6 +1003,10 @@ public final class DiagnosticsProvider {
                 }
             }
 
+            if (this.isTransportLevelTracingEnabled()) {
+                traceTransportLevel(cosmosCtx, context);
+            }
+
             if (finalError != null && cosmosCtx.isFailure()) {
                 tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
                 tracer.setAttribute("exception.message", errorMessage, context);
@@ -1025,6 +1052,119 @@ public final class DiagnosticsProvider {
             }
 
             tracer.end(errorMessage, finalError, context);
+        }
+
+        private void recordStoreResponseStatistics(
+            List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
+            Context context) {
+
+            for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {
+                StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
+                StoreResponseDiagnostics storeResponseDiagnostics =
+                    storeResultDiagnostics.getStoreResponseDiagnostics();
+
+                Map<String, Object> attributes = new HashMap<>();
+                attributes.put("rntbd.url", storeResultDiagnostics.getStorePhysicalAddressAsString());
+                attributes.put("rntbd.resource_type", responseStatistics.getRequestResourceType().toString());
+                attributes.put("rntbd.operation_type", responseStatistics.getRequestOperationType().toString());
+                attributes.put("rntbd.region", responseStatistics.getRegionName());
+
+                if (storeResultDiagnostics.getLsn() > 0) {
+                    attributes.put("rntbd.lsn", Long.toString(storeResultDiagnostics.getLsn()));
+                }
+
+                if (storeResultDiagnostics.getGlobalCommittedLSN() > 0) {
+                    attributes.put("rntbd.gclsn", Long.toString(storeResultDiagnostics.getGlobalCommittedLSN()));
+                }
+
+                String responseSessionToken = responseStatistics.getRequestSessionToken();
+                if (responseSessionToken != null && !responseSessionToken.isEmpty()) {
+                    attributes.put("rntbd.session_token", responseSessionToken);
+                }
+
+                String requestSessionToken = responseStatistics.getRequestSessionToken();
+                if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                    attributes.put("rntbd.request_session_token", requestSessionToken);
+                }
+
+                String activityId = storeResponseDiagnostics.getActivityId();
+                if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                    attributes.put("rntbd.activity_id", activityId);
+                }
+
+                String pkRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+                if (pkRangeId != null && !pkRangeId.isEmpty()) {
+                    attributes.put("rntbd.partition_key_range_id", pkRangeId);
+                }
+
+                attributes.put("rntbd.status_code", Integer.toString(storeResponseDiagnostics.getStatusCode()));
+                if (storeResponseDiagnostics.getSubStatusCode() != 0) {
+                    attributes.put("rntbd.sub_status_code", Integer.toString(storeResponseDiagnostics.getSubStatusCode()));
+                }
+
+                Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
+                if (backendLatency != null) {
+                    attributes.put("rntbd.backendLatency", Double.toString(backendLatency));
+                }
+
+                double requestCharge = storeResponseDiagnostics.getRequestCharge();
+                attributes.put("rntbd.requestCharge", Double.toString(requestCharge));
+
+                Duration latency = responseStatistics.getDuration();
+                if (latency != null) {
+                    attributes.put("rntbd.latency", latency.toString());
+                }
+
+                OffsetDateTime startTime = null;
+                for (RequestTimeline.Event event : storeResponseDiagnostics.getRequestTimeline()) {
+                    OffsetDateTime eventTime = event.getStartTime() != null ?
+                        event.getStartTime().atOffset(ZoneOffset.UTC) : null;
+
+                    if (eventTime != null &&
+                        (startTime == null || startTime.isBefore(eventTime))) {
+                        startTime = eventTime;
+                    }
+
+                    Duration duration = event.getDuration();
+                    if (duration == null || duration == Duration.ZERO) {
+                        continue;
+                    }
+
+                    attributes.put("rntbd.latency." + event.getName(), duration.toString());
+                }
+
+                attributes.put("rntbd.requestSizeBytes",storeResponseDiagnostics.getRequestPayloadLength());
+                attributes.put("rntbd.responseSizeBytes",storeResponseDiagnostics.getResponsePayloadLength());
+
+                this.tracer.addEvent(
+                    "rntbd.request",
+                    attributes,
+                    startTime != null ? startTime : OffsetDateTime.now(),
+                    context);
+             }
+        }
+
+        private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
+
+            // TODO @fabianm - assumption is that in java HTTP calls are automatically captured as well
+            // Validate this
+
+            for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
+                List<ClientSideRequestStatistics> clientSideRequestStatistics =
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+
+                if (clientSideRequestStatistics != null) {
+                    for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+
+                        recordStoreResponseStatistics(
+                            requestStatistics.getResponseStatisticsList(),
+                            context);
+                        recordStoreResponseStatistics(
+                            requestStatistics.getSupplementalResponseStatisticsList(),
+                            context);
+                    }
+                }
+            }
         }
     }
 

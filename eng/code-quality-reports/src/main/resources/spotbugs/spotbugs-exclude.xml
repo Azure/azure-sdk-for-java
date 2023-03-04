@@ -2046,6 +2046,7 @@
 
   <Match>
     <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    <Class name="~com.azure.cosmos.implementation.DiagnosticsProvider(\$.*)?"/>
     <Bug pattern="DM_EXIT"/>
   </Match>
 

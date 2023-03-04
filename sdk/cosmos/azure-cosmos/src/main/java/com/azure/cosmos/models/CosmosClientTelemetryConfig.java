@@ -63,6 +63,7 @@ public final class CosmosClientTelemetryConfig {
     private final CopyOnWriteArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
     private boolean useLegacyOpenTelemetryTracing = false;
     private boolean isDiagnosticsLoggerEnabled = false;
+    private boolean isTransportLevelTracingEnabled = false;
     private CosmosDiagnosticsLoggerConfig diagnosticsLoggerConfig = new CosmosDiagnosticsLoggerConfig();
     private Tag clientCorrelationTag;
     private String accountName;
@@ -388,6 +389,17 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
+    /**
+     * Enables transport level tracing. By default transport-level tracing is not enabled - but
+     * when operations fail or exceed thresholds the diagnostics are traced. Enabling transport level tracing
+     * can be useful when latency is still beneath the defined thresholds.
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig enableTransportLevelTracing() {
+        this.isTransportLevelTracingEnabled = true;
+        return this;
+    }
+
     private static class JsonProxyOptionsConfig {
         @JsonProperty
         private String host;
@@ -564,6 +576,11 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config) {
                     return config.useLegacyOpenTelemetryTracing;
+                }
+
+                @Override
+                public boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isTransportLevelTracingEnabled;
                 }
             });
     }

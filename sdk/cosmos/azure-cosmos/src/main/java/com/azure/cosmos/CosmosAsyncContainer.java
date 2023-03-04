@@ -434,8 +434,8 @@ public class CosmosAsyncContainer {
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
                     .getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
-                options.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+                requestOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
 
