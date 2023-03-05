@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -63,5 +63,11 @@ public interface RxStoreModel {
      * @return A flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
-    void configFaultInjectionRule(IFaultInjectionRuleInternal rule);
+
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 }

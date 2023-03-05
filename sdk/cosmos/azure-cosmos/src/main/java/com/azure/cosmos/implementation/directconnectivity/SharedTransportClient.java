@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -100,8 +100,8 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        this.transportClient.configFaultInjectionRule(rule);
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }
 
     public int getReferenceCounter() {

@@ -26,8 +26,8 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
-import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -610,13 +610,13 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 this.timestamps.channelWriteAttempted();
 
                 if (this.serverErrorInjector != null) {
-                    if (this.serverErrorInjector.applyServerResponseErrorRule(record)) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
                         return;
                     }
 
                     Consumer<Duration> writeRequestWithInjectedDelayConsumer =
                         (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
-                    if (this.serverErrorInjector.applyServerResponseLatencyRule(record, writeRequestWithInjectedDelayConsumer)) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelay(record, writeRequestWithInjectedDelayConsumer)) {
                         return;
                     }
                 }

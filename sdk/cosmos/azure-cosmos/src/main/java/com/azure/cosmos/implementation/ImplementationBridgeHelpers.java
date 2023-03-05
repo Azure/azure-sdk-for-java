@@ -17,14 +17,13 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
-import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -123,6 +122,8 @@ public class ImplementationBridgeHelpers {
             Configs getConfigs(CosmosClientBuilder builder);
 
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
+
+            String getEndpoint(CosmosClientBuilder builder);
         }
     }
 
@@ -715,7 +716,9 @@ public class ImplementationBridgeHelpers {
                 GlobalThroughputControlConfig globalControlConfig,
                 Mono<Integer> throughputQueryMono);
 
-            Mono<Void> configureFaultInjectionRules(CosmosAsyncContainer cosmosAsyncContainer, List<FaultInjectionRule> faultInjectionRules);
+            IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                IFaultInjectorProvider injectorProvider);
         }
     }
 
@@ -1197,46 +1200,6 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
-        }
-    }
-
-    public static final class FaultInjectionRuleHelper {
-        private final static AtomicBoolean faultInjectionRuleClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<FaultInjectionRuleAccessor> accessor = new AtomicReference<>();
-
-        private FaultInjectionRuleHelper() {
-        }
-
-        public static FaultInjectionRuleAccessor getFaultInjectionRuleAccessor() {
-            if (!faultInjectionRuleClassLoaded.get()) {
-                logger.debug("Initializing FaultInjectionRuleAccessor...");
-                initializeAllAccessors();
-            }
-
-            FaultInjectionRuleAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("FaultInjectionRuleAccessor is not initialized yet!");
-                System.exit(9726); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public static void setFaultInjectionRuleAccessor(
-            final FaultInjectionRuleAccessor newAccessor) {
-
-            assert(newAccessor != null);
-
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("FaultInjectionRuleAccessor already initialized!");
-            } else {
-                logger.debug("Setting FaultInjectionRuleAccessor...");
-                faultInjectionRuleClassLoaded.set(true);
-            }
-        }
-
-        public interface FaultInjectionRuleAccessor {
-            void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal);
         }
     }
 }

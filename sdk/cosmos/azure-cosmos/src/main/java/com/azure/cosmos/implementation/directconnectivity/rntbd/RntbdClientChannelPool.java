@@ -5,10 +5,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
-import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
-import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -210,7 +209,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector rntbdServerErrorInjector) {
+        final RntbdServerErrorInjector faultInjectionInterceptors) {
         this(
             endpoint,
             bootstrap,
@@ -218,7 +217,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             new RntbdClientChannelHealthChecker(config),
             clientTelemetry,
             connectionStateListener,
-            rntbdServerErrorInjector);
+            faultInjectionInterceptors);
     }
 
     private RntbdClientChannelPool(
@@ -740,7 +739,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         Consumer<Duration> openConnectionConsumer =
                             (delay) -> this.openNewChannelWithInjectedDelay(anotherPromise, delay);
 
-                        if (this.serverErrorInjector.applyServerConnectionDelayRule(promise.getRntbdRequestRecord(), openConnectionConsumer)) {
+                        if (this.serverErrorInjector.injectRntbdServerConnectionDelay(
+                            promise.getRntbdRequestRecord(),
+                            openConnectionConsumer)) {
                             return;
                         }
                     }
@@ -1413,18 +1414,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return null;
     }
 
-    public void injectConnectionErrors(FaultInjectionConnectionErrorResultInternal faultInjectionResult) {
+    public void injectConnectionErrors(double threshold, Class<?> eventType) {
         if (this.executor.inEventLoop()) {
-            this.injectConnectionErrorsInternal(faultInjectionResult);
+            this.injectConnectionErrorsInternal(threshold, eventType);
         } else {
-            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionResult)).awaitUninterruptibly(); // block until complete
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(threshold, eventType)).awaitUninterruptibly(); // block until complete
         }
     }
 
-    private void injectConnectionErrorsInternal(FaultInjectionConnectionErrorResultInternal faultInjectionResult) {
+    private void injectConnectionErrorsInternal(double threshold, Class<?> eventType) {
 
         // Calculate how many connections is going to be closed
-        int channelsToBeClosed = (int) Math.ceil(this.channels(false) * faultInjectionResult.getThreshold());
+        int channelsToBeClosed = (int) Math.ceil(this.channels(false) * threshold);
 
         // We will pick from acquired channel queues first as it means there are requests in flight on the channel
         // and it will be easier to see the impact
@@ -1438,21 +1439,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         for (Channel channel: channelsToBeClosedList) {
-            switch (faultInjectionResult.getErrorType()) {
-                case CONNECTION_CLOSE:
-                    channel
-                        .pipeline()
-                        .firstContext()
-                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent());
-                    break;
-                case CONNECTION_RESET:
-                    channel
-                        .pipeline()
-                        .firstContext()
-                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent());
-                    break;
-                default:
-                    throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorType() + " is not supported");
+            if (eventType == RntbdFaultInjectionConnectionCloseEvent.class) {
+                channel
+                    .pipeline()
+                    .firstContext()
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent());
+            } else if (eventType == RntbdFaultInjectionConnectionResetEvent.class) {
+                channel
+                    .pipeline()
+                    .firstContext()
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent());
+            } else {
+                throw new IllegalStateException("ConnectionEventType " + eventType + " is not supported");
             }
         }
     }

@@ -22,11 +22,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMappe
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
-import com.azure.cosmos.implementation.faultinjection.RntbdConnectionErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -107,7 +104,6 @@ public class RntbdTransportClient extends TransportClient {
     private final GlobalEndpointManager globalEndpointManager;
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
-    private final RntbdConnectionErrorInjector connectionErrorInjector;
 
     // endregion
 
@@ -146,7 +142,6 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
-        this.connectionErrorInjector = new RntbdConnectionErrorInjector(endpointProvider);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -158,7 +153,6 @@ public class RntbdTransportClient extends TransportClient {
         final GlobalEndpointManager globalEndpointManager) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
-
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
             options,
@@ -178,7 +172,6 @@ public class RntbdTransportClient extends TransportClient {
         } else {
             this.metricConfig = null;
         }
-        this.connectionErrorInjector = new RntbdConnectionErrorInjector(endpointProvider);
     }
 
     // endregion
@@ -368,13 +361,11 @@ public class RntbdTransportClient extends TransportClient {
         return Mono.fromFuture(endpoint.openConnection(addressUri));
     }
 
-    @Override
-    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-
-        if (rule instanceof FaultInjectionServerErrorRule) {
-            this.serverErrorInjector.configFaultInjectionRule((FaultInjectionServerErrorRule) rule);
-        } else if (rule instanceof FaultInjectionConnectionErrorRule) {
-            this.connectionErrorInjector.configFaultInjectionRule((FaultInjectionConnectionErrorRule) rule);
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        injectorProvider.registerConnectionErrorInjector(this.endpointProvider);
+        if (this.serverErrorInjector != null) {
+            this.serverErrorInjector
+                .registerServerErrorInjector(injectorProvider.getRntbdServerErrorInjector());
         }
     }
 

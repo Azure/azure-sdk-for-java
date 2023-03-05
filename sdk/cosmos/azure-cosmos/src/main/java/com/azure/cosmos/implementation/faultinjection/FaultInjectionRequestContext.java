@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,7 +18,7 @@ public class FaultInjectionRequestContext {
 
     /***
      * This usually is called during retries.
-     * The hit count cap will need to be copied over so that the total times defined in {@link com.azure.cosmos.faultinjection.FaultInjectionServerErrorResult} be honored.
+     * The hit count cap will need to be copied over so that the total times defined in error result be honored.
      * The transportRequestIdRuleIdMap can be re-initialized as all the required diagnostics has been recorded.
      *
      * @param cloneContext the previous fault injection context.
@@ -35,8 +33,8 @@ public class FaultInjectionRequestContext {
         this.transportRequestIdRuleIdMap = new ConcurrentHashMap<>();
     }
 
-    public void applyFaultInjectionRule(long transportId, IFaultInjectionRuleInternal rule) {
-        this.hitCountByRuleMap.compute(rule.getId(), (id, count) -> {
+    public void applyFaultInjectionRule(long transportId, String ruleId) {
+        this.hitCountByRuleMap.compute(ruleId, (id, count) -> {
             if (count == null) {
                 return 1;
             }
@@ -45,7 +43,7 @@ public class FaultInjectionRequestContext {
             return count;
         });
 
-        this.transportRequestIdRuleIdMap.put(transportId, rule.getId());
+        this.transportRequestIdRuleIdMap.put(transportId, ruleId);
     }
 
     public int getFaultInjectionRuleApplyCount(String ruleId) {

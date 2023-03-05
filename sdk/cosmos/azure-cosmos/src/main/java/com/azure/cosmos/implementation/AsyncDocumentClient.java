@@ -11,16 +11,17 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -1633,6 +1634,31 @@ public interface AsyncDocumentClient {
      */
     RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
+    /***
+     * Get the global endpoint manager.
+     *
+     * @return the global endpoint manager.
+     */
+    GlobalEndpointManager getGlobalEndpointManager();
+
+    /***
+     * Get the store model.
+     * @return the store model.
+     */
+    RxStoreModel getStoreModel();
+
+    /***
+     * Get the gateway store model.
+     * @return the gateway store model.
+     */
+    RxGatewayStoreModel getGatewayProxy();
+
+    /***
+     * Get the address selector.
+     * @return the address selector.
+     */
+    AddressSelector getAddressSelector();
+
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
@@ -1658,11 +1684,9 @@ public interface AsyncDocumentClient {
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
-     * Config fault injection rules.
+     * Configure fault injector provider.
      *
-     * @param faultInjectionRules the fault injection rule list.
-     * @param containerNameLink the container name link.
-     * @return the mono.
+     * @param injectorProvider the fault injector provider.
      */
-    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 }

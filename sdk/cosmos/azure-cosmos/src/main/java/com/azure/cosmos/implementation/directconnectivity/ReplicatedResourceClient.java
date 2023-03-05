@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,7 +195,7 @@ public class ReplicatedResourceClient {
         return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
-    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        this.transportClient.configFaultInjectionRule(rule);
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }
 }

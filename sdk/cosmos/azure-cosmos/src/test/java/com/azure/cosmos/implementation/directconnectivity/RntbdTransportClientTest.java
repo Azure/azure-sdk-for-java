@@ -55,7 +55,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
@@ -1112,7 +1111,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResultInternal faultInjectionConnectionErrorResult) {
+        public void injectConnectionErrors(String ruleId, double threshold, Class<?> eventType) {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 

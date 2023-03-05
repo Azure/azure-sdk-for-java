@@ -9,9 +9,9 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
@@ -29,7 +29,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.faultinjection.FaultInjectionRulesProcessor;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -62,7 +62,6 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -189,7 +188,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private FaultInjectionRulesProcessor faultInjectionRulesProcessor;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -550,15 +548,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.initializeDirectConnectivity();
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
-            this.faultInjectionRulesProcessor = new FaultInjectionRulesProcessor(
-                this.connectionPolicy.getConnectionMode(),
-                this.storeModel,
-                this.gatewayProxy,
-                this.collectionCache,
-                this.globalEndpointManager,
-                this.partitionKeyRangeCache,
-                new AddressSelector(this.addressResolver, this.configs.getProtocol()),
-                this.connectionPolicy.getThrottlingRetryOptions());
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -4159,6 +4148,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return partitionKeyRangeCache;
     }
 
+    @Override
+    public GlobalEndpointManager getGlobalEndpointManager() {
+        return this.globalEndpointManager;
+    }
+
+    @Override
+    public RxStoreModel getStoreModel() {
+        return this.storeModel;
+    }
+
+    @Override
+    public RxGatewayStoreModel getGatewayProxy() {
+        return this.gatewayProxy;
+    }
+
+    @Override
+    public AddressSelector getAddressSelector() {
+        return new AddressSelector(this.addressResolver, this.configs.getProtocol());
+    }
+
     public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
@@ -4304,13 +4313,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
-    @Override
-    public Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
-        checkNotNull(rules, "Argument 'rules' can not be null");
-        checkArgument(
-            StringUtils.isNotEmpty(containerNameLink),
-            "Argument 'containerNameLink' can not be null nor empty");
-        return this.faultInjectionRulesProcessor.processFaultInjectionRules(rules, containerNameLink);
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+        if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
+            this.storeModel.configureFaultInjectorProvider(injectorProvider);
+        } else {
+            throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
+        }
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

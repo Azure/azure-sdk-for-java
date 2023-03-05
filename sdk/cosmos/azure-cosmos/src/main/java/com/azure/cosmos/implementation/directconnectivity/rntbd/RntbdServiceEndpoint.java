@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -106,7 +105,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress,
         final ClientTelemetry clientTelemetry,
-        final RntbdServerErrorInjector rntbdFaultInjector,
+        final RntbdServerErrorInjector faultInjectionInterceptors,
         final URI serviceEndpoint) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
@@ -146,7 +145,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 config,
                 clientTelemetry,
                 this.connectionStateListener,
-                rntbdFaultInjector);
+                faultInjectionInterceptors);
 
         if (clientTelemetry != null &&
             clientTelemetry.isClientMetricsEnabled() &&
@@ -328,12 +327,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public void injectConnectionErrors(
         String faultInjectionRuleId,
-        FaultInjectionConnectionErrorResultInternal faultInjectionConnectionErrorResult) {
+        double threshold,
+        Class<?> eventType) {
 
         this.lastFaultInjectionRuleId = faultInjectionRuleId;
         this.lastFaultInjectionTimestamp = Instant.now();
 
-        this.channelPool.injectConnectionErrors(faultInjectionConnectionErrorResult);
+        this.channelPool.injectConnectionErrors(threshold, eventType);
     }
 
     // endregion
@@ -629,7 +629,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdTransportClient transportClient;
         private final IAddressResolver addressResolver;
         private final ClientTelemetry clientTelemetry;
-        private final RntbdServerErrorInjector rntbdFaultInjector;
+        private final RntbdServerErrorInjector serverErrorInjector;
 
         public Provider(
             final RntbdTransportClient transportClient,
@@ -637,7 +637,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final SslContext sslContext,
             final IAddressResolver addressResolver,
             final ClientTelemetry clientTelemetry,
-            final RntbdServerErrorInjector rntbdFaultInjector) {
+            final RntbdServerErrorInjector serverErrorInjector) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -664,7 +664,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
-            this.rntbdFaultInjector = rntbdFaultInjector;
+            this.serverErrorInjector = serverErrorInjector;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
         }
@@ -735,7 +735,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.requestTimer,
                 physicalAddress,
                 this.clientTelemetry,
-                this.rntbdFaultInjector,
+                this.serverErrorInjector,
                 serviceEndpoint));
         }
 

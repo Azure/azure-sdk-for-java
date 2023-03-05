@@ -44,7 +44,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -242,8 +242,8 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        throw new NotImplementedException("configFaultInjectionRule is not supported in httpTransportClient");
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        throw new NotImplementedException("configureFaultInjectorProvider is not supported in httpTransportClient");
     }
 
     @Override

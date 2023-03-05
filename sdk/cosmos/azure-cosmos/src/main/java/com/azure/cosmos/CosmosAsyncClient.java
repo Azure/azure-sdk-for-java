@@ -17,13 +17,13 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -33,7 +33,6 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -56,7 +55,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -597,13 +595,14 @@ public final class CosmosAsyncClient implements Closeable {
         this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
-    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
-        checkNotNull(rules, "Argument 'rules' can not be null");
-        checkArgument(
-            StringUtils.isNotEmpty(containerNameLink),
-            "Argument 'containerNameLink' can not be null nor empty");
-
-        return this.asyncDocumentClient.configureFaultInjectionRules(rules, containerNameLink);
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+        this.asyncDocumentClient.configureFaultInjectorProvider(injectorProvider);
     }
 
     /**

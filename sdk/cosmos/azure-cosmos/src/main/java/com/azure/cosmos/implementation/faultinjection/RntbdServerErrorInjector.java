@@ -3,49 +3,30 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorResultInternal;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
 
 import java.time.Duration;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class RntbdServerErrorInjector {
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-    private final Map<String, FaultInjectionServerErrorRule> serverLatencyRuleMap = new ConcurrentHashMap<>();
-    private final Map<String, FaultInjectionServerErrorRule> serverConnectionLatencyRuleMap = new ConcurrentHashMap<>();
-    private final Map<String, FaultInjectionServerErrorRule> serverResponseErrorMap = new ConcurrentHashMap<>();
+public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
+    private List<IRntbdServerErrorInjector> faultInjectors = new ArrayList<>();
 
-    public void configFaultInjectionRule(FaultInjectionServerErrorRule rule) {
-        FaultInjectionServerErrorResultInternal serverErrorResult = rule.getResult();
-        switch (serverErrorResult.getServerErrorType()) {
-            case CONNECTION_DELAY:
-                this.serverConnectionLatencyRuleMap.put(rule.getId(), rule);
-                break;
-            case RESPONSE_DELAY:
-                this.serverLatencyRuleMap.put(rule.getId(), rule);
-                break;
-            default:
-                this.serverResponseErrorMap.put(rule.getId(), rule);
-                break;
-        }
+    public void registerServerErrorInjector(IRntbdServerErrorInjector serverErrorInjector) {
+        checkNotNull(serverErrorInjector, "Argument 'serverErrorInjector' can not be null");
+        this.faultInjectors.add(serverErrorInjector);
     }
 
-    public boolean applyServerResponseLatencyRule(
+    @Override
+    public boolean injectRntbdServerResponseDelay(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> writeRequestWithDelayConsumer) {
 
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
-
-        for (FaultInjectionServerErrorRule latencyRule : this.serverLatencyRuleMap.values()) {
-            if (latencyRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), latencyRule);
-
-                writeRequestWithDelayConsumer.accept(latencyRule.getResult().getDelay());
+        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
+            if (injector.injectRntbdServerResponseDelay(requestRecord, writeRequestWithDelayConsumer)) {
                 return true;
             }
         }
@@ -53,15 +34,11 @@ public class RntbdServerErrorInjector {
         return false;
     }
 
-    public boolean applyServerResponseErrorRule(RntbdRequestRecord requestRecord) {
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
+    @Override
+    public boolean injectRntbdServerResponseError(RntbdRequestRecord requestRecord) {
 
-        for (FaultInjectionServerErrorRule serverResponseErrorRule : this.serverResponseErrorMap.values()) {
-            if (serverResponseErrorRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), serverResponseErrorRule);
-
-                CosmosException cause = serverResponseErrorRule.getInjectedServerError(request);
-                requestRecord.completeExceptionally(cause);
+        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
+            if (injector.injectRntbdServerResponseError(requestRecord)) {
                 return true;
             }
         }
@@ -69,22 +46,13 @@ public class RntbdServerErrorInjector {
         return false;
     }
 
-    public boolean applyServerConnectionDelayRule(
+    @Override
+    public boolean injectRntbdServerConnectionDelay(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer) {
 
-        if (requestRecord == null) {
-            return false;
-        }
-
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
-
-        for (FaultInjectionServerErrorRule connectionDelayRule : this.serverConnectionLatencyRuleMap.values()) {
-            if (connectionDelayRule.isApplicable(request)) {
-                request.faultInjectionRequestContext.applyFaultInjectionRule(requestRecord.transportRequestId(), connectionDelayRule);
-
-                openConnectionWithDelayConsumer.accept(connectionDelayRule.getResult().getDelay());
-
+        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
+            if (injector.injectRntbdServerConnectionDelay(requestRecord, openConnectionWithDelayConsumer)) {
                 return true;
             }
         }

@@ -28,7 +28,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
-import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,8 +140,8 @@ public class StoreClient implements IStoreClient {
         return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
-    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        this.replicatedResourceClient.configFaultInjectionRule(rule);
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.replicatedResourceClient.configureFaultInjectorProvider(injectorProvider);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {

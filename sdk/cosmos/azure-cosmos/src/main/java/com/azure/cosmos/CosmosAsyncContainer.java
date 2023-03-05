@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
@@ -48,7 +49,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -67,6 +67,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -111,6 +112,7 @@ public class CosmosAsyncContainer {
     private final String batchSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
+    private final AtomicReference<IFaultInjectorProvider> faultInjectorProvider = new AtomicReference<>();
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -1887,17 +1889,17 @@ public class CosmosAsyncContainer {
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
-    /***
-     * Config fault injection rules.
-     *
-     * @param rules the rules to be configured.
-     * @return the mono.
-     */
-    Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules) {
-        checkNotNull(rules, "Argument 'rules' can not be null");
-        return this.database
-            .getClient()
-            .configureFaultInjectionRules(rules, Utils.trimBeginningAndEndingSlashes(this.link));
+    void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {
+        this.database.getClient().configureFaultInjectorProvider(injectorProvider);
+    }
+
+    synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+
+        if(this.faultInjectorProvider.compareAndSet(null, injectorProvider)) {
+            this.configureFaultInjectionProvider(injectorProvider);
+        }
+        return this.faultInjectorProvider.get();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1924,8 +1926,11 @@ public class CosmosAsyncContainer {
                 }
 
                 @Override
-                public Mono<Void> configureFaultInjectionRules(CosmosAsyncContainer cosmosAsyncContainer, List<FaultInjectionRule> faultInjectionRules) {
-                    return cosmosAsyncContainer.configureFaultInjectionRules(faultInjectionRules);
+                public IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    IFaultInjectorProvider injectorProvider) {
+
+                    return cosmosAsyncContainer.getOrConfigureFaultInjectorProvider(injectorProvider);
                 }
             });
     }

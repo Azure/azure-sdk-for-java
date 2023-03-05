@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorResultInternal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -87,7 +86,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     void injectConnectionErrors(
         String faultInjectionRuleId,
-        FaultInjectionConnectionErrorResultInternal faultInjectionConnectionErrorResult);
+        double threshold,
+        Class<?> eventType);
 
     // endregion
 
