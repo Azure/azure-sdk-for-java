@@ -253,6 +253,10 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
         }
 
+        if (cosmosQueryRequestOptions.getPriorityLevel() != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, Integer.toString(cosmosQueryRequestOptions.getPriorityLevel().getPriorityValue()));
+        }
+
         return requestHeaders;
     }
 

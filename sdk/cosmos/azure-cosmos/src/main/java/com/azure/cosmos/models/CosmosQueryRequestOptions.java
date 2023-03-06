@@ -49,6 +49,7 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
+    private PriorityLevel priorityLevel;
     /**
      * Instantiates a new query request options.
      */
@@ -89,6 +90,7 @@ public class CosmosQueryRequestOptions {
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
+        this.priorityLevel = options.priorityLevel;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -634,6 +636,17 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public PriorityLevel getPriorityLevel() {
+        return this.priorityLevel;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -743,6 +756,7 @@ public class CosmosQueryRequestOptions {
                     requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
                     requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
                     requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+                    requestOptions.setPriorityLevel(queryRequestOptions.getPriorityLevel());
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {

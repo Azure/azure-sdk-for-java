@@ -32,6 +32,7 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private PriorityLevel priorityLevel;
 
     /**
      * copy constructor
@@ -50,6 +51,7 @@ public class CosmosItemRequestOptions {
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        priorityLevel = options.priorityLevel;
     }
 
 
@@ -301,6 +303,17 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public PriorityLevel getPriorityLevel() {
+        return this.priorityLevel;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
@@ -316,6 +329,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+        requestOptions.setPriorityLevel(priorityLevel);
         requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {

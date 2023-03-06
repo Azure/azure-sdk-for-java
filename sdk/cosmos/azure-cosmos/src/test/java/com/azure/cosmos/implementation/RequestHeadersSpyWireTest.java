@@ -4,11 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -214,6 +210,27 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithPriorityLevel() {
+        PriorityLevel priorityLevel = PriorityLevel.High;
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        cosmosItemRequestOptions.setPriorityLevel(priorityLevel);
+
+        String documentLink = getDocumentLink();
+
+        client.clearCapturedRequests();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+
+        client.readDocument(documentLink, requestOptions).block();
+        for(HttpRequest httpRequest : client.getCapturedRequests()) {
+            Map<String, String> headers = httpRequest.headers().toMap();
+            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
+                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(Integer.toString(priorityLevel.getPriorityValue()));
+            }
+        }
     }
 
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,

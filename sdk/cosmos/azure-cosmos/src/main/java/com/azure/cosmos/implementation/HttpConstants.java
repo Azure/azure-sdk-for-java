@@ -278,6 +278,9 @@ public class HttpConstants {
 
         // SDK supported capacities headers
         public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supportedcapabilities";
+
+        // Priority Level for throttling
+        public static final String PRIORITY_LEVEL = "x-ms-cosmos-priority-level";
     }
 
     public static class A_IMHeaderValues {
