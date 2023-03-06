@@ -27,8 +27,6 @@
 
 ### Features Added
 
-- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-
 ### Breaking Changes
 
 ### Bugs Fixed
