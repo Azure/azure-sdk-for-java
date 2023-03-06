@@ -47,9 +47,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: 'install'
-    env:
-      AZURE_TEST_MODE: ${{ parameters.TestMode }}
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+    env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
@@ -101,9 +99,7 @@ steps:
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
-    env:
-      AZURE_TEST_MODE: ${{ parameters.TestMode }}
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+    env:  ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
