@@ -86,12 +86,12 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
 
 The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
 
-![DefaultAzureCredential authentication flow](images/mermaidjs/DefaultAzureCredentialAuthFlow.svg)
+![DefaultAzureCredential authentication flow](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/identity/azure-identity/images/mermaidjs/DefaultAzureCredentialAuthFlow.svg)
 
 1. **Environment** - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
 1. **Managed Identity** - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
-1. **Azure Developer CLI** - If the developer has authenticated an account via the Azure Developer CLI `azd login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **IntelliJ** - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
+1. **Azure Developer CLI** - If the developer has authenticated an account via the Azure Developer CLI `azd login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **Azure CLI** - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **Azure PowerShell** - If the developer has authenticated an account via the Azure PowerShell `Connect-AzAccount` command, the `DefaultAzureCredential` will authenticate with that account.
 
@@ -328,7 +328,7 @@ Not all credentials require this configuration. Credentials that authenticate th
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
     <tr>
-      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
+      <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
       <td>authenticates a service principal using a secret</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
@@ -400,7 +400,8 @@ Not all credentials require this configuration. Credentials that authenticate th
       <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
       <!-- Example and Reference for azd is WIP -->
       <td></td>  
-      <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
+      <td></td>
+      <!-- Example and Reference for azd is WIP -->
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
@@ -428,8 +429,6 @@ Not all credentials require this configuration. Credentials that authenticate th
     </tr>
   </tbody>
 </table>
-
-> __Note:__ `AzureDeveloperCliCredential` is in beta and its name may change before the stable release.
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
