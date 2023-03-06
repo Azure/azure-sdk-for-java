@@ -438,7 +438,8 @@ public class BlobClientBase {
             case VERSION_ID:
                 if (properties.getVersionId() == null) {
                     throw LOGGER.logExceptionAsError(
-                        new UnsupportedOperationException("Versioning is not supported on this account."));
+                        new UnsupportedOperationException(
+                            "Version ID locking unsupported. Versioning is not supported on this account."));
                 } else {
                     // If version locking but no explicitly specified version, use the latest version from prefetch
                     if (getVersionId() == null) {
@@ -448,7 +449,7 @@ public class BlobClientBase {
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Concurrency control type not supported."));
+                    "Concurrency control type " + consistentReadControl + " not supported."));
         }
 
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(

@@ -13,7 +13,7 @@ import java.nio.channels.SeekableByteChannel;
  * Extended options that may be passed when opening a blob seekable byte channel for reading.
  */
 @Fluent
-public class BlobSeekableByteChannelReadOptions {
+public final class BlobSeekableByteChannelReadOptions {
 
     private Long initialPosition;
     private BlobRequestConditions requestConditions;
