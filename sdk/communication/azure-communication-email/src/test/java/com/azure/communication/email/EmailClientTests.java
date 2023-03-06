@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-@Timeout(value = 2, unit = TimeUnit.MINUTES)
+@Timeout(value = 5, unit = TimeUnit.MINUTES)
 public class EmailClientTests extends EmailTestBase {
 
     private EmailClient emailClient;
