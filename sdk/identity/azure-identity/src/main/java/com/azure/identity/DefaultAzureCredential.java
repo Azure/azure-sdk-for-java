@@ -14,7 +14,6 @@ import java.util.List;
  *
  * <ol>
  * <li>{@link EnvironmentCredential}</li>
- * <li>{@link WorkloadIdentityCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
  * <li>{@link AzureDeveloperCliCredential}</li>
  * <li>{@link SharedTokenCacheCredential}</li>

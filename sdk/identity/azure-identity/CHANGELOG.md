@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,13 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-
-## 1.9.0-beta.1 (2023-02-08)
-
-### Features Added
-- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-- Added support to disable instance discovery on AAD credentials.
-- `WorkloadIdentityCredential` and `DefaultAzureCredential` support Workload Identity Federation on Kubernetes. `DefaultAzureCredential` support requires environment variable configuration as set by the Workload Identity webhook.
 
 ## 1.8.0 (2023-02-03)
 
@@ -30,6 +23,17 @@
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
 - Upgraded `msal4j` from `1.13.3` to version `1.13.4`.
 
+## 1.8.0-beta.2 (Unreleased)
+
+### Features Added
+
+- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.8.0-beta.1 (2023-01-20)
 

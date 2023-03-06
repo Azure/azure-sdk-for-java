@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -132,16 +131,5 @@ public class ChainedTokenCredential implements TokenCredential {
                 : ""));
         }
         throw last;
-    }
-
-    WorkloadIdentityCredential getWorkloadIdentityCredentialIfPresent() {
-        List<TokenCredential> tokenCredentials = this.credentials
-            .stream().filter(tokenCredential -> tokenCredential instanceof WorkloadIdentityCredential)
-            .collect(Collectors.toList());
-        if (tokenCredentials.size() == 1) {
-            return (WorkloadIdentityCredential) tokenCredentials.get(0);
-        } else {
-            return null;
-        }
     }
 }
