@@ -63,7 +63,8 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
      */
     public void getRootDirectoryAsyncClient() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient
-        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient();
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient =
+            client.getDirectoryAsyncClient(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient
     }
 
