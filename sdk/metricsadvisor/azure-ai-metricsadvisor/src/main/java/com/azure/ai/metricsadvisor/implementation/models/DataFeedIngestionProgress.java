@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /** The DataFeedIngestionProgress model. */

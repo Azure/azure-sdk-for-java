@@ -34,25 +34,10 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,PeriodType,AnomalySeverity,AlertQueryTimeMode,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
 ```
 
 ### Generated types renamed and moved to model
-
-#### MetricsAdvisorErrorCodeException -> MetricsAdvisorResponseException
-```yaml
-directive:
-  - rename-model:
-      from: MetricsAdvisorErrorCodeException
-      to: MetricsAdvisorResponseException
-```
-
-#### MetricsAdvisorErrorCode -> MetricsAdvisorError
-```yaml
-directive:
-  - rename-model:
-      from: MetricsAdvisorErrorCode
-      to: MetricsAdvisorError
-```
 
 #### TimeMode -> AlertQueryTimeMode
 ```yaml
@@ -169,22 +154,6 @@ directive:
         if (metricDescription && !metricDescription["x-ms-client-name"]) {
             metricDescription["x-ms-client-name"] = "description";
             $.Metric.properties.metricDescription = metricDescription;
-        }
-    }
-```
-
-#### AnomalyAlert properties rename
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.AnomalyAlert) {
-        const alertId = $.AnomalyAlert.properties.alertId;
-        if (alertId && !metricId["x-ms-client-name"]) {
-            metricId["x-ms-client-name"] = "id";
-            $.Metric.properties.alertId = alertId;
         }
     }
 ```
@@ -324,7 +293,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -396,7 +365,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -468,7 +437,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -540,7 +509,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -612,7 +581,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -684,7 +653,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -756,7 +725,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -828,7 +797,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },

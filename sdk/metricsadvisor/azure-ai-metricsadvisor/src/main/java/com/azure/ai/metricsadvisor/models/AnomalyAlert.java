@@ -15,7 +15,7 @@ public final class AnomalyAlert {
      * alert id
      */
     @JsonProperty(value = "alertId", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private String alertId;
 
     /*
      * anomaly time
@@ -43,8 +43,8 @@ public final class AnomalyAlert {
      *
      * @return the alertId value.
      */
-    public String getId() {
-        return this.id;
+    public String getAlertId() {
+        return this.alertId;
     }
 
     /**
