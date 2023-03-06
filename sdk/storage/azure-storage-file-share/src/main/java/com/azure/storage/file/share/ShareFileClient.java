@@ -38,6 +38,7 @@ import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions;
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -172,19 +173,26 @@ public class ShareFileClient {
             create(options.getFileSize());
         }
 
-        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE, null /*readBehavior*/,
+        int chunkSize = options.getChunkSize() != null
+            ? options.getChunkSize().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        return new StorageSeekableByteChannel(chunkSize, null /*readBehavior*/,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()));
     }
 
     /**
      * Creates and opens a {@link SeekableByteChannel} to read data from the file.
-     * @param conditions requestConditions for reading from Storage.
+     * @param options Options for opening the channel.
      * @return The opened channel.
      */
-    public SeekableByteChannel getFileSeekableByteChannelRead(ShareRequestConditions conditions) {
-        return new StorageSeekableByteChannel((int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE,
-            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
+    public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
+        ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
+        Long configuredChunkSize = options != null ? options.getChunkSize() : null;
+        int chunkSize = configuredChunkSize != null
+            ? configuredChunkSize.intValue()
+            : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        return new StorageSeekableByteChannel(
+            chunkSize, new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/);
     }
 
     /**

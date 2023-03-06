@@ -10,6 +10,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
 import com.azure.storage.file.share.models.FileLastWrittenMode
 import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions
 
 class StorageFileSeekableByteChannelTests extends APISpec {
@@ -39,9 +40,9 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         def data = getRandomByteArray(1024)
 
         when: "Channel initialized"
-        def channel = new StorageSeekableByteChannel(streamBufferSize, null,
-            new StorageSeekableByteChannelShareFileWriteBehavior(primaryFileClient, null, null))
-        primaryFileClient.create(data.length)
+        def channel = primaryFileClient.getFileSeekableByteChannelWrite(
+            new ShareFileSeekableByteChannelWriteOptions(ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
+                .setFileSize(data.length).setChunkSize(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -71,8 +72,8 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         primaryFileClient.upload(new ByteArrayInputStream(data), data.length, null as ParallelTransferOptions)
 
         when: "Channel initialized"
-        def channel = new StorageSeekableByteChannel(streamBufferSize,
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null), null)
+        def channel = primaryFileClient.getFileSeekableByteChannelRead(
+            new ShareFileSeekableByteChannelReadOptions().setChunkSize(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -110,9 +111,11 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         and: "channel ReadBehavior is null"
         channel.getReadBehavior() == null
 
+        and: "channel configured correctly"
+
+
         where:
         conditions                   | lastWrittenMode
-        null                         | null
         null                         | null
         new ShareRequestConditions() | null
         null                         | FileLastWrittenMode.PRESERVE
@@ -120,7 +123,8 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
     def "Client creates appropriate channel readmode"() {
         when: "make channel in read mode"
-        def channel = primaryFileClient.getFileSeekableByteChannelRead(conditions) as StorageSeekableByteChannel
+        def channel = primaryFileClient.getFileSeekableByteChannelRead(new ShareFileSeekableByteChannelReadOptions()
+            .setRequestConditions(conditions)) as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
         channel.getWriteBehavior() == null
