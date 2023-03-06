@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mockStatic;
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
 
-    private final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canParseLong() {
@@ -76,16 +76,16 @@ public class MSITokenTests {
 
     @Test
     public void canDeserialize() {
-        String json = "{\n" +
-            "  \"access_token\": \"fake_token\",\n" +
-            "  \"refresh_token\": \"\",\n" +
-            "  \"expires_in\": \"3599\",\n" +
-            "  \"expires_on\": \"1506484173\",\n" +
-            "  \"refresh_in\": \"3599\",\n" +
-            "  \"not_before\": \"1506480273\",\n" +
-            "  \"resource\": \"https://management.azure.com/\",\n" +
-            "  \"token_type\": \"Bearer\"\n" +
-            "}";
+        String json = "{\n"
+            + "  \"access_token\": \"fake_token\",\n"
+            + "  \"refresh_token\": \"\",\n"
+            + "  \"expires_in\": \"3599\",\n"
+            + "  \"expires_on\": \"1506484173\",\n"
+            + "  \"refresh_in\": \"3599\",\n"
+            + "  \"not_before\": \"1506480273\",\n"
+            + "  \"resource\": \"https://managementazurecom/\",\n"
+            + "  \"token_type\": \"Bearer\"\n"
+            + "}";
         MSIToken token;
         try {
             token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
