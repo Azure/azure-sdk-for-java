@@ -6,4 +6,7 @@ module com.azure.analytics.purview.sharing {
     requires transitive com.azure.core;
 
     exports com.azure.analytics.purview.sharing;
+
+    exports com.azure.analytics.purview.sharing.models;
+    opens com.azure.analytics.purview.sharing.models to com.azure.core, com.fasterxml.jackson.databind;
 }
