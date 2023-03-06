@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.5.4`. Only code written against a beta version such as `4.6.0-beta.1` may be affected.
 - Removed support for Octet Key Pair (OKP) operations.
 
 ### Bugs Fixed
