@@ -8,6 +8,7 @@
 
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `msal4j` from `1.13.4` to version `1.13.5`.
 
 # 1.8.0 (2023-02-03)
 
