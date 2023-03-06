@@ -235,8 +235,11 @@ class ServiceBusSessionManager implements AutoCloseable {
         final List<Mono<Void>> closeables = sessionReceivers.values().stream()
             .map(receiver -> receiver.closeAsync())
             .collect(Collectors.toList());
-
-        Mono.when(closeables).block(operationTimeout);
+        
+        if(!closeables.isEmpty()){
+            Mono.when(closeables).block(operationTimeout);
+        }
+        
         sessionReceiveSink.complete();
 
         for (Scheduler scheduler : schedulers) {
