@@ -39,7 +39,6 @@
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
-- Added support to disable instance discovery on AAD credentials.
 
 ## 1.7.3 (2023-01-06)
 
