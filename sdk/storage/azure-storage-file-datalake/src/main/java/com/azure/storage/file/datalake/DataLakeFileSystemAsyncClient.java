@@ -105,6 +105,8 @@ public class DataLakeFileSystemAsyncClient {
 
     /**
      * Special directory name for the root directory of the file system.
+     * <p>
+     * This should only be used while getting the root directory from the file system client.
      */
     public static final String ROOT_DIRECTORY_NAME = "";
 
