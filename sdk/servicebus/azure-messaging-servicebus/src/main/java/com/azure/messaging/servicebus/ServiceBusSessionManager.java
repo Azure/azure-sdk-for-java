@@ -236,7 +236,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             .map(receiver -> receiver.closeAsync())
             .collect(Collectors.toList());
         
-        if(!closeables.isEmpty()){
+        if (!closeables.isEmpty()) {
             Mono.when(closeables).block(operationTimeout);
         }
         
