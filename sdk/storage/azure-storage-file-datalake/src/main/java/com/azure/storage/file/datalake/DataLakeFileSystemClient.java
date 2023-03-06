@@ -72,7 +72,7 @@ public class DataLakeFileSystemClient {
      */
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-    private static final String ROOT_DIRECTORY_NAME = "";
+    public static final String ROOT_DIRECTORY_NAME = "";
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -141,6 +141,17 @@ public class DataLakeFileSystemClient {
      * Initializes a new DataLakeDirectoryClient object by concatenating {@code ""} to the end of
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
+     *
+     * Note: this should only be used while getting the directory from the file system client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
+     * <pre>
+     * DataLakeDirectoryClient dataLakeDirectoryClient =
+     *     client.getDirectoryClient&#40;DataLakeFileSystemClient.ROOT_DIRECTORY_NAME&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */

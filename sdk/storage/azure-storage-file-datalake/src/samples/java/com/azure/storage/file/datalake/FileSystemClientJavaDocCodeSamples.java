@@ -65,6 +65,16 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemClient#getRootDirectoryClient}
+     */
+    public void getRootDirectoryClient() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
+        DataLakeDirectoryClient dataLakeDirectoryClient =
+            client.getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
+    }
+
+    /**
      * Generates a code sample for using {@link DataLakeFileSystemClient#getFileSystemName()}
      */
     public void getFileSystemName() {
