@@ -41,7 +41,7 @@ public final class IndexingPolicy {
 
         ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
             ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
-        accessor.setOverwritePolicy(this, true);
+        accessor.setOverwritePolicy(this, false);
         this.setAutomatic(true);
         this.setIndexingMode(IndexingMode.CONSISTENT);
     }

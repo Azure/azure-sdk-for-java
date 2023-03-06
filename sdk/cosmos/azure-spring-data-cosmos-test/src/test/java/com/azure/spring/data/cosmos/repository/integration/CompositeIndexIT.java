@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -51,6 +52,7 @@ public class CompositeIndexIT {
 
     @Test
     public void canSetCompositeIndex() {
+        collectionManager.deleteContainer(information);
         new SimpleCosmosRepository<>(information, template);
         CosmosContainerProperties properties = template.getContainerProperties(information.getContainerName());
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
@@ -68,6 +70,7 @@ public class CompositeIndexIT {
 
     @Test
     public void canSetCompositeIndexReactive() {
+        collectionManager.deleteContainer(information);
         new SimpleReactiveCosmosRepository<>(information, reactiveTemplate);
         CosmosContainerProperties properties = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
@@ -97,6 +100,9 @@ public class CompositeIndexIT {
         innerList.add(new CompositePath().setPath("/fieldFour"));
         newCompositeIndex.add(innerList);
         newIndexPolicy.setCompositeIndexes(newCompositeIndex);
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+        accessor.setOverwritePolicy(newIndexPolicy, true);
 
         // apply new index policy
         CosmosEntityInformation<CompositeIndexEntity, String> spyEntityInformation = Mockito.spy(information);
@@ -128,6 +134,9 @@ public class CompositeIndexIT {
         innerList.add(new CompositePath().setPath("/fieldFour"));
         newCompositeIndex.add(innerList);
         newIndexPolicy.setCompositeIndexes(newCompositeIndex);
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+        accessor.setOverwritePolicy(newIndexPolicy, true);
 
         // apply new index policy
         CosmosEntityInformation<CompositeIndexEntity, String> spyEntityInformation = Mockito.spy(information);

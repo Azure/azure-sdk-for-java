@@ -2,20 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.cosmos.models.IndexingMode;
-import com.azure.spring.data.cosmos.core.mapping.CompositeIndex;
-import com.azure.spring.data.cosmos.core.mapping.CompositeIndexPath;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import org.springframework.data.annotation.Id;
 
 @Container
 @CosmosIndexingPolicy(
-    overwritePolicy = false,
+    overwritePolicy = true,
     includePaths = {"/\"_etag\"/?"},
     excludePaths = {"/*"}
 )
-public class IndexPolicyDontOverwriteEntity {
+public class IndexPolicyOverwriteEntity {
 
     @Id
     String id;

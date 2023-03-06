@@ -3,9 +3,9 @@
 ### 3.33.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added a new flag `overwritePolicy` to `CosmosIndexingPolicy` that when set to false (by default it is true) will allow the user to prevent the Indexing policy in Portal to be overwritten by the Indexing Policy defined in the SDK  - See [PR 33171](https://github.com/Azure/azure-sdk-for-java/pull/33171)
 
 #### Breaking Changes
+* Added a new flag `overwritePolicy` to `CosmosIndexingPolicy` that when set to ture (by default it is false) will allow the user to overwrite the Indexing policy in Portal using the Indexing Policy defined in the SDK. This will affect users who change the Indexing Policy they have defined on the container and want that to overwrite what is in portal, you will now need to set the flag `overwritePolicy` to true for this to happen. - See [PR 33171](https://github.com/Azure/azure-sdk-for-java/pull/33171)
 
 #### Bugs Fixed
 
