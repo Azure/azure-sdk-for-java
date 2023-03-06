@@ -45,7 +45,7 @@ stages:
               GenerateVMJobs: true
         - ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
             - Name: Storage_live_test
-              Path: sdk/storage/platform-matrix.json
+              Path: sdk/storage/native-platform-matrix.json
               Selection: sparse
               GenerateVMJobs: true
       EnvVars:
