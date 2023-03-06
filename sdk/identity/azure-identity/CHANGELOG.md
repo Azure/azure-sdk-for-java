@@ -2,8 +2,6 @@
 
 ## 1.8.1 (2023-03-06)
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
