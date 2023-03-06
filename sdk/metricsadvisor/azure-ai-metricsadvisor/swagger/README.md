@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./metricsadvisor_1.20200903_openapi.v2.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -33,17 +33,25 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,DataFeedIngestionProgress,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,IngestionStatusType,PeriodType,AnomalySeverity,SnoozeScope,AlertQueryTimeMode,DataFeedIngestionStatus,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,PeriodType,AnomalySeverity,AlertQueryTimeMode,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
 ```
 
 ### Generated types renamed and moved to model
 
-#### ErrorCode -> MetricsAdvisorErrorCode
+#### MetricsAdvisorErrorCodeException -> MetricsAdvisorResponseException
 ```yaml
 directive:
   - rename-model:
-      from: ErrorCode
-      to: MetricsAdvisorErrorCode
+      from: MetricsAdvisorErrorCodeException
+      to: MetricsAdvisorResponseException
+```
+
+#### MetricsAdvisorErrorCode -> MetricsAdvisorError
+```yaml
+directive:
+  - rename-model:
+      from: MetricsAdvisorErrorCode
+      to: MetricsAdvisorError
 ```
 
 #### TimeMode -> AlertQueryTimeMode
@@ -161,6 +169,22 @@ directive:
         if (metricDescription && !metricDescription["x-ms-client-name"]) {
             metricDescription["x-ms-client-name"] = "description";
             $.Metric.properties.metricDescription = metricDescription;
+        }
+    }
+```
+
+#### AnomalyAlert properties rename
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.AnomalyAlert) {
+        const alertId = $.AnomalyAlert.properties.alertId;
+        if (alertId && !metricId["x-ms-client-name"]) {
+            metricId["x-ms-client-name"] = "id";
+            $.Metric.properties.alertId = alertId;
         }
     }
 ```

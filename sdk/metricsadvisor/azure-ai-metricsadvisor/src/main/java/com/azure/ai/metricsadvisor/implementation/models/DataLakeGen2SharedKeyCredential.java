@@ -20,6 +20,9 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
     @JsonProperty(value = "parameters", required = true)
     private DataLakeGen2SharedKeyParam parameters;
 
+    /** Creates an instance of DataLakeGen2SharedKeyCredential class. */
+    public DataLakeGen2SharedKeyCredential() {}
+
     /**
      * Get the parameters property: The parameters property.
      *
@@ -37,6 +40,20 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
      */
     public DataLakeGen2SharedKeyCredential setParameters(DataLakeGen2SharedKeyParam parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeGen2SharedKeyCredential setDataSourceCredentialName(String dataSourceCredentialName) {
+        super.setDataSourceCredentialName(dataSourceCredentialName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeGen2SharedKeyCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
+        super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 }
