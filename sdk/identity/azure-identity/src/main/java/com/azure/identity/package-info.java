@@ -38,7 +38,7 @@
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
  * <p>Further, it is recommended to read
- * {@link com.azure.identity.DefaultAzureCredential DefaultAzureCredentialJavaDocs} for more detailed information about
+ * {@link com.azure.identity.DefaultAzureCredential DefaultAzureCredential JavaDocs} for more detailed information about
  * the credential usage and the chain of credentials it runs underneath.</p>
  *
  * <p>The {@link com.azure.identity.DefaultAzureCredential} works well in most of the scenarios as it executes a chain
@@ -62,8 +62,8 @@
  * supports Managed Identity through IDENTITY/MSI, IMDS endpoints, or both, then the
  * {@link com.azure.identity.ManagedIdentityCredential} will get your application authenticated, and offers a great
  * secretless authentication experience. For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/managedidentity/docs">conceptual knowledge and configuration
- * details</a>.</p>
+ * <a href="https://aka.ms/azsdk/java/identity/managedidentity/docs">managed identity authentication
+ * documentation</a>.</p>
  *
  * <p><strong>Sample: Construct a Managed Identity Credential</strong></p>
  *
@@ -80,7 +80,7 @@
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
  * <p>Further, it is recommended to read
- * {@link com.azure.identity.ManagedIdentityCredential ManagedIdentityCredentialJavaDocs} for more detailed information
+ * {@link com.azure.identity.ManagedIdentityCredential ManagedIdentityCredential JavaDocs} for more detailed information
  * about the credential usage and the Azure platforms it supports.</p>
  *
  * <p>For other credentials that work well in Azure Hosted platforms, refer to the table below.</p>
@@ -101,7 +101,7 @@
  *       <td>This credential authenticates a service principal or user via credential information specified in
  *       environment variables. The service principal authentication works well in Azure hosted platforms when Managed
  *       Identity is not available. Further, it is recommended to read
- *       {@link com.azure.identity.EnvironmentCredential EnvironmentCredentialJavaDocs} for more information about
+ *       {@link com.azure.identity.EnvironmentCredential EnvironmentCredential JavaDocs} for more information about
  *       the credential usage.</td>
  *     </tr>
  *     <tr>
@@ -110,7 +110,7 @@
  *       together. For example, the {@link com.azure.identity.ManagedIdentityCredential} and
  *       {@link com.azure.identity.EnvironmentCredential} can be chained together to sequentially execute on Azure
  *       hosted platforms. The credential that first returns the token is used for authentication. Further, it is
- *       recommended to read {@link com.azure.identity.ChainedTokenCredential ChainedTokenCredentialJavaDocs} for more
+ *       recommended to read {@link com.azure.identity.ChainedTokenCredential ChainedTokenCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *   </tbody>
@@ -156,7 +156,7 @@
  * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
  *
  * <p>Further, it is recommended to read
- * {@link com.azure.identity.ClientSecretCredential ClientSecretCredentialJavaDocs} for more detailed information
+ * {@link com.azure.identity.ClientSecretCredential ClientSecretCredential JavaDocs} for more detailed information
  * about the credential usage.</p>
  *
  * <p>For other credentials that are compatible with service principal authentication, refer to the table below.</p>
@@ -177,7 +177,7 @@
  *       <td>This credential authenticates a service principal using a signed client assertion.
  *       It allows clients to prove their identity to Azure Active Directory without requiring them to disclose their
  *       credentials (such as a username and password). Further, it is recommended to read
- *       {@link com.azure.identity.ClientAssertionCredential ClientAssertionCredentialJavaDocs} for more
+ *       {@link com.azure.identity.ClientAssertionCredential ClientAssertionCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *     <tr>
@@ -185,7 +185,7 @@
  *       <td>This credential authenticates a service principal using a certificate. It doesn't require transmission of
  *       a client secret and mitigates the security related password storage and network transmission issues.
  *       Further, it is recommended to read {@link com.azure.identity.ClientCertificateCredential
- *       ClientCertificateCredentialJavaDocs} for more information about the credential usage.</td>
+ *       ClientCertificateCredential JavaDocs} for more information about the credential usage.</td>
  *     </tr>
  *   </tbody>
  * </table>
@@ -221,7 +221,7 @@
  * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
  *
  * <p>Further, it is recommended to read
- * {@link com.azure.identity.InteractiveBrowserCredential InteractiveBrowserCredentialJavaDocs} for more information
+ * {@link com.azure.identity.InteractiveBrowserCredential InteractiveBrowserCredential JavaDocs} for more information
  * about the credential usage.</p>
  *
  * <p>For other credentials that are compatible with user credentials based authentication, refer to the table below.
@@ -244,7 +244,7 @@
  *       to open an authentication URL with a device code on a UI enabled device and requires them to interactively
  *       authenticate there. Once authenticated, the original device requesting authentication gets authenticated
  *       and receives the access token. Further, it is recommended to read
- *       {@link com.azure.identity.DeviceCodeCredential DeviceCodeCredentialJavaDocs} for more
+ *       {@link com.azure.identity.DeviceCodeCredential DeviceCodeCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *     <tr>
@@ -253,7 +253,7 @@
  *       Oauth 2 flow. This is applicable for applications which control the logic of interactive user authentication
  *       to fetch an authorization code first. Once the application has received the authorization code, it can
  *       then configure it on this credential and use it to get an access token. Further, it is recommended to read
- *       {@link com.azure.identity.AuthorizationCodeCredential AuthorizationCodeCredentialJavaDocs} for more
+ *       {@link com.azure.identity.AuthorizationCodeCredential AuthorizationCodeCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *     <tr>
@@ -261,7 +261,7 @@
  *       <td>This credential authenticates a user with a username and password without multi-factored auth.
  *       This credential can be used on developer environment for user principals which do not require
  *       2FA/MFA (multi-facotred) authentication. Further, it is recommended to read
- *       {@link com.azure.identity.UsernamePasswordCredential UsernamePasswordCredentialJavaDocs} for more
+ *       {@link com.azure.identity.UsernamePasswordCredential UsernamePasswordCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *   </tbody>
@@ -298,7 +298,7 @@
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
  * <p>Further, it is recommended to read
- * {@link com.azure.identity.AzureCliCredential AzureCliCredentialJavaDocs} for more detailed
+ * {@link com.azure.identity.AzureCliCredential AzureCliCredential JavaDocs} for more detailed
  * information about the credential usage.</p>
  *
  * <p>For other credentials that are compatible with developer tools authentication, refer to the table below.</p>
@@ -320,7 +320,7 @@
  *       in Azure PowerShell. It utilizes the account of the already logged in user on Azure Powershell
  *       to get an access token. If there's no user logged in locally on Azure Powershell, then it will not work.
  *       Further, it is recommended to read
- *       {@link com.azure.identity.AzurePowerShellCredential AzurePowerShellCredentialJavaDocs} for more
+ *       {@link com.azure.identity.AzurePowerShellCredential AzurePowerShellCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *     <tr>
@@ -329,7 +329,7 @@
  *       in Azure Toolkit for IntelliJ plugin on IntelliJ IDE. It utilizes the cached login information of the Azure
  *       Toolkit for IntelliJ plugin to seamlessly authenticate the application. If there's no user logged in locally
  *       on Azure Toolkit for IntelliJ in IntelliJ IDE, then it will not work. Further, it is recommended to read
- *       {@link com.azure.identity.IntelliJCredential IntelliJCredentialJavaDocs} for more
+ *       {@link com.azure.identity.IntelliJCredential IntelliJCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *   </tbody>

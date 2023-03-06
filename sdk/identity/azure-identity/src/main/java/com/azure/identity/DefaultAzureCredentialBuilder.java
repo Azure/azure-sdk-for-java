@@ -18,7 +18,43 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * Fluent credential builder for instantiating a {@link DefaultAzureCredential}.
+ * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
+ *
+ * <p>The {@link DefaultAzureCredential} is appropriate for most scenarios where the application is intended to
+ * ultimately be run in Azure. DefaultAzureCredential combines credentials that are commonly used to authenticate when
+ * deployed, with credentials that are used to authenticate in a development environment.
+ * The {@link DefaultAzureCredential} will attempt to authenticate via the following mechanisms in order.</p>
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link DefaultAzureCredential}, using
+ * the DefaultAzureCredentialBuilder to configure it. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
+ * <pre>
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
+ *
+ * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
+ * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
+ * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
+ * to configure it. Once this credential is created, it may be passed into the builder of many of the
+ * Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
+ * <pre>
+ * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
  * @see DefaultAzureCredential
  */
