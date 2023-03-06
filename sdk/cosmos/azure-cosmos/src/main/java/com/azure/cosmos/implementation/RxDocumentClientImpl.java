@@ -953,11 +953,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ModelBridgeInternal.addQueryPlanDiagnosticsContextToFeedResponse(tFeedResponse,
                                 finalQueryInfo.getQueryPlanDiagnosticsContext());
 
-                            Duration queryPlanFetchLatency = feedResponseDiagnostics
-                                    .getQueryPlanDiagnosticsContext()
-                                    .getDuration();
+                            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext = feedResponseDiagnostics
+                                    .getQueryPlanDiagnosticsContext();
 
-                            queryPlanFetchLatency = queryPlanFetchLatency == null ? Duration.ZERO : queryPlanFetchLatency;
+                            Duration queryPlanFetchLatency = queryPlanDiagnosticsContext == null ?
+                                    Duration.ZERO : queryPlanDiagnosticsContext.getDuration();
+
+                            queryPlanFetchLatency = queryPlanFetchLatency == null ?
+                                    Duration.ZERO : queryPlanFetchLatency;
 
                             feedResponseDiagnostics.recordFeedResponseLatency(
                                     queryPlanFetchLatency
