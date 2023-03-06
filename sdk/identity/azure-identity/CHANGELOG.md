@@ -1,5 +1,15 @@
 # Release History
 
+## 1.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.8.1 (2023-03-06)
 
 ### Other Changes
@@ -10,7 +20,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `msal4j` from `1.13.4` to version `1.13.5`.
 
-# 1.8.0 (2023-02-03)
+## 1.8.0 (2023-02-03)
 
 ### Features Added
 
