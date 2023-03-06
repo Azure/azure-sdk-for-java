@@ -20,6 +20,15 @@ public final class VirtualNetworkPeeringState extends ExpandableStringEnum<Virtu
     public static final VirtualNetworkPeeringState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of VirtualNetworkPeeringState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkPeeringState() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkPeeringState from its string representation.
      *
      * @param name a name to look for.

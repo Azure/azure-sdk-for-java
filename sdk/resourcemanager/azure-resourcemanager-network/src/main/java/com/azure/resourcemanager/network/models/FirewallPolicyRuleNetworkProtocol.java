@@ -23,6 +23,15 @@ public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnu
     public static final FirewallPolicyRuleNetworkProtocol ICMP = fromString("ICMP");
 
     /**
+     * Creates a new instance of FirewallPolicyRuleNetworkProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyRuleNetworkProtocol() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyRuleNetworkProtocol from its string representation.
      *
      * @param name a name to look for.

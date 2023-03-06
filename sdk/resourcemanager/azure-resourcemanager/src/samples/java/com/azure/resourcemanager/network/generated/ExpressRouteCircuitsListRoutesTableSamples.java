@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCircuits ListRoutesTable. */
 public final class ExpressRouteCircuitsListRoutesTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCircuitRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitRouteTableList.json
      */
     /**
      * Sample code: List Route Tables.
@@ -22,6 +20,6 @@ public final class ExpressRouteCircuitsListRoutesTableSamples {
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .listRoutesTable("rg1", "circuitName", "peeringName", "devicePath", Context.NONE);
+            .listRoutesTable("rg1", "circuitName", "peeringName", "devicePath", com.azure.core.util.Context.NONE);
     }
 }

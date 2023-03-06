@@ -31,7 +31,7 @@ public final class SapApplicationServerInstancesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"instanceNo\":\"mcmuapc\",\"subnet\":\"dbevwqqxeysko\",\"hostname\":\"zinkfkbgbzbowxeq\",\"kernelVersion\":\"ljmygvkzqkjjeokb\",\"kernelPatch\":\"fezrx\",\"ipAddress\":\"zurtleipqxbkwvz\",\"gatewayPort\":3286584437525688934,\"icmHttpPort\":5805151273343223230,\"icmHttpsPort\":869334499854424511,\"loadBalancerDetails\":{\"id\":\"mqpnoda\"},\"vmDetails\":[],\"status\":\"Starting\",\"health\":\"Healthy\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"gsbos\",\"tags\":{\"atutmzlbiojlvfhr\":\"lnd\"},\"id\":\"bpneqvcwwyyurm\",\"name\":\"chpp\",\"type\":\"prsnmokayzejn\"}";
+            "{\"properties\":{\"instanceNo\":\"ftpmdtzfjltfv\",\"subnet\":\"cyjtotpvop\",\"hostname\":\"bdb\",\"kernelVersion\":\"gqqihedsvqwt\",\"kernelPatch\":\"ky\",\"ipAddress\":\"cysihs\",\"gatewayPort\":2251416135088020925,\"icmHttpPort\":5483811337729194379,\"icmHttpsPort\":8229457154745715233,\"loadBalancerDetails\":{\"id\":\"cdzsu\"},\"vmDetails\":[],\"status\":\"PartiallyRunning\",\"health\":\"Healthy\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"uapcvhdbevwqqxe\",\"tags\":{\"eqocljmygvk\":\"onqzinkfkbgbzbow\"},\"id\":\"qkjjeokbz\",\"name\":\"fezrx\",\"type\":\"czurtlei\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class SapApplicationServerInstancesGetWithResponseMockTests {
         SapApplicationServerInstance response =
             manager
                 .sapApplicationServerInstances()
-                .getWithResponse("gqcwdhohsdtmc", "zsu", "cohdx", com.azure.core.util.Context.NONE)
+                .getWithResponse("xhugcm", "k", "vlgo", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gsbos", response.location());
-        Assertions.assertEquals("lnd", response.tags().get("atutmzlbiojlvfhr"));
+        Assertions.assertEquals("uapcvhdbevwqqxe", response.location());
+        Assertions.assertEquals("onqzinkfkbgbzbow", response.tags().get("eqocljmygvk"));
     }
 }

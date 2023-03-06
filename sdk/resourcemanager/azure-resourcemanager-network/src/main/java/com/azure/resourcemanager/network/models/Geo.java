@@ -38,6 +38,15 @@ public final class Geo extends ExpandableStringEnum<Geo> {
     public static final Geo AQ = fromString("AQ");
 
     /**
+     * Creates a new instance of Geo value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Geo() {
+    }
+
+    /**
      * Creates or finds a Geo from its string representation.
      *
      * @param name a name to look for.

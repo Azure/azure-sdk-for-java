@@ -17,6 +17,15 @@ public final class GroupConnectivity extends ExpandableStringEnum<GroupConnectiv
     public static final GroupConnectivity DIRECTLY_CONNECTED = fromString("DirectlyConnected");
 
     /**
+     * Creates a new instance of GroupConnectivity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupConnectivity() {
+    }
+
+    /**
      * Creates or finds a GroupConnectivity from its string representation.
      *
      * @param name a name to look for.

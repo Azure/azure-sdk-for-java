@@ -18,6 +18,15 @@ public final class VirtualNetworkGatewayConnectionProtocol
     public static final VirtualNetworkGatewayConnectionProtocol IKEV1 = fromString("IKEv1");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewayConnectionProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewayConnectionProtocol() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewayConnectionProtocol from its string representation.
      *
      * @param name a name to look for.

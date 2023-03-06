@@ -220,7 +220,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-uploadDataToStorageBiggerThan4MB
         byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
 
-        long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
+        long chunkSize = 4 * 1024 * 1024L;
         if (data.length > chunkSize) {
             for (int offset = 0; offset < data.length; offset += chunkSize) {
                 try {
