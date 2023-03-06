@@ -123,7 +123,6 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @Test
     @DoNotRecord
-    @Disabled
     public void timeoutPolicy() {
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(FAKE_CONNECTION_STRING)
