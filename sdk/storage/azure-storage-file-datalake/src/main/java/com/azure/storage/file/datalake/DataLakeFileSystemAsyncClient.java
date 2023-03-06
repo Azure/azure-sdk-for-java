@@ -103,6 +103,9 @@ public class DataLakeFileSystemAsyncClient {
      */
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
+    /**
+     * Special directory name for the root directory of the file system.
+     */
     public static final String ROOT_DIRECTORY_NAME = "";
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemAsyncClient.class);
@@ -212,7 +215,7 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
-     * Note: this should only be used while getting the directory from the file system client.
+     * Note: this should only be used while getting the root directory from the file system client.
      *
      * <p><strong>Code Samples</strong></p>
      *
