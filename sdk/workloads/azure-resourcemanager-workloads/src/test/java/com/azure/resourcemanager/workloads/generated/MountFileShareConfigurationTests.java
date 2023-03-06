@@ -13,18 +13,19 @@ public final class MountFileShareConfigurationTests {
     public void testDeserialize() throws Exception {
         MountFileShareConfiguration model =
             BinaryData
-                .fromString("{\"configurationType\":\"Mount\",\"id\":\"uem\",\"privateEndpointId\":\"sbzkf\"}")
+                .fromString(
+                    "{\"configurationType\":\"Mount\",\"id\":\"lfltka\",\"privateEndpointId\":\"jvefkdlfoakggkfp\"}")
                 .toObject(MountFileShareConfiguration.class);
-        Assertions.assertEquals("uem", model.id());
-        Assertions.assertEquals("sbzkf", model.privateEndpointId());
+        Assertions.assertEquals("lfltka", model.id());
+        Assertions.assertEquals("jvefkdlfoakggkfp", model.privateEndpointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MountFileShareConfiguration model =
-            new MountFileShareConfiguration().withId("uem").withPrivateEndpointId("sbzkf");
+            new MountFileShareConfiguration().withId("lfltka").withPrivateEndpointId("jvefkdlfoakggkfp");
         model = BinaryData.fromObject(model).toObject(MountFileShareConfiguration.class);
-        Assertions.assertEquals("uem", model.id());
-        Assertions.assertEquals("sbzkf", model.privateEndpointId());
+        Assertions.assertEquals("lfltka", model.id());
+        Assertions.assertEquals("jvefkdlfoakggkfp", model.privateEndpointId());
     }
 }

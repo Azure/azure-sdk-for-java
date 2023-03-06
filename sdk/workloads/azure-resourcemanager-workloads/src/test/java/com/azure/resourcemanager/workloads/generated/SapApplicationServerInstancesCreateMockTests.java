@@ -33,7 +33,7 @@ public final class SapApplicationServerInstancesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"instanceNo\":\"aohdjh\",\"subnet\":\"lzok\",\"hostname\":\"ox\",\"kernelVersion\":\"lnjetaglt\",\"kernelPatch\":\"oatftgzpnpbswvef\",\"ipAddress\":\"ccsrmozihmipgaw\",\"gatewayPort\":1411241186878214819,\"icmHttpPort\":670605937205221964,\"icmHttpsPort\":5148739455688397470,\"loadBalancerDetails\":{\"id\":\"grytfmpcyci\"},\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Healthy\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"uztrksxwpndfcpf\",\"tags\":{\"aosrxuz\":\"thjtwk\",\"os\":\"oamktcq\",\"ltlaprltzkatbhj\":\"gbzahgxqdlyr\",\"gunbtgfebwlnbm\":\"znnbsoqeqalarvl\"},\"id\":\"yreeudz\",\"name\":\"av\",\"type\":\"pdqmjxlyyzglgouw\"}";
+            "{\"properties\":{\"instanceNo\":\"wcobie\",\"subnet\":\"tmninw\",\"hostname\":\"zcilnghg\",\"kernelVersion\":\"ejjtbxqmul\",\"kernelPatch\":\"lxqzvn\",\"ipAddress\":\"sbycucrwnamikz\",\"gatewayPort\":1725483024927981139,\"icmHttpPort\":3252438714549406945,\"icmHttpsPort\":4275672432001300092,\"loadBalancerDetails\":{\"id\":\"gfuhokzrusw\"},\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"jsxjwwix\",\"tags\":{\"ehaohdjhh\":\"mwmxqhndvnoamld\",\"coxpelnjeta\":\"lzok\",\"g\":\"ltsxoatf\"},\"id\":\"pnpbswveflocc\",\"name\":\"rmozihmipgawt\",\"type\":\"xp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,14 @@ public final class SapApplicationServerInstancesCreateMockTests {
         SapApplicationServerInstance response =
             manager
                 .sapApplicationServerInstances()
-                .define("snptfujgicgaao")
-                .withRegion("uluxl")
-                .withExistingSapVirtualInstance("xzjrgy", "wpgj")
-                .withTags(mapOf("amikzebrqbsm", "vnersbycucrw", "swhvhczznvfbycj", "wziqgfuhokzr"))
+                .define("xjwet")
+                .withRegion("epttaqu")
+                .withExistingSapVirtualInstance("elfwy", "wl")
+                .withTags(mapOf("gehkfkimrtixokff", "wemxswvruunzz", "qwhix", "yinljqe"))
                 .create();
 
-        Assertions.assertEquals("uztrksxwpndfcpf", response.location());
-        Assertions.assertEquals("thjtwk", response.tags().get("aosrxuz"));
+        Assertions.assertEquals("jsxjwwix", response.location());
+        Assertions.assertEquals("mwmxqhndvnoamld", response.tags().get("ehaohdjhh"));
     }
 
     @SuppressWarnings("unchecked")

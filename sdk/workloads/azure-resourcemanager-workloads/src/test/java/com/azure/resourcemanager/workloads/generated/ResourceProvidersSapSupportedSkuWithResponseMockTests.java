@@ -37,7 +37,7 @@ public final class ResourceProvidersSapSupportedSkuWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"supportedSkus\":[{\"vmSku\":\"pshneekulfgslq\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true},{\"vmSku\":\"enr\",\"isAppServerCertified\":false,\"isDatabaseCertified\":true},{\"vmSku\":\"bazpjuohmi\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true}]}";
+            "{\"supportedSkus\":[{\"vmSku\":\"ezbrhubskh\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"okkqfqjbvleo\",\"isAppServerCertified\":false,\"isDatabaseCertified\":true},{\"vmSku\":\"qtqzfavyv\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,19 +69,19 @@ public final class ResourceProvidersSapSupportedSkuWithResponseMockTests {
             manager
                 .resourceProviders()
                 .sapSupportedSkuWithResponse(
-                    "jvewzcjznmwcp",
+                    "lkxt",
                     new SapSupportedSkusRequest()
-                        .withAppLocation("guaadraufactkahz")
-                        .withEnvironment(SapEnvironmentType.NON_PROD)
+                        .withAppLocation("qjfsmlmbtxhw")
+                        .withEnvironment(SapEnvironmentType.PROD)
                         .withSapProduct(SapProductType.ECC)
                         .withDeploymentType(SapDeploymentType.THREE_TIER)
-                        .withDatabaseType(SapDatabaseType.HANA)
-                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+                        .withDatabaseType(SapDatabaseType.DB2)
+                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("pshneekulfgslq", response.supportedSkus().get(0).vmSku());
-        Assertions.assertEquals(true, response.supportedSkus().get(0).isAppServerCertified());
-        Assertions.assertEquals(true, response.supportedSkus().get(0).isDatabaseCertified());
+        Assertions.assertEquals("ezbrhubskh", response.supportedSkus().get(0).vmSku());
+        Assertions.assertEquals(false, response.supportedSkus().get(0).isAppServerCertified());
+        Assertions.assertEquals(false, response.supportedSkus().get(0).isDatabaseCertified());
     }
 }
