@@ -18,6 +18,8 @@ public abstract class TableClientTestBase extends TestBase {
     protected HttpPipelinePolicy recordPolicy;
     protected HttpClient playbackClient;
 
+    protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
+
     protected TableClientBuilder getClientBuilder(String tableName, String connectionString) {
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .connectionString(connectionString);
@@ -46,13 +48,12 @@ public abstract class TableClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
-            tableClientBuilder.httpClient(playbackClient);
+            tableClientBuilder.httpClient(buildAssertingClient(playbackClient));
         } else {
-            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
+            tableClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
-
                 tableClientBuilder.addPolicy(recordPolicy);
             }
         }

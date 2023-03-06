@@ -14,7 +14,8 @@
 - Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
 - Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
 - Changed `BaseResolution` to an abstract class.
-- Removed class `BooleanResolution`.
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
 
 ### Bugs Fixed
 

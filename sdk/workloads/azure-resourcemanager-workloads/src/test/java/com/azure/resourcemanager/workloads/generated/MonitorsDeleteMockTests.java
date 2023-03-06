@@ -31,7 +31,7 @@ public final class MonitorsDeleteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"pizruwnpqxpxiw\",\"name\":\"ngjsaasi\",\"status\":\"xtmkzjvkviir\",\"percentComplete\":82.58599,\"startTime\":\"2021-08-25T22:42:56Z\",\"endTime\":\"2021-10-27T06:03:30Z\",\"operations\":[{\"id\":\"ra\",\"name\":\"vzbglbyvi\",\"status\":\"tctbrxkjzwrgxffm\",\"percentComplete\":41.11345,\"startTime\":\"2021-08-28T12:30:32Z\",\"endTime\":\"2021-02-11T20:50:53Z\",\"operations\":[]},{\"id\":\"wopdbydpiz\",\"name\":\"clnapxbiygnugjkn\",\"status\":\"smfcttuxuuyilfl\",\"percentComplete\":45.98145,\"startTime\":\"2021-04-20T21:21:34Z\",\"endTime\":\"2021-06-20T10:05:15Z\",\"operations\":[]},{\"id\":\"njhvsujztc\",\"name\":\"tqjtwhauu\",\"status\":\"fprnjl\",\"percentComplete\":97.46975,\"startTime\":\"2021-02-18T12:39:05Z\",\"endTime\":\"2020-12-30T16:27:54Z\",\"operations\":[]},{\"id\":\"uifamowaziynknlq\",\"name\":\"dvpiwh\",\"status\":\"qszdtmaajquhuxyl\",\"percentComplete\":35.622257,\"startTime\":\"2021-06-06T18:03:06Z\",\"endTime\":\"2021-04-02T01:51:44Z\",\"operations\":[]}]}";
+            "{\"id\":\"smgbzahgxqdl\",\"name\":\"tlt\",\"status\":\"ap\",\"percentComplete\":8.252752,\"startTime\":\"2021-01-18T16:57:33Z\",\"endTime\":\"2021-06-30T17:25:30Z\",\"operations\":[{\"id\":\"mznnbsoqeqalarvl\",\"name\":\"un\",\"status\":\"tgfebwln\",\"percentComplete\":36.78445,\"startTime\":\"2021-02-09T00:26:12Z\",\"endTime\":\"2021-12-01T07:49:22Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,19 +60,19 @@ public final class MonitorsDeleteMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationStatusResult response =
-            manager.monitors().delete("oweyirdhlis", "gwflq", com.azure.core.util.Context.NONE);
+            manager.monitors().delete("aosrxuz", "oamktcq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pizruwnpqxpxiw", response.id());
-        Assertions.assertEquals("ngjsaasi", response.name());
-        Assertions.assertEquals("xtmkzjvkviir", response.status());
-        Assertions.assertEquals(82.58599F, response.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T22:42:56Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T06:03:30Z"), response.endTime());
-        Assertions.assertEquals("ra", response.operations().get(0).id());
-        Assertions.assertEquals("vzbglbyvi", response.operations().get(0).name());
-        Assertions.assertEquals("tctbrxkjzwrgxffm", response.operations().get(0).status());
-        Assertions.assertEquals(41.11345F, response.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T12:30:32Z"), response.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T20:50:53Z"), response.operations().get(0).endTime());
+        Assertions.assertEquals("smgbzahgxqdl", response.id());
+        Assertions.assertEquals("tlt", response.name());
+        Assertions.assertEquals("ap", response.status());
+        Assertions.assertEquals(8.252752F, response.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T16:57:33Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T17:25:30Z"), response.endTime());
+        Assertions.assertEquals("mznnbsoqeqalarvl", response.operations().get(0).id());
+        Assertions.assertEquals("un", response.operations().get(0).name());
+        Assertions.assertEquals("tgfebwln", response.operations().get(0).status());
+        Assertions.assertEquals(36.78445F, response.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T00:26:12Z"), response.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T07:49:22Z"), response.operations().get(0).endTime());
     }
 }

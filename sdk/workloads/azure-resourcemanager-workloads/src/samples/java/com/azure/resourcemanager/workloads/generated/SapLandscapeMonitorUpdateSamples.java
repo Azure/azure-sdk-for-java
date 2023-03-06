@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SapLandscapeMonitor Update. */
 public final class SapLandscapeMonitorUpdateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Update.json
      */
     /**
      * Sample code: Update SAP monitor.

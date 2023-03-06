@@ -72,6 +72,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
+                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                     PUBLIC_AUTHORITY_HOST_STRING,
                     POSTGRESQL_USER_AGENT,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,

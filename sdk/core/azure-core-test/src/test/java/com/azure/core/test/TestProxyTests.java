@@ -26,6 +26,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,6 +49,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test class for testing Test proxy functionality of record, playback and redaction.
  */
+
+// These tests override the environment variable so they can test playback and record in the same test run.
+// This strategy fails if we are in a LIVE test mode, so we'll just skip these entirely if that's the case.
+@DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
 public class TestProxyTests extends TestProxyTestBase {
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
