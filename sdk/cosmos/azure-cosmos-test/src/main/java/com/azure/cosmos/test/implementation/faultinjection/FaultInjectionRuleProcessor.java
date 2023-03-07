@@ -14,8 +14,6 @@ import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.RxGatewayStoreModel;
-import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WebExceptionRetryPolicy;
@@ -53,8 +51,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class FaultInjectionRuleProcessor {
     private final ConnectionMode connectionMode;
-    private final RxStoreModel storeModel;
-    private final RxGatewayStoreModel gatewayStoreModel;
     private final RxCollectionCache collectionCache;
     private final GlobalEndpointManager globalEndpointManager;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -63,8 +59,6 @@ public class FaultInjectionRuleProcessor {
 
     public FaultInjectionRuleProcessor(
         ConnectionMode connectionMode,
-        RxStoreModel storeModel,
-        RxGatewayStoreModel gatewayStoreModel,
         RxCollectionCache collectionCache,
         GlobalEndpointManager globalEndpointManager,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
@@ -72,8 +66,6 @@ public class FaultInjectionRuleProcessor {
         ThrottlingRetryOptions retryOptions) {
 
         checkNotNull(connectionMode, "Argument 'connectionMode' can not be null");
-        checkNotNull(storeModel, "Argument 'storeModel' can not be null");
-        checkNotNull(gatewayStoreModel, "Argument 'gatewayStoreModel' can not be null");
         checkNotNull(collectionCache, "Argument 'collectionCache' can not be null");
         checkNotNull(globalEndpointManager, "Argument 'globalEndpointManager' can not be null");
         checkNotNull(partitionKeyRangeCache, "Argument 'partitionKeyRangeCache' can not be null");
@@ -81,8 +73,6 @@ public class FaultInjectionRuleProcessor {
         checkNotNull(retryOptions, "Argument 'addressSelector' can not be null");
 
         this.connectionMode = connectionMode;
-        this.storeModel = storeModel;
-        this.gatewayStoreModel = gatewayStoreModel;
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.globalEndpointManager = globalEndpointManager;

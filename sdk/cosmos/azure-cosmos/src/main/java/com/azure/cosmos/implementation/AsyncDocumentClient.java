@@ -1642,18 +1642,6 @@ public interface AsyncDocumentClient {
     GlobalEndpointManager getGlobalEndpointManager();
 
     /***
-     * Get the store model.
-     * @return the store model.
-     */
-    RxStoreModel getStoreModel();
-
-    /***
-     * Get the gateway store model.
-     * @return the gateway store model.
-     */
-    RxGatewayStoreModel getGatewayProxy();
-
-    /***
      * Get the address selector.
      * @return the address selector.
      */

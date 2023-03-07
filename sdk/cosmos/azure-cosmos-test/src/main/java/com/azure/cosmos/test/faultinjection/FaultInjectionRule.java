@@ -181,5 +181,7 @@ public final class FaultInjectionRule {
             (rule, ruleInternal) -> rule.setEffectiveFaultInjectionRule(ruleInternal));
     }
 
-    static { initialize(); }
+    static {
+        initialize();
+    }
 }

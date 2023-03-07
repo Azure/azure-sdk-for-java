@@ -53,6 +53,7 @@ public final class FaultInjectionServerErrorResultBuilder {
      * Create a new fault injection server error result.
      *
      * @return the {@link FaultInjectionServerErrorResult}.
+     * @throws IllegalArgumentException if server type is response_delay or connection_delay but delay is not defined.
      */
     public FaultInjectionServerErrorResult build() {
         if ((this.serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY

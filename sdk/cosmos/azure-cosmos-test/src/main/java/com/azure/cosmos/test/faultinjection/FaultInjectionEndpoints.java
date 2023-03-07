@@ -10,8 +10,8 @@ import com.azure.cosmos.models.FeedRange;
  */
 public final class FaultInjectionEndpoints {
     private final FeedRange feedRange;
-    private boolean includePrimary;
-    private int replicaCount;
+    private final boolean includePrimary;
+    private final int replicaCount;
 
     FaultInjectionEndpoints(FeedRange feedRange, int replicaCount, boolean includePrimary) {
         this.feedRange = feedRange;

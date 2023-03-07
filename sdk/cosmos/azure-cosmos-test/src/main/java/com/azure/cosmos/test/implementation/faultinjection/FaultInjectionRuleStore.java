@@ -42,8 +42,6 @@ public class FaultInjectionRuleStore {
         );
         return new FaultInjectionRuleProcessor(
             client.getConnectionPolicy().getConnectionMode(),
-            client.getStoreModel(),
-            client.getGatewayProxy(),
             client.getCollectionCache(),
             client.getGlobalEndpointManager(),
             client.getPartitionKeyRangeCache(),

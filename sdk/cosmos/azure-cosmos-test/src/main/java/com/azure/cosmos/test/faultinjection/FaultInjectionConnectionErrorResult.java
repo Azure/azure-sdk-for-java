@@ -51,10 +51,10 @@ public final class FaultInjectionConnectionErrorResult implements IFaultInjectio
 
     @Override
     public String toString() {
-        return "FaultInjectionConnectionErrorResult{" +
-            "errorType=" + errorType +
-            ", interval=" + interval +
-            ", threshold=" + threshold +
-            '}';
+        return String.format(
+            "FaultInjectionConnectionErrorResult { errorType=%s, interval=%s, threshold=%s }",
+            this.errorType,
+            this.interval,
+            this.threshold);
     }
 }

@@ -4154,16 +4154,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public RxStoreModel getStoreModel() {
-        return this.storeModel;
-    }
-
-    @Override
-    public RxGatewayStoreModel getGatewayProxy() {
-        return this.gatewayProxy;
-    }
-
-    @Override
     public AddressSelector getAddressSelector() {
         return new AddressSelector(this.addressResolver, this.configs.getProtocol());
     }
