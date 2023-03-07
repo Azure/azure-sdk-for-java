@@ -10,11 +10,38 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.monitor.ingestion.implementation.ConcurrencyLimitingSpliterator;
+import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
+import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
+import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
+import com.azure.monitor.ingestion.implementation.Utils;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
+import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
+import static com.azure.monitor.ingestion.implementation.Utils.createRequests;
+import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -31,11 +58,17 @@ import com.azure.monitor.ingestion.models.LogsUploadOptions;
  */
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionClient {
+    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
+    private static final Runnable DO_NOTHING = () -> { };
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final Context ENABLE_SYNC_CONTEXT = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    private final IngestionUsingDataCollectionRulesClient client;
 
-    private final LogsIngestionAsyncClient asyncClient;
+    // dynamic thread pool that scales up and down on demand.
+    private static final ExecutorService THREAD_POOL = Utils.getThreadPoolWithShutDownHook(5);
 
-    LogsIngestionClient(LogsIngestionAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
+        this.client = client;
     }
 
     /**
@@ -61,7 +94,7 @@ public final class LogsIngestionClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName, Iterable<Object> logs) {
-        asyncClient.upload(ruleId, streamName, logs).block();
+        upload(ruleId, streamName, logs, null);
     }
 
     /**
@@ -90,7 +123,7 @@ public final class LogsIngestionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
                                    Iterable<Object> logs, LogsUploadOptions options) {
-        asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
+        upload(ruleId, streamName, logs, options, Context.NONE);
     }
 
     /**
@@ -111,7 +144,69 @@ public final class LogsIngestionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
                        Iterable<Object> logs, LogsUploadOptions options, Context context) {
-        asyncClient.upload(ruleId, streamName, logs, options, context).block();
+        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
+
+        context = enableSync(context);
+        int concurrency = getConcurrency(options);
+        ObjectSerializer serializer = Utils.getSerializer(options);
+        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addHeader(CONTENT_ENCODING, GZIP);
+        requestOptions.setContext(context);
+
+        List<LogsIngestionRequest> requests = new ArrayList<>();
+        createRequests(serializer, logs.iterator(), requests::add, this::mapException, DO_NOTHING);
+
+        Stream<UploadLogsResponseHolder> responses;
+        if (concurrency == 1) {
+            responses = requests.stream().map(request -> uploadToService(ruleId, streamName, requestOptions, request));
+        } else {
+            try {
+                ConcurrencyLimitingSpliterator<LogsIngestionRequest> spliterator = new ConcurrencyLimitingSpliterator<>(requests, concurrency);
+                responses = THREAD_POOL.submit(() -> StreamSupport.stream(spliterator, true)
+                    .map(request -> uploadToService(ruleId, streamName, requestOptions, request)))
+                    .get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+
+        responses = responses.filter(response -> response.getException() != null);
+
+        if (uploadLogsErrorConsumer != null) {
+            responses.forEach(response -> uploadLogsErrorConsumer.accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
+            return;
+        }
+
+        final int[] failedLogCount = new int[1];
+        List<HttpResponseException> exceptions = responses
+            .map(response -> {
+                failedLogCount[0] += response.getRequest().getLogs().size();
+                return response.getException();
+            })
+            .collect(Collectors.toList());
+
+        if (exceptions.size() > 0) {
+            throw LOGGER.logExceptionAsError(new LogsUploadException(exceptions, failedLogCount[0]));
+        }
+    }
+
+    private void mapException(IOException e) {
+        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+    }
+
+    private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions, LogsIngestionRequest request) {
+        HttpResponseException exception = null;
+        try {
+            client.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions);
+        } catch (HttpResponseException ex) {
+            exception = ex;
+        }
+
+        return new UploadLogsResponseHolder(request, exception);
     }
 
     /**
@@ -147,6 +242,32 @@ public final class LogsIngestionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
-        return asyncClient.uploadWithResponse(ruleId, streamName, logs, requestOptions).block();
+        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
+
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
+        requestOptions.setContext(enableSync(requestOptions.getContext()));
+        requestOptions.addRequestCallback(request -> {
+            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
+            if (httpHeader == null) {
+                BinaryData gzippedRequest = BinaryData.fromBytes(Utils.gzipRequest(logs.toBytes()));
+                request.setBody(gzippedRequest);
+                request.setHeader(CONTENT_ENCODING, GZIP);
+            }
+        });
+        return client.uploadWithResponse(ruleId, streamName, logs, requestOptions);
     }
+
+    private static Context enableSync(Context context) {
+        if (context == null || context == Context.NONE) {
+            return ENABLE_SYNC_CONTEXT;
+        }
+
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
 }
