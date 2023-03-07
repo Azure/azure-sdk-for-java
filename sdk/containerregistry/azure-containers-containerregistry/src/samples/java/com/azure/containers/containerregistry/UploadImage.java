@@ -4,7 +4,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -45,7 +45,7 @@ public class UploadImage {
         UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
         System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
-        OciManifest manifest = new OciManifest()
+        OciImageManifest manifest = new OciImageManifest()
             .setConfig(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(

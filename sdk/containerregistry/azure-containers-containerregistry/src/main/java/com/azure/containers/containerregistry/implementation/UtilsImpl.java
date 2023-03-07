@@ -76,6 +76,7 @@ public final class UtilsImpl {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-containers-containerregistry.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final ContainerRegistryAudience ACR_ACCESS_TOKEN_AUDIENCE = ContainerRegistryAudience.fromString("https://containerregistry.azure.net");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
@@ -150,7 +151,8 @@ public final class UtilsImpl {
         credentialPolicies.add(loggingPolicy);
 
         if (audience == null)  {
-            audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
+            audience = ACR_ACCESS_TOKEN_AUDIENCE;
         }
 
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(

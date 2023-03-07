@@ -8,7 +8,7 @@ import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -345,7 +345,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         UploadManifestResult result = client.uploadManifest(MANIFEST);
         DownloadManifestResult downloadResult = client.downloadManifest(result.getDigest());
-        OciManifest returnedManifest = downloadResult.asOciManifest();
+        OciImageManifest returnedManifest = downloadResult.asOciManifest();
         assertNotNull(returnedManifest);
         validateManifest(MANIFEST, returnedManifest);
     }
@@ -359,7 +359,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                     .then(asyncClient.uploadManifest(MANIFEST))
                     .flatMap(result -> asyncClient.downloadManifest(result.getDigest())))
             .assertNext(downloadResult -> {
-                OciManifest returnedManifest = downloadResult.asOciManifest();
+                OciImageManifest returnedManifest = downloadResult.asOciManifest();
                 assertNotNull(returnedManifest);
                 validateManifest(MANIFEST, returnedManifest);
             })
@@ -454,12 +454,12 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         return manifest;
     }
 
-    private void validateManifest(OciManifest originalManifest, BinaryData returnedManifestData) {
-        OciManifest returnedManifest = returnedManifestData.toObject(OciManifest.class);
+    private void validateManifest(OciImageManifest originalManifest, BinaryData returnedManifestData) {
+        OciImageManifest returnedManifest = returnedManifestData.toObject(OciImageManifest.class);
         validateManifest(originalManifest, returnedManifest);
     }
 
-    private void validateManifest(OciManifest originalManifest, OciManifest returnedManifest) {
+    private void validateManifest(OciImageManifest originalManifest, OciImageManifest returnedManifest) {
         assertNotNull(originalManifest);
         assertNotNull(returnedManifest);
         assertNotNull(returnedManifest.getConfig());

@@ -7,7 +7,7 @@ import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
@@ -54,7 +54,7 @@ public class UploadImageAsync {
                 .setMediaType("application/octet-stream"));
 
         Mono.zip(uploadConfig, uploadLayer)
-            .map(tuple -> new OciManifest()
+            .map(tuple -> new OciImageManifest()
                 .setConfig(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))

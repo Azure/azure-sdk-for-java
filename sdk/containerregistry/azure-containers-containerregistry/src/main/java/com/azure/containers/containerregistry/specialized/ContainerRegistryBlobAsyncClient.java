@@ -12,7 +12,7 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.models.DownloadBlobAsyncResult;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -112,7 +112,7 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadManifestResult> uploadManifest(OciManifest manifest) {
+    public Mono<UploadManifestResult> uploadManifest(OciImageManifest manifest) {
         if (manifest == null) {
             return monoError(LOGGER, new NullPointerException("'manifest' can't be null."));
         }
