@@ -10,6 +10,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -41,6 +42,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
 
 
 /**
@@ -58,6 +61,9 @@ public final class BlockBlobClient extends BlobClientBase {
     private static Context STATIC_ENABLE_REST_PROXY_CONTEXT =
         Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     private final BlockBlobAsyncClient client;
+    private static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS = 5;
+
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -475,15 +481,21 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        return client.uploadWithResponseSync(options, enableSyncRestProxy(context));
 
-        // TODO: Execute this in a thread with a timeout.
-//        try {
-//            return blockWithOptionalTimeout(upload, timeout);
-//        } catch (UncheckedIOException e) {
-//            throw LOGGER.logExceptionAsError(e);
-//        }
+        Supplier<Response<BlockBlobItem>> operation = () -> {
+            StorageImplUtils.assertNotNull("options", options);
+            return client.uploadWithResponseSync(options, enableSyncRestProxy(context));
+        };
+
+        try {
+            return timeout != null
+                ? THREAD_POOL.submit(() -> operation.get()).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : operation.get();
+        } catch (UncheckedIOException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (ExecutionException | TimeoutException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -592,15 +604,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        return client.uploadFromUrlWithResponseSync(options, context);
-
-        // TODO: Execute this in a thread with a timeout.
-
-//        try {
-//            return blockWithOptionalTimeout(upload, timeout);
-//        } catch (UncheckedIOException e) {
-//            throw LOGGER.logExceptionAsError(e);
-//        }
+        return executeOperation(() -> client.uploadFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
     }
 
     /**
@@ -692,18 +697,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        // TODO: Execute this in a thread with a timeout.
-        return client.stageBlockWithResponseSync(base64BlockId,
-            BinaryData.fromStream(data, length), contentMd5, leaseId, context);
-        // return blockWithOptionalTimeout(response, timeout);
-//=======
-//        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-//            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
-//
-//        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId,
-//            context);
-//        return blockWithOptionalTimeout(response, timeout);
-//>>>>>>> upstream/azure-storage-sync-stack
+        return executeOperation(() -> client.stageBlockWithResponseSync(base64BlockId,
+            BinaryData.fromStream(data, length), contentMd5, leaseId, enableSyncRestProxy(context)), timeout);
     }
 
     /**
@@ -737,10 +732,10 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        // TODO: Execute this in a thread with a timeout.
-        return client.stageBlockWithResponseSync(
-            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
-//        return blockWithOptionalTimeout(response, timeout);
+
+        return executeOperation(() -> client.stageBlockWithResponseSync(
+            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(),
+                enableSyncRestProxy(context)), timeout);
     }
 
     /**
@@ -847,9 +842,8 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        // TODO: Execute this in a thread with a timeout.
-        return client.stageBlockFromUrlWithResponseSync(options, context);
-//        return blockWithOptionalTimeout(response, timeout);
+        return executeOperation(() -> client.stageBlockFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
     }
 
     /**
@@ -942,9 +936,8 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        // TODO: Execute this in a thread with a timeout.
-        return client.listBlocksWithResponseSync(options, context);
-//        return blockWithOptionalTimeout(, timeout);
+        return executeOperation(() -> client.listBlocksWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
     }
 
     /**
@@ -1099,10 +1092,8 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        // TODO: Execute this in a thread with a timeout.
-        return client.commitBlockListWithResponseSync(
-            options, context);
-//        return blockWithOptionalTimeout(response, timeout);
+        return executeOperation(() -> client.commitBlockListWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
     }
 
     public static Context enableSyncRestProxy(Context context) {
@@ -1111,5 +1102,41 @@ public final class BlockBlobClient extends BlobClientBase {
         } else {
             return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         }
+    }
+
+
+
+    <T> Response<T> executeOperation(Supplier<Response<T>> operation, Duration timeout) {
+        try {
+            return timeout != null
+                ? THREAD_POOL.submit(() -> operation.get()).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : operation.get();
+        } catch (ExecutionException | TimeoutException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
     }
 }
