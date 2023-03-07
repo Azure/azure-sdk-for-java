@@ -40,6 +40,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.25</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.fasterxml.jackson.databind
+      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.azure.core
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <dependency>
