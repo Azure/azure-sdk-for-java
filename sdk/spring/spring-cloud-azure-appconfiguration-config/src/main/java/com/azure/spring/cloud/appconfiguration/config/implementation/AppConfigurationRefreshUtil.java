@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.implementation;
+package com.azure.spring.cloud.appconfiguration.config.implementation;
+
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -14,10 +18,10 @@ import org.springframework.util.StringUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
-import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
