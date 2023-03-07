@@ -153,7 +153,7 @@ public class TestUtils {
             return AzureAuthorityHosts.AZURE_GOVERNMENT;
         }
 
-        // By default we will assume that the authority is public
+        // by default we will assume that the authority is public
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
 

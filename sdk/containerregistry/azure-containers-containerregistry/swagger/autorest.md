@@ -3,7 +3,7 @@
 > see https://aka.ms/autorest
 
 This is the template AutoRest configuration file for client SDKs.
----
+
 ## Getting Started
 
 To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
