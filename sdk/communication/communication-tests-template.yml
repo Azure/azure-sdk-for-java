@@ -11,6 +11,9 @@ parameters:
 - name: TestMode
   type: string
   default: 'LIVE'
+- name: TestResourceDirectories
+  type: object
+  default:
 - name: EnVars
   type: object
   default: {}
@@ -49,6 +52,7 @@ stages:
           groupId: com.azure
           safeName: ${{ parameters.SafeName }}
       ServiceDirectory: communication
+      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       EnvVars:
         SKIP_LIVE_TEST: TRUE
         ${{ each var in parameters.EnVars }}:

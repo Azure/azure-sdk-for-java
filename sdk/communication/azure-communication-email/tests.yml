@@ -20,3 +20,5 @@ stages:
               SubscriptionConfigurations:
                 - $(sub-config-communication-ppe-test-resources-common)
                 - $(sub-config-communication-ppe-test-resources-java)
+          TestResourceDirectories:
+            - communication/azure-communication-email/
