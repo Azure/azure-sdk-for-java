@@ -101,6 +101,10 @@ public class ClientSideRequestStatistics {
         return requestStartTimeUTC;
     }
 
+    public Instant getRequestEndTimeUTC() {
+        return requestEndTimeUTC;
+    }
+
     public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
         return diagnosticsClientConfig;
     }

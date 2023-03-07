@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -90,7 +91,36 @@ public final class CosmosDiagnostics {
      */
     public Duration getDuration() {
         if (this.feedResponseDiagnostics != null) {
-            return null;
+
+            List<ClientSideRequestStatistics> statistics =
+                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
+            if (statistics == null) {
+                return Duration.ZERO;
+            }
+
+            Instant min = Instant.MAX;
+            Instant max = Instant.MIN;
+            for (ClientSideRequestStatistics s: statistics) {
+                if (s.getRequestStartTimeUTC() != null &&
+                    s.getRequestStartTimeUTC().isBefore(min)) {
+                    min = s.getRequestStartTimeUTC();
+                }
+
+                if (s.getRequestEndTimeUTC() != null &&
+                    s.getRequestEndTimeUTC().isAfter(max)) {
+                    max = s.getRequestEndTimeUTC();
+                }
+            }
+
+            if (max.isBefore(min)) {
+                return null;
+            }
+
+            if (min == max) {
+                return Duration.ZERO;
+            }
+
+            return Duration.between(min, max);
         }
 
         return this.clientSideRequestStatistics.getDuration();

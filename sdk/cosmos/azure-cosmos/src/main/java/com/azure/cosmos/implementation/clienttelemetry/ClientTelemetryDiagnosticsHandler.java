@@ -82,22 +82,29 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
             statusCode, objectSize, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
             ClientTelemetry.REQUEST_LATENCY_UNIT);
+
+
         ConcurrentDoubleHistogram latencyHistogram = this.telemetry
             .getClientTelemetryInfo()
             .getOperationInfoMap()
             .get(reportPayloadLatency);
-        if (latencyHistogram != null) {
-            ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
-        } else {
-            if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
-            } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
-            }
 
-            latencyHistogram.setAutoResize(true);
-            ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
-            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
+        if (cosmosDiagnostics.getDuration() != null) {
+            if (latencyHistogram != null) {
+                ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
+            } else {
+                if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
+                    latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
+                } else {
+                    latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
+                }
+
+                latencyHistogram.setAutoResize(true);
+                ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
+                telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
+            }
+        } else {
+            System.out.println("What the hell.");
         }
 
         ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosDiagnostics,
