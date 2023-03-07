@@ -177,7 +177,14 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
                 .filter(event -> isMatchingEvent(event, messageId))
                 .take(numberOfEvents))
-                .then(() -> producer.send(events, options))
+                .then(() -> {
+                    try {
+                        producer.send(events, options);
+                        logger.atInfo().log("sent events");
+                    } catch (RuntimeException ex) {
+                        throw logger.logThrowableAsError(ex);
+                    }
+                })
                 .expectNextCount(numberOfEvents)
                 .expectComplete()
                 .verify(TIMEOUT);
@@ -194,12 +201,15 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
     @Test
     void receiveMessageFromEnqueuedTime() {
         // Arrange
+        final EventData expectedEvent = receivedEvents[0];
+        final Instant enqueuedTime = expectedEvent.getEnqueuedTime();
+
         logger.atInfo()
             .addKeyValue("partitionId", testData.getPartitionId())
-            .addKeyValue("from", testData.getPartitionProperties().getLastEnqueuedTime())
+            .addKeyValue("from", enqueuedTime)
             .log("Receiving events");
-        final EventPosition position = EventPosition.fromEnqueuedTime(testData.getPartitionProperties().getLastEnqueuedTime());
-        final EventData expectedEvent = receivedEvents[0];
+
+        final EventPosition position = EventPosition.fromEnqueuedTime(enqueuedTime.minusMillis(1));
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
