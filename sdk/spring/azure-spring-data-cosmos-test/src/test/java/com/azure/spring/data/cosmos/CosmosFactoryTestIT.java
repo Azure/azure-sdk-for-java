@@ -4,7 +4,6 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;

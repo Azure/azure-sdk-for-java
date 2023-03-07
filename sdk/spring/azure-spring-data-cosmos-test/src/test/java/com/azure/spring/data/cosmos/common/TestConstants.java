@@ -4,8 +4,6 @@ package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -66,6 +66,8 @@
         <module>spring-cloud-azure-feature-management</module>
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
+        <module>azure-spring-data-cosmos</module>
+        <module>azure-spring-data-cosmos-test</module>
       </modules>
     </profile>
 
@@ -124,6 +126,8 @@
         <module>spring-cloud-azure-feature-management</module>
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
+        <module>azure-spring-data-cosmos</module>
+        <module>azure-spring-data-cosmos-test</module>
       </modules>
     </profile>
   </profiles>
