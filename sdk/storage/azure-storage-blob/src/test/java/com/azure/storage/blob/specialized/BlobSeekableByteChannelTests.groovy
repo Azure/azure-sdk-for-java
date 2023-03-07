@@ -24,7 +24,7 @@ class BlobSeekableByteChannelTests extends APISpec {
     BlobClient bc
 
     def setup() {
-        bc = cc.getBlobClient(generateBlobName())
+        bc = versionedBlobServiceClient.getBlobContainerClient(getContainerName()).getBlobClient(generateBlobName())
     }
 
     def "E2E channel read"() {
