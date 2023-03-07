@@ -16,26 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class GetTokenForTeamsUserOptions {
 
-    /*
+    /**
      * Azure AD access token of a Teams User to acquire a new Communication Identity access token.
      */
     @JsonProperty(value = "token", required = true)
     private String teamsUserAadToken;
 
-    /*
+    /**
      * Client ID of an Azure AD application to be verified against the appid claim in the Azure AD access token.
      */
     @JsonProperty(value = "appId", required = true)
     private String clientId;
 
-    /*
+    /**
      * Object ID of an Azure AD user (Teams User) to be verified against the oid claim in the Azure AD access token.
      */
     @JsonProperty(value = "userId", required = true)
     private String userObjectId;
-
-    /** Creates an instance of TeamsUserExchangeTokenRequest class. */
-    public GetTokenForTeamsUserOptions() {}
 
     /**
      * Constructor of {@link GetTokenForTeamsUserOptions}.
