@@ -19,7 +19,7 @@ public class TracingInfo {
 
     private FeatureFlagTracing featureFlagTracing;
 
-    public TracingInfo(Boolean isDev, Boolean isKeyVaultConfigured, int replicaCount) {
+    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount) {
         this.isDev = isDev;
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
