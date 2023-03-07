@@ -16,7 +16,8 @@ You will need the following environment variables for running the tests to acces
 ```
 CONTAINERREGISTRY_ENDPOINT=<azure container registry service endpoint>
 CONTAINERREGISTRY_REGISTRY_NAME=<azure container registry name.>
-CONTAINERREGISTRY_SUBSCRIPTION_ID=<subscription id in which azure container registry is created.>
+AZURE_SUBSCRIPTION_ID=<subscription id in which azure container registry is created.>
+AZURE_RESOURCE_GROUP=<resource group in which azure container registry is created.>
 
 // You should also have the default credentials set up done.
 AZURE_TENANT_ID=<azure tenant id.>

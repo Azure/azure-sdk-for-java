@@ -3,14 +3,10 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactArchitecture;
-import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciManifest;
-import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.io.IOUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -26,7 +22,6 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Collections;
 
 public class DownloadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -89,6 +84,7 @@ public class DownloadImageAsync {
                     System.out.println("Got docker manifest list");
                 } else if (ociIndexType.equals(downloadResult.getValue().getMediaType())) {
                     // ... get OCI Index
+                    System.out.println("Got OCI index");
                 } else {
                     throw new IllegalArgumentException("Got unexpected content type: " + downloadResult.getValue().getMediaType());
                 }

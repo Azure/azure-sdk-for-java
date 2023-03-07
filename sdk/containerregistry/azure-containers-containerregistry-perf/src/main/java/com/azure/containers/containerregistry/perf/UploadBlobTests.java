@@ -4,16 +4,13 @@
 package com.azure.containers.containerregistry.perf;
 
 import com.azure.containers.containerregistry.perf.core.ServiceTest;
-import com.azure.containers.containerregistry.perf.core.TestInputStream;
 import com.azure.core.util.Context;
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.RepeatingInputStream;
 import reactor.core.publisher.Mono;
 
 import java.nio.channels.Channels;
 import java.util.Arrays;
-
-import static com.azure.containers.containerregistry.perf.core.TestInputStream.generateAsyncStream;
-import static com.azure.containers.containerregistry.perf.core.Utils.REPOSITORY_NAME;
 
 public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
     public UploadBlobTests(PerfStressOptions options) {
@@ -27,8 +24,8 @@ public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        TestInputStream stream = new TestInputStream(options.getSize());
-        blobClient.uploadBlob(Channels.newChannel(stream), Context.NONE);
+        RepeatingInputStream input = new RepeatingInputStream(options.getSize());
+        blobClient.uploadBlob(Channels.newChannel(input), Context.NONE);
     }
 
     @Override
