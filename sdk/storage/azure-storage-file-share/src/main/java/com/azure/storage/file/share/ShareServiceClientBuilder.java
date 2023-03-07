@@ -595,7 +595,8 @@ public final class ShareServiceClientBuilder implements
 
     /**
      * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
-     * This is currently required when using {@link TokenCredential}.
+     * Possible values are: {@link ShareTokenIntent#BACKUP}
+     * This is currently required when using {@link TokenCredential}, and ignored for other forms of authentication.
      *
      * @param shareTokenIntent the {@link ShareTokenIntent} value.
      * @return the updated ShareServiceClientBuilder object
