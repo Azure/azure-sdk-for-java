@@ -93,9 +93,11 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
      * @param chunkSize Size of the internal channel buffer to use for data transfer, and for individual REST transfers.
      * @param readBehavior Behavior for reading from the backing Storage resource.
      * @param writeBehavior Behavior for writing to the backing Storage resource.
+     * @param startingPosition Initial position for the channel.
      * @throws IllegalArgumentException If both read and write behavior are given.
      */
-    public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, WriteBehavior writeBehavior) {
+    public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, WriteBehavior writeBehavior,
+        long startingPosition) {
         if (readBehavior != null && writeBehavior != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "StorageSeekableByteChannel can have only one of readBehavior or writeBehavior."));
@@ -105,6 +107,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         this.readBehavior = readBehavior;
         this.writeBehavior = writeBehavior;
 
+        absolutePosition = startingPosition;
         bufferAbsolutePosition = 0;
         if (readBehavior != null) {
             buffer.limit(0);
@@ -125,6 +128,13 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
      */
     public WriteBehavior getWriteBehavior() {
         return writeBehavior;
+    }
+
+    /**
+     * @return Transfer chunk size used by this channel.
+     */
+    public int getChunkSize() {
+        return buffer.capacity();
     }
 
     @Override

@@ -35,7 +35,7 @@ class StorageSeekableByteChannelTest extends Specification {
             getResourceLength() >> data.length
         }
 
-        def channel = new StorageSeekableByteChannel(chunkSize, behavior, null)
+        def channel = new StorageSeekableByteChannel(chunkSize, behavior, null, 0L)
         def dest = new ByteArrayOutputStream()
 
         when:
@@ -73,7 +73,7 @@ class StorageSeekableByteChannelTest extends Specification {
             }
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
 
         expect:
         def temp = ByteBuffer.allocate(100)
@@ -101,7 +101,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
 
         when:
         def temp = ByteBuffer.allocate(bufferLength * 2)
@@ -130,7 +130,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
 
         when:
         ByteBuffer result = ByteBuffer.allocate(bufferLength)
@@ -162,7 +162,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 }
             }
         }
-        def channel = new StorageSeekableByteChannel(resourceSize, behavior, null)
+        def channel = new StorageSeekableByteChannel(resourceSize, behavior, null, 0L)
 
         when: "read past resource end"
         channel.position(offset)
@@ -194,7 +194,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 src.get(dest, (int)destOffset, src.remaining())
             }
         }
-        def channel = new StorageSeekableByteChannel(chunkSize, null, behavior)
+        def channel = new StorageSeekableByteChannel(chunkSize, null, behavior, 0L)
 
         when:
         for (int i = 0, bytesLastWritten; i < source.length; i += bytesLastWritten) {
@@ -220,7 +220,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
             canSeek(_) >> true
         }
-        def channel = new StorageSeekableByteChannel(bufferSize, null, writeBehavior)
+        def channel = new StorageSeekableByteChannel(bufferSize, null, writeBehavior, 0L)
 
         when: "Write partial data then seek"
         channel.write(ByteBuffer.wrap(getRandomData(bufferSize - 5)))
@@ -250,7 +250,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
             canSeek(_) >> { long index -> index % 512 == 0 }
         }
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior)
+        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior, 0L)
 
         when: "Seek to 0"
         channel.position(0)
@@ -285,7 +285,7 @@ class StorageSeekableByteChannelTest extends Specification {
             2 * write(_,0) >> { throw new RuntimeException("mock behavior interrupt") } >> { ByteBuffer src, long offset -> testWriteDest.put(src) }
             0 * write(_, _)
         }
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior)
+        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior, 0L)
 
         when: "first attempt"
         def data1 = ByteBuffer.wrap(getRandomData(Constants.KB))
@@ -310,7 +310,7 @@ class StorageSeekableByteChannelTest extends Specification {
 
     def "Write mode cannot read"() {
         setup:
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, Mock(StorageSeekableByteChannel.WriteBehavior))
+        def channel = new StorageSeekableByteChannel(Constants.KB, null, Mock(StorageSeekableByteChannel.WriteBehavior), 0L)
 
         when:
         channel.read(ByteBuffer.allocate(Constants.KB))
@@ -321,7 +321,7 @@ class StorageSeekableByteChannelTest extends Specification {
 
     def "Read mode cannot write"() {
         setup:
-        def channel = new StorageSeekableByteChannel(Constants.KB, Mock(StorageSeekableByteChannel.ReadBehavior), null)
+        def channel = new StorageSeekableByteChannel(Constants.KB, Mock(StorageSeekableByteChannel.ReadBehavior), null, 0L)
 
         when:
         channel.write(ByteBuffer.allocate(Constants.KB))
