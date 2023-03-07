@@ -41,9 +41,7 @@
     <jacoco.min.linecoverage>0.25</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
-      --add-opens com.azure/com.azure.core=ALL-UNAMED
-      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing=ALL-UNAMED
-      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=ALL-UNAMED
+      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
