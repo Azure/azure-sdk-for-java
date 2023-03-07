@@ -221,7 +221,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
 ```
 
 #### Share with `TokenCredential`
-Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}`, `${connectionString}` and `ShareTokenIntent`. The request intent specifies whether the file should be backed up.
+Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}` and `ShareTokenIntent`. The request intent specifies whether the file should be backed up.
 
 ```java readme-sample-createShareClientWithTokenCredential
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
@@ -229,6 +229,7 @@ String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME
 ShareClient serviceClient = new ShareClientBuilder()
     .endpoint(shareURL)
     .credential(tokenCredential)
+    .shareName(shareName)
     .shareTokenIntent(ShareTokenIntent.BACKUP)
     .buildClient();
 ```
