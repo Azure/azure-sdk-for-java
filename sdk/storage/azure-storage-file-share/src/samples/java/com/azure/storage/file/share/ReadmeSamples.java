@@ -102,8 +102,8 @@ public class ReadmeSamples {
         ShareClient serviceClient = new ShareClientBuilder()
             .endpoint(shareURL)
             .credential(tokenCredential)
-            .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .shareName(shareName)
             .buildClient();
         // END: readme-sample-createShareClientWithTokenCredential
     }

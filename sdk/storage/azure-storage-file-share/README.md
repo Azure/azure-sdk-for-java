@@ -229,8 +229,8 @@ String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME
 ShareClient serviceClient = new ShareClientBuilder()
     .endpoint(shareURL)
     .credential(tokenCredential)
-    .shareName(shareName)
     .shareTokenIntent(ShareTokenIntent.BACKUP)
+    .shareName(shareName)
     .buildClient();
 ```
 

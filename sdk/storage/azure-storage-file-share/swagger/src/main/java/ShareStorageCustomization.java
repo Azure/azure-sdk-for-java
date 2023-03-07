@@ -33,8 +33,8 @@ public class ShareStorageCustomization extends Customization {
 
         ClassCustomization shareTokenIntent = models.getClass("ShareTokenIntent");
         shareTokenIntent.getJavadoc().setDescription("The request intent for whether the file should be backed up. " +
-            "Possible values are: {@link ShareTokenIntent#BACKUP} - specifies requests that are intended for backup/admin type operations,\n" +
-            " meaning that all file/directory ACLs are bypassed and full permissions are granted. User must also have required RBAC permission.");
+            "Request intent specifies requests that are intended for backup/admin type operations, meaning that all " +
+            "file/directory ACLs are bypassed and full permissions are granted. User must also have required RBAC permission.");
     }
 
     /*
