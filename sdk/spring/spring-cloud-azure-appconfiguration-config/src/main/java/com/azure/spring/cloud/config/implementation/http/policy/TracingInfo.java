@@ -11,9 +11,9 @@ import com.azure.spring.cloud.config.implementation.RequestType;
 
 public class TracingInfo {
 
-    private Boolean isDev = false;
+    private boolean isDev = false;
 
-    private Boolean isKeyVaultConfigured = false;
+    private boolean isKeyVaultConfigured = false;
 
     private int replicaCount = 0;
 
