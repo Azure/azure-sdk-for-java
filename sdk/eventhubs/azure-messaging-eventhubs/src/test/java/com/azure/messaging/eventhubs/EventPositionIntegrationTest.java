@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -31,6 +33,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests that {@link EventHubConsumerAsyncClient} can be created with various {@link EventPosition EventPositions}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventPositionIntegrationTest extends IntegrationTestBase {
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
@@ -80,6 +83,14 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             Assertions.assertEquals(numberOfEvents, received.size());
 
             receivedEvents = received.toArray(new EventData[0]);
+            for (int i = 0; i < received.size(); i ++) {
+                logger.atInfo()
+                    .addKeyValue("index", i)
+                    .addKeyValue("sequenceNo", receivedEvents[i].getSequenceNumber())
+                    .addKeyValue("offset", receivedEvents[i].getOffset())
+                    .addKeyValue("enqueued", receivedEvents[i].getEnqueuedTime())
+                    .log("receivedEvents");
+            }
         }
 
         Assertions.assertNotNull(testData, "testData should not be null. Or we have set this up incorrectly.");
@@ -183,6 +194,10 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
     @Test
     void receiveMessageFromEnqueuedTime() {
         // Arrange
+        logger.atInfo()
+            .addKeyValue("partitionId", testData.getPartitionId())
+            .addKeyValue("from", testData.getPartitionProperties().getLastEnqueuedTime())
+            .log("Receiving events");
         final EventPosition position = EventPosition.fromEnqueuedTime(testData.getPartitionProperties().getLastEnqueuedTime());
         final EventData expectedEvent = receivedEvents[0];
 
@@ -191,6 +206,12 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .map(PartitionEvent::getData)
                 .take(1))
                 .assertNext(event -> {
+                    logger.atInfo()
+                        .addKeyValue("sequenceNo", event.getSequenceNumber())
+                        .addKeyValue("offset", event.getOffset())
+                        .addKeyValue("enqueued", event.getEnqueuedTime())
+                        .log("actual");
+
                     Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
                     Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
                     Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
