@@ -170,11 +170,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
-                        tracerProvider.recordFeedResponseConsumerLatency(
-                            signal,
-                            Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
                         if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+
                             FeedResponse<T> response = signal.get();
                             Integer actualItemCount = response != null && response.getResults() != null ?
                                 response.getResults().size() :
@@ -183,17 +184,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 signal,
                                 HttpConstants.StatusCodes.OK,
                                 actualItemCount,
-                                response != null? response.getRequestCharge() : null,
-                                response != null ? response.getCosmosDiagnostics(): null);
+                                response != null ? response.getRequestCharge() : null,
+                                response != null ? response.getCosmosDiagnostics() : null);
                         }
 
                         break;
                     case ON_ERROR:
-                        tracerProvider.recordFeedResponseConsumerLatency(
-                            signal,
-                            Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
                         if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
                             // all info is extracted from CosmosException when applicable
                             tracerProvider.endSpan(
                                 signal,

@@ -27,6 +27,9 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
  * The type Cosmos async user.
  */
 public class CosmosAsyncUser {
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private final CosmosAsyncDatabase database;
 
     @SuppressWarnings("EnforceFinalFields")
@@ -153,15 +156,20 @@ public class CosmosAsyncUser {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllPermissions." + this.getId();
             CosmosAsyncClient client = this.getDatabase().getClient();
+            CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(nonNullOptions, spanName);
             pagedFluxOptions.setTracerInformation(
-                client.getDiagnosticsProvider(),
                 spanName,
-                client.getServiceEndpoint(),
                 this.getDatabase().getId(),
-                options != null ? ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(options, spanName) : spanName);
+                operationId,
+                OperationType.ReadFeed,
+                ResourceType.Permission,
+                client,
+                nonNullOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -203,15 +211,19 @@ public class CosmosAsyncUser {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryPermissions." + this.getId();
             CosmosAsyncClient client = this.getDatabase().getClient();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(requestOptions, spanName);
             pagedFluxOptions.setTracerInformation(
-                client.getDiagnosticsProvider(),
                 spanName,
-                client.getServiceEndpoint(),
                 this.getDatabase().getId(),
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(requestOptions, spanName));
+                operationId,
+                OperationType.Query,
+                ResourceType.Permission,
+                client,
+                requestOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, requestOptions)

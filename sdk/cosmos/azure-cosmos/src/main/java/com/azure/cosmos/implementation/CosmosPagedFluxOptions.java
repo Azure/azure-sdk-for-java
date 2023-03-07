@@ -11,6 +11,8 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 
 import java.time.Duration;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
  * @see CosmosPagedFlux
@@ -157,17 +159,32 @@ public class CosmosPagedFluxOptions {
 
 
     public void setTracerInformation(
-        DiagnosticsProvider tracerProvider,
         String tracerSpanName,
-        String accountTagValue,
         String databaseId,
-        String operationId) {
+        String operationId,
+        OperationType operationType,
+        ResourceType resourceType,
+        CosmosAsyncClient cosmosAsyncClient,
+        ConsistencyLevel consistencyLevel,
+        CosmosDiagnosticsThresholds thresholds) {
+
+        checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
+        checkNotNull(operationType, "Argument 'operationType' must not be NULL.");
+        checkNotNull(resourceType, "Argument 'resourceType' must not be NULL.");
+        checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be NULL.");
+        checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
 
         this.databaseId = databaseId;
-        this.serviceEndpoint = accountTagValue;
         this.tracerSpanName = tracerSpanName;
-        this.tracerProvider = tracerProvider;
+        this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.operationId = operationId;
+        this.operationType = operationType;
+        this.resourceType = resourceType;
+        this.cosmosAsyncClient = cosmosAsyncClient;
+        this.effectiveConsistencyLevel = clientAccessor
+            .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
+        this.thresholds = thresholds;
     }
 
     public void setTracerAndTelemetryInformation(String tracerSpanName,
@@ -180,6 +197,12 @@ public class CosmosPagedFluxOptions {
                                                  ConsistencyLevel consistencyLevel,
                                                  CosmosDiagnosticsThresholds thresholds
     ) {
+        checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
+        checkNotNull(databaseId, "Argument 'databaseId' must not be NULL.");
+        checkNotNull(operationType, "Argument 'operationType' must not be NULL.");
+        checkNotNull(resourceType, "Argument 'resourceType' must not be NULL.");
+        checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be NULL.");
+        checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
         this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.tracerSpanName = tracerSpanName;

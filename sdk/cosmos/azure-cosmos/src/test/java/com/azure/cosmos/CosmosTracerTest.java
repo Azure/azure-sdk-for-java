@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -44,8 +45,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
@@ -64,12 +68,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosTracerTest extends TestSuiteBase {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTracerTest.class);
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final String ITEM_ID = "tracerDoc";
     private CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
     CosmosAsyncClient client;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     CosmosAsyncContainer cosmosAsyncContainer;
+    static final AutoCloseable NOOP_CLOSEABLE = () -> { };
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
@@ -84,15 +90,17 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     }
 
-    // @todo fabianm REENABLE TESTS
-    /*
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncClient() throws Exception {
-        Tracer mockTracer = getMockTracer();
-        DiagnosticsProvider tracerProvider = Mockito.spy(new DiagnosticsProvider(mockTracer, false, false));
-        ReflectionUtils.setTracerProvider(client, tracerProvider);
-        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
-        setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
+        TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
+
+        CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds()
+            .configureLatencyThresholds(Duration.ZERO, Duration.ZERO);
+        CosmosClientTelemetryConfig clientTelemetryConfig = new CosmosClientTelemetryConfig()
+            .diagnosticsThresholds(thresholds);
+
+        DiagnosticsProvider tracerProvider = Mockito.spy(new DiagnosticsProvider(mockTracer, clientTelemetryConfig));
+        ReflectionUtils.setDiagnosticsProvider(client, tracerProvider);
 
         int traceApiCounter = 1;
 
@@ -100,10 +108,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         AddEventCapture addEventCapture = new AddEventCapture();
 
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(ArgumentMatchers.any(),
-            ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any());
-        Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
-            ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any());
 
@@ -116,12 +120,15 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosDatabaseResponse.getDiagnostics(), attributesMap);
         traceApiCounter++;
 
+        mockTracer.reset();
+
         FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases =
             client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
         verifyTracerAttributes(tracerProvider, mockTracer, "readAllDatabases", context, null, traceApiCounter, null,
             feedResponseReadAllDatabases.getCosmosDiagnostics(), attributesMap);
         traceApiCounter++;
 
+        mockTracer.reset();
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
         FeedResponse<CosmosDatabaseProperties> feedResponseQueryDatabases = client.queryDatabases(query,
@@ -130,6 +137,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             feedResponseQueryDatabases.getCosmosDiagnostics(), attributesMap);
     }
 
+    /*
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncDatabase() throws Exception {
         Tracer mockTracer = getMockTracer();
@@ -460,7 +468,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             , errorType, null, attributesMap);
         // sending null diagnostics as we don't want diagnostics in events for exception as this information is
         // already there as part of exception message
-    }
+    }*/
 
     @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void afterClass() {
@@ -487,23 +495,14 @@ public class CosmosTracerTest extends TestSuiteBase {
         return storedProcedureDef;
     }
 
-    private Tracer getMockTracer() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class),
-            ArgumentMatchers.any(StartSpanOptions.class),
-            ArgumentMatchers.any(Context.class)))
-        .thenReturn(Context.NONE);
-        return mockTracer;
-    }
-
-    private void verifyTracerAttributes(TracerProvider tracerProvider, Tracer mockTracer, String methodName,
+    private void verifyTracerAttributes(DiagnosticsProvider tracerProvider, Tracer mockTracer, String methodName,
                                         Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
                                         CosmosDiagnostics cosmosDiagnostics,
                                         Map<String, Map<String, Object>> eventAttributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
+            ArgumentMatchers.any(Context.class));
 
         ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
         Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest))
@@ -511,18 +510,19 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         Map<String, Object> startAttributes = optionsCaptor.getValue().getAttributes();
         if (databaseName != null) {
-            assertThat(startAttributes.get(DiagnosticsProvider.DB_INSTANCE)).isEqualTo(databaseName);
+            assertThat(startAttributes.get("db.name")).isEqualTo(databaseName);
         }
 
-        assertThat(startAttributes.get(DiagnosticsProvider.DB_TYPE)).isEqualTo(DiagnosticsProvider.DB_TYPE_VALUE);
-        assertThat(startAttributes.get(DiagnosticsProvider.LEGACY_DB_URL)).isEqualTo(TestConfigurations.HOST);
-        assertThat(startAttributes.get(DiagnosticsProvider.LEGACY_DB_STATEMENT)).isEqualTo(methodName);
+        assertThat(startAttributes.get("db.system")).isEqualTo("cosmosdb");
+        assertThat(startAttributes.get("db.operation")).isEqualTo(methodName);
+        assertThat(startAttributes.get("net.peer.name")).isEqualTo("localhost");
         assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(DiagnosticsProvider.RESOURCE_PROVIDER_NAME);
 
         //verifying diagnostics as events
-        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
+        //verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
     }
 
+    /*
     private void verifyTracerDiagnostics(DiagnosticsProvider tracerProvider,
                                          CosmosDiagnostics cosmosDiagnostics,
                                          Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
@@ -686,7 +686,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                     "Metrics")).isEqualTo(queryMetrics.getValue().toString());
             }
         }
-    }
+    }*/
 
     private class TracerProviderCapture implements Answer<Context> {
         private Context result = Context.NONE;
@@ -716,9 +716,43 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
     }
 
-    private void setThreshHoldDurationOnTracer(TracerProvider tracerProvider, Duration duration, String fieldName) throws Exception {
-        Field field = TracerProvider.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(tracerProvider, duration);
-    }*/
+    private static class TracerUnderTest implements Tracer {
+
+        public Map<String, String> attributes = new HashMap<>();
+        public String methodName;
+        public String statusMessage;
+        public Throwable error;
+
+        @Override
+        public Context start(String methodName, Context context) {
+
+            assertThat(this.methodName).isNull();
+            this.methodName = methodName;
+
+            return context;
+        }
+
+
+        @Override
+        public void end(String statusMessage, Throwable error, Context context) {
+            LOGGER.debug("--> end {}, {}", statusMessage, error);
+            assertThat(this.error).isNull();
+            assertThat(this.statusMessage).isNull();
+            this.error = error;
+            this.statusMessage = statusMessage;
+        }
+
+        @Override
+        public void setAttribute(String key, String value, Context context) {
+            LOGGER.debug("--> SetAttribute {}: {}", key, value);
+            this.attributes.put(key, value);
+        }
+
+        public void reset() {
+            this.error = null;
+            this.statusMessage = null;
+            this.methodName = null;
+            this.attributes.clear();
+        }
+    }
 }

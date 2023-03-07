@@ -6,8 +6,12 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -50,11 +54,22 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
         Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerInformation(
-                new DiagnosticsProvider(null, new CosmosClientTelemetryConfig()),
                 "testSpan",
-                "testEndpoint,",
                 "testDb",
-                null);
+                null,
+                OperationType.ReadFeed,
+                ResourceType.Database,
+                client,
+                null,
+                ImplementationBridgeHelpers
+                    .CosmosAsyncClientHelper
+                    .getCosmosAsyncClientAccessor()
+                    .getEffectiveDiagnosticsThresholds(
+                        client,
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getDiagnosticsThresholds(new CosmosQueryRequestOptions())));
             return response;
         }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();

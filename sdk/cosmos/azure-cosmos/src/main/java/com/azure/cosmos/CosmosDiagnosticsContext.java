@@ -74,7 +74,6 @@ public final class CosmosDiagnosticsContext {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
-        checkNotNull(databaseName, "Argument 'databaseName' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
@@ -82,7 +81,7 @@ public final class CosmosDiagnosticsContext {
 
         this.spanName = spanName;
         this.accountName = accountName;
-        this.databaseName = databaseName;
+        this.databaseName = databaseName != null ? databaseName : "";
         this.collectionName = collectionName != null ? collectionName : "";
         this.resourceType = resourceType;
         this.resourceTypeString = resourceType.toString();

@@ -1381,15 +1381,20 @@ public class CosmosAsyncContainer {
         CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
+            CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(nonNullOptions, this.readAllConflictsSpanName);
             pagedFluxOptions.setTracerInformation(
-                client.getDiagnosticsProvider(),
                 this.readAllConflictsSpanName,
-                client.getServiceEndpoint(),
                 database.getId(),
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(requestOptions, this.readAllConflictsSpanName));
+                operationId,
+                OperationType.ReadFeed,
+                ResourceType.Conflict,
+                client,
+                nonNullOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
@@ -1422,15 +1427,19 @@ public class CosmosAsyncContainer {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName);
             pagedFluxOptions.setTracerInformation(
-                client.getDiagnosticsProvider(),
                 this.queryConflictsSpanName,
-                client.getServiceEndpoint(),
                 database.getId(),
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName));
+                operationId,
+                OperationType.Query,
+                ResourceType.Conflict,
+                client,
+                requestOptions.getConsistencyLevel(),
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(

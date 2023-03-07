@@ -69,7 +69,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
-
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
         telemetryConfigAccessor = ImplementationBridgeHelpers
         .CosmosClientTelemetryConfigHelper
@@ -529,16 +530,20 @@ public final class CosmosAsyncClient implements Closeable {
     CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllDatabases";
+            CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(nonNullOptions, spanName);
             pagedFluxOptions.setTracerInformation(
-                this.diagnosticsProvider,
                 spanName,
-                this.serviceEndpoint,
                 null,
-                options != null ?
-                    ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
-                    : spanName);
+                operationId,
+                OperationType.ReadFeed,
+                ResourceType.Database,
+                this,
+                nonNullOptions.getConsistencyLevel(),
+                this.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -688,19 +693,26 @@ public final class CosmosAsyncClient implements Closeable {
         }
     }
 
-    private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
+    private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(
+        SqlQuerySpec querySpec,
+        CosmosQueryRequestOptions options){
+
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryDatabases";
+            CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
+            String operationId = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getQueryNameOrDefault(nonNullOptions, spanName);
             pagedFluxOptions.setTracerInformation(
-                this.diagnosticsProvider,
                 spanName,
-                this.serviceEndpoint,
                 null,
-                options != null ?
-                    ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
-                    : spanName);
+                operationId,
+                OperationType.Query,
+                ResourceType.Database,
+                this,
+                nonNullOptions.getConsistencyLevel(),
+                this.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
