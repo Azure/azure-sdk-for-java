@@ -2,18 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.identity;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.MalformedURLException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-
 import com.azure.communication.identity.implementation.CommunicationIdentityResponseMocker;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -21,10 +13,16 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
-
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
-
 import reactor.core.publisher.Mono;
+
+import java.net.MalformedURLException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
@@ -127,6 +125,60 @@ public class CommunicationIdentityBuilderTests {
     }
 
     @Test
+    public void buildAsyncClientTestUsingConnectionStringAndConfigurationOptions() {
+        builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertHMACHeadersExist(headers);
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            });
+        CommunicationIdentityAsyncClient asyncClient = builder
+            .configuration(Configuration.getGlobalConfiguration())
+            .buildAsyncClient();
+        assertNotNull(asyncClient);
+    }
+
+    @Test
+    public void buildAsyncClientTestUsingConnectionStringAndPipelineOptions() {
+        builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertHMACHeadersExist(headers);
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            });
+        CommunicationIdentityAsyncClient asyncClient = builder
+            .pipeline(new HttpPipelineBuilder().build())
+            .buildAsyncClient();
+        assertNotNull(asyncClient);
+    }
+
+    @Test
+    public void buildAsyncClientTestUsingConnectionStringAndServiceVersion() {
+        builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertHMACHeadersExist(headers);
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            });
+        CommunicationIdentityAsyncClient asyncClient = builder
+            .serviceVersion(CommunicationIdentityServiceVersion.getLatest())
+            .buildAsyncClient();
+        assertNotNull(asyncClient);
+    }
+
+    @Test
     public void createClientWithNoTokenCredentialThrows()
         throws NullPointerException, MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
         builder
@@ -169,7 +221,7 @@ public class CommunicationIdentityBuilderTests {
     }
 
     @Test
-    public void builderWithConfigurationOptionsThrows() {
+    public void builderWithNullConfigurationOptionsThrows() {
         assertThrows(NullPointerException.class, () -> {
             builder
                 .connectionString(MOCK_CONNECTION_STRING)
