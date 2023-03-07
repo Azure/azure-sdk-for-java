@@ -35,7 +35,7 @@ class AppConfigurationReplicaClient {
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client, TracingInfo tracingIngo) {
+    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client, TracingInfo tracingInfo) {
         this.endpoint = endpoint;
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
