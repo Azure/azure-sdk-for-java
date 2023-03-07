@@ -5,6 +5,7 @@ import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse
 import com.azure.storage.blob.models.BlobDownloadHeaders
 import com.azure.storage.blob.models.BlobDownloadResponse
@@ -21,10 +22,17 @@ import java.nio.ByteBuffer
 import java.time.Duration
 
 class BlobSeekableByteChannelTests extends APISpec {
+    BlobContainerClient versionedCC
     BlobClient bc
 
     def setup() {
-        bc = versionedBlobServiceClient.getBlobContainerClient(getContainerName()).getBlobClient(generateBlobName())
+        versionedCC = versionedBlobServiceClient.getBlobContainerClient(generateContainerName())
+        versionedCC.create()
+        bc = versionedCC.getBlobClient(generateBlobName())
+    }
+
+    def cleanup() {
+        versionedCC.delete()
     }
 
     def "E2E channel read"() {
