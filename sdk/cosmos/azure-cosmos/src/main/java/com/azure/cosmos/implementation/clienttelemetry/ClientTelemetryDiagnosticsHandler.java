@@ -103,8 +103,6 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
                 ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
                 telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
             }
-        } else {
-            System.out.println("What the hell.");
         }
 
         ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosDiagnostics,
