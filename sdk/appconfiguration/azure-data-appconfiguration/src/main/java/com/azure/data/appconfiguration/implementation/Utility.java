@@ -5,8 +5,6 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -15,15 +13,11 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,16 +27,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.CLIENT_FILTERS;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.CONDITIONS;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.DESCRIPTION;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.DISPLAY_NAME;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.ENABLED;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.LAST_MODIFIED;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.LOCKED;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.PARAMETERS;
 import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
 
+/**
+ * App Configuration Utility methods, use internally.
+ */
 public class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
@@ -53,7 +42,6 @@ public class Utility {
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
 
-
     static final String ID = "id";
     static final String DESCRIPTION = "description";
     static final String DISPLAY_NAME = "display_name";
@@ -62,17 +50,11 @@ public class Utility {
     static final String CLIENT_FILTERS = "client_filters";
     static final String NAME = "name";
     static final String PARAMETERS = "parameters";
-
-    static final String KEY = "key";
-    static final String LABEL = "label";
-    static final String VALUE = "value";
-    static final String CONTENT_TYPE = "content_type";
-    static final String ETAG = "etag";
-    static final String LAST_MODIFIED = "last_modified";
-    static final String LOCKED = "locked";
-    static final String TAGS = "tags";
     static final String URI = "uri";
 
+    /*
+     * Translate public ConfigurationSetting to KeyValue autorest generated class.
+     */
     public static KeyValue toKeyValue(ConfigurationSetting setting) {
         return new KeyValue()
                    .setKey(setting.getKey())
@@ -85,9 +67,13 @@ public class Utility {
                    .setTags(setting.getTags());
     }
 
+    /*
+     * Translate generated class KeyValue to public-explored ConfigurationSetting.
+     */
     public static ConfigurationSetting toConfigurationSetting(KeyValue keyValue) {
-        if (keyValue == null)
+        if (keyValue == null) {
             return null;
+        }
         final String contentType = keyValue.getContentType();
         final String key = keyValue.getKey();
         final String value = keyValue.getValue();
@@ -107,8 +93,8 @@ public class Utility {
             if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
                     && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
-                    getFeatureFlagConfigurationSetting(value);
-                return secretReferenceConfigurationSettingSubclassReflection(setting, featureFlagConfigurationSetting);
+                    getFeatureFlagConfigurationSetting(setting);
+                return subclassConfigurationSettingReflection(setting, featureFlagConfigurationSetting);
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
                 return getSecretReferenceConfigurationSetting(setting)
                            .setValue(value)
@@ -126,32 +112,53 @@ public class Utility {
         return setting;
     }
 
+    /*
+     * Extract properties from ConfigurationSetting to SecretReferenceConfigurationSetting.
+     */
+    public static SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(
+        ConfigurationSetting setting) {
+        try {
+            JsonParser parser = FACTORY.createParser(setting.getValue().getBytes(StandardCharsets.UTF_8));
+            return
+                (SecretReferenceConfigurationSetting) subclassConfigurationSettingReflection(
+                    setting, getSecretReferenceFieldValue(setting.getKey(), parser));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+        }
+    }
 
-    private static <T extends ConfigurationSetting> ConfigurationSetting
-        secretReferenceConfigurationSettingSubclassReflection(
+    /*
+     * Extract properties from ConfigurationSetting to FeatureFlagConfigurationSetting.
+     */
+    public static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(ConfigurationSetting setting) {
+        try {
+            JsonParser parser = FACTORY.createParser(setting.getValue().getBytes(StandardCharsets.UTF_8));
+            return (FeatureFlagConfigurationSetting) subclassConfigurationSettingReflection(setting,
+                getFieldValue(parser)
+                    .setKey(setting.getKey())
+                    .setValue(setting.getValue())
+                    .setLabel(setting.getLabel())
+                    .setETag(setting.getETag())
+                    .setContentType(setting.getContentType())
+                    .setTags(setting.getTags()));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+        }
+    }
+
+    private static <T extends ConfigurationSetting> ConfigurationSetting subclassConfigurationSettingReflection(
         ConfigurationSetting setting, T derivedClassSetting) {
         ConfigurationSettingHelper.setReadOnly(derivedClassSetting, setting.isReadOnly());
         ConfigurationSettingHelper.setLastModified(derivedClassSetting, setting.getLastModified());
         return derivedClassSetting;
     }
 
-    public static SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(
-        ConfigurationSetting setting) {
-        try (JsonParser parser = FACTORY.createParser(setting.getValue().getBytes(StandardCharsets.UTF_8))) {
-            return
-                (SecretReferenceConfigurationSetting) secretReferenceConfigurationSettingSubclassReflection(
-                    setting, getSecretReferenceFieldValue(setting.getKey(), parser));
-        } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-        }
-    }
-
     // Secret reference configuration setting: parsing feature flag values
     private static SecretReferenceConfigurationSetting getSecretReferenceFieldValue(String key, JsonParser parser)
         throws IOException {
         // Read first object, "{"
+        parser.nextToken();
         JsonToken token = parser.nextToken();
-        token = parser.nextToken();
         // uri
         String secretId = null;
 
@@ -168,14 +175,6 @@ public class Utility {
 
         parser.close();
         return secretReferenceConfigurationSetting;
-    }
-
-    public static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String value) {
-        try (JsonParser parser = FACTORY.createParser(value.getBytes(StandardCharsets.UTF_8))) {
-            return getFieldValue(parser);
-        } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-        }
     }
 
     // Feature flag configuration setting: parsing feature flag values
@@ -239,6 +238,7 @@ public class Utility {
     }
 
     // Feature flag configuration setting: client filters
+    @SuppressWarnings("unchecked")
     private static List<FeatureFlagFilter> readClientFilters(JsonParser parser) throws IOException {
         List<FeatureFlagFilter> filters = new ArrayList<>();
         JsonToken token = parser.nextToken();
@@ -252,7 +252,13 @@ public class Utility {
             }
             token = parser.nextToken();
             if (token == JsonToken.FIELD_NAME && PARAMETERS.equals(parser.getCurrentName())) {
-                flagFilter.setParameters((Map<String, Object>)readAdditionalPropertyValue(parser));  // Map<String, Object>
+                final Object propertyValue = readAdditionalPropertyValue(parser);
+                if (!(propertyValue instanceof Map)) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(
+                        "property class type should be Map<String, Object>, it represents a json data format in Java.")
+                    );
+                }
+                flagFilter.setParameters((Map<String, Object>) propertyValue);  // Map<String, Object>
                 filters.add(flagFilter);
             }
         }
@@ -261,7 +267,7 @@ public class Utility {
 
     // Feature flag configuration setting: "parameters" values
     private static Object readAdditionalPropertyValue(JsonParser parser) throws IOException {
-        JsonToken token = parser.nextToken(); // Object start, {
+        JsonToken token = parser.nextToken();
         switch (token) {
             case END_OBJECT:
             case START_OBJECT:
@@ -290,6 +296,7 @@ public class Utility {
         }
     }
 
+    // Translate generated List<KeyValueFields> to public-explored SettingFields[].
     public static SettingFields[] toSettingFieldsArray(List<KeyValueFields> kvFieldsList) {
         return kvFieldsList.stream()
                    .map(keyValueFields -> toSettingFields(keyValueFields))
@@ -297,18 +304,21 @@ public class Utility {
                    .toArray(new SettingFields[kvFieldsList.size()]);
     }
 
+    // Translate generated KeyValueFields to public-explored SettingFields.
+    public static SettingFields toSettingFields(KeyValueFields keyValueFields) {
+        return keyValueFields == null ? null : SettingFields.fromString(keyValueFields.toString());
+    }
+
+    // Translate public-explored SettingFields[] to generated List<KeyValueFields>.
     public static List<KeyValueFields> toKeyValueFieldsList(SettingFields[] settingFieldsArray) {
         return Arrays.stream(settingFieldsArray)
                    .map(settingFields -> toKeyValueFields(settingFields))
                    .collect(Collectors.toList());
     }
 
+    // Translate public-explored SettingFields to generated KeyValueFields.
     public static KeyValueFields toKeyValueFields(SettingFields settingFields) {
         return settingFields == null ? null : KeyValueFields.fromString(settingFields.toString());
-    }
-
-    public static SettingFields toSettingFields(KeyValueFields keyValueFields) {
-        return keyValueFields == null ? null : SettingFields.fromString(keyValueFields.toString());
     }
 
     /*
@@ -321,10 +331,18 @@ public class Utility {
         return (etag == null || "*".equals(etag)) ? etag : "\"" + etag + "\"";
     }
 
+    /*
+     * Get HTTP header value, if-match. Used to perform an operation only if the targeted resource's etag matches the
+     *  value provided.
+     */
     public static String getIfMatchETag(boolean ifUnchanged, ConfigurationSetting setting) {
         return ifUnchanged ? getETagValue(setting.getETag()) : null;
     }
 
+    /*
+     * Get HTTP header value, if-none-match. Used to perform an operation only if the targeted resource's etag does not
+     * match the value provided.
+     */
     public static String getIfNoneMatchETag(boolean onlyIfChanged, ConfigurationSetting setting) {
         return onlyIfChanged ? getETagValue(setting.getETag()) : null;
     }
@@ -340,6 +358,14 @@ public class Utility {
         }
     }
 
+    /**
+     * Enable the sync stack rest proxy.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
     public static Context enableSyncRestProxy(Context context) {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }

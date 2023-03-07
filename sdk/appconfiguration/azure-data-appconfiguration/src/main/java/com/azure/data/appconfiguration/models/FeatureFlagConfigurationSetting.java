@@ -71,7 +71,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public FeatureFlagConfigurationSetting setValue(String value) {
         super.setValue(value);
         // update strongly-typed properties.
-        final FeatureFlagConfigurationSetting updatedSetting = getFeatureFlagConfigurationSetting(value);
+        final FeatureFlagConfigurationSetting updatedSetting = getFeatureFlagConfigurationSetting(
+            new ConfigurationSetting().setValue(value));
         this.featureId = updatedSetting.getFeatureId();
         this.description = updatedSetting.getDescription();
         this.isEnabled = updatedSetting.isEnabled();

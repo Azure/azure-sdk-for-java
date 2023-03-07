@@ -490,20 +490,20 @@ public final class ConfigurationAsyncClient {
                     null,
                     addTracingNamespace(context))
                                .onErrorResume(HttpResponseException.class,
-                                   (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable ->
-                                   {
-                                       final HttpResponseException e = (HttpResponseException) throwable;
-                                       final HttpResponse httpResponse = e.getResponse();
-                                       if (httpResponse.getStatusCode() == 304) {
-                                           return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
-                                               httpResponse.getRequest(),
-                                               httpResponse.getStatusCode(),
-                                               httpResponse.getHeaders(),
-                                               null,
-                                               null));
-                                       }
-                                       return Mono.error(throwable);
-                                   })
+                                   (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>)
+                                    throwable -> {
+                                        HttpResponseException e = (HttpResponseException) throwable;
+                                        HttpResponse httpResponse = e.getResponse();
+                                        if (httpResponse.getStatusCode() == 304) {
+                                            return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
+                                                httpResponse.getRequest(),
+                                                httpResponse.getStatusCode(),
+                                                httpResponse.getHeaders(),
+                                                null,
+                                                null));
+                                        }
+                                        return Mono.error(throwable);
+                                    })
                                .map(response ->
                                         new SimpleResponse<>(response, toConfigurationSetting(response.getValue())))
             );
