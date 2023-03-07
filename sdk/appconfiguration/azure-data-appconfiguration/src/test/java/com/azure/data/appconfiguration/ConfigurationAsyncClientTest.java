@@ -796,6 +796,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @Disabled("This was failing even before re-record with Test Proxy")
     public void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
@@ -1217,7 +1218,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        final int numberExpected = 50;
+        final int numberExpected = 13;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
             settings.add(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));

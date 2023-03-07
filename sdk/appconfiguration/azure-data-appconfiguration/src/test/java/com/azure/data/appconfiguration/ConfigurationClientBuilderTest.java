@@ -269,8 +269,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
                                                                           .connectionString(FAKE_CONNECTION_STRING);
         ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
-        assertEquals("http://localhost:8080", client.getEndpoint());
-        assertEquals("http://localhost:8080", asyncClient.getEndpoint());
+        assertEquals("https://localhost:8080", client.getEndpoint());
+        assertEquals("https://localhost:8080", asyncClient.getEndpoint());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
