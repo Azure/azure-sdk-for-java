@@ -78,11 +78,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .httpClient(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-            if (getTestMode() != TestMode.PLAYBACK) {
+            if (getTestMode() == TestMode.PLAYBACK) {
+                interceptorManager.addMatchers(customMatcher);
+            } else {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
             }
+            interceptorManager.addSanitizers(customSanitizer);
             return builder.buildAsyncClient();
         });
     }
