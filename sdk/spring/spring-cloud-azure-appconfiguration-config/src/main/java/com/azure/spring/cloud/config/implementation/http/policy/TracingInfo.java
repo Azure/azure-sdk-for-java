@@ -26,7 +26,7 @@ public class TracingInfo {
         this.featureFlagTracing = new FeatureFlagTracing();
     }
 
-    public String getValue(Boolean watchRequests) {
+    public String getValue(boolean watchRequests) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if ("false".equalsIgnoreCase(track)) {
             return "";
