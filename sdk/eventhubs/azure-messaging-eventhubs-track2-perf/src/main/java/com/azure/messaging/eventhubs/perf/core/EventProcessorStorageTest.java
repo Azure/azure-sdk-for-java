@@ -4,24 +4,16 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.JedisRedisCheckpointStore;
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.perf.EventProcessorJedisOptions;
 import com.azure.perf.test.core.EventPerfTest;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import reactor.core.publisher.Mono;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import static com.azure.messaging.eventhubs.perf.core.Util.generateString;
@@ -30,7 +22,6 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
 
     private final EventProcessorClient eventProcessorClient;
     protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID();
-//    protected static final String CONTAINER_NAME = "test-con3";
     protected String connectionString;
     protected String eventhubsConnectionString;
     protected EventHubClientBuilder eventHubClientBuilder;
@@ -50,6 +41,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
         super(options);
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         connectionString = configuration.get("STORAGE_CONNECTION_STRING");
+
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new RuntimeException("Storage Connection String cannot be null.");
         }
@@ -69,9 +61,11 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
             .containerName(CONTAINER_NAME)
             .buildAsyncClient();
 
+        containerAsyncClient.createIfNotExists().block();
+
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(containerAsyncClient);
 
-        Consumer<ErrorContext> errorProcessor = errorContext -> {System.out.println("err");};
+        Consumer<ErrorContext> errorProcessor = errorContext -> {System.out.println("err + " + errorContext.getThrowable().getMessage());};
         Consumer<EventContext> eventProcessor = eventContext -> {
             super.eventRaised();
 //            System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
@@ -100,17 +94,22 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
             .connectionString(eventhubsConnectionString, eventHubName)
             .consumerGroup(options.getConsumerGroup())
             .checkpointStore(blobCheckpointStore)
-//            .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
+            .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
             .processError(errorProcessor)
             .processEvent(eventProcessor)
             .initialPartitionEventPosition(initalPositionMap)
+            .prefetchCount(options.getPrefetch())
             .buildEventProcessorClient();
+
+        eventProcessorClient.start();
     }
 
     @Override
     public Mono<Void> setupAsync() {
         return super.setupAsync()
-                .then(Mono.defer(() -> {
+//            .then(Mono.defer(() -> containerAsyncClient.createIfNotExists()))
+//            .delaySubscription(Duration.ofSeconds(10))
+            .then(Mono.defer(() -> {
                     eventProcessorClient.start();
                     return Mono.empty();
                 }));
@@ -128,7 +127,6 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfOption
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(containerAsyncClient.createIfNotExists())
             .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient, options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null , options.getEvents(), eventDataBytes)));
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.messaging.eventhubs.perf.core.EventProcessorBatchStorageTest;
 import com.azure.messaging.eventhubs.perf.core.EventProcessorStorageTest;
 import com.azure.messaging.eventhubs.perf.core.ReceiveEventsBatchTest;
 import com.azure.messaging.eventhubs.perf.core.ReceiveEventsFromPartitionBatchTest;
@@ -24,6 +25,7 @@ public class App {
             ReceiveEventsFromPartitionBatchTest.class,
             ReceiveEventsBatchTest.class,
             EventProcessorStorageTest.class,
+            EventProcessorBatchStorageTest.class,
 //            ReceiveEventsTest.class,
 //            SendEventDataTest.class,
 //            SendEventDataBatchTest.class,
