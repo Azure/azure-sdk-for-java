@@ -16,7 +16,7 @@
   <packaging>jar</packaging>
   <name>Spring Data Test for Azure Cosmos DB SQL API</name>
   <description>Spring Data Test for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos-test</url>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos-test</url>
 
   <properties>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
