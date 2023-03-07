@@ -17,6 +17,7 @@ import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementCo
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.models.FilterNotFoundException;
 import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 import reactor.core.publisher.Mono;
@@ -57,8 +58,21 @@ public class FeatureManager {
      * @return state of the feature
      * @throws FilterNotFoundException file not found
      */
-    public Mono<Boolean> isEnabledAsync(String feature) throws FilterNotFoundException {
+    public Mono<Boolean> isEnabledAsync(String feature) {
         return Mono.just(checkFeatures(feature));
+    }
+    
+    /**
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
+     *
+     * @param feature Feature being checked.
+     * @return state of the feature
+     * @throws FilterNotFoundException file not found
+     */
+    public Boolean isEnabled(String feature) throws FilterNotFoundException {
+        return checkFeatures(feature);
     }
 
     private boolean checkFeatures(String feature) throws FilterNotFoundException {
