@@ -9,8 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer.readSecretReferenceConfigurationSettingValue;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeSecretReferenceConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.getSecretReferenceConfigurationSetting;
 
 /**
  * {@link SecretReferenceConfigurationSetting} model. It represents a configuration setting that references as
@@ -85,8 +85,8 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     public SecretReferenceConfigurationSetting setValue(String value) {
         super.setValue(value);
         // update strongly-typed properties.
-        final SecretReferenceConfigurationSetting updatedSetting = readSecretReferenceConfigurationSettingValue(
-            super.getKey(), value);
+        final SecretReferenceConfigurationSetting updatedSetting =
+            getSecretReferenceConfigurationSetting(new ConfigurationSetting().setKey(super.getKey()).setValue(value));
         this.secretId = updatedSetting.getSecretId();
         return this;
     }

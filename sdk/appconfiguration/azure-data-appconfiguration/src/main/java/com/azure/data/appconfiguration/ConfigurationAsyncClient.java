@@ -9,13 +9,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
+import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -26,6 +30,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -476,12 +481,32 @@ public final class ConfigurationAsyncClient {
             // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
             validateSetting(setting);
             return withContext(
-                context -> serviceClient.getKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                    getIfNoneMatchETag(ifChanged, setting), null,
+                context -> serviceClient.getKeyValueWithResponseAsync(
+                    setting.getKey(),
+                    setting.getLabel(),
+                    acceptDateTime == null ? null : acceptDateTime.toString(),
+                    null,
+                    getIfNoneMatchETag(ifChanged, setting),
+                    null,
                     addTracingNamespace(context))
-                               .map(response -> new SimpleResponse<>(
-                                   response, toConfigurationSetting(response.getValue()))));
+                               .onErrorResume(HttpResponseException.class,
+                                   (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable ->
+                                   {
+                                       final HttpResponseException e = (HttpResponseException) throwable;
+                                       final HttpResponse httpResponse = e.getResponse();
+                                       if (httpResponse.getStatusCode() == 304) {
+                                           return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
+                                               httpResponse.getRequest(),
+                                               httpResponse.getStatusCode(),
+                                               httpResponse.getHeaders(),
+                                               null,
+                                               null));
+                                       }
+                                       return Mono.error(throwable);
+                                   })
+                               .map(response ->
+                                        new SimpleResponse<>(response, toConfigurationSetting(response.getValue())))
+            );
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

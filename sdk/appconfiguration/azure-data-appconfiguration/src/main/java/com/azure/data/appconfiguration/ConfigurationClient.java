@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -16,12 +17,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.DeleteLockHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -30,6 +34,7 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
@@ -64,6 +69,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
 @ServiceClient(builder = ConfigurationClientBuilder.class,
     serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
 public final class ConfigurationClient {
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
     private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
@@ -470,12 +476,21 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<GetKeyValueHeaders, KeyValue> response =
-            serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                getIfNoneMatchETag(ifChanged, setting), null,
-                enableSyncRestProxy(addTracingNamespace(context)));
-        return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+        try {
+            final ResponseBase<GetKeyValueHeaders, KeyValue> response =
+                serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
+                    acceptDateTime == null ? null : acceptDateTime.toString(), null,
+                    getIfNoneMatchETag(ifChanged, setting), null,
+                    enableSyncRestProxy(addTracingNamespace(context)));
+            return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+        } catch (HttpResponseException ex) {
+            final HttpResponse httpResponse = ex.getResponse();
+            if (httpResponse.getStatusCode() == 304) {
+                return new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                    httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null);
+            }
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -792,8 +807,12 @@ public final class ConfigurationClient {
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    selector.getKeyFilter(), selector.getLabelFilter(), null,
-                    selector.getAcceptDateTime(), toKeyValueFieldsList(selector.getFields()), null,
+                    selector == null ? null : selector.getKeyFilter(),
+                    selector == null ? null : selector.getLabelFilter(),
+                    null,
+                    selector == null ? null : selector.getAcceptDateTime(),
+                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return new PagedResponseBase<>(
                     pagedResponse.getRequest(),
@@ -887,11 +906,15 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
-                    selector.getKeyFilter(), selector.getLabelFilter(), null, selector.getAcceptDateTime(),
-                    toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : selector.getKeyFilter(),
+                    selector == null ? null : selector.getLabelFilter(),
+                    null,
+                    acceptDateTime,
+                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return new PagedResponseBase<>(
                     pagedResponse.getRequest(),
@@ -905,7 +928,7 @@ public final class ConfigurationClient {
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
-                    selector.getAcceptDateTime(), enableSyncRestProxy(addTracingNamespace(context)));
+                    acceptDateTime, enableSyncRestProxy(addTracingNamespace(context)));
                 return new PagedResponseBase<>(
                     pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(),

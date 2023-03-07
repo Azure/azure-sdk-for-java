@@ -36,16 +36,12 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImplBuilder;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
@@ -122,11 +118,6 @@ public final class ConfigurationClientBuilder implements
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
 
-    /**
-     * The serializer to serialize an object into a string.
-     */
-    private static final SerializerAdapter SERIALIZER_ADAPTER;
-
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
     private static final HttpPipelinePolicy ADD_HEADERS_POLICY;
@@ -139,12 +130,6 @@ public final class ConfigurationClientBuilder implements
             .set("x-ms-return-client-request-id", "true")
             .set("Content-Type", "application/json")
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
-
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
-
-        SERIALIZER_ADAPTER = jacksonAdapter;
     }
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
@@ -228,7 +213,6 @@ public final class ConfigurationClientBuilder implements
                    .pipeline(pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline)
                    .apiVersion(serviceVersion.getVersion())
                    .endpoint(endpoint)
-                   .serializerAdapter(SERIALIZER_ADAPTER)
                    .buildClient();
     }
 
