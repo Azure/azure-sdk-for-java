@@ -56,4 +56,5 @@ service-interface-as-public: true
 custom-types-subpackage: models
 sync-methods: all
 context-client-method-parameter: true
+disable-client-builder: true
 ```
