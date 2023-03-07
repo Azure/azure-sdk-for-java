@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuator.appconfiguration;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 
-import com.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 
 /**
  * Indicator class of App Configuration 
