@@ -10,17 +10,14 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
@@ -62,8 +59,8 @@ public class ReportGenerator {
         Optional<Dependency> bomDependency = Optional.empty();
         if (depMgmt != null) {
             bomDependency = depMgmt.getDependencies().stream()
-                    .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
-                    .findAny();
+                .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
+                .findAny();
         }
 
         if (bomDependency.isPresent()) {
@@ -90,20 +87,12 @@ public class ReportGenerator {
             }
 
             if (report.getServiceMethodCalls() != null && !report.getServiceMethodCalls().isEmpty()) {
-                writeArray("serviceMethodCalls", report.getServiceMethodCalls()
-                        .stream()
-                        .map(annotatedMethodCallerResult -> annotatedMethodCallerResult.getAnnotatedMethod())
-                        .map(method -> method.toGenericString())
-                        .collect(Collectors.toList()), generator);
+                writeArray(generator, "serviceMethodCalls", report.getServiceMethodCalls());
             }
 
             if (report.getBetaMethodCalls() != null && !report.getBetaMethodCalls().isEmpty()) {
-                writeArray("betaMethodCalls", report.getBetaMethodCalls()
-                        .stream()
-                        .map(AnnotatedMethodCallerResult::toString)
-                        .collect(Collectors.toList()), generator);
+                writeArray(generator, "betaMethodCalls", report.getBetaMethodCalls());
             }
-
 
             if (!report.getErrorMessages().isEmpty()) {
                 writeArray("errorMessages", report.getErrorMessages(), generator);
@@ -134,6 +123,30 @@ public class ReportGenerator {
         }
     }
 
+    private void writeArray(JsonGenerator generator, String serviceMethodCalls, Set<AnnotatedMethodCallerResult> report) throws IOException {
+        generator.writeFieldName(serviceMethodCalls);
+        generator.writeStartArray();
+
+        Map<String, Integer> methodCallFrequency = report
+            .stream()
+            .map(AnnotatedMethodCallerResult::getAnnotatedMethod)
+            .map(Method::toGenericString)
+            .sorted()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(e -> 1)));
+
+        methodCallFrequency.forEach((key, value) -> {
+            try {
+                generator.writeStartObject();
+                generator.writeStringField("methodName", key);
+                generator.writeNumberField("frequency", value);
+                generator.writeEndObject();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
+        generator.writeEndArray();
+    }
+
     private void writeArray(String fieldName, Collection<String> values, JsonGenerator generator) throws IOException {
         generator.writeFieldName(fieldName);
         generator.writeStartArray();
@@ -145,10 +158,10 @@ public class ReportGenerator {
 
     private List<String> computeAzureDependencies() {
         return getAllDependencies().stream()
-                // this includes Track 2 mgmt libraries, spring libraries and data plane libraries
-                .filter(artifact -> artifact.getGroupId().startsWith(AZURE_DEPENDENCY_GROUP))
-                .map(MavenUtils::toGAV)
-                .collect(Collectors.toList());
+            // this includes Track 2 mgmt libraries, spring libraries and data plane libraries
+            .filter(artifact -> artifact.getGroupId().startsWith(AZURE_DEPENDENCY_GROUP))
+            .map(MavenUtils::toGAV)
+            .collect(Collectors.toList());
     }
 
     private String getMd5(String inputText) {
