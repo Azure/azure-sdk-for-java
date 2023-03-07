@@ -2984,7 +2984,6 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
         Iterable<String> documents, String language, AbstractSummaryOptions options) {
@@ -3239,7 +3238,6 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
         Iterable<String> documents, String language, ExtractSummaryOptions options) {
