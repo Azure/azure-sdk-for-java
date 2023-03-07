@@ -96,6 +96,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withMessageOfTheDay(String messageOfTheDay) {
+        super.withMessageOfTheDay(messageOfTheDay);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
         super.withVnetSubnetId(vnetSubnetId);
         return this;
@@ -208,6 +215,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withEnableCustomCATrust(Boolean enableCustomCATrust) {
+        super.withEnableCustomCATrust(enableCustomCATrust);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
         super.withNodePublicIpPrefixId(nodePublicIpPrefixId);
         return this;
@@ -313,8 +327,29 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withCapacityReservationGroupId(String capacityReservationGroupId) {
+        super.withCapacityReservationGroupId(capacityReservationGroupId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withHostGroupId(String hostGroupId) {
         super.withHostGroupId(hostGroupId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
+        super.withWindowsProfile(windowsProfile);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        super.withNetworkProfile(networkProfile);
         return this;
     }
 

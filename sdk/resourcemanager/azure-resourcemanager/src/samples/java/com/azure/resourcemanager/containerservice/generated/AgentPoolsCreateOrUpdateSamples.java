@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
@@ -26,7 +27,7 @@ import java.util.Map;
 /** Samples for AgentPools CreateOrUpdate. */
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_EnableFIPS.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_EnableFIPS.json
      */
     /**
      * Sample code: Create Agent Pool with FIPS enabled OS.
@@ -53,7 +54,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPools_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPools_Update.json
      */
     /**
      * Sample code: Update Agent Pool.
@@ -85,7 +86,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_GPUMIG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Agent Pool with GPUMIG.
@@ -133,7 +134,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_WindowsOSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with Windows OSSKU.
@@ -160,7 +161,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_DedicatedHostGroup.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Agent Pool with Dedicated Host Group.
@@ -188,7 +189,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Agent Pool.
@@ -220,7 +221,36 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPools_Start.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+     */
+    /**
+     * Sample code: Create Windows Agent Pool with disabling OutboundNAT.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createWindowsAgentPoolWithDisablingOutboundNAT(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                "wnp2",
+                new AgentPoolInner()
+                    .withCount(3)
+                    .withVmSize("Standard_D4s_v3")
+                    .withOsType(OSType.WINDOWS)
+                    .withOsSku(OSSku.WINDOWS2022)
+                    .withOrchestratorVersion("1.23.8")
+                    .withWindowsProfile(new AgentPoolWindowsProfile().withDisableOutboundNat(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPools_Start.json
      */
     /**
      * Sample code: Start Agent Pool.
@@ -242,7 +272,34 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_Spot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_EnableCustomCATrust.json
+     */
+    /**
+     * Sample code: Create Agent Pool with CustomCATrust enabled.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAgentPoolWithCustomCATrustEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                "agentpool1",
+                new AgentPoolInner()
+                    .withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withOrchestratorVersion("")
+                    .withEnableCustomCATrust(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_Spot.json
      */
     /**
      * Sample code: Create Spot Agent Pool.
@@ -273,7 +330,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_Ephemeral.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_Ephemeral.json
      */
     /**
      * Sample code: Create Agent Pool with Ephemeral OS Disk.
@@ -301,7 +358,36 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsAssociate_CRG.json
+     */
+    /**
+     * Sample code: Associate Agent Pool with Capacity Reservation Group.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void associateAgentPoolWithCapacityReservationGroup(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                "agentpool1",
+                new AgentPoolInner()
+                    .withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withOrchestratorVersion("")
+                    .withCapacityReservationGroupId(
+                        "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Agent Pool with EncryptionAtHost enabled.
@@ -329,7 +415,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_EnableUltraSSD.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Agent Pool with UltraSSD enabled.
@@ -356,7 +442,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_WasmWasi.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_WasmWasi.json
      */
     /**
      * Sample code: Create Agent Pool with Krustlet and the WASI runtime.
@@ -386,7 +472,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_Snapshot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_Snapshot.json
      */
     /**
      * Sample code: Create Agent Pool using an agent pool snapshot.
@@ -417,7 +503,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_PPG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_PPG.json
      */
     /**
      * Sample code: Create Agent Pool with PPG.
@@ -445,7 +531,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_CustomNodeConfig.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
      * Sample code: Create Agent Pool with KubeletConfig and LinuxOSConfig.
@@ -493,7 +579,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPools_Stop.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPools_Stop.json
      */
     /**
      * Sample code: Stop Agent Pool.
@@ -515,7 +601,36 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsCreate_OSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_MessageOfTheDay.json
+     */
+    /**
+     * Sample code: Create Agent Pool with Message of the Day.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAgentPoolWithMessageOfTheDay(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                "agentpool1",
+                new AgentPoolInner()
+                    .withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsDiskSizeGB(64)
+                    .withMessageOfTheDay("Zm9vCg==")
+                    .withOsType(OSType.LINUX)
+                    .withMode(AgentPoolMode.USER)
+                    .withOrchestratorVersion(""),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsCreate_OSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with OSSKU.

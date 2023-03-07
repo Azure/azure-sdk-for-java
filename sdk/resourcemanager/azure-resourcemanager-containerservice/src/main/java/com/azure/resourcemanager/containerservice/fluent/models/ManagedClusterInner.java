@@ -7,9 +7,12 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
+import com.azure.resourcemanager.containerservice.models.GuardrailsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -18,6 +21,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgra
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -182,6 +187,31 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
+     * created/upgraded using a snapshot.
+     *
+     * @return the creationData value.
+     */
+    public CreationData creationData() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationData();
+    }
+
+    /**
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
+     * created/upgraded using a snapshot.
+     *
+     * @param creationData the creationData value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withCreationData(CreationData creationData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withCreationData(creationData);
+        return this;
+    }
+
+    /**
      * Get the maxAgentPools property: The max number of agent pools for the managed cluster.
      *
      * @return the maxAgentPools value.
@@ -191,16 +221,12 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the kubernetesVersion property: The version of Kubernetes specified by the user.
+     * Get the kubernetesVersion property: The version of Kubernetes the Managed Cluster is requested to run.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes
-     * minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For
-     * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
-     * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
-     * details.
+     * <p>When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be
+     * performed sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt;
+     * 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
+     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @return the kubernetesVersion value.
      */
@@ -209,16 +235,12 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the kubernetesVersion property: The version of Kubernetes specified by the user.
+     * Set the kubernetesVersion property: The version of Kubernetes the Managed Cluster is requested to run.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes
-     * minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For
-     * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
-     * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
-     * details.
+     * <p>When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be
+     * performed sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt;
+     * 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
+     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterInner object itself.
@@ -233,10 +255,6 @@ public final class ManagedClusterInner extends Resource {
 
     /**
      * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running.
-     *
-     * <p>If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
-     * to it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
-     * version being used.
      *
      * @return the currentKubernetesVersion value.
      */
@@ -524,6 +542,30 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the nodeResourceGroupProfile property: The node resource group configuration profile.
+     *
+     * @return the nodeResourceGroupProfile value.
+     */
+    public ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeResourceGroupProfile();
+    }
+
+    /**
+     * Set the nodeResourceGroupProfile property: The node resource group configuration profile.
+     *
+     * @param nodeResourceGroupProfile the nodeResourceGroupProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withNodeResourceGroupProfile(
+        ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withNodeResourceGroupProfile(nodeResourceGroupProfile);
+        return this;
+    }
+
+    /**
      * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
      *
      * @return the enableRbac value.
@@ -570,6 +612,37 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withEnablePodSecurityPolicy(enablePodSecurityPolicy);
+        return this;
+    }
+
+    /**
+     * Get the enableNamespaceResources property: Enable namespace as Azure resource.
+     *
+     * <p>The default value is false. It can be enabled/disabled on creation and updating of the managed cluster. See
+     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
+     * Resource.
+     *
+     * @return the enableNamespaceResources value.
+     */
+    public Boolean enableNamespaceResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNamespaceResources();
+    }
+
+    /**
+     * Set the enableNamespaceResources property: Enable namespace as Azure resource.
+     *
+     * <p>The default value is false. It can be enabled/disabled on creation and updating of the managed cluster. See
+     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
+     * Resource.
+     *
+     * @param enableNamespaceResources the enableNamespaceResources value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableNamespaceResources(Boolean enableNamespaceResources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableNamespaceResources(enableNamespaceResources);
         return this;
     }
 
@@ -643,6 +716,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withAutoUpgradeProfile(autoUpgradeProfile);
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @return the upgradeSettings value.
+     */
+    public ClusterUpgradeSettings upgradeSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettings();
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withUpgradeSettings(ClusterUpgradeSettings upgradeSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withUpgradeSettings(upgradeSettings);
         return this;
     }
 
@@ -870,6 +966,29 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the ingressProfile property: Ingress profile for the managed cluster.
+     *
+     * @return the ingressProfile value.
+     */
+    public ManagedClusterIngressProfile ingressProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressProfile();
+    }
+
+    /**
+     * Set the ingressProfile property: Ingress profile for the managed cluster.
+     *
+     * @param ingressProfile the ingressProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withIngressProfile(ManagedClusterIngressProfile ingressProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withIngressProfile(ingressProfile);
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
      *
      * <p>Allow or deny public network access for AKS.
@@ -921,7 +1040,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     * Get the azureMonitorProfile property: Prometheus addon profile for the container service cluster.
      *
      * @return the azureMonitorProfile value.
      */
@@ -930,7 +1049,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     * Set the azureMonitorProfile property: Prometheus addon profile for the container service cluster.
      *
      * @param azureMonitorProfile the azureMonitorProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -940,6 +1059,31 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withAzureMonitorProfile(azureMonitorProfile);
+        return this;
+    }
+
+    /**
+     * Get the guardrailsProfile property: The guardrails profile holds all the guardrails information for a given
+     * cluster.
+     *
+     * @return the guardrailsProfile value.
+     */
+    public GuardrailsProfile guardrailsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().guardrailsProfile();
+    }
+
+    /**
+     * Set the guardrailsProfile property: The guardrails profile holds all the guardrails information for a given
+     * cluster.
+     *
+     * @param guardrailsProfile the guardrailsProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withGuardrailsProfile(GuardrailsProfile guardrailsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withGuardrailsProfile(guardrailsProfile);
         return this;
     }
 

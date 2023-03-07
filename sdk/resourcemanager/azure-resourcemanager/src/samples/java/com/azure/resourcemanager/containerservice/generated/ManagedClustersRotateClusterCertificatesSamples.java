@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters RotateClusterCertificates. */
 public final class ManagedClustersRotateClusterCertificatesSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersRotateClusterCertificates.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/ManagedClustersRotateClusterCertificates.json
      */
     /**
      * Sample code: Rotate Cluster Certificates.

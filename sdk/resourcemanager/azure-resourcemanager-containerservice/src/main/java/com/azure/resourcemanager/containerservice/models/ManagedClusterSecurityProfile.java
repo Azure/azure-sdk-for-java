@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Security profile for the container service cluster. */
 @Fluent
@@ -22,6 +23,37 @@ public final class ManagedClusterSecurityProfile {
      */
     @JsonProperty(value = "azureKeyVaultKms")
     private AzureKeyVaultKms azureKeyVaultKms;
+
+    /*
+     * [Workload Identity](https://azure.github.io/azure-workload-identity/docs/) settings for the security profile.
+     */
+    @JsonProperty(value = "workloadIdentity")
+    private ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity;
+
+    /*
+     * ImageCleaner settings for the security profile.
+     */
+    @JsonProperty(value = "imageCleaner")
+    private ManagedClusterSecurityProfileImageCleaner imageCleaner;
+
+    /*
+     * [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     */
+    @JsonProperty(value = "nodeRestriction")
+    private ManagedClusterSecurityProfileNodeRestriction nodeRestriction;
+
+    /*
+     * The list of base64 encoded certificate strings that will be added to the node trust store. At most 10 strings
+     * can be provided.
+     *
+     * A list of up to 10 base64 encoded CAs that will be added to the trust store on nodes with the Custom CA Trust
+     * feature enabled. For more information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority)
+     */
+    @JsonProperty(value = "customCATrustCertificates")
+    private List<byte[]> customCATrustCertificates;
 
     /** Creates an instance of ManagedClusterSecurityProfile class. */
     public ManagedClusterSecurityProfile() {
@@ -70,6 +102,104 @@ public final class ManagedClusterSecurityProfile {
     }
 
     /**
+     * Get the workloadIdentity property: [Workload Identity](https://azure.github.io/azure-workload-identity/docs/)
+     * settings for the security profile.
+     *
+     * @return the workloadIdentity value.
+     */
+    public ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity() {
+        return this.workloadIdentity;
+    }
+
+    /**
+     * Set the workloadIdentity property: [Workload Identity](https://azure.github.io/azure-workload-identity/docs/)
+     * settings for the security profile.
+     *
+     * @param workloadIdentity the workloadIdentity value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withWorkloadIdentity(
+        ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity) {
+        this.workloadIdentity = workloadIdentity;
+        return this;
+    }
+
+    /**
+     * Get the imageCleaner property: ImageCleaner settings for the security profile.
+     *
+     * @return the imageCleaner value.
+     */
+    public ManagedClusterSecurityProfileImageCleaner imageCleaner() {
+        return this.imageCleaner;
+    }
+
+    /**
+     * Set the imageCleaner property: ImageCleaner settings for the security profile.
+     *
+     * @param imageCleaner the imageCleaner value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withImageCleaner(ManagedClusterSecurityProfileImageCleaner imageCleaner) {
+        this.imageCleaner = imageCleaner;
+        return this;
+    }
+
+    /**
+     * Get the nodeRestriction property: [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     *
+     * @return the nodeRestriction value.
+     */
+    public ManagedClusterSecurityProfileNodeRestriction nodeRestriction() {
+        return this.nodeRestriction;
+    }
+
+    /**
+     * Set the nodeRestriction property: [Node
+     * Restriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
+     * settings for the security profile.
+     *
+     * @param nodeRestriction the nodeRestriction value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withNodeRestriction(
+        ManagedClusterSecurityProfileNodeRestriction nodeRestriction) {
+        this.nodeRestriction = nodeRestriction;
+        return this;
+    }
+
+    /**
+     * Get the customCATrustCertificates property: The list of base64 encoded certificate strings that will be added to
+     * the node trust store. At most 10 strings can be provided.
+     *
+     * <p>A list of up to 10 base64 encoded CAs that will be added to the trust store on nodes with the Custom CA Trust
+     * feature enabled. For more information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
+     *
+     * @return the customCATrustCertificates value.
+     */
+    public List<byte[]> customCATrustCertificates() {
+        return this.customCATrustCertificates;
+    }
+
+    /**
+     * Set the customCATrustCertificates property: The list of base64 encoded certificate strings that will be added to
+     * the node trust store. At most 10 strings can be provided.
+     *
+     * <p>A list of up to 10 base64 encoded CAs that will be added to the trust store on nodes with the Custom CA Trust
+     * feature enabled. For more information see [Custom CA Trust
+     * Certificates](https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority).
+     *
+     * @param customCATrustCertificates the customCATrustCertificates value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withCustomCATrustCertificates(List<byte[]> customCATrustCertificates) {
+        this.customCATrustCertificates = customCATrustCertificates;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +210,15 @@ public final class ManagedClusterSecurityProfile {
         }
         if (azureKeyVaultKms() != null) {
             azureKeyVaultKms().validate();
+        }
+        if (workloadIdentity() != null) {
+            workloadIdentity().validate();
+        }
+        if (imageCleaner() != null) {
+            imageCleaner().validate();
+        }
+        if (nodeRestriction() != null) {
+            nodeRestriction().validate();
         }
     }
 }

@@ -750,13 +750,32 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget);
+
+    /**
+     * Deletes a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget);
 
     /**
      * Deletes a managed cluster.
@@ -789,6 +808,8 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -796,7 +817,23 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context);
+
+    /**
+     * Deletes a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget);
 
     /**
      * Deletes a managed cluster.
@@ -828,13 +865,15 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
@@ -1086,6 +1125,127 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context);
 
     /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName, Context context);
+
+    /**
      * Rotates the certificates of a managed cluster.
      *
      * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
@@ -1199,127 +1359,6 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void rotateClusterCertificates(String resourceGroupName, String resourceName, Context context);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
-        String resourceGroupName, String resourceName);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void abortLatestOperation(String resourceGroupName, String resourceName);
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void abortLatestOperation(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Rotates the service account signing keys of a managed cluster.

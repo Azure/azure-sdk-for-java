@@ -51,6 +51,21 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "disableRunCommand")
     private Boolean disableRunCommand;
 
+    /*
+     * Whether to enable apiserver vnet integration for the cluster or not.
+     */
+    @JsonProperty(value = "enableVnetIntegration")
+    private Boolean enableVnetIntegration;
+
+    /*
+     * The subnet to be used when apiserver vnet integration is enabled.
+     *
+     * It is required when: 1. creating a new cluster with BYO Vnet; 2. updating an existing cluster to enable
+     * apiserver vnet integration.
+     */
+    @JsonProperty(value = "subnetId")
+    private String subnetId;
+
     /** Creates an instance of ManagedClusterApiServerAccessProfile class. */
     public ManagedClusterApiServerAccessProfile() {
     }
@@ -175,6 +190,52 @@ public final class ManagedClusterApiServerAccessProfile {
      */
     public ManagedClusterApiServerAccessProfile withDisableRunCommand(Boolean disableRunCommand) {
         this.disableRunCommand = disableRunCommand;
+        return this;
+    }
+
+    /**
+     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not.
+     *
+     * @return the enableVnetIntegration value.
+     */
+    public Boolean enableVnetIntegration() {
+        return this.enableVnetIntegration;
+    }
+
+    /**
+     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not.
+     *
+     * @param enableVnetIntegration the enableVnetIntegration value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withEnableVnetIntegration(Boolean enableVnetIntegration) {
+        this.enableVnetIntegration = enableVnetIntegration;
+        return this;
+    }
+
+    /**
+     * Get the subnetId property: The subnet to be used when apiserver vnet integration is enabled.
+     *
+     * <p>It is required when: 1. creating a new cluster with BYO Vnet; 2. updating an existing cluster to enable
+     * apiserver vnet integration.
+     *
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.subnetId;
+    }
+
+    /**
+     * Set the subnetId property: The subnet to be used when apiserver vnet integration is enabled.
+     *
+     * <p>It is required when: 1. creating a new cluster with BYO Vnet; 2. updating an existing cluster to enable
+     * apiserver vnet integration.
+     *
+     * @param subnetId the subnetId value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
         return this;
     }
 

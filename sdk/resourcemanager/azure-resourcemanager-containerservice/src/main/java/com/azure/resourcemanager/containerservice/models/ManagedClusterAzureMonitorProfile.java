@@ -7,13 +7,11 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Monitor addon profiles for monitoring the managed cluster. */
+/** Prometheus addon profile for the container service cluster. */
 @Fluent
 public final class ManagedClusterAzureMonitorProfile {
     /*
-     * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes
-     * infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom
-     * targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Metrics profile for the prometheus service addon
      */
     @JsonProperty(value = "metrics")
     private ManagedClusterAzureMonitorProfileMetrics metrics;
@@ -23,9 +21,7 @@ public final class ManagedClusterAzureMonitorProfile {
     }
 
     /**
-     * Get the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
-     * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
-     * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Get the metrics property: Metrics profile for the prometheus service addon.
      *
      * @return the metrics value.
      */
@@ -34,9 +30,7 @@ public final class ManagedClusterAzureMonitorProfile {
     }
 
     /**
-     * Set the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
-     * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
-     * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Set the metrics property: Metrics profile for the prometheus service addon.
      *
      * @param metrics the metrics value to set.
      * @return the ManagedClusterAzureMonitorProfile object itself.

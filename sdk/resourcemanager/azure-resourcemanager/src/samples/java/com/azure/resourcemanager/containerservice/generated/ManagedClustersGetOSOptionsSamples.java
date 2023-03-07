@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters GetOSOptions. */
 public final class ManagedClustersGetOSOptionsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ContainerServiceGetOSOptions.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/ContainerServiceGetOSOptions.json
      */
     /**
      * Sample code: Get Container Service OS Options.

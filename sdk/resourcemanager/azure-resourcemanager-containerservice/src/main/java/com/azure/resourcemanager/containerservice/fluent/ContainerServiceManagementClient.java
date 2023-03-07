@@ -107,4 +107,39 @@ public interface ContainerServiceManagementClient {
      * @return the SnapshotsClient object.
      */
     SnapshotsClient getSnapshots();
+
+    /**
+     * Gets the ManagedClusterSnapshotsClient object to access its operations.
+     *
+     * @return the ManagedClusterSnapshotsClient object.
+     */
+    ManagedClusterSnapshotsClient getManagedClusterSnapshots();
+
+    /**
+     * Gets the TrustedAccessRolesClient object to access its operations.
+     *
+     * @return the TrustedAccessRolesClient object.
+     */
+    TrustedAccessRolesClient getTrustedAccessRoles();
+
+    /**
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     *
+     * @return the TrustedAccessRoleBindingsClient object.
+     */
+    TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
+
+    /**
+     * Gets the FleetsClient object to access its operations.
+     *
+     * @return the FleetsClient object.
+     */
+    FleetsClient getFleets();
+
+    /**
+     * Gets the FleetMembersClient object to access its operations.
+     *
+     * @return the FleetMembersClient object.
+     */
+    FleetMembersClient getFleetMembers();
 }

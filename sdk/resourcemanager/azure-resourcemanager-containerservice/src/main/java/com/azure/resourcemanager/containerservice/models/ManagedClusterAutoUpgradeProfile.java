@@ -19,6 +19,14 @@ public final class ManagedClusterAutoUpgradeProfile {
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
+    /*
+     * Manner in which the OS on your nodes is updated
+     *
+     * The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+     */
+    @JsonProperty(value = "nodeOSUpgradeChannel")
+    private NodeOSUpgradeChannel nodeOSUpgradeChannel;
+
     /** Creates an instance of ManagedClusterAutoUpgradeProfile class. */
     public ManagedClusterAutoUpgradeProfile() {
     }
@@ -46,6 +54,30 @@ public final class ManagedClusterAutoUpgradeProfile {
      */
     public ManagedClusterAutoUpgradeProfile withUpgradeChannel(UpgradeChannel upgradeChannel) {
         this.upgradeChannel = upgradeChannel;
+        return this;
+    }
+
+    /**
+     * Get the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated
+     *
+     * <p>The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+     *
+     * @return the nodeOSUpgradeChannel value.
+     */
+    public NodeOSUpgradeChannel nodeOSUpgradeChannel() {
+        return this.nodeOSUpgradeChannel;
+    }
+
+    /**
+     * Set the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated
+     *
+     * <p>The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+     *
+     * @param nodeOSUpgradeChannel the nodeOSUpgradeChannel value to set.
+     * @return the ManagedClusterAutoUpgradeProfile object itself.
+     */
+    public ManagedClusterAutoUpgradeProfile withNodeOSUpgradeChannel(NodeOSUpgradeChannel nodeOSUpgradeChannel) {
+        this.nodeOSUpgradeChannel = nodeOSUpgradeChannel;
         return this;
     }
 

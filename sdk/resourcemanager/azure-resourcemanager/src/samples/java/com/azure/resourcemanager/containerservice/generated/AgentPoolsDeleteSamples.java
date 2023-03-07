@@ -7,7 +7,25 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for AgentPools Delete. */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/AgentPoolsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+     */
+    /**
+     * Sample code: Delete Agent Pool by ignoring PodDisruptionBudget.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteAgentPoolByIgnoringPodDisruptionBudget(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .delete("rg1", "clustername1", "agentpool1", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.
@@ -20,6 +38,6 @@ public final class AgentPoolsDeleteSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .delete("rg1", "clustername1", "agentpool1", com.azure.core.util.Context.NONE);
+            .delete("rg1", "clustername1", "agentpool1", null, com.azure.core.util.Context.NONE);
     }
 }

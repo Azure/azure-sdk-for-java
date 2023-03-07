@@ -18,6 +18,12 @@ public final class ContainerServiceNetworkProfile {
     private NetworkPlugin networkPlugin;
 
     /*
+     * Network plugin mode used for building the Kubernetes network.
+     */
+    @JsonProperty(value = "networkPluginMode")
+    private NetworkPluginMode networkPluginMode;
+
+    /*
      * Network policy used for building the Kubernetes network.
      */
     @JsonProperty(value = "networkPolicy")
@@ -30,6 +36,12 @@ public final class ContainerServiceNetworkProfile {
      */
     @JsonProperty(value = "networkMode")
     private NetworkMode networkMode;
+
+    /*
+     * The eBPF dataplane used for building the Kubernetes network.
+     */
+    @JsonProperty(value = "ebpfDataplane")
+    private EbpfDataplane ebpfDataplane;
 
     /*
      * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
@@ -115,6 +127,15 @@ public final class ContainerServiceNetworkProfile {
     @JsonProperty(value = "ipFamilies")
     private List<IpFamily> ipFamilies;
 
+    /*
+     * Holds configuration customizations for kube-proxy. Any values not defined will use the kube-proxy defaulting
+     * behavior. See https://v<version>.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/
+     * where <version> is represented by a <major version>-<minor version> string. Kubernetes version 1.23 would be
+     * '1-23'.
+     */
+    @JsonProperty(value = "kubeProxyConfig")
+    private ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig;
+
     /** Creates an instance of ContainerServiceNetworkProfile class. */
     public ContainerServiceNetworkProfile() {
     }
@@ -136,6 +157,26 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNetworkPlugin(NetworkPlugin networkPlugin) {
         this.networkPlugin = networkPlugin;
+        return this;
+    }
+
+    /**
+     * Get the networkPluginMode property: Network plugin mode used for building the Kubernetes network.
+     *
+     * @return the networkPluginMode value.
+     */
+    public NetworkPluginMode networkPluginMode() {
+        return this.networkPluginMode;
+    }
+
+    /**
+     * Set the networkPluginMode property: Network plugin mode used for building the Kubernetes network.
+     *
+     * @param networkPluginMode the networkPluginMode value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkPluginMode(NetworkPluginMode networkPluginMode) {
+        this.networkPluginMode = networkPluginMode;
         return this;
     }
 
@@ -180,6 +221,26 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNetworkMode(NetworkMode networkMode) {
         this.networkMode = networkMode;
+        return this;
+    }
+
+    /**
+     * Get the ebpfDataplane property: The eBPF dataplane used for building the Kubernetes network.
+     *
+     * @return the ebpfDataplane value.
+     */
+    public EbpfDataplane ebpfDataplane() {
+        return this.ebpfDataplane;
+    }
+
+    /**
+     * Set the ebpfDataplane property: The eBPF dataplane used for building the Kubernetes network.
+     *
+     * @param ebpfDataplane the ebpfDataplane value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withEbpfDataplane(EbpfDataplane ebpfDataplane) {
+        this.ebpfDataplane = ebpfDataplane;
         return this;
     }
 
@@ -441,6 +502,35 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
+     * Get the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
+     * use the kube-proxy defaulting behavior. See
+     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
+     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
+     * would be '1-23'.
+     *
+     * @return the kubeProxyConfig value.
+     */
+    public ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig() {
+        return this.kubeProxyConfig;
+    }
+
+    /**
+     * Set the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
+     * use the kube-proxy defaulting behavior. See
+     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
+     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
+     * would be '1-23'.
+     *
+     * @param kubeProxyConfig the kubeProxyConfig value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withKubeProxyConfig(
+        ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig) {
+        this.kubeProxyConfig = kubeProxyConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -451,6 +541,9 @@ public final class ContainerServiceNetworkProfile {
         }
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
+        }
+        if (kubeProxyConfig() != null) {
+            kubeProxyConfig().validate();
         }
     }
 }

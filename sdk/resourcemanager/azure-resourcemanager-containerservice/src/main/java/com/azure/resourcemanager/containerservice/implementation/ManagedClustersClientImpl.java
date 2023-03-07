@@ -265,6 +265,7 @@ public final class ManagedClustersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
+            @QueryParam("ignore-pod-disruption-budget") Boolean ignorePodDisruptionBudget,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -303,10 +304,10 @@ public final class ManagedClustersClientImpl
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/rotateClusterCertificates")
+                + "/managedclusters/{resourceName}/abort")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificates(
+        Mono<Response<Flux<ByteBuffer>>> abortLatestOperation(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -318,10 +319,10 @@ public final class ManagedClustersClientImpl
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedclusters/{resourceName}/abort")
+                + "/managedClusters/{resourceName}/rotateClusterCertificates")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> abortLatestOperation(
+        Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificates(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -481,7 +482,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -528,7 +529,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -611,7 +612,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -654,7 +655,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -753,7 +754,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -808,7 +809,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -925,7 +926,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -976,7 +977,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1081,7 +1082,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1142,7 +1143,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1261,7 +1262,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1313,7 +1314,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1418,7 +1419,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1474,7 +1475,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1581,7 +1582,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1633,7 +1634,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1736,7 +1737,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1786,7 +1787,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1886,7 +1887,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1943,7 +1944,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2155,7 +2156,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2212,7 +2213,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2390,13 +2391,16 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2416,7 +2420,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2428,6 +2432,7 @@ public final class ManagedClustersClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
+                            ignorePodDisruptionBudget,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2438,6 +2443,8 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2446,7 +2453,7 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2466,7 +2473,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2476,8 +2483,32 @@ public final class ManagedClustersClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
+                ignorePodDisruptionBudget,
                 accept,
                 context);
+    }
+
+    /**
+     * Deletes a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2492,7 +2523,9 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
+        final Boolean ignorePodDisruptionBudget = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -2504,6 +2537,8 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2512,9 +2547,10 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -2532,7 +2568,8 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        final Boolean ignorePodDisruptionBudget = null;
+        return this.beginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget).getSyncPoller();
     }
 
     /**
@@ -2540,6 +2577,8 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2548,8 +2587,29 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget) {
+        return beginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2564,7 +2624,10 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
+        final Boolean ignorePodDisruptionBudget = null;
+        return beginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2572,6 +2635,8 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2579,8 +2644,9 @@ public final class ManagedClustersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2596,7 +2662,8 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        deleteAsync(resourceGroupName, resourceName).block();
+        final Boolean ignorePodDisruptionBudget = null;
+        deleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget).block();
     }
 
     /**
@@ -2604,14 +2671,17 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     *     considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, Context context) {
-        deleteAsync(resourceGroupName, resourceName, context).block();
+    public void delete(
+        String resourceGroupName, String resourceName, Boolean ignorePodDisruptionBudget, Context context) {
+        deleteAsync(resourceGroupName, resourceName, ignorePodDisruptionBudget, context).block();
     }
 
     /**
@@ -2654,7 +2724,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2716,7 +2786,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2954,7 +3024,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3014,7 +3084,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3205,6 +3275,280 @@ public final class ManagedClustersClientImpl
     }
 
     /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
+        String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-01-02-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .abortLatestOperation(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-01-02-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .abortLatestOperation(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = abortLatestOperationWithResponseAsync(resourceGroupName, resourceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            abortLatestOperationWithResponseAsync(resourceGroupName, resourceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName) {
+        return this.beginAbortLatestOperationAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
+        String resourceGroupName, String resourceName, Context context) {
+        return this.beginAbortLatestOperationAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName) {
+        return beginAbortLatestOperationAsync(resourceGroupName, resourceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName, Context context) {
+        return beginAbortLatestOperationAsync(resourceGroupName, resourceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortLatestOperation(String resourceGroupName, String resourceName) {
+        abortLatestOperationAsync(resourceGroupName, resourceName).block();
+    }
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, an error is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortLatestOperation(String resourceGroupName, String resourceName, Context context) {
+        abortLatestOperationAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
      * Rotates the certificates of a managed cluster.
      *
      * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
@@ -3239,7 +3583,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3292,7 +3636,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3471,280 +3815,6 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
-        String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-01-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .abortLatestOperation(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String apiVersion = "2023-01-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .abortLatestOperation(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(
-        String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = abortLatestOperationWithResponseAsync(resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            abortLatestOperationWithResponseAsync(resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName) {
-        return this.beginAbortLatestOperationAsync(resourceGroupName, resourceName).getSyncPoller();
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
-        String resourceGroupName, String resourceName, Context context) {
-        return this.beginAbortLatestOperationAsync(resourceGroupName, resourceName, context).getSyncPoller();
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName) {
-        return beginAbortLatestOperationAsync(resourceGroupName, resourceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginAbortLatestOperationAsync(resourceGroupName, resourceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void abortLatestOperation(String resourceGroupName, String resourceName) {
-        abortLatestOperationAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
-     * cancellation can take place, a 409 error code is returned.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void abortLatestOperation(String resourceGroupName, String resourceName, Context context) {
-        abortLatestOperationAsync(resourceGroupName, resourceName, context).block();
-    }
-
-    /**
      * Rotates the service account signing keys of a managed cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3776,7 +3846,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3826,7 +3896,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4017,7 +4087,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4072,7 +4142,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4294,7 +4364,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4347,7 +4417,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4560,7 +4630,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4620,7 +4690,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4855,7 +4925,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4911,7 +4981,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5016,7 +5086,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5081,7 +5151,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-01-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

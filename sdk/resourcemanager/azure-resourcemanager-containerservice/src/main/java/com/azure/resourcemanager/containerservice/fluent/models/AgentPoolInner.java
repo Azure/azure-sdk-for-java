@@ -7,8 +7,10 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
+import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
@@ -249,6 +251,37 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the messageOfTheDay property: Message of the day for Linux nodes, base64-encoded.
+     *
+     * <p>A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the
+     * message of the day for Linux nodes. It must not be specified for Windows nodes. It must be a static string (i.e.,
+     * will be printed raw and not be executed as a script).
+     *
+     * @return the messageOfTheDay value.
+     */
+    public String messageOfTheDay() {
+        return this.innerProperties() == null ? null : this.innerProperties().messageOfTheDay();
+    }
+
+    /**
+     * Set the messageOfTheDay property: Message of the day for Linux nodes, base64-encoded.
+     *
+     * <p>A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the
+     * message of the day for Linux nodes. It must not be specified for Windows nodes. It must be a static string (i.e.,
+     * will be printed raw and not be executed as a script).
+     *
+     * @param messageOfTheDay the messageOfTheDay value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withMessageOfTheDay(String messageOfTheDay) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withMessageOfTheDay(messageOfTheDay);
+        return this;
+    }
+
+    /**
      * Get the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
      * startup.
      *
@@ -359,9 +392,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
-     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
-     * Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
+     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
+     * Windows2019 is deprecated.
      *
      * @return the osSku value.
      */
@@ -370,9 +403,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
-     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
-     * Windows.
+     * Set the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
+     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
+     * Windows2019 is deprecated.
      *
      * @param osSku the osSku value to set.
      * @return the AgentPoolInner object itself.
@@ -534,13 +567,13 @@ public final class AgentPoolInner extends SubResource {
     /**
      * Get the orchestratorVersion property: The version of Kubernetes specified by the user.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in
-     * an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the
-     * control plane. The node pool minor version must be within two minor versions of the control plane version. The
-     * node pool version cannot be greater than the control plane version. For more information see [upgrading a node
+     * <p>Both patch version &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt;
+     * is specified, the latest supported patch version is chosen automatically. Updating the agent pool with the same
+     * &lt;major.minor&gt; once it has been created will not trigger an upgrade, even if a newer patch version is
+     * available. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes
+     * version. The node pool version must have the same major version as the control plane. The node pool minor version
+     * must be within two minor versions of the control plane version. The node pool version cannot be greater than the
+     * control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @return the orchestratorVersion value.
@@ -552,13 +585,13 @@ public final class AgentPoolInner extends SubResource {
     /**
      * Set the orchestratorVersion property: The version of Kubernetes specified by the user.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in
-     * an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the
-     * control plane. The node pool minor version must be within two minor versions of the control plane version. The
-     * node pool version cannot be greater than the control plane version. For more information see [upgrading a node
+     * <p>Both patch version &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt;
+     * is specified, the latest supported patch version is chosen automatically. Updating the agent pool with the same
+     * &lt;major.minor&gt; once it has been created will not trigger an upgrade, even if a newer patch version is
+     * available. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes
+     * version. The node pool version must have the same major version as the control plane. The node pool minor version
+     * must be within two minor versions of the control plane version. The node pool version cannot be greater than the
+     * control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -573,10 +606,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running.
+     * Get the currentOrchestratorVersion property: The version of Kubernetes running on the Agent Pool.
      *
-     * <p>If orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly
-     * equal to it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full
+     * <p>If orchestratorVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly
+     * equal to it. If orchestratorVersion was &lt;major.minor&gt;, this field will contain the full
      * &lt;major.minor.patch&gt; version being used.
      *
      * @return the currentOrchestratorVersion value.
@@ -710,6 +743,37 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withEnableNodePublicIp(enableNodePublicIp);
+        return this;
+    }
+
+    /**
+     * Get the enableCustomCATrust property: Whether to enable Custom CA Trust feature.
+     *
+     * <p>When set to true, AKS adds a label to the node indicating that the feature is enabled and deploys a daemonset
+     * along with host services to sync custom certificate authorities from user-provided list of base64 encoded
+     * certificates into node trust stores. Defaults to false.
+     *
+     * @return the enableCustomCATrust value.
+     */
+    public Boolean enableCustomCATrust() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableCustomCATrust();
+    }
+
+    /**
+     * Set the enableCustomCATrust property: Whether to enable Custom CA Trust feature.
+     *
+     * <p>When set to true, AKS adds a label to the node indicating that the feature is enabled and deploys a daemonset
+     * along with host services to sync custom certificate authorities from user-provided list of base64 encoded
+     * certificates into node trust stores. Defaults to false.
+     *
+     * @param enableCustomCATrust the enableCustomCATrust value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withEnableCustomCATrust(Boolean enableCustomCATrust) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withEnableCustomCATrust(enableCustomCATrust);
         return this;
     }
 
@@ -1109,6 +1173,31 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the capacityReservationGroupId property: AKS will associate the specified agent pool with the Capacity
+     * Reservation Group.
+     *
+     * @return the capacityReservationGroupId value.
+     */
+    public String capacityReservationGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityReservationGroupId();
+    }
+
+    /**
+     * Set the capacityReservationGroupId property: AKS will associate the specified agent pool with the Capacity
+     * Reservation Group.
+     *
+     * @param capacityReservationGroupId the capacityReservationGroupId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withCapacityReservationGroupId(String capacityReservationGroupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withCapacityReservationGroupId(capacityReservationGroupId);
+        return this;
+    }
+
+    /**
      * Get the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
      * machines from, used only in creation scenario and not allowed to changed once set.
      *
@@ -1140,6 +1229,52 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withHostGroupId(hostGroupId);
+        return this;
+    }
+
+    /**
+     * Get the windowsProfile property: The Windows agent pool's specific profile.
+     *
+     * @return the windowsProfile value.
+     */
+    public AgentPoolWindowsProfile windowsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().windowsProfile();
+    }
+
+    /**
+     * Set the windowsProfile property: The Windows agent pool's specific profile.
+     *
+     * @param windowsProfile the windowsProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withWindowsProfile(windowsProfile);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @return the networkProfile value.
+     */
+    public AgentPoolNetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 

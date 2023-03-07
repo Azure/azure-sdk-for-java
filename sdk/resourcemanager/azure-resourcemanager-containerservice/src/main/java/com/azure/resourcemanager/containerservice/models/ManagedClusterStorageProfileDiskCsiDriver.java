@@ -16,6 +16,12 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /*
+     * The version of AzureDisk CSI Driver. The default value is v1.
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
     /** Creates an instance of ManagedClusterStorageProfileDiskCsiDriver class. */
     public ManagedClusterStorageProfileDiskCsiDriver() {
     }
@@ -37,6 +43,26 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
      */
     public ManagedClusterStorageProfileDiskCsiDriver withEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the version property: The version of AzureDisk CSI Driver. The default value is v1.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version of AzureDisk CSI Driver. The default value is v1.
+     *
+     * @param version the version value to set.
+     * @return the ManagedClusterStorageProfileDiskCsiDriver object itself.
+     */
+    public ManagedClusterStorageProfileDiskCsiDriver withVersion(String version) {
+        this.version = version;
         return this;
     }
 

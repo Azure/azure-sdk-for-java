@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.containerservice.models.MaintenanceWindow;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -141,6 +142,29 @@ public final class MaintenanceConfigurationInner extends SubResource {
             this.innerProperties = new MaintenanceConfigurationProperties();
         }
         this.innerProperties().withNotAllowedTime(notAllowedTime);
+        return this;
+    }
+
+    /**
+     * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
+     *
+     * @return the maintenanceWindow value.
+     */
+    public MaintenanceWindow maintenanceWindow() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceWindow();
+    }
+
+    /**
+     * Set the maintenanceWindow property: Maintenance window for the maintenance configuration.
+     *
+     * @param maintenanceWindow the maintenanceWindow value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceConfigurationProperties();
+        }
+        this.innerProperties().withMaintenanceWindow(maintenanceWindow);
         return this;
     }
 

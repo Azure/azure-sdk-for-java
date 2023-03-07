@@ -11,7 +11,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.FleetMembersClient;
+import com.azure.resourcemanager.containerservice.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClusterSnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
@@ -19,6 +22,8 @@ import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnecti
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
 import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
+import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRoleBindingsClient;
+import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -210,6 +215,66 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.snapshots;
     }
 
+    /** The ManagedClusterSnapshotsClient object to access its operations. */
+    private final ManagedClusterSnapshotsClient managedClusterSnapshots;
+
+    /**
+     * Gets the ManagedClusterSnapshotsClient object to access its operations.
+     *
+     * @return the ManagedClusterSnapshotsClient object.
+     */
+    public ManagedClusterSnapshotsClient getManagedClusterSnapshots() {
+        return this.managedClusterSnapshots;
+    }
+
+    /** The TrustedAccessRolesClient object to access its operations. */
+    private final TrustedAccessRolesClient trustedAccessRoles;
+
+    /**
+     * Gets the TrustedAccessRolesClient object to access its operations.
+     *
+     * @return the TrustedAccessRolesClient object.
+     */
+    public TrustedAccessRolesClient getTrustedAccessRoles() {
+        return this.trustedAccessRoles;
+    }
+
+    /** The TrustedAccessRoleBindingsClient object to access its operations. */
+    private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
+
+    /**
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     *
+     * @return the TrustedAccessRoleBindingsClient object.
+     */
+    public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
+        return this.trustedAccessRoleBindings;
+    }
+
+    /** The FleetsClient object to access its operations. */
+    private final FleetsClient fleets;
+
+    /**
+     * Gets the FleetsClient object to access its operations.
+     *
+     * @return the FleetsClient object.
+     */
+    public FleetsClient getFleets() {
+        return this.fleets;
+    }
+
+    /** The FleetMembersClient object to access its operations. */
+    private final FleetMembersClient fleetMembers;
+
+    /**
+     * Gets the FleetMembersClient object to access its operations.
+     *
+     * @return the FleetMembersClient object.
+     */
+    public FleetMembersClient getFleetMembers() {
+        return this.fleetMembers;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -244,5 +309,10 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
+        this.managedClusterSnapshots = new ManagedClusterSnapshotsClientImpl(this);
+        this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
+        this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
+        this.fleets = new FleetsClientImpl(this);
+        this.fleetMembers = new FleetMembersClientImpl(this);
     }
 }

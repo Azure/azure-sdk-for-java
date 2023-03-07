@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for MaintenanceConfigurations Delete. */
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/MaintenanceConfigurationsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/MaintenanceConfigurationsDelete.json
      */
     /**
      * Sample code: Delete Maintenance Configuration.
@@ -21,5 +21,24 @@ public final class MaintenanceConfigurationsDeleteSamples {
             .serviceClient()
             .getMaintenanceConfigurations()
             .deleteWithResponse("rg1", "clustername1", "default", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-01-02-preview/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+     */
+    /**
+     * Sample code: Delete Maintenance Configuration For Node OS Upgrade.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteMaintenanceConfigurationForNodeOSUpgrade(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .deleteWithResponse(
+                "rg1", "clustername1", "aksManagedNodeOSUpgradeSchedule", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,12 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     @JsonProperty(value = "keda")
     private ManagedClusterWorkloadAutoScalerProfileKeda keda;
 
+    /*
+     * The verticalPodAutoscaler property.
+     */
+    @JsonProperty(value = "verticalPodAutoscaler")
+    private ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler;
+
     /** Creates an instance of ManagedClusterWorkloadAutoScalerProfile class. */
     public ManagedClusterWorkloadAutoScalerProfile() {
     }
@@ -41,6 +47,27 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     }
 
     /**
+     * Get the verticalPodAutoscaler property: The verticalPodAutoscaler property.
+     *
+     * @return the verticalPodAutoscaler value.
+     */
+    public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler() {
+        return this.verticalPodAutoscaler;
+    }
+
+    /**
+     * Set the verticalPodAutoscaler property: The verticalPodAutoscaler property.
+     *
+     * @param verticalPodAutoscaler the verticalPodAutoscaler value to set.
+     * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
+     */
+    public ManagedClusterWorkloadAutoScalerProfile withVerticalPodAutoscaler(
+        ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler) {
+        this.verticalPodAutoscaler = verticalPodAutoscaler;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -48,6 +75,9 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     public void validate() {
         if (keda() != null) {
             keda().validate();
+        }
+        if (verticalPodAutoscaler() != null) {
+            verticalPodAutoscaler().validate();
         }
     }
 }
