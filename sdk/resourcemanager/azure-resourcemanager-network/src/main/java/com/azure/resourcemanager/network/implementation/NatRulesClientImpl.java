@@ -174,7 +174,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,7 +229,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +338,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -405,7 +405,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -496,7 +496,9 @@ public final class NatRulesClientImpl implements NatRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, String natRuleName, VpnGatewayNatRuleInner natRuleParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -519,7 +521,8 @@ public final class NatRulesClientImpl implements NatRulesClient {
         String natRuleName,
         VpnGatewayNatRuleInner natRuleParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters, context)
             .getSyncPoller();
     }
 
@@ -645,7 +648,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,7 +703,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -773,7 +776,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName) {
-        return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, gatewayName, natRuleName).getSyncPoller();
     }
 
     /**
@@ -791,7 +794,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, gatewayName, natRuleName, context).getSyncPoller();
     }
 
     /**
@@ -895,7 +898,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -955,7 +958,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

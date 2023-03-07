@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/0d0cd5af40aa17af76ce0307ac5512351c38e3bc/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/becaba47bb961445fa2f8ab55b0ed199b391d179/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -161,7 +161,7 @@ directive:
     to: CollectTonesResultInternal
 - rename-model:
     from: ChoiceResult
-    to: CollectChoiceResultInternal
+    to: ChoiceResultInternal
 
 # Remove models
 - remove-model: AddParticipantFailed

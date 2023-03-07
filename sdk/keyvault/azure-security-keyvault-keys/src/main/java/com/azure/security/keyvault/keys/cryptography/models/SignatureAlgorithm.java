@@ -3,10 +3,10 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 
 /**
@@ -63,11 +63,6 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
      * Static value ES256K for SignatureAlgorithm.
      */
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
-
-    /**
-     * Static value EdDSA for SignatureAlgorithm.
-     */
-    public static final SignatureAlgorithm EDDSA = fromString("EdDSA");
 
     /**
      * Creates or finds a SignatureAlgorithm from its string representation.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2023-03-02)
+
+### Features Added
+
+- Added replica of `JacksonAdapter` from `azure-core`. The `JacksonAdapter` in this library doesn't expose the internal
+  `ObjectMapper`s used to prevent global mutations or support for running privileged actions to override 
+  `SecurityManager` policies as `SecurityManager` is deprecated for removal. This `JacksonAdapter` will serve as the
+  long term replacement to the `JacksonAdapter` in `azure-core`. ([#33401](https://github.com/Azure/azure-sdk-for-java/pull/33401))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded Jackson to the latest releases `2.13.5`.
 
 ## 1.2.25 (2023-02-01)
 

@@ -20,6 +20,15 @@ public final class ApplicationGatewaySslPolicyType extends ExpandableStringEnum<
     public static final ApplicationGatewaySslPolicyType CUSTOM_V2 = fromString("CustomV2");
 
     /**
+     * Creates a new instance of ApplicationGatewaySslPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewaySslPolicyType() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewaySslPolicyType from its string representation.
      *
      * @param name a name to look for.

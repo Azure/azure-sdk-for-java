@@ -37,6 +37,10 @@
 
   <properties>
     <jacoco.skip>true</jacoco.skip>
+    <javadoc.excludePackageNames>
+      com.azure.core.*:
+      com.azure.resourcemanager.*.samples
+    </javadoc.excludePackageNames>
   </properties>
 
   <developers>
@@ -55,12 +59,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -166,17 +170,6 @@
   </profiles>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <configuration>
-          <excludePackageNames>
-            com.azure.resourcemanager.*.samples:
-          </excludePackageNames>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

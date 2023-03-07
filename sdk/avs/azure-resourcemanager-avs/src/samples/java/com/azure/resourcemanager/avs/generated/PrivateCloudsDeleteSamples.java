@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds Delete. */
 public final class PrivateCloudsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class PrivateCloudsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().delete("group1", "cloud1", Context.NONE);
+        manager.privateClouds().delete("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

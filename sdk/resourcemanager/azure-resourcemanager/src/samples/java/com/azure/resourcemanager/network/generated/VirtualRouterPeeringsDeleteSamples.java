@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualRouterPeerings Delete. */
 public final class VirtualRouterPeeringsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualRouterPeeringDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeeringDelete.json
      */
     /**
      * Sample code: Delete VirtualRouterPeering.
@@ -22,6 +20,6 @@ public final class VirtualRouterPeeringsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualRouterPeerings()
-            .delete("rg1", "virtualRouter", "peering1", Context.NONE);
+            .delete("rg1", "virtualRouter", "peering1", com.azure.core.util.Context.NONE);
     }
 }

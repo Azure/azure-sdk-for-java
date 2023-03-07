@@ -953,6 +953,7 @@
         "OIDC",
         "qpid",
         "reqoest",
+        "signin",
         "Spel",
         "sqldb",
         "SQLDB",
@@ -974,6 +975,16 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/purview/azure-analytics-purview-sharing/**",
+      "words": [
+        "ADLS",
+        "Adls"
+      ],
+      "ignoreRegExpList": [
+        "/\/\/\\s*(BEGIN:|END:).*/"
       ]
     }
   ],

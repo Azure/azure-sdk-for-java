@@ -17,6 +17,15 @@ public final class VisibilityParameterEnum extends ExpandableStringEnum<Visibili
     public static final VisibilityParameterEnum HIDDEN = fromString("Hidden");
 
     /**
+     * Creates a new instance of VisibilityParameterEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VisibilityParameterEnum() {
+    }
+
+    /**
      * Creates or finds a VisibilityParameterEnum from its string representation.
      *
      * @param name a name to look for.

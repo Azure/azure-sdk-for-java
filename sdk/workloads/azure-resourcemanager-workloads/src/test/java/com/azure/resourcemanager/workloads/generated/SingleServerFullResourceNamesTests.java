@@ -19,14 +19,13 @@ public final class SingleServerFullResourceNamesTests {
         SingleServerFullResourceNames model =
             BinaryData
                 .fromString(
-                    "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"cf\",\"hostName\":\"cqdpfuv\",\"networkInterfaces\":[{\"networkInterfaceName\":\"jjcanvxbvtv\"},{\"networkInterfaceName\":\"utncorm\"}],\"osDiskName\":\"xqtvcofu\",\"dataDiskNames\":{\"n\":[\"kgjubgdknnqvsazn\"],\"mkycgra\":[\"rudsg\",\"a\"]}}}")
+                    "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"qztpp\",\"hostName\":\"o\",\"networkInterfaces\":[{\"networkInterfaceName\":\"jaltolmnc\"}],\"osDiskName\":\"obqwcsdbnwdcfh\",\"dataDiskNames\":{\"t\":[\"pfuvglsbjjca\",\"vxb\"],\"xqtvcofu\":[\"dut\",\"cormr\"],\"gdknnqv\":[\"lvkgju\"],\"s\":[\"znqntoru\",\"sgsahmkycgr\",\"uwjuetaeburuvdmo\"]}}}")
                 .toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("cf", model.virtualMachine().vmName());
-        Assertions.assertEquals("cqdpfuv", model.virtualMachine().hostname());
-        Assertions
-            .assertEquals("jjcanvxbvtv", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("xqtvcofu", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("kgjubgdknnqvsazn", model.virtualMachine().dataDiskNames().get("n").get(0));
+        Assertions.assertEquals("qztpp", model.virtualMachine().vmName());
+        Assertions.assertEquals("o", model.virtualMachine().hostname());
+        Assertions.assertEquals("jaltolmnc", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("pfuvglsbjjca", model.virtualMachine().dataDiskNames().get("t").get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -35,23 +34,27 @@ public final class SingleServerFullResourceNamesTests {
             new SingleServerFullResourceNames()
                 .withVirtualMachine(
                     new VirtualMachineResourceNames()
-                        .withVmName("cf")
-                        .withHostname("cqdpfuv")
+                        .withVmName("qztpp")
+                        .withHostname("o")
                         .withNetworkInterfaces(
-                            Arrays
-                                .asList(
-                                    new NetworkInterfaceResourceNames().withNetworkInterfaceName("jjcanvxbvtv"),
-                                    new NetworkInterfaceResourceNames().withNetworkInterfaceName("utncorm")))
-                        .withOsDiskName("xqtvcofu")
+                            Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("jaltolmnc")))
+                        .withOsDiskName("obqwcsdbnwdcfh")
                         .withDataDiskNames(
-                            mapOf("n", Arrays.asList("kgjubgdknnqvsazn"), "mkycgra", Arrays.asList("rudsg", "a"))));
+                            mapOf(
+                                "t",
+                                Arrays.asList("pfuvglsbjjca", "vxb"),
+                                "xqtvcofu",
+                                Arrays.asList("dut", "cormr"),
+                                "gdknnqv",
+                                Arrays.asList("lvkgju"),
+                                "s",
+                                Arrays.asList("znqntoru", "sgsahmkycgr", "uwjuetaeburuvdmo"))));
         model = BinaryData.fromObject(model).toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("cf", model.virtualMachine().vmName());
-        Assertions.assertEquals("cqdpfuv", model.virtualMachine().hostname());
-        Assertions
-            .assertEquals("jjcanvxbvtv", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("xqtvcofu", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("kgjubgdknnqvsazn", model.virtualMachine().dataDiskNames().get("n").get(0));
+        Assertions.assertEquals("qztpp", model.virtualMachine().vmName());
+        Assertions.assertEquals("o", model.virtualMachine().hostname());
+        Assertions.assertEquals("jaltolmnc", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("pfuvglsbjjca", model.virtualMachine().dataDiskNames().get("t").get(0));
     }
 
     @SuppressWarnings("unchecked")

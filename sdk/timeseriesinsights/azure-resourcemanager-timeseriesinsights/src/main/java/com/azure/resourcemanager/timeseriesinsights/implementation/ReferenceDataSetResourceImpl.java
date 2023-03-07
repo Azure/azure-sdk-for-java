@@ -49,6 +49,14 @@ public final class ReferenceDataSetResourceImpl
         }
     }
 
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public OffsetDateTime creationTime() {
+        return this.innerModel().creationTime();
+    }
+
     public List<ReferenceDataSetKeyProperty> keyProperties() {
         List<ReferenceDataSetKeyProperty> inner = this.innerModel().keyProperties();
         if (inner != null) {
@@ -62,20 +70,16 @@ public final class ReferenceDataSetResourceImpl
         return this.innerModel().dataStringComparisonBehavior();
     }
 
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public OffsetDateTime creationTime() {
-        return this.innerModel().creationTime();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ReferenceDataSetResourceInner innerModel() {

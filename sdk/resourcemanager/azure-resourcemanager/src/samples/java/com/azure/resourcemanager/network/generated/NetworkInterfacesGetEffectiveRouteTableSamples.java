@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkInterfaces GetEffectiveRouteTable. */
 public final class NetworkInterfacesGetEffectiveRouteTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkInterfaceEffectiveRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceEffectiveRouteTableList.json
      */
     /**
      * Sample code: Show network interface effective route tables.
@@ -22,6 +20,6 @@ public final class NetworkInterfacesGetEffectiveRouteTableSamples {
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .getEffectiveRouteTable("rg1", "nic1", Context.NONE);
+            .getEffectiveRouteTable("rg1", "nic1", com.azure.core.util.Context.NONE);
     }
 }

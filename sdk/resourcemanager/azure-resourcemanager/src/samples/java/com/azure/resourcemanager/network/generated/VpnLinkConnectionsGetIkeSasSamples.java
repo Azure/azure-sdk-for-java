@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VpnLinkConnections GetIkeSas. */
 public final class VpnLinkConnectionsGetIkeSasSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VpnSiteLinkConnectionGetIkeSas.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnSiteLinkConnectionGetIkeSas.json
      */
     /**
      * Sample code: GetVpnLinkConnectionIkeSa.
@@ -22,6 +20,6 @@ public final class VpnLinkConnectionsGetIkeSasSamples {
             .manager()
             .serviceClient()
             .getVpnLinkConnections()
-            .getIkeSas("rg1", "gateway1", "vpnConnection1", "Connection-Link1", Context.NONE);
+            .getIkeSas("rg1", "gateway1", "vpnConnection1", "Connection-Link1", com.azure.core.util.Context.NONE);
     }
 }

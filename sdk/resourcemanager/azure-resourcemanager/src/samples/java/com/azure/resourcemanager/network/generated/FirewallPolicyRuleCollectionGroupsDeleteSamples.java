@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallPolicyRuleCollectionGroups Delete. */
 public final class FirewallPolicyRuleCollectionGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
      */
     /**
      * Sample code: Delete FirewallPolicyRuleCollectionGroup.
@@ -22,6 +20,6 @@ public final class FirewallPolicyRuleCollectionGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getFirewallPolicyRuleCollectionGroups()
-            .delete("rg1", "firewallPolicy", "ruleCollectionGroup1", Context.NONE);
+            .delete("rg1", "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
     }
 }

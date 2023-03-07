@@ -98,6 +98,14 @@ class APISpec extends StorageSpec {
         return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
+    byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(namer.getRandomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
+    }
+
     ShareServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceAsyncClient(account.credential, account.fileEndpoint, null)
     }

@@ -7,14 +7,30 @@
 # compared to the latest stable version. No other changes shall be included as part of such a release.
 #
 # Currently, the process only handles data plane libraries (those under the 'com.azure' group ID), meaning this will
-# not work for management plane or Spring libraries.
+# not work for perf, management plane or Spring libraries.
 #
-# Libraries listed here will not be released for a given release cycle if a new stable version for them has been marked
-# for release in our Azure DevOps portal either manually or by using the /eng/common/scripts/Prepare-Release.ps1 script.
-# Marking a library for a beta release will not affect this process.
+# Libraries listed here will not be released if a stable version for them has already been released for a given release
+# cycle by the time the script is run. So, if a library owner needs to release a bugfix, performance improvement or new
+# features, they should go ahead with their release during release week and not worry about updating this list. The
+# automated release process will happen the week after release week.
 
+com.azure:azure-ai-formrecognizer
+com.azure:azure-ai-metricsadvisor
+com.azure:azure-ai-textanalytics
+com.azure:azure-containers-containerregistry
+com.azure:azure-data-appconfiguration
+com.azure:azure-data-schemaregistry
+com.azure:azure-data-schemaregistry-apacheavro
+com.azure:azure-data-tables
+com.azure:azure-messaging-eventgrid
+com.azure:azure-messaging-eventhubs
+com.azure:azure-messaging-eventhubs-checkpointstore-blob
+com.azure:azure-messaging-servicebus
+com.azure:azure-messaging-webpubsub
+com.azure:azure-monitor-query
 com.azure:azure-security-attestation
 com.azure:azure-security-keyvault-administration
 com.azure:azure-security-keyvault-certificates
 com.azure:azure-security-keyvault-keys
 com.azure:azure-security-keyvault-secrets
+com.azure:azure-search-documents
