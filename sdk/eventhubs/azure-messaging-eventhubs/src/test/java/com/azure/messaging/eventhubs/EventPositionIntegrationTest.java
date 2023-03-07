@@ -83,7 +83,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             Assertions.assertEquals(numberOfEvents, received.size());
 
             receivedEvents = received.toArray(new EventData[0]);
-            for (int i = 0; i < received.size(); i ++) {
+            for (int i = 0; i < received.size(); i++) {
                 logger.atInfo()
                     .addKeyValue("index", i)
                     .addKeyValue("sequenceNo", receivedEvents[i].getSequenceNumber())
