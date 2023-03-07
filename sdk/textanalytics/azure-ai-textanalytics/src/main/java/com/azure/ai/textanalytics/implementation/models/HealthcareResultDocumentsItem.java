@@ -5,9 +5,9 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The HealthcareResultDocumentsItem model. */
 @Fluent
@@ -57,7 +57,7 @@ public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocum
 
     /** {@inheritDoc} */
     @Override
-    public HealthcareResultDocumentsItem setFhirBundle(BinaryData fhirBundle) {
+    public HealthcareResultDocumentsItem setFhirBundle(Map<String, Object> fhirBundle) {
         super.setFhirBundle(fhirBundle);
         return this;
     }
