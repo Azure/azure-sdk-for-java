@@ -28,7 +28,7 @@ public class CosmosFaultInjectionHelper {
             (FaultInjectorProvider) ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .getOrConfigureFaultInjectorProvider(container, new FaultInjectorProvider(container));
+                .getOrConfigureFaultInjectorProvider(container, () -> new FaultInjectorProvider(container));
 
         return injectorProvider.configureFaultInjectionRules(rules);
     }

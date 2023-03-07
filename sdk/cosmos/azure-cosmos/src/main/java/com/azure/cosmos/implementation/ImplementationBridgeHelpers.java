@@ -63,6 +63,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -718,7 +719,7 @@ public class ImplementationBridgeHelpers {
 
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
-                IFaultInjectorProvider injectorProvider);
+                Callable<IFaultInjectorProvider> injectorProviderCallable);
         }
     }
 

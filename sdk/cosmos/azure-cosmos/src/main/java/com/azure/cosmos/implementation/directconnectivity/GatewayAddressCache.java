@@ -973,10 +973,10 @@ public class GatewayAddressCache implements IAddressCache {
                                     if (this.openConnectionsHandler != null) {
                                         return this.openConnectionsHandler.openConnections(
                                             this.serviceEndpoint,
-                                                Arrays
-                                                    .stream(addressInfo.getRight())
-                                                    .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                    .collect(Collectors.toList()));
+                                            Arrays
+                                                .stream(addressInfo.getRight())
+                                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                .collect(Collectors.toList()));
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");

@@ -67,7 +67,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE_DATA)
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
                         .endpoints(
                             new FaultInjectionEndpointBuilder(
                                 FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk())))

@@ -111,7 +111,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(serverGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_DATA)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
                 .result(
@@ -128,7 +128,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(tooManyRequestsRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_DATA)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
                 .result(
@@ -198,7 +198,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(writeRegionServerGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE_DATA)
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
                         .build()
                 )
                 .result(
@@ -216,7 +216,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(primaryReplicaServerGoneRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE_DATA)
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
                         .endpoints(
                             new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getId())))
                                 .replicaCount(3)
@@ -447,7 +447,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(timeoutRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_DATA)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
                 .result(
@@ -508,7 +508,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE_DATA)
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
                         .build()
                 )
                 .result(
@@ -569,7 +569,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_DATA)
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build()
                 )
                 .result(

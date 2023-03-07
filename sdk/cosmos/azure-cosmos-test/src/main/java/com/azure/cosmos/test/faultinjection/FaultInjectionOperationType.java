@@ -10,31 +10,31 @@ public enum FaultInjectionOperationType {
     /**
      * Read items.
      */
-    READ_DATA,
+    READ_ITEM,
     /**
      * Query items.
      */
-    QUERY_DATA,
+    QUERY_ITEM,
     /**
      * Create item.
      */
-    CREATE_DATA,
+    CREATE_ITEM,
     /**
      * Upsert item.
      */
-    UPSERT_DATA,
+    UPSERT_ITEM,
     /**
      * Replace item.
      */
-    REPLACE_DATA,
+    REPLACE_ITEM,
     /**
      * Delete item.
      */
-    DELETE_DATA,
+    DELETE_ITEM,
     /**
      * Patch item.
      */
-    PATCH_DATA
+    PATCH_ITEM
 
     // Add support for metadata request type
 }

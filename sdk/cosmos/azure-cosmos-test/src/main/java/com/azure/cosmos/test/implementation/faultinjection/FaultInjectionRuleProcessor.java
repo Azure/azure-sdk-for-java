@@ -278,18 +278,20 @@ public class FaultInjectionRuleProcessor {
         }
 
         switch (faultInjectionOperationType) {
-            case READ_DATA:
+            case READ_ITEM:
                 return OperationType.Read;
-            case CREATE_DATA:
+            case CREATE_ITEM:
                 return OperationType.Create;
-            case QUERY_DATA:
+            case QUERY_ITEM:
                 return OperationType.Query;
-            case UPSERT_DATA:
+            case UPSERT_ITEM:
                 return OperationType.Upsert;
-            case REPLACE_DATA:
+            case REPLACE_ITEM:
                 return OperationType.Replace;
-            case DELETE_DATA:
+            case DELETE_ITEM:
                 return OperationType.Delete;
+            case PATCH_ITEM:
+                return OperationType.Patch;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }

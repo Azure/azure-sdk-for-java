@@ -65,6 +65,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -112,7 +113,7 @@ public class CosmosAsyncContainer {
     private final String batchSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
-    private final AtomicReference<IFaultInjectorProvider> faultInjectorProvider = new AtomicReference<>();
+    private IFaultInjectorProvider faultInjectorProvider;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -1893,13 +1894,19 @@ public class CosmosAsyncContainer {
         this.database.getClient().configureFaultInjectorProvider(injectorProvider);
     }
 
-    synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+    synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(Callable<IFaultInjectorProvider> injectorProviderCallable) {
+        checkNotNull(injectorProviderCallable, "Argument 'injectorProviderCallable' can not be null");
 
-        if(this.faultInjectorProvider.compareAndSet(null, injectorProvider)) {
-            this.configureFaultInjectionProvider(injectorProvider);
+        try {
+            if (this.faultInjectorProvider == null) {
+                this.faultInjectorProvider = injectorProviderCallable.call();
+                this.configureFaultInjectionProvider(this.faultInjectorProvider);
+            }
+
+            return this.faultInjectorProvider;
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to configure fault injector provider " + e);
         }
-        return this.faultInjectorProvider.get();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1928,9 +1935,9 @@ public class CosmosAsyncContainer {
                 @Override
                 public IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                     CosmosAsyncContainer cosmosAsyncContainer,
-                    IFaultInjectorProvider injectorProvider) {
+                    Callable<IFaultInjectorProvider> injectorProviderCallable) {
 
-                    return cosmosAsyncContainer.getOrConfigureFaultInjectorProvider(injectorProvider);
+                    return cosmosAsyncContainer.getOrConfigureFaultInjectorProvider(injectorProviderCallable);
                 }
             });
     }
