@@ -715,6 +715,7 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsContext create(
                 String spanName,
                 String account,
+                String endpoint,
                 String databaseId,
                 String containerId,
                 ResourceType resourceType,
@@ -748,6 +749,8 @@ public class ImplementationBridgeHelpers {
             ResourceType getResourceType(CosmosDiagnosticsContext ctx);
 
             OperationType getOperationType(CosmosDiagnosticsContext ctx);
+
+            String getEndpoint(CosmosDiagnosticsContext ctx);
         }
     }
 

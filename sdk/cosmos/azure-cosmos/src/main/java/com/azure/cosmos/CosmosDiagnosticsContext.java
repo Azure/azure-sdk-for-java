@@ -37,6 +37,7 @@ public final class CosmosDiagnosticsContext {
 
     private final String spanName;
     private final String accountName;
+    private final String endpoint;
     private final String databaseName;
     private final String collectionName;
     private final ResourceType resourceType;
@@ -63,6 +64,7 @@ public final class CosmosDiagnosticsContext {
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
+        String endpoint,
         String databaseName,
         String collectionName,
         ResourceType resourceType,
@@ -74,6 +76,7 @@ public final class CosmosDiagnosticsContext {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
+        checkNotNull(endpoint, "Argument 'endpoint' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
@@ -81,6 +84,7 @@ public final class CosmosDiagnosticsContext {
 
         this.spanName = spanName;
         this.accountName = accountName;
+        this.endpoint = endpoint;
         this.databaseName = databaseName != null ? databaseName : "";
         this.collectionName = collectionName != null ? collectionName : "";
         this.resourceType = resourceType;
@@ -101,6 +105,8 @@ public final class CosmosDiagnosticsContext {
     public String getAccountName() {
         return this.accountName;
     }
+
+    String getEndpoint() { return this.endpoint; }
 
     /**
      * The name of the database related to the operation
@@ -479,9 +485,9 @@ public final class CosmosDiagnosticsContext {
                     .CosmosDiagnosticsContextAccessor() {
 
                     @Override
-                    public CosmosDiagnosticsContext create(String spanName, String account, String databaseId,
-                                                           String containerId, ResourceType resourceType,
-                                                           OperationType operationType,
+                    public CosmosDiagnosticsContext create(String spanName, String account, String endpoint,
+                                                           String databaseId,String containerId,
+                                                           ResourceType resourceType, OperationType operationType,
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds) {
@@ -489,6 +495,7 @@ public final class CosmosDiagnosticsContext {
                         return new CosmosDiagnosticsContext(
                             spanName,
                             account,
+                            endpoint,
                             databaseId,
                             containerId,
                             resourceType,
@@ -562,6 +569,12 @@ public final class CosmosDiagnosticsContext {
                     public OperationType getOperationType(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getOperationTypeInternal();
+                    }
+
+                    @Override
+                    public String getEndpoint(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getEndpoint();
                     }
                 });
     }

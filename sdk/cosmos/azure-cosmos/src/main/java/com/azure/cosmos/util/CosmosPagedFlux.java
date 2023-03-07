@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -241,6 +242,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
                 pagedFluxOptions.getTracerSpanName(),
                 pagedFluxOptions.getAccountTag(),
+                BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
                 pagedFluxOptions.getDatabaseId(),
                 pagedFluxOptions.getContainerId(),
                 pagedFluxOptions.getResourceType(),

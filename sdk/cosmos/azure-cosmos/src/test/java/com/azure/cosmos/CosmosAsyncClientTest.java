@@ -40,7 +40,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public final void setTestName(Method method) {
+    public final void setTestName(Method method, Object[] row) {
         String testClassAndMethodName = Strings.lenientFormat("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
@@ -61,10 +61,19 @@ public abstract class CosmosAsyncClientTest implements ITest {
         } else {
             this.testName = testClassAndMethodName;
         }
+
+        String suffix = this.resolveTestNameSuffix(row);
+        if (suffix != null && !suffix.isEmpty()) {
+            this.testName += "(" + suffix + ")";
+        }
     }
 
     @AfterMethod(alwaysRun = true)
     public final void unsetTestName() {
         this.testName = null;
+    }
+
+    public String resolveTestNameSuffix(Object[] row) {
+        return "";
     }
 }

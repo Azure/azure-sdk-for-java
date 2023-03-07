@@ -590,6 +590,7 @@ public final class DiagnosticsProvider {
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             spanName,
             accountName,
+            BridgeInternal.getServiceEndpoint(client),
             databaseId,
             containerId,
             resourceType,
@@ -728,7 +729,7 @@ public final class DiagnosticsProvider {
             StartSpanOptions spanOptions = this.startSpanOptions(
                 spanName,
                 cosmosCtx.getDatabaseName(),
-                cosmosCtx.getAccountName());
+                ctxAccessor.getEndpoint(cosmosCtx));
 
             // start the span and return the started span
             return tracer.start(spanName, spanOptions, context);
