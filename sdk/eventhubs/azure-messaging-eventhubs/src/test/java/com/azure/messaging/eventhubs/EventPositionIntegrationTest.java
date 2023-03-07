@@ -22,13 +22,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests that {@link EventHubConsumerAsyncClient} can be created with various {@link EventPosition EventPositions}.
  */
@@ -166,33 +169,22 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving message from latest offset
      */
     @Test
-    void receiveLatestMessages() {
+    void receiveLatestMessages() throws InterruptedException {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(testData.getPartitionId());
         final EventHubProducerClient producer = toClose(createBuilder().buildProducerClient());
         final List<EventData> events = TestUtils.getEvents(15, messageId);
+        final CountDownLatch receivedAll = new CountDownLatch(numberOfEvents);
+        toClose(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
+            .filter(event -> isMatchingEvent(event, messageId))
+            .take(numberOfEvents)
+            .subscribe(e -> receivedAll.countDown(), (ex) -> fail(ex)));
 
-        try {
-            StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
-                .filter(event -> isMatchingEvent(event, messageId))
-                .take(numberOfEvents))
-                .then(() -> {
-                    try {
-                        producer.send(events, options);
-                        logger.atInfo().log("sent events");
-                    } catch (RuntimeException ex) {
-                        throw logger.logThrowableAsError(ex);
-                    }
-                })
-                .expectNextCount(numberOfEvents)
-                .expectComplete()
-                .verify(TIMEOUT);
+        producer.send(events, options);
+        logger.atInfo().log("sent events");
 
-            // Act
-        } finally {
-            dispose(producer);
-        }
+        assertTrue(receivedAll.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
     }
 
     /**

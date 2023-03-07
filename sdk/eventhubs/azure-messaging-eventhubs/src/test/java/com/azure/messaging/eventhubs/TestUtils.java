@@ -38,7 +38,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public final class TestUtils {
     private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
-;
+
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
     static final Long OFFSET = 1534L;
