@@ -49,10 +49,10 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
 
     @Override
     public String toString() {
-        return "FaultInjectionServerErrorResult{" +
-            "serverErrorType=" + serverErrorType +
-            ", times=" + times +
-            ", delay=" + delay +
-            '}';
+        return String.format(
+            "FaultInjectionServerErrorResult{ serverErrorType=%s, times=%s, delay=%s }",
+            this.serverErrorType,
+            this.times,
+            this.delay);
     }
 }

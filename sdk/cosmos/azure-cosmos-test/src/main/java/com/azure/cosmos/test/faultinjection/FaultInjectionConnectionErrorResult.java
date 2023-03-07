@@ -10,8 +10,8 @@ import java.time.Duration;
  */
 public final class FaultInjectionConnectionErrorResult implements IFaultInjectionResult {
     private final FaultInjectionConnectionErrorType errorType;
-    private Duration interval;
-    private double threshold;
+    private final Duration interval;
+    private final double threshold;
 
     FaultInjectionConnectionErrorResult(
         FaultInjectionConnectionErrorType errorType,

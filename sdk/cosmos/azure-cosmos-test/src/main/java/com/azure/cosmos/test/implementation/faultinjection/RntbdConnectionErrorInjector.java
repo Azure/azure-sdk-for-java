@@ -21,7 +21,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Fault injector which can handle {@link FaultInjectionConnectionErrorRule} with direct connection type.
  */
 public class RntbdConnectionErrorInjector {
-    private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionErrorInjector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RntbdConnectionErrorInjector.class);
 
     private final RntbdEndpoint.Provider endpointProvider;
     private final FaultInjectionRuleStore ruleStore;
@@ -107,7 +107,7 @@ public class RntbdConnectionErrorInjector {
                 return Mono.empty();
             })
             .onErrorResume(throwable -> {
-                logger.warn("Inject connection error for rule [{}] failed due to", rule.getId(), throwable);
+                LOGGER.warn("Inject connection error for rule [{}] failed due to", rule.getId(), throwable);
                 return Mono.empty();
             })
             .repeat(() -> this.isEffectiveRule(rule))

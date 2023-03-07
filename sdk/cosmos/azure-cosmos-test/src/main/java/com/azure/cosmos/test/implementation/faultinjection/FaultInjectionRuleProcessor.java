@@ -35,8 +35,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.implementation.ImplementationBridgeHelpers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,8 +52,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Mapping to internal rule model and route to the correct components.
  */
 public class FaultInjectionRuleProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(FaultInjectionRuleProcessor.class);
-
     private final ConnectionMode connectionMode;
     private final RxStoreModel storeModel;
     private final RxGatewayStoreModel gatewayStoreModel;
@@ -374,7 +370,7 @@ public class FaultInjectionRuleProcessor {
     static class FaultInjectionRuleProcessorRetryPolicy implements IRetryPolicy {
         private final ResourceThrottleRetryPolicy resourceThrottleRetryPolicy;
         private final WebExceptionRetryPolicy webExceptionRetryPolicy;
-        public FaultInjectionRuleProcessorRetryPolicy(ThrottlingRetryOptions retryOptions) {
+        FaultInjectionRuleProcessorRetryPolicy(ThrottlingRetryOptions retryOptions) {
             this.resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
                 retryOptions.getMaxRetryAttemptsOnThrottledRequests(),
                 retryOptions.getMaxRetryWaitTime(),

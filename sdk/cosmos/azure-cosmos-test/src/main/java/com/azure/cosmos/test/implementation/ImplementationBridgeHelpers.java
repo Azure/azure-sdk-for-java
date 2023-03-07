@@ -15,8 +15,8 @@ public class ImplementationBridgeHelpers {
     private static final Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
     public static final class FaultInjectionRuleHelper {
-        private final static AtomicBoolean faultInjectionRuleClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<FaultInjectionRuleAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean faultInjectionRuleClassLoaded = new AtomicBoolean(false);
+        private static final AtomicReference<FaultInjectionRuleAccessor> accessor = new AtomicReference<>();
 
         private FaultInjectionRuleHelper() {
         }
@@ -38,7 +38,7 @@ public class ImplementationBridgeHelpers {
         public static void setFaultInjectionRuleAccessor(
             final FaultInjectionRuleAccessor newAccessor) {
 
-            assert(newAccessor != null);
+            assert (newAccessor != null);
 
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("FaultInjectionRuleAccessor already initialized!");

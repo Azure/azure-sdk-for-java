@@ -76,7 +76,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
         FaultInjectionServerErrorRule serverConnectionDelayRule = this.ruleStore.findRntbdServerConnectionDelayRule(request);
 
-        if(serverConnectionDelayRule != null) {
+        if (serverConnectionDelayRule != null) {
             request.faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),

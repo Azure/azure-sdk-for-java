@@ -62,11 +62,11 @@ public final class FaultInjectionCondition {
 
     @Override
     public String toString() {
-        return "FaultInjectionCondition{" +
-            "endpoints=" + endpoints +
-            ", operationType=" + operationType +
-            ", connectionType=" + connectionType +
-            ", region='" + region + '\'' +
-            '}';
+        return String.format(
+            "FaultInjectionCondition{ endpoints=%s, operationType=%s, connectionType=%s, region=%s }",
+            this.endpoints,
+            this.operationType,
+            this.connectionType,
+            this.region);
     }
 }

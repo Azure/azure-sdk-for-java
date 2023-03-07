@@ -69,7 +69,7 @@ public class FaultInjectionConditionInternal {
 
     static class RegionEndpointValidator implements IFaultInjectionConditionValidator {
         private List<URI> regionEndpoints;
-        public RegionEndpointValidator(List<URI> regionEndpoints) {
+        RegionEndpointValidator(List<URI> regionEndpoints) {
             this.regionEndpoints = regionEndpoints;
         }
         @Override
@@ -80,7 +80,7 @@ public class FaultInjectionConditionInternal {
 
     static class OperationTypeValidator implements IFaultInjectionConditionValidator {
         private OperationType operationType;
-        public OperationTypeValidator(OperationType operationType) {
+        OperationTypeValidator(OperationType operationType) {
             this.operationType = operationType;
         }
 
@@ -93,7 +93,7 @@ public class FaultInjectionConditionInternal {
     static class ContainerValidator implements IFaultInjectionConditionValidator {
 
         private final String containerResourceId;
-        public ContainerValidator(String containerResourceId) {
+        ContainerValidator(String containerResourceId) {
             this.containerResourceId = containerResourceId;
         }
 
@@ -105,7 +105,7 @@ public class FaultInjectionConditionInternal {
 
     static class AddressValidator implements IFaultInjectionConditionValidator {
         private final List<URI> addresses;
-        public AddressValidator(List<URI> addresses) {
+        AddressValidator(List<URI> addresses) {
             this.addresses = addresses;
         }
 

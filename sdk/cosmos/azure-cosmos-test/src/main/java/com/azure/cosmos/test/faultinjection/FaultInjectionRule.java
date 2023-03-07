@@ -79,7 +79,9 @@ public final class FaultInjectionRule {
      *
      * @return the start delay.
      */
-    public Duration getStartDelay() { return startDelay; }
+    public Duration getStartDelay() {
+        return startDelay;
+    }
 
     /***
      * Get the hit limit of the fault injection rule.
@@ -104,7 +106,9 @@ public final class FaultInjectionRule {
      *
      * @return the flag to indicate whether the rule is enabled.
      */
-    public boolean isEnabled() { return this.enabled; }
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
     /***
      * Disable the fault injection rule.
@@ -158,16 +162,15 @@ public final class FaultInjectionRule {
 
     @Override
     public String toString() {
-        return "FaultInjectionRule{" +
-            "condition=" + condition +
-            ", result=" + result +
-            ", duration=" + duration +
-            ", startDelay=" + startDelay +
-            ", hitLimit=" + hitLimit +
-            ", id='" + id + '\'' +
-            ", enabled=" + enabled +
-            ", effectiveRule=" + effectiveRule +
-            '}';
+        return String.format(
+            "FaultInjectionRule{ condition=%s, result=%s, duration=%s, startDelay=%s, hitLimit=%s, id=%s, enabled=%s",
+            this.condition,
+            this.result,
+            this.duration,
+            this.startDelay,
+            this.hitLimit,
+            this.id,
+            this.enabled);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

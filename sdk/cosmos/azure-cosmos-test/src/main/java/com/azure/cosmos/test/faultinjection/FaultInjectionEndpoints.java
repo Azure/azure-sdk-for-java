@@ -49,10 +49,10 @@ public final class FaultInjectionEndpoints {
 
     @Override
     public String toString() {
-        return "FaultInjectionEndpoints{" +
-            "feedRange=" + feedRange +
-            ", includePrimary=" + includePrimary +
-            ", replicaCount=" + replicaCount +
-            '}';
+        return String.format(
+            "FaultInjectionEndpoints{ feedRange=%s, includePrimary=%s, replicaCount=%s }",
+            this.feedRange,
+            this.includePrimary,
+            this.replicaCount);
     }
 }
