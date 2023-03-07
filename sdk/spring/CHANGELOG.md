@@ -1,7 +1,8 @@
 # Release History
 
 ## 4.7.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 2.7.9 and Spring Cloud dependencies version to 2021.0.5
+- Upgrade Spring Boot dependencies version to 2.7.9 and Spring Cloud dependencies version to 2021.0.5.
+- Fix CVE-2023-25194 by upgrading **org.apache.kafka:kafka-clients** to 3.4.0.
 
 ### Spring Messaging Event Hubs
 This section includes changes in `spring-messaging-azure-eventhubs` module.
