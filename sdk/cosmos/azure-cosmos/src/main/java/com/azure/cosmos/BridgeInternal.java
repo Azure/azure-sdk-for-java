@@ -82,6 +82,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        if (cosmosDiagnostics.clientSideRequestStatistics() == null) {
+            return Collections.<String>emptySet();
+        }
         return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
 
