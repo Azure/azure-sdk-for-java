@@ -221,7 +221,7 @@ class AppConfigurationRefreshUtil {
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
-                checkFeatureFlags(currentKeys, watchedKeySize, state, client, eventData);
+                watchedKeySize = checkFeatureFlags(currentKeys, state, client, eventData);
             }
 
             if (!eventData.getDoRefresh() && watchedKeySize != state.getWatchKeys().size()) {
@@ -240,8 +240,9 @@ class AppConfigurationRefreshUtil {
         }
     }
 
-    private static void checkFeatureFlags(List<ConfigurationSetting> currentKeys, int watchedKeySize, State state,
+    private static int checkFeatureFlags(List<ConfigurationSetting> currentKeys, State state,
         AppConfigurationReplicaClient client, RefreshEventData eventData) {
+        int watchedKeySize = 0;
         for (ConfigurationSetting currentKey : currentKeys) {
             if (currentKey instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
@@ -253,12 +254,13 @@ class AppConfigurationRefreshUtil {
                     // A refresh will trigger once the selector returns a value.
                     if (compairKeys(watchFlag, currentKey, client.getEndpoint(), eventData)) {
                         if (eventData.getDoRefresh()) {
-                            return;
+                            return watchedKeySize;
                         }
                     }
                 }
             }
         }
+        return watchedKeySize;
     }
 
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
