@@ -98,6 +98,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 .add(pkIds.get(1))
                 .build();
 
+        PartitionKey pk1 = new PartitionKeyBuilder().addNoneValue().add("simon").build();
+
         String documentId = UUID.randomUUID().toString();
         ObjectNode properties = getItem(documentId, pkIds);
         createdMultiHashContainer.createItem(properties);
@@ -110,7 +112,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void invalidPartitionKeyDepth() throws CosmosException {
+    public void invalidPartitionKeys() throws CosmosException {
+        //Try to use an invalid depth in partition key definition
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
         partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
@@ -129,6 +132,13 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         } catch (CosmosException e) {
             assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Too many partition key paths (4) specified. A maximum of 3 is allowed.")).isTrue();
+        }
+
+        //Try to build a partition key with PartitionKey.None and other paths
+        try {
+            new PartitionKeyBuilder().addNoneValue().add("test-value").build();
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage().contains("PartitionKey.None can't be used with multiple paths")).isTrue();
         }
     }
 

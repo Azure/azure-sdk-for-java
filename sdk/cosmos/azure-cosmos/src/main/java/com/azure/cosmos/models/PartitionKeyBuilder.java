@@ -53,15 +53,6 @@ public final class PartitionKeyBuilder {
     }
 
     /**
-     * Adds a null partition key value
-     * @return The current PartitionKeyBuilder object
-     */
-    public PartitionKeyBuilder addNullValue() {
-        this.partitionKeyValues.add(null);
-        return this;
-    }
-
-    /**
      * Adds a None Partition Key
      * @return The current PartitionKeyBuilder object
      */
@@ -73,6 +64,7 @@ public final class PartitionKeyBuilder {
     /**
      * Builds a new instance of the type PartitionKey with the specified Partition Key values.
      * @return PartitionKey object
+     * @throws IllegalStateException when using PartitionKey.None with other values
      */
     public PartitionKey build() {
         // Why these checks?
@@ -91,6 +83,10 @@ public final class PartitionKeyBuilder {
 
         if(this.partitionKeyValues.size() == 1 && PartitionKey.NONE.equals(this.partitionKeyValues.get(0))) {
             return PartitionKey.NONE;
+        }
+
+        if(this.partitionKeyValues.size() > 1 && this.partitionKeyValues.contains(PartitionKey.NONE)) {
+            throw new IllegalStateException("PartitionKey.None can't be used with multiple paths");
         }
 
         PartitionKeyInternal partitionKeyInternal;
