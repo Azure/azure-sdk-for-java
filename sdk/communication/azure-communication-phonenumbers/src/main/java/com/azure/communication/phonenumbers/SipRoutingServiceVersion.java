@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum SipRoutingServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-05-01-preview}.
+     * Service version {@code 2023-03-01}.
      */
-    V2021_05_01_PREVIEW("2021-05-01-preview");
+    V2023_03_01("2023-03-01");
 
     private final String version;
 
@@ -34,6 +34,6 @@ public enum SipRoutingServiceVersion implements ServiceVersion {
      * @return the latest {@link SipRoutingServiceVersion}
      */
     public static SipRoutingServiceVersion getLatest() {
-        return V2021_05_01_PREVIEW;
+        return V2023_03_01;
     }
 }

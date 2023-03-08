@@ -940,7 +940,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
     private String tenantId;
-    
+
     /**
      * Validate config and initialization
      *
@@ -949,7 +949,7 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
      */
     public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         super(cosmosAsyncClient, databaseName);
-        
+
         this.tenantId = databaseName;
     }
 

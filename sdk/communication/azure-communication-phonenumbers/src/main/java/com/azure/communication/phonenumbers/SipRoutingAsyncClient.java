@@ -415,22 +415,22 @@ public final class SipRoutingAsyncClient {
     }
 
     private Mono<SipConfiguration> getSipConfiguration() {
-        return client.getSipConfigurationAsync()
+        return client.getSipRoutings().getAsync()
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException);
     }
 
     private Mono<Response<SipConfiguration>> getSipConfigurationWithResponse() {
-        return client.getSipConfigurationWithResponseAsync()
+        return client.getSipRoutings().getWithResponseAsync()
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException);
     }
 
     private Mono<SipConfiguration> setSipConfiguration(SipConfiguration update) {
-        return client.patchSipConfigurationAsync(update)
+        return client.getSipRoutings().updateAsync(update)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException);
     }
 
     private Mono<Response<SipConfiguration>> setSipConfigurationWithResponse(SipConfiguration update) {
-        return client.patchSipConfigurationWithResponseAsync(update)
+        return client.getSipRoutings().updateWithResponseAsync(update)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException);
     }
 
