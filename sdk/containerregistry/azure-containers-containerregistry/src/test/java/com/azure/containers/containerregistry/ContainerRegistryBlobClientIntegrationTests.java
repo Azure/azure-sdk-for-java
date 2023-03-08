@@ -7,7 +7,7 @@ import com.azure.containers.containerregistry.implementation.models.V2Manifest;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
@@ -41,7 +41,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -83,7 +82,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
     @BeforeAll
     static void beforeAll() {
-        importImage(TestingHelpers.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest"));
+        importImage(TestingHelpers.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
     }
 
     @BeforeEach
@@ -439,16 +438,16 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         V2Manifest manifest = new V2Manifest()
             .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
             .setSchemaVersion(2)
-            .setConfig(new OciBlobDescriptor()
+            .setConfig(new OciDescriptor()
                 .setMediaType("application/vnd.docker.container.image.v1+json")
                 .setDigest(CONFIG_DIGEST)
-                .setSize(171L));
+                .setSizeInBytes(171L));
 
-        List<OciBlobDescriptor> layers = new ArrayList<>();
+        List<OciDescriptor> layers = new ArrayList<>();
 
-        layers.add(new OciBlobDescriptor()
+        layers.add(new OciDescriptor()
             .setMediaType("application/vnd.docker.image.rootfs.diff.tar.gzip")
-            .setSize(28L)
+            .setSizeInBytes(28L)
             .setDigest(LAYER_DIGEST));
 
         manifest.setLayers(layers);
@@ -465,13 +464,13 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         assertNotNull(returnedManifest);
         assertNotNull(returnedManifest.getConfig());
         assertEquals(originalManifest.getConfig().getMediaType(), returnedManifest.getConfig().getMediaType());
-        assertEquals(originalManifest.getConfig().getSize(), returnedManifest.getConfig().getSize());
+        assertEquals(originalManifest.getConfig().getSizeInBytes(), returnedManifest.getConfig().getSizeInBytes());
         assertNotNull(returnedManifest.getLayers());
         assertEquals(originalManifest.getLayers().size(), returnedManifest.getLayers().size());
         for (int i = 0; i < originalManifest.getLayers().size(); i++) {
             assertEquals(originalManifest.getLayers().get(i).getMediaType(), returnedManifest.getLayers().get(i).getMediaType());
             assertEquals(originalManifest.getLayers().get(i).getDigest(), returnedManifest.getLayers().get(i).getDigest());
-            assertEquals(originalManifest.getLayers().get(i).getSize(), returnedManifest.getLayers().get(i).getSize());
+            assertEquals(originalManifest.getLayers().get(i).getSizeInBytes(), returnedManifest.getLayers().get(i).getSizeInBytes());
         }
     }
 

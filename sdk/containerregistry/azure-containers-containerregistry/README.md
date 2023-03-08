@@ -236,22 +236,22 @@ BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setPropert
 UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
 System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
 
-OciBlobDescriptor configDescriptor = new OciBlobDescriptor()
+OciDescriptor configDescriptor = new OciDescriptor()
     .setMediaType("application/vnd.unknown.config.v1+json")
     .setDigest(configUploadResult.getDigest())
-    .setSize(configContent.getLength());
+    .setSizeInBytes(configContent.getLength());
 
 BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
 UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
 System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
-OciManifest manifest = new OciManifest()
+OciImageManifest manifest = new OciImageManifest()
     .setConfig(configDescriptor)
     .setSchemaVersion(2)
     .setLayers(Collections.singletonList(
-        new OciBlobDescriptor()
+        new OciDescriptor()
             .setDigest(layerUploadResult.getDigest())
-            .setSize(layerContent.getLength())
+            .setSizeInBytes(layerContent.getLength())
             .setMediaType("application/octet-stream")));
 
 UploadManifestResult manifestResult = blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest"));
@@ -269,14 +269,14 @@ ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder(
 
 DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-OciManifest manifest = manifestResult.asOciManifest();
+OciImageManifest manifest = manifestResult.asOciManifest();
 System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
 
 String configFileName = manifest.getConfig().getDigest() + ".json";
 blobClient.downloadStream(manifest.getConfig().getDigest(), createWriteChannel(configFileName));
 System.out.printf("Got config: %s\n", configFileName);
 
-for (OciBlobDescriptor layer : manifest.getLayers()) {
+for (OciDescriptor layer : manifest.getLayers()) {
     blobClient.downloadStream(layer.getDigest(), createWriteChannel(layer.getDigest()));
     System.out.printf("Got layer: %s\n", layer.getDigest());
 }

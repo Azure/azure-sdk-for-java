@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -36,21 +36,21 @@ public class UploadImageAsync {
 
         BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("async client"));
 
-        Mono<OciBlobDescriptor> uploadConfig = blobClient
+        Mono<OciDescriptor> uploadConfig = blobClient
             .uploadBlob(configContent)
             .doOnSuccess(configUploadResult -> System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength()))
-            .map(configUploadResult -> new OciBlobDescriptor()
+            .map(configUploadResult -> new OciDescriptor()
                 .setMediaType("application/vnd.unknown.config.v1+json")
                 .setDigest(configUploadResult.getDigest())
-                .setSize(configContent.getLength()));
+                .setSizeInBytes(configContent.getLength()));
 
         BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
-        Mono<OciBlobDescriptor> uploadLayer = blobClient
+        Mono<OciDescriptor> uploadLayer = blobClient
             .uploadBlob(layerContent)
             .doOnSuccess(layerUploadResult -> System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength()))
-            .map(layerUploadResult -> new OciBlobDescriptor()
+            .map(layerUploadResult -> new OciDescriptor()
                 .setDigest(layerUploadResult.getDigest())
-                .setSize(layerContent.getLength())
+                .setSizeInBytes(layerContent.getLength())
                 .setMediaType("application/octet-stream"));
 
         Mono.zip(uploadConfig, uploadLayer)

@@ -68,7 +68,7 @@ sync-methods: none
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciBlobDescriptor,OciImageManifest,RepositoryProperties
+custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
 generic-response-type: true
@@ -258,13 +258,22 @@ directive:
         }
 ```
 
-# Make ArtifactBlobDescriptor a public type
+# Rename ArtifactBlobDescriptor.size to sizeInBytes
 ```yaml
 directive:
   from: swagger-document
   where: $.definitions.Descriptor
   transform: >
-    $["x-ms-client-name"] = "OciBlobDescriptor";
+    $.properties.size["x-ms-client-name"] = "sizeInBytes";
+```
+
+# Rename ArtifactBlobDescriptor to OciDescriptor
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Descriptor
+  transform: >
+    $["x-ms-client-name"] = "OciDescriptor";
     delete $["x-accessibility"]
 ```
 

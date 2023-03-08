@@ -3,7 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
@@ -36,10 +36,10 @@ public class UploadImage {
         UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
         System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
 
-        OciBlobDescriptor configDescriptor = new OciBlobDescriptor()
+        OciDescriptor configDescriptor = new OciDescriptor()
             .setMediaType("application/vnd.unknown.config.v1+json")
             .setDigest(configUploadResult.getDigest())
-            .setSize(configContent.getLength());
+            .setSizeInBytes(configContent.getLength());
 
         BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
         UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
@@ -49,9 +49,9 @@ public class UploadImage {
             .setConfig(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(
-                new OciBlobDescriptor()
+                new OciDescriptor()
                     .setDigest(layerUploadResult.getDigest())
-                    .setSize(layerContent.getLength())
+                    .setSizeInBytes(layerContent.getLength())
                     .setMediaType("application/octet-stream")));
 
         UploadManifestResult manifestResult = blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest"));
