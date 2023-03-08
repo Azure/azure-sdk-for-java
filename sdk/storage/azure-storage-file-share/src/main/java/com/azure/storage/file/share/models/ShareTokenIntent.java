@@ -9,9 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The request intent for whether the file should be backed up. Request intent specifies requests that are intended for
- * backup/admin type operations, meaning that all file/directory ACLs are bypassed and full permissions are granted.
- * User must also have required RBAC permission.
+ * The request intent specifies requests that are intended for backup/admin type operations, meaning that all
+ * file/directory ACLs are bypassed and full permissions are granted. User must also have required RBAC permission.
  */
 public final class ShareTokenIntent extends ExpandableStringEnum<ShareTokenIntent> {
     /** Static value backup for ShareTokenIntent. */

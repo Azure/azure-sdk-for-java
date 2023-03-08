@@ -32,9 +32,9 @@ public class ShareStorageCustomization extends Customization {
         changeJacksonXmlRootElementName(models.getClass("SourceModifiedAccessConditions"), "source-modified-access-conditions");
 
         ClassCustomization shareTokenIntent = models.getClass("ShareTokenIntent");
-        shareTokenIntent.getJavadoc().setDescription("The request intent for whether the file should be backed up. " +
-            "Request intent specifies requests that are intended for backup/admin type operations, meaning that all " +
-            "file/directory ACLs are bypassed and full permissions are granted. User must also have required RBAC permission.");
+        shareTokenIntent.getJavadoc().setDescription("The request intent specifies requests that are intended for " +
+            "backup/admin type operations, meaning that all file/directory ACLs are bypassed and full permissions are " +
+            "granted. User must also have required RBAC permission.");
     }
 
     /*
