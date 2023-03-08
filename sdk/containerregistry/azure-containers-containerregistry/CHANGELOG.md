@@ -9,11 +9,11 @@
 
 ### Breaking Changes from version 1.1.0-beta.2
 - Download blob changes:
-  - `ContainerRegistryBlobClient.downloadBlob` method was renamed to `downloadStream`, instead or returning `DownloadBlobResult` it now writes content to channel provided in parameters.
-  - `ContainerRegistryBlobAsyncClient.downloadBlob` method was renamed to `downloadStream`, instead or returning `DownloadBlobResult` it now returns `DownloadBlobAsyncResult`
-  - `downloadBlobWithResponse` methods on both `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were removed.
+  - `ContainerRegistryBlobClient.downloadBlob` method was renamed to `downloadStream` and now writes content to channel provided in parameters. It no longer returns `DownloadBlobResult`.
+  - `ContainerRegistryBlobAsyncClient.downloadBlob` method was renamed to `downloadStream` and now returns `DownloadBlobAsyncResult`.
+  - `downloadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes were removed.
 - Upload blob changes:
-  - `uploadBlobWithResponse` methods on both `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were removed.
+  - `uploadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were removed.
 - Manifest changes:
   - `DownloadManifestOptions` class was removed: `downloadManifest` and `downloadManifestWithResponse` methods
     (on `ContainerRegistryBlobAsyncClient` or `ContainerRegistryBlobClient`) now take tag or digest string value instead of `DownloadManifestOptions`
@@ -21,13 +21,13 @@
   - `OciBlobDescriptor` class was renamed to `OciDescriptor`, `getSize` and `setSize` methods on it were renamed to `getSizeInBytes` and `setSizeInBytes`
   - `OciManifest` class was renamed to `OciImageManifest`
   - `UploadManifestOptions(binaryData)` constructor was replaced with `UploadManifestOptions(BinaryData, ManifestMediaType)` one.
-  - `UploadManifestResult(string)` constructor was removed
+  - `UploadManifestResult(string)` constructor was removed.
 - Misc
-  - Default audience was changed from `https://management.azure.com` to `https://containerregistry.azure.net`.  
+  - Default audience was changed from `https://management.azure.com` to `https://containerregistry.azure.net`.
 
 ### Other Changes
 - `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
-- Following default  constructors were deprecated: `ArtifactManifestPlatform`, ` ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`
+- Following default constructors were deprecated: `ArtifactManifestPlatform`, `ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`.
 - `ArtifactManifestPlatform` default constructor is deprecated.
 
 #### Dependency Updates
