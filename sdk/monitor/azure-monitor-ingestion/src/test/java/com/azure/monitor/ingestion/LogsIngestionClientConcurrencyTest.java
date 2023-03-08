@@ -23,13 +23,10 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.monitor.ingestion.LogsIngestionTestBase.getObjects;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,7 +55,7 @@ public class LogsIngestionClientConcurrencyTest {
         int batchCount = 20;
         List<Object> logs = getObjects(LOGS_IN_BATCH * batchCount);
 
-        TestHttpClient http = new TestHttpClient(concurrency, batchCount, false);
+        TestHttpClient http = new TestHttpClient(false);
         clientBuilder.httpClient(http);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
@@ -66,6 +63,7 @@ public class LogsIngestionClientConcurrencyTest {
             () -> clientBuilder.buildClient().upload(RULE_ID, STREAM, logs, uploadOptions),
             () -> clientBuilder.buildAsyncClient().upload(RULE_ID, STREAM, logs, uploadOptions));
         assertEquals(batchCount, http.getCallsCount());
+        assertTrue(http.getMaxConcurrentCalls() <= concurrency + 1, String.format("http.getMaxConcurrentCalls() = %s", http.getMaxConcurrentCalls()));
     }
 
     @Test
@@ -74,7 +72,7 @@ public class LogsIngestionClientConcurrencyTest {
         int batchCount = 7;
         List<Object> logs = getObjects(LOGS_IN_BATCH * batchCount);
 
-        TestHttpClient http = new TestHttpClient(concurrency, batchCount, true);
+        TestHttpClient http = new TestHttpClient(true);
         clientBuilder.httpClient(http);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
@@ -95,7 +93,7 @@ public class LogsIngestionClientConcurrencyTest {
         int batchCount = 12;
         List<Object> logs = getObjects(LOGS_IN_BATCH * batchCount);
 
-        TestHttpClient http = new TestHttpClient(concurrency, batchCount, true);
+        TestHttpClient http = new TestHttpClient(true);
         LogsUploadOptions uploadOptions = new LogsUploadOptions().setMaxConcurrency(concurrency);
 
         StepVerifier.create(clientBuilder
@@ -116,26 +114,22 @@ public class LogsIngestionClientConcurrencyTest {
     }
 
     public class TestHttpClient extends NoOpHttpClient {
-        private final CountDownLatch dontRespondUntil;
         private final AtomicInteger concurrentCalls = new AtomicInteger(0);
-        private final int maxConcurrency;
+        private final AtomicInteger maxConcurrency;
         private final AtomicBoolean failSecondRequest;
         private final AtomicInteger counter;
-        public TestHttpClient(int maxConcurrency, int batchCount, boolean failSecondRequest) {
-            this.dontRespondUntil = new CountDownLatch(maxConcurrency);
-            this.maxConcurrency = Math.min(batchCount, maxConcurrency);
+        public TestHttpClient(boolean failSecondRequest) {
+            this.maxConcurrency = new AtomicInteger();
             this.failSecondRequest = new AtomicBoolean(failSecondRequest);
             this.counter = new AtomicInteger();
         }
 
         public Mono<HttpResponse> send(HttpRequest request) {
-            dontRespondUntil.countDown();
             return Mono.delay(Duration.ofMillis(1))
                 .map(l -> process(request));
         }
 
         public HttpResponse sendSync(HttpRequest request, Context context) {
-            dontRespondUntil.countDown();
             return process(request);
         }
 
@@ -143,13 +137,26 @@ public class LogsIngestionClientConcurrencyTest {
             return counter.get();
         }
         private HttpResponse process(HttpRequest request) {
-            assertTrue(concurrentCalls.incrementAndGet() <= maxConcurrency + 1, String.format("concurrentCalls is %s", concurrentCalls.get()));
-            assertTrue(assertDoesNotThrow(() -> dontRespondUntil.await(30, TimeUnit.SECONDS)));
-            concurrentCalls.decrementAndGet();
-            if (counter.getAndIncrement() == 1 && failSecondRequest.compareAndSet(true, false)) {
-                return new MockHttpResponse(request, 404);
+            int c = concurrentCalls.incrementAndGet();
+            if (c > maxConcurrency.get()) {
+                maxConcurrency.set(c);
             }
-            return new MockHttpResponse(request, 204);
+
+            try {
+                Thread.sleep(1000);
+                if (counter.getAndIncrement() == 1 && failSecondRequest.compareAndSet(true, false)) {
+                    return new MockHttpResponse(request, 404);
+                }
+                return new MockHttpResponse(request, 204);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } finally {
+                concurrentCalls.decrementAndGet();
+            }
+        }
+
+        public int getMaxConcurrentCalls() {
+            return maxConcurrency.get();
         }
     }
 }

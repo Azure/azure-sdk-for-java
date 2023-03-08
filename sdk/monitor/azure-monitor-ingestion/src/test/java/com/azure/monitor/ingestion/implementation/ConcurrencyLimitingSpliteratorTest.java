@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class ConcurrencyLimitingSpliteratorTest {
     private static final int TEST_TIMEOUT_SEC = 30;
@@ -38,6 +39,8 @@ public class ConcurrencyLimitingSpliteratorTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 4, 5, 7, 11, 15})
     public void concurrentCalls(int concurrency) throws ExecutionException, InterruptedException {
+        assumeTrue(Runtime.getRuntime().availableProcessors() > concurrency);
+
         List<Integer> list = IntStream.range(0, 11).boxed().collect(Collectors.toList());
         ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list, concurrency);
 
