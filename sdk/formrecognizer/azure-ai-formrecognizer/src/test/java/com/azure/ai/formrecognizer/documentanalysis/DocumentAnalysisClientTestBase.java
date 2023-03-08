@@ -21,8 +21,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -35,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,10 +56,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentAnalysisClientTestBase extends TestBase {
+public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
-
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+    final TestProxySanitizer OPERATION_LOCATION_SANITIZER = new TestProxySanitizer("Operation-Location",URL_REGEX, "REDACTED",TestProxySanitizerType.BODY_KEY);
     Duration durationTestMode;
 
     /**
@@ -78,18 +82,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+            } else if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            } else {
-                builder.credential(getCredentialByAuthority(endpoint));
             }
+        } else {
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.credential(getCredentialByAuthority(endpoint));
         }
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
         return builder;
     }
 

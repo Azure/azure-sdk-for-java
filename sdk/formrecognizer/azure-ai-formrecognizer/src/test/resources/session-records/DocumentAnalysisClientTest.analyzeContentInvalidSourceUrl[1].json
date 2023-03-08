@@ -1,27 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "436e842a-d2a1-4868-8c71-ff3f063ccad0",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "97",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c3101664-44a2-48d3-a7ef-5d1f6ec50320",
-      "retry-after" : "0",
-      "Content-Length" : "221",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
-      "Date" : "Tue, 14 Mar 2023 18:22:52 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ms-azure-ai-errorcode" : "InvalidRequest"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-layout:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "77",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Apr 2023 22:58:39 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "eeff402b-4062-4805-8d10-aff42a7e2752"
+      },
+      "RequestBody": {
+        "urlSource": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "bb84f6b0-8a27-48b7-b197-c8279de8bdc1",
+        "Content-Length": "221",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Apr 2023 22:58:38 GMT",
+        "ms-azure-ai-errorcode": "InvalidRequest",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "107",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid request.",
+          "innererror": {
+            "code": "InvalidContent",
+            "message": "The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

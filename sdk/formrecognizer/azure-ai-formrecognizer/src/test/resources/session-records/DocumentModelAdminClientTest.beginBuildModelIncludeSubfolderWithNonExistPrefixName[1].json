@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "networkCallRecords" : [ {
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
@@ -24,3 +25,51 @@
   } ],
   "variables" : [ ]
 }
+=======
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "345",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 18:42:04 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "01ec787b-09ca-4491-a331-7cd010756e96"
+      },
+      "RequestBody": {
+        "modelId": "afb8c907-3387-4997-a23f-561d87e879c6",
+        "buildMode": "template",
+        "azureBlobSource": {
+          "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/multipage-training-data?sp=rl\u0026st=2022-01-24T21:28:33Z\u0026se=2026-01-25T05:28:33Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=CWjKGuJXpYtcn%2Bh3Z4FPW8Bu1Tw09t4%2FlY3N9hnU5gU%3D",
+          "prefix": "subfolders"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "4f0a7557-8ecc-4abc-8a67-73f1251403f5",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 18:42:13 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "1509",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid request.",
+          "innererror": {
+            "code": "TrainingContentMissing",
+            "message": "Training data is missing: Could not find any training data at the given path."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
+>>>>>>> 294c7d84192 (add new client test recordings with test proxy)

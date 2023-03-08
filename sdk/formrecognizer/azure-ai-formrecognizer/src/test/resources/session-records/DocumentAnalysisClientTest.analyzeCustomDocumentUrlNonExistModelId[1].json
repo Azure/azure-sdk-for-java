@@ -1,27 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9d94c0cd-a603-45ff-baed-ce28e3655130",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "347",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2eeb3f5c-89d7-489c-821c-e376f33ef360",
-      "retry-after" : "0",
-      "Content-Length" : "146",
-      "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Resource not found.\",\"innererror\":{\"code\":\"ModelNotFound\",\"message\":\"The requested model was not found.\"}}}",
-      "Date" : "Tue, 14 Mar 2023 18:21:47 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ms-azure-ai-errorcode" : "NotFound"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "172",
+        "Content-Type": "application/json",
+        "Date": "Tue, 04 Apr 2023 22:58:00 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "33773f02-5c0d-4b90-9347-6c4bb9bfcf82"
+      },
+      "RequestBody": {
+        "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/Form_1.jpg"
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "apim-request-id": "4b91607d-c4ce-4007-9f00-6304de39198a",
+        "Content-Length": "146",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Apr 2023 22:58:01 GMT",
+        "ms-azure-ai-errorcode": "NotFound",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "303",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "NotFound",
+          "message": "Resource not found.",
+          "innererror": {
+            "code": "ModelNotFound",
+            "message": "The requested model was not found."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

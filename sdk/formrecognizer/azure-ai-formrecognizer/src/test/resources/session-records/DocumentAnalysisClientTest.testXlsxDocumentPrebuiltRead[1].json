@@ -1,88 +1,320 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fdd6dad7-62b8-408e-b9e1-0002f4ce78ea",
-      "Content-Type" : "application/octet-stream"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "10508",
+        "Content-Type": "application/octet-stream",
+        "Date": "Tue, 04 Apr 2023 22:58:05 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "9692439f-572b-4bf8-807c-24e87b083356"
+      },
+      "RequestBody": "UEsDBBQABgAIAAAAIQB7ksghegEAAIEFAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAIooAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACslMtuwjAQRfeV\u002Bg\u002BRtxUxdFFVFYFFH8sWCfoBJp4kFolteQYKf9\u002BJeaiqeCiCTaLYnnvuTGY8HK\u002BbOllBQONsJgZpXyRgc6eNLTPxPfvoPYsESVmtamchExtAMR7d3w1nGw\u002BYcLTFTFRE/kVKzCtoFKbOg\u002BWdwoVGEX\u002BGUnqVL1QJ8rHff5K5swSWetRqiNHwDQq1rCl5X/Py1sncWJG8bs\u002B1qEwo72uTK2KjcmX1P0jPFYXJQbt82bB0ij6A0lgBUFOnPhgmhikQcWIo5FFmgBq7QXdZpRwZjWFlPD5w6icI7c7prHZxX/w7gtGQTFSgT9Vw7nJdyx8XFnPnFul5ka6liSVKG2Xs3vcZfjyMMr4GNzbS5heFL/gg7jGQ8Xm9hShzAYi0qQFvXfYoeolcqQB6Sty95c0N/NU\u002B54NHahKcR57aAN2rsB\u002BRNrrnWQgCGTgMybFmOxB55K8uO7R3igbdlZ0vkVxzNX4rcwQu4wU6\u002BgUAAP//AwBQSwMEFAAGAAgAAAAhABNevmUCAQAA3wIAAAsACAJfcmVscy8ucmVscyCiBAIooAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACskk1LAzEQhu\u002BC/yHMvTvbKiLSbC9F6E1k/QExmf1gN5mQpLr990ZBdKG2Hnqcr3eeeZn1ZrKjeKMQe3YSlkUJgpxm07tWwkv9uLgHEZNyRo3sSMKBImyq66v1M40q5aHY9T6KrOKihC4l/4AYdUdWxYI9uVxpOFiVchha9EoPqiVcleUdht8aUM00xc5ICDtzA6I\u002B\u002BLz5vDY3Ta9py3pvyaUjK5CmRM6QWfiQ2ULq8zWiVqGlJMGwfsrpiMr7ImMDHida/Z/o72vRUlJGJYWaA53m\u002Bew4BbS8pEVzE3/cmUZ85zC8Mg\u002BnWG4vyaL3MbE9Y85XzzcSzt6y\u002BgAAAP//AwBQSwMEFAAGAAgAAAAhAD0Hodn6AgAA5wYAAA8AAAB4bC93b3JrYm9vay54bWysVdtu4jAQfV9p/yHye5o4hABRQ5Vy0SJ1d1GvL0iVSQyxSOysbQpV1X/fcUKglJduuxHYscc5PjNzxj6/2Ba59USlYoJHCJ\u002B5yKI8ESnjywjd3Y7tLrKUJjwlueA0Qs9UoYv\u002B92/nGyFXcyFWFgBwFaFM6zJ0HJVktCDqTJSUg2UhZEE0DOXSUaWkJFUZpbrIHc91A6cgjKMaIZQfwRCLBUvoUCTrgnJdg0iaEw30VcZK1aAVyUfgCiJX69JORFECxJzlTD9XoMgqknCy5EKSeQ5ub3Hb2kr4BfDHLjResxOYTrYqWCKFEgt9BtBOTfrEf\u002Bw6GB\u002BFYHsag48h\u002BY6kT8zkcM9KBp9kFeyxggMYdr\u002BMhkFalVZCCN4n0dp7bh7qny9YTu9r6VqkLH\u002BRwmQqR1ZOlB6lTNM0Qh0Yig09TIBXcl1erlkOVs/veD3k9PdynkoYQO7jXFPJiaYDwTVIbUf9q7KqsAeZABFb1/TPmkkKtQMSAnegJUlI5mpKdGatZR6hcTgbbROaz\u002BLpxP49uLZHfMk4nQ2EpLvXMQRhSqSicnbHmb4FT9UMCmQ3Z8ZmiZq90Ss5LY5/UCxJTMAcCFLtSP3\u002BPmDgjwwbVU61tOB9MryCzNyQJ8gTqCHdlfEEEoFbjzyRIX586cSteIBbse27457te3HXjoNu1x50xn5riIM4GI9ewRkZhIkga53tJGCgI\u002BRDvk9MP8m2sWA3XLP0QOPF3T226d81je3VOGwOu3tGN\u002BogFjO0tg\u002BMp2IDSmu1kfV8NNpUpgeW6gxcDLodWFHP/aBsmQFf7Aa\u002BOUqkZ3hF6IjPsOYzhsc2zREf5w2h6lAFYlVv8aoQbsxBi\u002BH0Nn0VYhB\u002BaPaQkxRXKWw\u002BS0ieTKVlumph4PVwy6ygW32ldNWDIBnQw74bd9yeb7ujVtv2uz3P7votzx74Q2/U7oyGo8u2yY65FML/cTRWdRE2t41hmRGpbyVJVnBHXdPFJVEgp9oh4AtqbFg7zVf9vwAAAP//AwBQSwMEFAAGAAgAAAAhAIE\u002BlJfzAAAAugIAABoACAF4bC9fcmVscy93b3JrYm9vay54bWwucmVscyCiBAEooAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKxSTUvEMBC9C/6HMHebdhUR2XQvIuxV6w8IybQp2yYhM3703xsqul1Y1ksvA2\u002BGee/Nx3b3NQ7iAxP1wSuoihIEehNs7zsFb83zzQMIYu2tHoJHBRMS7Orrq\u002B0LDppzE7k\u002BksgsnhQ45vgoJRmHo6YiRPS50oY0as4wdTJqc9Adyk1Z3su05ID6hFPsrYK0t7cgmilm5f\u002B5Q9v2Bp\u002BCeR/R8xkJSTwNeQDR6NQhK/jBRfYI8rz8Zk15zmvBo/oM5RyrSx6qNT18hnQgh8hHH38pknPlopm7Ve/hdEL7yim/2/Isy/TvZuTJx9XfAAAA//8DAFBLAwQUAAYACAAAACEARkw1504CAAA8BAAAGAAAAHhsL3dvcmtzaGVldHMvc2hlZXQxLnhtbJySS2vDMAyA74P9B\u002BN74yTtyhqSlsEo623sdXccJTH1I9hOH4z99znpmg5yKTV\u002BytYnyVK6OkiBdmAs1yrDURBiBIrpgqsqw58f68kjRtZRVVChFWT4CBavlvd36V6bra0BHPIEZTNcO9ckhFhWg6Q20A0of1NqI6nzR1MR2xigRa8kBYnDcE4k5QqfCIm5hqHLkjN41qyVoNwJYkBQ5/23NW/smSbZNThJzbZtJkzLxiNyLrg79lCMJEs2ldKG5sLHfYhmlKGD8T32Y3o208tHliRnRltdusCTycnncfgLsiCUDaRx/FdhohkxsONdAi\u002Bo\u002BDaXooeBFV9g0xth8wHWfZdJWl5k\u002BDv8axO/Rt0UXqbz3Q9epgX3Ge6iQgbKDD9FmCzTvni\u002BOOztvz1yNH8HAcyBNxBh1NVmrvW2e7jxorBTJSPddV\u002BbrwYVUNJWuDe9fwFe1c5DpsHCK/0CAAD//wAAAP//sinOSE0tcUksSbSzKcovVyiyVTJUUiguSMwrBrKsDJXsbJJBgo5A0RJbpWIgv8zOwEa/zM5GPxmIgXqAJMIQAAAAAP//AAAA//80jkEKwkAMRa8y5ADWIiJKpxtXXRSEnmC0aSeok5BGRU/vVOzuv7/471cSOaHR5aRu4GRN76EEZ29BD4mPnJ6oE3GCoq4kjNgGHSlN7oaDeVivduCUxrhkY/m1W3BnNuP7QhFDjzrTBrKJbYH/bof2ECdBUDv6ZPkeHCthsmBZ70FYTQNZ9h0ov9SmL\u002BdTxYv1OkVEq78AAAD//wMAUEsDBBQABgAIAAAAIQB1PplpkwYAAIwaAAATAAAAeGwvdGhlbWUvdGhlbWUxLnhtbOxZW4vbRhR\u002BL/Q/CL07vkmyvcQbbNlO2uwmIeuk5HFsj63JjjRGM96NCYGSPPWlUEhLXwp960MpDTTQ0Jf\u002BmIWENv0RPTOSrZn1OJvLprQla1ik0XfOfHPO0TcXXbx0L6bOEU45YUnbrV6ouA5OxmxCklnbvTUclJquwwVKJoiyBLfdJebupd2PP7qIdkSEY\u002ByAfcJ3UNuNhJjvlMt8DM2IX2BznMCzKUtjJOA2nZUnKToGvzEt1yqVoBwjkrhOgmJwe306JWPsDKVLd3flvE/hNhFcNoxpeiBdY8NCYSeHVYngSx7S1DlCtO1CPxN2PMT3hOtQxAU8aLsV9eeWdy\u002BW0U5uRMUWW81uoP5yu9xgclhTfaaz0bpTz/O9oLP2rwBUbOL6jX7QD9b\u002BFACNxzDSjIvu0\u002B\u002B2uj0/x2qg7NLiu9fo1asGXvNf3\u002BDc8eXPwCtQ5t/bwA8GIUTRwCtQhvctMWnUQs/AK1CGDzbwjUqn5zUMvAJFlCSHG\u002BiKH9TD1WjXkCmjV6zwlu8NGrXceYGCalhXl\u002BxiyhKxrdZidJelAwBIIEWCJI5YzvEUjaGKQ0TJKCXOHplFUHhzlDAOzZVaZVCpw3/589SVigjawUizlryACd9oknwcPk7JXLTdT8Grq0GeP3t28vDpycNfTx49Onn4c963cmXYXUHJTLd7\u002BcNXf333ufPnL9\u002B/fPx11vVpPNfxL3764sVvv7/KPYy4CMXzb568ePrk\u002Bbdf/vHjY4v3TopGOnxIYsyda/jYucliGKCFPx6lb2YxjBAxLFAEvi2u\u002ByIygNeWiNpwXWyG8HYKKmMDXl7cNbgeROlCEEvPV6PYAO4zRrsstQbgquxLi/BwkczsnacLHXcToSNb3yFKjAT3F3OQV2JzGUbYoHmDokSgGU6wcOQzdoixZXR3CDHiuk/GKeNsKpw7xOkiYg3JkIyMQiqMrpAY8rK0EYRUG7HZv\u002B10GbWNuoePTCS8FohayA8xNcJ4GS0Eim0uhyimesD3kIhsJA\u002BW6VjH9bmATM8wZU5/gjm32VxPYbxa0q\u002BCwtjTvk\u002BXsYlMBTm0\u002BdxDjOnIHjsMIxTPrZxJEunYT/ghlChybjBhg\u002B8z8w2R95AHlGxN922CjXSfLQS3QFx1SkWByCeL1JLLy5iZ7\u002BOSThFWKgPab0h6TJIz9f2Usvv/jLLbNfocNN3u\u002BF3UvJMS6zt15ZSGb8P9B5W7hxbJDQwvy\u002BbM9UG4Pwi3\u002B78X7m3v8vnLdaHQIN7FWl2t3OOtC/cpofRALCne42rtzmFemgygUW0q1M5yvZGbR3CZbxMM3CxFysZJmfiMiOggQnNY4FfVNnTGc9cz7swZh3W/alYbYnzKt9o9LOJ9Nsn2q9Wq3Jtm4sGRKNor/rod9hoiQweNYg\u002B2dq92tTO1V14RkLZvQkLrzCRRt5BorBohC68ioUZ2LixaFhZN6X6VqlUW16EAauuswMLJgeVW2/W97BwAtlSI4onMU3YksMquTM65ZnpbMKleAbCKWFVAkemW5Lp1eHJ0Wam9RqYNElq5mSS0MozQBOfVqR\u002BcnGeuW0VKDXoyFKu3oaDRaL6PXEsROaUNNNGVgibOcdsN6j6cjY3RvO1OYd8Pl/EcaofLBS\u002BiMzg8G4s0e\u002BHfRlnmKRc9xKMs4Ep0MjWIicCpQ0ncduXw19VAE6Uhilu1BoLwryXXAln5t5GDpJtJxtMpHgs97VqLjHR2CwqfaYX1qTJ/e7C0ZAtI90E0OXZGdJHeRFBifqMqAzghHI5/qlk0JwTOM9dCVtTfqYkpl139QFHVUNaO6DxC\u002BYyii3kGVyK6pqPu1jHQ7vIxQ0A3QziayQn2nWfds6dqGTlNNIs501AVOWvaxfT9TfIaq2ISNVhl0q22DbzQutZK66BQrbPEGbPua0wIGrWiM4OaZLwpw1Kz81aT2jkuCLRIBFvitp4jrJF425kf7E5XrZwgVutKVfjqw4f\u002BbYKN7oJ49OAUeEEFV6mELw8pgkVfdo6cyQa8IvdEvkaEK2eRkrZ7v\u002BJ3vLDmh6VK0\u002B\u002BXvLpXKTX9Tr3U8f16te9XK71u7QFMLCKKq3720WUAB1F0mX96Ue0bn1/i1VnbhTGLy0x9Xikr4urzS7W2/fOLQ0B07ge1Qave6galVr0zKHm9brPUCoNuqReEjd6gF/rN1uCB6xwpsNeph17Qb5aCahiWvKAi6TdbpYZXq3W8RqfZ9zoP8mUMjDyTjzwWEF7Fa/dvAAAA//8DAFBLAwQUAAYACAAAACEA5hbrcr4CAACkBgAADQAAAHhsL3N0eWxlcy54bWykVd1u2jAUvp\u002B0d7B8nzoJhAFKUo1SpErdNKmdtFuTOGDNP8g2KGzaA\u002Bxh9gK72eP0NXacBAjq1E7tDTk\u002Btr/vOz8\u002BpJe1FGjHjOVaZTi6CDFiqtAlV6sMf75fBGOMrKOqpEIrluE9s/gyf/smtW4v2N2aMYcAQtkMr53bTAmxxZpJai/0hinYqbSR1MHSrIjdGEZL6y9JQeIwHBFJucItwlQW/wMiqfm63QSFlhvq\u002BJIL7vYNFkaymN6slDZ0KUBqHQ1pgepoZGJUmwNJ433EI3lhtNWVuwBcoquKF\u002Byx3AmZEFqckAD5ZUhRQsL4LPbavBBpSAzbcV8\u002BnKeVVs6iQm\u002BVy3DcOfLUfkM7KqC8ESZ5WmihDXJQJUhS41FUsvbEw6\u002BfD7//\u002BFMVlVzsW2/sHU1du2OSQ5a9k3jGlvdEM/E7z2EOGilraix0UKtuMHyOp6GzwMeFOI8THHkKDeGYUQtYoM6\u002B328gSgW928ptzvnrT5xeGbqP4qR3gTSEebrUpoS3cshwBBluXXkqWOUgbMNXa/91egO/S\u002B0c9FOelpyutKLCp\u002BxwozMgnIIJceff05fqDLuukNrKhXQ3ZYbhZfpkH0wIoTNbvHbh8ftoLfarYVFdneMDYk/2megjPfItkOGPfgAIeDQdBFpuuXBc/UMwYJb1KQWhr4Dzj7lJzpEFMlGyim6Fuz9uZvhkf2Al38r4eOoT32nXQGT4ZN/6SkUjz8Fqd2uhjeGLtoZn\u002BPv17N1kfr2Ig3E4GwfDAUuCSTKbB8nwajafLyZhHF796I2UVwyUZgLmKcylqRUwdkwXbBfi3cmX4d6ild/0KMjua5/Eo/B9EoXBYhBGwXBEx8F4NEiCRRLF89Fwdp0skp725IWDJyRR1I4wLz6ZOi6Z4OpQq0OF\u002Bl4oEiyfCIIcKkFOfy/5XwAAAP//AwBQSwMEFAAGAAgAAAAhAHvIbUipAAAAxwAAABQAAAB4bC9zaGFyZWRTdHJpbmdzLnhtbDSOwQrCMBBE74L/sOzdpnoQkTQ9CH5B/YDQrm0g2dTuVurfGw/CXB4zw4xttxThTYuEzA0eqxqBuM9D4LHBR3c/XBBEPQ8\u002BZqYGPyTYuv3OiiiULkuDk\u002Bp8NUb6iZKXKs/ExXnmJXktuIxG5oX8IBORpmhOdX02yQdG6PPKWnYRVg6vlW5/dlaCs\u002Bq6KQgUediibECbT3Okyhp11vwiphxxXwAAAP//AwBQSwMEFAAGAAgAAAAhADttMkvBAAAAQgEAACMAAAB4bC93b3Jrc2hlZXRzL19yZWxzL3NoZWV0MS54bWwucmVsc4SPwYrCMBRF9wP\u002BQ3h7k9aFDENTNyK4VecDYvraBtuXkPcU/XuzHGXA5eVwz\u002BU2m/s8qRtmDpEs1LoCheRjF2iw8HvaLb9BsTjq3BQJLTyQYdMuvpoDTk5KiceQWBULsYVRJP0Yw37E2bGOCamQPubZSYl5MMn5ixvQrKpqbfJfB7QvTrXvLOR9V4M6PVJZ/uyOfR88bqO/zkjyz4RJOZBgPqJIOchF7fKAYkHrd/aea30OBKZtzMvz9gkAAP//AwBQSwMEFAAGAAgAAAAhAKolfqrFAgAA0CMAACcAAAB4bC9wcmludGVyU2V0dGluZ3MvcHJpbnRlclNldHRpbmdzMS5iaW7sWt2K00AU/qbtstWCIgj\u002BXK3rjSiK0aqIV6WIit2l7FZaoVAijRLcJpK6agV/nmMfwSfwzhfxAXa99sIbqedMMm3aJiHSrmTtTEkynTmTOec7P50znTbaMPEefVj0fIkeBlQ36NPGU6q5eI7XqFDNpv6raNLTQZfa34KLKEB8x8/1k9\u002BQEziGvVK52IXAKlr0PUf3PFFVUJbUh3MTIv69\u002B\u002BvAdr3WYhKuV\u002B/cutsxjNGAerXWqqVgi2UrF/dKV\u002BB/hFv8cZzGlS8Avy4DluBev1W1CcJpFUncTUwsqBCgAo\u002BchmcOxjxOs\u002BeTTRDfiBWBtEDvnCC\u002BGUucnyWOV1xhlrhWbcS8e5/MYIqNDdPZNXei6AtsWIrnVDaTEWLFqyAPyEbJCh8ZgUOzoRHQCCwBAjruLVLJ/EvP79Oo6uChEVh2BHIUB3jB7a9yKSacCOc4ETEiIgVKiiTclwcllpKIkwGOPMEI2djFB6BAVb4kK8NPwAGnL/Km4pXSVHOjY1w34vX2BFt4gPvYRFz\u002BkqzzeccffYuqwJM7BJH5XArxBB5iGEmnNM/6H1/S\u002BgI1B3XeaMhcYfMM2a/k2LfkUbNPEhaPx4QFlOa/EsimPGfkfXPLPK/ugGG06hagjZzcEaEdJd5MIdF5pnF27Tt/6mlm45DgHapWrp4/yztZsoRih1IdhRm99PkXrqV\u002BU45\u002BPNQSaAQ0AotDoEOLzopnR\u002B8XB9NU3V3Ptry1Tcv/b2J69obds/rcu7bl9kxnhrntQe\u002BZm7CAadrOiy5dfa1YjcB/iMBK6czp89FypXS9WFC062mP0QgkIMDZ3QGlHhcpC7HpyxtKfL4cakYb5I8Cj6FSyyXXkMqstaFqBP7OFuRhkM/zu2sfr7BDJ2v4dM1tOjNzjU7lvKNrXPjMCe9FyCdVKUzg3sevv8\u002BZpy5x1x8AAAD//wMAUEsDBBQABgAIAAAAIQCPOoI5TAEAAGcCAAARAAgBZG9jUHJvcHMvY29yZS54bWwgogQBKKAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8klFrgzAUhd8H\u002Bw\u002BSd02itCtBLWyjTyts1LGxt5DcWplGSdJZ//2ids7Sscfcc/LlnEvi9akqvS/QpqhVgmhAkAdK1LJQeYJes42/Qp6xXEle1goS1IFB6/T2JhYNE7WGZ103oG0BxnMkZZhoEnSwtmEYG3GAipvAOZQT97WuuHVHneOGi0\u002BeAw4JWeIKLJfcctwD/WYiojNSignZHHU5AKTAUEIFyhpMA4p/vRZ0Zf68MCgzZ1XYrnGdznHnbClGcXKfTDEZ27YN2miI4fJT/L592g1V/UL1uxKA0lgKJjRwW\u002Bv0pVDdUXm7WuUxns37HZbc2K1b974Aed9dWq9lRx1KjGiQnovFxhI/ylv08JhtUBoSuvDJ0ieLjK4YvWMh\u002Behfv7jfxxwH1TnDv8Qw9An1w1VGIrZYsYjOiD\u002BANMZXXyP9BgAA//8DAFBLAwQUAAYACAAAACEAYUkJEIkBAAARAwAAEAAIAWRvY1Byb3BzL2FwcC54bWwgogQBKKAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACckkFv2zAMhe8D\u002Bh8M3Rs53VAMgaxiSFf0sGEBkrZnTaZjobIkiKyR7NePttHU2XrqjeR7ePpESd0cOl/0kNHFUInlohQFBBtrF/aVeNjdXX4VBZIJtfExQCWOgOJGX3xSmxwTZHKABUcErERLlFZSom2hM7hgObDSxNwZ4jbvZWwaZ\u002BE22pcOAsmrsryWcCAINdSX6RQopsRVTx8NraMd\u002BPBxd0wMrNW3lLyzhviW\u002BqezOWJsqPh\u002BsOCVnIuK6bZgX7Kjoy6VnLdqa42HNQfrxngEJd8G6h7MsLSNcRm16mnVg6WYC3R/eG1XovhtEAacSvQmOxOIsQbb1Iy1T0hZP8X8jC0AoZJsmIZjOffOa/dFL0cDF\u002BfGIWACYeEccefIA/5qNibTO8TLOfHIMPFOONuBbzpzzjdemU/6J3sdu2TCkYVT9cOFZ3xIu3hrCF7XeT5U29ZkqPkFTus\u002BDdQ9bzL7IWTdmrCH\u002BtXzvzA8/uP0w/XyelF\u002BLvldZzMl3/6y/gsAAP//AwBQSwMEFAAGAAgAAAAhAGQfLTu8AQAA0QUAABMACAFkb2NQcm9wcy9jdXN0b20ueG1sIKIEASigAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtJRLi9swFIX3hf4Ho73GkvyQbOwMkzgDgU4ZSKaLboJsSRODLRlLSRtK/3uVPiak0I2Ll5crjr5zOZzi/mvfBSc52tboEuA7BAKpGyNa/VqCl90jZCCwjmvBO6NlCc7SgvvF\u002B3fF82gGObpW2sBLaFuCg3NDHoa2Ocie2zu/1n6jzNhz58fxNTRKtY2sTHPspXYhQSgNm6N1pofDmxz4pZef3FRJYZoLnf20Ow8ed1H8Fj8HqnetKMG3KllVVYISSNbZCmKElzCLMgoRQ4gsyeoxe1h/B8FweUxAoHnvrT9tN8/7D7yW3V7FhPMoJpBRlMKYMAZrgTGUdc2SLEsQYc1\u002BrXndSeH/P7m8G75YNy7ceJRFeJ2L8A/bf1JGUym30lXcyRtKggiBCEPCdijKE5ZH6PMs1PFU6ifpDub2tNufKR3FLKDJVNCPPjo3t91oJ0fNu1kw08kpaJ3c3N6TEpUxVivIUoVhjLmCGeY1JII2AmEs6pjOYoJONfHQON9if9mIOCWUpgxinCAYc\u002B\u002BA1TKCEteKpSKhKFOz2PDFOa03VsZHRLtl6y7dde0K9C/M8NrFix8AAAD//wMAUEsBAi0AFAAGAAgAAAAhAHuSyCF6AQAAgQUAABMAAAAAAAAAAAAAAAAAAAAAAFtDb250ZW50X1R5cGVzXS54bWxQSwECLQAUAAYACAAAACEAE16\u002BZQIBAADfAgAACwAAAAAAAAAAAAAAAACzAwAAX3JlbHMvLnJlbHNQSwECLQAUAAYACAAAACEAPQeh2foCAADnBgAADwAAAAAAAAAAAAAAAADmBgAAeGwvd29ya2Jvb2sueG1sUEsBAi0AFAAGAAgAAAAhAIE\u002BlJfzAAAAugIAABoAAAAAAAAAAAAAAAAADQoAAHhsL19yZWxzL3dvcmtib29rLnhtbC5yZWxzUEsBAi0AFAAGAAgAAAAhAEZMNedOAgAAPAQAABgAAAAAAAAAAAAAAAAAQAwAAHhsL3dvcmtzaGVldHMvc2hlZXQxLnhtbFBLAQItABQABgAIAAAAIQB1PplpkwYAAIwaAAATAAAAAAAAAAAAAAAAAMQOAAB4bC90aGVtZS90aGVtZTEueG1sUEsBAi0AFAAGAAgAAAAhAOYW63K\u002BAgAApAYAAA0AAAAAAAAAAAAAAAAAiBUAAHhsL3N0eWxlcy54bWxQSwECLQAUAAYACAAAACEAe8htSKkAAADHAAAAFAAAAAAAAAAAAAAAAABxGAAAeGwvc2hhcmVkU3RyaW5ncy54bWxQSwECLQAUAAYACAAAACEAO20yS8EAAABCAQAAIwAAAAAAAAAAAAAAAABMGQAAeGwvd29ya3NoZWV0cy9fcmVscy9zaGVldDEueG1sLnJlbHNQSwECLQAUAAYACAAAACEAqiV\u002BqsUCAADQIwAAJwAAAAAAAAAAAAAAAABOGgAAeGwvcHJpbnRlclNldHRpbmdzL3ByaW50ZXJTZXR0aW5nczEuYmluUEsBAi0AFAAGAAgAAAAhAI86gjlMAQAAZwIAABEAAAAAAAAAAAAAAAAAWB0AAGRvY1Byb3BzL2NvcmUueG1sUEsBAi0AFAAGAAgAAAAhAGFJCRCJAQAAEQMAABAAAAAAAAAAAAAAAAAA2x8AAGRvY1Byb3BzL2FwcC54bWxQSwECLQAUAAYACAAAACEAZB8tO7wBAADRBQAAEwAAAAAAAAAAAAAAAACaIgAAZG9jUHJvcHMvY3VzdG9tLnhtbFBLBQYAAAAADQANAGcDAACPJQAAAAA=",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "2a7430e3-c9a1-4d55-af2d-5e0fa79e0952",
+        "Content-Length": "0",
+        "Date": "Tue, 04 Apr 2023 22:58:05 GMT",
+        "Operation-Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/2a7430e3-c9a1-4d55-af2d-5e0fa79e0952?api-version=2023-02-28-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "61",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "178",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c6909947-c2e3-4e1e-b114-a634ad3183b4",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
-      "Date" : "Thu, 23 Mar 2023 20:29:19 GMT"
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-read/analyzeResults/2a7430e3-c9a1-4d55-af2d-5e0fa79e0952?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 04 Apr 2023 22:58:06 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "2e82f422-a2eb-4ae9-8534-15693af17012"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bf11d7f5-6020-42f8-b665-38feac897046",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Apr 2023 22:58:05 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "14",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-04T22:58:06Z",
+        "lastUpdatedDateTime": "2023-04-04T22:58:06Z"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "33d6c4b5-d14c-416a-994d-d68460790e6e"
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-read/analyzeResults/2a7430e3-c9a1-4d55-af2d-5e0fa79e0952?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 04 Apr 2023 22:58:11 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "1cb14ed7-88ab-4c79-a56b-712803d81a4a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "7a8421bb-8907-4a92-ae67-ce4e925d39cb",
+        "Content-Length": "981",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Apr 2023 22:58:11 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "25",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-04-04T22:58:06Z",
+        "lastUpdatedDateTime": "2023-04-04T22:58:06Z",
+        "analyzeResult": {
+          "apiVersion": "2023-02-28-preview",
+          "modelId": "prebuilt-read",
+          "stringIndexType": "utf16CodeUnit",
+          "content": "Sheet1\nThis is a xlsx example.",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "words": [
+                {
+                  "content": "Sheet1",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 0,
+                    "length": 6
+                  }
+                },
+                {
+                  "content": "This",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 7,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "is",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 12,
+                    "length": 2
+                  }
+                },
+                {
+                  "content": "a",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 15,
+                    "length": 1
+                  }
+                },
+                {
+                  "content": "xlsx",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 17,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "example.",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 22,
+                    "length": 8
+                  }
+                }
+              ],
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 30
+                }
+              ],
+              "kind": "sheet"
+            }
+          ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 6
+                }
+              ],
+              "content": "Sheet1"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 7,
+                  "length": 23
+                }
+              ],
+              "content": "This is a xlsx example."
+            }
+          ],
+          "styles": [],
+          "languages": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 30
+                }
+              ],
+              "locale": "en",
+              "confidence": 1
+            }
+          ]
+        }
+      }
     },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "18",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "da76da6f-68b0-48e6-86a5-9906a7a2a0b6",
-      "retry-after" : "0",
-      "Content-Length" : "106",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"running\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:19Z\"}",
-      "Date" : "Thu, 23 Mar 2023 20:29:19 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f5073422-d325-45cb-8a84-003c97ddc62e"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "31",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d6e5a955-cf88-404e-addf-cdc3d915444c",
-      "retry-after" : "0",
-      "Content-Length" : "981",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:20Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"Sheet1\\nThis is a xlsx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"Sheet1\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":6}},{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":7,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":12,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":1}},{\"content\":\"xlsx\",\"confidence\":1,\"span\":{\"offset\":17,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":22,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":30}],\"kind\":\"sheet\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":6}],\"content\":\"Sheet1\"},{\"spans\":[{\"offset\":7,\"length\":23}],\"content\":\"This is a xlsx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":30}],\"locale\":\"en\",\"confidence\":1}]}}",
-      "Date" : "Thu, 23 Mar 2023 20:29:24 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ab76166c-aced-4ed8-ba9e-3875cf18753a"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "31",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "bdc9ad56-2180-4e6b-880f-22380bbe297f",
-      "retry-after" : "0",
-      "Content-Length" : "981",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:20Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"Sheet1\\nThis is a xlsx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"Sheet1\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":6}},{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":7,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":12,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":1}},{\"content\":\"xlsx\",\"confidence\":1,\"span\":{\"offset\":17,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":22,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":30}],\"kind\":\"sheet\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":6}],\"content\":\"Sheet1\"},{\"spans\":[{\"offset\":7,\"length\":23}],\"content\":\"This is a xlsx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":30}],\"locale\":\"en\",\"confidence\":1}]}}",
-      "Date" : "Thu, 23 Mar 2023 20:29:24 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-read/analyzeResults/2a7430e3-c9a1-4d55-af2d-5e0fa79e0952?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 04 Apr 2023 22:58:11 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "ec58a502-43c8-482a-847c-16424e84c9e3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6739fc91-a548-4a8a-81d2-5dbe7229b5ee",
+        "Content-Length": "981",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 04 Apr 2023 22:58:11 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "27",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-04-04T22:58:06Z",
+        "lastUpdatedDateTime": "2023-04-04T22:58:06Z",
+        "analyzeResult": {
+          "apiVersion": "2023-02-28-preview",
+          "modelId": "prebuilt-read",
+          "stringIndexType": "utf16CodeUnit",
+          "content": "Sheet1\nThis is a xlsx example.",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "words": [
+                {
+                  "content": "Sheet1",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 0,
+                    "length": 6
+                  }
+                },
+                {
+                  "content": "This",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 7,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "is",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 12,
+                    "length": 2
+                  }
+                },
+                {
+                  "content": "a",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 15,
+                    "length": 1
+                  }
+                },
+                {
+                  "content": "xlsx",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 17,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "example.",
+                  "confidence": 1,
+                  "span": {
+                    "offset": 22,
+                    "length": 8
+                  }
+                }
+              ],
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 30
+                }
+              ],
+              "kind": "sheet"
+            }
+          ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 6
+                }
+              ],
+              "content": "Sheet1"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 7,
+                  "length": 23
+                }
+              ],
+              "content": "This is a xlsx example."
+            }
+          ],
+          "styles": [],
+          "languages": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 30
+                }
+              ],
+              "locale": "en",
+              "confidence": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
