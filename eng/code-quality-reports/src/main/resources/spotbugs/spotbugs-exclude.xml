@@ -2052,7 +2052,10 @@
   </Match>
 
   <Match>
-    <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    <Or>
+      <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+      <Class name="~com.azure.cosmos.test.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
 
