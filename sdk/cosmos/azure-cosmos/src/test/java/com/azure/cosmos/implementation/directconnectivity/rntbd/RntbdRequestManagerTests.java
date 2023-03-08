@@ -48,7 +48,9 @@ public class RntbdRequestManagerTests {
                 healthChecker,
                 30,
                 connectionStateListener,
-                Duration.ofSeconds(1).toNanos());
+                Duration.ofSeconds(1).toNanos(),
+                null,
+                config.tcpNetworkRequestTimeoutInNanos());
         RntbdClientChannelHealthChecker.Timestamps timestamps = rntbdRequestManager.getTimestamps();
 
         ChannelHandlerContext channelHandlerContext = Mockito.mock(ChannelHandlerContext.class);
@@ -126,7 +128,9 @@ public class RntbdRequestManagerTests {
             healthChecker,
             30,
             connectionStateListener,
-            Duration.ofSeconds(1).toNanos());
+            Duration.ofSeconds(1).toNanos(),
+            null,
+            config.tcpNetworkRequestTimeoutInNanos());
 
         RntbdClientChannelHealthChecker.Timestamps timestamps = rntbdRequestManager.getTimestamps();
 

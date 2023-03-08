@@ -62,6 +62,16 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
+    RntbdEndpointStatistics lastFaultInjectionId(String lastFaultInjectionId) {
+        this.lastFaultInjectionId = lastFaultInjectionId;
+        return this;
+    }
+
+    RntbdEndpointStatistics lastFaultInjectionTimestamp(Instant lastFaultInjectionTimestamp) {
+        this.lastFaultInjectionTimestamp = lastFaultInjectionTimestamp;
+        return this;
+    }
+
     private int availableChannels;
     private int acquiredChannels;
     private int executorTaskQueueSize;
@@ -71,6 +81,8 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastRequestNanoTime;
     private Instant createdTime;
     private RntbdConnectionStateListenerMetricsDiagnostics connectionStateListenerMetrics;
+    private String lastFaultInjectionId;
+    private Instant lastFaultInjectionTimestamp;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
@@ -97,6 +109,8 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
+            this.writeNonNullStringField(writer, "lastFaultInjectionId", stats.lastFaultInjectionId);
+            this.writeNonNullInstantField(writer, "lastFaultInjectionTimestamp", stats.lastFaultInjectionTimestamp);
             if (stats.connectionStateListenerMetrics != null)
             {
                 writer.writeObjectField("cerMetrics", stats.connectionStateListenerMetrics);
@@ -111,6 +125,22 @@ public class RntbdEndpointStatistics implements Serializable {
         private String toInstantString(long nanoTime) {
             Instant time = Instant.ofEpochMilli(referenceInstant.plusNanos(nanoTime - referenceNanoTime).toEpochMilli());
             return DiagnosticsInstantSerializer.fromInstant(time);
+        }
+
+        private void writeNonNullInstantField(JsonGenerator jsonGenerator, String fieldName, Instant value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value.toString());
+        }
+
+        private void writeNonNullStringField(JsonGenerator jsonGenerator, String fieldName, String value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value);
         }
     }
 }
