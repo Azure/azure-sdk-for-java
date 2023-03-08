@@ -17,10 +17,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A token credential provider that can provide a credential from a list of providers.
+ * The ChainedTokenCredential is a convenience credential that allows users to chain together a set of TokenCredential
+ * together. The credential executes each credential in the chain sequentially and returns the token from the first
+ * credential in the chain that successfully authenticates.
  *
- * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then
- * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
+ * <p><strong>Sample: Construct a ChainedTokenCredential.</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ChainedTokenCredential},
+ * using the {@link com.azure.identity.ChainedTokenCredentialBuilder} to configure it. The sample below
+ * tries silent username+password login tried first, then interactive browser login as needed
+ * (e.g. when 2FA is turned on in the directory). Once this credential is created, it may be passed into the builder
+ * of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>

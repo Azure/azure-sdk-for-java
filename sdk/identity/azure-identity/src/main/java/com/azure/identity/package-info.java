@@ -131,7 +131,9 @@
  * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
  * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
  * A client secret and/or a client certificate associated with the registered service principal is used as the password
- * when authenticating the service principal. The Azure Identity library supports both client secret and client
+ * when authenticating the service principal.</p>
+ *
+ * </p>The Azure Identity library supports both client secret and client
  * certificate based service principal authentication via {@link com.azure.identity.ClientSecretCredential} and
  * {@link com.azure.identity.ClientCertificateCredential} respectively. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/docs">service principal authentication
@@ -199,7 +201,9 @@
  * <p>User credential authentication is a type of authentication in Azure that involves a user providing their
  * username and password to authenticate with Azure resources. In Azure, user credential authentication can be used to
  * authenticate with <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active
- * Directory (Azure AD)</a>. The Azure Identity library supports user credentials based authentication via
+ * Directory (Azure AD)</a>.</p>
+ *
+ * <p>The Azure Identity library supports user credentials based authentication via
  * {@link com.azure.identity.InteractiveBrowserCredential}, {@link com.azure.identity.DeviceCodeCredential} and
  * {@link com.azure.identity.UsernamePasswordCredential}. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/usercredential/docs">user credential authentication documentation</a>.
@@ -275,11 +279,12 @@
  *
  * <p>Azure supports developer environment authentication via Azure CLI, Azure Powershell and Azure Tools for IntelliJ
  * plugin in IntelliJ IDE. It involves interactively authenticating using user credentials locally on the developer
- * machine. Once authenticated, the login information is persisted. The Azure Identity library supports authenticating
- * in developer environment via {@link com.azure.identity.AzureCliCredential},
- * {@link com.azure.identity.AzurePowerShellCredential} {@link com.azure.identity.IntelliJCredential}.
- * These credentials offer a seamless authentication experience by utilizing the cached Azure Plugin login information
- * from their respective IDE tool. For more information refer to the
+ * machine. Once authenticated, the login information is persisted.</p>
+ *
+ * <p>The Azure Identity library supports authenticating in developer environment via
+ * {@link com.azure.identity.AzureCliCredential}, {@link com.azure.identity.AzurePowerShellCredential} and
+ * {@link com.azure.identity.IntelliJCredential}. These credentials offer a seamless authentication experience by
+ * utilizing the cached Azure Plugin login information from their respective IDE tool. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/developerenvironment/docs">developer environment authentication
  * documentation</a>.</p>
  *

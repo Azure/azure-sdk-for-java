@@ -22,9 +22,17 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The IntelliJ credential authenticates in a development environment and acquires a token with the account in
- * Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses it to authenticate
- * the application against Azure Active Directory.
+ * <p>IntelliJ IDEA is an integrated development environment (IDE) developed by JetBrains, which provides a variety of
+ * features to support software development, such as code completion, debugging, and testing.
+ * Azure offers <a href="https://learn.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/">Azure Toolkit
+ * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It
+ * enables developers to create, test, and deploy Java applications to the Azure cloud platform. In order to
+ * use the plugin authentication as a user or service principal against
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a> is required.
+ * The IntelliJCredential authenticates in a development environment and acquires a token on behalf of the
+ * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses
+ * it to authenticate the application against Azure Active Directory.</p>
  *
  * <h2>Configure IntelliJCredential</h2>
  *
@@ -44,16 +52,18 @@ import java.util.concurrent.atomic.AtomicReference;
  * reuse the cached plugin credentials.</p>
  *
  * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.IntelliJCredential},
+ * using the {@link com.azure.identity.IntelliJCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
  * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
- *
- * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
- * AAD authentication.</p>
  *
  * @see com.azure.identity
  * @see IntelliJCredentialBuilder

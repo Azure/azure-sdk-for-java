@@ -28,7 +28,8 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  *
- * <p>The required environment variables for service principal authentication using client certificate are as follows:</p>
+ * <p>The required environment variables for service principal authentication using client certificate are as follows:
+ * </p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH AZURE_CLIENT_CERTIFICATE_PATH}</li>
@@ -48,6 +49,12 @@ import reactor.core.publisher.Mono;
  * scenario's environment variables are configured.</p>
  *
  * <p><strong>Sample: Construct EnvironmentCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.EnvironmentCredential},
+ * using the {@link com.azure.identity.EnvironmentCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
  * <pre>
  * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
@@ -55,8 +62,8 @@ import reactor.core.publisher.Mono;
  * </pre>
  * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *
- * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for AAD authentication.</p>
+ * @see com.azure.identity
+ * @see EnvironmentCredentialBuilder
  */
 @Immutable
 public class EnvironmentCredential implements TokenCredential {

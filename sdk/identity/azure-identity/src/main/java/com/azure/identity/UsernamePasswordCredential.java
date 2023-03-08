@@ -21,7 +21,11 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * <p>The UsernamePasswordCredential authenticates a public client application and acquires a token using the
+ * <p>Username password authentication is a common type of authentication flow used by many applications and services,
+ * including <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
+ * (Azure AD)</a> . With username password authentication, users enter their username and password credentials to sign
+ * in to an application or service.
+ * The UsernamePasswordCredential authenticates a public client application and acquires a token using the
  * user credentials that don't require 2FA/MFA (Multi-factored) authentication. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/usernamepasswordcredential/docs">conceptual knowledge and configuration
  * details</a>.</p>
@@ -29,7 +33,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>In the scenario where 2FA/MFA (Multi-factored) authentication is turned on, please use
  * {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential} instead.</p>
  *
- * <p><strong>Sample: Construct DeviceCodeCredential</strong></p>
+ * <p><strong>Sample: Construct UsernamePasswordCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.UsernamePasswordCredential},
+ * using the {@link com.azure.identity.UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
+ * {@code username} and {@code password} parameters are required to create
+ * {@link com.azure.identity.UsernamePasswordCredential}. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
  * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
  * <pre>
@@ -40,10 +50,6 @@ import java.util.concurrent.atomic.AtomicReference;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
- *
- * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
- * AAD authentication.</p>
  *
  * @see com.azure.identity
  * @see UsernamePasswordCredentialBuilder

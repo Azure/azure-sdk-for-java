@@ -6,8 +6,11 @@ package com.azure.identity.credential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
+
 import com.azure.identity.AzureCliCredential;
 import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.ClientAssertionCredential;
+import com.azure.identity.ClientAssertionCredentialBuilder;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredential;
@@ -84,6 +87,28 @@ public final class JavaDocCodeSnippets {
             .proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("10.21.32.43", 5465)))
             .build();
         // END: com.azure.identity.credential.clientcertificatecredential.constructwithproxy
+    }
+
+    /**
+     * Method to insert code snippets for {@link ClientAssertionCredential}
+     */
+    public void clientAssertionCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.clientassertioncredential.construct
+        TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientAssertion(() -> "<Client-Assertion>")
+            .build();
+        // END: com.azure.identity.credential.clientassertioncredential.construct
+
+        // BEGIN: com.azure.identity.credential.clientassertioncredential.constructwithproxy
+        TokenCredential assertionCredential = new ClientAssertionCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientAssertion(() -> "<Client-Assertion>")
+            .proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("10.21.32.43", 5465)))
+            .build();
+        // END: com.azure.identity.credential.clientassertioncredential.constructwithproxy
     }
 
     /**
@@ -186,10 +211,7 @@ public final class JavaDocCodeSnippets {
     public void deviceCodeCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.devicecodecredential.construct
         TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
-            .challengeConsumer(challenge -> {
-                // Lets the user know about the challenge.
-                System.out.println(challenge.getMessage());
-            }).build();
+            .build();
         // END: com.azure.identity.credential.devicecodecredential.construct
     }
 

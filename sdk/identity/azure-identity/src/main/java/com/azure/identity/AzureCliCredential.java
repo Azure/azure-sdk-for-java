@@ -16,9 +16,14 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * The Azure CLI credential authenticates in a development environment and acquires a token with the enabled user
- * or service principal in Azure CLI. It uses the Azure CLI given a user that is already logged into it, and uses the
- * Azure CLI to authenticate the application against Azure Active Directory.
+ * <p>The Azure CLI is a command-line tool that allows users to manage Azure resources from their local machine or
+ * terminal. It allows users to
+ * <a href="https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
+ * user and/or a service principal against
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a>. The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
+ * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
+ * and executes an Azure CLI command underneath to authenticate the application against Azure Active Directory.</p>
  *
  * <h2>Configure AzureCliCredential</h2>
  *
@@ -36,16 +41,18 @@ import reactor.core.publisher.Mono;
  * prompt you to sign in again.</p>
  *
  * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
+ * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
  * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
- *
- * <p>The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication.
- * The TokenCredential instantiated above can be passed into most of the Azure SDK client builders for
- * AAD authentication.</p>
  *
  * @see com.azure.identity
  * @see AzureCliCredentialBuilder

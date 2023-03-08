@@ -23,12 +23,13 @@ import java.time.Duration;
  * Managed Identity</a> is a feature in
  * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that provides a way for applications running on Azure to authenticate themselves with Azure resources without
- * needing to manage or store any secrets like passwords or keys. The Managed Identity credential authenticates the
- * configured managed identity (system or user assigned) of an Azure resource. So, if the application is running inside
- * an Azure resource that supports Managed Identity through IDENTITY/MSI, IMDS endpoints, or both, then this credential
- * will get your application authenticated, and offers a great secretless authentication experience. For more
- * information refer to the <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">managed
- * identity authentication documentation</a>.</p>
+ * needing to manage or store any secrets like passwords or keys.
+ * The ManagedIdentityCredential authenticates the configured managed identity (system or user assigned) of an
+ * Azure resource. So, if the application is running inside an Azure resource that supports Managed Identity through
+ * IDENTITY/MSI, IMDS endpoints, or both, then this credential will get your application authenticated, and offers a
+ * great secretless authentication experience. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">managed identity authentication
+ * documentation</a>.</p>
  *
  * <p>The Managed Identity credential supports managed identity authentication for the following Azure Services:</p>
  *
