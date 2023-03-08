@@ -97,9 +97,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 .add(pkIds.get(0))
                 .add(pkIds.get(1))
                 .build();
-
-        PartitionKey pk1 = new PartitionKeyBuilder().addNoneValue().add("simon").build();
-
+        
         String documentId = UUID.randomUUID().toString();
         ObjectNode properties = getItem(documentId, pkIds);
         createdMultiHashContainer.createItem(properties);
