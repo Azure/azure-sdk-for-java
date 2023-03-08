@@ -18,15 +18,17 @@ import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelShareFileReadBehavior.class);
+    private static final long UNKNOWN_LENGTH = Long.MIN_VALUE;
 
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
 
-    private Long lastKnownResourceLength;
+    private long lastKnownResourceLength;
 
     StorageSeekableByteChannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
         this.client = client;
         this.conditions = conditions;
+        this.lastKnownResourceLength = UNKNOWN_LENGTH;
     }
 
     ShareFileClient getClient() {
@@ -72,7 +74,7 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
 
     @Override
     public long getResourceLength() {
-        if (lastKnownResourceLength == null) {
+        if (lastKnownResourceLength == UNKNOWN_LENGTH) {
             lastKnownResourceLength = client.getProperties().getContentLength();
         }
         return lastKnownResourceLength;
