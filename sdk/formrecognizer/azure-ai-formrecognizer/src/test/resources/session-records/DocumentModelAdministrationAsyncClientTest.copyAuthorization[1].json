@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "networkCallRecords" : [ {
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2023-02-28-preview",
@@ -43,3 +44,68 @@
   } ],
   "variables" : [ ]
 }
+=======
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:authorizeCopy?api-version=2022-08-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "34",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 19:38:27 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "c8cf66a6-de26-4f56-80cf-e924a8797edc"
+      },
+      "RequestBody": {
+        "modelId": "java_copy_model_test"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6dad7f14-b5cb-4b3a-a62f-9663eec0d775",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:38:26 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "542",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "targetResourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR",
+        "targetResourceRegion": "eastus",
+        "targetModelId": "java_copy_model_test",
+        "targetModelLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2022-08-31",
+        "accessToken": "REDACTED",
+        "expirationDateTime": "2023-03-08T20:38:27Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/java_copy_model_test?api-version=2022-08-31",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:38:28 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "1d686d0f-cac2-4eb2-a631-1c4cda6e805f"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "apim-request-id": "3f6f6a51-6c9c-496f-98bc-acfaee50f18b",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:38:27 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "50",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)

@@ -16,19 +16,12 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.FluxUtil;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
 
@@ -40,17 +33,15 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIENT_ID;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.OPERATION_LOCATION_SANITIZER;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,8 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    final TestProxySanitizer OPERATION_LOCATION_SANITIZER = new TestProxySanitizer("Operation-Location",URL_REGEX, "REDACTED",TestProxySanitizerType.BODY_KEY);
     Duration durationTestMode;
 
     /**
@@ -116,32 +105,21 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+            } else if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            } else {
-                builder.credential(getCredentialByAuthority(endpoint));
             }
-        }
-        return builder;
-    }
-
-    static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
         } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.credential(getCredentialByAuthority(endpoint));
         }
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
+        return builder;
     }
 
     static void validateEncodedUrlExceptionSource(HttpResponseException errorResponseException) {

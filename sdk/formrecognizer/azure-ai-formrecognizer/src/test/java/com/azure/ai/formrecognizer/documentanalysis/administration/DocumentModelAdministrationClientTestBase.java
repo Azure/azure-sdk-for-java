@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -37,6 +38,8 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.OPERATION_LOCATION_SANITIZER;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
@@ -76,23 +79,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             }
             builder.credential(getCredentialByAuthority(endpoint));
         }
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
         return builder;
-    }
-
-    static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
-        }
     }
 
     static void validateCopyAuthorizationResult(DocumentModelCopyAuthorization actualResult) {

@@ -1,25 +1,42 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "05bc4d3c-2471-4797-8ed8-5afa0a26d9b9",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "161",
-      "x-envoy-upstream-service-time" : "3106",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "88ae190a-88ed-43a4-8d42-6dddb729e808",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"88ae190a-88ed-43a4-8d42-6dddb729e808\"},\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Thu, 25 Aug 2022 18:17:12 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "74",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 19:40:28 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "9f164135-0f44-4abf-b7cf-5d722222f620"
+      },
+      "RequestBody": {
+        "source": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "830d4bf4-f824-4013-8037-fe2006c11e04",
+        "Content-Length": "170",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:40:27 GMT",
+        "ms-azure-ai-errorcode": "InvalidImage",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "48",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "innerError": {
+            "requestId": "830d4bf4-f824-4013-8037-fe2006c11e04"
+          },
+          "code": "InvalidImage",
+          "message": "The input data is not a valid image or password protected."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
