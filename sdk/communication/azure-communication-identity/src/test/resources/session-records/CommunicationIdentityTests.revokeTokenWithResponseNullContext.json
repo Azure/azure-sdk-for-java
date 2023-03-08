@@ -54,7 +54,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED/:revokeAccessTokens?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0e2e2295-e3fa-4c9f-8d27-0149fdd396ff"
+      "x-ms-client-request-id" : "0functional2295-e3fa-4c9f-8d27-0149fdd396ff"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
@@ -66,7 +66,7 @@
       "X-Azure-Ref" : "00IcIZAAAAAAeKJZT++c/RZbdmxDiQgGPSEVMMDFFREdFMjAxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "204",
       "Date" : "Wed, 08 Mar 2023 13:04:16 GMT",
-      "x-ms-client-request-id" : "0e2e2295-e3fa-4c9f-8d27-0149fdd396ff",
+      "x-ms-client-request-id" : "0functional2295-e3fa-4c9f-8d27-0149fdd396ff",
       "Request-Context" : "appId="
     },
     "Exception" : null

@@ -38,7 +38,7 @@ public final class IdentityErrorConverter {
      *
      * @return the converted IdentityError.
      */
-    private static IdentityError convert(CommunicationError communicationError) {
+    public static IdentityError convert(CommunicationError communicationError) {
         if (communicationError == null) {
             return null;
         }

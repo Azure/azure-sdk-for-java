@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.identity.e2e;
+package com.azure.communication.identity.functional;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -21,8 +21,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.azure.communication.identity.e2e.CteTestHelper.skipExchangeAadTeamsTokenTest;
-import static com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
+import static com.azure.communication.identity.functional.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
 import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,7 +73,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenScopeTestHelper#getTokenScopes")
+    @MethodSource("com.azure.communication.identity.functional.TokenScopeTestHelper#getTokenScopes")
     public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -90,7 +90,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -109,7 +109,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -126,7 +126,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -147,7 +147,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -365,7 +365,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenScopeTestHelper#getTokenScopes")
+    @MethodSource("com.azure.communication.identity.functional.TokenScopeTestHelper#getTokenScopes")
     public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -380,7 +380,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -401,7 +401,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -421,7 +421,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -443,7 +443,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    @MethodSource("com.azure.communication.identity.functional.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -560,7 +560,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithValidParams(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -575,7 +575,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithValidParamsWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -594,7 +594,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "when {1} is null")
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getNullParams")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getNullParams")
     public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -612,7 +612,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getInvalidTokens")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getInvalidTokens")
     public void getTokenForTeamsUserWithInvalidToken(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -630,7 +630,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getInvalidAppIds")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getInvalidAppIds")
     public void getTokenForTeamsUserWithInvalidAppId(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -648,7 +648,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     }
 
     @ParameterizedTest(name = "{0}")
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getInvalidUserIds")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getInvalidUserIds")
     public void getTokenForTeamsUserWithInvalidUserId(String testName, GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;

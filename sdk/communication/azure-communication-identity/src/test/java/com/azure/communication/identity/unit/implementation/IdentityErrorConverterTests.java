@@ -66,7 +66,7 @@ public class IdentityErrorConverterTests {
     @Test
     public void translateExceptionWithoutErrorResponse() {
         // Arrange
-        communicationResponseException = new CommunicationErrorResponseException("Exception Message", httpResponse);;
+        communicationResponseException = new CommunicationErrorResponseException("Exception Message", httpResponse);
 
         // Action
         IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);

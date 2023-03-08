@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity.e2e;
+package com.azure.communication.identity.functional;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -17,7 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-import static com.azure.communication.identity.e2e.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.functional.CteTestHelper.skipExchangeAadTeamsTokenTest;
 
 public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
@@ -128,7 +128,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
     public void getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -143,7 +143,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.e2e.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;

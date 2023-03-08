@@ -13,8 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * This class provides helper methods to create request models that are used for invoking Azure Communication Service Identity operations.
+ */
 public final class CommunicationIdentityClientUtils {
 
+    /** The Token Expiration Overflow Message. */
     public static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
 
     static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
