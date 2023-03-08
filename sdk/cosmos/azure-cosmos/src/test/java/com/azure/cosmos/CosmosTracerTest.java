@@ -56,6 +56,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
@@ -89,13 +90,14 @@ public class CosmosTracerTest extends TestSuiteBase {
     CosmosAsyncContainer cosmosAsyncContainer;
     static final AutoCloseable NOOP_CLOSEABLE = () -> { };
 
+    @Factory(dataProvider = "clientBuildersWithDirectSessionIncludeComputeGateway")
+    public CosmosTracerTest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder.contentResponseOnWriteEnabled(true));
+    }
+
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .directMode(DirectConnectionConfig.getDefaultConfig())
-            .buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(client);
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(client);
         cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -665,7 +667,13 @@ public class CosmosTracerTest extends TestSuiteBase {
                                            TracerUnderTest mockTracer,
                                            boolean enableRequestLevelTracing) throws JsonProcessingException {
 
-        if (!enableRequestLevelTracing) {
+        assertThat(mockTracer).isNotNull();
+        assertThat(mockTracer.context).isNotNull();
+
+        if (!enableRequestLevelTracing ||
+            // For Gateway we rely on http out-of-the-box tracing
+            client.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+
             assertThat(mockTracer.events).noneMatch(e -> e.name.equals("rntbd.request"));
             return;
         } else {
@@ -976,7 +984,11 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
 
         assertThat(attributes.get("db.type")).isEqualTo("Cosmos");
-        assertThat(attributes.get("db.url")).isEqualTo(TestConfigurations.HOST);
+        assertThat(attributes.get("db.url"))
+            .matches(url -> url.equals(TestConfigurations.HOST) ||
+                url.equals(TestConfigurations.HOST.replace(
+                    ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT
+                )));
         assertThat(attributes.get("db.statement")).isEqualTo(methodName);
         assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo("Microsoft.DocumentDB");
 
@@ -1179,13 +1191,16 @@ public class CosmosTracerTest extends TestSuiteBase {
                             clientSideStatistics.getRequestStartTimeUTC());
                     }
                 } else if (clientSideStatistics.getGatewayStatistics() != null) {
-                    String eventName = "Diagnostics for PKRange "
-                        + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
-                    assertEvent(
-                        mockTracer,
-                        eventName,
-                        clientSideStatistics.getRequestStartTimeUTC());
+                    String pkRangeId = clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
 
+                    if (pkRangeId != null) {
+                        String eventName = "Diagnostics for PKRange "
+                            + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                        assertEvent(
+                            mockTracer,
+                            eventName,
+                            clientSideStatistics.getRequestStartTimeUTC());
+                    }
                 } else {
                     String eventName = "Diagnostics " + counter++;
                     assertEvent(
