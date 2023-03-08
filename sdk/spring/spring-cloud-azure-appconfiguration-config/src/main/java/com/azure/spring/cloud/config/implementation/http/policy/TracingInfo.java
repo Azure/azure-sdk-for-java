@@ -15,9 +15,9 @@ public class TracingInfo {
 
     private boolean isKeyVaultConfigured = false;
 
-    private int replicaCount = 0;
+    private int replicaCount;
 
-    private FeatureFlagTracing featureFlagTracing;
+    private final FeatureFlagTracing featureFlagTracing;
 
     public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount) {
         this.isDev = isDev;
@@ -35,7 +35,7 @@ public class TracingInfo {
         RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
         StringBuilder sb = new StringBuilder();
 
-        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY + "=" + requestTypeValue);
+        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=" + requestTypeValue);
 
         if (featureFlagTracing != null && featureFlagTracing.usesAnyFilter()) {
             sb.append(",Filter=").append(featureFlagTracing.toString());
@@ -43,18 +43,18 @@ public class TracingInfo {
 
         String hostType = getHostType();
         if (!hostType.isEmpty()) {
-            sb.append("," + RequestTracingConstants.HOST_TYPE_KEY + "=" + hostType);
+            sb.append(",").append(RequestTracingConstants.HOST_TYPE_KEY).append("=").append(hostType);
         }
 
         if (isDev) {
-            sb.append(",Env=" + DEV_ENV_TRACING);
+            sb.append(",Env=").append(DEV_ENV_TRACING);
         }
         if (isKeyVaultConfigured) {
-            sb.append("," + KEY_VAULT_CONFIGURED_TRACING);
+            sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
         }
 
         if (replicaCount > 0) {
-            sb.append("," + RequestTracingConstants.REPLICA_COUNT + "=" + replicaCount);
+            sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
         }
 
         return sb.toString();

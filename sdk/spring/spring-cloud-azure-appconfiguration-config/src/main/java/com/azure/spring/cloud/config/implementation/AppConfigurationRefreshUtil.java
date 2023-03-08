@@ -21,7 +21,7 @@ import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 
 class AppConfigurationRefreshUtil {
 
@@ -173,8 +173,7 @@ class AppConfigurationRefreshUtil {
 
             if (eventData.getDoRefresh()) {
                 // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the
-                // new
-                // configurations.
+                // new configurations.
                 StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
             }
         }
@@ -212,7 +211,7 @@ class AppConfigurationRefreshUtil {
             int watchedKeySize = 0;
 
             for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
-                String keyFilter = FEATURE_STORE_WATCH_KEY;
+                String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
                 if (StringUtils.hasText(watchKey.getKeyFilter())) {
                     keyFilter = FEATURE_FLAG_PREFIX + watchKey.getKeyFilter();
@@ -222,29 +221,10 @@ class AppConfigurationRefreshUtil {
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
-                keyCheck: for (ConfigurationSetting currentKey : currentKeys) {
-                    if (currentKey instanceof FeatureFlagConfigurationSetting
-                        && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
-
-                        watchedKeySize += 1;
-                        for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
-
-                            // If there is no result, etag will be considered empty.
-                            // A refresh will trigger once the selector returns a value.
-                            if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())
-                                && watchFlag.getLabel().equals(currentKey.getLabel())) {
-                                checkETag(watchFlag, currentKey, client.getEndpoint(), eventData);
-                                if (eventData.getDoRefresh()) {
-                                    break keyCheck;
-
-                                }
-                            }
-                        }
-                    }
-                }
+                checkFeatureFlags(currentKeys, watchedKeySize, state, client, eventData);
             }
 
-            if (watchedKeySize != state.getWatchKeys().size()) {
+            if (!eventData.getDoRefresh() && watchedKeySize != state.getWatchKeys().size()) {
                 String eventDataInfo = ".appconfig.featureflag/*";
 
                 // Only one refresh Event needs to be call to update all of the
@@ -257,6 +237,27 @@ class AppConfigurationRefreshUtil {
             // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the new
             // configurations.
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
+        }
+    }
+
+    private static void checkFeatureFlags(List<ConfigurationSetting> currentKeys, int watchedKeySize, State state,
+        AppConfigurationReplicaClient client, RefreshEventData eventData) {
+        for (ConfigurationSetting currentKey : currentKeys) {
+            if (currentKey instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
+
+                watchedKeySize += 1;
+                for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
+
+                    // If there is no result, etag will be considered empty.
+                    // A refresh will trigger once the selector returns a value.
+                    if (compairKeys(watchFlag, currentKey, client.getEndpoint(), eventData)) {
+                        if (eventData.getDoRefresh()) {
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -276,9 +277,7 @@ class AppConfigurationRefreshUtil {
 
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
-                    if (watchFlag != null && watchFlag.getKey().equals(currentTriggerConfiguration.getKey())
-                        && watchFlag.getLabel().equals(currentTriggerConfiguration.getLabel())) {
-                        checkETag(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData);
+                    if (compairKeys(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData)) {
                         if (eventData.getDoRefresh()) {
                             return;
                         }
@@ -299,6 +298,16 @@ class AppConfigurationRefreshUtil {
                 eventData.setMessage(eventDataInfo);
             }
         }
+    }
+
+    private static Boolean compairKeys(ConfigurationSetting key1, ConfigurationSetting key2,
+        String endpoint, RefreshEventData eventData) {
+        if (key1 != null && key1.getKey().equals(key2.getKey()) && key1.getLabel().equals(key2.getLabel())) {
+            checkETag(key1, key2, endpoint, eventData);
+            return true;
+        }
+        return false;
+
     }
 
     private static void checkETag(ConfigurationSetting watchSetting, ConfigurationSetting currentTriggerConfiguration,

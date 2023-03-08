@@ -28,7 +28,7 @@ public enum RequestTracingConstants {
     KUBERNETES_ENVIRONMENT_VARIABLE("KUBERNETES_PORT"),
     
     /**
-     * Constant for checking for Container App.
+     * Constant for checking for use in Container App.
      */
     CONTAINER_APP_ENVIRONMENT_VARIABLE("CONTAINER_APP_NAME"),
     

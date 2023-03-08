@@ -33,9 +33,9 @@ public class AppConfigurationConstants {
     public static final String LABEL_SEPARATOR = ",";
 
     /**
-     * Key for returning all feature flags
+     * The key filter for selecting all feature flags.
      */
-    public static final String FEATURE_STORE_WATCH_KEY = FEATURE_FLAG_PREFIX + "*";
+    public static final String SELECT_ALL_FEATURE_FLAGS = FEATURE_FLAG_PREFIX + "*";
 
     /**
      * Constant for tracing if the library is being used with a dev profile.

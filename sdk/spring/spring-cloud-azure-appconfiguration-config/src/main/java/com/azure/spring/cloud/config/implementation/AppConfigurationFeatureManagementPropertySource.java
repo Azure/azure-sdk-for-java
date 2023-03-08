@@ -8,7 +8,7 @@ import static com.azure.spring.cloud.config.implementation.AppConfigurationConst
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
-import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
@@ -79,7 +79,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     public void initProperties() {
         SettingSelector settingSelector = new SettingSelector();
 
-        String keyFilter = FEATURE_STORE_WATCH_KEY;
+        String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
         if (StringUtils.hasText(this.keyFilter)) {
             keyFilter = FEATURE_FLAG_PREFIX + this.keyFilter;
@@ -106,9 +106,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
                     String configName = FEATURE_MANAGEMENT_KEY
                         + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
 
-                    for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
-                        tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
-                    }
+                    updateTelemetry(featureFlag, tracing);
 
                     properties.put(configName, createFeature(featureFlag));
                 }
@@ -171,6 +169,18 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         }
         return feature;
 
+    }
+    
+    /**
+     * Looks at each filter used in a Feature Flag to check what types it is using.
+     * 
+     * @param featureFlag FeatureFlagConfigurationSetting
+     * @param tracing The TracingInfo for this store.
+     */
+    private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag, TracingInfo tracing) {
+        for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+            tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
+        }
     }
 
     private String getFeatureSimpleName(ConfigurationSetting setting) {
