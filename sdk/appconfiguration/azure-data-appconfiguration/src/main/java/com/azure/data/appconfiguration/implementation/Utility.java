@@ -55,6 +55,11 @@ public class Utility {
     static final String PARAMETERS = "parameters";
     static final String URI = "uri";
 
+    /**
+     * Represents any value in Etag.
+     */
+    public static final String ETAG_ANY = "*";
+
     /*
      * Translate public ConfigurationSetting to KeyValue autorest generated class.
      */

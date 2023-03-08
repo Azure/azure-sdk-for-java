@@ -34,6 +34,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 
+import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
@@ -194,8 +195,11 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
         Context context) {
         validateSetting(setting);
+        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+        // If the service finds any existing configuration settings, then its e-tag will match and the service will
+        // return an error.
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, null,
+            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, ETAG_ANY,
                 toKeyValue(setting), enableSyncRestProxy(addTracingNamespace(context)));
         return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
     }

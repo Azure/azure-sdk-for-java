@@ -37,6 +37,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.data.appconfiguration.implementation.Utility.APP_CONFIG_TRACING_NAMESPACE_VALUE;
+import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
@@ -194,9 +195,12 @@ public final class ConfigurationAsyncClient {
         try {
             // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
             validateSetting(setting);
+            // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+            // If the service finds any existing configuration settings, then its e-tag will match and the service will
+            // return an error.
             return withContext(
                 context -> serviceClient.putKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    null, null, toKeyValue(setting),
+                    null, ETAG_ANY, toKeyValue(setting),
                     addTracingNamespace(context))
             .map(response -> new SimpleResponse<>(response, toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {

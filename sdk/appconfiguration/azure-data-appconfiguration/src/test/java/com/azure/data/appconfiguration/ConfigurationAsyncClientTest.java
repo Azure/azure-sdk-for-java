@@ -3,7 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -200,7 +199,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
-    @Disabled("Temporary disable the test, make sure put kv endpoint has the  ")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
@@ -211,7 +209,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .then(
                         client.addConfigurationSettingWithResponse(expected)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex,
-                    ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
+                    HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
