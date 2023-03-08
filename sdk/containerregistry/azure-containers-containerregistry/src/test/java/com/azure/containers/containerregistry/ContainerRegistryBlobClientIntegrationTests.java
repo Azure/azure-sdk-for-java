@@ -42,6 +42,7 @@ import java.nio.channels.Channels;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -387,7 +388,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
-        StepVerifier.create(asyncClient.downloadManifestWithResponse("latest", dockerListType))
+        StepVerifier.create(asyncClient.downloadManifestWithResponse("latest", Collections.singletonList(dockerListType)))
             .assertNext(manifestResult -> {
                 assertNotNull(manifestResult.getValue());
                 assertEquals(dockerListType, manifestResult.getValue().getMediaType());

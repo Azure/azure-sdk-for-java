@@ -30,6 +30,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -39,9 +40,14 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
@@ -264,7 +270,7 @@ public final class ContainerRegistryBlobAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DownloadManifestResult> downloadManifest(String tagOrDigest) {
-        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, SUPPORTED_MANIFEST_TYPES, context)).flatMap(FluxUtil::toMono);
+        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, null, context)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -274,22 +280,27 @@ public final class ContainerRegistryBlobAsyncClient {
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
-     * @param mediaType Manifest media type to request (or a comma separated list of media types).
+     * @param mediaTypes Optional manifest media types Manifest media type to request (or a comma separated list of media types).
      * @return The response for the manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, ManifestMediaType mediaType) {
-        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, mediaType, context));
+    public Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, Collection<ManifestMediaType> mediaTypes) {
+        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, mediaTypes, context));
     }
 
-    private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, ManifestMediaType mediaType, Context context) {
+    private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, Collection<ManifestMediaType> mediaTypes, Context context) {
         if (tagOrDigest == null) {
             return monoError(LOGGER, new NullPointerException("'tagOrDigest' can't be null."));
         }
 
-        return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, mediaType.toString(), context)
+        String requestMediaTypes = SUPPORTED_MANIFEST_TYPES.toString();
+        if (!CoreUtils.isNullOrEmpty(mediaTypes)) {
+            requestMediaTypes = mediaTypes.stream().map(String::valueOf).collect(Collectors.joining(","));
+        }
+
+        return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, requestMediaTypes, context)
             .map(response -> toDownloadManifestResponse(tagOrDigest, response))
             .onErrorMap(UtilsImpl::mapException);
     }

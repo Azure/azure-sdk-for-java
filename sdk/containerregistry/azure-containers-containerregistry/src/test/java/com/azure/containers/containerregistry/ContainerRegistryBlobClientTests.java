@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
@@ -49,6 +49,7 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -187,7 +188,7 @@ public class ContainerRegistryBlobClientTests {
 
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
             () -> client.downloadManifestWithResponse(MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
+            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST, Collections.singletonList(ManifestMediaType.DOCKER_MANIFEST)));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
         assertNotNull(result.getValue().asOciManifest());
@@ -201,11 +202,11 @@ public class ContainerRegistryBlobClientTests {
 
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
             () -> client.downloadManifestWithResponse(OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
+            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST, Collections.singletonList(OCI_INDEX_MEDIA_TYPE)));
 
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
         assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getMediaType());
-        OciManifest ociManifest = result.getValue().asOciManifest();
+        OciImageManifest ociManifest = result.getValue().asOciManifest();
         assertEquals(2, ociManifest.getSchemaVersion());
         assertNull(ociManifest.getConfig());
         assertNull(ociManifest.getLayers());
