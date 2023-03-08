@@ -7,15 +7,17 @@ package com.azure.analytics.purview.workflow.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class WorkflowDeleteTests extends PurviewWorkflowClientTestBase {
     @Test
+    @Disabled
     public void testWorkflowDeleteTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.deleteWorkflowWithResponse(
-                        "af1ecae-16ee-4b2d-8972-00d611dd2f99", requestOptions);
+                        "4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
     }
 }

@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScansDelete {
     public static void main(String[] args) {
-        ScansClient client =
+        ScansClient scansClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildScansClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scansdelete.scansdelete
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.deleteWithResponse("myDataSource", "myScanName", requestOptions);
+        Response<BinaryData> response = scansClient.deleteWithResponse("myDataSource", "myScanName", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scansdelete.scansdelete
     }
 }

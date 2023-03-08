@@ -73,6 +73,26 @@ public final class DiscoveriesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/search/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> querySync(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData searchRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/search/suggest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -86,6 +106,26 @@ public final class DiscoveriesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggest(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData suggestRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/search/suggest")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> suggestSync(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData suggestRequest,
@@ -113,6 +153,26 @@ public final class DiscoveriesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/browse")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> browseSync(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData browseRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/search/autocomplete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -132,115 +192,131 @@ public final class DiscoveriesImpl {
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Post("/search/autocomplete")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> autoCompleteSync(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData autoCompleteRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     offset: Integer
-     *     limit: Integer
-     *     filter: Object
-     *     facets: [
-     *         {
-     *             count: Integer
-     *             facet: String
-     *             sort: Object
+     *     keywords: String (Optional)
+     *     offset: Integer (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
+     *     facets (Optional): [
+     *          (Optional){
+     *             count: Integer (Optional)
+     *             facet: String (Optional)
+     *             sort: Object (Optional)
      *         }
      *     ]
-     *     taxonomySetting: {
-     *         assetTypes: [
-     *             String
+     *     taxonomySetting (Optional): {
+     *         assetTypes (Optional): [
+     *             String (Optional)
      *         ]
-     *         facet: (recursive schema, see facet above)
+     *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     searchFacets: {
-     *         assetType: [
-     *             {
-     *                 count: Integer
-     *                 value: String
+     *     @search.count: Integer (Optional)
+     *     @search.facets (Optional): {
+     *         assetType (Optional): [
+     *              (Optional){
+     *                 count: Integer (Optional)
+     *                 value: String (Optional)
      *             }
      *         ]
-     *         classification: [
+     *         classification (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         classificationCategory: [
+     *         classificationCategory (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         contactId: [
+     *         contactId (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         fileExtension: [
+     *         fileExtension (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         label: [
+     *         label (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         term: [
+     *         term (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchHighlights: {
-     *                 id: [
-     *                     String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.highlights (Optional): {
+     *                 id (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 qualifiedName: [
-     *                     String
+     *                 qualifiedName (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 name: [
-     *                     String
+     *                 name (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 description: [
-     *                     String
+     *                 description (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 entityType: [
-     *                     String
+     *                 entityType (Optional): [
+     *                     String (Optional)
      *                 ]
      *             }
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -271,246 +347,107 @@ public final class DiscoveriesImpl {
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     offset: Integer
-     *     limit: Integer
-     *     filter: Object
-     *     facets: [
-     *         {
-     *             count: Integer
-     *             facet: String
-     *             sort: Object
+     *     keywords: String (Optional)
+     *     offset: Integer (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
+     *     facets (Optional): [
+     *          (Optional){
+     *             count: Integer (Optional)
+     *             facet: String (Optional)
+     *             sort: Object (Optional)
      *         }
      *     ]
-     *     taxonomySetting: {
-     *         assetTypes: [
-     *             String
+     *     taxonomySetting (Optional): {
+     *         assetTypes (Optional): [
+     *             String (Optional)
      *         ]
-     *         facet: (recursive schema, see facet above)
+     *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     searchFacets: {
-     *         assetType: [
-     *             {
-     *                 count: Integer
-     *                 value: String
+     *     @search.count: Integer (Optional)
+     *     @search.facets (Optional): {
+     *         assetType (Optional): [
+     *              (Optional){
+     *                 count: Integer (Optional)
+     *                 value: String (Optional)
      *             }
      *         ]
-     *         classification: [
+     *         classification (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         classificationCategory: [
+     *         classificationCategory (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         contactId: [
+     *         contactId (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         fileExtension: [
+     *         fileExtension (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         label: [
+     *         label (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         term: [
+     *         term (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchHighlights: {
-     *                 id: [
-     *                     String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.highlights (Optional): {
+     *                 id (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 qualifiedName: [
-     *                     String
+     *                 qualifiedName (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 name: [
-     *                     String
+     *                 name (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 description: [
-     *                     String
+     *                 description (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 entityType: [
-     *                     String
-     *                 ]
-     *             }
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
-     *             ]
-     *             label: [
-     *                 String
-     *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
-     *                 }
-     *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
-     *                 }
-     *             ]
-     *             assetType: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param searchRequest An object specifying the search criteria.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data using search along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> queryWithResponseAsync(
-            BinaryData searchRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.query(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                searchRequest,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Gets data using search.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     keywords: String
-     *     offset: Integer
-     *     limit: Integer
-     *     filter: Object
-     *     facets: [
-     *         {
-     *             count: Integer
-     *             facet: String
-     *             sort: Object
-     *         }
-     *     ]
-     *     taxonomySetting: {
-     *         assetTypes: [
-     *             String
-     *         ]
-     *         facet: (recursive schema, see facet above)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     searchCount: Integer
-     *     searchFacets: {
-     *         assetType: [
-     *             {
-     *                 count: Integer
-     *                 value: String
-     *             }
-     *         ]
-     *         classification: [
-     *             (recursive schema, see above)
-     *         ]
-     *         classificationCategory: [
-     *             (recursive schema, see above)
-     *         ]
-     *         contactId: [
-     *             (recursive schema, see above)
-     *         ]
-     *         fileExtension: [
-     *             (recursive schema, see above)
-     *         ]
-     *         label: [
-     *             (recursive schema, see above)
-     *         ]
-     *         term: [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchHighlights: {
-     *                 id: [
-     *                     String
-     *                 ]
-     *                 qualifiedName: [
-     *                     String
-     *                 ]
-     *                 name: [
-     *                     String
-     *                 ]
-     *                 description: [
-     *                     String
-     *                 ]
-     *                 entityType: [
-     *                     String
+     *                 entityType (Optional): [
+     *                     String (Optional)
      *                 ]
      *             }
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -527,58 +464,61 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
-        return queryWithResponseAsync(searchRequest, requestOptions).block();
+        final String accept = "application/json";
+        return service.querySync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                searchRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -591,8 +531,7 @@ public final class DiscoveriesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
@@ -611,131 +550,49 @@ public final class DiscoveriesImpl {
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param suggestRequest An object specifying the suggest criteria.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> suggestWithResponseAsync(
-            BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.suggest(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                suggestRequest,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get search suggestions by query criteria.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
-     *             ]
-     *             label: [
-     *                 String
-     *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
-     *                 }
-     *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
-     *                 }
-     *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -752,44 +609,47 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
-        return suggestWithResponseAsync(suggestRequest, requestOptions).block();
+        final String accept = "application/json";
+        return service.suggestSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                suggestRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     entityType: String
-     *     path: String
-     *     limit: Integer
-     *     offset: Integer
+     *     entityType: String (Optional)
+     *     path: String (Optional)
+     *     limit: Integer (Optional)
+     *     offset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     value: [
-     *         {
-     *             entityType: String
-     *             id: String
-     *             isLeaf: Boolean
-     *             name: String
-     *             owner: [
-     *                 {
-     *                     id: String
-     *                     displayName: String
-     *                     mail: String
-     *                     contactType: String
+     *     @search.count: Integer (Optional)
+     *     value (Optional): [
+     *          (Optional){
+     *             entityType: String (Optional)
+     *             id: String (Optional)
+     *             isLeaf: Boolean (Optional)
+     *             name: String (Optional)
+     *             owner (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     displayName: String (Optional)
+     *                     mail: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             path: String
-     *             qualifiedName: String
+     *             path: String (Optional)
+     *             qualifiedName: String (Optional)
      *         }
      *     ]
      * }
@@ -819,101 +679,35 @@ public final class DiscoveriesImpl {
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     entityType: String
-     *     path: String
-     *     limit: Integer
-     *     offset: Integer
+     *     entityType: String (Optional)
+     *     path: String (Optional)
+     *     limit: Integer (Optional)
+     *     offset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     value: [
-     *         {
-     *             entityType: String
-     *             id: String
-     *             isLeaf: Boolean
-     *             name: String
-     *             owner: [
-     *                 {
-     *                     id: String
-     *                     displayName: String
-     *                     mail: String
-     *                     contactType: String
+     *     @search.count: Integer (Optional)
+     *     value (Optional): [
+     *          (Optional){
+     *             entityType: String (Optional)
+     *             id: String (Optional)
+     *             isLeaf: Boolean (Optional)
+     *             name: String (Optional)
+     *             owner (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     displayName: String (Optional)
+     *                     mail: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             path: String
-     *             qualifiedName: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param browseRequest An object specifying the browse criteria.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return browseResult along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> browseWithResponseAsync(
-            BinaryData browseRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.browse(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                browseRequest,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Browse entities by path or entity type.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     entityType: String
-     *     path: String
-     *     limit: Integer
-     *     offset: Integer
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     searchCount: Integer
-     *     value: [
-     *         {
-     *             entityType: String
-     *             id: String
-     *             isLeaf: Boolean
-     *             name: String
-     *             owner: [
-     *                 {
-     *                     id: String
-     *                     displayName: String
-     *                     mail: String
-     *                     contactType: String
-     *                 }
-     *             ]
-     *             path: String
-     *             qualifiedName: String
+     *             path: String (Optional)
+     *             qualifiedName: String (Optional)
      *         }
      *     ]
      * }
@@ -929,7 +723,14 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
-        return browseWithResponseAsync(browseRequest, requestOptions).block();
+        final String accept = "application/json";
+        return service.browseSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                browseRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -939,9 +740,9 @@ public final class DiscoveriesImpl {
      *
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
      *
@@ -949,10 +750,10 @@ public final class DiscoveriesImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             text: String
-     *             queryPlusText: String
+     *     value (Optional): [
+     *          (Optional){
+     *             text: String (Optional)
+     *             queryPlusText: String (Optional)
      *         }
      *     ]
      * }
@@ -988,9 +789,9 @@ public final class DiscoveriesImpl {
      *
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
      *
@@ -998,58 +799,10 @@ public final class DiscoveriesImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             text: String
-     *             queryPlusText: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return auto complete options along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
-            BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.autoComplete(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                autoCompleteRequest,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get auto complete options.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             text: String
-     *             queryPlusText: String
+     *     value (Optional): [
+     *          (Optional){
+     *             text: String (Optional)
+     *             queryPlusText: String (Optional)
      *         }
      *     ]
      * }
@@ -1066,6 +819,13 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autoCompleteWithResponse(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {
-        return autoCompleteWithResponseAsync(autoCompleteRequest, requestOptions).block();
+        final String accept = "application/json";
+        return service.autoCompleteSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                autoCompleteRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 }

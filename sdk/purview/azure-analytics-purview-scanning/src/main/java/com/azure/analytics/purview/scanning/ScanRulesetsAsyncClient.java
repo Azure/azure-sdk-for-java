@@ -9,7 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -22,7 +25,7 @@ public final class ScanRulesetsAsyncClient {
     @Generated private final ScanRulesetsImpl serviceClient;
 
     /**
-     * Initializes an instance of ScanRulesets client.
+     * Initializes an instance of ScanRulesetsAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -34,29 +37,24 @@ public final class ScanRulesetsAsyncClient {
     /**
      * Get a scan ruleset.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a scan ruleset along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -68,23 +66,25 @@ public final class ScanRulesetsAsyncClient {
     /**
      * Creates or Updates a scan ruleset.
      *
-     * <p><strong>Query Parameters</strong>
+     * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Query Parameters</caption>
+     *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
@@ -92,17 +92,20 @@ public final class ScanRulesetsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -115,29 +118,24 @@ public final class ScanRulesetsAsyncClient {
     /**
      * Deletes a scan ruleset.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -149,35 +147,24 @@ public final class ScanRulesetsAsyncClient {
     /**
      * List scan rulesets in Data catalog.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scanRulesetType: String(Custom/System)
-     *             status: String(Enabled/Disabled)
-     *             version: Integer
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

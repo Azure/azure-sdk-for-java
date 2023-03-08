@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class ApprovalRequestReassignTests extends PurviewWorkflowClientTestBase {
+public final class TaskRequestUpdateTests extends PurviewWorkflowClientTestBase {
     @Test
     @Disabled
-    public void testApprovalRequestReassignTests() {
-        BinaryData reassignCommand =
-                BinaryData.fromString(
-                        "{\"reassignments\":[{\"reassignFrom\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"reassignTo\":\"7645223c-cdca-43e9-98c8-bd4d97e79e5e\"}]}");
+    public void testTaskRequestUpdateTests() {
+        BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"InProgress\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.reassignWorkflowTaskWithResponse(
-                        "11b0244b-70ea-4c6b-9d28-08f52de40f2f", reassignCommand, requestOptions);
+                purviewWorkflowClient.updateTaskStatusWithResponse(
+                        "d5bd0215-df84-4245-8e18-3a8f012be376", taskUpdateCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

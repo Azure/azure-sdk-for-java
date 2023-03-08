@@ -9,7 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -21,7 +24,7 @@ public final class TriggersAsyncClient {
     @Generated private final TriggersImpl serviceClient;
 
     /**
-     * Initializes an instance of Triggers client.
+     * Initializes an instance of TriggersAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -33,60 +36,52 @@ public final class TriggersAsyncClient {
     /**
      * Gets trigger information.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -95,6 +90,9 @@ public final class TriggersAsyncClient {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -107,60 +105,52 @@ public final class TriggersAsyncClient {
     /**
      * Creates an instance of a trigger.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -169,48 +159,48 @@ public final class TriggersAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -220,6 +210,9 @@ public final class TriggersAsyncClient {
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -232,60 +225,52 @@ public final class TriggersAsyncClient {
     /**
      * Deletes the trigger associated with the scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -294,6 +279,9 @@ public final class TriggersAsyncClient {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated

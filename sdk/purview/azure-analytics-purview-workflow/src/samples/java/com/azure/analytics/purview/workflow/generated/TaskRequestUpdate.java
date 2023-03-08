@@ -8,21 +8,23 @@ import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
 import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class WorkflowDelete {
+public class TaskRequestUpdate {
     public static void main(String[] args) {
         PurviewWorkflowClient purviewWorkflowClient =
                 new PurviewWorkflowClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.deleteworkflow.workflowdelete
+        // BEGIN:com.azure.analytics.purview.workflow.generated.updatetaskstatus.taskrequestupdate
+        BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"InProgress\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.deleteWorkflowWithResponse(
-                        "4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.deleteworkflow.workflowdelete
+                purviewWorkflowClient.updateTaskStatusWithResponse(
+                        "d5bd0215-df84-4245-8e18-3a8f012be376", taskUpdateCommand, requestOptions);
+        // END:com.azure.analytics.purview.workflow.generated.updatetaskstatus.taskrequestupdate
     }
 }

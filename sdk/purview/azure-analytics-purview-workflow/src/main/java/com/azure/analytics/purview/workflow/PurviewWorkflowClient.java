@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow;
 
+import com.azure.analytics.purview.workflow.implementation.PurviewWorkflowClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -20,16 +21,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = PurviewWorkflowClientBuilder.class)
 public final class PurviewWorkflowClient {
-    @Generated private final PurviewWorkflowAsyncClient client;
+    @Generated private final PurviewWorkflowClientImpl serviceClient;
 
     /**
      * Initializes an instance of PurviewWorkflowClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    PurviewWorkflowClient(PurviewWorkflowAsyncClient client) {
-        this.client = client;
+    PurviewWorkflowClient(PurviewWorkflowClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -68,7 +69,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflows(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listWorkflows(requestOptions));
+        return this.serviceClient.listWorkflows(requestOptions);
     }
 
     /**
@@ -109,7 +110,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowWithResponse(String workflowId, RequestOptions requestOptions) {
-        return this.client.getWorkflowWithResponse(workflowId, requestOptions).block();
+        return this.serviceClient.getWorkflowWithResponse(workflowId, requestOptions);
     }
 
     /**
@@ -171,9 +172,8 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceWorkflowWithResponse(
             String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
-        return this.client
-                .createOrReplaceWorkflowWithResponse(workflowId, workflowCreateOrUpdateCommand, requestOptions)
-                .block();
+        return this.serviceClient.createOrReplaceWorkflowWithResponse(
+                workflowId, workflowCreateOrUpdateCommand, requestOptions);
     }
 
     /**
@@ -190,7 +190,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkflowWithResponse(String workflowId, RequestOptions requestOptions) {
-        return this.client.deleteWorkflowWithResponse(workflowId, requestOptions).block();
+        return this.serviceClient.deleteWorkflowWithResponse(workflowId, requestOptions);
     }
 
     /**
@@ -243,7 +243,7 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> submitUserRequestsWithResponse(
             BinaryData userRequestsPayload, RequestOptions requestOptions) {
-        return this.client.submitUserRequestsWithResponse(userRequestsPayload, requestOptions).block();
+        return this.serviceClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflowRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listWorkflowRuns(requestOptions));
+        return this.serviceClient.listWorkflowRuns(requestOptions);
     }
 
     /**
@@ -336,7 +336,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowRunWithResponse(String workflowRunId, RequestOptions requestOptions) {
-        return this.client.getWorkflowRunWithResponse(workflowRunId, requestOptions).block();
+        return this.serviceClient.getWorkflowRunWithResponse(workflowRunId, requestOptions);
     }
 
     /**
@@ -363,7 +363,7 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWorkflowRunWithResponse(
             String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
-        return this.client.cancelWorkflowRunWithResponse(workflowRunId, runCancelReply, requestOptions).block();
+        return this.serviceClient.cancelWorkflowRunWithResponse(workflowRunId, runCancelReply, requestOptions);
     }
 
     /**
@@ -431,7 +431,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflowTasks(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listWorkflowTasks(requestOptions));
+        return this.serviceClient.listWorkflowTasks(requestOptions);
     }
 
     /**
@@ -483,7 +483,7 @@ public final class PurviewWorkflowClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowTaskWithResponse(String taskId, RequestOptions requestOptions) {
-        return this.client.getWorkflowTaskWithResponse(taskId, requestOptions).block();
+        return this.serviceClient.getWorkflowTaskWithResponse(taskId, requestOptions);
     }
 
     /**
@@ -510,7 +510,7 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> approveApprovalTaskWithResponse(
             String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
-        return this.client.approveApprovalTaskWithResponse(taskId, approvalResponseComment, requestOptions).block();
+        return this.serviceClient.approveApprovalTaskWithResponse(taskId, approvalResponseComment, requestOptions);
     }
 
     /**
@@ -537,7 +537,7 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectApprovalTaskWithResponse(
             String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
-        return this.client.rejectApprovalTaskWithResponse(taskId, approvalResponseComment, requestOptions).block();
+        return this.serviceClient.rejectApprovalTaskWithResponse(taskId, approvalResponseComment, requestOptions);
     }
 
     /**
@@ -569,7 +569,7 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reassignWorkflowTaskWithResponse(
             String taskId, BinaryData reassignCommand, RequestOptions requestOptions) {
-        return this.client.reassignWorkflowTaskWithResponse(taskId, reassignCommand, requestOptions).block();
+        return this.serviceClient.reassignWorkflowTaskWithResponse(taskId, reassignCommand, requestOptions);
     }
 
     /**
@@ -597,6 +597,6 @@ public final class PurviewWorkflowClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTaskStatusWithResponse(
             String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
-        return this.client.updateTaskStatusWithResponse(taskId, taskUpdateCommand, requestOptions).block();
+        return this.serviceClient.updateTaskStatusWithResponse(taskId, taskUpdateCommand, requestOptions);
     }
 }

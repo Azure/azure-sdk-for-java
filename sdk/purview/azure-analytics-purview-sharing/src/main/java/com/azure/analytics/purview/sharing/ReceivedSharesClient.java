@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.sharing;
 
+import com.azure.analytics.purview.sharing.implementation.ReceivedSharesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -21,16 +22,16 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous PurviewShareClient type. */
 @ServiceClient(builder = ReceivedSharesClientBuilder.class)
 public final class ReceivedSharesClient {
-    @Generated private final ReceivedSharesAsyncClient client;
+    @Generated private final ReceivedSharesImpl serviceClient;
 
     /**
      * Initializes an instance of ReceivedSharesClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    ReceivedSharesClient(ReceivedSharesAsyncClient client) {
-        this.client = client;
+    ReceivedSharesClient(ReceivedSharesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -58,7 +59,7 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getReceivedShareWithResponse(String receivedShareId, RequestOptions requestOptions) {
-        return this.client.getReceivedShareWithResponse(receivedShareId, requestOptions).block();
+        return this.serviceClient.getReceivedShareWithResponse(receivedShareId, requestOptions);
     }
 
     /**
@@ -97,9 +98,7 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions)
-                .getSyncPoller();
+        return this.serviceClient.beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions);
     }
 
     /**
@@ -138,7 +137,7 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteReceivedShare(
             String receivedShareId, RequestOptions requestOptions) {
-        return this.client.beginDeleteReceivedShare(receivedShareId, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteReceivedShare(receivedShareId, requestOptions);
     }
 
     /**
@@ -178,7 +177,7 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllAttachedReceivedShares(referenceName, requestOptions));
+        return this.serviceClient.getAllAttachedReceivedShares(referenceName, requestOptions);
     }
 
     /**
@@ -217,7 +216,7 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllDetachedReceivedShares(requestOptions));
+        return this.serviceClient.getAllDetachedReceivedShares(requestOptions);
     }
 
     /**
@@ -271,7 +270,7 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> activateTenantEmailRegistrationWithResponse(
             BinaryData tenantEmailRegistration, RequestOptions requestOptions) {
-        return this.client.activateTenantEmailRegistrationWithResponse(tenantEmailRegistration, requestOptions).block();
+        return this.serviceClient.activateTenantEmailRegistrationWithResponse(tenantEmailRegistration, requestOptions);
     }
 
     /**
@@ -306,6 +305,6 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> registerTenantEmailRegistrationWithResponse(RequestOptions requestOptions) {
-        return this.client.registerTenantEmailRegistrationWithResponse(requestOptions).block();
+        return this.serviceClient.registerTenantEmailRegistrationWithResponse(requestOptions);
     }
 }

@@ -40,29 +40,29 @@ public final class RelationshipAsyncClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -70,29 +70,29 @@ public final class RelationshipAsyncClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -117,29 +117,29 @@ public final class RelationshipAsyncClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -147,29 +147,29 @@ public final class RelationshipAsyncClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -198,93 +198,95 @@ public final class RelationshipAsyncClient {
      *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     referredEntities: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     referredEntities (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     relationship: {
-     *         attributes: {
-     *             String: Object
+     *     relationship (Optional): {
+     *         attributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         typeName: String
-     *         lastModifiedTS: String
-     *         createTime: Float
-     *         createdBy: String
-     *         end1: {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *         typeName: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         end1 (Optional): {
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         end2: (recursive schema, see end2 above)
-     *         guid: String
-     *         homeId: String
-     *         label: String
-     *         provenanceType: Float
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
+     *         end2 (Optional): (recursive schema, see end2 above)
+     *         guid: String (Optional)
+     *         homeId: String (Optional)
+     *         label: String (Optional)
+     *         provenanceType: Float (Optional)
+     *         status: String(ACTIVE/DELETED) (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         version: Float (Optional)
      *     }
      * }
      * }</pre>

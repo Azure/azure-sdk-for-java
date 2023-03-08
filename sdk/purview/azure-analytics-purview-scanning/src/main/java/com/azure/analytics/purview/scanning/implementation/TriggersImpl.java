@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -16,7 +17,11 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -52,32 +57,129 @@ public final class TriggersImpl {
     public interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getTriggerSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createTriggerSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteTriggerSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -85,60 +187,52 @@ public final class TriggersImpl {
     /**
      * Gets trigger information.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -147,11 +241,15 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTrigger(
@@ -159,6 +257,7 @@ public final class TriggersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -166,140 +265,52 @@ public final class TriggersImpl {
     /**
      * Gets trigger information.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return service.getTrigger(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Gets trigger information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
-     *                 }
-     *                 minutes: [
-     *                     int
-     *                 ]
-     *                 hours: [
-     *                     int
-     *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                 ]
-     *                 monthDays: [
-     *                     int
-     *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
-     *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
-     *                     }
-     *                 ]
-     *             }
-     *             timeZone: String
-     *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -308,71 +319,74 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return trigger information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTriggerWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions).block();
+        final String accept = "application/json";
+        return service.getTriggerSync(
+                this.client.getEndpoint(),
+                dataSourceName,
+                scanName,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Creates an instance of a trigger.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -381,48 +395,48 @@ public final class TriggersImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -432,11 +446,15 @@ public final class TriggersImpl {
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createTrigger(
@@ -445,6 +463,7 @@ public final class TriggersImpl {
                                 scanName,
                                 this.client.getServiceVersion().getVersion(),
                                 body,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -452,60 +471,52 @@ public final class TriggersImpl {
     /**
      * Creates an instance of a trigger.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -514,180 +525,48 @@ public final class TriggersImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param body The body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return service.createTrigger(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Creates an instance of a trigger.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
-     *                 }
-     *                 minutes: [
-     *                     int
-     *                 ]
-     *                 hours: [
-     *                     int
-     *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                 ]
-     *                 monthDays: [
-     *                     int
-     *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
-     *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
-     *                     }
-     *                 ]
-     *             }
-     *             timeZone: String
-     *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
-     *                 }
-     *                 minutes: [
-     *                     int
-     *                 ]
-     *                 hours: [
-     *                     int
-     *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                 ]
-     *                 monthDays: [
-     *                     int
-     *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
-     *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
-     *                     }
-     *                 ]
-     *             }
-     *             timeZone: String
-     *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -697,71 +576,75 @@ public final class TriggersImpl {
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTriggerWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
-        return createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions).block();
+        final String accept = "application/json";
+        return service.createTriggerSync(
+                this.client.getEndpoint(),
+                dataSourceName,
+                scanName,
+                this.client.getServiceVersion().getVersion(),
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Deletes the trigger associated with the scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -770,11 +653,15 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTrigger(
@@ -782,6 +669,7 @@ public final class TriggersImpl {
                                 dataSourceName,
                                 scanName,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -789,140 +677,52 @@ public final class TriggersImpl {
     /**
      * Deletes the trigger associated with the scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         recurrence (Optional): {
+     *             frequency: String(Week/Month) (Optional)
+     *             interval: Integer (Optional)
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             schedule (Optional): {
+     *                 additionalProperties (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 minutes: [
-     *                     int
+     *                 minutes (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 hours: [
-     *                     int
+     *                 hours (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 weekDays (Optional): [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                 ]
-     *                 monthDays: [
-     *                     int
+     *                 monthDays (Optional): [
+     *                     int (Optional)
      *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
+     *                 monthlyOccurrences (Optional): [
+     *                      (Optional){
+     *                         additionalProperties (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
+     *                         occurrence: Integer (Optional)
      *                     }
      *                 ]
      *             }
-     *             timeZone: String
+     *             timeZone: String (Optional)
      *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return service.deleteTrigger(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         recurrence: {
-     *             frequency: String(Week/Month)
-     *             interval: Integer
-     *             startTime: String
-     *             endTime: String
-     *             schedule: {
-     *                 additionalProperties: {
-     *                     String: Object
-     *                 }
-     *                 minutes: [
-     *                     int
-     *                 ]
-     *                 hours: [
-     *                     int
-     *                 ]
-     *                 weekDays: [
-     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                 ]
-     *                 monthDays: [
-     *                     int
-     *                 ]
-     *                 monthlyOccurrences: [
-     *                     {
-     *                         additionalProperties: {
-     *                             String: Object
-     *                         }
-     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
-     *                         occurrence: Integer
-     *                     }
-     *                 ]
-     *             }
-     *             timeZone: String
-     *         }
-     *         recurrenceInterval: String
-     *         createdAt: String
-     *         lastModifiedAt: String
-     *         lastScheduled: String
-     *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: String
+     *         recurrenceInterval: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastScheduled: OffsetDateTime (Optional)
+     *         scanLevel: String(Full/Incremental) (Optional)
+     *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
      * }</pre>
@@ -931,11 +731,22 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteTriggerWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteTriggerSync(
+                this.client.getEndpoint(),
+                dataSourceName,
+                scanName,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 }
