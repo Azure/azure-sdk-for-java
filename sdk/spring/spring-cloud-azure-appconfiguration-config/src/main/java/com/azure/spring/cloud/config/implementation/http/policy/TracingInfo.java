@@ -28,7 +28,7 @@ public class TracingInfo {
 
     public String getValue(boolean watchRequests) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if ("false".equalsIgnoreCase(track)) {
+        if (track != null && !Boolean.valueOf(track)) {
             return "";
         }
 

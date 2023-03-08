@@ -40,7 +40,7 @@ class AppConfigurationReplicaClient {
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
         this.failedAttempts = 0;
-        this.tracingInfo = tracingIngo;
+        this.tracingInfo = tracingInfo;
     }
 
     /**
