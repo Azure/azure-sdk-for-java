@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -57,7 +58,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     }
 
     @Override
-    public int read(ByteBuffer dst, long sourceOffset) {
+    public int read(ByteBuffer dst, long sourceOffset) throws IOException {
         if (dst.remaining() <= 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dst.remaining()' must be positive."));
         }
@@ -75,22 +76,20 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             BlobDownloadResponse response =  client.downloadStreamWithResponse(dstStream,
                 new BlobRange(sourceOffset, (long) dst.remaining()), null /*downloadRetryOptions*/, requestConditions,
                 false, null, null);
-            resourceLength = getResourceLengthFromContentRange(
+            resourceLength = CoreUtils.extractSizeFromContentRange(
                 response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {
             if (e.getErrorCode() == BlobErrorCode.INVALID_RANGE) {
                 String contentRange = e.getResponse().getHeaderValue("Content-Range");
                 if (contentRange != null) {
-                    resourceLength = getResourceLengthFromContentRange(contentRange);
+                    resourceLength = CoreUtils.extractSizeFromContentRange(contentRange);
                 }
                 // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
                 // that zero bytes were read
                 return sourceOffset < resourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -114,9 +113,5 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     @Override
     public long getResourceLength() {
         return resourceLength;
-    }
-
-    private static long getResourceLengthFromContentRange(String contentRange) {
-        return Long.parseLong(contentRange.split("/")[1]);
     }
 }

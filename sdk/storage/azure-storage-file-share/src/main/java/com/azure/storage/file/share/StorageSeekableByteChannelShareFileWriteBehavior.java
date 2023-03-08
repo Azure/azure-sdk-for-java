@@ -44,15 +44,12 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public void write(ByteBuffer src, long destOffset) {
-        try (InputStream uploadStream = new ByteBufferMarkableInputStream(src)) {
-            client.uploadRangeWithResponse(
-                new ShareFileUploadRangeOptions(uploadStream, src.remaining())
-                    .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
-                null, null);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+    public void write(ByteBuffer src, long destOffset) throws IOException {
+        InputStream uploadStream = new ByteBufferMarkableInputStream(src);
+        client.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(uploadStream, src.remaining())
+                .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
+            null, null);
     }
 
     @Override

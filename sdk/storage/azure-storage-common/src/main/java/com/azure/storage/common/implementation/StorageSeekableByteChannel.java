@@ -36,7 +36,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
          * @return Number of bytes read from the resource, possibly zero, or -1 end of resource.
          * @see java.nio.channels.ReadableByteChannel#read(ByteBuffer)
          */
-        int read(ByteBuffer dst, long sourceOffset);
+        int read(ByteBuffer dst, long sourceOffset) throws IOException;
 
         /**
          * Gets the length of the resource. The returned value may have been cached from previous operations on this
@@ -55,7 +55,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
          * @param src Bytes to write.
          * @param destOffset Offset of backing resource to write the bytes at.
          */
-        void write(ByteBuffer src, long destOffset);
+        void write(ByteBuffer src, long destOffset) throws IOException;
 
         /**
          * Calls any necessary commit/flush calls on the backing resource.
@@ -183,7 +183,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         return read;
     }
 
-    private int refillReadBuffer(long newBufferAbsolutePosition) {
+    private int refillReadBuffer(long newBufferAbsolutePosition) throws IOException {
         buffer.clear();
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
@@ -219,7 +219,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         return write;
     }
 
-    private void flushWriteBuffer() {
+    private void flushWriteBuffer() throws IOException {
         if (buffer.position() == 0) {
             return;
         }
@@ -270,7 +270,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         absolutePosition = newPosition;
     }
 
-    private void writeModeSeek(long newPosition) {
+    private void writeModeSeek(long newPosition) throws IOException {
         writeBehavior.assertCanSeek(newPosition);
 
         flushWriteBuffer();

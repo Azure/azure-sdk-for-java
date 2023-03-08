@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -18,7 +19,7 @@ import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelShareFileReadBehavior.class);
-    private static final long UNKNOWN_LENGTH = Long.MIN_VALUE;
+    private static final long UNKNOWN_LENGTH = -1;
 
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
@@ -40,7 +41,7 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
     }
 
     @Override
-    public int read(ByteBuffer dst, long sourceOffset) {
+    public int read(ByteBuffer dst, long sourceOffset) throws IOException {
         if (dst.remaining() <= 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dst.remaining()' must be positive."));
         }
@@ -53,22 +54,20 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
                     .setRange(new ShareFileRange(sourceOffset, sourceOffset + dst.remaining() - 1))
                     .setRequestConditions(conditions),
                 null, null);
-            lastKnownResourceLength = getResourceLengthFromContentRange(
+            lastKnownResourceLength = CoreUtils.extractSizeFromContentRange(
                 response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (ShareStorageException e) {
             if (e.getErrorCode() == ShareErrorCode.INVALID_RANGE) {
                 String contentRange = e.getResponse().getHeaderValue("Content-Range");
                 if (contentRange != null) {
-                    lastKnownResourceLength = getResourceLengthFromContentRange(contentRange);
+                    lastKnownResourceLength = CoreUtils.extractSizeFromContentRange(contentRange);
                 }
                 // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
                 // that zero bytes were read
                 return sourceOffset < lastKnownResourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -78,9 +77,5 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             lastKnownResourceLength = client.getProperties().getContentLength();
         }
         return lastKnownResourceLength;
-    }
-
-    private static long getResourceLengthFromContentRange(String contentRange) {
-        return Long.parseLong(contentRange.split("/")[1]);
     }
 }
