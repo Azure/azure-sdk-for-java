@@ -1,5 +1,13 @@
 # Release History
 
+## 1.4.4 (2023-03-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 ## 1.4.3 (2023-02-08)
 
 ### Other Changes
