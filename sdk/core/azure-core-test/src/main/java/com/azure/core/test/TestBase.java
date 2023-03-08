@@ -155,6 +155,7 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         if (isTestProxyEnabled()) {
+            interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
@@ -238,7 +239,7 @@ public abstract class TestBase implements BeforeEachCallback {
          * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
          * implementation it will use.
          */
-        if (testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.PLAYBACK && !enableTestProxy) {
             return Stream.of(new HttpClient[] { null });
         }
 

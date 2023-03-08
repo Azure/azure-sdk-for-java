@@ -71,6 +71,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
+    private HttpClient httpClient;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -301,7 +302,7 @@ public class InterceptorManager implements AutoCloseable {
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient();
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             }
             return testProxyPlaybackClient;
@@ -346,7 +347,7 @@ public class InterceptorManager implements AutoCloseable {
 
     private HttpPipelinePolicy getProxyRecordingPolicy() {
         if (testProxyRecordPolicy == null) {
-            testProxyRecordPolicy = new TestProxyRecordPolicy();
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
             testProxyRecordPolicy.startRecording(playbackRecordName);
         }
         return testProxyRecordPolicy;
@@ -432,5 +433,14 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             throw new RuntimeException("Playback must have been started before adding matchers.");
         }
+    }
+
+    /**
+     * Sets the httpClient to be used for this test.
+     * @param httpClient The {@link HttpClient} implementation to use.
+     */
+    void setHttpClient(HttpClient httpClient) {
+
+        this.httpClient = httpClient;
     }
 }

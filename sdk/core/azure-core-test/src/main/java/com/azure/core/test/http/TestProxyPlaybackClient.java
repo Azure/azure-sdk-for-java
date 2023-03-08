@@ -36,7 +36,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyPlaybackClient implements HttpClient {
 
-    private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+    private final HttpClient client;
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
@@ -48,7 +48,8 @@ public class TestProxyPlaybackClient implements HttpClient {
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      */
-    public TestProxyPlaybackClient() {
+    public TestProxyPlaybackClient(HttpClient httpClient) {
+        this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 

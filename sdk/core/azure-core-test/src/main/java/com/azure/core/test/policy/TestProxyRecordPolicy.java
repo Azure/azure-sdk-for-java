@@ -3,6 +3,7 @@
 
 package com.azure.core.test.policy;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -36,7 +37,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
-    private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+    private final HttpClient client;
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -44,7 +45,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      */
-    public TestProxyRecordPolicy() {
+    public TestProxyRecordPolicy(HttpClient httpClient) {
+        this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
