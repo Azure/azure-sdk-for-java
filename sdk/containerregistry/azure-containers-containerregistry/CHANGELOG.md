@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (2023-03-09)
+## 1.1.0-beta.3 (2023-03-08)
 
 ### Features Added
 - Added support for blob upload and download from streams for content that does not fit into memory.
@@ -27,8 +27,7 @@
 
 ### Other Changes
 - `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
-- Following default constructors were deprecated: `ArtifactManifestPlatform`, `ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`.
-- `ArtifactManifestPlatform` default constructor is deprecated.
+- Default constructors on following classes were deprecated: `ArtifactManifestPlatform`, `ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`., `ArtifactManifestPlatform`.
 
 #### Dependency Updates
 
