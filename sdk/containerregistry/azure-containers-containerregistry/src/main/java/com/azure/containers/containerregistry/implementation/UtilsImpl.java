@@ -61,10 +61,12 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
@@ -82,7 +84,7 @@ public final class UtilsImpl {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    public static final ManifestMediaType SUPPORTED_MANIFEST_TYPES = ManifestMediaType.fromString(ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST);
+    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
@@ -484,5 +486,13 @@ public final class UtilsImpl {
             // This will not happen.
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
+    }
+
+    public static String getContentTypeString(Collection<ManifestMediaType> mediaTypes) {
+        return CoreUtils.isNullOrEmpty(mediaTypes)
+            ? SUPPORTED_MANIFEST_TYPES
+            : mediaTypes.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
     }
 }

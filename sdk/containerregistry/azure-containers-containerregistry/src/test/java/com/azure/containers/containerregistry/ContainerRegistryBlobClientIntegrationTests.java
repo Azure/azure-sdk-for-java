@@ -41,6 +41,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -140,6 +141,27 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         DownloadManifestResult downloadManifestResult = client.downloadManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
+        validateManifest(MANIFEST, downloadManifestResult.getContent());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void canDownloadManifestWithListOfTypes(HttpClient httpClient) {
+        client = getBlobClient("oci-artifact", httpClient);
+        uploadManifestPrerequisites();
+
+        UploadManifestResult result = client.uploadManifest(MANIFEST);
+        assertNotNull(result);
+        assertNotNull(result.getDigest());
+
+        List<ManifestMediaType> manifestTypes = Arrays.asList(ManifestMediaType.DOCKER_MANIFEST,
+            ManifestMediaType.OCI_MANIFEST,
+            ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json"),
+            ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json"));
+
+        DownloadManifestResult downloadManifestResult = client.downloadManifestWithResponse(MANIFEST_DIGEST, manifestTypes, Context.NONE).getValue();
+        assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
+        assertEquals(ManifestMediaType.OCI_MANIFEST, downloadManifestResult.getMediaType());
         validateManifest(MANIFEST, downloadManifestResult.getContent());
     }
 
@@ -368,10 +390,32 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
+    public void downloadManifestWithListOfTypesAsync(HttpClient httpClient) {
+        List<ManifestMediaType> manifestTypes = Arrays.asList(ManifestMediaType.DOCKER_MANIFEST,
+            ManifestMediaType.OCI_MANIFEST,
+            ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json"),
+            ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json"));
+
+        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
+        StepVerifier.create(
+                uploadManifestPrerequisitesAsync()
+                    .then(asyncClient.uploadManifest(MANIFEST))
+                    .flatMap(result -> asyncClient.downloadManifestWithResponse(result.getDigest(), manifestTypes))
+                    .map(response -> response.getValue()))
+            .assertNext(downloadResult -> {
+                OciImageManifest returnedManifest = downloadResult.asOciManifest();
+                assertNotNull(returnedManifest);
+                validateManifest(MANIFEST, returnedManifest);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
     public void downloadManifestListManifest(HttpClient httpClient) {
         client = getBlobClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        Response<DownloadManifestResult> manifestResult = client.downloadManifestWithResponse("latest", dockerListType, Context.NONE);
+        Response<DownloadManifestResult> manifestResult = client.downloadManifestWithResponse("latest", Collections.singletonList(dockerListType), Context.NONE);
         assertNotNull(manifestResult.getValue());
         assertEquals(dockerListType, manifestResult.getValue().getMediaType());
         // does not throw

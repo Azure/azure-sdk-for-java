@@ -30,7 +30,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -44,16 +43,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentTypeString;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
@@ -277,7 +275,7 @@ public final class ContainerRegistryBlobAsyncClient {
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
-     * @param mediaTypes Optional manifest media types Manifest media type to request (or a comma separated list of media types).
+     * @param mediaTypes List of {@link  ManifestMediaType} to request.
      * @return The response for the manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
@@ -292,10 +290,7 @@ public final class ContainerRegistryBlobAsyncClient {
             return monoError(LOGGER, new NullPointerException("'tagOrDigest' can't be null."));
         }
 
-        String requestMediaTypes = SUPPORTED_MANIFEST_TYPES.toString();
-        if (!CoreUtils.isNullOrEmpty(mediaTypes)) {
-            requestMediaTypes = mediaTypes.stream().map(String::valueOf).collect(Collectors.joining(","));
-        }
+        String requestMediaTypes = getContentTypeString(mediaTypes);
 
         return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, requestMediaTypes, context)
             .map(response -> toDownloadManifestResponse(tagOrDigest, response))
