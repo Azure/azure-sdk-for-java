@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
@@ -13,10 +14,12 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +96,13 @@ public class Utility {
             if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
                     && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
-                    getFeatureFlagConfigurationSetting(setting);
+                    getFeatureFlagConfigurationSetting(setting)
+                        .setKey(setting.getKey())
+                        .setValue(setting.getValue())
+                        .setLabel(setting.getLabel())
+                        .setETag(setting.getETag())
+                        .setContentType(setting.getContentType())
+                        .setTags(setting.getTags());
                 return subclassConfigurationSettingReflection(setting, featureFlagConfigurationSetting);
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
                 return getSecretReferenceConfigurationSetting(setting)
@@ -134,13 +143,7 @@ public class Utility {
         try {
             JsonParser parser = FACTORY.createParser(setting.getValue().getBytes(StandardCharsets.UTF_8));
             return (FeatureFlagConfigurationSetting) subclassConfigurationSettingReflection(setting,
-                getFieldValue(parser)
-                    .setKey(setting.getKey())
-                    .setValue(setting.getValue())
-                    .setLabel(setting.getLabel())
-                    .setETag(setting.getETag())
-                    .setContentType(setting.getContentType())
-                    .setTags(setting.getTags()));
+                getFieldValue(parser));
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
@@ -373,5 +376,82 @@ public class Utility {
     public static Context addTracingNamespace(Context context) {
         context = context == null ? Context.NONE : context;
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
+    }
+
+    // Serialization
+    /**
+     * Serialize the strongly-type property, {@code secretId} of {@link SecretReferenceConfigurationSetting} into a
+     * JSON format string, which is the {@code value} of {@link SecretReferenceConfigurationSetting}.
+     *
+     * @param setting the {@link SecretReferenceConfigurationSetting}.
+     * @return a JSON format string that represents the {@code value} of {@link SecretReferenceConfigurationSetting}.
+     * @throws IOException if {@link JsonGenerator} can not be created.
+     */
+    public static String writeSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting setting)
+        throws IOException {
+        // The setting's value is expected to be a JSON string for the SecretReferenceConfigurationSetting,
+        // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
+        // StringWriter.
+        final StringWriter jsonObjectWriter = new StringWriter();
+        final JsonGenerator gen = new JsonFactory().createGenerator(jsonObjectWriter);
+        gen.writeStartObject();
+        gen.writeStringField(URI, setting.getSecretId());
+        gen.writeEndObject();
+        gen.close();
+        return jsonObjectWriter.toString();
+    }
+
+    /**
+     * Serialize the strong-type properties, such as {@code featureId} of {@link FeatureFlagConfigurationSetting}
+     * into a JSON format string, which is the {@code value} of {@link FeatureFlagConfigurationSetting}.
+     *
+     * @param setting the {@link FeatureFlagConfigurationSetting}.
+     * @return a JSON format string that represents the {@code value} of {@link FeatureFlagConfigurationSetting}.
+     * @throws IOException if {@link JsonGenerator} can not be created.
+     */
+    public static String writeFeatureFlagConfigurationSetting(FeatureFlagConfigurationSetting setting)
+        throws IOException {
+        // The setting's value is expected to be a JSON string for the FeatureFlagConfigurationSetting,
+        // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
+        // StringWriter.
+        final StringWriter jsonObjectWriter = new StringWriter();
+        final JsonGenerator gen = new JsonFactory().createGenerator(jsonObjectWriter);
+        gen.writeStartObject();
+
+        gen.writeStringField(ID, setting.getFeatureId());
+        gen.writeStringField(DESCRIPTION, setting.getDescription());
+        gen.writeStringField(DISPLAY_NAME, setting.getDisplayName());
+        gen.writeBooleanField(ENABLED, setting.isEnabled());
+
+        gen.writeObjectFieldStart(CONDITIONS);
+        gen.writeArrayFieldStart(CLIENT_FILTERS);
+        for (FeatureFlagFilter filter : setting.getClientFilters()) {
+            gen.writeStartObject();
+            gen.writeStringField(NAME, filter.getName());
+            gen.writeObjectFieldStart(PARAMETERS);
+            writeMapProperties(filter.getParameters(), gen);
+            gen.writeEndObject(); // parameters object
+            gen.writeEndObject(); // each filter object
+        }
+
+        gen.writeEndArray();
+        gen.writeEndObject();
+
+        gen.writeEndObject();
+        gen.close();
+
+        return jsonObjectWriter.toString();
+    }
+
+    private static void writeMapProperties(Map<String, ? extends Object> properties, JsonGenerator gen)
+        throws IOException {
+        if (CoreUtils.isNullOrEmpty(properties)) {
+            return;
+        }
+
+        for (Map.Entry<String, ? extends Object> property : properties.entrySet()) {
+            gen.writeFieldName(property.getKey());
+            gen.writeObject(property.getValue().toString());
+        }
     }
 }

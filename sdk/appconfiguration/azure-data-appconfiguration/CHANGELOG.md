@@ -9,6 +9,9 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Used autorest.java to generate the underline implementation layer. Removed `ConfigurationClientImpl`.
+- Removed the dependency of `com.fasterxml.jackson.databind` package, but use `com.fasterxml.jackson.core.JsonParser` instead.
+- Removed `ConfigurationSettingJsonDeserializer` and  `ConfigurationSettingJsonSerializer`. 
 
 ## 1.4.2 (2023-02-16)
 

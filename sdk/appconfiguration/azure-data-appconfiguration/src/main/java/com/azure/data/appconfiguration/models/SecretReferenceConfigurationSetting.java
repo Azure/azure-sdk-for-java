@@ -9,8 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeSecretReferenceConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.getSecretReferenceConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.writeSecretReferenceConfigurationSetting;
 
 /**
  * {@link SecretReferenceConfigurationSetting} model. It represents a configuration setting that references as

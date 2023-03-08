@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeFeatureFlagConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.getFeatureFlagConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.writeFeatureFlagConfigurationSetting;
 
 /**
  * {@link FeatureFlagConfigurationSetting} allows you to customize your own feature flags to dynamically administer a
