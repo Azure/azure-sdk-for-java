@@ -3,7 +3,7 @@
 #
 # This document contains a list of artifacts that have opted-in to be a part of the automated patch release process.
 #
-# An automated patch release for a library contains updates to a library's dependencies, CHANGELOG and README only,
+# An automated patch release for a library only contains updates to a library's dependencies, CHANGELOG and README,
 # compared to the latest stable version. No other changes shall be included as part of such a release.
 #
 # Currently, the process only handles data plane libraries (those under the 'com.azure' group ID), meaning this will
@@ -12,7 +12,7 @@
 # Libraries listed here will not be released if a stable version for them has already been released for a given release
 # cycle by the time the the automated release process begins. So, if a library owner needs to release a bugfix,
 # performance improvement or new features, they should go ahead with their release during release week and not worry
-# about updating this list. The automated release process will happen the week after release week, followed by
+# about updating this file. The automated release process will happen the week after release week, followed by
 # the release of the Azure SDK BOM the week after that.
 # 
 # Test owners listed here are responsible for ensuring their library works properly before and after releases and for
