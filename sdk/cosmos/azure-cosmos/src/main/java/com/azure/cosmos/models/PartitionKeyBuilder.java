@@ -53,7 +53,7 @@ public final class PartitionKeyBuilder {
     }
 
     /**
-     * Adds a None Partition Key
+     * Adds a None Partition Key value to the path. An error will be raised if used with other paths.
      * @return The current PartitionKeyBuilder object
      */
     public PartitionKeyBuilder addNoneValue() {
@@ -66,7 +66,7 @@ public final class PartitionKeyBuilder {
      * @return PartitionKey object
      * @throws IllegalStateException when using PartitionKey.None with other values
      */
-    public PartitionKey build() throws IllegalStateException {
+    public PartitionKey build() {
         // Why these checks?
         // These changes are being added for SDK to support multiple paths in a partition key.
         //
