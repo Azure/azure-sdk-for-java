@@ -16,8 +16,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -38,7 +38,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENAN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class DocumentModelAdministrationClientTestBase extends TestBase {
+public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
     Duration durationTestMode;
 
     /**
@@ -60,17 +60,20 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+        if (useKeyCredential) {
+            if (getTestMode() == TestMode.PLAYBACK) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
             } else {
-                builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
+        } else {
+            if (getTestMode() != TestMode.PLAYBACK) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.credential(getCredentialByAuthority(endpoint));
         }
         return builder;
     }
