@@ -1,28 +1,123 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23f553f5-ad0d-45f2-95b1-466a02d049d5",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "content-length" : "786",
-      "x-envoy-upstream-service-time" : "352",
-      "apim-request-id" : "516fbfef-7c5d-472e-997a-2f6dbe3a7645",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Wed, 02 Nov 2022 09:12:10 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0,CognitiveServices.TextAnalytics.TextRecords=2",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Body" : "{\"kind\":\"DynamicClassificationResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":0},\"documents\":[{\"id\":\"0\",\"classifications\":[{\"category\":\"Health\",\"confidenceScore\":0.88},{\"category\":\"Music\",\"confidenceScore\":0.04},{\"category\":\"Sports\",\"confidenceScore\":0.04},{\"category\":\"Politics\",\"confidenceScore\":0.03}],\"statistics\":{\"charactersCount\":46,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"classifications\":[{\"category\":\"Sports\",\"confidenceScore\":0.99},{\"category\":\"Music\",\"confidenceScore\":0.0},{\"category\":\"Health\",\"confidenceScore\":0.0},{\"category\":\"Politics\",\"confidenceScore\":0.0}],\"statistics\":{\"charactersCount\":42,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01-preview\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=true",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "312",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 18:58:05 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "c49049e8-09f5-4b9b-8e36-0cf380d05d5a"
+      },
+      "RequestBody": {
+        "kind": "DynamicClassification",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "The WHO is issuing a warning about Monkey Pox."
+            },
+            {
+              "id": "1",
+              "text": "Mo Salah plays in Liverpool FC in England."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "classificationType": "Multi",
+          "categories": [
+            "Health",
+            "Politics",
+            "Music",
+            "Sports"
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "2ab7b6aa-3d18-4b59-8d75-a6bcfb30fd34",
+        "Content-Length": "786",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.BatchScoring=0,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 08 Mar 2023 18:58:04 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "315",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "DynamicClassificationResults",
+        "results": {
+          "statistics": {
+            "documentsCount": 2,
+            "validDocumentsCount": 2,
+            "erroneousDocumentsCount": 0,
+            "transactionsCount": 0
+          },
+          "documents": [
+            {
+              "id": "0",
+              "classifications": [
+                {
+                  "category": "Health",
+                  "confidenceScore": 0.88
+                },
+                {
+                  "category": "Music",
+                  "confidenceScore": 0.04
+                },
+                {
+                  "category": "Sports",
+                  "confidenceScore": 0.04
+                },
+                {
+                  "category": "Politics",
+                  "confidenceScore": 0.03
+                }
+              ],
+              "statistics": {
+                "charactersCount": 46,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            },
+            {
+              "id": "1",
+              "classifications": [
+                {
+                  "category": "Sports",
+                  "confidenceScore": 0.99
+                },
+                {
+                  "category": "Music",
+                  "confidenceScore": 0.0
+                },
+                {
+                  "category": "Health",
+                  "confidenceScore": 0.0
+                },
+                {
+                  "category": "Politics",
+                  "confidenceScore": 0.0
+                }
+              ],
+              "statistics": {
+                "charactersCount": 42,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-10-01-preview"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

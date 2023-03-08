@@ -1,28 +1,123 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f754f66d-2099-4637-a5d2-6b6b34f41050",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "content-length" : "790",
-      "x-envoy-upstream-service-time" : "1102",
-      "apim-request-id" : "9c697a27-5558-40c1-8f5c-7fb42ea919e1",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Wed, 02 Nov 2022 09:15:45 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=0,CognitiveServices.TextAnalytics.TextRecords=2",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Body" : "{\"kind\":\"DynamicClassificationResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":0},\"documents\":[{\"id\":\"0\",\"classifications\":[{\"category\":\"Health\",\"confidenceScore\":0.35},{\"category\":\"Politics\",\"confidenceScore\":0.29},{\"category\":\"Music\",\"confidenceScore\":0.19},{\"category\":\"Sports\",\"confidenceScore\":0.17}],\"statistics\":{\"charactersCount\":355,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"classifications\":[{\"category\":\"Health\",\"confidenceScore\":0.34},{\"category\":\"Music\",\"confidenceScore\":0.31},{\"category\":\"Politics\",\"confidenceScore\":0.19},{\"category\":\"Sports\",\"confidenceScore\":0.16}],\"statistics\":{\"charactersCount\":20,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01-preview\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=true",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "599",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 18:32:50 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "6a149666-fd53-4b53-824b-16cdb47fd095"
+      },
+      "RequestBody": {
+        "kind": "DynamicClassification",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn\u0027tseemtostopatanygivenpointintime.ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage.Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase.ThisallowsustotestwhathappensifitisnotOK.Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure!"
+            },
+            {
+              "id": "1",
+              "text": "I work at Microsoft."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "classificationType": "Multi",
+          "categories": [
+            "Health",
+            "Politics",
+            "Music",
+            "Sports"
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "a0cf30e5-d7df-4e02-b8fe-b6a1e66ad02b",
+        "Content-Length": "790",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.BatchScoring=0,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 08 Mar 2023 18:32:51 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "1277",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "DynamicClassificationResults",
+        "results": {
+          "statistics": {
+            "documentsCount": 2,
+            "validDocumentsCount": 2,
+            "erroneousDocumentsCount": 0,
+            "transactionsCount": 0
+          },
+          "documents": [
+            {
+              "id": "0",
+              "classifications": [
+                {
+                  "category": "Health",
+                  "confidenceScore": 0.35
+                },
+                {
+                  "category": "Politics",
+                  "confidenceScore": 0.29
+                },
+                {
+                  "category": "Music",
+                  "confidenceScore": 0.19
+                },
+                {
+                  "category": "Sports",
+                  "confidenceScore": 0.17
+                }
+              ],
+              "statistics": {
+                "charactersCount": 355,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            },
+            {
+              "id": "1",
+              "classifications": [
+                {
+                  "category": "Health",
+                  "confidenceScore": 0.34
+                },
+                {
+                  "category": "Music",
+                  "confidenceScore": 0.31
+                },
+                {
+                  "category": "Politics",
+                  "confidenceScore": 0.19
+                },
+                {
+                  "category": "Sports",
+                  "confidenceScore": 0.16
+                }
+              ],
+              "statistics": {
+                "charactersCount": 20,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-10-01-preview"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

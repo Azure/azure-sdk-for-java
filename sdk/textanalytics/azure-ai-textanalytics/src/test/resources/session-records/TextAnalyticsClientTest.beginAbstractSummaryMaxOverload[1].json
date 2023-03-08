@@ -1,88 +1,221 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "333f842c-bedb-47c0-a6f7-7004b5b7e49a",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "1822",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 19:06:17 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b7ce2c86-ee20-4dcf-8dc5-c9e9faaad7ec"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z). At the intersection of all three, there\u2019s magic\u2014what we call XYZ-code as illustrated in Figure 1\u2014a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today. Over the past five years, we have achieved human performance on benchmarks in conversational speech recognition, machine translation, conversational question answering, machine reading comprehension, and image captioning. These five breakthroughs provided us with strong signals toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and multilingual learning that is closer in line with how humans learn and understand. I believe the joint XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources in the downstream AI tasks."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "AbstractiveSummarization",
+            "parameters": {
+              "sentenceCount": 4,
+              "stringIndexType": "Utf16CodeUnit",
+              "loggingOptOut": false
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "2f1c966b-249b-41bc-9712-4e720a815e9f",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:06:18 GMT",
+        "operation-location": "https://eastuslanguage.cognitiveservices.azure.com/language/analyze-text/jobs/efd61ca3-821e-433a-8a96-a158ffaeedba?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "154",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "159",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://eastuslanguage.cognitiveservices.azure.com/language/analyze-text/jobs/464bc52a-3ad7-4d3f-9d52-0418e73ced2e?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "01dc0b70-c29b-407b-909e-09167ccd64bb",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "Date" : "Thu, 26 Jan 2023 22:29:41 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/efd61ca3-821e-433a-8a96-a158ffaeedba?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:06:18 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f363fb0b-c3b8-4ef9-813e-cdf1a1d761df"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "2f8839df-83a2-4383-9498-ee0324dd4768",
+        "Content-Length": "280",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:06:18 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "9",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "jobId": "efd61ca3-821e-433a-8a96-a158ffaeedba",
+        "lastUpdatedDateTime": "2023-03-08T19:06:18Z",
+        "createdDateTime": "2023-03-08T19:06:18Z",
+        "expirationDateTime": "2023-03-09T19:06:18Z",
+        "status": "running",
+        "errors": [],
+        "tasks": {
+          "completed": 0,
+          "failed": 0,
+          "inProgress": 1,
+          "total": 1,
+          "items": []
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/464bc52a-3ad7-4d3f-9d52-0418e73ced2e?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a3740bba-2b73-4a65-8e2c-6b960c226c06"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/efd61ca3-821e-433a-8a96-a158ffaeedba?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:06:48 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "c825f30e-6beb-42f4-8022-36ade0088c7a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "539b7af1-1a86-4272-bcf5-95d0c83227f9",
+        "Content-Length": "1250",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:06:48 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "67",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "jobId": "efd61ca3-821e-433a-8a96-a158ffaeedba",
+        "lastUpdatedDateTime": "2023-03-08T19:06:20Z",
+        "createdDateTime": "2023-03-08T19:06:18Z",
+        "expirationDateTime": "2023-03-09T19:06:18Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "AbstractiveSummarizationLROResults",
+              "lastUpdateDateTime": "2023-03-08T19:06:20.680576Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "summaries": [
+                      {
+                        "text": "Microsoft has been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Xbox AI Cognitive Services, I enjoy a unique perspective in viewing the relationship between three attributes of human cognition: monolingual text, audio or visual sensory signals, and bilingual. At the intersection of all three, there\u2019s magic\u2014what we call XYZ-code\u2014a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ- code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages.",
+                        "contexts": [
+                          {
+                            "offset": 0,
+                            "length": 1627
+                          }
+                        ]
+                      }
+                    ],
+                    "id": "0",
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "latest"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "10",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c437cf4b-ff40-480a-bb7a-07d5df1678ce",
-      "retry-after" : "0",
-      "Content-Length" : "280",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"464bc52a-3ad7-4d3f-9d52-0418e73ced2e\",\"lastUpdatedDateTime\":\"2023-01-26T22:29:42Z\",\"createdDateTime\":\"2023-01-26T22:29:42Z\",\"expirationDateTime\":\"2023-01-27T22:29:42Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1,\"items\":[]}}",
-      "Date" : "Thu, 26 Jan 2023 22:29:41 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/464bc52a-3ad7-4d3f-9d52-0418e73ced2e?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d27028ed-75df-4158-b02a-07a2030d09b9"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "41",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "25c7c18c-298c-46c9-a707-41466e83113d",
-      "retry-after" : "0",
-      "Content-Length" : "1065",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"464bc52a-3ad7-4d3f-9d52-0418e73ced2e\",\"lastUpdatedDateTime\":\"2023-01-26T22:29:44Z\",\"createdDateTime\":\"2023-01-26T22:29:42Z\",\"expirationDateTime\":\"2023-01-27T22:29:42Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"AbstractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2023-01-26T22:29:44.2461401Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"summaries\":[{\"text\":\"Microsoft is taking a more holistic, human-centric approach to learning and understanding. The company is developing a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks. The goal of this work is to achieve a leap in AI capabilities, achieving multisensory and multilingual learning that is closer to how humans learn and understand.\",\"contexts\":[{\"offset\":0,\"length\":1627}]}],\"id\":\"0\",\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"latest\"}}]}}",
-      "Date" : "Thu, 26 Jan 2023 22:30:12 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/464bc52a-3ad7-4d3f-9d52-0418e73ced2e?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3e5dc0a1-2d02-436e-b666-b3fc0f36732f"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "26",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "829c648b-1bb1-427f-b882-3267bbf3199c",
-      "retry-after" : "0",
-      "Content-Length" : "1065",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"464bc52a-3ad7-4d3f-9d52-0418e73ced2e\",\"lastUpdatedDateTime\":\"2023-01-26T22:29:44Z\",\"createdDateTime\":\"2023-01-26T22:29:42Z\",\"expirationDateTime\":\"2023-01-27T22:29:42Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"AbstractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2023-01-26T22:29:44.2461401Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"summaries\":[{\"text\":\"Microsoft is taking a more holistic, human-centric approach to learning and understanding. The company is developing a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks. The goal of this work is to achieve a leap in AI capabilities, achieving multisensory and multilingual learning that is closer to how humans learn and understand.\",\"contexts\":[{\"offset\":0,\"length\":1627}]}],\"id\":\"0\",\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"latest\"}}]}}",
-      "Date" : "Thu, 26 Jan 2023 22:30:12 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/efd61ca3-821e-433a-8a96-a158ffaeedba?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:06:49 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e84d1109-2f96-4b4a-b323-bb5cc93dd68f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "7fc07743-d4d7-4009-9e7b-c0974a0b6c60",
+        "Content-Length": "1250",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:06:48 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "61",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "jobId": "efd61ca3-821e-433a-8a96-a158ffaeedba",
+        "lastUpdatedDateTime": "2023-03-08T19:06:20Z",
+        "createdDateTime": "2023-03-08T19:06:18Z",
+        "expirationDateTime": "2023-03-09T19:06:18Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "AbstractiveSummarizationLROResults",
+              "lastUpdateDateTime": "2023-03-08T19:06:20.680576Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "summaries": [
+                      {
+                        "text": "Microsoft has been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Xbox AI Cognitive Services, I enjoy a unique perspective in viewing the relationship between three attributes of human cognition: monolingual text, audio or visual sensory signals, and bilingual. At the intersection of all three, there\u2019s magic\u2014what we call XYZ-code\u2014a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ- code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages.",
+                        "contexts": [
+                          {
+                            "offset": 0,
+                            "length": 1627
+                          }
+                        ]
+                      }
+                    ],
+                    "id": "0",
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "latest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
