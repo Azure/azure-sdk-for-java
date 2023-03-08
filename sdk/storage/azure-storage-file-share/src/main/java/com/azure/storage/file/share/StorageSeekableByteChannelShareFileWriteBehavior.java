@@ -65,7 +65,7 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
         if (0 <= position && position <= fileSize) {
             return;
         }
-        throw new UnsupportedOperationException("Cannot seek beyond bounds of file.");
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot seek beyond bounds of file."));
     }
 
     @Override

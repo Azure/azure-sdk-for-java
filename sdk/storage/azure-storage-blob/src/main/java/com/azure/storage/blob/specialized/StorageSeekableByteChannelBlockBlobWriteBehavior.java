@@ -96,7 +96,8 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
 
     @Override
     public void assertCanSeek(long position) {
-        throw new UnsupportedOperationException("Block blob write channels support sequential write only.");
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Block blob write channels support sequential write only."));
     }
 
     @Override
