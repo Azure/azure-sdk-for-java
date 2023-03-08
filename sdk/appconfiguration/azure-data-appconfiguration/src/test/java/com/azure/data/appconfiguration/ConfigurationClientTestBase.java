@@ -6,7 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class ConfigurationClientTestBase extends TestBase {
+public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
@@ -51,7 +51,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final int RESOURCE_LENGTH = 16;
 
     public static final String FAKE_CONNECTION_STRING =
-        "Endpoint=http://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
+        "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
     static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
