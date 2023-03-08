@@ -131,16 +131,16 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     }
 
     /**
-     * Gets the read-behavior used by this channel.
-     * @return {@link ReadBehavior} of this channel.
+     * Gets the read-behavior used by this channel, if any.
+     * @return {@link ReadBehavior} of this channel. Null if the channel is configured for writes.
      */
     public ReadBehavior getReadBehavior() {
         return readBehavior;
     }
 
     /**
-     * Gets the write-behavior used by this channel.
-     * @return {@link WriteBehavior} of this channel.
+     * Gets the write-behavior used by this channel, if any.
+     * @return {@link WriteBehavior} of this channel. Null if the channel is configured for reads.
      */
     public WriteBehavior getWriteBehavior() {
         return writeBehavior;
