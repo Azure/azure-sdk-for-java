@@ -225,19 +225,34 @@ public class ReadmeSamples {
         return null;
     }
 
-    private final TokenCredential credentials = null;
+    private final TokenCredential credential = null;
     public void nationalCloudSample() {
-        // BEGIN: readme-sample-nationalCloudSample
+        // BEGIN: readme-sample-armTokenChina
         ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
-            .credential(credentials)
+            .credential(credential)
+            // only if ACR access tokens are disabled or not supported
             .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildClient();
 
         containerRegistryClient
             .listRepositoryNames()
             .forEach(name -> System.out.println(name));
-        // END: readme-sample-nationalCloudSample
+        // END: readme-sample-armTokenChina
+    }
+
+    public void armTokenSample() {
+        // BEGIN: readme-sample-armTokenPublic
+        ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+            .endpoint(getEndpoint())
+            .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+            .buildClient();
+
+        containerRegistryClient
+            .listRepositoryNames()
+            .forEach(name -> System.out.println(name));
+        // END: readme-sample-armTokenPublic
     }
 }
 

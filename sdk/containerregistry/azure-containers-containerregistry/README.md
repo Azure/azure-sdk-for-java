@@ -85,15 +85,38 @@ ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
 
 For more information on using AAD with Azure Container Registry, please see the service's [Authentication Overview](https://docs.microsoft.com/azure/container-registry/container-registry-authentication).
 
-#### National Clouds
-To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
-- Set the authorityHost in the credential builder.
-- Set the authenticationScope in ContainerRegistryClientBuilder.
+#### Authenticating with ARM AAD token
 
-```java readme-sample-nationalCloudSample
+By default, Container Registry SDK for Java uses ACR access tokens. If you want to authenticate with ARM AAD token and have corresponding policy enabled,
+make sure to set audience when building container Registry client.
+Please refer to [ACR CLI reference](https://learn.microsoft.com/cli/azure/acr/config/authentication-as-arm?view=azure-cli-latest) for information
+on how to check ARM authentication policy configuration.
+
+`ContainerRegistryAudience` value is specific to the cloud:
+
+```java readme-sample-armTokenPublic
 ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
     .endpoint(getEndpoint())
-    .credential(credentials)
+    .credential(credential)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+    .buildClient();
+
+containerRegistryClient
+    .listRepositoryNames()
+    .forEach(name -> System.out.println(name));
+```
+
+#### National Clouds
+
+To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+- Set the `authorityHost` in the credential builder following [Identity client library documentation](https://learn.microsoft.com/java/api/overview/azure/identity-readme) 
+- If ACR access token authentication is disabled for yourcontainer Registry resource, you need to configure the audience on the Container Registry client builder.
+
+```java readme-sample-armTokenChina
+ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+    .endpoint(getEndpoint())
+    .credential(credential)
+    // only if ACR access tokens are disabled or not supported
     .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
     .buildClient();
 
