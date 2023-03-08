@@ -97,15 +97,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
      * @throws IllegalArgumentException If both read and write behavior are given.
      */
     public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, long startingPosition) {
-        if (chunkSize < 1) {
-            throw new IllegalArgumentException("'chunkSize' must be a positive number");
-        }
-
-        this.readBehavior = Objects.requireNonNull(readBehavior);
-        this.writeBehavior = null;
-        buffer = ByteBuffer.allocate(chunkSize);
-        absolutePosition = startingPosition;
-        bufferAbsolutePosition = 0;
+        this(chunkSize, null, Objects.requireNonNull(readBehavior), startingPosition);
 
         // indicate first read needs to call into readBehavior.
         buffer.limit(0);
@@ -119,8 +111,20 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
      * @throws IllegalArgumentException If both read and write behavior are given.
      */
     public StorageSeekableByteChannel(int chunkSize, WriteBehavior writeBehavior, long startingPosition) {
-        this.writeBehavior = Objects.requireNonNull(writeBehavior);
-        this.readBehavior = null;
+        this(chunkSize, Objects.requireNonNull(writeBehavior), null, startingPosition);
+    }
+
+    private StorageSeekableByteChannel(int chunkSize, WriteBehavior writeBehavior, ReadBehavior readBehavior,
+        long startingPosition) {
+        if (chunkSize < 1) {
+            throw new IllegalArgumentException("'chunkSize' must be a positive number.");
+        }
+        if (startingPosition < 0) {
+            throw new IllegalArgumentException("'startingPosition' cannot be a negative number.");
+        }
+
+        this.readBehavior = readBehavior;
+        this.writeBehavior = writeBehavior;
         buffer = ByteBuffer.allocate(chunkSize);
         absolutePosition = startingPosition;
         bufferAbsolutePosition = 0;
