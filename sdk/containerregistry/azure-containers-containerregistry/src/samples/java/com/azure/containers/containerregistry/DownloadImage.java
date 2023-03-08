@@ -4,8 +4,8 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciDescriptor;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.identity.DefaultAzureCredential;
@@ -37,14 +37,14 @@ public class DownloadImage {
 
         DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-        OciManifest manifest = manifestResult.asOciManifest();
+        OciImageManifest manifest = manifestResult.asOciManifest();
         System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
 
         String configFileName = manifest.getConfig().getDigest() + ".json";
         blobClient.downloadStream(manifest.getConfig().getDigest(), createWriteChannel(configFileName));
         System.out.printf("Got config: %s\n", configFileName);
 
-        for (OciBlobDescriptor layer : manifest.getLayers()) {
+        for (OciDescriptor layer : manifest.getLayers()) {
             blobClient.downloadStream(layer.getDigest(), createWriteChannel(layer.getDigest()));
             System.out.printf("Got layer: %s\n", layer.getDigest());
         }

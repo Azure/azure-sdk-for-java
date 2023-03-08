@@ -14,7 +14,7 @@ public class DownloadManifestResult {
     }
 
     private final String digest;
-    private OciManifest ociManifest;
+    private OciImageManifest ociManifest;
     private final ManifestMediaType mediaType;
     private final BinaryData rawData;
 
@@ -36,12 +36,12 @@ public class DownloadManifestResult {
      * The OCI manifest that was downloaded.
      * @return The OCIManifest object.
      */
-    public OciManifest asOciManifest() {
+    public OciImageManifest asOciManifest() {
         if (ociManifest != null) {
             return ociManifest;
         }
 
-        ociManifest = rawData.toObject(OciManifest.class);
+        ociManifest = rawData.toObject(OciImageManifest.class);
 
         return ociManifest;
     }

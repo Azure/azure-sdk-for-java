@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
@@ -49,6 +49,8 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -185,9 +187,10 @@ public class ContainerRegistryBlobClientTests {
         ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
 
+        Collection<ManifestMediaType> dockerType = Collections.singletonList(ManifestMediaType.DOCKER_MANIFEST);
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
+            () -> client.downloadManifestWithResponse(MANIFEST_DIGEST, dockerType, Context.NONE),
+            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST, dockerType));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
         assertNotNull(result.getValue().asOciManifest());
@@ -199,13 +202,14 @@ public class ContainerRegistryBlobClientTests {
         ContainerRegistryBlobClient client = createSyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
 
+        Collection<ManifestMediaType> ociIndexType = Collections.singletonList(OCI_INDEX_MEDIA_TYPE);
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
+            () -> client.downloadManifestWithResponse(OCI_INDEX_DIGEST, ociIndexType, Context.NONE),
+            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST, ociIndexType));
 
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
         assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getMediaType());
-        OciManifest ociManifest = result.getValue().asOciManifest();
+        OciImageManifest ociManifest = result.getValue().asOciManifest();
         assertEquals(2, ociManifest.getSchemaVersion());
         assertNull(ociManifest.getConfig());
         assertNull(ociManifest.getLayers());
@@ -288,7 +292,7 @@ public class ContainerRegistryBlobClientTests {
     }
 
     @Test
-    public void uploadVariableChunkSize() throws NoSuchAlgorithmException {
+    public void uploadVariableChunkSize() {
         ByteBuffer buf = ByteBuffer.wrap(CHUNK);
         Flux<ByteBuffer> content = Flux.create(sink -> {
             sink.next(slice(buf, 0, 1));
@@ -322,7 +326,8 @@ public class ContainerRegistryBlobClientTests {
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
         StepVerifier.create(asyncClient.uploadBlob(content))
-            .expectError(IllegalStateException.class);
+            .expectError(IllegalStateException.class)
+            .verify();
     }
 
     @Test
@@ -345,17 +350,18 @@ public class ContainerRegistryBlobClientTests {
     }
 
     @SyncAsyncTest
-    public void uploadFromStream() {
+    public void uploadFromStream() throws IOException {
         ByteBuffer data = slice(ByteBuffer.wrap(CHUNK), 0, 1024 * 100);
         sha256.update(data.asReadOnlyBuffer());
-        ByteBufferBackedInputStream stream = new ByteBufferBackedInputStream(data);
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+        try (ByteBufferBackedInputStream stream = new ByteBufferBackedInputStream(data)) {
+            Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
-        ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
-        SyncAsyncExtension.execute(
-            () -> client.uploadBlob(BinaryData.fromStream(stream)),
-            () -> asyncClient.uploadBlob(BinaryData.fromStream(stream)));
+            ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+            ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
+            SyncAsyncExtension.execute(
+                () -> client.uploadBlob(BinaryData.fromStream(stream)),
+                () -> asyncClient.uploadBlob(BinaryData.fromStream(stream)));
+        }
     }
 
     @Test
@@ -363,49 +369,54 @@ public class ContainerRegistryBlobClientTests {
         File output = File.createTempFile("temp", "in");
 
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
-        AsynchronousFileChannel outputChannel = AsynchronousFileChannel.open(output.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.READ);
+        try (AsynchronousFileChannel outputChannel = AsynchronousFileChannel
+            .open(output.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.READ)) {
+            StepVerifier.create(asyncClient.downloadStream(SMALL_CONTENT_SHA256)
+                    .flatMap(result -> result.writeValueToAsync(IOUtils.toAsynchronousByteChannel(outputChannel, 0))))
+                .verifyComplete();
 
-        StepVerifier.create(asyncClient.downloadStream(SMALL_CONTENT_SHA256)
-                .flatMap(result -> result.writeValueToAsync(IOUtils.toAsynchronousByteChannel(outputChannel, 0))))
-            .verifyComplete();
+            ByteBuffer result = ByteBuffer.wrap(SMALL_CONTENT.toBytes());
+            outputChannel.read(result, 0).get();
 
-        ByteBuffer result = ByteBuffer.wrap(SMALL_CONTENT.toBytes());
-        outputChannel.read(result, 0).get();
-
-        // make Java 8 happy
-        Buffer flip = result.flip();
-        assertArrayEquals(SMALL_CONTENT.toBytes(), (byte[]) flip.array());
+            // make Java 8 happy
+            Buffer flip = result.flip();
+            assertArrayEquals(SMALL_CONTENT.toBytes(), (byte[]) flip.array());
+        }
     }
 
     public static HttpClient createDownloadBlobClient(BinaryData content, String digest) {
-        InputStream contentStream = content.toStream();
-        AtomicLong expectedStartPosition = new AtomicLong(0);
-        long contentLength = content.getLength();
-        return new MockHttpClient(request -> {
-            long start = expectedStartPosition.get();
-            long end = Math.min(start + CHUNK_SIZE, contentLength);
+        try (InputStream contentStream = content.toStream()) {
+            AtomicLong expectedStartPosition = new AtomicLong(0);
+            long contentLength = content.getLength();
+            return new MockHttpClient(request -> {
+                long start = expectedStartPosition.get();
+                long end = Math.min(start + CHUNK_SIZE, contentLength);
 
-            if (start >= contentLength) {
-                fail("Got download chunk on completed blob");
-            }
+                if (start >= contentLength) {
+                    fail("Got download chunk on completed blob");
+                }
 
-            HttpRange expectedRange = new HttpRange(start, (long) CHUNK_SIZE);
-            assertEquals(expectedRange.toString(), request.getHeaders().getValue(HttpHeaderName.RANGE));
+                HttpRange expectedRange = new HttpRange(start, (long) CHUNK_SIZE);
+                assertEquals(expectedRange.toString(), request.getHeaders().getValue(HttpHeaderName.RANGE));
 
-            byte[] response = new byte[(int) (end - start)];
-            try {
-                contentStream.read(response);
-            } catch (IOException e) {
-                fail(e);
-            }
+                byte[] response = new byte[(int) (end - start)];
+                try {
+                    contentStream.read(response);
+                } catch (IOException e) {
+                    fail(e);
+                }
 
-            HttpHeaders headers = new HttpHeaders()
-                .add("Content-Range", String.format("bytes %s-%s/%s", start, end, contentLength))
-                .add(UtilsImpl.DOCKER_DIGEST_HEADER_NAME, digest);
+                HttpHeaders headers = new HttpHeaders()
+                    .add("Content-Range", String.format("bytes %s-%s/%s", start, end, contentLength))
+                    .add(UtilsImpl.DOCKER_DIGEST_HEADER_NAME, digest);
 
-            expectedStartPosition.set(start + CHUNK_SIZE);
-            return new MockHttpResponse(request, 206, headers, response);
-        });
+                expectedStartPosition.set(start + CHUNK_SIZE);
+                return new MockHttpResponse(request, 206, headers, response);
+            });
+        } catch (IOException e) {
+            fail(e);
+            throw new RuntimeException(e);
+        }
     }
 
     public static HttpClient createClientManifests(BinaryData content, String digest,
@@ -440,6 +451,7 @@ public class ContainerRegistryBlobClientTests {
                     // make Java 8 happy
                     assertEquals(request.getUrl().getQuery(), "digest=" + URLEncoder.encode(expectedDigest, StandardCharsets.UTF_8.toString()));
                 } catch (UnsupportedEncodingException e) {
+                    fail(e);
                 }
                 assertEquals("/" + expectedReceivedLocation, request.getUrl().getPath());
 
