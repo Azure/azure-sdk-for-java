@@ -127,72 +127,13 @@ directive:
       to: DataFeedStatus
 ```
 
-#### Metric properties rename
-
+### Change AnomalyAlert alertId to id
 ``` yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.Metric) {
-        const metricId = $.Metric.properties.metricId;
-        if (metricId && !metricId["x-ms-client-name"]) {
-            metricId["x-ms-client-name"] = "id";
-            $.Metric.properties.metricId = metricId;
-        }
-        const metricName = $.Metric.properties.metricName;
-        if (metricName && !metricId["x-ms-client-name"]) {
-            metricName["x-ms-client-name"] = "name";
-            $.Metric.properties.metricName = metricName;
-        }
-        const metricDisplayName = $.Metric.properties.metricDisplayName;
-        if (metricDisplayName && !metricDisplayName["x-ms-client-name"]) {
-            metricDisplayName["x-ms-client-name"] = "displayName";
-            $.Metric.properties.metricDisplayName = metricDisplayName;
-        }
-        const metricDescription = $.Metric.properties.metricDescription;
-        if (metricDescription && !metricDescription["x-ms-client-name"]) {
-            metricDescription["x-ms-client-name"] = "description";
-            $.Metric.properties.metricDescription = metricDescription;
-        }
-    }
-```
-
-#### Dimension properties rename
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.Dimension) {
-        const dimensionName = $.Metric.properties.dimensionName;
-        if (dimensionName && !dimensionName["x-ms-client-name"]) {
-            dimensionName["x-ms-client-name"] = "name";
-            $.Metric.properties.dimensionName = dimensionName;
-        }
-        const dimensionDisplayName = $.Metric.properties.dimensionDisplayName;
-        if (dimensionDisplayName && !dimensionDisplayName["x-ms-client-name"]) {
-            dimensionDisplayName["x-ms-client-name"] = "displayName";
-            $.Metric.properties.dimensionDisplayName = dimensionDisplayName;
-        }
-    }
-```
-
-#### Alert properties rename
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.AlertResult) {
-        const alertId = $.AlertResult.properties.alertId;
-        if (alertId && !alertId["x-ms-client-name"]) {
-            alertId["x-ms-client-name"] = "id";
-            $.AlertResult.properties.alertId = alertId;
-        }
-    }
+  - from: swagger-document
+    where: $.definitions.AnomalyAlert.properties
+    transform: >
+      $.alertId["x-ms-client-name"] = "id";
 ```
 
 ### Expose MetricId as String
