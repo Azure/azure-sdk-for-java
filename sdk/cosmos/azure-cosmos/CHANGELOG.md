@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated `CosmosClientBuilder` javadocs to include specific instructions for configuring Session consistency behavior - See [PR 33923](https://github.com/Azure/azure-sdk-for-java/pull/33923)
 
 ### 4.41.0 (2023-02-17)
 
