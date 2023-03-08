@@ -180,6 +180,18 @@
         },
         {
           "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.cosmos.models.PartitionKeyBuilder com.azure.cosmos.models.PartitionKeyBuilder::addNullValue()",
+          "justification": "removing unnecessary method from PartitionKeyBuilder class"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.exception.runtimeAdded",
+          "new": "method com.azure.cosmos.models.PartitionKey com.azure.cosmos.models.PartitionKeyBuilder::build() throws java.lang.IllegalStateException",
+          "justification": "adding throws to build() method if PartitionKey.None is used with other paths"
+        },
+        {
+          "ignore": true,
           "code": "java.method.addedToInterface",
           "new": "method java.lang.String com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::getServiceBusDomainName()",
           "justification": "support configuration of Service Bus domain name."
