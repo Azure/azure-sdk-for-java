@@ -70,6 +70,7 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
 
     @Override
     public void resize(long newSize) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            "Setting share file size not supported through SeekableByteChannel interface."));
     }
 }
