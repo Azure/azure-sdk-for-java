@@ -9,7 +9,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
 import java.io.IOException;

@@ -4,7 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileRange;

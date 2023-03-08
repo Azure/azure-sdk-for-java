@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.ConsistentReadControl
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions
-import com.azure.storage.common.StorageSeekableByteChannel
+import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
 
@@ -66,7 +66,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         def behavior = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null)
 
         and: "StorageSeekableByteChannel"
-        def channel = new StorageSeekableByteChannel(toRead, behavior, null, 0)
+        def channel = new StorageSeekableByteChannel(toRead, behavior, 0)
 
         when: "seek"
         channel.position(offset)

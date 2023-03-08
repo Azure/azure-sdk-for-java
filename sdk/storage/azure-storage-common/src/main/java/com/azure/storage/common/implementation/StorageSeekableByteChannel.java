@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 
@@ -11,6 +11,7 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Objects;
 
 /**
  * StorageSeekableByteChannel allows for uploading and downloading data to and from an Azure Storage service using the
@@ -66,9 +67,9 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
          * Determines whether the write behavior can support a random seek to this position. May fetch information
          * from the service to determine if possible.
          * @param position Desired seek position.
-         * @return Whether the resource supports this.
+         * @throws UnsupportedOperationException describing why the attempted seek is unsupported.
          */
-        boolean canSeek(long position);
+        void assertCanSeek(long position);
 
         /**
          * Changes the size of the backing resource, if supported.
@@ -89,29 +90,40 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     private long absolutePosition;
 
     /**
-     * Constructs an instance of this class.
+     * Constructs an instance of this class in read mode.
      * @param chunkSize Size of the internal channel buffer to use for data transfer, and for individual REST transfers.
      * @param readBehavior Behavior for reading from the backing Storage resource.
+     * @param startingPosition Initial position for the channel.
+     * @throws IllegalArgumentException If both read and write behavior are given.
+     */
+    public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, long startingPosition) {
+        if (chunkSize < 1) {
+            throw new IllegalArgumentException("'chunkSize' must be a positive number");
+        }
+
+        this.readBehavior = Objects.requireNonNull(readBehavior);
+        this.writeBehavior = null;
+        buffer = ByteBuffer.allocate(chunkSize);
+        absolutePosition = startingPosition;
+        bufferAbsolutePosition = 0;
+
+        // indicate first read needs to call into readBehavior.
+        buffer.limit(0);
+    }
+
+    /**
+     * Constructs an instance of this class in write mode.
+     * @param chunkSize Size of the internal channel buffer to use for data transfer, and for individual REST transfers.
      * @param writeBehavior Behavior for writing to the backing Storage resource.
      * @param startingPosition Initial position for the channel.
      * @throws IllegalArgumentException If both read and write behavior are given.
      */
-    public StorageSeekableByteChannel(int chunkSize, ReadBehavior readBehavior, WriteBehavior writeBehavior,
-        long startingPosition) {
-        if (readBehavior != null && writeBehavior != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "StorageSeekableByteChannel can have only one of readBehavior or writeBehavior."));
-        }
-
+    public StorageSeekableByteChannel(int chunkSize, WriteBehavior writeBehavior, long startingPosition) {
+        this.writeBehavior = Objects.requireNonNull(writeBehavior);
+        this.readBehavior = null;
         buffer = ByteBuffer.allocate(chunkSize);
-        this.readBehavior = readBehavior;
-        this.writeBehavior = writeBehavior;
-
         absolutePosition = startingPosition;
         bufferAbsolutePosition = 0;
-        if (readBehavior != null) {
-            buffer.limit(0);
-        }
     }
 
     /**
@@ -142,7 +154,8 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         assertOpen();
         assertCanRead();
         if (dst.isReadOnly()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("ByteBuffer dst must support writes."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'dst' is read-only and cannot be written to."));
         }
 
         if (buffer.remaining() == 0) {
@@ -254,10 +267,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void writeModeSeek(long newPosition) {
-        if (!writeBehavior.canSeek(newPosition)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "The backing resource does not support this position change."));
-        }
+        writeBehavior.assertCanSeek(newPosition);
 
         flushWriteBuffer();
         absolutePosition = newPosition;

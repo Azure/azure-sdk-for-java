@@ -4,7 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -61,11 +61,14 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public boolean canSeek(long position) {
+    public void assertCanSeek(long position) {
         if (fileSize == null) {
             fileSize = client.getProperties().getContentLength();
         }
-        return 0 <= position && position <= fileSize;
+        if (0 <= position && position <= fileSize) {
+            return;
+        }
+        throw new UnsupportedOperationException("Cannot seek beyond bounds of file.");
     }
 
     @Override

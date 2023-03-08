@@ -5,7 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.ParallelTransferOptions
 
-import com.azure.storage.common.StorageSeekableByteChannel
+import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
 import com.azure.storage.file.share.models.FileLastWrittenMode
