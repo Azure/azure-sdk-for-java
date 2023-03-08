@@ -66,7 +66,7 @@ public final class PartitionKeyBuilder {
      * @return PartitionKey object
      * @throws IllegalStateException when using PartitionKey.None with other values
      */
-    public PartitionKey build() {
+    public PartitionKey build() throws IllegalStateException {
         // Why these checks?
         // These changes are being added for SDK to support multiple paths in a partition key.
         //
