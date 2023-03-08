@@ -610,7 +610,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         List<ObjectNode> insertedDocs = Flux.merge(
             Flux.fromIterable(result),
-            10)
+            2)
                    .map(CosmosItemResponse::getItem).collectList().block();
 
         for (ObjectNode doc : insertedDocs) {

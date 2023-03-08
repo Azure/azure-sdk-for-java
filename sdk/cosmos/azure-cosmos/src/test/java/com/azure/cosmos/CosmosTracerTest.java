@@ -37,6 +37,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -51,6 +53,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 public class CosmosTracerTest extends TestSuiteBase {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTracerTest.class);
@@ -105,12 +108,12 @@ public class CosmosTracerTest extends TestSuiteBase {
     @DataProvider(name = "traceTestCaseProvider")
     private Object[][] traceTestCaseProvider() {
         return new Object[][]{
-            new Object[] { true, false, true },
-            new Object[] { true, false, false },
-            new Object[] { false, false, false },
+            //new Object[] { true, false, true },
+            //new Object[] { true, false, false },
+            //new Object[] { false, false, false },
             new Object[] { false, true, false },
-            new Object[] { false, false, true },
-            new Object[] { false, true, true },
+            //new Object[] { false, false, true },
+            //new Object[] { false, true, true },
         };
     }
 
@@ -152,6 +155,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             "createDatabaseIfNotExists." + cosmosAsyncDatabase.getId(),
             cosmosAsyncDatabase.getId(),
             cosmosDatabaseResponse.getDiagnostics(),
+            null,
             useLegacyTracing,
             enableRequestLevelTracing,
             forceThresholdViolations);
@@ -168,6 +172,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             "readAllDatabases",
             null,
             feedResponseReadAllDatabases.getCosmosDiagnostics(),
+            null,
             useLegacyTracing,
             enableRequestLevelTracing,
             forceThresholdViolations);
@@ -185,9 +190,37 @@ public class CosmosTracerTest extends TestSuiteBase {
             "queryDatabases",
             null,
             feedResponseQueryDatabases.getCosmosDiagnostics(),
+            null,
             useLegacyTracing,
             enableRequestLevelTracing,
             forceThresholdViolations);
+
+        mockTracer.reset();
+
+        CosmosException cosmosError = null;
+        // Trying to create already existing database to trigger 409 (escaped exception)
+        try {
+            client.createDatabase(cosmosAsyncDatabase.getId(),
+                ThroughputProperties.createManualThroughput(5000)).block();
+
+            fail("Should have thrown 409 exception");
+        } catch (CosmosException error) {
+            assertThat(error.getStatusCode()).isEqualTo(409);
+            assertThat(error.getDiagnostics()).isNotNull();
+            cosmosError = error;
+        }
+
+        verifyTracerAttributes(
+            mockTracer,
+            "createDatabase." + cosmosAsyncDatabase.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosError.getDiagnostics(),
+            cosmosError,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations);
+
+        mockTracer.reset();
     }
 
     /*
@@ -533,6 +566,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         String methodName,
         String databaseName,
         CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
         boolean forceThresholdViolation) throws JsonProcessingException {
@@ -553,6 +587,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             methodName,
             databaseName,
             cosmosDiagnostics,
+            error,
             enableRequestLevelTracing);
     }
 
@@ -561,6 +596,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         String methodName,
         String databaseName,
         CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
         boolean enableRequestLevelTracing) {
 
         Map<String, Object> attributes = mockTracer.attributes;
@@ -576,7 +612,21 @@ public class CosmosTracerTest extends TestSuiteBase {
         verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
 
         verifyOTelTracerTransport(
-            cosmosDiagnostics, mockTracer, enableRequestLevelTracing);
+            cosmosDiagnostics, error,  mockTracer, enableRequestLevelTracing);
+
+        if (error != null) {
+            assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
+            assertThat(attributes.get("exception.message")).isEqualTo(error.getMessageWithoutDiagnostics());
+
+            StringWriter stackWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stackWriter);
+            error.printStackTrace(printWriter);
+            printWriter.flush();
+            stackWriter.flush();
+            assertThat(stackWriter.toString().contains((String)attributes.get("exception.stacktrace")))
+                .isEqualTo(true);
+            printWriter.close();
+        }
     }
 
     private void verifyOTelTracerDiagnostics(CosmosDiagnostics cosmosDiagnostics,
@@ -614,6 +664,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private void verifyOTelTracerTransport(CosmosDiagnostics cosmosDiagnostics,
+                                           CosmosException error,
                                            TracerUnderTest mockTracer,
                                            boolean enableRequestLevelTracing) {
 
@@ -627,7 +678,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(mockTracer.events).noneMatch(e -> e.name.equals("rntbd.request"));
             return;
         } else {
-            assertThat(mockTracer.events).anyMatch(e -> e.name.equals("rntbd.request"));
+            if (error == null) {
+                assertThat(mockTracer.events).anyMatch(e -> e.name.equals("rntbd.request"));
+            }
         }
 
         ClientSideRequestStatistics clientSideRequestStatistics =

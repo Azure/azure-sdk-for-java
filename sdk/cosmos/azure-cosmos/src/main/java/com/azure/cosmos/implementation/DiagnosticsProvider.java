@@ -1009,29 +1009,16 @@ public final class DiagnosticsProvider {
                 }
             }
 
+            if (finalError != null) {
+                tracer.setAttribute("exception.escaped", Boolean.toString(cosmosCtx.isFailure()), context);
+                tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
+                tracer.setAttribute("exception.message", errorMessage, context);
+                tracer.setAttribute("exception.stacktrace", prettifyCallstack(finalError), context);
+            }
+
             if (this.isTransportLevelTracingEnabled()) {
                 traceTransportLevel(cosmosCtx, context);
             }
-
-            if (finalError != null && cosmosCtx.isFailure()) {
-                tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
-                tracer.setAttribute("exception.message", errorMessage, context);
-
-                StringWriter stackWriter = new StringWriter();
-                PrintWriter printWriter = new PrintWriter(stackWriter);
-                finalError.printStackTrace(printWriter);
-                printWriter.flush();
-                stackWriter.flush();
-                tracer.setAttribute("exception.stacktrace", stackWriter.toString(), context);
-                printWriter.close();
-
-                try {
-                    stackWriter.close();
-                } catch (IOException e) {
-                    LOGGER.warn("Error trying to close StringWriter.", e);
-                }
-            }
-
 
             tracer.setAttribute(
                 "db.cosmosdb.status_code",
@@ -1178,6 +1165,28 @@ public final class DiagnosticsProvider {
                 }
             }
         }
+    }
+
+    public static String prettifyCallstack(Throwable e) {
+        StringWriter stackWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stackWriter);
+        e.printStackTrace(printWriter);
+        printWriter.flush();
+        stackWriter.flush();
+        String prettifiedCallstack = stackWriter.toString();
+        String message = e.toString();
+        if (prettifiedCallstack.length() > message.length()) {
+            prettifiedCallstack = prettifiedCallstack.substring(message.length());
+        }
+        printWriter.close();
+
+        try {
+            stackWriter.close();
+        } catch (IOException closeError) {
+            LOGGER.warn("Error trying to close StringWriter.", closeError);
+        }
+
+        return prettifiedCallstack;
     }
 
     private static final class NoOpTracer implements Tracer {
