@@ -1,64 +1,637 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false&locale=en-US",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e2e54440-9452-4865-ae24-f854cff00b19",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/businessCard/analyze?includeTextDetails=false\u0026locale=en-US",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "175",
+        "Content-Type": "application/json",
+        "Date": "Wed, 08 Mar 2023 19:39:30 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0515603b-a471-4c6c-9c94-7610673411b4"
+      },
+      "RequestBody": {
+        "source": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/businessCard.jpg"
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "40e799fa-0629-48cc-9a35-b5285be50a43",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:39:30 GMT",
+        "Operation-Location": "REDACTED",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "917",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "629",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "319aef2f-5045-4d86-bda6-e37a2eb75831",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/319aef2f-5045-4d86-bda6-e37a2eb75831",
-      "Date" : "Thu, 25 Aug 2022 18:17:42 GMT"
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/40e799fa-0629-48cc-9a35-b5285be50a43",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:39:36 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "06572fc2-1b23-4395-a062-4186ff3c6b3a"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "569b2669-e1e5-48f4-ada1-ed6043f8669e",
+        "Content-Length": "2684",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:39:35 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "34",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-03-08T19:39:30Z",
+        "lastUpdatedDateTime": "2023-03-08T19:39:32Z",
+        "analyzeResult": {
+          "version": "2.1.0",
+          "readResults": [
+            {
+              "page": 1,
+              "angle": -16.6836,
+              "width": 4032,
+              "height": 3024,
+              "unit": "pixel"
+            }
+          ],
+          "documentResults": [
+            {
+              "docType": "prebuilt:businesscard",
+              "pageRange": [
+                1,
+                1
+              ],
+              "fields": {
+                "Addresses": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "2 Kingdom Street Paddington, London, W2 6BD",
+                      "text": "2 Kingdom Street Paddington, London, W2 6BD",
+                      "boundingBox": [
+                        1227.3,
+                        2138.3,
+                        2520.2,
+                        1690.5,
+                        2597,
+                        1912.3,
+                        1304.1,
+                        2360.1
+                      ],
+                      "page": 1,
+                      "confidence": 0.98
+                    }
+                  ]
+                },
+                "CompanyNames": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Contoso",
+                      "text": "Contoso",
+                      "boundingBox": [
+                        1146,
+                        1926,
+                        2224,
+                        1587,
+                        2285,
+                        1756,
+                        1202,
+                        2099
+                      ],
+                      "page": 1,
+                      "confidence": 0.168
+                    }
+                  ]
+                },
+                "ContactNames": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "object",
+                      "valueObject": {
+                        "FirstName": {
+                          "type": "string",
+                          "valueString": "Avery",
+                          "text": "Avery",
+                          "boundingBox": [
+                            666,
+                            1102,
+                            1111,
+                            995,
+                            1140,
+                            1114,
+                            696,
+                            1216
+                          ],
+                          "page": 1
+                        },
+                        "LastName": {
+                          "type": "string",
+                          "valueString": "Smith",
+                          "text": "Smith",
+                          "boundingBox": [
+                            1170,
+                            981,
+                            1571,
+                            881,
+                            1600,
+                            1000,
+                            1200,
+                            1100
+                          ],
+                          "page": 1
+                        }
+                      },
+                      "text": "Dr. Avery Smith",
+                      "boundingBox": [
+                        414.1,
+                        1153,
+                        1572,
+                        880.8,
+                        1601.3,
+                        1005.6,
+                        443.5,
+                        1277.9
+                      ],
+                      "page": 1,
+                      "confidence": 0.979
+                    }
+                  ]
+                },
+                "Departments": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Cloud \u0026 Al Department",
+                      "text": "Cloud \u0026 Al Department",
+                      "boundingBox": [
+                        473.6,
+                        1409.5,
+                        1586,
+                        1134,
+                        1607.3,
+                        1219.8,
+                        494.9,
+                        1495.3
+                      ],
+                      "page": 1,
+                      "confidence": 0.989
+                    }
+                  ]
+                },
+                "Emails": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "avery.smith@contoso.com",
+                      "text": "avery.smith@contoso.com",
+                      "boundingBox": [
+                        2106,
+                        934,
+                        2908,
+                        706,
+                        2921,
+                        769,
+                        2122,
+                        993
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "Faxes": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 20 6789 2345",
+                      "boundingBox": [
+                        2520.4,
+                        1195.5,
+                        3191.8,
+                        983.5,
+                        3215.8,
+                        1059.2,
+                        2544.3,
+                        1271.3
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "JobTitles": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Senior Researcher",
+                      "text": "Senior Researcher",
+                      "boundingBox": [
+                        451,
+                        1312,
+                        1315.9,
+                        1103.6,
+                        1334.7,
+                        1181.7,
+                        469.8,
+                        1390
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "MobilePhones": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 7911 123456",
+                      "boundingBox": [
+                        2426.8,
+                        1040.1,
+                        3065.5,
+                        846,
+                        3087.2,
+                        917.6,
+                        2448.5,
+                        1111.7
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "Websites": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "https://www.contoso.com/",
+                      "text": "https://www.contoso.com/",
+                      "boundingBox": [
+                        2120,
+                        1003,
+                        2981,
+                        757,
+                        3006,
+                        824,
+                        2139,
+                        1075
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "WorkPhones": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 20 9876 5432",
+                      "boundingBox": [
+                        2468.2,
+                        1118.1,
+                        3130.3,
+                        914.6,
+                        3152.9,
+                        988.2,
+                        2490.8,
+                        1191.6
+                      ],
+                      "page": 1,
+                      "confidence": 0.989
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/319aef2f-5045-4d86-bda6-e37a2eb75831",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c834eee4-9ca5-48d7-b33d-9a0f6e399709"
-    },
-    "Response" : {
-      "content-length" : "2684",
-      "x-envoy-upstream-service-time" : "35",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7990a161-7b58-42b3-ba04-1ef9496f3967",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-25T18:17:43Z\",\"lastUpdatedDateTime\":\"2022-08-25T18:17:45Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Thu, 25 Aug 2022 18:17:47 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/319aef2f-5045-4d86-bda6-e37a2eb75831",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f8633297-ec91-4993-af7d-480c1f2ea13d"
-    },
-    "Response" : {
-      "content-length" : "2684",
-      "x-envoy-upstream-service-time" : "35",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "091d8be7-0ebf-47b1-b67b-6fbae879b938",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-25T18:17:43Z\",\"lastUpdatedDateTime\":\"2022-08-25T18:17:45Z\",\"analyzeResult\":{\"version\":\"2.1.0\",\"readResults\":[{\"page\":1,\"angle\":-16.6836,\"width\":4032,\"height\":3024,\"unit\":\"pixel\"}],\"documentResults\":[{\"docType\":\"prebuilt:businesscard\",\"pageRange\":[1,1],\"fields\":{\"Addresses\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"text\":\"2 Kingdom Street Paddington, London, W2 6BD\",\"boundingBox\":[1227.3,2138.3,2520.2,1690.5,2597,1912.3,1304.1,2360.1],\"page\":1,\"confidence\":0.98}]},\"CompanyNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Contoso\",\"text\":\"Contoso\",\"boundingBox\":[1146,1926,2224,1587,2285,1756,1202,2099],\"page\":1,\"confidence\":0.168}]},\"ContactNames\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"object\",\"valueObject\":{\"FirstName\":{\"type\":\"string\",\"valueString\":\"Avery\",\"text\":\"Avery\",\"boundingBox\":[666,1102,1111,995,1140,1114,696,1216],\"page\":1},\"LastName\":{\"type\":\"string\",\"valueString\":\"Smith\",\"text\":\"Smith\",\"boundingBox\":[1170,981,1571,881,1600,1000,1200,1100],\"page\":1}},\"text\":\"Dr. Avery Smith\",\"boundingBox\":[414.1,1153,1572,880.8,1601.3,1005.6,443.5,1277.9],\"page\":1,\"confidence\":0.979}]},\"Departments\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Cloud & Al Department\",\"text\":\"Cloud & Al Department\",\"boundingBox\":[473.6,1409.5,1586,1134,1607.3,1219.8,494.9,1495.3],\"page\":1,\"confidence\":0.989}]},\"Emails\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"avery.smith@contoso.com\",\"text\":\"avery.smith@contoso.com\",\"boundingBox\":[2106,934,2908,706,2921,769,2122,993],\"page\":1,\"confidence\":0.99}]},\"Faxes\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 6789 2345\",\"boundingBox\":[2520.4,1195.5,3191.8,983.5,3215.8,1059.2,2544.3,1271.3],\"page\":1,\"confidence\":0.99}]},\"JobTitles\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"Senior Researcher\",\"text\":\"Senior Researcher\",\"boundingBox\":[451,1312,1315.9,1103.6,1334.7,1181.7,469.8,1390],\"page\":1,\"confidence\":0.99}]},\"MobilePhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 7911 123456\",\"boundingBox\":[2426.8,1040.1,3065.5,846,3087.2,917.6,2448.5,1111.7],\"page\":1,\"confidence\":0.99}]},\"Websites\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"string\",\"valueString\":\"https://www.contoso.com/\",\"text\":\"https://www.contoso.com/\",\"boundingBox\":[2120,1003,2981,757,3006,824,2139,1075],\"page\":1,\"confidence\":0.99}]},\"WorkPhones\":{\"type\":\"array\",\"valueArray\":[{\"type\":\"phoneNumber\",\"text\":\"+44 (0) 20 9876 5432\",\"boundingBox\":[2468.2,1118.1,3130.3,914.6,3152.9,988.2,2490.8,1191.6],\"page\":1,\"confidence\":0.989}]}}}]}}",
-      "Date" : "Thu, 25 Aug 2022 18:17:47 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/businessCard/analyzeResults/40e799fa-0629-48cc-9a35-b5285be50a43",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:39:36 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "34a3ce3f-e0a2-478a-86fb-e02775bb23d7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "a6f4aa05-0e12-44e4-8df4-ddf41637c9db",
+        "Content-Length": "2684",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:39:35 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "32",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-03-08T19:39:30Z",
+        "lastUpdatedDateTime": "2023-03-08T19:39:32Z",
+        "analyzeResult": {
+          "version": "2.1.0",
+          "readResults": [
+            {
+              "page": 1,
+              "angle": -16.6836,
+              "width": 4032,
+              "height": 3024,
+              "unit": "pixel"
+            }
+          ],
+          "documentResults": [
+            {
+              "docType": "prebuilt:businesscard",
+              "pageRange": [
+                1,
+                1
+              ],
+              "fields": {
+                "Addresses": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "2 Kingdom Street Paddington, London, W2 6BD",
+                      "text": "2 Kingdom Street Paddington, London, W2 6BD",
+                      "boundingBox": [
+                        1227.3,
+                        2138.3,
+                        2520.2,
+                        1690.5,
+                        2597,
+                        1912.3,
+                        1304.1,
+                        2360.1
+                      ],
+                      "page": 1,
+                      "confidence": 0.98
+                    }
+                  ]
+                },
+                "CompanyNames": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Contoso",
+                      "text": "Contoso",
+                      "boundingBox": [
+                        1146,
+                        1926,
+                        2224,
+                        1587,
+                        2285,
+                        1756,
+                        1202,
+                        2099
+                      ],
+                      "page": 1,
+                      "confidence": 0.168
+                    }
+                  ]
+                },
+                "ContactNames": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "object",
+                      "valueObject": {
+                        "FirstName": {
+                          "type": "string",
+                          "valueString": "Avery",
+                          "text": "Avery",
+                          "boundingBox": [
+                            666,
+                            1102,
+                            1111,
+                            995,
+                            1140,
+                            1114,
+                            696,
+                            1216
+                          ],
+                          "page": 1
+                        },
+                        "LastName": {
+                          "type": "string",
+                          "valueString": "Smith",
+                          "text": "Smith",
+                          "boundingBox": [
+                            1170,
+                            981,
+                            1571,
+                            881,
+                            1600,
+                            1000,
+                            1200,
+                            1100
+                          ],
+                          "page": 1
+                        }
+                      },
+                      "text": "Dr. Avery Smith",
+                      "boundingBox": [
+                        414.1,
+                        1153,
+                        1572,
+                        880.8,
+                        1601.3,
+                        1005.6,
+                        443.5,
+                        1277.9
+                      ],
+                      "page": 1,
+                      "confidence": 0.979
+                    }
+                  ]
+                },
+                "Departments": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Cloud \u0026 Al Department",
+                      "text": "Cloud \u0026 Al Department",
+                      "boundingBox": [
+                        473.6,
+                        1409.5,
+                        1586,
+                        1134,
+                        1607.3,
+                        1219.8,
+                        494.9,
+                        1495.3
+                      ],
+                      "page": 1,
+                      "confidence": 0.989
+                    }
+                  ]
+                },
+                "Emails": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "avery.smith@contoso.com",
+                      "text": "avery.smith@contoso.com",
+                      "boundingBox": [
+                        2106,
+                        934,
+                        2908,
+                        706,
+                        2921,
+                        769,
+                        2122,
+                        993
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "Faxes": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 20 6789 2345",
+                      "boundingBox": [
+                        2520.4,
+                        1195.5,
+                        3191.8,
+                        983.5,
+                        3215.8,
+                        1059.2,
+                        2544.3,
+                        1271.3
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "JobTitles": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "Senior Researcher",
+                      "text": "Senior Researcher",
+                      "boundingBox": [
+                        451,
+                        1312,
+                        1315.9,
+                        1103.6,
+                        1334.7,
+                        1181.7,
+                        469.8,
+                        1390
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "MobilePhones": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 7911 123456",
+                      "boundingBox": [
+                        2426.8,
+                        1040.1,
+                        3065.5,
+                        846,
+                        3087.2,
+                        917.6,
+                        2448.5,
+                        1111.7
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "Websites": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "string",
+                      "valueString": "https://www.contoso.com/",
+                      "text": "https://www.contoso.com/",
+                      "boundingBox": [
+                        2120,
+                        1003,
+                        2981,
+                        757,
+                        3006,
+                        824,
+                        2139,
+                        1075
+                      ],
+                      "page": 1,
+                      "confidence": 0.99
+                    }
+                  ]
+                },
+                "WorkPhones": {
+                  "type": "array",
+                  "valueArray": [
+                    {
+                      "type": "phoneNumber",
+                      "text": "\u002B44 (0) 20 9876 5432",
+                      "boundingBox": [
+                        2468.2,
+                        1118.1,
+                        3130.3,
+                        914.6,
+                        3152.9,
+                        988.2,
+                        2490.8,
+                        1191.6
+                      ],
+                      "page": 1,
+                      "confidence": 0.989
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

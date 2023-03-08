@@ -8,12 +8,12 @@
         "Authorization": "Sanitized",
         "Content-Length": "337",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:42:04 GMT",
+        "Date": "Wed, 08 Mar 2023 19:39:18 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "f8a9c76d-b214-4f7d-8de1-d34e6ed384b6"
+        "x-ms-client-request-id": "07244d9e-e96a-4a8a-a29f-537aef2c0418"
       },
       "RequestBody": {
-        "modelId": "87440228-4dd3-4efd-b746-f14fd266e6ea",
+        "modelId": "d1a4e6b2-0889-4282-9183-907ad14884bf",
         "buildMode": "template",
         "azureBlobSource": {
           "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata?sp=rl\u0026st=2022-01-24T21:29:02Z\u0026se=2025-01-25T05:29:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=q71NyEgO5ebO7aKW%2FcN2rzeVaCJP49O%2BRw9T9pGXhkE%3D",
@@ -22,13 +22,13 @@
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "d4af1ff3-2f66-4718-8a5d-ab8336cccb6c",
+        "apim-request-id": "e8bc5cf1-bff3-4d8f-9243-c061caa2fa3f",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:42:12 GMT",
+        "Date": "Wed, 08 Mar 2023 19:39:18 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "1356",
+        "x-envoy-upstream-service-time": "753",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

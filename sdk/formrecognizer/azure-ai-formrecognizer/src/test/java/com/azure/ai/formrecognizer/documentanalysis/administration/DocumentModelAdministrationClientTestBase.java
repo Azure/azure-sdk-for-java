@@ -36,6 +36,8 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.TEST_PROXY_SANITIZER_LIST;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
@@ -75,23 +77,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             }
             builder.credential(getCredentialByAuthority(endpoint));
         }
+        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
         return builder;
-    }
-
-    static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
-        }
     }
 
     static void validateCopyAuthorizationResult(DocumentModelCopyAuthorization actualResult) {
