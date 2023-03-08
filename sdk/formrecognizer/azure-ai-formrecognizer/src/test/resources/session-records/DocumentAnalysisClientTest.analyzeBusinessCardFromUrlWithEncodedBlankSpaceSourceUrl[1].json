@@ -1,22 +1,33 @@
 {
   "Entries": [
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "49",
         "Content-Type": "application/json",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:30 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "43f0479d-96da-4cef-93a2-042247aaa96e"
+=======
+        "Date": "Wed, 08 Mar 2023 19:41:26 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a556013f-eddb-487e-86a6-9703771a91de"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": {
         "urlSource": "https://fakeuri.com/blank%20space"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "80912601-5ea5-4f02-a230-81f0c6dddd4f",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
@@ -25,6 +36,16 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "499",
+=======
+        "apim-request-id": "7d5def87-4216-40d9-89bb-05a25998cd62",
+        "Content-Length": "221",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:41:25 GMT",
+        "ms-azure-ai-errorcode": "InvalidRequest",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "591",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {

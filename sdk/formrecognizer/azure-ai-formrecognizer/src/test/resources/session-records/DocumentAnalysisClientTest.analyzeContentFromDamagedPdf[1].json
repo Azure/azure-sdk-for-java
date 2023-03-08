@@ -8,17 +8,30 @@
         "Authorization": "Sanitized",
         "Content-Length": "7",
         "Content-Type": "application/octet-stream",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:39 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "364c009d-c37b-4cb3-9818-d8c02f710a10"
+=======
+        "Date": "Wed, 08 Mar 2023 19:38:50 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "872d88c0-8d87-4c55-98d6-d399aeb54f49"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": "JVBERlVVVQ==",
       "StatusCode": 400,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "d46515db-9815-46b0-ab43-328cc20b7cc1",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 04 Apr 2023 22:58:39 GMT",
+=======
+        "apim-request-id": "d52ba9e4-8acf-40a6-af6d-62dc67baffe1",
+        "Content-Length": "221",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:38:48 GMT",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "ms-azure-ai-errorcode": "InvalidRequest",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",

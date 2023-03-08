@@ -8,15 +8,22 @@
         "Authorization": "Sanitized",
         "Content-Length": "173",
         "Content-Type": "application/json",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:26 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "5bce39ce-82a0-4f50-866c-2ade082c2d37"
+=======
+        "Date": "Wed, 08 Mar 2023 19:43:51 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "9ad53ff7-56d7-433b-851e-8e66f8641dca"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": {
         "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/license.png"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "80091b97-be6a-4c74-abdd-b2f00bcdf4ba",
         "Content-Length": "0",
         "Date": "Tue, 04 Apr 2023 22:58:26 GMT",
@@ -24,24 +31,44 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "248",
+=======
+        "apim-request-id": "8696f6f0-843d-493b-b251-81a59785d787",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:43:50 GMT",
+        "Operation-Location": "REDACTED",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "210",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/80091b97-be6a-4c74-abdd-b2f00bcdf4ba?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/8696f6f0-843d-493b-b251-81a59785d787?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:26 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "661897c4-f263-4057-a7ef-adf37315268a"
+=======
+        "Date": "Wed, 08 Mar 2023 19:43:52 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a5b1426f-2b4a-46b4-9246-57bd0d95ad78"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "f2ef86ce-8482-4dee-a42a-c989349c5c08",
         "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
@@ -49,28 +76,53 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "14",
+=======
+        "apim-request-id": "2a4b45f0-6452-4463-9f8d-07f3388064b9",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:43:50 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "47",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "running",
+<<<<<<< HEAD
         "createdDateTime": "2023-04-04T22:58:26Z",
         "lastUpdatedDateTime": "2023-04-04T22:58:26Z"
       }
     },
     {
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/80091b97-be6a-4c74-abdd-b2f00bcdf4ba?api-version=2023-02-28-preview",
+=======
+        "createdDateTime": "2023-03-08T19:43:51Z",
+        "lastUpdatedDateTime": "2023-03-08T19:43:51Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/8696f6f0-843d-493b-b251-81a59785d787?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:31 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "84614b73-5bb4-458e-90aa-fb835f875342"
+=======
+        "Date": "Wed, 08 Mar 2023 19:43:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "01b43bf4-6b51-42b9-952e-365194efb7d7"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "535024d3-55f7-4b61-8858-e54fdf9a6b89",
         "Content-Length": "11586",
         "Content-Type": "application/json; charset=utf-8",
@@ -78,12 +130,26 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "37",
+=======
+        "apim-request-id": "2271c85c-fdd2-4b25-9e90-25cee35a244c",
+        "Content-Length": "14733",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:43:56 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "46",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
+<<<<<<< HEAD
         "createdDateTime": "2023-04-04T22:58:26Z",
         "lastUpdatedDateTime": "2023-04-04T22:58:27Z",
+=======
+        "createdDateTime": "2023-03-08T19:43:51Z",
+        "lastUpdatedDateTime": "2023-03-08T19:43:52Z",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
           "modelId": "prebuilt-idDocument",
@@ -1331,6 +1397,7 @@
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         260,
                         153,
                         565,
@@ -1341,6 +1408,271 @@
                         207
                       ]
                     }
+=======
+                        650,
+                        330,
+                        716,
+                        328,
+                        716,
+                        352,
+                        649,
+                        352
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 237,
+                      "length": 5
+                    }
+                  ]
+                }
+              },
+              "confidence": 0.995,
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 264
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/8696f6f0-843d-493b-b251-81a59785d787?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:43:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "36019d22-1515-4629-812c-218e6bc0ae47"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bbb2b482-b7e1-4574-afc8-523dd9b443bb",
+        "Content-Length": "14733",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:43:56 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "69",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-03-08T19:43:51Z",
+        "lastUpdatedDateTime": "2023-03-08T19:43:52Z",
+        "analyzeResult": {
+          "apiVersion": "2022-08-31",
+          "modelId": "prebuilt-idDocument",
+          "stringIndexType": "utf16CodeUnit",
+          "content": "WEST VIRGINIA\nCommercial Driver\u0027s License\nCHRIS SMITH\nMain Street , Charleston, WV 456789\nCLASS: A\nLIC #:\n034568\nDOB:\n03/23/1988\nEXP:\n03/23/2026\nRESTR: NONE\nISS: 03/23/2019\nDD: 12645646464554646456464544\nEND: NONE\nSEX:\nM\nHGT:\n5\u002711\u0022\nWGT: 185LB\nEYES: BLU\nORGAN DONOR",
+          "pages": [
+            {
+              "pageNumber": 1,
+              "angle": -0.24690000712871552,
+              "width": 759,
+              "height": 463,
+              "unit": "pixel",
+              "words": [
+                {
+                  "content": "WEST",
+                  "polygon": [
+                    107,
+                    33,
+                    196,
+                    33,
+                    196,
+                    66,
+                    106,
+                    65
+                  ],
+                  "confidence": 0.982,
+                  "span": {
+                    "offset": 0,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "VIRGINIA",
+                  "polygon": [
+                    205,
+                    33,
+                    357,
+                    32,
+                    358,
+                    65,
+                    205,
+                    66
+                  ],
+                  "confidence": 0.995,
+                  "span": {
+                    "offset": 5,
+                    "length": 8
+                  }
+                },
+                {
+                  "content": "Commercial",
+                  "polygon": [
+                    556,
+                    20,
+                    722,
+                    19,
+                    722,
+                    45,
+                    557,
+                    45
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 14,
+                    "length": 10
+                  }
+                },
+                {
+                  "content": "Driver\u0027s",
+                  "polygon": [
+                    531,
+                    50,
+                    635,
+                    50,
+                    635,
+                    76,
+                    531,
+                    76
+                  ],
+                  "confidence": 0.991,
+                  "span": {
+                    "offset": 25,
+                    "length": 8
+                  }
+                },
+                {
+                  "content": "License",
+                  "polygon": [
+                    640,
+                    50,
+                    742,
+                    50,
+                    743,
+                    76,
+                    640,
+                    76
+                  ],
+                  "confidence": 0.996,
+                  "span": {
+                    "offset": 34,
+                    "length": 7
+                  }
+                },
+                {
+                  "content": "CHRIS",
+                  "polygon": [
+                    256,
+                    108,
+                    367,
+                    106,
+                    367,
+                    143,
+                    255,
+                    143
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 42,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "SMITH",
+                  "polygon": [
+                    380,
+                    106,
+                    496,
+                    106,
+                    496,
+                    143,
+                    379,
+                    143
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 48,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "Main",
+                  "polygon": [
+                    260,
+                    154,
+                    317,
+                    153,
+                    317,
+                    178,
+                    260,
+                    177
+                  ],
+                  "confidence": 0.993,
+                  "span": {
+                    "offset": 54,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "Street",
+                  "polygon": [
+                    324,
+                    153,
+                    401,
+                    153,
+                    401,
+                    179,
+                    324,
+                    178
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 59,
+                    "length": 6
+                  }
+                },
+                {
+                  "content": ",",
+                  "polygon": [
+                    406,
+                    153,
+                    414,
+                    153,
+                    414,
+                    179,
+                    406,
+                    179
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 66,
+                    "length": 1
+                  }
+                },
+                {
+                  "content": "Charleston,",
+                  "polygon": [
+                    419,
+                    153,
+                    565,
+                    153,
+                    564,
+                    181,
+                    419,
+                    179
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   ],
                   "confidence": 0.99,
                   "spans": [

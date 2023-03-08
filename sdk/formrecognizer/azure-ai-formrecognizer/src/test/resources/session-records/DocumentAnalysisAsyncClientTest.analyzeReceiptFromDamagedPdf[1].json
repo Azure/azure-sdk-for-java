@@ -36,17 +36,17 @@
         "Authorization": "Sanitized",
         "Content-Length": "7",
         "Content-Type": "application/octet-stream",
-        "Date": "Wed, 08 Mar 2023 18:52:10 GMT",
+        "Date": "Wed, 08 Mar 2023 19:44:04 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "569ee1d9-b7f6-4b09-a3c7-903ebee7ae08"
+        "x-ms-client-request-id": "35338785-5cff-43fe-8a13-1be0bf75dbbe"
       },
       "RequestBody": "JVBERlVVVQ==",
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "72d85198-7980-4c4e-a19d-e4abdda9db09",
+        "apim-request-id": "e9927c45-23e9-4d5a-9a42-390dbba92656",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 18:52:09 GMT",
+        "Date": "Wed, 08 Mar 2023 19:44:03 GMT",
         "ms-azure-ai-errorcode": "InvalidRequest",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",

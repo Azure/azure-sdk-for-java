@@ -1,25 +1,37 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ca486c23-6efc-4897-b25b-9bc468735c8a",
-      "Content-Type" : "application/pdf"
-    },
-    "Response" : {
-      "content-length" : "161",
-      "x-envoy-upstream-service-time" : "6",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7f34b43e-e658-40f9-9d58-a288b8c0f6b3",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"7f34b43e-e658-40f9-9d58-a288b8c0f6b3\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
-      "Date" : "Wed, 07 Jul 2021 06:32:19 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "7",
+        "Content-Type": "application/pdf",
+        "Date": "Wed, 08 Mar 2023 19:40:05 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "26dbb524-2845-4aaf-a6d7-6b45f4323350"
+      },
+      "RequestBody": "JVBERlVVVQ==",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "02be78f3-c12c-4bb0-a43a-7de322d93ab8",
+        "Content-Length": "95",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:40:04 GMT",
+        "ms-azure-ai-errorcode": "BadArgument",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "4",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "BadArgument",
+          "message": "Bad or unrecognizable request JSON or binary file."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

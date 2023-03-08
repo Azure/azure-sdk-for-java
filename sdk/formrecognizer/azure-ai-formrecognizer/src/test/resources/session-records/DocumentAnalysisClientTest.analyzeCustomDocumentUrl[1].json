@@ -8,12 +8,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "312",
         "Content-Type": "application/json",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:13 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "60547db9-fed5-4579-9f8c-1fb0daa79091"
       },
       "RequestBody": {
         "modelId": "2034b212-d34b-4cbd-83b2-f786bb6edab2",
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "55695a42-0ad8-40d0-bc26-ba1b201eeb8e"
+      },
+      "RequestBody": {
+        "modelId": "0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "buildMode": "template",
         "azureBlobSource": {
           "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata?sp=rl\u0026st=2022-01-24T21:29:02Z\u0026se=2025-01-25T05:29:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=q71NyEgO5ebO7aKW%2FcN2rzeVaCJP49O%2BRw9T9pGXhkE%3D"
@@ -21,6 +30,7 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "567f4b58-369e-4da0-9778-92a90d93032c",
         "Content-Length": "0",
         "Date": "Tue, 04 Apr 2023 22:58:16 GMT",
@@ -28,24 +38,44 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "2919",
+=======
+        "apim-request-id": "ac86b772-edf6-4ac1-93c4-34aa3cba9831",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:44:10 GMT",
+        "operation-location": "REDACTED",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "2938",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/operations/31485718906_567f4b58-369e-4da0-9778-92a90d93032c?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:16 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "98eee24f-8a0c-43b4-a8c6-da43f1cbba40"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:11 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "6f04ab27-dc42-4aae-89a5-477238b1ae56"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "435f4964-9cb9-4732-bd10-ce778dfbd8c1",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 04 Apr 2023 22:58:16 GMT",
@@ -66,21 +96,55 @@
     },
     {
       "RequestUri": "https://REDACTED/formrecognizer/operations/31485718906_567f4b58-369e-4da0-9778-92a90d93032c?api-version=2023-02-28-preview",
+=======
+        "apim-request-id": "764463f8-8cda-4e47-b7c9-0ee57de686ba",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:10 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "21",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "operationId": "31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831",
+        "kind": "documentModelBuild",
+        "status": "running",
+        "createdDateTime": "2023-03-08T19:44:07Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:10Z",
+        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b?api-version=2022-08-31"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:21 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "e386cfbe-b8c7-4e53-8569-6b35164d4c9a"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:16 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "10a77c4f-3e66-4278-a790-6021bf1f7ed0"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "81cec690-4403-4ff2-a5eb-045a1c8d5ae7",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 04 Apr 2023 22:58:21 GMT",
+=======
+        "apim-request-id": "fa2dc0c1-8342-4f5d-90af-b823188ab3ac",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:15 GMT",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
@@ -88,6 +152,7 @@
         "x-ms-region": "East US"
       },
       "ResponseBody": {
+<<<<<<< HEAD
         "operationId": "31485718906_567f4b58-369e-4da0-9778-92a90d93032c",
         "kind": "documentModelBuild",
         "status": "succeeded",
@@ -98,6 +163,18 @@
         "result": {
           "docTypes": {
             "2034b212-d34b-4cbd-83b2-f786bb6edab2": {
+=======
+        "operationId": "31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831",
+        "kind": "documentModelBuild",
+        "status": "succeeded",
+        "createdDateTime": "2023-03-08T19:44:07Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:11Z",
+        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b?api-version=2022-08-31",
+        "percentCompleted": 100,
+        "result": {
+          "docTypes": {
+            "0c7b7a9d-0afc-4e58-9a70-4890964c812b": {
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -165,27 +242,45 @@
               }
             }
           },
+<<<<<<< HEAD
           "modelId": "2034b212-d34b-4cbd-83b2-f786bb6edab2",
           "createdDateTime": "2023-04-04T22:58:17Z",
           "expirationDateTime": "2025-04-03T22:58:17Z",
           "apiVersion": "2023-02-28-preview"
+=======
+          "modelId": "0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+          "createdDateTime": "2023-03-08T19:44:11Z",
+          "expirationDateTime": "2025-03-07T19:44:11Z",
+          "apiVersion": "2022-08-31"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         }
       }
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/operations/31485718906_567f4b58-369e-4da0-9778-92a90d93032c?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:21 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "ec4e7245-8fcb-4ec6-a7a4-46b8d87f750a"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:16 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e100b9a6-f63a-437b-8441-217014af1834"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "1293c928-ed42-40ce-909d-e5974fe76eb8",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 04 Apr 2023 22:58:21 GMT",
@@ -206,6 +301,28 @@
         "result": {
           "docTypes": {
             "2034b212-d34b-4cbd-83b2-f786bb6edab2": {
+=======
+        "apim-request-id": "9f499061-0a60-485f-9295-cc0c99f55cfc",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:15 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "16",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "operationId": "31488063352_ac86b772-edf6-4ac1-93c4-34aa3cba9831",
+        "kind": "documentModelBuild",
+        "status": "succeeded",
+        "createdDateTime": "2023-03-08T19:44:07Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:11Z",
+        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b?api-version=2022-08-31",
+        "percentCompleted": 100,
+        "result": {
+          "docTypes": {
+            "0c7b7a9d-0afc-4e58-9a70-4890964c812b": {
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -273,30 +390,48 @@
               }
             }
           },
+<<<<<<< HEAD
           "modelId": "2034b212-d34b-4cbd-83b2-f786bb6edab2",
           "createdDateTime": "2023-04-04T22:58:17Z",
           "expirationDateTime": "2025-04-03T22:58:17Z",
           "apiVersion": "2023-02-28-preview"
+=======
+          "modelId": "0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+          "createdDateTime": "2023-03-08T19:44:11Z",
+          "expirationDateTime": "2025-03-07T19:44:11Z",
+          "apiVersion": "2022-08-31"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         }
       }
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/2034b212-d34b-4cbd-83b2-f786bb6edab2:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "172",
         "Content-Type": "application/json",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:22 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "6673e996-c35a-44fa-91ef-0908240238c5"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:17 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8fd82973-3529-427c-aed6-95fe607cee1e"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": {
         "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/Form_1.jpg"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "eb9ac9cb-accf-4b52-9b09-c79ca1bdcc3c",
         "Content-Length": "0",
         "Date": "Tue, 04 Apr 2023 22:58:22 GMT",
@@ -304,24 +439,44 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "239",
+=======
+        "apim-request-id": "00ba9c6a-c3ec-407b-a360-be7ed385454d",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:44:16 GMT",
+        "Operation-Location": "REDACTED",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "364",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/2034b212-d34b-4cbd-83b2-f786bb6edab2/analyzeResults/eb9ac9cb-accf-4b52-9b09-c79ca1bdcc3c?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b/analyzeResults/00ba9c6a-c3ec-407b-a360-be7ed385454d?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:22 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "b442b4ab-9a97-4d2d-b170-7d98fe97821b"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:17 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "fc5bceb8-62f2-4ba9-a186-365bd9a3a6a3"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "ed23549c-c43a-4fce-9556-0f47d982e1bd",
         "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
@@ -329,28 +484,53 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "20",
+=======
+        "apim-request-id": "6a56a22b-74b8-4dcf-8950-21ce551fc5da",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:16 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "19",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "running",
+<<<<<<< HEAD
         "createdDateTime": "2023-04-04T22:58:22Z",
         "lastUpdatedDateTime": "2023-04-04T22:58:22Z"
       }
     },
     {
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/2034b212-d34b-4cbd-83b2-f786bb6edab2/analyzeResults/eb9ac9cb-accf-4b52-9b09-c79ca1bdcc3c?api-version=2023-02-28-preview",
+=======
+        "createdDateTime": "2023-03-08T19:44:16Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:16Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b/analyzeResults/00ba9c6a-c3ec-407b-a360-be7ed385454d?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:27 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "b33c3f69-a6ed-4bc5-b0c9-c0da62d6cb46"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:22 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "c1a8675c-c287-411d-8aa8-5e7242fd34f3"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "7b73d5b9-d0a5-4bb6-8727-d4a1256f8b96",
         "Content-Length": "32028",
         "Content-Type": "application/json; charset=utf-8",
@@ -358,15 +538,32 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "38",
+=======
+        "apim-request-id": "a95da3bc-9da1-4b0a-8d34-1f34078059fa",
+        "Content-Length": "32019",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:21 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "47",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
+<<<<<<< HEAD
         "createdDateTime": "2023-04-04T22:58:22Z",
         "lastUpdatedDateTime": "2023-04-04T22:58:24Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
           "modelId": "2034b212-d34b-4cbd-83b2-f786bb6edab2",
+=======
+        "createdDateTime": "2023-03-08T19:44:16Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:19Z",
+        "analyzeResult": {
+          "apiVersion": "2022-08-31",
+          "modelId": "0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
           "stringIndexType": "utf16CodeUnit",
           "content": "Purchase Order\nHero Limited\nCompany Phone: 555-348-6512 Website: www.herolimited.com Email: accounts@herolimited.com\nPurchase Order\nDated As: 12/20/2020 Purchase Order #: 948284\nShipped To Vendor Name: Hillary Swank Company Name: Higgly Wiggly Books Address: 938 NE Burner Road Boulder City, CO 92848 Phone: 938-294-2949\nShipped From Name: Bernie Sanders Company Name: Jupiter Book Supply Address: 383 N Kinnick Road Seattle, WA 38383\nPhone: 932-299-0292\nDetails\nQuantity\nUnit Price\nTotal\nBindings\n20\n1.00\n20.00\nCovers Small\n20\n1.00\n20.00\nFeather Bookmark\n20\n5.00\n100.00\nCopper Swirl Marker\n20\n5.00\n100.00\nBernie Sanders\nBernie Sanders Manager\nAdditional Notes:\nDo not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\nSUBTOTAL\n$140.00\nTAX\n$4.00\nTOTAL\n$144.00",
           "pages": [
@@ -4541,7 +4738,11 @@
           ],
           "documents": [
             {
+<<<<<<< HEAD
               "docType": "2034b212-d34b-4cbd-83b2-f786bb6edab2:2034b212-d34b-4cbd-83b2-f786bb6edab2",
+=======
+              "docType": "0c7b7a9d-0afc-4e58-9a70-4890964c812b:0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -4558,14 +4759,22 @@
                 }
               ],
               "fields": {
+<<<<<<< HEAD
                 "CompanyPhoneNumber": {
                   "type": "string",
                   "valueString": "938-294-2949",
                   "content": "938-294-2949",
+=======
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "content": "555-348-6512",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         707,
                         718,
                         886,
@@ -4581,6 +4790,23 @@
                   "spans": [
                     {
                       "offset": 308,
+=======
+                        365,
+                        349,
+                        527,
+                        349,
+                        527,
+                        377,
+                        365,
+                        377
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 43,
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       "length": 12
                     }
                   ]
@@ -4612,14 +4838,22 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "PurchaseOrderNumber": {
                   "type": "string",
                   "valueString": "948284",
                   "content": "948284",
+=======
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bernie Sanders",
+                  "content": "Bernie Sanders",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         1276,
                         460,
                         1374,
@@ -4636,6 +4870,24 @@
                     {
                       "offset": 171,
                       "length": 6
+=======
+                        487,
+                        1670,
+                        763,
+                        1670,
+                        763,
+                        1708,
+                        487,
+                        1708
+                      ]
+                    }
+                  ],
+                  "confidence": 0.444,
+                  "spans": [
+                    {
+                      "offset": 606,
+                      "length": 14
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
@@ -4693,30 +4945,30 @@
                     }
                   ]
                 },
-                "VendorName": {
+                "CompanyName": {
                   "type": "string",
-                  "valueString": "Hillary Swank",
-                  "content": "Hillary Swank",
+                  "valueString": "Higgly Wiggly Books",
+                  "content": "Higgly Wiggly Books",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        347,
-                        606,
-                        521,
-                        606,
-                        521,
-                        641,
-                        347,
-                        641
+                        376,
+                        645,
+                        627,
+                        645,
+                        627,
+                        679,
+                        376,
+                        679
                       ]
                     }
                   ],
-                  "confidence": 0.99,
+                  "confidence": 0.993,
                   "spans": [
                     {
-                      "offset": 202,
-                      "length": 13
+                      "offset": 230,
+                      "length": 19
                     }
                   ]
                 },
@@ -4747,14 +4999,22 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "Subtotal": {
                   "type": "string",
                   "valueString": "$140.00",
                   "content": "$140.00",
+=======
+                "VendorName": {
+                  "type": "string",
+                  "valueString": "Hillary Swank",
+                  "content": "Hillary Swank",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         1426,
                         1571,
                         1526,
@@ -4778,10 +5038,36 @@
                   "type": "string",
                   "valueString": "accounts@herolimited.com",
                   "content": "accounts@herolimited.com",
+=======
+                        347,
+                        606,
+                        521,
+                        606,
+                        521,
+                        641,
+                        347,
+                        641
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 202,
+                      "length": 13
+                    }
+                  ]
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "Hero Limited",
+                  "content": "Hero Limited",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         164,
                         477,
                         473,
@@ -4798,33 +5084,78 @@
                     {
                       "offset": 92,
                       "length": 24
+=======
+                        616,
+                        203,
+                        1059,
+                        203,
+                        1059,
+                        267,
+                        616,
+                        267
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 15,
+                      "length": 12
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
-                "Signature": {
+                "CompanyPhoneNumber": {
                   "type": "string",
-                  "valueString": "Bernie Sanders",
-                  "content": "Bernie Sanders",
+                  "valueString": "938-294-2949",
+                  "content": "938-294-2949",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        487,
-                        1670,
-                        763,
-                        1670,
-                        763,
-                        1708,
-                        487,
-                        1708
+                        707,
+                        718,
+                        886,
+                        718,
+                        886,
+                        752,
+                        707,
+                        752
                       ]
                     }
                   ],
-                  "confidence": 0.444,
+                  "confidence": 0.995,
                   "spans": [
                     {
-                      "offset": 606,
-                      "length": 14
+                      "offset": 308,
+                      "length": 12
+                    }
+                  ]
+                },
+                "DatedAs": {
+                  "type": "string",
+                  "valueString": "12/20/2020",
+                  "content": "12/20/2020",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1163,
+                        418,
+                        1315,
+                        418,
+                        1315,
+                        450,
+                        1163,
+                        450
+                      ]
+                    }
+                  ],
+                  "confidence": 0.994,
+                  "spans": [
+                    {
+                      "offset": 142,
+                      "length": 10
                     }
                   ]
                 },
@@ -4855,14 +5186,49 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "Tax": {
                   "type": "string",
                   "valueString": "$4.00",
                   "content": "$4.00",
+=======
+                "Subtotal": {
+                  "type": "string",
+                  "valueString": "$140.00",
+                  "content": "$140.00",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+                        1426,
+                        1571,
+                        1526,
+                        1571,
+                        1526,
+                        1600,
+                        1426,
+                        1600
+                      ]
+                    }
+                  ],
+                  "confidence": 0.995,
+                  "spans": [
+                    {
+                      "offset": 849,
+                      "length": 7
+                    }
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "content": "948284",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+<<<<<<< HEAD
                         1456,
                         1611,
                         1529,
@@ -4871,18 +5237,34 @@
                         1646,
                         1456,
                         1646
+=======
+                        1276,
+                        460,
+                        1374,
+                        460,
+                        1374,
+                        489,
+                        1276,
+                        489
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
-                  "confidence": 0.993,
+                  "confidence": 0.992,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 861,
                       "length": 5
+=======
+                      "offset": 171,
+                      "length": 6
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
                 "Total": {
+<<<<<<< HEAD
                   "type": "string",
                   "valueString": "$144.00",
                   "content": "$144.00",
@@ -4937,6 +5319,8 @@
                   ]
                 },
                 "CompanyName": {
+=======
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "type": "string",
                   "valueString": "Higgly Wiggly Books",
                   "content": "Higgly Wiggly Books",
@@ -4960,6 +5344,33 @@
                     {
                       "offset": 230,
                       "length": 19
+                    }
+                  ]
+                },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "content": "$4.00",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1456,
+                        1611,
+                        1529,
+                        1611,
+                        1529,
+                        1646,
+                        1456,
+                        1646
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 861,
+                      "length": 5
                     }
                   ]
                 }
@@ -4977,43 +5388,73 @@
       }
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/2034b212-d34b-4cbd-83b2-f786bb6edab2?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:28 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "3fbffdd1-724b-4a8c-bc97-fe9e952d2895"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:22 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "670f91c7-1046-4893-8d45-c3ee940a3126"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "4b406dd3-0fbf-455e-bebc-0611be962f8c",
         "Content-Length": "0",
         "Date": "Tue, 04 Apr 2023 22:58:27 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "89",
+=======
+        "apim-request-id": "38f2a6cc-71da-47d2-b5a7-d2fe96a66cbd",
+        "Content-Length": "0",
+        "Date": "Wed, 08 Mar 2023 19:44:21 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "81",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
+<<<<<<< HEAD
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/2034b212-d34b-4cbd-83b2-f786bb6edab2/analyzeResults/eb9ac9cb-accf-4b52-9b09-c79ca1bdcc3c?api-version=2023-02-28-preview",
+=======
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/0c7b7a9d-0afc-4e58-9a70-4890964c812b/analyzeResults/00ba9c6a-c3ec-407b-a360-be7ed385454d?api-version=2022-08-31",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
+<<<<<<< HEAD
         "Date": "Tue, 04 Apr 2023 22:58:28 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
         "x-ms-client-request-id": "fbed35b1-fd1e-4808-a13c-52d43953f73b"
+=======
+        "Date": "Wed, 08 Mar 2023 19:44:23 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f79bc719-d081-4099-a98d-65df19f5c49e"
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+<<<<<<< HEAD
         "apim-request-id": "cdb2fa7c-d3f5-4fb0-8f67-f39ab40bfa80",
         "Content-Length": "32028",
         "Content-Type": "application/json; charset=utf-8",
@@ -5021,15 +5462,32 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "40",
+=======
+        "apim-request-id": "10cacfe2-d0ed-4b43-b8c4-9a437a1d5328",
+        "Content-Length": "32019",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 08 Mar 2023 19:44:21 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "39",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
+<<<<<<< HEAD
         "createdDateTime": "2023-04-04T22:58:22Z",
         "lastUpdatedDateTime": "2023-04-04T22:58:24Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
           "modelId": "2034b212-d34b-4cbd-83b2-f786bb6edab2",
+=======
+        "createdDateTime": "2023-03-08T19:44:16Z",
+        "lastUpdatedDateTime": "2023-03-08T19:44:19Z",
+        "analyzeResult": {
+          "apiVersion": "2022-08-31",
+          "modelId": "0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
           "stringIndexType": "utf16CodeUnit",
           "content": "Purchase Order\nHero Limited\nCompany Phone: 555-348-6512 Website: www.herolimited.com Email: accounts@herolimited.com\nPurchase Order\nDated As: 12/20/2020 Purchase Order #: 948284\nShipped To Vendor Name: Hillary Swank Company Name: Higgly Wiggly Books Address: 938 NE Burner Road Boulder City, CO 92848 Phone: 938-294-2949\nShipped From Name: Bernie Sanders Company Name: Jupiter Book Supply Address: 383 N Kinnick Road Seattle, WA 38383\nPhone: 932-299-0292\nDetails\nQuantity\nUnit Price\nTotal\nBindings\n20\n1.00\n20.00\nCovers Small\n20\n1.00\n20.00\nFeather Bookmark\n20\n5.00\n100.00\nCopper Swirl Marker\n20\n5.00\n100.00\nBernie Sanders\nBernie Sanders Manager\nAdditional Notes:\nDo not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\nSUBTOTAL\n$140.00\nTAX\n$4.00\nTOTAL\n$144.00",
           "pages": [
@@ -9204,7 +9662,11 @@
           ],
           "documents": [
             {
+<<<<<<< HEAD
               "docType": "2034b212-d34b-4cbd-83b2-f786bb6edab2:2034b212-d34b-4cbd-83b2-f786bb6edab2",
+=======
+              "docType": "0c7b7a9d-0afc-4e58-9a70-4890964c812b:0c7b7a9d-0afc-4e58-9a70-4890964c812b",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -9221,14 +9683,76 @@
                 }
               ],
               "fields": {
+<<<<<<< HEAD
                 "CompanyPhoneNumber": {
                   "type": "string",
                   "valueString": "938-294-2949",
                   "content": "938-294-2949",
+=======
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "content": "555-348-6512",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+                        365,
+                        349,
+                        527,
+                        349,
+                        527,
+                        377,
+                        365,
+                        377
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 43,
+                      "length": 12
+                    }
+                  ]
+                },
+                "Email": {
+                  "type": "string",
+                  "valueString": "accounts@herolimited.com",
+                  "content": "accounts@herolimited.com",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        164,
+                        477,
+                        473,
+                        477,
+                        473,
+                        505,
+                        164,
+                        505
+                      ]
+                    }
+                  ],
+                  "confidence": 0.953,
+                  "spans": [
+                    {
+                      "offset": 92,
+                      "length": 24
+                    }
+                  ]
+                },
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bernie Sanders",
+                  "content": "Bernie Sanders",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+<<<<<<< HEAD
                         707,
                         718,
                         886,
@@ -9237,14 +9761,29 @@
                         752,
                         707,
                         752
+=======
+                        487,
+                        1670,
+                        763,
+                        1670,
+                        763,
+                        1708,
+                        487,
+                        1708
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
-                  "confidence": 0.995,
+                  "confidence": 0.444,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 308,
                       "length": 12
+=======
+                      "offset": 606,
+                      "length": 14
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
@@ -9275,14 +9814,22 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "PurchaseOrderNumber": {
                   "type": "string",
                   "valueString": "948284",
                   "content": "948284",
+=======
+                "CompanyName": {
+                  "type": "string",
+                  "valueString": "Higgly Wiggly Books",
+                  "content": "Higgly Wiggly Books",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         1276,
                         460,
                         1374,
@@ -9299,6 +9846,24 @@
                     {
                       "offset": 171,
                       "length": 6
+=======
+                        376,
+                        645,
+                        627,
+                        645,
+                        627,
+                        679,
+                        376,
+                        679
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 230,
+                      "length": 19
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
@@ -9329,14 +9894,22 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "PhoneNumber": {
                   "type": "string",
                   "valueString": "555-348-6512",
                   "content": "555-348-6512",
+=======
+                "VendorName": {
+                  "type": "string",
+                  "valueString": "Hillary Swank",
+                  "content": "Hillary Swank",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         365,
                         349,
                         527,
@@ -9345,12 +9918,23 @@
                         377,
                         365,
                         377
+=======
+                        347,
+                        606,
+                        521,
+                        606,
+                        521,
+                        641,
+                        347,
+                        641
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
-                  "confidence": 0.992,
+                  "confidence": 0.99,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 43,
                       "length": 12
                     }
@@ -9360,10 +9944,22 @@
                   "type": "string",
                   "valueString": "Hillary Swank",
                   "content": "Hillary Swank",
+=======
+                      "offset": 202,
+                      "length": 13
+                    }
+                  ]
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "Hero Limited",
+                  "content": "Hero Limited",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         347,
                         606,
                         521,
@@ -9372,14 +9968,79 @@
                         641,
                         347,
                         641
+=======
+                        616,
+                        203,
+                        1059,
+                        203,
+                        1059,
+                        267,
+                        616,
+                        267
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 202,
                       "length": 13
+                    }
+                  ]
+                },
+                "DatedAs": {
+                  "type": "string",
+                  "valueString": "12/20/2020",
+                  "content": "12/20/2020",
+=======
+                      "offset": 15,
+                      "length": 12
+                    }
+                  ]
+                },
+                "CompanyPhoneNumber": {
+                  "type": "string",
+                  "valueString": "938-294-2949",
+                  "content": "938-294-2949",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+<<<<<<< HEAD
+                        1163,
+                        418,
+                        1315,
+                        418,
+                        1315,
+                        450,
+                        1163,
+                        450
+                      ]
+                    }
+                  ],
+                  "confidence": 0.994,
+                  "spans": [
+                    {
+=======
+                        707,
+                        718,
+                        886,
+                        718,
+                        886,
+                        752,
+                        707,
+                        752
+                      ]
+                    }
+                  ],
+                  "confidence": 0.995,
+                  "spans": [
+                    {
+                      "offset": 308,
+                      "length": 12
                     }
                   ]
                 },
@@ -9405,6 +10066,7 @@
                   "confidence": 0.994,
                   "spans": [
                     {
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       "offset": 142,
                       "length": 10
                     }
@@ -9437,6 +10099,7 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "Email": {
                   "type": "string",
                   "valueString": "accounts@herolimited.com",
@@ -9495,10 +10158,17 @@
                   "type": "string",
                   "valueString": "www.herolimited.com",
                   "content": "www.herolimited.com",
+=======
+                "Subtotal": {
+                  "type": "string",
+                  "valueString": "$140.00",
+                  "content": "$140.00",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         273,
                         392,
                         522,
@@ -9507,12 +10177,23 @@
                         418,
                         273,
                         418
+=======
+                        1426,
+                        1571,
+                        1526,
+                        1571,
+                        1526,
+                        1600,
+                        1426,
+                        1600
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
                   "confidence": 0.992,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 65,
                       "length": 19
                     }
@@ -9522,10 +10203,22 @@
                   "type": "string",
                   "valueString": "$4.00",
                   "content": "$4.00",
+=======
+                      "offset": 849,
+                      "length": 7
+                    }
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "content": "948284",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         1456,
                         1611,
                         1529,
@@ -9534,14 +10227,29 @@
                         1646,
                         1456,
                         1646
+=======
+                        1276,
+                        460,
+                        1374,
+                        460,
+                        1374,
+                        489,
+                        1276,
+                        489
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
                   "confidence": 0.993,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 861,
                       "length": 5
+=======
+                      "offset": 171,
+                      "length": 6
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 },
@@ -9572,6 +10280,7 @@
                     }
                   ]
                 },
+<<<<<<< HEAD
                 "Quantity": {
                   "type": "number",
                   "valueNumber": 20,
@@ -9603,10 +10312,17 @@
                   "type": "string",
                   "valueString": "Higgly Wiggly Books",
                   "content": "Higgly Wiggly Books",
+=======
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "content": "$4.00",
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
+<<<<<<< HEAD
                         376,
                         645,
                         627,
@@ -9615,14 +10331,29 @@
                         679,
                         376,
                         679
+=======
+                        1456,
+                        1611,
+                        1529,
+                        1611,
+                        1529,
+                        1646,
+                        1456,
+                        1646
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                       ]
                     }
                   ],
                   "confidence": 0.993,
                   "spans": [
                     {
+<<<<<<< HEAD
                       "offset": 230,
                       "length": 19
+=======
+                      "offset": 861,
+                      "length": 5
+>>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
                     }
                   ]
                 }
