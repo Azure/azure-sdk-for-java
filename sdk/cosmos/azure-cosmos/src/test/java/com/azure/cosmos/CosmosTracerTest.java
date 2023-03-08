@@ -19,6 +19,8 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -60,12 +62,19 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -90,32 +99,61 @@ public class CosmosTracerTest extends TestSuiteBase {
         cosmosAsyncDatabase = getSharedCosmosDatabase(client);
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(client);
         cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-
     }
 
     @Override
     public String resolveTestNameSuffix(Object[] row) {
-        if (row != null && row.length == 1 && (boolean)row[0]) {
-            return "Legacy";
+        if (row != null && row.length == 3) {
+            StringBuilder sb = new StringBuilder();
+            if ((boolean)row[0]) {
+                sb.append("Legacy");
+            } else {
+                sb.append("OTel");
+            }
+            sb.append("|");
+            if ((boolean)row[1]) {
+                sb.append("WithReq");
+            } else {
+                sb.append("NoReq");
+            }
+            sb.append("|");
+            if ((boolean)row[2]) {
+                sb.append("ForceThresholdViolation");
+            } else {
+                sb.append("NoThresholdViolation");
+            }
+
+            return sb.toString();
         }
 
-        return "OTel";
+        return "";
     }
 
-    @DataProvider(name = "traceFlavorsProvider")
-    private Object[][] traceFlavorsProvider() {
+    @DataProvider(name = "traceTestCaseProvider")
+    private Object[][] traceTestCaseProvider() {
         return new Object[][]{
-            new Object[] { true },
-            new Object[] { false },
+            new Object[] { true, false, true },
+            new Object[] { true, false, false },
+            new Object[] { false, false, false },
+            new Object[] { false, true, false },
+            new Object[] { false, false, true },
+            new Object[] { false, true, true },
         };
     }
 
-    @Test(groups = {"simple", "emulator"}, dataProvider = "traceFlavorsProvider", timeOut = TIMEOUT)
-    public void cosmosAsyncClient(boolean useLegacyTracing) throws Exception {
+    @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    public void cosmosAsyncClient(
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        boolean forceThresholdViolations) throws Exception {
+
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
-        CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds()
-            .configureLatencyThresholds(Duration.ZERO, Duration.ZERO);
+        CosmosDiagnosticsThresholds thresholds = forceThresholdViolations ?
+            new CosmosDiagnosticsThresholds()
+                .configureLatencyThresholds(Duration.ZERO, Duration.ZERO)
+            : new CosmosDiagnosticsThresholds()
+                .configureLatencyThresholds(Duration.ofDays(1), Duration.ofDays(1));
         CosmosClientTelemetryConfig clientTelemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsThresholds(thresholds);
 
@@ -123,7 +161,12 @@ public class CosmosTracerTest extends TestSuiteBase {
             clientTelemetryConfig.useLegacyOpenTelemetryTracing();
         }
 
+        if (enableRequestLevelTracing) {
+            clientTelemetryConfig.enableTransportLevelTracing();
+        }
+
         DiagnosticsProvider tracerProvider = Mockito.spy(new DiagnosticsProvider(mockTracer, clientTelemetryConfig));
+        ReflectionUtils.setClientTelemetryConfig(client, clientTelemetryConfig);
         ReflectionUtils.setDiagnosticsProvider(client, tracerProvider);
 
         CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
@@ -134,7 +177,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             "createDatabaseIfNotExists." + cosmosAsyncDatabase.getId(),
             cosmosAsyncDatabase.getId(),
             cosmosDatabaseResponse.getDiagnostics(),
-            useLegacyTracing);
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations);
 
         mockTracer.reset();
 
@@ -146,7 +191,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             "readAllDatabases",
             null,
             feedResponseReadAllDatabases.getCosmosDiagnostics(),
-            useLegacyTracing);
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations);
 
         mockTracer.reset();
 
@@ -160,7 +207,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             "queryDatabases",
             null,
             feedResponseQueryDatabases.getCosmosDiagnostics(),
-            useLegacyTracing);
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations);
     }
 
     /*
@@ -527,14 +576,29 @@ public class CosmosTracerTest extends TestSuiteBase {
         String methodName,
         String databaseName,
         CosmosDiagnostics cosmosDiagnostics,
-        boolean useLegacyTracing) throws JsonProcessingException {
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        boolean forceThresholdViolation) throws JsonProcessingException {
 
         if (useLegacyTracing) {
-            verifyLegacyTracerAttributes(tracerProvider, mockTracer, methodName, databaseName, cosmosDiagnostics);
+            verifyLegacyTracerAttributes(
+                tracerProvider,
+                mockTracer,
+                methodName,
+                databaseName,
+                cosmosDiagnostics,
+                enableRequestLevelTracing,
+                forceThresholdViolation);
             return;
         }
 
-        verifyOTelTracerAttributes(tracerProvider, mockTracer, methodName, databaseName, cosmosDiagnostics);
+        verifyOTelTracerAttributes(
+            tracerProvider,
+            mockTracer,
+            methodName,
+            databaseName,
+            cosmosDiagnostics,
+            enableRequestLevelTracing);
     }
 
     private void verifyOTelTracerAttributes(
@@ -542,9 +606,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer,
         String methodName,
         String databaseName,
-        CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
-
-
+        CosmosDiagnostics cosmosDiagnostics,
+        boolean enableRequestLevelTracing) throws JsonProcessingException {
 
         Map<String, Object> attributes = mockTracer.attributes;
         if (databaseName != null) {
@@ -556,8 +619,179 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("net.peer.name")).isEqualTo("localhost");
         assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(DiagnosticsProvider.RESOURCE_PROVIDER_NAME);
 
-        //verifying diagnostics as events
-        //verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
+        verifyOTelTracerDiagnostics(tracerProvider, cosmosDiagnostics, mockTracer);
+
+        verifyOTelTracerTransport(
+            tracerProvider, cosmosDiagnostics, mockTracer, enableRequestLevelTracing);
+    }
+
+    private void verifyOTelTracerDiagnostics(DiagnosticsProvider tracerProvider,
+                                             CosmosDiagnostics cosmosDiagnostics,
+                                             TracerUnderTest mockTracer) throws JsonProcessingException {
+        ClientSideRequestStatistics clientSideRequestStatistics =
+            BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
+
+        FeedResponseDiagnostics feedResponseDiagnostics =
+            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+        if (clientSideRequestStatistics != null ||
+            (feedResponseDiagnostics != null &&
+                feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0)) {
+
+            assertThat(mockTracer).isNotNull();
+            assertThat(mockTracer.context).isNotNull();
+
+            CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
+                mockTracer.context
+            );
+
+            if (ctx.isFailure() || ctx.isThresholdViolated()) {
+                if (ctx.isFailure()) {
+                    assertThat(mockTracer.events).anyMatch(e -> e.name .equals("failure"));
+                    assertThat(mockTracer.events).noneMatch(e -> e.name.equals("threshold_violation"));
+
+                } else {
+                    assertThat(mockTracer.events).noneMatch(e -> e.name.equals("failure"));
+                    assertThat(mockTracer.events).anyMatch(e -> e.name.equals("threshold_violation"));
+                }
+            } else {
+                assertThat(mockTracer.events).noneMatch(e -> e.name.equals("threshold_violation"));
+                assertThat(mockTracer.events).noneMatch(e -> e.name.equals("failure"));
+            }
+        }
+    }
+
+    private void verifyOTelTracerTransport(DiagnosticsProvider tracerProvider,
+                                           CosmosDiagnostics cosmosDiagnostics,
+                                           TracerUnderTest mockTracer,
+                                           boolean enableRequestLevelTracing) throws JsonProcessingException {
+
+        if (!enableRequestLevelTracing) {
+            assertThat(mockTracer.events).noneMatch(e -> e.name.equals("rntbd.request"));
+            return;
+        } else {
+            assertThat(mockTracer.events).anyMatch(e -> e.name.equals("rntbd.request"));
+        }
+
+        ClientSideRequestStatistics clientSideRequestStatistics =
+            BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
+
+        FeedResponseDiagnostics feedResponseDiagnostics =
+            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+        if (clientSideRequestStatistics != null ||
+            (feedResponseDiagnostics != null &&
+                feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0)) {
+
+            assertThat(mockTracer).isNotNull();
+            assertThat(mockTracer.context).isNotNull();
+
+            CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
+                mockTracer.context
+            );
+
+            for (CosmosDiagnostics d: ctx.getDiagnostics()) {
+                if (d.getClientSideRequestStatistics() != null) {
+                    for (ClientSideRequestStatistics s: d.getClientSideRequestStatistics()) {
+                        if (s.getResponseStatisticsList() == null) {
+                            continue;
+                        }
+                        assertStoreResponseStatistics(mockTracer, s.getResponseStatisticsList());
+                    }
+                }
+
+            }
+        }
+    }
+
+    private void assertStoreResponseStatistics(
+        TracerUnderTest mockTracer,
+        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {
+            StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
+            StoreResponseDiagnostics storeResponseDiagnostics =
+                storeResultDiagnostics.getStoreResponseDiagnostics();
+
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("rntbd.url", storeResultDiagnostics.getStorePhysicalAddressAsString());
+            attributes.put("rntbd.resource_type", responseStatistics.getRequestResourceType().toString());
+            attributes.put("rntbd.operation_type", responseStatistics.getRequestOperationType().toString());
+            attributes.put("rntbd.region", responseStatistics.getRegionName());
+
+            if (storeResultDiagnostics.getLsn() > 0) {
+                attributes.put("rntbd.lsn", Long.toString(storeResultDiagnostics.getLsn()));
+            }
+
+            if (storeResultDiagnostics.getGlobalCommittedLSN() > 0) {
+                attributes.put("rntbd.gclsn", Long.toString(storeResultDiagnostics.getGlobalCommittedLSN()));
+            }
+
+            String responseSessionToken = responseStatistics.getRequestSessionToken();
+            if (responseSessionToken != null && !responseSessionToken.isEmpty()) {
+                attributes.put("rntbd.session_token", responseSessionToken);
+            }
+
+            String requestSessionToken = responseStatistics.getRequestSessionToken();
+            if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                attributes.put("rntbd.request_session_token", requestSessionToken);
+            }
+
+            String activityId = storeResponseDiagnostics.getActivityId();
+            if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                attributes.put("rntbd.activity_id", activityId);
+            }
+
+            String pkRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            if (pkRangeId != null && !pkRangeId.isEmpty()) {
+                attributes.put("rntbd.partition_key_range_id", pkRangeId);
+            }
+
+            attributes.put("rntbd.status_code", Integer.toString(storeResponseDiagnostics.getStatusCode()));
+            if (storeResponseDiagnostics.getSubStatusCode() != 0) {
+                attributes.put("rntbd.sub_status_code", Integer.toString(storeResponseDiagnostics.getSubStatusCode()));
+            }
+
+            Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
+            if (backendLatency != null) {
+                attributes.put("rntbd.backend_latency", Double.toString(backendLatency));
+            }
+
+            double requestCharge = storeResponseDiagnostics.getRequestCharge();
+            attributes.put("rntbd.request_charge", Double.toString(requestCharge));
+
+            Duration latency = responseStatistics.getDuration();
+            if (latency != null) {
+                attributes.put("rntbd.latency", latency.toString());
+            }
+
+            if (storeResponseDiagnostics.getRntbdChannelStatistics() != null) {
+                attributes.put(
+                    "rntbd.is_new_channel",
+                    storeResponseDiagnostics.getRntbdChannelStatistics().isWaitForConnectionInit());
+            }
+
+            Instant startTime = null;
+            for (RequestTimeline.Event event : storeResponseDiagnostics.getRequestTimeline()) {
+                Instant eventTime = event.getStartTime() != null ?
+                    event.getStartTime() : null;
+
+                if (eventTime != null &&
+                    (startTime == null || startTime.isBefore(eventTime))) {
+                    startTime = eventTime;
+                }
+
+                Duration duration = event.getDuration();
+                if (duration == null || duration == Duration.ZERO) {
+                    continue;
+                }
+
+                attributes.put("rntbd.latency_" + event.getName().toLowerCase(Locale.ROOT), duration.toString());
+            }
+
+            attributes.put("rntbd.request_size_bytes",storeResponseDiagnostics.getRequestPayloadLength());
+            attributes.put("rntbd.response_size_bytes",storeResponseDiagnostics.getResponsePayloadLength());
+
+            assertEvent(mockTracer, "rntbd.request", startTime != null ? startTime : null, attributes);
+        }
     }
 
     /*
@@ -730,8 +964,12 @@ public class CosmosTracerTest extends TestSuiteBase {
                                               TracerUnderTest mockTracer,
                                               String methodName,
                                               String databaseName,
-                                              CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
+                                              CosmosDiagnostics cosmosDiagnostics,
+                                              boolean enableRequestLevelTracing,
+                                              boolean forceThresholdViolation) throws JsonProcessingException {
         Map<String, Object> attributes = mockTracer.attributes;
+
+        assertThat(enableRequestLevelTracing).isEqualTo(false);
 
         if (databaseName != null) {
             assertThat(attributes.get("db.instance")).isEqualTo(databaseName);
@@ -743,57 +981,115 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo("Microsoft.DocumentDB");
 
         //verifying diagnostics as events
-        //verifyLegacyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
+        if (forceThresholdViolation) {
+            verifyLegacyTracerDiagnostics(tracerProvider, cosmosDiagnostics, mockTracer);
+        }
     }
 
-    /*
-    private void verifyLegacyTracerDiagnostics(TracerProvider tracerProvider,
+    private static void assertEvent(TracerUnderTest mockTracer, String eventName, Instant time) {
+        assertEvent(mockTracer, eventName, time, Collections.EMPTY_MAP);
+    }
+
+    private static void assertEvent(
+        TracerUnderTest mockTracer, String eventName, Instant time, String key, String value) {
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(key, value);
+        assertEvent(mockTracer, eventName, time, attributes);
+    }
+
+    private static void assertEvent(
+        TracerUnderTest mockTracer, String eventName, Instant time, Map<String, Object> attributes) {
+
+        List<EventRecord> filteredEvents =
+            mockTracer.events.stream().filter(e -> e.name.equals(eventName)).collect(Collectors.toList());
+        assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
+        if (time != null) {
+            filteredEvents =
+                filteredEvents
+                    .stream()
+                    .filter(e -> e.timestamp != null &&
+                        e.timestamp.equals(OffsetDateTime.ofInstant(time, ZoneOffset.UTC)))
+                    .collect(Collectors.toList());
+
+            assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
+        }
+
+        if (attributes == null || attributes.size() == 0) {
+            return;
+        }
+
+        filteredEvents =
+            filteredEvents
+                .stream()
+                .filter(e -> {
+                    if (e.attributes == null || e.attributes.size() < attributes.size()) {
+                        return false;
+                    }
+
+                    for(String key: attributes.keySet()) {
+                        if (!e.attributes.containsKey((key))) {
+                            return false;
+                        }
+
+                        if (!e.attributes.get(key).equals(attributes.get(key))) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                })
+                .collect(Collectors.toList());
+
+        assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
+    }
+
+    private void verifyLegacyTracerDiagnostics(DiagnosticsProvider tracerProvider,
                                          CosmosDiagnostics cosmosDiagnostics,
-                                         Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
+                                         TracerUnderTest mockTracer) throws JsonProcessingException {
         ClientSideRequestStatistics clientSideRequestStatistics =
             BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
         int counter = 1;
         if (clientSideRequestStatistics != null) {
-            //verifying add event call for systemInformation
-            Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SystemInformation")
-                , ArgumentMatchers.any(),
-                Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)), ArgumentMatchers.any());
-
-            //verifying add event call for regionContacted
-            Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("RegionContacted")
-                , ArgumentMatchers.any(),
-                Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
-
-            //verifying add event call for clientCfgs
-            Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("ClientCfgs")
-                , ArgumentMatchers.any(),
-                Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
-                    ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
-
+            assertEvent(
+                mockTracer, "SystemInformation", clientSideRequestStatistics.getRequestStartTimeUTC());
+            assertEvent(
+                mockTracer,
+                "RegionContacted",
+                clientSideRequestStatistics.getRequestStartTimeUTC(),
+                "JSON",
+                OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
+            assertEvent(
+                mockTracer,
+                "ClientCfgs",
+                clientSideRequestStatistics.getRequestStartTimeUTC(),
+                "JSON",
+                OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
 
             //verifying add event call for serializationDiagnostics
             if (BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics).getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
                 for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics :
                     clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
-                    Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SerializationDiagnostics " + serializationDiagnostics.serializationType)
-                        , ArgumentMatchers.any(),
-                        Mockito.eq(OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC)),
-                        ArgumentMatchers.any());
-                    assertThat(attributesMap.get("SerializationDiagnostics " + serializationDiagnostics.serializationType).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(serializationDiagnostics));
+
+                    String eventName = "SerializationDiagnostics " + serializationDiagnostics.serializationType;
+                    assertEvent(
+                        mockTracer,
+                        eventName,
+                        serializationDiagnostics.startTimeUTC,
+                        "JSON",
+                        OBJECT_MAPPER.writeValueAsString(serializationDiagnostics));
                 }
             }
 
             //verifying add event call for retry context
             if (clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
-                Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("Retry Context")
-                    , ArgumentMatchers.any(),
-                    Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime()
-                        , ZoneOffset.UTC)), ArgumentMatchers.any());
-                assertThat(attributesMap.get("Retry Context").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+                String eventName = "Retry Context";
+                assertEvent(
+                    mockTracer,
+                    eventName,
+                    clientSideRequestStatistics.getRetryContext().getRetryStartTime(),
+                    "JSON",
+                    OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
             }
 
             //verifying add event call for storeResponseStatistics
@@ -806,59 +1102,39 @@ public class CosmosTracerTest extends TestSuiteBase {
                     eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
                 }
 
-                OffsetDateTime requestStartTime =
-                    OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC(), ZoneOffset.UTC);
+                Instant requestStartTime =
+                    storeResponseStatistics.getRequestResponseTimeUTC();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
-                        requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                        requestStartTime = event.getStartTime();
                         break;
                     }
                 }
-                Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("StoreResponse" + counter)
-                    , ArgumentMatchers.any(),
-                    Mockito.eq(requestStartTime),
-                    ArgumentMatchers.any());
-                assertThat(attributesMap.get("StoreResponse" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
-                counter++;
-            }
 
-            //verifying add event call for supplemental storeResponseStatistics
-            counter = 1;
-            for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
-                ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
-                Iterator<RequestTimeline.Event> eventIterator = null;
-                try {
-                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
-                } catch (CosmosException ex) {
-                    eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
-                }
+                String eventName = "StoreResponse" + counter;
+                assertEvent(
+                    mockTracer,
+                    eventName,
+                    requestStartTime,
+                    "JSON",
+                    OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
 
-                OffsetDateTime requestStartTime =
-                    OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC(), ZoneOffset.UTC);
-                while (eventIterator.hasNext()) {
-                    RequestTimeline.Event event = eventIterator.next();
-                    if (event.getName().equals("created")) {
-                        requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
-                        break;
-                    }
-                }
-                Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("StoreResponse" + counter)
-                    , ArgumentMatchers.any(),
-                    Mockito.eq(requestStartTime),
-                    ArgumentMatchers.any());
-                assertThat(attributesMap.get("Supplemental StoreResponse" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
                 counter++;
             }
 
             counter = 1;
             for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
                 BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics).getAddressResolutionStatistics().values()) {
-                Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("AddressResolutionStatistics" + counter)
-                    , ArgumentMatchers.any(),
-                    Mockito.eq(OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(),
-                        ZoneOffset.UTC)), ArgumentMatchers.any());
-                assertThat(attributesMap.get("AddressResolutionStatistics" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(addressResolutionStatistics));
+
+                String eventName = "AddressResolutionStatistics" + counter;
+                assertEvent(
+                    mockTracer,
+                    eventName,
+                    addressResolutionStatistics.getStartTimeUTC(),
+                    "JSON",
+                    OBJECT_MAPPER.writeValueAsString(addressResolutionStatistics));
+
                 counter++;
             }
         }
@@ -868,12 +1144,12 @@ public class CosmosTracerTest extends TestSuiteBase {
         if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan
-                Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("Query Plan Statistics")
-                    , ArgumentMatchers.any(),
-                    Mockito.eq(OffsetDateTime.ofInstant(feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
-                        ZoneOffset.UTC)), ArgumentMatchers.any());
-                assertThat(attributesMap.get("Query Plan Statistics").get("JSON"))
-                    .isEqualTo(OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
+                assertEvent(
+                    mockTracer,
+                    "Query Plan Statistics",
+                    feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
+                    "JSON",
+                    OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
             }
 
             counter = 1;
@@ -881,33 +1157,52 @@ public class CosmosTracerTest extends TestSuiteBase {
                 feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
                     && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
-                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange "
-                            + clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId())
-                        , ArgumentMatchers.any(),
-                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)), ArgumentMatchers.any());
+
+                    String pkRangeId = clientSideStatistics
+                        .getResponseStatisticsList()
+                        .get(0)
+                        .getStoreResult()
+                        .getStoreResponseDiagnostics()
+                        .getPartitionKeyRangeId();
+
+                    if (pkRangeId != null) {
+                        String eventName = "Diagnostics for PKRange "
+                            + clientSideStatistics
+                            .getResponseStatisticsList()
+                            .get(0)
+                            .getStoreResult()
+                            .getStoreResponseDiagnostics()
+                            .getPartitionKeyRangeId();
+                        assertEvent(
+                            mockTracer,
+                            eventName,
+                            clientSideStatistics.getRequestStartTimeUTC());
+                    }
                 } else if (clientSideStatistics.getGatewayStatistics() != null) {
-                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange "
-                            + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId())
-                        , ArgumentMatchers.any(),
-                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)), ArgumentMatchers.any());
+                    String eventName = "Diagnostics for PKRange "
+                        + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                    assertEvent(
+                        mockTracer,
+                        eventName,
+                        clientSideStatistics.getRequestStartTimeUTC());
+
                 } else {
-                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics " + counter++)
-                        , ArgumentMatchers.any(),
-                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
-                            ZoneOffset.UTC)), ArgumentMatchers.any());
+                    String eventName = "Diagnostics " + counter++;
+                    assertEvent(
+                        mockTracer,
+                        eventName,
+                        clientSideStatistics.getRequestStartTimeUTC());
                 }
             }
 
             for (Map.Entry<String, QueryMetrics> queryMetrics :
                 feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
-                Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Query Metrics for PKRange " + queryMetrics.getKey())
-                    , ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any());
-                assertThat(attributesMap.get("Query Metrics for PKRange " + queryMetrics.getKey()).get("Query " +
-                    "Metrics")).isEqualTo(queryMetrics.getValue().toString());
+                String eventName = "Query Metrics for PKRange " + queryMetrics.getKey();
+                Stream<EventRecord> filteredEvents =
+                    mockTracer.events.stream().filter(e -> e.name.equals(eventName));
+                assertThat(filteredEvents).hasSize(1);
+                assertThat(filteredEvents.findFirst().get().attributes.get("Query Metrics"))
+                    .isEqualTo(queryMetrics.getValue().toString());
             }
         }
     }
@@ -938,7 +1233,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         public Map<String, Map<String, Object>> getAttributesMap() {
             return attributesMap;
         }
-    }*/
+    }
 
     private static class EventRecord {
         private final String name;
@@ -963,6 +1258,24 @@ public class CosmosTracerTest extends TestSuiteBase {
         public Map<String, Object> getAttributes() {
             return this.attributes;
         }
+
+        @Override
+        public String toString() {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.name)
+              .append(" - ")
+              .append(this.timestamp)
+              .append(": { '");
+
+            for(String key: this.attributes.keySet()) {
+                sb.append(key).append("' : '").append(this.attributes.get(key)).append("'");
+            }
+
+            sb.append(" }");
+
+            return sb.toString();
+        }
     }
 
     private static class TracerUnderTest implements Tracer {
@@ -971,7 +1284,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         public String methodName;
         public String statusMessage;
         public Throwable error;
-        public Map<String, EventRecord> events = new HashMap<>();
+        public List<EventRecord> events = new ArrayList<>();
+        public Context context;
 
         @Override
         public Context start(String methodName, Context context) {
@@ -979,7 +1293,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(this.methodName).isNull();
             this.methodName = methodName;
 
-            return context;
+            return this.context = context;
         }
 
         @Override
@@ -992,7 +1306,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 }
             }
 
-            return ctx;
+            return this.context = ctx;
         }
 
         @Override
@@ -1002,25 +1316,29 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(this.statusMessage).isNull();
             this.error = error;
             this.statusMessage = statusMessage;
+            this.context = context;
         }
 
         @Override
         public void setAttribute(String key, String value, Context context) {
             LOGGER.info("--> SetAttribute {}: {}", key, value);
             this.attributes.put(key, value);
+            this.context = context;
         }
 
         @Override
         public void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
             Tracer.super.addEvent(name, attributes, timestamp, context);
 
-            this.events.put(name, new EventRecord(name, timestamp, attributes));
+            this.events.add(new EventRecord(name, timestamp, attributes));
+            this.context = context;
         }
 
         public void reset() {
             this.error = null;
             this.statusMessage = null;
             this.methodName = null;
+            this.context = null;
             this.attributes.clear();
             this.events.clear();
         }

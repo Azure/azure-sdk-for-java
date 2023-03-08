@@ -1400,7 +1400,8 @@ public class CosmosAsyncContainer {
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
-                    response.getResponseHeaders()));
+                    response.getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -1444,7 +1445,8 @@ public class CosmosAsyncContainer {
             return database.getDocClientWrapper().queryConflicts(getLink(), query, requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
-                    response.getResponseHeaders()));
+                    response.getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 

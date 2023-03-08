@@ -67,7 +67,8 @@ public class AggregateDocumentQueryExecutionContext
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                            FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
+                            FeedResponse<Document> frp = BridgeInternal
+                                .createFeedResponse(aggregateResults, headers, null);
                             BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
                             return frp;
                         }
@@ -90,7 +91,8 @@ public class AggregateDocumentQueryExecutionContext
                     }
 
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                    FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
+                    FeedResponse<Document> frp = BridgeInternal
+                        .createFeedResponse(aggregateResults, headers, null);
                     if(!queryMetricsMap.isEmpty()) {
                         for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {
                             BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());

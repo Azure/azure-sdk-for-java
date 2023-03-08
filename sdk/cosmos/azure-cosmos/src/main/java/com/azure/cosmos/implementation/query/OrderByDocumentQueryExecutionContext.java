@@ -620,7 +620,8 @@ public class OrderByDocumentQueryExecutionContext
                         // construct a page from result with request charge
                         FeedResponse<OrderByRowResult<Document>> feedResponse = BridgeInternal.createFeedResponse(
                                 orderByRowResults,
-                                headerResponse(tracker.getAndResetCharge()));
+                                headerResponse(tracker.getAndResetCharge()),
+                                null);
                         if (!queryMetricMap.isEmpty()) {
                             for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
@@ -634,7 +635,7 @@ public class OrderByDocumentQueryExecutionContext
                     // results.
                     .concatWith(Flux.defer(() -> {
                         return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                null));
+                                null, null));
                     }))
                     // CREATE pairs from the stream to allow the observables downstream to "peek"
                     // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)

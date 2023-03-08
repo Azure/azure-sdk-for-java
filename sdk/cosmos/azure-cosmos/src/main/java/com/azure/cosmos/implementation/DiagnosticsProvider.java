@@ -52,6 +52,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -166,7 +167,7 @@ public final class DiagnosticsProvider {
         return null;
     }
 
-    private static CosmosDiagnosticsContext getCosmosDiagnosticsContextFromTraceContextOrThrow(Context traceContext) {
+    public static CosmosDiagnosticsContext getCosmosDiagnosticsContextFromTraceContextOrThrow(Context traceContext) {
         Object cosmosCtx = traceContext.getData(COSMOS_DIAGNOSTICS_CONTEXT_KEY).orElse(null);
 
         if (cosmosCtx instanceof CosmosDiagnosticsContext) {
@@ -779,6 +780,10 @@ public final class DiagnosticsProvider {
             Map<String, Object> attributes;
             //adding storeResponse
             int diagnosticsCounter = 1;
+            if (clientSideRequestStatistics == null) {
+                return;
+            }
+
             for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
                 clientSideRequestStatistics.getResponseStatisticsList()) {
                 attributes = new HashMap<>();
@@ -998,9 +1003,9 @@ public final class DiagnosticsProvider {
                 attributes.put("Diagnostics", cosmosCtx.toString());
 
                 if (cosmosCtx.isFailure()) {
-                    tracer.addEvent("Failure", attributes, OffsetDateTime.now(), context);
+                    tracer.addEvent("failure", attributes, OffsetDateTime.now(), context);
                 } else {
-                    tracer.addEvent("ThresholdViolation", attributes, OffsetDateTime.now(), context);
+                    tracer.addEvent("threshold_violation", attributes, OffsetDateTime.now(), context);
                 }
             }
 
@@ -1105,15 +1110,21 @@ public final class DiagnosticsProvider {
 
                 Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
                 if (backendLatency != null) {
-                    attributes.put("rntbd.backendLatency", Double.toString(backendLatency));
+                    attributes.put("rntbd.backend_latency", Double.toString(backendLatency));
                 }
 
                 double requestCharge = storeResponseDiagnostics.getRequestCharge();
-                attributes.put("rntbd.requestCharge", Double.toString(requestCharge));
+                attributes.put("rntbd.request_charge", Double.toString(requestCharge));
 
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
                     attributes.put("rntbd.latency", latency.toString());
+                }
+
+                if (storeResponseDiagnostics.getRntbdChannelStatistics() != null) {
+                    attributes.put(
+                        "rntbd.is_new_channel",
+                        storeResponseDiagnostics.getRntbdChannelStatistics().isWaitForConnectionInit());
                 }
 
                 OffsetDateTime startTime = null;
@@ -1131,11 +1142,11 @@ public final class DiagnosticsProvider {
                         continue;
                     }
 
-                    attributes.put("rntbd.latency." + event.getName(), duration.toString());
+                    attributes.put("rntbd.latency_" + event.getName().toLowerCase(Locale.ROOT), duration.toString());
                 }
 
-                attributes.put("rntbd.requestSizeBytes",storeResponseDiagnostics.getRequestPayloadLength());
-                attributes.put("rntbd.responseSizeBytes",storeResponseDiagnostics.getResponsePayloadLength());
+                attributes.put("rntbd.request_size_bytes",storeResponseDiagnostics.getRequestPayloadLength());
+                attributes.put("rntbd.response_size_bytes",storeResponseDiagnostics.getResponsePayloadLength());
 
                 this.tracer.addEvent(
                     "rntbd.request",

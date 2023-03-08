@@ -175,7 +175,8 @@ public class CosmosAsyncUser {
                        .readPermissions(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
-                           response.getResponseHeaders()));
+                           response.getResponseHeaders(),
+                           response.getCosmosDiagnostics()));
         });
     }
 
@@ -229,7 +230,8 @@ public class CosmosAsyncUser {
                        .queryPermissions(getLink(), query, requestOptions)
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
-                           response.getResponseHeaders()));
+                           response.getResponseHeaders(),
+                           response.getCosmosDiagnostics()));
         });
     }
 

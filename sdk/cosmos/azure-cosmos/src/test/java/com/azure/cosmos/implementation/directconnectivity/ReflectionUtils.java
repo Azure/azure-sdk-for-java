@@ -183,6 +183,10 @@ public class ReflectionUtils {
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
     }
 
+    public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
+        set(cosmosAsyncClient, cfg, "clientTelemetryConfig");
+    }
+
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }

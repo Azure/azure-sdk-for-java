@@ -73,7 +73,8 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<Document> row) {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
-        FeedResponse<Document> fr = BridgeInternal.createFeedResponse(Collections.singletonList((Document) row), headers);
+        FeedResponse<Document> fr = BridgeInternal
+            .createFeedResponse(Collections.singletonList((Document) row), headers, null);
         return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 

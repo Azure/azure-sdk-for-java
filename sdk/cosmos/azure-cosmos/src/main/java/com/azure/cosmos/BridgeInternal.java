@@ -191,8 +191,23 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-            Map<String, String> headers) {
-        return ModelBridgeInternal.createFeedResponse(results, headers);
+            Map<String, String> headers, CosmosDiagnostics cosmosDiagnostics) {
+        FeedResponse<T> feedResponseWithDiagnostics = ModelBridgeInternal.createFeedResponse(results, headers);
+
+        if (cosmosDiagnostics == null) {
+            return feedResponseWithDiagnostics;
+        }
+
+        ClientSideRequestStatistics requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
+        if (requestStatistics != null) {
+            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
+                Collections.singletonList(requestStatistics));
+        }
+        BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
+            cosmosDiagnostics.getFeedResponseDiagnostics()
+                             .getClientSideRequestStatisticsList());
+
+        return feedResponseWithDiagnostics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

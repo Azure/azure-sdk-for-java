@@ -58,7 +58,7 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions() {
 
-        this.thresholds = new CosmosDiagnosticsThresholds();
+        this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
     }
@@ -509,6 +509,10 @@ public class CosmosQueryRequestOptions {
      * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
+        if (this.thresholds == null) {
+            return CosmosDiagnosticsThresholds.DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
+        }
+
         return thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds);
     }
 
@@ -522,6 +526,10 @@ public class CosmosQueryRequestOptions {
      * @return the CosmosQueryRequestOptions
      */
     public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        if (this.thresholds == null) {
+            this.thresholds = new CosmosDiagnosticsThresholds();
+        }
+
         this.thresholds.configureLatencyThresholds(
             thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds),
             thresholdForDiagnosticsOnTracer
@@ -763,7 +771,9 @@ public class CosmosQueryRequestOptions {
                     requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
                     requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
                     requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
-                    requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
+                    if (queryRequestOptions.thresholds != null) {
+                        requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
+                    }
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {

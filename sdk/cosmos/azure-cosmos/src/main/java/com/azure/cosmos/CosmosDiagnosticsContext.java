@@ -200,10 +200,6 @@ public final class CosmosDiagnosticsContext {
             return true;
         }
 
-        if (this.resourceType != ResourceType.Document) {
-            return false;
-        }
-
         if (this.operationType.isPointOperation()) {
             if (this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;

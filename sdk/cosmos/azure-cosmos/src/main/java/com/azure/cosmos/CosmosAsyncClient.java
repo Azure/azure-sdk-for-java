@@ -549,7 +549,8 @@ public final class CosmosAsyncClient implements Closeable {
                 .map(response ->
                     BridgeInternal.createFeedResponse(
                         ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                        response.getResponseHeaders()));
+                        response.getResponseHeaders(),
+                        response.getCosmosDiagnostics()));
         });
     }
 
@@ -717,7 +718,8 @@ public final class CosmosAsyncClient implements Closeable {
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
-                    response.getResponseHeaders()));
+                    response.getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 

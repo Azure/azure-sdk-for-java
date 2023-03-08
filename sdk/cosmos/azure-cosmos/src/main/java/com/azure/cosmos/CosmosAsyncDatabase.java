@@ -439,7 +439,8 @@ public class CosmosAsyncDatabase {
             return getDocClientWrapper().readCollections(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
-                    response.getResponseHeaders()));
+                    response.getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -628,7 +629,8 @@ public class CosmosAsyncDatabase {
             return getDocClientWrapper().readUsers(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
-                        .getResponseHeaders()));
+                        .getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -689,7 +691,8 @@ public class CosmosAsyncDatabase {
             return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()), response
-                        .getResponseHeaders()));
+                        .getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -949,7 +952,8 @@ public class CosmosAsyncDatabase {
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
-                    response.getResponseHeaders()));
+                    response.getResponseHeaders(),
+                    response.getCosmosDiagnostics()));
         });
     }
 
