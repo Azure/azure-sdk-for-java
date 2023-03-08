@@ -39,8 +39,9 @@ import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.Cosmos
  * <p>
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
  * <p>
- * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
- * By default, account consistency level is used if none is provided.
+ * Though consistencyLevel is not mandatory, we strongly suggest to pay attention to this API when building the client.
+ * By default, account consistency level is used if none is provided except in the case of Session consistency. In order
+ * to see Session consistency behavior, the client needs to be built with the {@link ConsistencyLevel#SESSION} setting.
  * <p>
  * By default, direct connection mode is used if none specified.
  * <pre>
@@ -166,11 +167,8 @@ public class CosmosClientBuilder implements
     ApiType apiType(){ return this.apiType; }
 
     /**
-     * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
-     * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
-     * Consistency while the client is not configured in session.
-     * <p>
-     * enabling Session capturing for Session mode has no effect.
+     * It is not needed, unless you need to occasionally send requests with Session Consistency.
+     *
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
@@ -396,8 +394,6 @@ public class CosmosClientBuilder implements
     /**
      * Gets the {@link ConsistencyLevel} to be used
      *
-     * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
-     *
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel() {
@@ -406,8 +402,10 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the {@link ConsistencyLevel} to be used
-     *
-     * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
+     * <p>
+     * This setting is mandatory if the intention is to see Session consistency behavior. For other
+     * consistency levels, account consistency level will be used if consistencyLevel is not set when
+     * building the client.
      *
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
