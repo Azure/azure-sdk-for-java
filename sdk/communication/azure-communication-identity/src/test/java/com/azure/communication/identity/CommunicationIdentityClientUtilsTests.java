@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityClientUtilsTests {
 
-    private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
+    private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientUtils.class);
 
     @Test
     public void createCommunicationIdentityCreateRequestWithCustomTokenValidity() {

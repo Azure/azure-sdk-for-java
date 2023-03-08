@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.identity.implementation;
+package com.azure.communication.identity.unit;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class CommunicationIdentityResponseMocker {
-    
+
     public static HttpResponse createUserResult(HttpRequest request) {
         String body = String.format("{\"id\": \"Sanitized\"}");
         return generateMockResponse(body, request, 200);

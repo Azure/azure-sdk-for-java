@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-final class CommunicationIdentityClientUtils {
+public final class CommunicationIdentityClientUtils {
 
-    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
+    public static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
 
     static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
         Iterable<CommunicationTokenScope> scopes,
