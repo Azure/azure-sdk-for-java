@@ -185,6 +185,12 @@
           "justification": "removing unnecessary method from PartitionKeyBuilder class"
         },
         {
+        "ignore": true,
+        "code": "java.method.removed",
+        "old": "method com.azure.cosmos.models.PartitionKeyBuilder com.azure.cosmos.models.PartitionKeyBuilder::addNoneValue()",
+        "justification": "removing unnecessary method from PartitionKeyBuilder class"
+        },
+        {
           "ignore": true,
           "code": "java.method.addedToInterface",
           "new": "method java.lang.String com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::getServiceBusDomainName()",
