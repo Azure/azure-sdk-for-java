@@ -8,10 +8,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -22,73 +20,46 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.CosmosTriggerResponse;
-import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
-import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.TriggerOperation;
-import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosTracerTest extends TestSuiteBase {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTracerTest.class);
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private static final String ITEM_ID = "tracerDoc";
+
     private CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
     CosmosAsyncClient client;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     CosmosAsyncContainer cosmosAsyncContainer;
-    static final AutoCloseable NOOP_CLOSEABLE = () -> { };
 
     @Factory(dataProvider = "clientBuildersWithDirectSessionIncludeComputeGateway")
     public CosmosTracerTest(CosmosClientBuilder clientBuilder) {
@@ -173,8 +144,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
             ThroughputProperties.createManualThroughput(5000)).block();
+
+        assertThat(cosmosDatabaseResponse).isNotNull();
+
         verifyTracerAttributes(
-            tracerProvider,
             mockTracer,
             "createDatabaseIfNotExists." + cosmosAsyncDatabase.getId(),
             cosmosAsyncDatabase.getId(),
@@ -187,8 +160,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases =
             client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
+
+        assertThat(feedResponseReadAllDatabases).isNotNull();
+
         verifyTracerAttributes(
-            tracerProvider,
             mockTracer,
             "readAllDatabases",
             null,
@@ -203,8 +178,9 @@ public class CosmosTracerTest extends TestSuiteBase {
         FeedResponse<CosmosDatabaseProperties> feedResponseQueryDatabases = client.queryDatabases(query,
             new CosmosQueryRequestOptions()).byPage().single().block();
 
+        assertThat(feedResponseQueryDatabases).isNotNull();
+
         verifyTracerAttributes(
-            tracerProvider,
             mockTracer,
             "queryDatabases",
             null,
@@ -552,28 +528,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         LifeCycleUtils.closeQuietly(client);
     }
 
-    private static CosmosUserDefinedFunctionProperties getCosmosUserDefinedFunctionProperties() {
-        CosmosUserDefinedFunctionProperties udf =
-            new CosmosUserDefinedFunctionProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
-        return udf;
-    }
-
-    private static CosmosTriggerProperties getCosmosTriggerProperties() {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties(UUID.randomUUID().toString(), "function() {var " +
-            "x = 10;}");
-        trigger.setTriggerOperation(TriggerOperation.CREATE);
-        trigger.setTriggerType(TriggerType.PRE);
-        return trigger;
-    }
-
-    private static CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
-        CosmosStoredProcedureProperties storedProcedureDef =
-            new CosmosStoredProcedureProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
-        return storedProcedureDef;
-    }
-
     private void verifyTracerAttributes(
-        DiagnosticsProvider tracerProvider,
         TracerUnderTest mockTracer,
         String methodName,
         String databaseName,
@@ -584,7 +539,6 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         if (useLegacyTracing) {
             verifyLegacyTracerAttributes(
-                tracerProvider,
                 mockTracer,
                 methodName,
                 databaseName,
@@ -595,7 +549,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
 
         verifyOTelTracerAttributes(
-            tracerProvider,
             mockTracer,
             methodName,
             databaseName,
@@ -604,12 +557,11 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private void verifyOTelTracerAttributes(
-        DiagnosticsProvider tracerProvider,
         TracerUnderTest mockTracer,
         String methodName,
         String databaseName,
         CosmosDiagnostics cosmosDiagnostics,
-        boolean enableRequestLevelTracing) throws JsonProcessingException {
+        boolean enableRequestLevelTracing) {
 
         Map<String, Object> attributes = mockTracer.attributes;
         if (databaseName != null) {
@@ -621,15 +573,14 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("net.peer.name")).isEqualTo("localhost");
         assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(DiagnosticsProvider.RESOURCE_PROVIDER_NAME);
 
-        verifyOTelTracerDiagnostics(tracerProvider, cosmosDiagnostics, mockTracer);
+        verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
 
         verifyOTelTracerTransport(
-            tracerProvider, cosmosDiagnostics, mockTracer, enableRequestLevelTracing);
+            cosmosDiagnostics, mockTracer, enableRequestLevelTracing);
     }
 
-    private void verifyOTelTracerDiagnostics(DiagnosticsProvider tracerProvider,
-                                             CosmosDiagnostics cosmosDiagnostics,
-                                             TracerUnderTest mockTracer) throws JsonProcessingException {
+    private void verifyOTelTracerDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                             TracerUnderTest mockTracer) {
         ClientSideRequestStatistics clientSideRequestStatistics =
             BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
 
@@ -662,10 +613,9 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
     }
 
-    private void verifyOTelTracerTransport(DiagnosticsProvider tracerProvider,
-                                           CosmosDiagnostics cosmosDiagnostics,
+    private void verifyOTelTracerTransport(CosmosDiagnostics cosmosDiagnostics,
                                            TracerUnderTest mockTracer,
-                                           boolean enableRequestLevelTracing) throws JsonProcessingException {
+                                           boolean enableRequestLevelTracing) {
 
         assertThat(mockTracer).isNotNull();
         assertThat(mockTracer.context).isNotNull();
@@ -798,7 +748,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             attributes.put("rntbd.request_size_bytes",storeResponseDiagnostics.getRequestPayloadLength());
             attributes.put("rntbd.response_size_bytes",storeResponseDiagnostics.getResponsePayloadLength());
 
-            assertEvent(mockTracer, "rntbd.request", startTime != null ? startTime : null, attributes);
+            assertEvent(mockTracer, "rntbd.request", startTime, attributes);
         }
     }
 
@@ -968,8 +918,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
     }*/
 
-    private void verifyLegacyTracerAttributes(DiagnosticsProvider tracerProvider,
-                                              TracerUnderTest mockTracer,
+    private void verifyLegacyTracerAttributes(TracerUnderTest mockTracer,
                                               String methodName,
                                               String databaseName,
                                               CosmosDiagnostics cosmosDiagnostics,
@@ -994,19 +943,20 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         //verifying diagnostics as events
         if (forceThresholdViolation) {
-            verifyLegacyTracerDiagnostics(tracerProvider, cosmosDiagnostics, mockTracer);
+            verifyLegacyTracerDiagnostics(cosmosDiagnostics, mockTracer);
         }
     }
 
     private static void assertEvent(TracerUnderTest mockTracer, String eventName, Instant time) {
-        assertEvent(mockTracer, eventName, time, Collections.EMPTY_MAP);
+        Map<String, Object> attributes = new HashMap<>();
+        assertEvent(mockTracer, eventName, time, attributes);
     }
 
     private static void assertEvent(
-        TracerUnderTest mockTracer, String eventName, Instant time, String key, String value) {
+        TracerUnderTest mockTracer, String eventName, Instant time, String value) {
 
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put(key, value);
+        attributes.put("JSON", value);
         assertEvent(mockTracer, eventName, time, attributes);
     }
 
@@ -1056,9 +1006,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
     }
 
-    private void verifyLegacyTracerDiagnostics(DiagnosticsProvider tracerProvider,
-                                         CosmosDiagnostics cosmosDiagnostics,
-                                         TracerUnderTest mockTracer) throws JsonProcessingException {
+    private void verifyLegacyTracerDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                               TracerUnderTest mockTracer) throws JsonProcessingException {
         ClientSideRequestStatistics clientSideRequestStatistics =
             BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
         int counter = 1;
@@ -1069,13 +1018,11 @@ public class CosmosTracerTest extends TestSuiteBase {
                 mockTracer,
                 "RegionContacted",
                 clientSideRequestStatistics.getRequestStartTimeUTC(),
-                "JSON",
                 OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
             assertEvent(
                 mockTracer,
                 "ClientCfgs",
                 clientSideRequestStatistics.getRequestStartTimeUTC(),
-                "JSON",
                 OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
 
             //verifying add event call for serializationDiagnostics
@@ -1088,7 +1035,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                         mockTracer,
                         eventName,
                         serializationDiagnostics.startTimeUTC,
-                        "JSON",
                         OBJECT_MAPPER.writeValueAsString(serializationDiagnostics));
                 }
             }
@@ -1100,14 +1046,13 @@ public class CosmosTracerTest extends TestSuiteBase {
                     mockTracer,
                     eventName,
                     clientSideRequestStatistics.getRetryContext().getRetryStartTime(),
-                    "JSON",
                     OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
             }
 
             //verifying add event call for storeResponseStatistics
             for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
                 clientSideRequestStatistics.getResponseStatisticsList()) {
-                Iterator<RequestTimeline.Event> eventIterator = null;
+                Iterator<RequestTimeline.Event> eventIterator;
                 try {
                     eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 } catch (CosmosException ex) {
@@ -1129,7 +1074,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                     mockTracer,
                     eventName,
                     requestStartTime,
-                    "JSON",
                     OBJECT_MAPPER.writeValueAsString(storeResponseStatistics));
 
                 counter++;
@@ -1144,7 +1088,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                     mockTracer,
                     eventName,
                     addressResolutionStatistics.getStartTimeUTC(),
-                    "JSON",
                     OBJECT_MAPPER.writeValueAsString(addressResolutionStatistics));
 
                 counter++;
@@ -1160,7 +1103,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                     mockTracer,
                     "Query Plan Statistics",
                     feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
-                    "JSON",
                     OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
             }
 
@@ -1216,37 +1158,10 @@ public class CosmosTracerTest extends TestSuiteBase {
                 Stream<EventRecord> filteredEvents =
                     mockTracer.events.stream().filter(e -> e.name.equals(eventName));
                 assertThat(filteredEvents).hasSize(1);
+                assertThat(filteredEvents.findFirst().isPresent()).isEqualTo(true);
                 assertThat(filteredEvents.findFirst().get().attributes.get("Query Metrics"))
                     .isEqualTo(queryMetrics.getValue().toString());
             }
-        }
-    }
-
-    private class TracerProviderCapture implements Answer<Context> {
-        private Context result = Context.NONE;
-
-        public Context getResult() {
-            return result;
-        }
-
-        @Override
-        public Context answer(InvocationOnMock invocationOnMock) throws Throwable {
-            result = (Context) invocationOnMock.callRealMethod();
-            return result;
-        }
-    }
-
-    private class AddEventCapture implements Answer<Void> {
-        private Map<String, Map<String, Object>> attributesMap = new HashMap<>();
-
-        @Override
-        public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
-            attributesMap.put(invocationOnMock.getArgument(0), invocationOnMock.getArgument(1));
-            return null;
-        }
-
-        public Map<String, Map<String, Object>> getAttributesMap() {
-            return attributesMap;
         }
     }
 
@@ -1255,23 +1170,10 @@ public class CosmosTracerTest extends TestSuiteBase {
         private final OffsetDateTime timestamp;
         private final Map<String, Object> attributes;
 
-
         public EventRecord(String name, OffsetDateTime timestamp,  Map<String, Object> attributes) {
             this.name = name;
             this.timestamp = timestamp;
             this.attributes = attributes;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public OffsetDateTime getTimestamp() {
-            return this.timestamp;
-        }
-
-        public Map<String, Object> getAttributes() {
-            return this.attributes;
         }
 
         @Override
