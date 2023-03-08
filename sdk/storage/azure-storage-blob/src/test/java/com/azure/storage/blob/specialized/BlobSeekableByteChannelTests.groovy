@@ -5,7 +5,6 @@ import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse
 import com.azure.storage.blob.models.BlobDownloadHeaders
 import com.azure.storage.blob.models.BlobDownloadResponse
@@ -22,17 +21,10 @@ import java.nio.ByteBuffer
 import java.time.Duration
 
 class BlobSeekableByteChannelTests extends APISpec {
-    BlobContainerClient versionedCC
     BlobClient bc
 
     def setup() {
-        versionedCC = versionedBlobServiceClient.getBlobContainerClient(generateContainerName())
-        versionedCC.create()
-        bc = versionedCC.getBlobClient(generateBlobName())
-    }
-
-    def cleanup() {
-        versionedCC.delete()
+        bc = cc.getBlobClient(generateBlobName())
     }
 
     def "E2E channel read"() {
@@ -113,6 +105,11 @@ class BlobSeekableByteChannelTests extends APISpec {
     }
 
     def "Client creates appropriate channel readmode"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(generateContainerName())
+        versionedCC.create()
+        bc = versionedCC.getBlobClient(generateBlobName())
+
         when: "make channel in read mode"
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
