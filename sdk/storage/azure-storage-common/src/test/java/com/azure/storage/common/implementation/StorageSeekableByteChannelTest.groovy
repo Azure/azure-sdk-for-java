@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common
+package com.azure.storage.common.implementation
 
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -35,7 +36,7 @@ class StorageSeekableByteChannelTest extends Specification {
             getResourceLength() >> data.length
         }
 
-        def channel = new StorageSeekableByteChannel(chunkSize, behavior, null, 0L)
+        def channel = new StorageSeekableByteChannel(chunkSize, behavior, 0L)
         def dest = new ByteArrayOutputStream()
 
         when:
@@ -73,7 +74,7 @@ class StorageSeekableByteChannelTest extends Specification {
             }
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L)
 
         expect:
         def temp = ByteBuffer.allocate(100)
@@ -101,7 +102,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L)
 
         when:
         def temp = ByteBuffer.allocate(bufferLength * 2)
@@ -130,7 +131,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getResourceLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, behavior, null, 0L)
+        def channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L)
 
         when:
         ByteBuffer result = ByteBuffer.allocate(bufferLength)
@@ -162,7 +163,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 }
             }
         }
-        def channel = new StorageSeekableByteChannel(resourceSize, behavior, null, 0L)
+        def channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L)
 
         when: "read past resource end"
         channel.position(offset)
@@ -194,7 +195,7 @@ class StorageSeekableByteChannelTest extends Specification {
                 src.get(dest, (int)destOffset, src.remaining())
             }
         }
-        def channel = new StorageSeekableByteChannel(chunkSize, null, behavior, 0L)
+        def channel = new StorageSeekableByteChannel(chunkSize, behavior, 0L)
 
         when:
         for (int i = 0, bytesLastWritten; i < source.length; i += bytesLastWritten) {
@@ -217,10 +218,8 @@ class StorageSeekableByteChannelTest extends Specification {
     def "Write mode seek"() {
         given:
         def bufferSize = Constants.KB
-        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
-            canSeek(_) >> true
-        }
-        def channel = new StorageSeekableByteChannel(bufferSize, null, writeBehavior, 0L)
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock()
+        def channel = new StorageSeekableByteChannel(bufferSize, writeBehavior, 0L)
 
         when: "Write partial data then seek"
         channel.write(ByteBuffer.wrap(getRandomData(bufferSize - 5)))
@@ -248,9 +247,9 @@ class StorageSeekableByteChannelTest extends Specification {
     def "Write mode seek obeys behavior"() {
         given: "Channel that allows you to seek in 512 byte increments"
         StorageSeekableByteChannel.WriteBehavior writeBehavior = Mock() {
-            canSeek(_) >> { long index -> index % 512 == 0 }
+            assertCanSeek(_) >> { long index -> if (index % 512 != 0) throw new UnsupportedOperationException() }
         }
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior, 0L)
+        def channel = new StorageSeekableByteChannel(Constants.KB, writeBehavior, 0L)
 
         when: "Seek to 0"
         channel.position(0)
@@ -274,8 +273,7 @@ class StorageSeekableByteChannelTest extends Specification {
         channel.position(100)
 
         then: "failure"
-        def e = thrown(IllegalArgumentException)
-        e.message == "The backing resource does not support this position change."
+        def e = thrown(UnsupportedOperationException)
     }
 
     def "Failed behavior write can resume where left off"() {
@@ -285,7 +283,7 @@ class StorageSeekableByteChannelTest extends Specification {
             2 * write(_,0) >> { throw new RuntimeException("mock behavior interrupt") } >> { ByteBuffer src, long offset -> testWriteDest.put(src) }
             0 * write(_, _)
         }
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, writeBehavior, 0L)
+        def channel = new StorageSeekableByteChannel(Constants.KB, writeBehavior, 0L)
 
         when: "first attempt"
         def data1 = ByteBuffer.wrap(getRandomData(Constants.KB))
@@ -310,7 +308,7 @@ class StorageSeekableByteChannelTest extends Specification {
 
     def "Write mode cannot read"() {
         setup:
-        def channel = new StorageSeekableByteChannel(Constants.KB, null, Mock(StorageSeekableByteChannel.WriteBehavior), 0L)
+        def channel = new StorageSeekableByteChannel(Constants.KB, Mock(StorageSeekableByteChannel.WriteBehavior), 0L)
 
         when:
         channel.read(ByteBuffer.allocate(Constants.KB))
@@ -321,7 +319,7 @@ class StorageSeekableByteChannelTest extends Specification {
 
     def "Read mode cannot write"() {
         setup:
-        def channel = new StorageSeekableByteChannel(Constants.KB, Mock(StorageSeekableByteChannel.ReadBehavior), null, 0L)
+        def channel = new StorageSeekableByteChannel(Constants.KB, Mock(StorageSeekableByteChannel.ReadBehavior), 0L)
 
         when:
         channel.write(ByteBuffer.allocate(Constants.KB))

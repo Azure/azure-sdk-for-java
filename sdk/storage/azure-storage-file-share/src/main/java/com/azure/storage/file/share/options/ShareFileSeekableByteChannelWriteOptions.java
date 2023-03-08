@@ -71,6 +71,11 @@ public final class ShareFileSeekableByteChannelWriteOptions {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file."));
         }
+        if (fileSize != null && fileSize < 0) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'fileSize' must be a non-negative number if provided."));
+        }
+
         this.fileSize = fileSize;
         return this;
     }

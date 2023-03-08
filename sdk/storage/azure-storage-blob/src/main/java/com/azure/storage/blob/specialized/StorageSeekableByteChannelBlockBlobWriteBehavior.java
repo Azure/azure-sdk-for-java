@@ -11,8 +11,9 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteMode;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -54,7 +55,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public void write(ByteBuffer src, long destOffset) {
+    public void write(ByteBuffer src, long destOffset) throws IOException {
         String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId, BinaryData.fromByteBuffer(src));
         if (conditions != null) {
@@ -94,8 +95,9 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public boolean canSeek(long position) {
-        return false;
+    public void assertCanSeek(long position) {
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Block blob write channels support sequential write only."));
     }
 
     @Override
