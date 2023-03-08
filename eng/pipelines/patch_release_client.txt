@@ -12,7 +12,8 @@
 # Libraries listed here will not be released if a stable version for them has already been released for a given release
 # cycle by the time the the automated release process begins. So, if a library owner needs to release a bugfix,
 # performance improvement or new features, they should go ahead with their release during release week and not worry
-# about updating this list. The automated release process will happen the week after release week.
+# about updating this list. The automated release process will happen the week after release week, followed by
+# the release of the Azure SDK BOM the week after that.
 # 
 # Test owners listed here are responsible for ensuring their library works properly before and after releases and for
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
