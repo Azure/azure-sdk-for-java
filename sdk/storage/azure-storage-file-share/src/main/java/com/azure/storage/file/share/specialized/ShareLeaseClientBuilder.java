@@ -233,7 +233,7 @@ public final class ShareLeaseClientBuilder {
 
     /**
      * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
-     * This is currently required when using {@link TokenCredential}.
+     * This is currently required when using {@link TokenCredential}, and ignored for other forms of authentication.
      *
      * @param shareTokenIntent the {@link ShareTokenIntent} value.
      * @return the updated ShareLeaseClientBuilder object
