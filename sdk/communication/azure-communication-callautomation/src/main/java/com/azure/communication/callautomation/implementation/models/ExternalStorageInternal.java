@@ -14,7 +14,7 @@ public final class ExternalStorageInternal {
      * Defines the type of external storage
      */
     @JsonProperty(value = "storageType", required = true)
-    private RecordingStorageType storageType;
+    private RecordingStorageTypeInternal storageType;
 
     /*
      * Defines the blob storage location where the recording will be stored
@@ -27,7 +27,7 @@ public final class ExternalStorageInternal {
      *
      * @return the storageType value.
      */
-    public RecordingStorageType getStorageType() {
+    public RecordingStorageTypeInternal getStorageType() {
         return this.storageType;
     }
 
@@ -37,7 +37,7 @@ public final class ExternalStorageInternal {
      * @param storageType the storageType value to set.
      * @return the ExternalStorageInternal object itself.
      */
-    public ExternalStorageInternal setStorageType(RecordingStorageType storageType) {
+    public ExternalStorageInternal setStorageType(RecordingStorageTypeInternal storageType) {
         this.storageType = storageType;
         return this;
     }

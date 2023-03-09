@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.RecordingStorageType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,8 +23,8 @@ public final class BlobStorage extends ExternalStorage {
      */
 
     public BlobStorage(String containerUri) {
+        super(RecordingStorageType.BLOB_STORAGE);
         this.containerUri = containerUri;
-        this.setStorageType(RecordingStorageType.BLOB_STORAGE);
     }
 
 

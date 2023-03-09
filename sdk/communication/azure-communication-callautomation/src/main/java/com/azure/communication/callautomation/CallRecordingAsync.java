@@ -15,6 +15,7 @@ import com.azure.communication.callautomation.implementation.models.ExternalStor
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
@@ -174,7 +175,7 @@ public class CallRecordingAsync {
         }
         if (options.getExternalStorage() != null) {
             ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
-                .setStorageType(options.getExternalStorage().getStorageType());
+                .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
 
             if (options.getExternalStorage() instanceof BlobStorage) {
                 externalStorageInternal.setBlobStorage(getBlobStorageInternalFromBlobStorage((BlobStorage) options.getExternalStorage()));

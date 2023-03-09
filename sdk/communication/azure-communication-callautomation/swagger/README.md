@@ -349,3 +349,12 @@ directive:
   transform: >
     $.name = "GenderTypeInternal";
 ```
+
+### Rename RecordingStorageType to RecordingStorageTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStorageType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageTypeInternal";
+```

@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.RecordingStorageType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public abstract class ExternalStorage {
     @JsonProperty(value = "storageType")
-    private RecordingStorageType storageType;
+    private final RecordingStorageType storageType;
 
     /**
      * Get the storageType property: Defines the type of external storage.
@@ -23,13 +22,11 @@ public abstract class ExternalStorage {
     }
 
     /**
-     * Set the storageType property: Defines the type of external storage.
+     * The constructor
      *
-     * @param storageType the storageType value to set.
-     * @return the ExternalStorage object itself.
+     * @param storageType Specify the storage type kind.
      */
-    protected ExternalStorage setStorageType(RecordingStorageType storageType) {
+    ExternalStorage(RecordingStorageType storageType) {
         this.storageType = storageType;
-        return this;
     }
 }

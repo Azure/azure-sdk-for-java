@@ -163,7 +163,7 @@ public class StartRecordingOptions {
      *
      * @return the externalStorage value.
      */
-    public ExternalStorage getExternalStorage(){
+    public ExternalStorage getExternalStorage() {
         return this.externalStorage;
     }
 
@@ -173,7 +173,7 @@ public class StartRecordingOptions {
      * @param externalStorage the external storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage){
+    public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage) {
         this.externalStorage = externalStorage;
         return this;
     }
