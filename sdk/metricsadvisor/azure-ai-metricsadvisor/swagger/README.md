@@ -408,7 +408,7 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    $["/{nextLink}?listMetricFeedbacksNext"] = {
+    $["{nextLink}?listMetricFeedbacksNext"] = {
       "post": {
         "tags": [
           "Feedback"

@@ -745,15 +745,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     private List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
-            return ingestionStatusList
-                .stream()
-                .map(ingestionStatus -> {
-                    DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
-                    DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
-                    DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
-                    DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
-                    return dataFeedIngestionStatus;
-                }).collect(Collectors.toList());
+        return ingestionStatusList
+            .stream()
+            .map(ingestionStatus -> {
+                DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
+                DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
+                DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
+                DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
+                return dataFeedIngestionStatus;
+            })
+            .collect(Collectors.toList());
     }
 
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(

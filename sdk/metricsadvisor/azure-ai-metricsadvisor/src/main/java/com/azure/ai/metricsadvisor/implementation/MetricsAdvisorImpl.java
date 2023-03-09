@@ -675,7 +675,7 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedbackList>> listMetricFeedbacksNext(

@@ -8,7 +8,6 @@ import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionStatusHe
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The DataFeedIngestionStatus model. */
 @Immutable
