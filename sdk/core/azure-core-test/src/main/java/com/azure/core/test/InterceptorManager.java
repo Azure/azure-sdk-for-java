@@ -444,10 +444,14 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (testMode != TestMode.PLAYBACK) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
         } else {
