@@ -230,6 +230,7 @@ public class BlockBlobClient extends BlobClientBase {
      * @param options {@link BlobSeekableByteChannelReadOptions}
      * @return A <code>SeekableByteChannel</code> object that represents the channel to use for writing to the blob.
      * @throws BlobStorageException If a storage service error occurred.
+     * @throws NullPointerException if 'options' is null.
      */
     public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options) {
         Objects.requireNonNull(options);
