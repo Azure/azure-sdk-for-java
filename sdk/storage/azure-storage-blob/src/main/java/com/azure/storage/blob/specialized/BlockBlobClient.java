@@ -239,8 +239,7 @@ public class BlockBlobClient extends BlobClientBase {
         long startingPosition = 0L;
         if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
             internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
-        }
-        else {
+        } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Unsupported value for `options.getWriteMode()`."));
         }
