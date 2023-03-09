@@ -301,6 +301,9 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {
+            if (isLiveMode()) {
+                throw new RuntimeException("A playback client cannot be requested in LIVE mode.");
+            }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
@@ -347,6 +350,9 @@ public class InterceptorManager implements AutoCloseable {
 
     private HttpPipelinePolicy getProxyRecordingPolicy() {
         if (testProxyRecordPolicy == null) {
+            if (isLiveMode()) {
+                throw new RuntimeException("A recording policy cannot be requested in LIVE mode.");
+            }
             testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
             testProxyRecordPolicy.startRecording(playbackRecordName);
         }

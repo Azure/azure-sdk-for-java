@@ -142,6 +142,8 @@ public abstract class TestBase implements BeforeEachCallback {
             localTestMode = TestMode.RECORD;
         } else if (testInfo.getTags().contains("Playback")) {
             localTestMode = TestMode.PLAYBACK;
+        } else if (testInfo.getTags().contains("Live")) {
+            localTestMode = TestMode.LIVE;
         }
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled());
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
