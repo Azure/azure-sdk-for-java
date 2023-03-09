@@ -58,7 +58,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
-public final class BlockBlobClient extends BlobClientBase {
+public class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
     private final BlockBlobAsyncClient client;

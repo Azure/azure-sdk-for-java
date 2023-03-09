@@ -1409,16 +1409,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Dynamic classification
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassifyBatch(Iterable, String, Iterable, DynamicClassifyOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassifyBatch(Iterable, Iterable, String, DynamicClassifyOptions)}
      */
     public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
+        // BEGIN: AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
         List<String> documents = new ArrayList<>();
         documents.add("The WHO is issuing a warning about Monkey Pox.");
         documents.add("Mo Salah plays in Liverpool FC in England.");
         DynamicClassifyOptions options = new DynamicClassifyOptions();
-        textAnalyticsAsyncClient.dynamicClassifyBatch(documents,  "en",
-            Arrays.asList("Health", "Politics", "Music", "Sport"), options)
+        textAnalyticsAsyncClient.dynamicClassifyBatch(documents,
+            Arrays.asList("Health", "Politics", "Music", "Sport"), "en", options)
             .subscribe(
                 resultCollection -> resultCollection.forEach(documentResult -> {
                     System.out.println("Document ID: " + documentResult.getId());
@@ -1429,7 +1429,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 }),
                 error -> System.err.println("There was an error analyzing dynamic classification of the documents. " + error),
                 () -> System.out.println("End of analyzing dynamic classification."));
-        // END: AsyncClient.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
+        // END: AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
     }
 
     /**
@@ -1547,7 +1547,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setMaxSentenceCount(4);
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, "en", options)
             .flatMap(result -> {
                 AbstractSummaryOperationDetail operationDetail = result.getValue();
@@ -1601,7 +1601,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setMaxSentenceCount(4);
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, options)
             .flatMap(result -> {
                 AbstractSummaryOperationDetail operationDetail = result.getValue();

@@ -976,6 +976,16 @@
         "Dspotbugs",
         "Pdev"
       ]
+    },
+    {
+      "filename": "sdk/purview/azure-analytics-purview-sharing/**",
+      "words": [
+        "ADLS",
+        "Adls"
+      ],
+      "ignoreRegExpList": [
+        "/\/\/\\s*(BEGIN:|END:).*/"
+      ]
     }
   ],
   "allowCompoundWords": true

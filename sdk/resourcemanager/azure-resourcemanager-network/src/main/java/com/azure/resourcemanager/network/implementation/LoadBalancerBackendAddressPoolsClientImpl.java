@@ -177,7 +177,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -238,7 +238,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -368,7 +368,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -426,7 +426,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -542,7 +542,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -611,7 +611,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -709,7 +709,8 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         String loadBalancerName,
         String backendAddressPoolName,
         BackendAddressPoolInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, parameters)
             .getSyncPoller();
     }
 
@@ -733,8 +734,8 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         String backendAddressPoolName,
         BackendAddressPoolInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, loadBalancerName, backendAddressPoolName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, parameters, context)
             .getSyncPoller();
     }
 
@@ -871,7 +872,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +930,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1003,7 +1004,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
-        return beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).getSyncPoller();
     }
 
     /**
@@ -1021,7 +1022,9 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context)
+            .getSyncPoller();
     }
 
     /**

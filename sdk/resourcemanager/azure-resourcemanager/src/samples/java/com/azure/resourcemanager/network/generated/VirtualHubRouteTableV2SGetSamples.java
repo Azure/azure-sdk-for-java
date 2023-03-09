@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualHubRouteTableV2S Get. */
 public final class VirtualHubRouteTableV2SGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualHubRouteTableV2Get.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubRouteTableV2Get.json
      */
     /**
      * Sample code: VirtualHubVirtualHubRouteTableV2Get.
@@ -22,6 +20,6 @@ public final class VirtualHubRouteTableV2SGetSamples {
             .manager()
             .serviceClient()
             .getVirtualHubRouteTableV2S()
-            .getWithResponse("rg1", "virtualHub1", "virtualHubRouteTable1a", Context.NONE);
+            .getWithResponse("rg1", "virtualHub1", "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
     }
 }

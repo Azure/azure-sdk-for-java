@@ -3843,6 +3843,7 @@
             }
           }
         ]
+      }          
     },
     {
       "taskType": "trigger",

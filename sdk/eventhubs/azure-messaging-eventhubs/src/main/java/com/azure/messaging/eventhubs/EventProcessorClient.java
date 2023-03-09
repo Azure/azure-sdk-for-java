@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -74,7 +75,6 @@ public class EventProcessorClient {
      * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
      * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
      * @param loadBalancingStrategy The load balancing strategy to use.
-     * @param tracer Tracer instance.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
@@ -195,7 +195,6 @@ public class EventProcessorClient {
 
     private void stopProcessing() {
         partitionPumpManager.stopAllPartitionPumps();
-
         // finally, remove ownerid from checkpointstore as the processor is shutting down
         checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
             .filter(ownership -> identifier.equals(ownership.getOwnerId()))

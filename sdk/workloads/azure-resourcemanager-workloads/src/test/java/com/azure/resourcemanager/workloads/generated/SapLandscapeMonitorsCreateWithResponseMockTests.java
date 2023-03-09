@@ -33,7 +33,7 @@ public final class SapLandscapeMonitorsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[]},\"id\":\"p\",\"name\":\"ilkmk\",\"type\":\"holvdn\"}";
+            "{\"properties\":{\"provisioningState\":\"Created\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[]},\"id\":\"xgpnr\",\"name\":\"govfgpikqmhhaow\",\"type\":\"rmzvupo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,8 +65,8 @@ public final class SapLandscapeMonitorsCreateWithResponseMockTests {
             manager
                 .sapLandscapeMonitors()
                 .createWithResponse(
-                    "kmqp",
-                    "o",
+                    "yxrxmunj",
+                    "xvglnkvxlxp",
                     new SapLandscapeMonitorInner()
                         .withGrouping(
                             new SapLandscapeMonitorPropertiesGrouping()

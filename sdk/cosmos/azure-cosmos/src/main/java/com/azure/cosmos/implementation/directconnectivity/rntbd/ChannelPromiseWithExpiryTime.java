@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 class ChannelPromiseWithExpiryTime implements Promise<Channel> {
     private final Promise<Channel> channelPromise;
     private final long expiryTimeInNanos;
-    private final RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private final RntbdRequestRecord requestRecord;
 
     public ChannelPromiseWithExpiryTime(Promise<Channel> channelPromise, long expiryTimeInNanos) {
         this(channelPromise, expiryTimeInNanos, null);
@@ -26,13 +26,13 @@ class ChannelPromiseWithExpiryTime implements Promise<Channel> {
     public ChannelPromiseWithExpiryTime(
         Promise<Channel> channelPromise,
         long expiryTimeInNanos,
-        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        RntbdRequestRecord requestRecord) {
         checkNotNull(channelPromise, "channelPromise must not be null");
         checkNotNull(expiryTimeInNanos, "expiryTimeInNanos must not be null");
 
         this.channelPromise = channelPromise;
         this.expiryTimeInNanos = expiryTimeInNanos;
-        this.channelAcquisitionTimeline = channelAcquisitionTimeline;
+        this.requestRecord = requestRecord;
     }
 
     public long getExpiryTimeInNanos() {
@@ -182,7 +182,11 @@ class ChannelPromiseWithExpiryTime implements Promise<Channel> {
         return this.channelPromise.syncUninterruptibly();
     }
 
+    public RntbdRequestRecord getRntbdRequestRecord() {
+        return this.requestRecord;
+    }
+
     public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
-        return this.channelAcquisitionTimeline;
+       return this.requestRecord == null ? null : this.requestRecord.getChannelAcquisitionTimeline();
     }
 }

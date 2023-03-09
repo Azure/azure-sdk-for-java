@@ -1429,22 +1429,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
 
     void abstractSummaryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
-        Integer maxSentenceCount) {
+        Integer sentenceCount) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
                 .setAbstractSummaryActions(
-                    new AbstractSummaryAction().setMaxSentenceCount(maxSentenceCount)));
+                    new AbstractSummaryAction().setSentenceCount(sentenceCount)));
     }
 
     void abstractSummaryRunner(BiConsumer<List<String>, AbstractSummaryOptions> testRunner,
-        Integer maxSentenceCount) {
-        testRunner.accept(SUMMARY_INPUTS, new AbstractSummaryOptions().setMaxSentenceCount(maxSentenceCount));
+        Integer sentenceCount) {
+        testRunner.accept(SUMMARY_INPUTS, new AbstractSummaryOptions().setSentenceCount(sentenceCount));
     }
 
     void abstractSummaryMaxOverloadRunner(BiConsumer<List<TextDocumentInput>, AbstractSummaryOptions> testRunner,
-        Integer maxSentenceCount) {
+        Integer sentenceCount) {
         testRunner.accept(TestUtils.getTextDocumentInputs(SUMMARY_INPUTS),
-            new AbstractSummaryOptions().setMaxSentenceCount(maxSentenceCount));
+            new AbstractSummaryOptions().setSentenceCount(sentenceCount));
     }
 
     // Dynamic classification
@@ -1950,7 +1950,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
         AnalyzeHealthcareEntitiesResult actual) {
         if (expected.getFhirBundle() != null) {
-            assertTrue(actual.getFhirBundle() != null);
+            assertTrue(actual.getFhirBundle() != null && actual.getFhirBundle().size() != 0);
         } else {
             assertNull(actual.getFhirBundle());
         }

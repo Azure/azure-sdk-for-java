@@ -1,15 +1,38 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.3 (2023-03-08)
 
 ### Features Added
+- Added support for blob upload and download from streams for content that does not fit into memory.
+- Added support to upload and download custom manifest types.
+- Added support ACR access token scopes.
 
-### Breaking Changes
-
-### Bugs Fixed
+### Breaking Changes from version 1.1.0-beta.2
+- Download blob changes:
+  - `ContainerRegistryBlobClient.downloadBlob` method was renamed to `downloadStream` and now writes content to channel provided in parameters. It no longer returns `DownloadBlobResult`.
+  - `ContainerRegistryBlobAsyncClient.downloadBlob` method was renamed to `downloadStream` and now returns `DownloadBlobAsyncResult`.
+  - `downloadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes were removed.
+- Upload blob changes:
+  - `uploadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were removed.
+- Manifest changes:
+  - `DownloadManifestOptions` class was removed: `downloadManifest` and `downloadManifestWithResponse` methods
+    (on `ContainerRegistryBlobAsyncClient` or `ContainerRegistryBlobClient`) now take tag or digest string value instead of `DownloadManifestOptions`
+  - `DownloadManifestResult.getManifestStream` and `getManifest` methods were renamed to `getContent` and `asOciManifest`.
+  - `OciBlobDescriptor` class was renamed to `OciDescriptor`, `getSize` and `setSize` methods on it were renamed to `getSizeInBytes` and `setSizeInBytes`
+  - `OciManifest` class was renamed to `OciImageManifest`
+  - `UploadManifestOptions(binaryData)` constructor was replaced with `UploadManifestOptions(BinaryData, ManifestMediaType)` one.
+  - `UploadManifestResult(string)` constructor was removed.
+- Misc
+  - Default audience was changed from `https://management.azure.com` to `https://containerregistry.azure.net`.
 
 ### Other Changes
 - `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
+- Default constructors on following classes were deprecated: `ArtifactManifestPlatform`, `ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`., `ArtifactManifestPlatform`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.37.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.1`.
 
 ## 1.0.12 (2023-02-16)
 

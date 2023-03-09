@@ -583,20 +583,12 @@ public final class BlobServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTags(options, null);
+            return findBlobsByTags(options, null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
-    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
-        throwOnAnonymousAccess();
-        StorageImplUtils.assertNotNull("options", options);
-        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
-            (marker, pageSize) -> withContext(context -> this.findBlobsByTags(
-                new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize), marker, timeout, context));
-        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
-    }
 
     PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();

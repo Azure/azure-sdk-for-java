@@ -14,32 +14,32 @@ public final class ThreeTierRecommendationResultTests {
         ThreeTierRecommendationResult model =
             BinaryData
                 .fromString(
-                    "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"mqg\",\"databaseInstanceCount\":7776859938318021776,\"centralServerVmSku\":\"zikywgg\",\"centralServerInstanceCount\":6691582601566919644,\"applicationServerVmSku\":\"atmelwui\",\"applicationServerInstanceCount\":2386844510824622616}")
+                    "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ocrkvcikh\",\"databaseInstanceCount\":191719140386438255,\"centralServerVmSku\":\"qgxqquezikyw\",\"centralServerInstanceCount\":5773769686889892375,\"applicationServerVmSku\":\"lla\",\"applicationServerInstanceCount\":8033658748454090244}")
                 .toObject(ThreeTierRecommendationResult.class);
-        Assertions.assertEquals("mqg", model.dbVmSku());
-        Assertions.assertEquals(7776859938318021776L, model.databaseInstanceCount());
-        Assertions.assertEquals("zikywgg", model.centralServerVmSku());
-        Assertions.assertEquals(6691582601566919644L, model.centralServerInstanceCount());
-        Assertions.assertEquals("atmelwui", model.applicationServerVmSku());
-        Assertions.assertEquals(2386844510824622616L, model.applicationServerInstanceCount());
+        Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
+        Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());
+        Assertions.assertEquals("qgxqquezikyw", model.centralServerVmSku());
+        Assertions.assertEquals(5773769686889892375L, model.centralServerInstanceCount());
+        Assertions.assertEquals("lla", model.applicationServerVmSku());
+        Assertions.assertEquals(8033658748454090244L, model.applicationServerInstanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreeTierRecommendationResult model =
             new ThreeTierRecommendationResult()
-                .withDbVmSku("mqg")
-                .withDatabaseInstanceCount(7776859938318021776L)
-                .withCentralServerVmSku("zikywgg")
-                .withCentralServerInstanceCount(6691582601566919644L)
-                .withApplicationServerVmSku("atmelwui")
-                .withApplicationServerInstanceCount(2386844510824622616L);
+                .withDbVmSku("ocrkvcikh")
+                .withDatabaseInstanceCount(191719140386438255L)
+                .withCentralServerVmSku("qgxqquezikyw")
+                .withCentralServerInstanceCount(5773769686889892375L)
+                .withApplicationServerVmSku("lla")
+                .withApplicationServerInstanceCount(8033658748454090244L);
         model = BinaryData.fromObject(model).toObject(ThreeTierRecommendationResult.class);
-        Assertions.assertEquals("mqg", model.dbVmSku());
-        Assertions.assertEquals(7776859938318021776L, model.databaseInstanceCount());
-        Assertions.assertEquals("zikywgg", model.centralServerVmSku());
-        Assertions.assertEquals(6691582601566919644L, model.centralServerInstanceCount());
-        Assertions.assertEquals("atmelwui", model.applicationServerVmSku());
-        Assertions.assertEquals(2386844510824622616L, model.applicationServerInstanceCount());
+        Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
+        Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());
+        Assertions.assertEquals("qgxqquezikyw", model.centralServerVmSku());
+        Assertions.assertEquals(5773769686889892375L, model.centralServerInstanceCount());
+        Assertions.assertEquals("lla", model.applicationServerVmSku());
+        Assertions.assertEquals(8033658748454090244L, model.applicationServerInstanceCount());
     }
 }

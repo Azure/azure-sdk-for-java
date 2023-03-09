@@ -14,13 +14,12 @@ public final class ImageReferenceTests {
         ImageReference model =
             BinaryData
                 .fromString(
-                    "{\"publisher\":\"iysui\",\"offer\":\"ynkedyatrwyhqmib\",\"sku\":\"hwit\",\"version\":\"ypyynpcdpumnzg\",\"exactVersion\":\"z\",\"sharedGalleryImageId\":\"abikns\"}")
+                    "{\"publisher\":\"iysui\",\"offer\":\"ynkedyatrwyhqmib\",\"sku\":\"hwit\",\"version\":\"ypyynpcdpumnzg\"}")
                 .toObject(ImageReference.class);
         Assertions.assertEquals("iysui", model.publisher());
         Assertions.assertEquals("ynkedyatrwyhqmib", model.offer());
         Assertions.assertEquals("hwit", model.sku());
         Assertions.assertEquals("ypyynpcdpumnzg", model.version());
-        Assertions.assertEquals("abikns", model.sharedGalleryImageId());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +29,11 @@ public final class ImageReferenceTests {
                 .withPublisher("iysui")
                 .withOffer("ynkedyatrwyhqmib")
                 .withSku("hwit")
-                .withVersion("ypyynpcdpumnzg")
-                .withSharedGalleryImageId("abikns");
+                .withVersion("ypyynpcdpumnzg");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
         Assertions.assertEquals("iysui", model.publisher());
         Assertions.assertEquals("ynkedyatrwyhqmib", model.offer());
         Assertions.assertEquals("hwit", model.sku());
         Assertions.assertEquals("ypyynpcdpumnzg", model.version());
-        Assertions.assertEquals("abikns", model.sharedGalleryImageId());
     }
 }

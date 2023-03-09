@@ -42,20 +42,6 @@ public final class ImageReference {
     @JsonProperty(value = "version")
     private String version;
 
-    /*
-     * Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
-     * machine. This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'.
-     */
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String exactVersion;
-
-    /*
-     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image
-     * GET call.
-     */
-    @JsonProperty(value = "sharedGalleryImageId")
-    private String sharedGalleryImageId;
-
     /** Creates an instance of ImageReference class. */
     public ImageReference() {
     }
@@ -145,39 +131,6 @@ public final class ImageReference {
      */
     public ImageReference withVersion(String version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Get the exactVersion property: Specifies in decimal numbers, the version of platform image or marketplace image
-     * used to create the virtual machine. This readonly field differs from 'version', only if the value specified in
-     * 'version' field is 'latest'.
-     *
-     * @return the exactVersion value.
-     */
-    public String exactVersion() {
-        return this.exactVersion;
-    }
-
-    /**
-     * Get the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
-     * be fetched from shared gallery image GET call.
-     *
-     * @return the sharedGalleryImageId value.
-     */
-    public String sharedGalleryImageId() {
-        return this.sharedGalleryImageId;
-    }
-
-    /**
-     * Set the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
-     * be fetched from shared gallery image GET call.
-     *
-     * @param sharedGalleryImageId the sharedGalleryImageId value to set.
-     * @return the ImageReference object itself.
-     */
-    public ImageReference withSharedGalleryImageId(String sharedGalleryImageId) {
-        this.sharedGalleryImageId = sharedGalleryImageId;
         return this;
     }
 

@@ -34,6 +34,7 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     private Long fileSize;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode fileLastWrittenMode;
+    private Long chunkSize;
 
     /**
      * Options constructor.
@@ -70,7 +71,28 @@ public final class ShareFileSeekableByteChannelWriteOptions {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file."));
         }
+        if (fileSize != null && fileSize < 0) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'fileSize' must be a non-negative number if provided."));
+        }
+
         this.fileSize = fileSize;
+        return this;
+    }
+
+    /**
+     * @return The size of individual writes to the service.
+     */
+    public Long getChunkSize() {
+        return chunkSize;
+    }
+
+    /**
+     * @param chunkSize The size of individual writes to the service.
+     * @return The updated instance.
+     */
+    public ShareFileSeekableByteChannelWriteOptions setChunkSize(Long chunkSize) {
+        this.chunkSize = chunkSize;
         return this;
     }
 

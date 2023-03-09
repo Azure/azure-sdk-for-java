@@ -9,13 +9,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Gets or sets the file share configuration for file share created with the VIS case. */
+/**
+ * Gets or sets the file share configuration where the transport directory fileshare is created and mounted as a part of
+ * the create infra flow. Please pre-create the resource group you intend to place the transport directory in. The
+ * storage account and fileshare will be auto-created by the ACSS and doesn’t need to pre-created.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
 @JsonTypeName("CreateAndMount")
 @Fluent
 public final class CreateAndMountFileShareConfiguration extends FileShareConfiguration {
     /*
-     * The name of file share resource group. The app rg is used in case of missing input.
+     * The name of transport file share resource group. This should be pre created by the customer. The app rg is used
+     * in case of missing input.
      */
     @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
@@ -31,8 +36,8 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     }
 
     /**
-     * Get the resourceGroup property: The name of file share resource group. The app rg is used in case of missing
-     * input.
+     * Get the resourceGroup property: The name of transport file share resource group. This should be pre created by
+     * the customer. The app rg is used in case of missing input.
      *
      * @return the resourceGroup value.
      */
@@ -41,8 +46,8 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     }
 
     /**
-     * Set the resourceGroup property: The name of file share resource group. The app rg is used in case of missing
-     * input.
+     * Set the resourceGroup property: The name of transport file share resource group. This should be pre created by
+     * the customer. The app rg is used in case of missing input.
      *
      * @param resourceGroup the resourceGroup value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.

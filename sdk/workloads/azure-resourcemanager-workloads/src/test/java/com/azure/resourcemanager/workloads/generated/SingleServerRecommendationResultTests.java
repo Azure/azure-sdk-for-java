@@ -13,15 +13,15 @@ public final class SingleServerRecommendationResultTests {
     public void testDeserialize() throws Exception {
         SingleServerRecommendationResult model =
             BinaryData
-                .fromString("{\"deploymentType\":\"SingleServer\",\"vmSku\":\"crkvcikhnv\"}")
+                .fromString("{\"deploymentType\":\"SingleServer\",\"vmSku\":\"syocogjltdtbnnha\"}")
                 .toObject(SingleServerRecommendationResult.class);
-        Assertions.assertEquals("crkvcikhnv", model.vmSku());
+        Assertions.assertEquals("syocogjltdtbnnha", model.vmSku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SingleServerRecommendationResult model = new SingleServerRecommendationResult().withVmSku("crkvcikhnv");
+        SingleServerRecommendationResult model = new SingleServerRecommendationResult().withVmSku("syocogjltdtbnnha");
         model = BinaryData.fromObject(model).toObject(SingleServerRecommendationResult.class);
-        Assertions.assertEquals("crkvcikhnv", model.vmSku());
+        Assertions.assertEquals("syocogjltdtbnnha", model.vmSku());
     }
 }

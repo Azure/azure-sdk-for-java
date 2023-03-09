@@ -1340,10 +1340,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Dynamic classification
     /**
-     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatch(Iterable, String, Iterable, DynamicClassifyOptions)}
+     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatch(Iterable, Iterable, String, DynamicClassifyOptions)}
      */
     public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: Client.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
+        // BEGIN: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
         List<String> documents = new ArrayList<>();
         documents.add("The WHO is issuing a warning about Monkey Pox.");
         documents.add("Mo Salah plays in Liverpool FC in England.");
@@ -1351,7 +1351,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Analyzing dynamic classification
         DynamicClassifyDocumentResultCollection resultCollection = textAnalyticsClient.dynamicClassifyBatch(
-            documents, "en", Arrays.asList("Health", "Politics", "Music", "Sport"), options);
+            documents, Arrays.asList("Health", "Politics", "Music", "Sport"), "en", options);
 
         // Result of dynamic classification
         resultCollection.forEach(documentResult -> {
@@ -1361,7 +1361,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     classification.getCategory(), classification.getConfidenceScore());
             }
         });
-        // END: Client.dynamicClassifyBatch#Iterable-String-Iterable-DynamicClassifyOptions
+        // END: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
     }
 
     /**
@@ -1474,7 +1474,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents, "en",
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3));
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractSummaryResult documentResult : resultCollection) {
@@ -1520,7 +1520,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents,
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3),
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {

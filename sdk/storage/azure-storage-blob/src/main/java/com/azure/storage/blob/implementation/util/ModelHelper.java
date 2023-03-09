@@ -26,6 +26,7 @@ import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -449,6 +450,12 @@ public final class ModelHelper {
     }
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BlobPropertiesConstructorProxy.create(
+                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+    }
+
+    public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             BlobPropertiesConstructorProxy.create(
                 new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));

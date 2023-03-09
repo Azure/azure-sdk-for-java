@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -15,8 +16,8 @@ import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -89,6 +90,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final int maxConcurrentRequests;
 
     private final RntbdConnectionStateListener connectionStateListener;
+    private final URI serviceEndpoint;
+    private String lastFaultInjectionRuleId;
+    private Instant lastFaultInjectionTimestamp;
 
     // endregion
 
@@ -100,9 +104,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
         final URI physicalAddress,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdServerErrorInjector faultInjectionInterceptors,
+        final URI serviceEndpoint) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
+        this.serviceEndpoint = serviceEndpoint;
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
@@ -131,7 +138,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this) : null;
 
-        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
+        this.channelPool =
+            new RntbdClientChannelPool(
+                this,
+                bootstrap,
+                config,
+                clientTelemetry,
+                this.connectionStateListener,
+                faultInjectionInterceptors);
 
         if (clientTelemetry != null &&
             clientTelemetry.isClientMetricsEnabled() &&
@@ -305,6 +319,23 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return this.channelPool.usedHeapMemory();
     }
 
+    @Override
+    public URI serviceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    @Override
+    public void injectConnectionErrors(
+        String faultInjectionRuleId,
+        double threshold,
+        Class<?> eventType) {
+
+        this.lastFaultInjectionRuleId = faultInjectionRuleId;
+        this.lastFaultInjectionTimestamp = Instant.now();
+
+        this.channelPool.injectConnectionErrors(threshold, eventType);
+    }
+
     // endregion
 
     // region Methods
@@ -435,7 +466,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .createdTime(this.createdTime)
             .lastRequestNanoTime(this.lastRequestNanoTime())
             .closed(this.closed.get())
-            .inflightRequests(concurrentRequestSnapshot);
+            .inflightRequests(concurrentRequestSnapshot)
+            .lastFaultInjectionId(this.lastFaultInjectionRuleId)
+            .lastFaultInjectionTimestamp(this.lastFaultInjectionTimestamp);
 
         if (this.connectionStateListener != null) {
             stats.connectionStateListenerMetrics(this.connectionStateListener.getMetrics());
@@ -596,13 +629,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdTransportClient transportClient;
         private final IAddressResolver addressResolver;
         private final ClientTelemetry clientTelemetry;
+        private final RntbdServerErrorInjector serverErrorInjector;
 
         public Provider(
             final RntbdTransportClient transportClient,
             final Options options,
             final SslContext sslContext,
             final IAddressResolver addressResolver,
-            final ClientTelemetry clientTelemetry) {
+            final ClientTelemetry clientTelemetry,
+            final RntbdServerErrorInjector serverErrorInjector) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -629,6 +664,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
+            this.serverErrorInjector = serverErrorInjector;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
         }
@@ -691,14 +727,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public RntbdEndpoint get(final URI physicalAddress) {
+        public RntbdEndpoint createIfAbsent(final URI serviceEndpoint, final URI physicalAddress) {
             return endpoints.computeIfAbsent(physicalAddress.getAuthority(), authority -> new RntbdServiceEndpoint(
                 this,
                 this.config,
                 this.eventLoopGroup,
                 this.requestTimer,
                 physicalAddress,
-                this.clientTelemetry));
+                this.clientTelemetry,
+                this.serverErrorInjector,
+                serviceEndpoint));
+        }
+
+        @Override
+        public RntbdEndpoint get(URI physicalAddress) {
+            return endpoints.get(physicalAddress.getAuthority());
         }
 
         @Override
