@@ -1,54 +1,201 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5c40c5d8-1753-427b-95e3-2b15fa690706",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "881",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:59 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "39ec73cc-c7e1-4060-8728-35fa2895cbdc"
+      },
+      "RequestBody": {
+        "name": "image-analysis-key-phrase-skillset80428f716",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.ImageAnalysisSkill",
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url"
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "description",
+                "targetName": "mydescription"
+              }
+            ],
+            "name": "myimage",
+            "description": "Tested image analysis skill",
+            "context": "/document",
+            "defaultLanguageCode": "en",
+            "visualFeatures": [
+              "brands",
+              "objects",
+              "description",
+              "categories",
+              "adult",
+              "faces",
+              "tags"
+            ],
+            "details": [
+              "celebrities",
+              "landmarks"
+            ]
+          },
+          {
+            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mydescription/*/Tags/*"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "keyPhrases",
+                "targetName": "myKeyPhrases"
+              }
+            ],
+            "name": "mykeyphrases",
+            "description": "Tested Key Phrase skill",
+            "context": "/document",
+            "defaultLanguageCode": "en"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "39ec73cc-c7e1-4060-8728-35fa2895cbdc",
+        "Content-Length": "1232",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:58 GMT",
+        "elapsed-time": "65",
+        "ETag": "W/\u00220x8DB20DB8445D40D\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027image-analysis-key-phrase-skillset80428f716\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "39ec73cc-c7e1-4060-8728-35fa2895cbdc",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "39ec73cc-c7e1-4060-8728-35fa2895cbdc"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB8445D40D\u0022",
+        "name": "image-analysis-key-phrase-skillset80428f716",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.ImageAnalysisSkill",
+            "name": "myimage",
+            "description": "Tested image analysis skill",
+            "context": "/document",
+            "defaultLanguageCode": "en",
+            "visualFeatures": [
+              "brands",
+              "objects",
+              "description",
+              "categories",
+              "adult",
+              "faces",
+              "tags"
+            ],
+            "details": [
+              "celebrities",
+              "landmarks"
+            ],
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "description",
+                "targetName": "mydescription"
+              }
+            ]
+          },
+          {
+            "@odata.type": "#Microsoft.Skills.Text.KeyPhraseExtractionSkill",
+            "name": "mykeyphrases",
+            "description": "Tested Key Phrase skill",
+            "context": "/document",
+            "defaultLanguageCode": "en",
+            "maxKeyPhraseCount": null,
+            "modelVersion": null,
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mydescription/*/Tags/*",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "keyPhrases",
+                "targetName": "myKeyPhrases"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "5c40c5d8-1753-427b-95e3-2b15fa690706",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:23 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "5c40c5d8-1753-427b-95e3-2b15fa690706",
-      "ETag" : "W/\"0x8DAF8CBE55DBD4D\"",
-      "elapsed-time" : "51",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "1220",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBE55DBD4D\\\"\",\"name\":\"image-analysis-key-phrase-skillset5547838f1\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"brands\",\"objects\",\"description\",\"categories\",\"adult\",\"faces\",\"tags\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"modelVersion\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "5c40c5d8-1753-427b-95e3-2b15fa690706",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('image-analysis-key-phrase-skillset5547838f1')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('image-analysis-key-phrase-skillset5547838f1')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5787cfe5-03d9-4f90-9ce0-0eaf78111189"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "5787cfe5-03d9-4f90-9ce0-0eaf78111189",
-      "elapsed-time" : "29",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "5787cfe5-03d9-4f90-9ce0-0eaf78111189",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:23 GMT",
-      "x-ms-client-request-id" : "5787cfe5-03d9-4f90-9ce0-0eaf78111189"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "image-analysis-key-phrase-skillset5547838f1" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027image-analysis-key-phrase-skillset80428f716\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:19:00 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9fa4c174-a41f-4911-bdd8-2d15b3ee3ac3"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9fa4c174-a41f-4911-bdd8-2d15b3ee3ac3",
+        "Date": "Thu, 09 Mar 2023 20:18:58 GMT",
+        "elapsed-time": "46",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "9fa4c174-a41f-4911-bdd8-2d15b3ee3ac3",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9fa4c174-a41f-4911-bdd8-2d15b3ee3ac3"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "image-analysis-key-phrase-skillset80428f716"
+  }
 }

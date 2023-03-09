@@ -1,31 +1,50 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-books-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "458f0283-ea26-4efe-a265-d6cd8682d82e",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "458f0283-ea26-4efe-a265-d6cd8682d82e",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:29:37 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "458f0283-ea26-4efe-a265-d6cd8682d82e",
-      "elapsed-time" : "31",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "118",
-      "Body" : "{\"value\":[{\"@search.text\":\"War and Peace\",\"ISBN\":\"456\",\"Title\":\"War and Peace\",\"PublishDate\":\"2015-08-18T00:00:00Z\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "458f0283-ea26-4efe-a265-d6cd8682d82e",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-suggest-shared-books-instance\u0027)/docs/search.post.suggest?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "71",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:02:14 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "3bcb9c64-8d2c-4a40-9075-c8f7ac493911"
+      },
+      "RequestBody": {
+        "search": "War",
+        "suggesterName": "sg",
+        "select": "ISBN,Title,PublishDate"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "3bcb9c64-8d2c-4a40-9075-c8f7ac493911",
+        "Content-Length": "118",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:02:13 GMT",
+        "elapsed-time": "36",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "3bcb9c64-8d2c-4a40-9075-c8f7ac493911",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "3bcb9c64-8d2c-4a40-9075-c8f7ac493911"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "@search.text": "War and Peace",
+            "ISBN": "456",
+            "Title": "War and Peace",
+            "PublishDate": "2015-08-18T00:00:00Z"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

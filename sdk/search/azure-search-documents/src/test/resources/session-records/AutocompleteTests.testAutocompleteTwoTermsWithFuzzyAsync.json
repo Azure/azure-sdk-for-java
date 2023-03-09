@@ -1,31 +1,57 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c16b72d4-0ddd-470b-9798-e6a3e4ef2dd7",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "c16b72d4-0ddd-470b-9798-e6a3e4ef2dd7",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:13 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "c16b72d4-0ddd-470b-9798-e6a3e4ef2dd7",
-      "elapsed-time" : "15",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "188",
-      "Body" : "{\"value\":[{\"text\":\"model suites\",\"queryPlusText\":\"model suites\"},{\"text\":\"modern architecture\",\"queryPlusText\":\"modern architecture\"},{\"text\":\"modern stay\",\"queryPlusText\":\"modern stay\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "c16b72d4-0ddd-470b-9798-e6a3e4ef2dd7",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-autocomplete-shared-instance\u0027)/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "80",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:22 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2236e70e-b064-4ec8-91f4-30715d68c1b9"
+      },
+      "RequestBody": {
+        "search": "mod",
+        "suggesterName": "sg",
+        "autocompleteMode": "twoTerms",
+        "fuzzy": true
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "2236e70e-b064-4ec8-91f4-30715d68c1b9",
+        "Content-Length": "188",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:21 GMT",
+        "elapsed-time": "21",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "2236e70e-b064-4ec8-91f4-30715d68c1b9",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "2236e70e-b064-4ec8-91f4-30715d68c1b9"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "text": "model suites",
+            "queryPlusText": "model suites"
+          },
+          {
+            "text": "modern architecture",
+            "queryPlusText": "modern architecture"
+          },
+          {
+            "text": "modern stay",
+            "queryPlusText": "modern stay"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

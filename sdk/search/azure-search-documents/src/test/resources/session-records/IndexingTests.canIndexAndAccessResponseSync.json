@@ -1,165 +1,370 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e64f5094-7452-4e1a-8dc1-61daa9d40b7b",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "175",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:54:05 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e3f33bb6-308d-4c02-8a3d-44b5f7f81fd9"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "upload",
+            "HotelId": "key2042511c026bdb601",
+            "Tags": [],
+            "Rooms": []
+          },
+          {
+            "@search.action": "upload",
+            "HotelId": "key261045da8bee50c2e",
+            "Tags": [],
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "e3f33bb6-308d-4c02-8a3d-44b5f7f81fd9",
+        "Content-Length": "175",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:04 GMT",
+        "elapsed-time": "63",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "e3f33bb6-308d-4c02-8a3d-44b5f7f81fd9",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "e3f33bb6-308d-4c02-8a3d-44b5f7f81fd9"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key2042511c026bdb601",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          },
+          {
+            "key": "key261045da8bee50c2e",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e64f5094-7452-4e1a-8dc1-61daa9d40b7b",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:09 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e64f5094-7452-4e1a-8dc1-61daa9d40b7b",
-      "elapsed-time" : "55",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "175",
-      "Body" : "{\"value\":[{\"key\":\"key82911967fa49f9a6c\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"key2571035e0d1a08371\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e64f5094-7452-4e1a-8dc1-61daa9d40b7b",
-      "Content-Type" : "application/json; odata.metadata=none"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "103",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:54:07 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4324eca8-6912-408c-92de-ef873d0ed621"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "merge",
+            "HotelId": "key2042511c026bdb601",
+            "Tags": [],
+            "Rating": 5,
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "4324eca8-6912-408c-92de-ef873d0ed621",
+        "Content-Length": "93",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:06 GMT",
+        "elapsed-time": "47",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "4324eca8-6912-408c-92de-ef873d0ed621",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "4324eca8-6912-408c-92de-ef873d0ed621"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key2042511c026bdb601",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          }
+        ]
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "58942978-c551-4fa6-a29d-1c74b94c3466",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "211",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:54:07 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "426615cb-2fdd-4f90-b568-3a9046b463d9"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "mergeOrUpload",
+            "HotelId": "key58198abc3c68d6456",
+            "Tags": [],
+            "Rating": 4,
+            "Rooms": []
+          },
+          {
+            "@search.action": "mergeOrUpload",
+            "HotelId": "key43303035de23c569e",
+            "Tags": [],
+            "Rating": 1,
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "426615cb-2fdd-4f90-b568-3a9046b463d9",
+        "Content-Length": "175",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:06 GMT",
+        "elapsed-time": "76",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "426615cb-2fdd-4f90-b568-3a9046b463d9",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "426615cb-2fdd-4f90-b568-3a9046b463d9"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key58198abc3c68d6456",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          },
+          {
+            "key": "key43303035de23c569e",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "58942978-c551-4fa6-a29d-1c74b94c3466",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:11 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "58942978-c551-4fa6-a29d-1c74b94c3466",
-      "elapsed-time" : "50",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "93",
-      "Body" : "{\"value\":[{\"key\":\"key82911967fa49f9a6c\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "58942978-c551-4fa6-a29d-1c74b94c3466",
-      "Content-Type" : "application/json; odata.metadata=none"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "93",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:54:09 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "48cdedbd-50be-43df-987c-d6461e70a61b"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "delete",
+            "HotelId": "key43303035de23c569e",
+            "Tags": [],
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "48cdedbd-50be-43df-987c-d6461e70a61b",
+        "Content-Length": "93",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:08 GMT",
+        "elapsed-time": "54",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "48cdedbd-50be-43df-987c-d6461e70a61b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "48cdedbd-50be-43df-987c-d6461e70a61b"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key43303035de23c569e",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          }
+        ]
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d3a43cdd-79cd-408a-9102-d977e167ae45",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "375",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:54:12 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9ca731b5-9ad8-4621-9126-d8e440032b2c"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "upload",
+            "HotelId": "key2042511c026bdb601",
+            "Tags": [],
+            "Rooms": []
+          },
+          {
+            "@search.action": "upload",
+            "HotelId": "key261045da8bee50c2e",
+            "Tags": [],
+            "Rooms": []
+          },
+          {
+            "@search.action": "mergeOrUpload",
+            "HotelId": "key58198abc3c68d6456",
+            "Tags": [],
+            "Rating": 4,
+            "Rooms": []
+          },
+          {
+            "@search.action": "mergeOrUpload",
+            "HotelId": "key43303035de23c569e",
+            "Tags": [],
+            "Rating": 1,
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9ca731b5-9ad8-4621-9126-d8e440032b2c",
+        "Content-Length": "339",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:11 GMT",
+        "elapsed-time": "112",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "9ca731b5-9ad8-4621-9126-d8e440032b2c",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9ca731b5-9ad8-4621-9126-d8e440032b2c"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key2042511c026bdb601",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          },
+          {
+            "key": "key261045da8bee50c2e",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          },
+          {
+            "key": "key58198abc3c68d6456",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          },
+          {
+            "key": "key43303035de23c569e",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "d3a43cdd-79cd-408a-9102-d977e167ae45",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:11 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "d3a43cdd-79cd-408a-9102-d977e167ae45",
-      "elapsed-time" : "55",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "175",
-      "Body" : "{\"value\":[{\"key\":\"key75559f8defaa61d6d\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"key599938c7460dcb28e\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "d3a43cdd-79cd-408a-9102-d977e167ae45",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c70f6a05-2ec7-4fc0-9dde-f3a49cdf4701",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "c70f6a05-2ec7-4fc0-9dde-f3a49cdf4701",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:13 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "c70f6a05-2ec7-4fc0-9dde-f3a49cdf4701",
-      "elapsed-time" : "43",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "93",
-      "Body" : "{\"value\":[{\"key\":\"key599938c7460dcb28e\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "c70f6a05-2ec7-4fc0-9dde-f3a49cdf4701",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4f1494df-69ba-46ec-b6c4-9d0c5e46ee7b",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "4f1494df-69ba-46ec-b6c4-9d0c5e46ee7b",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:15 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "4f1494df-69ba-46ec-b6c4-9d0c5e46ee7b",
-      "elapsed-time" : "63",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "339",
-      "Body" : "{\"value\":[{\"key\":\"key82911967fa49f9a6c\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"key2571035e0d1a08371\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"key75559f8defaa61d6d\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"key599938c7460dcb28e\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "4f1494df-69ba-46ec-b6c4-9d0c5e46ee7b",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('key75559f8defaa61d6d')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "63ed5fcf-e307-47e7-90e8-3a68f643f058"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "63ed5fcf-e307-47e7-90e8-3a68f643f058",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:07:18 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "63ed5fcf-e307-47e7-90e8-3a68f643f058",
-      "elapsed-time" : "16",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "242",
-      "Body" : "{\"HotelId\":\"key75559f8defaa61d6d\",\"HotelName\":null,\"Description\":null,\"Description_fr\":null,\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":4,\"Location\":null,\"Address\":null,\"Rooms\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "63ed5fcf-e307-47e7-90e8-3a68f643f058",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "key82911967fa49f9a6c", "key2571035e0d1a08371", "key75559f8defaa61d6d", "key599938c7460dcb28e" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs(\u0027key58198abc3c68d6456\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:54:14 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "37d61c28-c095-471a-97e6-fec15920129b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "37d61c28-c095-471a-97e6-fec15920129b",
+        "Content-Length": "242",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:54:13 GMT",
+        "elapsed-time": "20",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "37d61c28-c095-471a-97e6-fec15920129b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "37d61c28-c095-471a-97e6-fec15920129b"
+      },
+      "ResponseBody": {
+        "HotelId": "key58198abc3c68d6456",
+        "HotelName": null,
+        "Description": null,
+        "Description_fr": null,
+        "Category": null,
+        "Tags": [],
+        "ParkingIncluded": null,
+        "SmokingAllowed": null,
+        "LastRenovationDate": null,
+        "Rating": 4,
+        "Location": null,
+        "Address": null,
+        "Rooms": []
+      }
+    }
+  ],
+  "Variables": {
+    "0": "key2042511c026bdb601",
+    "1": "key261045da8bee50c2e",
+    "2": "key58198abc3c68d6456",
+    "3": "key43303035de23c569e"
+  }
 }

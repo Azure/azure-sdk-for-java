@@ -1,43 +1,4 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "50553dc0-95ab-4bc9-a7ad-85cfde29f3d3",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "retry-after" : "0",
-      "StatusCode" : "413"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "34be73c5-6e44-4df9-9b98-450752cb24d6",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "retry-after" : "0",
-      "StatusCode" : "413"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ce12a37e-e2d8-494d-aba3-37eb3ae6aed5",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "retry-after" : "0",
-      "StatusCode" : "413"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [],
+  "Variables": {}
 }

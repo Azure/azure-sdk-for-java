@@ -1,58 +1,109 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "84e4ba5f-761f-49ff-b886-109749eb845d",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "113",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:44 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0ddfa497-6b91-43c6-a652-873803d97dcf"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "upload",
+            "HotelId": "key84640ab3b6cd7cf46",
+            "Category": "Luxury",
+            "Tags": [],
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "0ddfa497-6b91-43c6-a652-873803d97dcf",
+        "Content-Length": "93",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:43 GMT",
+        "elapsed-time": "45",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "0ddfa497-6b91-43c6-a652-873803d97dcf",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "0ddfa497-6b91-43c6-a652-873803d97dcf"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key84640ab3b6cd7cf46",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "84e4ba5f-761f-49ff-b886-109749eb845d",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:06:48 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "84e4ba5f-761f-49ff-b886-109749eb845d",
-      "elapsed-time" : "46",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "93",
-      "Body" : "{\"value\":[{\"key\":\"key212231547c0a8a699\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "84e4ba5f-761f-49ff-b886-109749eb845d",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0dad4f49-a20b-4853-8cbd-570672aea290",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "0dad4f49-a20b-4853-8cbd-570672aea290",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:06:50 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "0dad4f49-a20b-4853-8cbd-570672aea290",
-      "elapsed-time" : "47",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "93",
-      "Body" : "{\"value\":[{\"key\":\"key212231547c0a8a699\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "0dad4f49-a20b-4853-8cbd-570672aea290",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "key212231547c0a8a699" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-hotel-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "114",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:46 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "93fddc3c-41c7-4df6-955e-e7e6f69d67bd"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "delete",
+            "HotelId": "key84640ab3b6cd7cf46",
+            "Category": "ignored",
+            "Tags": [],
+            "Rooms": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "93fddc3c-41c7-4df6-955e-e7e6f69d67bd",
+        "Content-Length": "93",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:46 GMT",
+        "elapsed-time": "56",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "93fddc3c-41c7-4df6-955e-e7e6f69d67bd",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "93fddc3c-41c7-4df6-955e-e7e6f69d67bd"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key84640ab3b6cd7cf46",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 200
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {
+    "0": "key84640ab3b6cd7cf46"
+  }
 }

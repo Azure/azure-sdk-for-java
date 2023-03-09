@@ -1,30 +1,78 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/servicestats?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b8cb706c-e206-452e-affa-f8b108e2c618"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "b8cb706c-e206-452e-affa-f8b108e2c618",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:45:58 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "b8cb706c-e206-452e-affa-f8b108e2c618",
-      "elapsed-time" : "6",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "623",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#Microsoft.Azure.Search.V2021_04_30_Preview.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":0,\"quota\":15},\"indexersCount\":{\"usage\":0,\"quota\":15},\"dataSourcesCount\":{\"usage\":0,\"quota\":15},\"storageSize\":{\"usage\":0,\"quota\":2147483648},\"synonymMaps\":{\"usage\":0,\"quota\":3},\"skillsetCount\":{\"usage\":0,\"quota\":15},\"aliasesCount\":{\"usage\":0,\"quota\":30}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "b8cb706c-e206-452e-affa-f8b108e2c618",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/servicestats?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:30 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9cede9fb-909d-410d-9bd6-ad399881357d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9cede9fb-909d-410d-9bd6-ad399881357d",
+        "Content-Length": "635",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:29 GMT",
+        "elapsed-time": "2",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "9cede9fb-909d-410d-9bd6-ad399881357d",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9cede9fb-909d-410d-9bd6-ad399881357d"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#Microsoft.Azure.Search.V2021_04_30_Preview.ServiceStatistics",
+        "counters": {
+          "documentCount": {
+            "usage": 0,
+            "quota": null
+          },
+          "indexesCount": {
+            "usage": 0,
+            "quota": 15
+          },
+          "indexersCount": {
+            "usage": 0,
+            "quota": 15
+          },
+          "dataSourcesCount": {
+            "usage": 0,
+            "quota": 15
+          },
+          "storageSize": {
+            "usage": 0,
+            "quota": 2147483648
+          },
+          "synonymMaps": {
+            "usage": 0,
+            "quota": 3
+          },
+          "skillsetCount": {
+            "usage": 0,
+            "quota": 15
+          },
+          "aliasesCount": {
+            "usage": 0,
+            "quota": 30
+          }
+        },
+        "limits": {
+          "maxFieldsPerIndex": 1000,
+          "maxFieldNestingDepthPerIndex": 10,
+          "maxComplexCollectionFieldsPerIndex": 40,
+          "maxComplexObjectsInCollectionsPerDocument": 3000
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

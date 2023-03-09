@@ -1,58 +1,79 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-hotel-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5ff99c1f-5bc2-4102-88ac-1e01a74d21e1",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-suggest-shared-hotel-instance\u0027)/docs/search.post.suggest?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "39",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:02:15 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ce7da085-ac1b-4b5b-b4d2-03cf50511466"
+      },
+      "RequestBody": {
+        "search": "hitel",
+        "suggesterName": "sg"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "ce7da085-ac1b-4b5b-b4d2-03cf50511466",
+        "Content-Length": "12",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:02:14 GMT",
+        "elapsed-time": "42",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "ce7da085-ac1b-4b5b-b4d2-03cf50511466",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "ce7da085-ac1b-4b5b-b4d2-03cf50511466"
+      },
+      "ResponseBody": {
+        "value": []
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "5ff99c1f-5bc2-4102-88ac-1e01a74d21e1",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:29:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "5ff99c1f-5bc2-4102-88ac-1e01a74d21e1",
-      "elapsed-time" : "15",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "12",
-      "Body" : "{\"value\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "5ff99c1f-5bc2-4102-88ac-1e01a74d21e1",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-hotel-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "8082d287-6ecf-45f0-b0a6-bed30ebdc036",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "8082d287-6ecf-45f0-b0a6-bed30ebdc036",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:29:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "8082d287-6ecf-45f0-b0a6-bed30ebdc036",
-      "elapsed-time" : "16",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "12",
-      "Body" : "{\"value\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "8082d287-6ecf-45f0-b0a6-bed30ebdc036",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-suggest-shared-hotel-instance\u0027)/docs/search.post.suggest?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "39",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:02:15 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "80ad1441-a033-4d11-8163-536d1c072bf0"
+      },
+      "RequestBody": {
+        "search": "hitel",
+        "suggesterName": "sg"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "80ad1441-a033-4d11-8163-536d1c072bf0",
+        "Content-Length": "12",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:02:14 GMT",
+        "elapsed-time": "15",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "80ad1441-a033-4d11-8163-536d1c072bf0",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "80ad1441-a033-4d11-8163-536d1c072bf0"
+      },
+      "ResponseBody": {
+        "value": []
+      }
+    }
+  ],
+  "Variables": {}
 }

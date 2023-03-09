@@ -1,31 +1,45 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5e74ebfd-4d73-4ba7-9e3b-3a917859b662",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "5e74ebfd-4d73-4ba7-9e3b-3a917859b662",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:29:01 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "5e74ebfd-4d73-4ba7-9e3b-3a917859b662",
-      "elapsed-time" : "25",
-      "Expires" : "-1",
-      "Content-Length" : "141",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'.\\r\\nParameter name: $filter\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "5e74ebfd-4d73-4ba7-9e3b-3a917859b662",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "53",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:34 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "67a76924-e804-4b17-8312-c1261d953958"
+      },
+      "RequestBody": {
+        "filter": "This is not a valid filter.",
+        "search": "*"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "67a76924-e804-4b17-8312-c1261d953958",
+        "Content-Language": "en",
+        "Content-Length": "141",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:01:32 GMT",
+        "elapsed-time": "13",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "67a76924-e804-4b17-8312-c1261d953958",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "67a76924-e804-4b17-8312-c1261d953958"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "Invalid expression: Syntax error at position 7 in \u0027This is not a valid filter.\u0027.\r\nParameter name: $filter"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

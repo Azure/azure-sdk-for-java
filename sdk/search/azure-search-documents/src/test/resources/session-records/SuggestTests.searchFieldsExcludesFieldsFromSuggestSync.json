@@ -1,31 +1,44 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-hotel-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bff501eb-0ff3-453d-8cd5-05e21178f77d",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "bff501eb-0ff3-453d-8cd5-05e21178f77d",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:29:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "bff501eb-0ff3-453d-8cd5-05e21178f77d",
-      "elapsed-time" : "14",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "12",
-      "Body" : "{\"value\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "bff501eb-0ff3-453d-8cd5-05e21178f77d",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-suggest-shared-hotel-instance\u0027)/docs/search.post.suggest?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "80",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:02:16 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b5bd302f-5ca1-4c6d-8dc7-4f7f7c66c2d5"
+      },
+      "RequestBody": {
+        "search": "luxury",
+        "suggesterName": "sg",
+        "searchFields": "HotelName",
+        "select": "*"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "b5bd302f-5ca1-4c6d-8dc7-4f7f7c66c2d5",
+        "Content-Length": "12",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:02:14 GMT",
+        "elapsed-time": "18",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "b5bd302f-5ca1-4c6d-8dc7-4f7f7c66c2d5",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "b5bd302f-5ca1-4c6d-8dc7-4f7f7c66c2d5"
+      },
+      "ResponseBody": {
+        "value": []
+      }
+    }
+  ],
+  "Variables": {}
 }

@@ -1,31 +1,57 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "feba32d3-0b32-49f2-8c69-51b68de0f54d",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "feba32d3-0b32-49f2-8c69-51b68de0f54d",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:39:46 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "feba32d3-0b32-49f2-8c69-51b68de0f54d",
-      "elapsed-time" : "3",
-      "Expires" : "-1",
-      "Content-Length" : "326",
-      "Body" : "{\"error\":{\"code\":\"OperationNotAllowed\",\"message\":\"The request is invalid. Details: index : Found 0 key fields in index 'hotels'. Each index must have exactly one key field.\",\"details\":[{\"code\":\"MissingKeyField\",\"message\":\"Found 0 key fields in index 'hotels'. Each index must have exactly one key field. Parameters: index\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "feba32d3-0b32-49f2-8c69-51b68de0f54d",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "79",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:10:58 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "dba5fc55-336f-484b-b25d-8241d2483abf"
+      },
+      "RequestBody": {
+        "name": "hotels",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": false
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "dba5fc55-336f-484b-b25d-8241d2483abf",
+        "Content-Language": "en",
+        "Content-Length": "326",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:10:57 GMT",
+        "elapsed-time": "3",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "dba5fc55-336f-484b-b25d-8241d2483abf",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "dba5fc55-336f-484b-b25d-8241d2483abf"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "OperationNotAllowed",
+          "message": "The request is invalid. Details: index : Found 0 key fields in index \u0027hotels\u0027. Each index must have exactly one key field.",
+          "details": [
+            {
+              "code": "MissingKeyField",
+              "message": "Found 0 key fields in index \u0027hotels\u0027. Each index must have exactly one key field. Parameters: index"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

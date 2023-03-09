@@ -8,8 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Abstract base class for all Search API tests
  */
-public abstract class SearchTestBase extends TestBase {
+public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -80,10 +80,19 @@ public abstract class SearchTestBase extends TestBase {
     private static final String FAKE_DESCRIPTION = "Some data source";
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
-    static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
         new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));
+
+//    @Override
+//    public void beforeEach(ExtensionContext extensionContext) {
+//        super.beforeEach(extensionContext);
+//        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+//            .setExcludedHeaders(Arrays.asList("Connection", "Content-Length"))));
+//        interceptorManager.addSanitizers(Arrays.asList(
+//            new TestProxySanitizer("api-key", "REDACTED", TestProxySanitizerType.HEADER)
+//        ));
+//    }
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);

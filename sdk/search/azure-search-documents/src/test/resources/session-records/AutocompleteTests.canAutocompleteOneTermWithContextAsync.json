@@ -1,31 +1,56 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d4287977-80f0-4bb0-8503-9f25340e1de6",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "d4287977-80f0-4bb0-8503-9f25340e1de6",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "d4287977-80f0-4bb0-8503-9f25340e1de6",
-      "elapsed-time" : "16",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "208",
-      "Body" : "{\"value\":[{\"text\":\"very police\",\"queryPlusText\":\"looking for very police\"},{\"text\":\"very polite\",\"queryPlusText\":\"looking for very polite\"},{\"text\":\"very popular\",\"queryPlusText\":\"looking for very popular\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "d4287977-80f0-4bb0-8503-9f25340e1de6",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-autocomplete-shared-instance\u0027)/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "93",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:23 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4443cc2a-cc33-4b7e-a822-67b6b6d84931"
+      },
+      "RequestBody": {
+        "search": "looking for very po",
+        "suggesterName": "sg",
+        "autocompleteMode": "oneTermWithContext"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "4443cc2a-cc33-4b7e-a822-67b6b6d84931",
+        "Content-Length": "208",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:22 GMT",
+        "elapsed-time": "20",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "4443cc2a-cc33-4b7e-a822-67b6b6d84931",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "4443cc2a-cc33-4b7e-a822-67b6b6d84931"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "text": "very police",
+            "queryPlusText": "looking for very police"
+          },
+          {
+            "text": "very polite",
+            "queryPlusText": "looking for very polite"
+          },
+          {
+            "text": "very popular",
+            "queryPlusText": "looking for very popular"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

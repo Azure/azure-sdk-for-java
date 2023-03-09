@@ -1,54 +1,141 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1a342ead-d06a-4d01-bc5c-058ca693b79c",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "468",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:54 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e3bc1d2b-56db-4739-9b9e-a930f1be0320"
+      },
+      "RequestBody": {
+        "name": "conditional-skillset2133352b0617df17",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Util.ConditionalSkill",
+            "inputs": [
+              {
+                "name": "condition",
+                "source": "= $(/document/language) == null"
+              },
+              {
+                "name": "whenTrue",
+                "source": "= \u0027es\u0027"
+              },
+              {
+                "name": "whenFalse",
+                "source": "= $(/document/language)"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "output",
+                "targetName": "myLanguageCode"
+              }
+            ],
+            "name": "myconditional",
+            "description": "Tested Conditional skill",
+            "context": "/document"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "e3bc1d2b-56db-4739-9b9e-a930f1be0320",
+        "Content-Length": "774",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:53 GMT",
+        "elapsed-time": "56",
+        "ETag": "W/\u00220x8DB20DB81467284\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027conditional-skillset2133352b0617df17\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "e3bc1d2b-56db-4739-9b9e-a930f1be0320",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "e3bc1d2b-56db-4739-9b9e-a930f1be0320"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB81467284\u0022",
+        "name": "conditional-skillset2133352b0617df17",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Util.ConditionalSkill",
+            "name": "myconditional",
+            "description": "Tested Conditional skill",
+            "context": "/document",
+            "inputs": [
+              {
+                "name": "condition",
+                "source": "= $(/document/language) == null",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "whenTrue",
+                "source": "= \u0027es\u0027",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "whenFalse",
+                "source": "= $(/document/language)",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "output",
+                "targetName": "myLanguageCode"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "1a342ead-d06a-4d01-bc5c-058ca693b79c",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:18 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "1a342ead-d06a-4d01-bc5c-058ca693b79c",
-      "ETag" : "W/\"0x8DAF8CBE2A8C804\"",
-      "elapsed-time" : "51",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "762",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBE2A8C804\\\"\",\"name\":\"conditional-skillset48223d9d60f64a0c\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ConditionalSkill\",\"name\":\"myconditional\",\"description\":\"Tested Conditional skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"condition\",\"source\":\"= $(/document/language) == null\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenTrue\",\"source\":\"= 'es'\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"whenFalse\",\"source\":\"= $(/document/language)\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myLanguageCode\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "1a342ead-d06a-4d01-bc5c-058ca693b79c",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('conditional-skillset48223d9d60f64a0c')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('conditional-skillset48223d9d60f64a0c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f820c216-80b5-46e1-b659-9a811bb4270c"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "f820c216-80b5-46e1-b659-9a811bb4270c",
-      "elapsed-time" : "33",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "f820c216-80b5-46e1-b659-9a811bb4270c",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:18 GMT",
-      "x-ms-client-request-id" : "f820c216-80b5-46e1-b659-9a811bb4270c"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "conditional-skillset48223d9d60f64a0c" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027conditional-skillset2133352b0617df17\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:55 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "37f60926-5f30-4294-98bf-c10f8905994b"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "37f60926-5f30-4294-98bf-c10f8905994b",
+        "Date": "Thu, 09 Mar 2023 20:18:53 GMT",
+        "elapsed-time": "34",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "37f60926-5f30-4294-98bf-c10f8905994b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "37f60926-5f30-4294-98bf-c10f8905994b"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "conditional-skillset2133352b0617df17"
+  }
 }

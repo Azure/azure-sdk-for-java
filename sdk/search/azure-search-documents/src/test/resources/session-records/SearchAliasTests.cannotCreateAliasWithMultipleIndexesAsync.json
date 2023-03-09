@@ -1,31 +1,54 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c435042d-8b5b-4476-9007-8fb47d71079f",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "c435042d-8b5b-4476-9007-8fb47d71079f",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:23:35 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "c435042d-8b5b-4476-9007-8fb47d71079f",
-      "elapsed-time" : "4",
-      "Expires" : "-1",
-      "Content-Length" : "401",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Index alias was not valid for creation.\",\"details\":[{\"code\":\"InvalidIndexAliasMapping\",\"message\":\"An index alias can be mapped to a single index within the search service. Alias - 'my-alias' is being mapped to more than one index within the search service - 'alzimmer-basic'. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "c435042d-8b5b-4476-9007-8fb47d71079f",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/aliases?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "119",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:55:56 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "fe6fbf40-0eeb-4457-bde3-702410381c57"
+      },
+      "RequestBody": {
+        "name": "my-alias",
+        "indexes": [
+          "azsearch-search-shared-hotel-instance-one",
+          "azsearch-search-shared-hotel-instance-two"
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "fe6fbf40-0eeb-4457-bde3-702410381c57",
+        "Content-Language": "en",
+        "Content-Length": "413",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:55:56 GMT",
+        "elapsed-time": "4",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "fe6fbf40-0eeb-4457-bde3-702410381c57",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "fe6fbf40-0eeb-4457-bde3-702410381c57"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequestParameter",
+          "message": "Index alias was not valid for creation.",
+          "details": [
+            {
+              "code": "InvalidIndexAliasMapping",
+              "message": "An index alias can be mapped to a single index within the search service. Alias - \u0027my-alias\u0027 is being mapped to more than one index within the search service - \u0027azs-java-alzimmertestproxy\u0027. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

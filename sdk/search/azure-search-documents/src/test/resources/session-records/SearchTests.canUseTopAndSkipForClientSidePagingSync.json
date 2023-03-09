@@ -1,58 +1,305 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c8b2189b-3401-47e7-9b2d-d6e74dd9537a",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "51",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2747c8c4-d70d-422a-b610-99723afc82d7"
+      },
+      "RequestBody": {
+        "orderby": "HotelId",
+        "search": "*",
+        "skip": 0,
+        "top": 3
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "2747c8c4-d70d-422a-b610-99723afc82d7",
+        "Content-Length": "2888",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "elapsed-time": "37",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "2747c8c4-d70d-422a-b610-99723afc82d7",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "2747c8c4-d70d-422a-b610-99723afc82d7"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "@search.score": 1.0,
+            "HotelId": "1",
+            "HotelName": "Fancy Stay",
+            "Description": "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.",
+            "Description_fr": "Meilleur h\u00F4tel en ville si vous aimez les h\u00F4tels de luxe. Ils ont une magnifique piscine \u00E0 d\u00E9bordement, un spa et un concierge tr\u00E8s utile. L\u0027emplacement est parfait \u2013 en plein centre, \u00E0 proximit\u00E9 de toutes les attractions touristiques. Nous recommandons fortement cet h\u00F4tel.",
+            "Category": "Luxury",
+            "Tags": [
+              "pool",
+              "view",
+              "wifi",
+              "concierge"
+            ],
+            "ParkingIncluded": false,
+            "SmokingAllowed": false,
+            "LastRenovationDate": "2010-06-27T00:00:00Z",
+            "Rating": 5,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -122.131577,
+                47.678581
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": null,
+            "Rooms": []
+          },
+          {
+            "@search.score": 1.0,
+            "HotelId": "10",
+            "HotelName": "Countryside Hotel",
+            "Description": "Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer \u0026 dryer, 24/7 support, bowling alley, fitness center and more.",
+            "Description_fr": "\u00C9conomisez jusqu\u0027\u00E0 50% sur les h\u00F4tels traditionnels.  WiFi gratuit, tr\u00E8s bien situ\u00E9 pr\u00E8s du centre-ville, cuisine compl\u00E8te, laveuse \u0026 s\u00E9cheuse, support 24/7, bowling, centre de fitness et plus encore.",
+            "Category": "Budget",
+            "Tags": [
+              "24-hour front desk service",
+              "coffee in lobby",
+              "restaurant"
+            ],
+            "ParkingIncluded": false,
+            "SmokingAllowed": true,
+            "LastRenovationDate": "1999-09-06T00:00:00Z",
+            "Rating": 3,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -78.940483,
+                35.90416
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": {
+              "StreetAddress": "6910 Fayetteville Rd",
+              "City": "Durham",
+              "StateProvince": "NC",
+              "PostalCode": "27713",
+              "Country": "USA"
+            },
+            "Rooms": [
+              {
+                "Description": "Suite, 1 King Bed (Amenities)",
+                "Description_fr": "Suite, 1 tr\u00E8s grand lit (Services)",
+                "Type": "Suite",
+                "BaseRate": 2.44,
+                "BedOptions": "1 King Bed",
+                "SleepsCount": 2,
+                "SmokingAllowed": true,
+                "Tags": [
+                  "coffee maker"
+                ]
+              },
+              {
+                "Description": "Budget Room, 1 Queen Bed (Amenities)",
+                "Description_fr": "Chambre \u00C9conomique, 1 grand lit (Services)",
+                "Type": "Budget Room",
+                "BaseRate": 7.69,
+                "BedOptions": "1 Queen Bed",
+                "SleepsCount": 2,
+                "SmokingAllowed": false,
+                "Tags": [
+                  "coffee maker"
+                ]
+              }
+            ]
+          },
+          {
+            "@search.score": 1.0,
+            "HotelId": "2",
+            "HotelName": "Roach Motel",
+            "Description": "Cheapest hotel in town. Infact, a motel.",
+            "Description_fr": "H\u00F4tel le moins cher en ville. Infact, un motel.",
+            "Category": "Budget",
+            "Tags": [
+              "motel",
+              "budget"
+            ],
+            "ParkingIncluded": true,
+            "SmokingAllowed": true,
+            "LastRenovationDate": "1982-04-28T00:00:00Z",
+            "Rating": 1,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -122.131577,
+                49.678581
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": null,
+            "Rooms": []
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "c8b2189b-3401-47e7-9b2d-d6e74dd9537a",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:28:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "c8b2189b-3401-47e7-9b2d-d6e74dd9537a",
-      "elapsed-time" : "17",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "2888",
-      "Body" : "{\"value\":[{\"@search.score\":1.0,\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]},{\"@search.score\":1.0,\"HotelId\":\"10\",\"HotelName\":\"Countryside Hotel\",\"Description\":\"Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.\",\"Description_fr\":\"\\u00c9conomisez jusqu'\\u00e0 50% sur les h\\u00f4tels traditionnels.  WiFi gratuit, tr\\u00e8s bien situ\\u00e9 pr\\u00e8s du centre-ville, cuisine compl\\u00e8te, laveuse & s\\u00e9cheuse, support 24/7, bowling, centre de fitness et plus encore.\",\"Category\":\"Budget\",\"Tags\":[\"24-hour front desk service\",\"coffee in lobby\",\"restaurant\"],\"ParkingIncluded\":false,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1999-09-06T00:00:00Z\",\"Rating\":3,\"Location\":{\"type\":\"Point\",\"coordinates\":[-78.940483,35.90416],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"6910 Fayetteville Rd\",\"City\":\"Durham\",\"StateProvince\":\"NC\",\"PostalCode\":\"27713\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":\"Suite, 1 King Bed (Amenities)\",\"Description_fr\":\"Suite, 1 tr\\u00e8s grand lit (Services)\",\"Type\":\"Suite\",\"BaseRate\":2.44,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"coffee maker\"]},{\"Description\":\"Budget Room, 1 Queen Bed (Amenities)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 grand lit (Services)\",\"Type\":\"Budget Room\",\"BaseRate\":7.69,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":false,\"Tags\":[\"coffee maker\"]}]},{\"@search.score\":1.0,\"HotelId\":\"2\",\"HotelName\":\"Roach Motel\",\"Description\":\"Cheapest hotel in town. Infact, a motel.\",\"Description_fr\":\"H\\u00f4tel le moins cher en ville. Infact, un motel.\",\"Category\":\"Budget\",\"Tags\":[\"motel\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1982-04-28T00:00:00Z\",\"Rating\":1,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,49.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "c8b2189b-3401-47e7-9b2d-d6e74dd9537a",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3b9f06f5-2de0-4281-87f1-f9c52dbe8e5b",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "3b9f06f5-2de0-4281-87f1-f9c52dbe8e5b",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:28:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "3b9f06f5-2de0-4281-87f1-f9c52dbe8e5b",
-      "elapsed-time" : "16",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "1331",
-      "Body" : "{\"value\":[{\"@search.score\":1.0,\"HotelId\":\"3\",\"HotelName\":\"EconoStay\",\"Description\":\"Very popular hotel in town\",\"Description_fr\":\"H\\u00f4tel le plus populaire en ville\",\"Category\":\"Budget\",\"Tags\":[\"wifi\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":false,\"LastRenovationDate\":\"1995-07-01T00:00:00Z\",\"Rating\":4,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,49.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]},{\"@search.score\":1.0,\"HotelId\":\"4\",\"HotelName\":\"Express Rooms\",\"Description\":\"Pretty good hotel\",\"Description_fr\":\"Assez bon h\\u00f4tel\",\"Category\":\"Budget\",\"Tags\":[\"wifi\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":false,\"LastRenovationDate\":\"1995-07-01T00:00:00Z\",\"Rating\":4,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,48.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]},{\"@search.score\":1.0,\"HotelId\":\"5\",\"HotelName\":\"Comfy Place\",\"Description\":\"Another good hotel\",\"Description_fr\":\"Un autre bon h\\u00f4tel\",\"Category\":\"Budget\",\"Tags\":[\"wifi\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2012-08-12T00:00:00Z\",\"Rating\":4,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,48.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "3b9f06f5-2de0-4281-87f1-f9c52dbe8e5b",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "51",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a2d0ccdb-2f56-405f-ae88-4732fe956c20"
+      },
+      "RequestBody": {
+        "orderby": "HotelId",
+        "search": "*",
+        "skip": 3,
+        "top": 3
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "a2d0ccdb-2f56-405f-ae88-4732fe956c20",
+        "Content-Length": "1331",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "elapsed-time": "17",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "a2d0ccdb-2f56-405f-ae88-4732fe956c20",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "a2d0ccdb-2f56-405f-ae88-4732fe956c20"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "@search.score": 1.0,
+            "HotelId": "3",
+            "HotelName": "EconoStay",
+            "Description": "Very popular hotel in town",
+            "Description_fr": "H\u00F4tel le plus populaire en ville",
+            "Category": "Budget",
+            "Tags": [
+              "wifi",
+              "budget"
+            ],
+            "ParkingIncluded": true,
+            "SmokingAllowed": false,
+            "LastRenovationDate": "1995-07-01T00:00:00Z",
+            "Rating": 4,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -122.131577,
+                49.678581
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": null,
+            "Rooms": []
+          },
+          {
+            "@search.score": 1.0,
+            "HotelId": "4",
+            "HotelName": "Express Rooms",
+            "Description": "Pretty good hotel",
+            "Description_fr": "Assez bon h\u00F4tel",
+            "Category": "Budget",
+            "Tags": [
+              "wifi",
+              "budget"
+            ],
+            "ParkingIncluded": true,
+            "SmokingAllowed": false,
+            "LastRenovationDate": "1995-07-01T00:00:00Z",
+            "Rating": 4,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -122.131577,
+                48.678581
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": null,
+            "Rooms": []
+          },
+          {
+            "@search.score": 1.0,
+            "HotelId": "5",
+            "HotelName": "Comfy Place",
+            "Description": "Another good hotel",
+            "Description_fr": "Un autre bon h\u00F4tel",
+            "Category": "Budget",
+            "Tags": [
+              "wifi",
+              "budget"
+            ],
+            "ParkingIncluded": true,
+            "SmokingAllowed": false,
+            "LastRenovationDate": "2012-08-12T00:00:00Z",
+            "Rating": 4,
+            "Location": {
+              "type": "Point",
+              "coordinates": [
+                -122.131577,
+                48.678581
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "Address": null,
+            "Rooms": []
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

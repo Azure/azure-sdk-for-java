@@ -1,30 +1,41 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('thisdatasourcedoesnotexist')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0324977b-b924-4bfb-9a0a-3f9cf453ae8f"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "0324977b-b924-4bfb-9a0a-3f9cf453ae8f",
-      "StatusCode" : "404",
-      "Date" : "Tue, 17 Jan 2023 20:35:04 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "0324977b-b924-4bfb-9a0a-3f9cf453ae8f",
-      "elapsed-time" : "7",
-      "Expires" : "-1",
-      "Content-Length" : "130",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'thisdatasourcedoesnotexist' was found in service 'alzimmer-basic'.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "0324977b-b924-4bfb-9a0a-3f9cf453ae8f",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/datasources(\u0027thisdatasourcedoesnotexist\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:08:08 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "53bafc02-5314-40e8-89ba-84cda1d2a5b7"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "53bafc02-5314-40e8-89ba-84cda1d2a5b7",
+        "Content-Language": "en",
+        "Content-Length": "142",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:08:06 GMT",
+        "elapsed-time": "11",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "53bafc02-5314-40e8-89ba-84cda1d2a5b7",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "53bafc02-5314-40e8-89ba-84cda1d2a5b7"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "No data source with the name \u0027thisdatasourcedoesnotexist\u0027 was found in service \u0027azs-java-alzimmertestproxy\u0027."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

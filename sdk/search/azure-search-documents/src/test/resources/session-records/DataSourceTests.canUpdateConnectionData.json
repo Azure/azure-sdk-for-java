@@ -1,4 +1,6 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "azs-java-test-blob51754fd0a" ]
+  "Entries": [],
+  "Variables": {
+    "0": "azs-java-test-blob9570067f9"
+  }
 }

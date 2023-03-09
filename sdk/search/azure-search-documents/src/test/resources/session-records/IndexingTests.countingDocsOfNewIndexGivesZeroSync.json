@@ -1,30 +1,36 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-empty-instance')/docs/$count?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "cb858803-7e38-4b04-95ab-e8b072454ef4"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "cb858803-7e38-4b04-95ab-e8b072454ef4",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:06:59 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "cb858803-7e38-4b04-95ab-e8b072454ef4",
-      "elapsed-time" : "68",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "4",
-      "Body" : "0",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "cb858803-7e38-4b04-95ab-e8b072454ef4",
-      "Content-Type" : "text/plain"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-indexing-shared-empty-instance\u0027)/docs/$count?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:55 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "93b0c2bf-1612-4458-bef5-f8db9a1e191b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "93b0c2bf-1612-4458-bef5-f8db9a1e191b",
+        "Content-Length": "4",
+        "Content-Type": "text/plain",
+        "Date": "Thu, 09 Mar 2023 19:53:55 GMT",
+        "elapsed-time": "63",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "93b0c2bf-1612-4458-bef5-f8db9a1e191b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "93b0c2bf-1612-4458-bef5-f8db9a1e191b"
+      },
+      "ResponseBody": "\uFEFF0"
+    }
+  ],
+  "Variables": {}
 }
