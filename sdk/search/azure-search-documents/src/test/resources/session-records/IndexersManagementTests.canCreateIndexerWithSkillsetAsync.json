@@ -248,7 +248,7 @@
           "connectionString": "REDACTED"
         },
         "container": {
-          "name": "azscontaineralzimmertestproxy",
+          "name": "searchcontainer",
           "query": "/"
         },
         "dataDeletionDetectionPolicy": {
@@ -286,7 +286,7 @@
           "connectionString": null
         },
         "container": {
-          "name": "azscontaineralzimmertestproxy",
+          "name": "searchcontainer",
           "query": "/"
         },
         "dataChangeDetectionPolicy": null,

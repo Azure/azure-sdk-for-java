@@ -72,8 +72,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-    private static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
+    private static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
