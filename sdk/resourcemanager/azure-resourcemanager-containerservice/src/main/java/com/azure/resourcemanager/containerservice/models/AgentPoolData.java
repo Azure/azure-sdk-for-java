@@ -498,11 +498,9 @@ public class AgentPoolData implements AgentPool, HasInnerModel<AgentPoolInner> {
     /**
      * Specify to use an FIPS-enabled OS for agent pool machines.
      *
-     * <p>See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
-     * details.
-     *
      * @return the AgentPoolData object itself
+     * @see <a href="https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview">
+     *     Add a FIPS-enabled node pool</a> for more details.
      */
     public AgentPoolData withFipsEnabled() {
         innerModel().withEnableFips(true);
