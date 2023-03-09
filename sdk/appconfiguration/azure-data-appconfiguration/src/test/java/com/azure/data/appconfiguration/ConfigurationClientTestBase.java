@@ -6,12 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.TestProxyRequestMatcher;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -58,14 +53,6 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
-    static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-    static List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-    private static final String REDACTED = "REDACTED";
-    static {
-        customSanitizer.add(new TestProxySanitizer("Connection", REDACTED, TestProxySanitizerType.HEADER));
-        customSanitizer.add(new TestProxySanitizer("Sync-Token", REDACTED, TestProxySanitizerType.HEADER));
-        customMatcher.add(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Content-Length")));
-    }
     String keyPrefix;
     String labelPrefix;
 
