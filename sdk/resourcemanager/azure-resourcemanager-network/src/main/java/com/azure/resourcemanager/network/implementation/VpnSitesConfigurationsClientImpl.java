@@ -57,7 +57,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VpnSitesConfigurationsService {
+    public interface VpnSitesConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
@@ -113,7 +113,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -170,7 +170,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -243,7 +243,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
-        return beginDownloadAsync(resourceGroupName, virtualWanName, request).getSyncPoller();
+        return this.beginDownloadAsync(resourceGroupName, virtualWanName, request).getSyncPoller();
     }
 
     /**
@@ -261,7 +261,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
-        return beginDownloadAsync(resourceGroupName, virtualWanName, request, context).getSyncPoller();
+        return this.beginDownloadAsync(resourceGroupName, virtualWanName, request, context).getSyncPoller();
     }
 
     /**

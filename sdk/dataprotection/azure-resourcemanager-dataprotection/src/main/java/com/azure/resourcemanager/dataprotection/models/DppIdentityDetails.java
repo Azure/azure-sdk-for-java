@@ -5,25 +5,24 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DppIdentityDetails Identity details. */
+/**
+ * DppIdentityDetails
+ *
+ * <p>Identity details.
+ */
 @Fluent
 public final class DppIdentityDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppIdentityDetails.class);
-
     /*
-     * The object ID of the service principal object for the managed identity
-     * that is used to grant role-based access to an Azure resource.
+     * The object ID of the service principal object for the managed identity that is used to grant role-based access
+     * to an Azure resource.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * A Globally Unique Identifier (GUID) that represents the Azure AD tenant
-     * where the resource is now a member.
+     * A Globally Unique Identifier (GUID) that represents the Azure AD tenant where the resource is now a member.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -33,6 +32,10 @@ public final class DppIdentityDetails {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of DppIdentityDetails class. */
+    public DppIdentityDetails() {
+    }
 
     /**
      * Get the principalId property: The object ID of the service principal object for the managed identity that is used

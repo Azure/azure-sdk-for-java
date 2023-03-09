@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.PropagatedRouteTable;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for ExpressRouteConnections CreateOrUpdate. */
 public final class ExpressRouteConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteConnectionCreate.json
      */
     /**
      * Sample code: ExpressRouteConnectionCreate.
@@ -40,7 +39,7 @@ public final class ExpressRouteConnectionsCreateOrUpdateSamples {
                         new ExpressRouteCircuitPeeringId()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteCircuits/circuitName/peerings/AzurePrivatePeering"))
-                    .withAuthorizationKey("authorizationKey")
+                    .withAuthorizationKey("fakeTokenPlaceholder")
                     .withRoutingWeight(2)
                     .withRoutingConfiguration(
                         new RoutingConfiguration()
@@ -71,6 +70,6 @@ public final class ExpressRouteConnectionsCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

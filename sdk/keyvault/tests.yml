@@ -5,7 +5,7 @@ stages:
     parameters:
       ServiceDirectory: keyvault
       TimeoutInMinutes: 240
-      SupportedClouds: 'Public,UsGov,China'
+      SupportedClouds: 'Public,UsGov,China,Canary'
       CloudConfig:
         Public:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
@@ -15,6 +15,13 @@ stages:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        Canary:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Location: 'centraluseuap'
+          # Managed HSM test resources are expensive and provisioning has not been reliable.
+          # Given test coverage of non-canary regions we probably don't need to test in canary.
           MatrixFilters:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)
       MatrixConfigs:

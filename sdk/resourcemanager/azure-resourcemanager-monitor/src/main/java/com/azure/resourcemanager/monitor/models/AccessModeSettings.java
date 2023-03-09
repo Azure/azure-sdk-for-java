@@ -34,6 +34,10 @@ public final class AccessModeSettings {
     @JsonProperty(value = "exclusions")
     private List<AccessModeSettingsExclusion> exclusions;
 
+    /** Creates an instance of AccessModeSettings class. */
+    public AccessModeSettings() {
+    }
+
     /**
      * Get the queryAccessMode property: Specifies the default access mode of queries through associated private
      * endpoints in scope. If not specified default value is 'Open'. You can override this default setting for a

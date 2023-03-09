@@ -17,6 +17,15 @@ public final class IpFamily extends ExpandableStringEnum<IpFamily> {
     public static final IpFamily IPV6 = fromString("IPv6");
 
     /**
+     * Creates a new instance of IpFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpFamily() {
+    }
+
+    /**
      * Creates or finds a IpFamily from its string representation.
      *
      * @param name a name to look for.

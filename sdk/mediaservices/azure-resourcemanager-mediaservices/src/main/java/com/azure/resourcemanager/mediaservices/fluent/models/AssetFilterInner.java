@@ -28,6 +28,10 @@ public final class AssetFilterInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AssetFilterInner class. */
+    public AssetFilterInner() {
+    }
+
     /**
      * Get the innerProperties property: The Media Filter properties.
      *

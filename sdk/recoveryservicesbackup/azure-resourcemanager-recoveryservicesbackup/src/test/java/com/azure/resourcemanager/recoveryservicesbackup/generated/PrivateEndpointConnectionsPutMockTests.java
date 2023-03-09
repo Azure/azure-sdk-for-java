@@ -38,7 +38,7 @@ public final class PrivateEndpointConnectionsPutMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"lqjbekpeek\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"dqhjvyklxeslkhhu\",\"actionRequired\":\"cpoq\"}},\"eTag\":\"vnwqjwgo\",\"location\":\"nlejjjkxybwf\",\"tags\":{\"vkzykjtjknsxf\":\"jbzten\",\"cdp\":\"us\",\"kuwxeoiojfizfavk\":\"upnqrmgjfb\",\"fwxrzxmdew\":\"zwfbcyaykmmfzs\"},\"id\":\"rsxkr\",\"name\":\"lbjazejww\",\"type\":\"iyoypsuhbrnnhj\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"jymxcgqt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lss\",\"actionRequired\":\"jomevtfycnlb\"}},\"eTag\":\"jcodkkgjiiytssi\",\"location\":\"izbcufqbvntnr\",\"tags\":{\"nl\":\"sorhcekx\",\"cpwzv\":\"km\"},\"id\":\"doksqdtiwlwxlbon\",\"name\":\"qba\",\"type\":\"qicqchygt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,34 +69,35 @@ public final class PrivateEndpointConnectionsPutMockTests {
         PrivateEndpointConnectionResource response =
             manager
                 .privateEndpointConnections()
-                .define("qyv")
-                .withRegion("igsyeipqdsmjt")
-                .withExistingVault("tekva", "blhtjq")
-                .withTags(mapOf("eplkcsm", "gdgkki", "qfloygbdgwum", "nhwtbbaedorvv", "pabgdexjddvjsaqw", "xdgd"))
+                .define("quwusq")
+                .withRegion("jhngxnoq")
+                .withExistingVault("vcb", "hez")
+                .withTags(
+                    mapOf("vhdl", "disnj", "o", "ydidwhepfwwtjf", "wcdbckyoik", "sxxh", "rbhtmeplvukaobr", "kxhnegknj"))
                 .withProperties(
                     new PrivateEndpointConnection()
                         .withProvisioningState(ProvisioningState.SUCCEEDED)
-                        .withPrivateEndpoint(new PrivateEndpoint().withId("mxhzzysevus"))
+                        .withPrivateEndpoint(new PrivateEndpoint().withId("rruyuu"))
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateEndpointConnectionStatus.APPROVED)
-                                .withDescription("rryveimipskdy")
-                                .withActionRequired("tv")))
-                .withEtag("zkaftjvvrux")
+                                .withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
+                                .withDescription("bjwcolbmx")
+                                .withActionRequired("nwtpcpahprz")))
+                .withEtag("xhmtfhocnxzc")
                 .create();
 
-        Assertions.assertEquals("nlejjjkxybwf", response.location());
-        Assertions.assertEquals("jbzten", response.tags().get("vkzykjtjknsxf"));
+        Assertions.assertEquals("izbcufqbvntnr", response.location());
+        Assertions.assertEquals("sorhcekx", response.tags().get("nl"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals("lqjbekpeek", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("jymxcgqt", response.properties().privateEndpoint().id());
         Assertions
             .assertEquals(
                 PrivateEndpointConnectionStatus.APPROVED,
                 response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("lss", response.properties().privateLinkServiceConnectionState().description());
         Assertions
-            .assertEquals("dqhjvyklxeslkhhu", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("cpoq", response.properties().privateLinkServiceConnectionState().actionRequired());
-        Assertions.assertEquals("vnwqjwgo", response.etag());
+            .assertEquals("jomevtfycnlb", response.properties().privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("jcodkkgjiiytssi", response.etag());
     }
 
     @SuppressWarnings("unchecked")

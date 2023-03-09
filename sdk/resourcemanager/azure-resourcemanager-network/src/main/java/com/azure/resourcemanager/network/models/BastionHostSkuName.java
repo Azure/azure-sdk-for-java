@@ -17,6 +17,15 @@ public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSk
     public static final BastionHostSkuName STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of BastionHostSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BastionHostSkuName() {
+    }
+
+    /**
      * Creates or finds a BastionHostSkuName from its string representation.
      *
      * @param name a name to look for.

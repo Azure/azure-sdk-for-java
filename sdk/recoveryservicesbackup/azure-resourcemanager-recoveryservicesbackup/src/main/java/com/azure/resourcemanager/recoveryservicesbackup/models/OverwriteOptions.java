@@ -20,6 +20,15 @@ public final class OverwriteOptions extends ExpandableStringEnum<OverwriteOption
     public static final OverwriteOptions OVERWRITE = fromString("Overwrite");
 
     /**
+     * Creates a new instance of OverwriteOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OverwriteOptions() {
+    }
+
+    /**
      * Creates or finds a OverwriteOptions from its string representation.
      *
      * @param name a name to look for.

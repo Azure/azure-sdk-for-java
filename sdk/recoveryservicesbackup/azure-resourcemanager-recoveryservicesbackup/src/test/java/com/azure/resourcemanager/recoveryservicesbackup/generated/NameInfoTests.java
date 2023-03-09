@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.NameInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NameInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NameInfo model =
             BinaryData
                 .fromString("{\"value\":\"ukjfkgiawxklr\",\"localizedValue\":\"lwckbasyypnddhs\"}")
@@ -20,8 +19,8 @@ public final class NameInfoTests {
         Assertions.assertEquals("lwckbasyypnddhs", model.localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NameInfo model = new NameInfo().withValue("ukjfkgiawxklr").withLocalizedValue("lwckbasyypnddhs");
         model = BinaryData.fromObject(model).toObject(NameInfo.class);
         Assertions.assertEquals("ukjfkgiawxklr", model.value());

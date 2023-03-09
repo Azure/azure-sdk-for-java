@@ -18,7 +18,7 @@ public interface Experiments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Experiment> listByProfile(String resourceGroupName, String profileName);
 
@@ -31,9 +31,24 @@ public interface Experiments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Experiment> listByProfile(String resourceGroupName, String profileName, Context context);
+
+    /**
+     * Gets an Experiment by ExperimentName.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName The Profile identifier associated with the Tenant and Partner.
+     * @param experimentName The Experiment identifier associated with the Experiment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Experiment by ExperimentName along with {@link Response}.
+     */
+    Response<Experiment> getWithResponse(
+        String resourceGroupName, String profileName, String experimentName, Context context);
 
     /**
      * Gets an Experiment by ExperimentName.
@@ -47,21 +62,6 @@ public interface Experiments {
      * @return an Experiment by ExperimentName.
      */
     Experiment get(String resourceGroupName, String profileName, String experimentName);
-
-    /**
-     * Gets an Experiment by ExperimentName.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param experimentName The Experiment identifier associated with the Experiment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
-     */
-    Response<Experiment> getWithResponse(
-        String resourceGroupName, String profileName, String experimentName, Context context);
 
     /**
      * Deletes an Experiment.
@@ -95,7 +95,7 @@ public interface Experiments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response}.
      */
     Experiment getById(String id);
 
@@ -107,7 +107,7 @@ public interface Experiments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response}.
      */
     Response<Experiment> getByIdWithResponse(String id, Context context);
 

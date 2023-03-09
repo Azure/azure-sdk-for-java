@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ErrorManagementTypes. */
+/** The type of error management to use for the mapping. */
 public enum ErrorManagementTypes {
     /** Enum value RejectAndContinue. */
     REJECT_AND_CONTINUE("RejectAndContinue"),
@@ -33,6 +33,9 @@ public enum ErrorManagementTypes {
      */
     @JsonCreator
     public static ErrorManagementTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ErrorManagementTypes[] items = ErrorManagementTypes.values();
         for (ErrorManagementTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ErrorManagementTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

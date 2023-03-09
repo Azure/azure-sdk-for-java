@@ -56,6 +56,15 @@ public final class ComputeInstanceState extends ExpandableStringEnum<ComputeInst
     public static final ComputeInstanceState UNUSABLE = fromString("Unusable");
 
     /**
+     * Creates a new instance of ComputeInstanceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeInstanceState() {
+    }
+
+    /**
      * Creates or finds a ComputeInstanceState from its string representation.
      *
      * @param name a name to look for.

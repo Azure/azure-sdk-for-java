@@ -17,6 +17,15 @@ public final class ClusterVersionsEnvironment extends ExpandableStringEnum<Clust
     public static final ClusterVersionsEnvironment LINUX = fromString("Linux");
 
     /**
+     * Creates a new instance of ClusterVersionsEnvironment value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterVersionsEnvironment() {
+    }
+
+    /**
      * Creates or finds a ClusterVersionsEnvironment from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ClusterVersionsEnvironment extends ExpandableStringEnum<Clust
         return fromString(name, ClusterVersionsEnvironment.class);
     }
 
-    /** @return known ClusterVersionsEnvironment values. */
+    /**
+     * Gets known ClusterVersionsEnvironment values.
+     *
+     * @return known ClusterVersionsEnvironment values.
+     */
     public static Collection<ClusterVersionsEnvironment> values() {
         return values(ClusterVersionsEnvironment.class);
     }

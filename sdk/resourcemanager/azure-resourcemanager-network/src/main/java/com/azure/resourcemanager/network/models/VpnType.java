@@ -17,6 +17,15 @@ public final class VpnType extends ExpandableStringEnum<VpnType> {
     public static final VpnType ROUTE_BASED = fromString("RouteBased");
 
     /**
+     * Creates a new instance of VpnType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnType() {
+    }
+
+    /**
      * Creates or finds a VpnType from its string representation.
      *
      * @param name a name to look for.

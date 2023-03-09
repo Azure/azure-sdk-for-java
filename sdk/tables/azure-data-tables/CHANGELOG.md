@@ -10,6 +10,34 @@
 
 ### Other Changes
 
+## 12.3.9 (2023-03-08)
+
+### Other Changes
+- Removed Reactor from synchronous clients
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+
+## 12.3.8 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 12.3.7 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` dependency to `1.35.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.8`.
+
 ## 12.3.6 (2022-11-08)
 
 ### Other Changes

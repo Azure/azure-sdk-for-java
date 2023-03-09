@@ -34,6 +34,10 @@ public final class NamespaceJunction {
     @JsonProperty(value = "nfsAccessPolicy")
     private String nfsAccessPolicy;
 
+    /** Creates an instance of NamespaceJunction class. */
+    public NamespaceJunction() {
+    }
+
     /**
      * Get the namespacePath property: Namespace path on a Cache for a Storage Target.
      *

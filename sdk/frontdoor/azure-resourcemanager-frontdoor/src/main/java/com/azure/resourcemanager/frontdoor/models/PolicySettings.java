@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines top-level WebApplicationFirewallPolicy configuration settings. */
 @Fluent
 public final class PolicySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySettings.class);
-
     /*
-     * Describes if the policy is in enabled or disabled state. Defaults to
-     * Enabled if not specified.
+     * Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
      */
     @JsonProperty(value = "enabledState")
     private PolicyEnabledState enabledState;
@@ -28,22 +23,20 @@ public final class PolicySettings {
     private PolicyMode mode;
 
     /*
-     * If action type is redirect, this field represents redirect URL for the
-     * client.
+     * If action type is redirect, this field represents redirect URL for the client.
      */
     @JsonProperty(value = "redirectUrl")
     private String redirectUrl;
 
     /*
-     * If the action type is block, customer can override the response status
-     * code.
+     * If the action type is block, customer can override the response status code.
      */
     @JsonProperty(value = "customBlockResponseStatusCode")
     private Integer customBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body.
-     * The body must be specified in base64 encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
      */
     @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
@@ -53,6 +46,10 @@ public final class PolicySettings {
      */
     @JsonProperty(value = "requestBodyCheck")
     private PolicyRequestBodyCheck requestBodyCheck;
+
+    /** Creates an instance of PolicySettings class. */
+    public PolicySettings() {
+    }
 
     /**
      * Get the enabledState property: Describes if the policy is in enabled or disabled state. Defaults to Enabled if

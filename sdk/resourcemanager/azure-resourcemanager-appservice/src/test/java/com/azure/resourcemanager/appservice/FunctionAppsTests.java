@@ -231,6 +231,19 @@ public class FunctionAppsTests extends AppServiceTest {
                     .asList(functionApp1.innerModel().kind().split(Pattern.quote(",")))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
+        FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
+        // consumption plan requires this 2 settings
+        Assertions.assertTrue(functionAppResource1.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
+        Assertions.assertTrue(functionAppResource1.appSettings.containsKey(KEY_CONTENT_SHARE));
+        Assertions
+            .assertEquals(
+                functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
+                functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
+        // verify accountKey
+        Assertions
+            .assertEquals(
+                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
 
@@ -311,6 +324,11 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
+
+        FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
+        // premium plan requires this 2 settings
+        Assertions.assertTrue(functionAppResource1.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
+        Assertions.assertTrue(functionAppResource1.appSettings.containsKey(KEY_CONTENT_SHARE));
 
         // wait for deploy
         if (!isPlaybackMode()) {

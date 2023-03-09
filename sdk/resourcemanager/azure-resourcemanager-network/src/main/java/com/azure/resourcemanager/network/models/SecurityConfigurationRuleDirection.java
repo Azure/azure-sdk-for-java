@@ -17,6 +17,15 @@ public final class SecurityConfigurationRuleDirection extends ExpandableStringEn
     public static final SecurityConfigurationRuleDirection OUTBOUND = fromString("Outbound");
 
     /**
+     * Creates a new instance of SecurityConfigurationRuleDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityConfigurationRuleDirection() {
+    }
+
+    /**
      * Creates or finds a SecurityConfigurationRuleDirection from its string representation.
      *
      * @param name a name to look for.

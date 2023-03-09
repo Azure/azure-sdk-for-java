@@ -23,6 +23,15 @@ public final class AzureFirewallNetworkRuleProtocol extends ExpandableStringEnum
     public static final AzureFirewallNetworkRuleProtocol ICMP = fromString("ICMP");
 
     /**
+     * Creates a new instance of AzureFirewallNetworkRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallNetworkRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallNetworkRuleProtocol from its string representation.
      *
      * @param name a name to look for.

@@ -15,66 +15,67 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadContainer model =
             BinaryData
                 .fromString(
-                    "{\"containerType\":\"AzureWorkloadContainer\",\"sourceResourceId\":\"bwnupgahxkumas\",\"lastUpdatedTime\":\"2021-05-10T22:23:02Z\",\"extendedInfo\":{\"hostServerName\":\"fdmmcpug\",\"inquiryInfo\":{\"status\":\"qepvufhbzeh\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"lbqnbldxeacl\",\"status\":\"chorimkrsr\"}]},\"workloadType\":\"AzureFileShare\",\"operationType\":\"Reregister\",\"friendlyName\":\"fldpuviyfc\",\"backupManagementType\":\"AzureStorage\",\"registrationStatus\":\"olhbhlvb\",\"healthStatus\":\"uqibsxtkcu\",\"protectableObjectType\":\"b\"}")
+                    "{\"containerType\":\"AzureWorkloadContainer\",\"sourceResourceId\":\"htgv\",\"lastUpdatedTime\":\"2021-10-27T20:22:13Z\",\"extendedInfo\":{\"hostServerName\":\"rkolawjm\",\"inquiryInfo\":{\"status\":\"wro\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"zwyjafitlhgu\",\"status\":\"uchlgmltx\"},{\"nodeName\":\"mozusgzvlnsnnjz\",\"status\":\"afolpymwamxqzrag\"}]},\"workloadType\":\"Exchange\",\"operationType\":\"Register\",\"friendlyName\":\"dulajvlejchcs\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"nmzlanru\",\"healthStatus\":\"wvnph\",\"protectableObjectType\":\"zqtpjhmq\"}")
                 .toObject(AzureWorkloadContainer.class);
-        Assertions.assertEquals("fldpuviyfc", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
-        Assertions.assertEquals("olhbhlvb", model.registrationStatus());
-        Assertions.assertEquals("uqibsxtkcu", model.healthStatus());
-        Assertions.assertEquals("b", model.protectableObjectType());
-        Assertions.assertEquals("bwnupgahxkumas", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T22:23:02Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("fdmmcpug", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("qepvufhbzeh", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("lbqnbldxeacl", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("chorimkrsr", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workloadType());
-        Assertions.assertEquals(OperationType.REREGISTER, model.operationType());
+        Assertions.assertEquals("dulajvlejchcs", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("nmzlanru", model.registrationStatus());
+        Assertions.assertEquals("wvnph", model.healthStatus());
+        Assertions.assertEquals("zqtpjhmq", model.protectableObjectType());
+        Assertions.assertEquals("htgv", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T20:22:13Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("rkolawjm", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("wro", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("zwyjafitlhgu", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("uchlgmltx", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workloadType());
+        Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadContainer model =
             new AzureWorkloadContainer()
-                .withFriendlyName("fldpuviyfc")
-                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
-                .withRegistrationStatus("olhbhlvb")
-                .withHealthStatus("uqibsxtkcu")
-                .withProtectableObjectType("b")
-                .withSourceResourceId("bwnupgahxkumas")
-                .withLastUpdatedTime(OffsetDateTime.parse("2021-05-10T22:23:02Z"))
+                .withFriendlyName("dulajvlejchcs")
+                .withBackupManagementType(BackupManagementType.MAB)
+                .withRegistrationStatus("nmzlanru")
+                .withHealthStatus("wvnph")
+                .withProtectableObjectType("zqtpjhmq")
+                .withSourceResourceId("htgv")
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-10-27T20:22:13Z"))
                 .withExtendedInfo(
                     new AzureWorkloadContainerExtendedInfo()
-                        .withHostServerName("fdmmcpug")
-                        .withInquiryInfo(
-                            new InquiryInfo().withStatus("qepvufhbzeh").withInquiryDetails(Arrays.asList()))
+                        .withHostServerName("rkolawjm")
+                        .withInquiryInfo(new InquiryInfo().withStatus("wro").withInquiryDetails(Arrays.asList()))
                         .withNodesList(
                             Arrays
                                 .asList(
-                                    new DistributedNodesInfo().withNodeName("lbqnbldxeacl").withStatus("chorimkrsr"))))
-                .withWorkloadType(WorkloadType.AZURE_FILE_SHARE)
-                .withOperationType(OperationType.REREGISTER);
+                                    new DistributedNodesInfo().withNodeName("zwyjafitlhgu").withStatus("uchlgmltx"),
+                                    new DistributedNodesInfo()
+                                        .withNodeName("mozusgzvlnsnnjz")
+                                        .withStatus("afolpymwamxqzrag"))))
+                .withWorkloadType(WorkloadType.EXCHANGE)
+                .withOperationType(OperationType.REGISTER);
         model = BinaryData.fromObject(model).toObject(AzureWorkloadContainer.class);
-        Assertions.assertEquals("fldpuviyfc", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
-        Assertions.assertEquals("olhbhlvb", model.registrationStatus());
-        Assertions.assertEquals("uqibsxtkcu", model.healthStatus());
-        Assertions.assertEquals("b", model.protectableObjectType());
-        Assertions.assertEquals("bwnupgahxkumas", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T22:23:02Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("fdmmcpug", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("qepvufhbzeh", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("lbqnbldxeacl", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("chorimkrsr", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workloadType());
-        Assertions.assertEquals(OperationType.REREGISTER, model.operationType());
+        Assertions.assertEquals("dulajvlejchcs", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("nmzlanru", model.registrationStatus());
+        Assertions.assertEquals("wvnph", model.healthStatus());
+        Assertions.assertEquals("zqtpjhmq", model.protectableObjectType());
+        Assertions.assertEquals("htgv", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T20:22:13Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("rkolawjm", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("wro", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("zwyjafitlhgu", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("uchlgmltx", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workloadType());
+        Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 }

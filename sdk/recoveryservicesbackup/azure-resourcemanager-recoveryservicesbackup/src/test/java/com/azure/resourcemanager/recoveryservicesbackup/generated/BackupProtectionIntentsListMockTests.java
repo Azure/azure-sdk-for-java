@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntentResource;
@@ -35,7 +34,7 @@ public final class BackupProtectionIntentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"yxlzgs\",\"itemId\":\"kzzltafhbzf\",\"policyId\":\"vwmbjlzqsczpg\",\"protectionState\":\"NotProtected\"},\"eTag\":\"a\",\"location\":\"fdqwowftpt\",\"tags\":{\"h\":\"jtks\",\"hvyeldotj\":\"cgqyhleseyq\",\"kukjtasb\":\"dkwisw\",\"txfkndlqvt\":\"wispkxk\"},\"id\":\"knvgmmbugtywat\",\"name\":\"qaqkuea\",\"type\":\"groeshoyg\"}]}";
+            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"eryekzkdhmeottaw\",\"itemId\":\"osxw\",\"policyId\":\"nhjtf\",\"protectionState\":\"NotProtected\"},\"eTag\":\"pmil\",\"location\":\"pnwy\",\"tags\":{\"iqhzlr\":\"qllzsauzpjlxeehu\",\"xls\":\"yme\",\"yyshtuwgmevua\":\"ihmxrfdsajredn\",\"rkgwltxeqip\":\"pwzyi\"},\"id\":\"gzdyimsfayorp\",\"name\":\"avkjog\",\"type\":\"sl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +63,20 @@ public final class BackupProtectionIntentsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProtectionIntentResource> response =
-            manager.backupProtectionIntents().list("jjk", "ajb", "scgdu", "sioycblevpmcl", Context.NONE);
+            manager
+                .backupProtectionIntents()
+                .list("kn", "rwzawnvs", "cfhzagxnvhycv", "imwrzregzgyufu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fdqwowftpt", response.iterator().next().location());
-        Assertions.assertEquals("jtks", response.iterator().next().tags().get("h"));
+        Assertions.assertEquals("pnwy", response.iterator().next().location());
+        Assertions.assertEquals("qllzsauzpjlxeehu", response.iterator().next().tags().get("iqhzlr"));
         Assertions
             .assertEquals(
-                BackupManagementType.DEFAULT_BACKUP, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("yxlzgs", response.iterator().next().properties().sourceResourceId());
-        Assertions.assertEquals("kzzltafhbzf", response.iterator().next().properties().itemId());
-        Assertions.assertEquals("vwmbjlzqsczpg", response.iterator().next().properties().policyId());
+                BackupManagementType.AZURE_IAAS_VM, response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("eryekzkdhmeottaw", response.iterator().next().properties().sourceResourceId());
+        Assertions.assertEquals("osxw", response.iterator().next().properties().itemId());
+        Assertions.assertEquals("nhjtf", response.iterator().next().properties().policyId());
         Assertions
             .assertEquals(ProtectionStatus.NOT_PROTECTED, response.iterator().next().properties().protectionState());
-        Assertions.assertEquals("a", response.iterator().next().etag());
+        Assertions.assertEquals("pmil", response.iterator().next().etag());
     }
 }

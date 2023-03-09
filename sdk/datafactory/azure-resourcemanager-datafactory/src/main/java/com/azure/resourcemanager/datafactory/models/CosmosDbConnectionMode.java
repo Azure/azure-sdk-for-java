@@ -17,6 +17,15 @@ public final class CosmosDbConnectionMode extends ExpandableStringEnum<CosmosDbC
     public static final CosmosDbConnectionMode DIRECT = fromString("Direct");
 
     /**
+     * Creates a new instance of CosmosDbConnectionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CosmosDbConnectionMode() {
+    }
+
+    /**
      * Creates or finds a CosmosDbConnectionMode from its string representation.
      *
      * @param name a name to look for.

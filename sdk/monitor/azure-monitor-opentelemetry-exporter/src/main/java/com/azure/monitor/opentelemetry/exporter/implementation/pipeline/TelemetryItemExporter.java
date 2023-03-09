@@ -134,7 +134,7 @@ public class TelemetryItemExporter {
             try (JsonGenerator jg = mapper.createGenerator(debug)) {
                 writeTelemetryItems(jg, telemetryItems);
             }
-            logger.verbose("sending telemetry to ingestion service:\n{}", debug);
+            logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
         }
 
         ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);

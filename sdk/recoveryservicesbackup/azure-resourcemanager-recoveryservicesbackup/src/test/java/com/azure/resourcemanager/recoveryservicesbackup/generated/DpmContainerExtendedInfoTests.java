@@ -8,23 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DpmContainerExtendedInfo;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DpmContainerExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DpmContainerExtendedInfo model =
             BinaryData
-                .fromString("{\"lastRefreshedAt\":\"2021-02-11T05:39:41Z\"}")
+                .fromString("{\"lastRefreshedAt\":\"2021-11-08T19:03:48Z\"}")
                 .toObject(DpmContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T05:39:41Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T19:03:48Z"), model.lastRefreshedAt());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DpmContainerExtendedInfo model =
-            new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-02-11T05:39:41Z"));
+            new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-11-08T19:03:48Z"));
         model = BinaryData.fromObject(model).toObject(DpmContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T05:39:41Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T19:03:48Z"), model.lastRefreshedAt());
     }
 }

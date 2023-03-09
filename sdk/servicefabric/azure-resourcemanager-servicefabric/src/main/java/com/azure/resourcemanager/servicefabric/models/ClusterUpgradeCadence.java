@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterUpgradeCadence. */
+/** Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. */
 public final class ClusterUpgradeCadence extends ExpandableStringEnum<ClusterUpgradeCadence> {
     /** Static value Wave0 for ClusterUpgradeCadence. */
     public static final ClusterUpgradeCadence WAVE0 = fromString("Wave0");
@@ -18,6 +18,15 @@ public final class ClusterUpgradeCadence extends ExpandableStringEnum<ClusterUpg
 
     /** Static value Wave2 for ClusterUpgradeCadence. */
     public static final ClusterUpgradeCadence WAVE2 = fromString("Wave2");
+
+    /**
+     * Creates a new instance of ClusterUpgradeCadence value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterUpgradeCadence() {
+    }
 
     /**
      * Creates or finds a ClusterUpgradeCadence from its string representation.
@@ -30,7 +39,11 @@ public final class ClusterUpgradeCadence extends ExpandableStringEnum<ClusterUpg
         return fromString(name, ClusterUpgradeCadence.class);
     }
 
-    /** @return known ClusterUpgradeCadence values. */
+    /**
+     * Gets known ClusterUpgradeCadence values.
+     *
+     * @return known ClusterUpgradeCadence values.
+     */
     public static Collection<ClusterUpgradeCadence> values() {
         return values(ClusterUpgradeCadence.class);
     }

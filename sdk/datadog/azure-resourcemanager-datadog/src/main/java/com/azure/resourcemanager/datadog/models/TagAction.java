@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TagAction. */
+/** Valid actions for a filtering tag. Exclusion takes priority over inclusion. */
 public final class TagAction extends ExpandableStringEnum<TagAction> {
     /** Static value Include for TagAction. */
     public static final TagAction INCLUDE = fromString("Include");
 
     /** Static value Exclude for TagAction. */
     public static final TagAction EXCLUDE = fromString("Exclude");
+
+    /**
+     * Creates a new instance of TagAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TagAction() {
+    }
 
     /**
      * Creates or finds a TagAction from its string representation.
@@ -27,7 +36,11 @@ public final class TagAction extends ExpandableStringEnum<TagAction> {
         return fromString(name, TagAction.class);
     }
 
-    /** @return known TagAction values. */
+    /**
+     * Gets known TagAction values.
+     *
+     * @return known TagAction values.
+     */
     public static Collection<TagAction> values() {
         return values(TagAction.class);
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityAdminConfigurations Get. */
 public final class SecurityAdminConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerSecurityAdminConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerSecurityAdminConfigurationGet.json
      */
     /**
      * Sample code: Get security admin configurations.
@@ -22,6 +20,6 @@ public final class SecurityAdminConfigurationsGetSamples {
             .manager()
             .serviceClient()
             .getSecurityAdminConfigurations()
-            .getWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig", Context.NONE);
+            .getWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig", com.azure.core.util.Context.NONE);
     }
 }

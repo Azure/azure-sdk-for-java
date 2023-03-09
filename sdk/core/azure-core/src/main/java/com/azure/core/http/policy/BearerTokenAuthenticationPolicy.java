@@ -25,8 +25,6 @@ import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String AUTHORIZATION_HEADER_LOWER_CASE = "authorization";
     private static final String BEARER = "Bearer";
 
     private final String[] scopes;

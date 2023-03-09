@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.NetworkManagerConnectionInner;
 
 /** Samples for ManagementGroupNetworkManagerConnections CreateOrUpdate. */
 public final class ManagementGroupNetworkManagerConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerConnectionManagementGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerConnectionManagementGroupPut.json
      */
     /**
      * Sample code: Create or Update Management Group Network Manager Connection.
@@ -30,6 +29,6 @@ public final class ManagementGroupNetworkManagerConnectionsCreateOrUpdateSamples
                 new NetworkManagerConnectionInner()
                     .withNetworkManagerId(
                         "/subscriptions/subscriptionC/resourceGroup/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

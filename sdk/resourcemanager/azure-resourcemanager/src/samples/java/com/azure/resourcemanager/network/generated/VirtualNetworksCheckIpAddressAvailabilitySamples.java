@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworks CheckIpAddressAvailability. */
 public final class VirtualNetworksCheckIpAddressAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkCheckIPAddressAvailability.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkCheckIPAddressAvailability.json
      */
     /**
      * Sample code: Check IP address availability.
@@ -22,6 +20,6 @@ public final class VirtualNetworksCheckIpAddressAvailabilitySamples {
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .checkIpAddressAvailabilityWithResponse("rg1", "test-vnet", "10.0.1.4", Context.NONE);
+            .checkIpAddressAvailabilityWithResponse("rg1", "test-vnet", "10.0.1.4", com.azure.core.util.Context.NONE);
     }
 }

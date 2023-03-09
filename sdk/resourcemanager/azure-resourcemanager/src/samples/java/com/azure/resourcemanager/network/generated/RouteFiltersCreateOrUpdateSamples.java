@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.network.models.Access;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for RouteFilters CreateOrUpdate. */
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteFilterCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.
@@ -43,7 +42,7 @@ public final class RouteFiltersCreateOrUpdateSamples {
                                     .withAccess(Access.ALLOW)
                                     .withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY)
                                     .withCommunities(Arrays.asList("12076:5030", "12076:5040")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -5,41 +5,32 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters used to update an existing Creator resource. */
-@JsonFlatten
 @Fluent
-public class CreatorUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatorUpdateParameters.class);
-
+public final class CreatorUpdateParameters {
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and
+     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
+     * must have a key no greater than 128 characters and value no greater than 256 characters.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The state of the resource provisioning, terminal states: Succeeded,
-     * Failed, Canceled
+     * Creator resource properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private CreatorProperties innerProperties;
 
-    /*
-     * The storage units to be allocated. Integer values from 1 to 100,
-     * inclusive.
-     */
-    @JsonProperty(value = "properties.storageUnits")
-    private Integer storageUnits;
+    /** Creates an instance of CreatorUpdateParameters class. */
+    public CreatorUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
@@ -66,13 +57,22 @@ public class CreatorUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Creator resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private CreatorProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the provisioningState property: The state of the resource provisioning, terminal states: Succeeded, Failed,
      * Canceled.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -81,7 +81,7 @@ public class CreatorUpdateParameters {
      * @return the storageUnits value.
      */
     public Integer storageUnits() {
-        return this.storageUnits;
+        return this.innerProperties() == null ? null : this.innerProperties().storageUnits();
     }
 
     /**
@@ -91,7 +91,10 @@ public class CreatorUpdateParameters {
      * @return the CreatorUpdateParameters object itself.
      */
     public CreatorUpdateParameters withStorageUnits(Integer storageUnits) {
-        this.storageUnits = storageUnits;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreatorProperties();
+        }
+        this.innerProperties().withStorageUnits(storageUnits);
         return this;
     }
 
@@ -101,5 +104,8 @@ public class CreatorUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

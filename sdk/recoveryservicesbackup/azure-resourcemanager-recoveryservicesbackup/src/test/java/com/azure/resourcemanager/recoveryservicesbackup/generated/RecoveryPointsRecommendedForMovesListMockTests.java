@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
@@ -35,7 +34,7 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"ltrfowtdvrf\",\"location\":\"vlihcvjd\",\"tags\":{\"yojbfqzdkf\":\"rjidhftukvhdxl\",\"atqxmbjroumzzn\":\"jyixhaf\",\"jrhuzgf\":\"al\"},\"id\":\"on\",\"name\":\"tpusllywp\",\"type\":\"tiotzb\"}]}";
+            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"qfp\",\"location\":\"vstclg\",\"tags\":{\"smtbljjehhcif\":\"werfwx\",\"tbrekqhsqhtf\":\"wdv\",\"yejuwyqwdqigmghg\":\"wpq\"},\"id\":\"nztxlujkh\",\"name\":\"jcmrnkfm\",\"type\":\"h\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,18 +66,18 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
             manager
                 .recoveryPointsRecommendedForMoves()
                 .list(
-                    "emehllizh",
-                    "eumoqod",
-                    "adppyibn",
-                    "qladywrxwhydtlu",
-                    "vadswzs",
+                    "cladvatdavuqmcb",
+                    "msfobjlquvj",
+                    "zcjumvpsimioyoig",
+                    "kmi",
+                    "wnnra",
                     new ListRecoveryPointsRecommendedForMoveRequest()
-                        .withObjectType("yemlowuowhlxln")
-                        .withExcludedRPList(Arrays.asList("mouvbl", "mo")),
-                    Context.NONE);
+                        .withObjectType("ibb")
+                        .withExcludedRPList(Arrays.asList("spkladydgnhau", "wuk", "xzgpmn", "abeddqilwgd")),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vlihcvjd", response.iterator().next().location());
-        Assertions.assertEquals("rjidhftukvhdxl", response.iterator().next().tags().get("yojbfqzdkf"));
-        Assertions.assertEquals("ltrfowtdvrf", response.iterator().next().etag());
+        Assertions.assertEquals("vstclg", response.iterator().next().location());
+        Assertions.assertEquals("werfwx", response.iterator().next().tags().get("smtbljjehhcif"));
+        Assertions.assertEquals("qfp", response.iterator().next().etag());
     }
 }

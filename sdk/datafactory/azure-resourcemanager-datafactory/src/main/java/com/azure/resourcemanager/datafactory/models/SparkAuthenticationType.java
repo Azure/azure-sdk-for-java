@@ -24,6 +24,15 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
         fromString("WindowsAzureHDInsightService");
 
     /**
+     * Creates a new instance of SparkAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a SparkAuthenticationType from its string representation.
      *
      * @param name a name to look for.

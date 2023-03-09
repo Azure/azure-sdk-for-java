@@ -1,5 +1,123 @@
 # Release History
 
+## 4.7.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.9 and Spring Cloud dependencies version to 2021.0.5
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fixed Event Hubs Message header `source-type` from `kafka` to `amqp` when using `StreamBridge#send`. [#32777](https://github.com/Azure/azure-sdk-for-java/issues/32777)
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Make the default partition behavior of Spring Cloud Azure EventHubs binder be a round-robin assignment to align with Event Hubs.[#32816](https://github.com/Azure/azure-sdk-for-java/pull/32816).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Deprecated properties for AAD and AAD B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
+  - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
+  - Deprecated properties `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
+
+## 4.6.0 (2023-02-07)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.8. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>8) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
+
+#### Features Added
+- Release the `spring-cloud-azure-starter-redis`. This starter supports Azure hosted Redis service authenticating with Azure AD.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
+- Make the domain-name option optional when configuring Event Hubs/Service Bus in non-public Azure cloud [#32034](https://github.com/Azure/azure-sdk-for-java/issues/32034).
+
+#### Breaking Changes
+- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).
+- Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32799](https://github.com/Azure/azure-sdk-for-java/pull/32799).
+- Change the default value of `spring.cloud.azure.eventhubs.processor.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
+#### Bugs Fixed
+- Fixed `GraphClient` exceptions handling when switching `HttpURLConnection` to `RestTemplate`. [#32779](https://github.com/Azure/azure-sdk-for-java/issues/32779)
+
+#### Dependency Updates
+- Upgrade Azure SDK BOM to 1.2.9.
+- Upgrade Azure Spring Data Cosmos to 3.31.0.
+- Upgrade Azure Resource Manager to 2.23.0.
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Bugs Fixed
+- Remove warning logs about client properties while using Kafka passwordless. [#32235](https://github.com/Azure/azure-sdk-for-java/issues/32235)
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Breaking Changes
+- Change the default load-balancing strategy from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Change the default value of `spring.cloud.stream.eventhubs.bindings.<binding-name>.consumer.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
+## 5.0.0 (2023-01-17)
+- This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Breaking Changes
+- Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
+- Remove Spring AOT support [#32742](https://github.com/Azure/azure-sdk-for-java/pull/32742).
+- Decrease the major version of Spring Cloud Azure to 5.0 [#32947](https://github.com/Azure/azure-sdk-for-java/pull/32947).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741).
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property [#32720](https://github.com/Azure/azure-sdk-for-java/pull/32720).
+
+#### Breaking Changes
+- Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514).
+- Remove Cloud Foundry support [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
+- Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32817](https://github.com/Azure/azure-sdk-for-java/pull/32817).
+- Change the default value of `spring.cloud.azure.eventhubs.processor.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
+
+#### Bugs Fixed
+- Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)
+
+### Spring Messaging Azure
+This section includes changes in `spring-messaging-azure` module.
+
+#### Breaking Changes
+- Rename class `AbstractAzureMessageConverter` to `AbstractJacksonAzureMessageConverter` [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Bugs Fixed
+- Remove warning logs about client properties while using Kafka passwordless. [#32235](https://github.com/Azure/azure-sdk-for-java/issues/32235)
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Breaking Changes
+- Change the default load-balancing strategy from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Change the default value of `spring.cloud.stream.eventhubs.bindings.<binding-name>.consumer.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
+
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
 

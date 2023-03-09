@@ -39,16 +39,6 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResource get(String resourceGroupName, String vaultName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, privateLinkResourceName);
-        if (inner != null) {
-            return new PrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String vaultName, String privateLinkResourceName, Context context) {
         Response<PrivateLinkResourceInner> inner =
@@ -59,6 +49,16 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResource get(String resourceGroupName, String vaultName, String privateLinkResourceName) {
+        PrivateLinkResourceInner inner =
+            this.serviceClient().get(resourceGroupName, vaultName, privateLinkResourceName);
+        if (inner != null) {
+            return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

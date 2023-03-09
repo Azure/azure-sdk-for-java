@@ -16,6 +16,10 @@ public final class Properties {
     @JsonProperty(value = "serviceSpecification", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceSpecification serviceSpecification;
 
+    /** Creates an instance of Properties class. */
+    public Properties() {
+    }
+
     /**
      * Get the serviceSpecification property: The service specifications.
      *

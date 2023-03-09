@@ -28,15 +28,6 @@ public final class MediaServicesOperationResultsImpl implements MediaServicesOpe
         this.serviceManager = serviceManager;
     }
 
-    public MediaService get(String locationName, String operationId) {
-        MediaServiceInner inner = this.serviceClient().get(locationName, operationId);
-        if (inner != null) {
-            return new MediaServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MediaService> getWithResponse(String locationName, String operationId, Context context) {
         MediaServicesOperationResultsGetResponse inner =
             this.serviceClient().getWithResponse(locationName, operationId, context);
@@ -46,6 +37,15 @@ public final class MediaServicesOperationResultsImpl implements MediaServicesOpe
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MediaServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MediaService get(String locationName, String operationId) {
+        MediaServiceInner inner = this.serviceClient().get(locationName, operationId);
+        if (inner != null) {
+            return new MediaServiceImpl(inner, this.manager());
         } else {
             return null;
         }

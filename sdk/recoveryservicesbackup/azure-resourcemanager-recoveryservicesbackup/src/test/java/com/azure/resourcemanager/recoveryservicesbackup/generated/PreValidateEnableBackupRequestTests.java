@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PreValidateEnableBackupRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PreValidateEnableBackupRequest model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class PreValidateEnableBackupRequestTests {
         Assertions.assertEquals("xrifkwmrvkts", model.properties());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PreValidateEnableBackupRequest model =
             new PreValidateEnableBackupRequest()
                 .withResourceType(DataSourceType.SHAREPOINT)

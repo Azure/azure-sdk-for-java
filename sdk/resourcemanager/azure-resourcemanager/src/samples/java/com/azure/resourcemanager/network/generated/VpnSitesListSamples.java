@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VpnSites List. */
 public final class VpnSitesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnSiteList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnSiteList.json
      */
     /**
      * Sample code: VpnSiteList.
@@ -17,6 +15,6 @@ public final class VpnSitesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnSites().list(Context.NONE);
+        azure.networks().manager().serviceClient().getVpnSites().list(com.azure.core.util.Context.NONE);
     }
 }

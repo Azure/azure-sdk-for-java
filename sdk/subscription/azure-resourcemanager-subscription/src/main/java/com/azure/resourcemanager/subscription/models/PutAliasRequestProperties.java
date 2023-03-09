@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Put subscription properties. */
 @Fluent
 public final class PutAliasRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutAliasRequestProperties.class);
-
     /*
      * The friendly name of the subscription.
      */
@@ -21,8 +17,7 @@ public final class PutAliasRequestProperties {
     private String displayName;
 
     /*
-     * The workload type of the subscription. It can be either Production or
-     * DevTest.
+     * The workload type of the subscription. It can be either Production or DevTest.
      */
     @JsonProperty(value = "workload")
     private Workload workload;
@@ -44,6 +39,10 @@ public final class PutAliasRequestProperties {
      */
     @JsonProperty(value = "resellerId")
     private String resellerId;
+
+    /** Creates an instance of PutAliasRequestProperties class. */
+    public PutAliasRequestProperties() {
+    }
 
     /**
      * Get the displayName property: The friendly name of the subscription.

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Signed identifier. */
-@Fluent
 @JacksonXmlRootElement(localName = "SignedIdentifier")
+@Fluent
 public final class ShareSignedIdentifier {
 
     /*

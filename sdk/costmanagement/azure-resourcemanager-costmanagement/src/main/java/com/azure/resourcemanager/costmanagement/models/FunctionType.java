@@ -8,19 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FunctionType. */
+/** The name of the aggregation function to use. */
 public final class FunctionType extends ExpandableStringEnum<FunctionType> {
-    /** Static value Avg for FunctionType. */
-    public static final FunctionType AVG = fromString("Avg");
-
-    /** Static value Max for FunctionType. */
-    public static final FunctionType MAX = fromString("Max");
-
-    /** Static value Min for FunctionType. */
-    public static final FunctionType MIN = fromString("Min");
-
     /** Static value Sum for FunctionType. */
     public static final FunctionType SUM = fromString("Sum");
+
+    /**
+     * Creates a new instance of FunctionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FunctionType() {
+    }
 
     /**
      * Creates or finds a FunctionType from its string representation.
@@ -33,7 +33,11 @@ public final class FunctionType extends ExpandableStringEnum<FunctionType> {
         return fromString(name, FunctionType.class);
     }
 
-    /** @return known FunctionType values. */
+    /**
+     * Gets known FunctionType values.
+     *
+     * @return known FunctionType values.
+     */
     public static Collection<FunctionType> values() {
         return values(FunctionType.class);
     }

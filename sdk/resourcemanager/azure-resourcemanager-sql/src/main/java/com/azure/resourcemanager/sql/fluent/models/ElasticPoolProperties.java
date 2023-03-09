@@ -33,15 +33,20 @@ public final class ElasticPoolProperties {
     private Long maxSizeBytes;
 
     /*
+     * Minimal capacity that serverless pool will not shrink below, if not paused
+     */
+    @JsonProperty(value = "minCapacity")
+    private Double minCapacity;
+
+    /*
      * The per database settings for the elastic pool.
      */
     @JsonProperty(value = "perDatabaseSettings")
     private ElasticPoolPerDatabaseSettings perDatabaseSettings;
 
     /*
-     * Whether or not this elastic pool is zone redundant, which means the
-     * replicas of this elastic pool will be spread across multiple
-     * availability zones.
+     * Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread
+     * across multiple availability zones.
      */
     @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
@@ -51,6 +56,24 @@ public final class ElasticPoolProperties {
      */
     @JsonProperty(value = "licenseType")
     private ElasticPoolLicenseType licenseType;
+
+    /*
+     * Maintenance configuration id assigned to the elastic pool. This configuration defines the period when the
+     * maintenance updates will will occur.
+     */
+    @JsonProperty(value = "maintenanceConfigurationId")
+    private String maintenanceConfigurationId;
+
+    /*
+     * The number of secondary replicas associated with the elastic pool that are used to provide high availability.
+     * Applicable only to Hyperscale elastic pools.
+     */
+    @JsonProperty(value = "highAvailabilityReplicaCount")
+    private Integer highAvailabilityReplicaCount;
+
+    /** Creates an instance of ElasticPoolProperties class. */
+    public ElasticPoolProperties() {
+    }
 
     /**
      * Get the state property: The state of the elastic pool.
@@ -87,6 +110,26 @@ public final class ElasticPoolProperties {
      */
     public ElasticPoolProperties withMaxSizeBytes(Long maxSizeBytes) {
         this.maxSizeBytes = maxSizeBytes;
+        return this;
+    }
+
+    /**
+     * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @return the minCapacity value.
+     */
+    public Double minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withMinCapacity(Double minCapacity) {
+        this.minCapacity = minCapacity;
         return this;
     }
 
@@ -149,6 +192,50 @@ public final class ElasticPoolProperties {
      */
     public ElasticPoolProperties withLicenseType(ElasticPoolLicenseType licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @return the highAvailabilityReplicaCount value.
+     */
+    public Integer highAvailabilityReplicaCount() {
+        return this.highAvailabilityReplicaCount;
+    }
+
+    /**
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
+        this.highAvailabilityReplicaCount = highAvailabilityReplicaCount;
         return this;
     }
 

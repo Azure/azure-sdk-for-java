@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementUsage;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
@@ -34,7 +33,7 @@ public final class BackupUsageSummariesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"unit\":\"BytesPerSecond\",\"quotaPeriod\":\"ljdjuskbrreqy\",\"nextResetTime\":\"2021-11-21T07:30:22Z\",\"currentValue\":6302992004022602829,\"limit\":1905948100625439372,\"name\":{\"value\":\"pl\",\"localizedValue\":\"ysh\"}}]}";
+            "{\"value\":[{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"gxannnoytzposewx\",\"nextResetTime\":\"2021-07-30T20:51:02Z\",\"currentValue\":7765276897594665546,\"limit\":8890314367257087596,\"name\":{\"value\":\"xvpif\",\"localizedValue\":\"aifyzyzeyuubeids\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +62,17 @@ public final class BackupUsageSummariesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BackupManagementUsage> response =
-            manager.backupUsageSummaries().list("cbyfqxkf", "oytehqpuvjm", "qm", "dwckygroe", Context.NONE);
+            manager
+                .backupUsageSummaries()
+                .list("bnsmjkwynqxaek", "sykvwjtqpke", "myltj", "rspxklur", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsagesUnit.BYTES_PER_SECOND, response.iterator().next().unit());
-        Assertions.assertEquals("ljdjuskbrreqy", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(UsagesUnit.COUNT_PER_SECOND, response.iterator().next().unit());
+        Assertions.assertEquals("gxannnoytzposewx", response.iterator().next().quotaPeriod());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-11-21T07:30:22Z"), response.iterator().next().nextResetTime());
-        Assertions.assertEquals(6302992004022602829L, response.iterator().next().currentValue());
-        Assertions.assertEquals(1905948100625439372L, response.iterator().next().limit());
-        Assertions.assertEquals("pl", response.iterator().next().name().value());
-        Assertions.assertEquals("ysh", response.iterator().next().name().localizedValue());
+            .assertEquals(OffsetDateTime.parse("2021-07-30T20:51:02Z"), response.iterator().next().nextResetTime());
+        Assertions.assertEquals(7765276897594665546L, response.iterator().next().currentValue());
+        Assertions.assertEquals(8890314367257087596L, response.iterator().next().limit());
+        Assertions.assertEquals("xvpif", response.iterator().next().name().value());
+        Assertions.assertEquals("aifyzyzeyuubeids", response.iterator().next().name().localizedValue());
     }
 }

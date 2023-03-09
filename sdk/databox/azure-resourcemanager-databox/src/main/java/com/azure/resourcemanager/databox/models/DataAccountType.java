@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DataAccountType. */
+/** Type of the account. */
 public enum DataAccountType {
     /** Enum value StorageAccount. */
     STORAGE_ACCOUNT("StorageAccount"),
@@ -30,6 +30,9 @@ public enum DataAccountType {
      */
     @JsonCreator
     public static DataAccountType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataAccountType[] items = DataAccountType.values();
         for (DataAccountType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DataAccountType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

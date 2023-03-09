@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.assertj.core.api.Condition;
 
 import java.util.ArrayList;

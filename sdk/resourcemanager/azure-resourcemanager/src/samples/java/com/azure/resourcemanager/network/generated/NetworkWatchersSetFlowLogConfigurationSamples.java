@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
 
 /** Samples for NetworkWatchers SetFlowLogConfiguration. */
 public final class NetworkWatchersSetFlowLogConfigurationSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherFlowLogConfigure.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherFlowLogConfigure.json
      */
     /**
      * Sample code: Configure flow log.
@@ -32,6 +31,6 @@ public final class NetworkWatchersSetFlowLogConfigurationSamples {
                     .withStorageId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/st1")
                     .withEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

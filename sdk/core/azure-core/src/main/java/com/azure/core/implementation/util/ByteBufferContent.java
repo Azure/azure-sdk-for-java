@@ -85,6 +85,11 @@ public final class ByteBufferContent extends BinaryDataContent {
         return Mono.just(this);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
+
     private byte[] getBytes() {
         byte[] bytes = new byte[content.remaining()];
 

@@ -8,19 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.models.GroupIdInformationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The group information for creating a private endpoint on a workspace. */
 @Fluent
 public final class GroupIdInformationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationInner.class);
-
     /*
      * The group id properties.
      */
     @JsonProperty(value = "properties", required = true)
     private GroupIdInformationProperties properties;
+
+    /** Creates an instance of GroupIdInformationInner class. */
+    public GroupIdInformationInner() {
+    }
 
     /**
      * Get the properties property: The group id properties.
@@ -49,7 +50,7 @@ public final class GroupIdInformationInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model GroupIdInformationInner"));
@@ -57,4 +58,6 @@ public final class GroupIdInformationInner extends ProxyResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupIdInformationInner.class);
 }

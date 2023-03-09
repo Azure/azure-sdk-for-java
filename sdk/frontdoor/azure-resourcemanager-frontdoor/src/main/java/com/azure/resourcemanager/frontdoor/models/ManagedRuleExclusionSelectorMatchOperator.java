@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedRuleExclusionSelectorMatchOperator. */
+/**
+ * Comparison operator to apply to the selector when specifying which elements in the collection this exclusion applies
+ * to.
+ */
 public final class ManagedRuleExclusionSelectorMatchOperator
     extends ExpandableStringEnum<ManagedRuleExclusionSelectorMatchOperator> {
     /** Static value Equals for ManagedRuleExclusionSelectorMatchOperator. */
@@ -27,6 +30,15 @@ public final class ManagedRuleExclusionSelectorMatchOperator
     public static final ManagedRuleExclusionSelectorMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
+     * Creates a new instance of ManagedRuleExclusionSelectorMatchOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedRuleExclusionSelectorMatchOperator() {
+    }
+
+    /**
      * Creates or finds a ManagedRuleExclusionSelectorMatchOperator from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +49,11 @@ public final class ManagedRuleExclusionSelectorMatchOperator
         return fromString(name, ManagedRuleExclusionSelectorMatchOperator.class);
     }
 
-    /** @return known ManagedRuleExclusionSelectorMatchOperator values. */
+    /**
+     * Gets known ManagedRuleExclusionSelectorMatchOperator values.
+     *
+     * @return known ManagedRuleExclusionSelectorMatchOperator values.
+     */
     public static Collection<ManagedRuleExclusionSelectorMatchOperator> values() {
         return values(ManagedRuleExclusionSelectorMatchOperator.class);
     }

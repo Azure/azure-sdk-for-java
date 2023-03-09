@@ -14,6 +14,15 @@ public final class SharedToValues extends ExpandableStringEnum<SharedToValues> {
     public static final SharedToValues TENANT = fromString("tenant");
 
     /**
+     * Creates a new instance of SharedToValues value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharedToValues() {
+    }
+
+    /**
      * Creates or finds a SharedToValues from its string representation.
      *
      * @param name a name to look for.

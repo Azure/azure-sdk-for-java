@@ -60,6 +60,13 @@ public interface KustoManagementClient {
     ClusterPrincipalAssignmentsClient getClusterPrincipalAssignments();
 
     /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    SkusClient getSkus();
+
+    /**
      * Gets the DatabasesClient object to access its operations.
      *
      * @return the DatabasesClient object.

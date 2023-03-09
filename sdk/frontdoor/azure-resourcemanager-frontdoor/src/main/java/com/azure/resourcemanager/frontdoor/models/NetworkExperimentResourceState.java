@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkExperimentResourceState. */
+/** Defines the server side resource status. */
 public final class NetworkExperimentResourceState extends ExpandableStringEnum<NetworkExperimentResourceState> {
     /** Static value Creating for NetworkExperimentResourceState. */
     public static final NetworkExperimentResourceState CREATING = fromString("Creating");
@@ -29,6 +29,15 @@ public final class NetworkExperimentResourceState extends ExpandableStringEnum<N
     public static final NetworkExperimentResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of NetworkExperimentResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkExperimentResourceState() {
+    }
+
+    /**
      * Creates or finds a NetworkExperimentResourceState from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class NetworkExperimentResourceState extends ExpandableStringEnum<N
         return fromString(name, NetworkExperimentResourceState.class);
     }
 
-    /** @return known NetworkExperimentResourceState values. */
+    /**
+     * Gets known NetworkExperimentResourceState values.
+     *
+     * @return known NetworkExperimentResourceState values.
+     */
     public static Collection<NetworkExperimentResourceState> values() {
         return values(NetworkExperimentResourceState.class);
     }

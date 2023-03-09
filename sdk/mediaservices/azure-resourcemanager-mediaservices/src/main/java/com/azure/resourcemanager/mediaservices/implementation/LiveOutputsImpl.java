@@ -41,15 +41,6 @@ public final class LiveOutputsImpl implements LiveOutputs {
         return Utils.mapPage(inner, inner1 -> new LiveOutputImpl(inner1, this.manager()));
     }
 
-    public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
-        LiveOutputInner inner = this.serviceClient().get(resourceGroupName, accountName, liveEventName, liveOutputName);
-        if (inner != null) {
-            return new LiveOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LiveOutput> getWithResponse(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         Response<LiveOutputInner> inner =
@@ -67,6 +58,15 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
     }
 
+    public LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
+        LiveOutputInner inner = this.serviceClient().get(resourceGroupName, accountName, liveEventName, liveOutputName);
+        if (inner != null) {
+            return new LiveOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
         this.serviceClient().delete(resourceGroupName, accountName, liveEventName, liveOutputName);
     }
@@ -74,16 +74,6 @@ public final class LiveOutputsImpl implements LiveOutputs {
     public void delete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, liveEventName, liveOutputName, context);
-    }
-
-    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
-        AsyncOperationResultInner inner =
-            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
-        if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AsyncOperationResult> asyncOperationWithResponse(
@@ -101,14 +91,11 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
     }
 
-    public LiveOutput operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
-        LiveOutputInner inner =
-            this
-                .serviceClient()
-                .operationLocation(resourceGroupName, accountName, liveEventName, liveOutputName, operationId);
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
         if (inner != null) {
-            return new LiveOutputImpl(inner, this.manager());
+            return new AsyncOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -132,6 +119,19 @@ public final class LiveOutputsImpl implements LiveOutputs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LiveOutputImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LiveOutput operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        LiveOutputInner inner =
+            this
+                .serviceClient()
+                .operationLocation(resourceGroupName, accountName, liveEventName, liveOutputName, operationId);
+        if (inner != null) {
+            return new LiveOutputImpl(inner, this.manager());
         } else {
             return null;
         }

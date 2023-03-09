@@ -5,36 +5,30 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The extended Info of the Data Box Edge/Gateway device. */
-@JsonFlatten
 @Fluent
-public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxEdgeDeviceExtendedInfoInner.class);
-
+public final class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
     /*
-     * The digital signature of encrypted certificate.
+     * The extended info properties.
      */
-    @JsonProperty(value = "properties.encryptionKeyThumbprint")
-    private String encryptionKeyThumbprint;
+    @JsonProperty(value = "properties")
+    private DataBoxEdgeDeviceExtendedInfoProperties innerProperties;
 
-    /*
-     * The public part of the encryption certificate. Client uses this to
-     * encrypt any secret.
-     */
-    @JsonProperty(value = "properties.encryptionKey")
-    private String encryptionKey;
+    /** Creates an instance of DataBoxEdgeDeviceExtendedInfoInner class. */
+    public DataBoxEdgeDeviceExtendedInfoInner() {
+    }
 
-    /*
-     * The Resource ID of the Resource.
+    /**
+     * Get the innerProperties property: The extended info properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.resourceKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceKey;
+    private DataBoxEdgeDeviceExtendedInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the encryptionKeyThumbprint property: The digital signature of encrypted certificate.
@@ -42,7 +36,7 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
      * @return the encryptionKeyThumbprint value.
      */
     public String encryptionKeyThumbprint() {
-        return this.encryptionKeyThumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionKeyThumbprint();
     }
 
     /**
@@ -52,7 +46,10 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
      * @return the DataBoxEdgeDeviceExtendedInfoInner object itself.
      */
     public DataBoxEdgeDeviceExtendedInfoInner withEncryptionKeyThumbprint(String encryptionKeyThumbprint) {
-        this.encryptionKeyThumbprint = encryptionKeyThumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceExtendedInfoProperties();
+        }
+        this.innerProperties().withEncryptionKeyThumbprint(encryptionKeyThumbprint);
         return this;
     }
 
@@ -63,7 +60,7 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
      * @return the encryptionKey value.
      */
     public String encryptionKey() {
-        return this.encryptionKey;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionKey();
     }
 
     /**
@@ -74,7 +71,10 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
      * @return the DataBoxEdgeDeviceExtendedInfoInner object itself.
      */
     public DataBoxEdgeDeviceExtendedInfoInner withEncryptionKey(String encryptionKey) {
-        this.encryptionKey = encryptionKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceExtendedInfoProperties();
+        }
+        this.innerProperties().withEncryptionKey(encryptionKey);
         return this;
     }
 
@@ -84,7 +84,7 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
      * @return the resourceKey value.
      */
     public String resourceKey() {
-        return this.resourceKey;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceKey();
     }
 
     /**
@@ -95,5 +95,8 @@ public class DataBoxEdgeDeviceExtendedInfoInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

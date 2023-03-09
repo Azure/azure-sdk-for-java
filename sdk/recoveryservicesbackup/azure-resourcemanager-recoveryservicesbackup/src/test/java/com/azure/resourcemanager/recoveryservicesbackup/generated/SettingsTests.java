@@ -7,26 +7,25 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Settings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Settings model =
             BinaryData
-                .fromString("{\"timeZone\":\"vdxec\",\"issqlcompression\":false,\"isCompression\":true}")
+                .fromString("{\"timeZone\":\"a\",\"issqlcompression\":true,\"isCompression\":true}")
                 .toObject(Settings.class);
-        Assertions.assertEquals("vdxec", model.timeZone());
-        Assertions.assertEquals(false, model.issqlcompression());
+        Assertions.assertEquals("a", model.timeZone());
+        Assertions.assertEquals(true, model.issqlcompression());
         Assertions.assertEquals(true, model.isCompression());
     }
 
-    @Test
-    public void testSerialize() {
-        Settings model = new Settings().withTimeZone("vdxec").withIssqlcompression(false).withIsCompression(true);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Settings model = new Settings().withTimeZone("a").withIssqlcompression(true).withIsCompression(true);
         model = BinaryData.fromObject(model).toObject(Settings.class);
-        Assertions.assertEquals("vdxec", model.timeZone());
-        Assertions.assertEquals(false, model.issqlcompression());
+        Assertions.assertEquals("a", model.timeZone());
+        Assertions.assertEquals(true, model.issqlcompression());
         Assertions.assertEquals(true, model.isCompression());
     }
 }

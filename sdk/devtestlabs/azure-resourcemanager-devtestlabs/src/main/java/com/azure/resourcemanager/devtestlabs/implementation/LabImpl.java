@@ -160,6 +160,10 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabInner innerModel() {
         return this.innerObject;
     }
@@ -282,15 +286,15 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
         serviceManager.labs().exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context);
     }
 
-    public GenerateUploadUriResponse generateUploadUri(GenerateUploadUriParameter generateUploadUriParameter) {
-        return serviceManager.labs().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
-    }
-
     public Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
         GenerateUploadUriParameter generateUploadUriParameter, Context context) {
         return serviceManager
             .labs()
             .generateUploadUriWithResponse(resourceGroupName, name, generateUploadUriParameter, context);
+    }
+
+    public GenerateUploadUriResponse generateUploadUri(GenerateUploadUriParameter generateUploadUriParameter) {
+        return serviceManager.labs().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
     }
 
     public void importVirtualMachine(ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {

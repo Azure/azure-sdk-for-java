@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Storage properties of a server. */
 @Fluent
 public final class Storage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Storage.class);
-
     /*
      * Max storage allowed for a server.
      */
     @JsonProperty(value = "storageSizeGB")
     private Integer storageSizeGB;
+
+    /** Creates an instance of Storage class. */
+    public Storage() {
+    }
 
     /**
      * Get the storageSizeGB property: Max storage allowed for a server.

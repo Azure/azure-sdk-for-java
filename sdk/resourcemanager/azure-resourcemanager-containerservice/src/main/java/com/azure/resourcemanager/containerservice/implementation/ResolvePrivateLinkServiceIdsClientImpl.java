@@ -53,7 +53,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ResolvePrivateLinkServiceIdsService {
+    public interface ResolvePrivateLinkServiceIdsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
@@ -110,7 +110,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -168,7 +168,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2023-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

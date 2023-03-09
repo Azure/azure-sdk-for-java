@@ -3,16 +3,20 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.logs.SdkLoggerProvider;
+import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import io.opentelemetry.sdk.logs.export.SimpleLogRecordProcessor;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
@@ -28,7 +32,10 @@ import java.util.Map;
 
 public final class TestUtils {
 
-    private static final String CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF";
+    private static final String TRACE_CONNECTION_STRING =
+        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+            + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
+            + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     public static TelemetryItem createMetricTelemetry(
         String name, int value, String connectionString) {
@@ -65,36 +72,68 @@ public final class TestUtils {
         return telemetry;
     }
 
-    public static Tracer configureAzureMonitorTraceExporter(HttpPipelinePolicy validator) {
-        SpanExporter exporter =
+    public static Tracer configureAzureMonitorTraceExporter(HttpPipeline httpPipeline) {
+        return createOpenTelemetrySdk(httpPipeline).getTracer("Sample");
+    }
+
+    public static OpenTelemetry createOpenTelemetrySdk(HttpPipeline httpPipeline) {
+        return createOpenTelemetrySdk(httpPipeline, Configuration.NONE);
+    }
+
+    public static OpenTelemetry createOpenTelemetrySdk(
+        HttpPipeline httpPipeline, Configuration configuration) {
+        return createOpenTelemetrySdkDeprecated(httpPipeline, configuration);
+    }
+
+    // remove this after Log API is public and can be retrieved from the OpenTelemetry object
+    public static OpenTelemetrySdk createOpenTelemetrySdkDeprecated(
+        HttpPipeline httpPipeline, Configuration configuration) {
+
+        OpenTelemetrySdkBuilder builder = OpenTelemetrySdk.builder();
+
+        SpanExporter spanExporter =
             new AzureMonitorExporterBuilder()
-                .connectionString(CONNECTION_STRING)
-                .addHttpPipelinePolicy(validator)
+                .configuration(configuration)
+                .connectionString(TRACE_CONNECTION_STRING)
+                .httpPipeline(httpPipeline)
                 .buildTraceExporter();
 
         SdkTracerProvider tracerProvider =
-            SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
+            SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(spanExporter))
+                .build();
 
-        OpenTelemetrySdk openTelemetrySdk =
-            OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        return openTelemetrySdk.getTracer("Sample");
-    }
+        builder.setTracerProvider(tracerProvider);
 
-    public static Meter configureAzureMonitorMetricExporter(HttpPipelinePolicy policy) {
-        MetricExporter exporter =
+        MetricExporter metricExporter =
             new AzureMonitorExporterBuilder()
-                .connectionString(CONNECTION_STRING)
-                .addHttpPipelinePolicy(policy)
+                .configuration(configuration)
+                .connectionString(TRACE_CONNECTION_STRING)
+                .httpPipeline(httpPipeline)
                 .buildMetricExporter();
 
         PeriodicMetricReader metricReader =
-            PeriodicMetricReader.builder(exporter).setInterval(Duration.ofMillis(10)).build();
+            PeriodicMetricReader.builder(metricExporter).setInterval(Duration.ofMillis(10)).build();
         SdkMeterProvider meterProvider =
             SdkMeterProvider.builder().registerMetricReader(metricReader).build();
-        OpenTelemetry openTelemetry =
-            OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
 
-        return openTelemetry.getMeter("Sample");
+        builder.setMeterProvider(meterProvider);
+
+        LogRecordExporter logRecordExporter =
+            new AzureMonitorExporterBuilder()
+                .configuration(configuration)
+                .connectionString(TRACE_CONNECTION_STRING)
+                .httpPipeline(httpPipeline)
+                .buildLogRecordExporter();
+
+        SdkLoggerProvider loggerProvider =
+            SdkLoggerProvider.builder()
+                .addLogRecordProcessor(SimpleLogRecordProcessor.create(logRecordExporter))
+                .build();
+
+        builder.setLoggerProvider(loggerProvider);
+
+        return builder.build();
     }
 
     private TestUtils() {

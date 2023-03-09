@@ -11,6 +11,9 @@ parameters:
   - name: Artifacts
     type: object
     default: []
+  - name: ReleaseArtifacts
+    type: object
+    default: []
   - name: AdditionalModules
     type: object
     default: []
@@ -28,9 +31,6 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -57,9 +57,10 @@ jobs:
   - job: 'Build'
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-      - name: ArtifactName
-        value: 'packages'
+      ArtifactName: 'packages'
+      Codeql.Enabled: true
+      Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
+      Codeql.SkipTaskAutoInjection: false
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
@@ -154,7 +155,7 @@ jobs:
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - script: |
-          pip install markdown2 BeautifulSoup4
+          pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
@@ -189,11 +190,12 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.Artifacts}}
+          Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
@@ -220,9 +222,6 @@ jobs:
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
-
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
@@ -401,8 +400,8 @@ jobs:
     - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-win-2019-general
-      vmImage: MMS2019
+      name: azsdk-pool-mms-win-2022-general
+      vmImage: windows-2022
     steps:
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:
@@ -424,7 +423,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}

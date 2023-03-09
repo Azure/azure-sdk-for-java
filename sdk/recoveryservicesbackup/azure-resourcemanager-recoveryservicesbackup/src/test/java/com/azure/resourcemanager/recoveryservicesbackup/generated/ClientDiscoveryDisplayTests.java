@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientDiscoveryDisplayTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClientDiscoveryDisplay model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class ClientDiscoveryDisplayTests {
         Assertions.assertEquals("isdkfthwxmnteiw", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClientDiscoveryDisplay model =
             new ClientDiscoveryDisplay()
                 .withProvider("y")

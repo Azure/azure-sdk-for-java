@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -11,10 +12,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
-import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
 import com.azure.storage.blob.implementation.models.BlobTag;
@@ -25,9 +26,8 @@ import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
@@ -62,6 +62,8 @@ public final class ModelHelper {
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
     public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+
+    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -146,15 +148,11 @@ public final class ModelHelper {
      */
     public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
         ParallelTransferOptions blobOptions) {
-        Long blockSize = blobOptions.getBlockSizeLong();
-        Integer maxConcurrency = blobOptions.getMaxConcurrency();
-        Long maxSingleUploadSize = blobOptions.getMaxSingleUploadSizeLong();
-
         return new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
-            .setMaxConcurrency(maxConcurrency)
+            .setBlockSizeLong(blobOptions.getBlockSizeLong())
+            .setMaxConcurrency(blobOptions.getMaxConcurrency())
             .setProgressListener(blobOptions.getProgressListener())
-            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+            .setMaxSingleUploadSizeLong(blobOptions.getMaxSingleUploadSizeLong());
     }
 
     /**
@@ -180,24 +178,7 @@ public final class ModelHelper {
      * @return {@link BlobItem}
      */
     public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
-        BlobItem blobItem = new BlobItem();
-        blobItem.setName(toBlobNameString(blobItemInternal.getName()));
-        blobItem.setDeleted(blobItemInternal.isDeleted());
-        blobItem.setSnapshot(blobItemInternal.getSnapshot());
-        blobItem.setProperties(populateBlobItemProperties(blobItemInternal.getProperties()));
-        blobItem.setMetadata(blobItemInternal.getMetadata());
-        blobItem.setVersionId(blobItemInternal.getVersionId());
-        blobItem.setCurrentVersion(blobItemInternal.isCurrentVersion());
-        blobItem.setIsPrefix(blobItemInternal.isPrefix());
-
-        blobItem.setTags(tagMapFromBlobTags(blobItemInternal.getBlobTags()));
-
-        blobItem.setObjectReplicationSourcePolicies(
-            transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
-
-        blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
-
-        return blobItem;
+        return BlobItemConstructorProxy.create(blobItemInternal);
     }
 
     public static String toBlobNameString(BlobName blobName) {
@@ -211,11 +192,11 @@ public final class ModelHelper {
             tagMapFromBlobTags(filterBlobItem.getTags()));
     }
 
-    private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
+    public static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
         if (blobTags == null || CoreUtils.isNullOrEmpty(blobTags.getBlobTagSet())) {
             return Collections.emptyMap();
         } else {
-            Map<String, String> tags = new HashMap<>(blobTags.getBlobTagSet().size());
+            Map<String, String> tags = new HashMap<>((int) (blobTags.getBlobTagSet().size() / 0.75F));
             for (BlobTag tag : blobTags.getBlobTagSet()) {
                 tags.put(tag.getKey(), tag.getValue());
             }
@@ -223,60 +204,22 @@ public final class ModelHelper {
         }
     }
 
-    /**
-     * Transforms {@link BlobItemPropertiesInternal} into a public {@link BlobItemProperties}.
-     *
-     * @param blobItemPropertiesInternal {@link BlobItemPropertiesInternal}
-     * @return {@link BlobItemProperties}
-     */
-    public static BlobItemProperties populateBlobItemProperties(BlobItemPropertiesInternal blobItemPropertiesInternal) {
-        BlobItemProperties blobItemProperties = new BlobItemProperties();
-        blobItemProperties.setCreationTime(blobItemPropertiesInternal.getCreationTime());
-        blobItemProperties.setLastModified(blobItemPropertiesInternal.getLastModified());
-        blobItemProperties.setETag(blobItemPropertiesInternal.getETag());
-        blobItemProperties.setContentLength(blobItemPropertiesInternal.getContentLength());
-        blobItemProperties.setContentType(blobItemPropertiesInternal.getContentType());
-        blobItemProperties.setContentEncoding(blobItemPropertiesInternal.getContentEncoding());
-        blobItemProperties.setContentLanguage(blobItemPropertiesInternal.getContentLanguage());
-        blobItemProperties.setContentMd5(blobItemPropertiesInternal.getContentMd5());
-        blobItemProperties.setContentDisposition(blobItemPropertiesInternal.getContentDisposition());
-        blobItemProperties.setCacheControl(blobItemPropertiesInternal.getCacheControl());
-        blobItemProperties.setBlobSequenceNumber(blobItemPropertiesInternal.getBlobSequenceNumber());
-        blobItemProperties.setBlobType(blobItemPropertiesInternal.getBlobType());
-        blobItemProperties.setLeaseStatus(blobItemPropertiesInternal.getLeaseStatus());
-        blobItemProperties.setLeaseState(blobItemPropertiesInternal.getLeaseState());
-        blobItemProperties.setLeaseDuration(blobItemPropertiesInternal.getLeaseDuration());
-        blobItemProperties.setCopyId(blobItemPropertiesInternal.getCopyId());
-        blobItemProperties.setCopyStatus(blobItemPropertiesInternal.getCopyStatus());
-        blobItemProperties.setCopySource(blobItemPropertiesInternal.getCopySource());
-        blobItemProperties.setCopyProgress(blobItemPropertiesInternal.getCopyProgress());
-        blobItemProperties.setCopyCompletionTime(blobItemPropertiesInternal.getCopyCompletionTime());
-        blobItemProperties.setCopyStatusDescription(blobItemPropertiesInternal.getCopyStatusDescription());
-        blobItemProperties.setServerEncrypted(blobItemPropertiesInternal.isServerEncrypted());
-        blobItemProperties.setIncrementalCopy(blobItemPropertiesInternal.isIncrementalCopy());
-        blobItemProperties.setDestinationSnapshot(blobItemPropertiesInternal.getDestinationSnapshot());
-        blobItemProperties.setDeletedTime(blobItemPropertiesInternal.getDeletedTime());
-        blobItemProperties.setRemainingRetentionDays(blobItemPropertiesInternal.getRemainingRetentionDays());
-        blobItemProperties.setAccessTier(blobItemPropertiesInternal.getAccessTier());
-        blobItemProperties.setAccessTierInferred(blobItemPropertiesInternal.isAccessTierInferred());
-        blobItemProperties.setArchiveStatus(blobItemPropertiesInternal.getArchiveStatus());
-        blobItemProperties.setCustomerProvidedKeySha256(blobItemPropertiesInternal.getCustomerProvidedKeySha256());
-        blobItemProperties.setEncryptionScope(blobItemPropertiesInternal.getEncryptionScope());
-        blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
-        blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
-        blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
-        blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
-        blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
-        blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
-        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
-            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
-            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
-        blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
+    public static BlobTags toBlobTags(Map<String, String> tags) {
+        if (tags == null) {
+            return null;
+        }
 
-        return blobItemProperties;
+        if (tags.isEmpty()) {
+            return new BlobTags().setBlobTagSet(new ArrayList<>());
+        }
+
+        List<BlobTag> blobTagSet = new ArrayList<>(tags.size());
+        tags.forEach((key, value) -> blobTagSet.add(new BlobTag().setKey(key).setValue(value)));
+
+        return new BlobTags().setBlobTagSet(blobTagSet);
     }
 
-    private static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
+    public static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
         Map<String, String> objectReplicationMetadata) {
         if (CoreUtils.isNullOrEmpty(objectReplicationMetadata)) {
             return null;
@@ -285,10 +228,10 @@ public final class ModelHelper {
         Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
         for (Map.Entry<String, String> entry : objectReplicationMetadata.entrySet()) {
             String orString = entry.getKey();
-            String str = orString.startsWith("or-") ? orString.substring(3) : orString;
-            int index = str.indexOf('_');
-            String policyId = str.substring(0, index);
-            String ruleId = str.substring(index + 1);
+            int startIndex = orString.startsWith("or-") ? 3 : 0;
+            int index = orString.indexOf('_', startIndex);
+            String policyId = orString.substring(startIndex, index);
+            String ruleId = orString.substring(index + 1);
             ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                 ObjectReplicationStatus.fromString(entry.getValue()));
             if (!internalSourcePolicies.containsKey(policyId)) {
@@ -302,6 +245,26 @@ public final class ModelHelper {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         return objectReplicationSourcePolicies;
+    }
+
+    public static Map<String, String> toObjectReplicationMetadata(List<ObjectReplicationPolicy> policies) {
+        if (policies == null) {
+            return null;
+        }
+
+        if (policies.isEmpty()) {
+            return new HashMap<>();
+        }
+
+        Map<String, String> objectReplicationMetadata = new HashMap<>((int) (policies.size() / 0.75F));
+        policies.forEach(policy -> {
+            for (ObjectReplicationRule rule : policy.getRules()) {
+                String key = "or-" + policy.getPolicyId() + "_" + rule.getRuleId();
+                objectReplicationMetadata.put(key, rule.getStatus().toString());
+            }
+        });
+
+        return objectReplicationMetadata;
     }
 
     /**
@@ -329,7 +292,8 @@ public final class ModelHelper {
      * @param requestConditions {@link RequestConditions}
      * @return {@link BlobBeginCopySourceRequestConditions}
      */
-    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
+    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(
+        RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
@@ -399,14 +363,14 @@ public final class ModelHelper {
     }
 
     public static String getErrorCode(HttpHeaders headers) {
-        return getHeaderValue(headers, "x-ms-error-code");
+        return getHeaderValue(headers, X_MS_ERROR_CODE);
     }
 
     public static String getETag(HttpHeaders headers) {
-        return getHeaderValue(headers, "ETag");
+        return getHeaderValue(headers, HttpHeaderName.ETAG);
     }
 
-    private static String getHeaderValue(HttpHeaders headers, String headerName) {
+    private static String getHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
         if (headers == null) {
             return null;
         }
@@ -487,7 +451,14 @@ public final class ModelHelper {
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+            BlobPropertiesConstructorProxy.create(
+                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+    }
+
+    public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadResponse response) {
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BlobPropertiesConstructorProxy.create(
+                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {

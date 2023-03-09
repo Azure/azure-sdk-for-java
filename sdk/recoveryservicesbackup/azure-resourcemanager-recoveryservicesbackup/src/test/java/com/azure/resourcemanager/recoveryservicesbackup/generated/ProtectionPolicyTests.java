@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectionPolicy model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class ProtectionPolicyTests {
         Assertions.assertEquals("vmkfssxqu", model.resourceGuardOperationRequests().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectionPolicy model =
             new ProtectionPolicy()
                 .withProtectedItemsCount(1408848677)

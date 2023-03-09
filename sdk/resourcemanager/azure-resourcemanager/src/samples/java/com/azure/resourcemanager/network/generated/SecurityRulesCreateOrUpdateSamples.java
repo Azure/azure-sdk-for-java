@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 /** Samples for SecurityRules CreateOrUpdate. */
 public final class SecurityRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkSecurityGroupRuleCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkSecurityGroupRuleCreate.json
      */
     /**
      * Sample code: Create security rule.
@@ -39,6 +38,6 @@ public final class SecurityRulesCreateOrUpdateSamples {
                     .withAccess(SecurityRuleAccess.DENY)
                     .withPriority(100)
                     .withDirection(SecurityRuleDirection.OUTBOUND),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectionContainer model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class ProtectionContainerTests {
         Assertions.assertEquals("axoruzfgsquy", model.protectableObjectType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectionContainer model =
             new ProtectionContainer()
                 .withFriendlyName("axhexiilivp")

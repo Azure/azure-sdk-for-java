@@ -5,8 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.util.Beta;
-import com.azure.cosmos.util.Beta.SinceVersion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +12,12 @@ import java.util.List;
 /**
  * Builder for partition keys.
  */
-@Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class PartitionKeyBuilder {
     private final List<Object> partitionKeyValues;
 
     /**
      * Constructor. CREATE a new instance of the PartitionKeyBuilder object.
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKeyBuilder() {
         this.partitionKeyValues = new ArrayList<Object>();
     }
@@ -31,7 +27,6 @@ public final class PartitionKeyBuilder {
      * @param value The value of type string to be used as partition key
      * @return The current PartitionKeyBuilder object
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKeyBuilder add(String value) {
         this.partitionKeyValues.add(value);
         return this;
@@ -42,7 +37,6 @@ public final class PartitionKeyBuilder {
      * @param value The value of type double to be used as partition key
      * @return The current PartitionKeyBuilder object
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKeyBuilder add(double value) {
         this.partitionKeyValues.add(value);
         return this;
@@ -53,7 +47,6 @@ public final class PartitionKeyBuilder {
      * @param value The value of type boolean to be used as partition key
      * @return The current PartitionKeyBuilder object
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKeyBuilder add(boolean value) {
         this.partitionKeyValues.add(value);
         return this;
@@ -62,18 +55,20 @@ public final class PartitionKeyBuilder {
     /**
      * Adds a null partition key value
      * @return The current PartitionKeyBuilder object
+     * @deprecated Null value should only be used with PartitionKey constructor.
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated
     public PartitionKeyBuilder addNullValue() {
         this.partitionKeyValues.add(null);
         return this;
     }
 
     /**
-     * Adds a None Partition Key
+     * Adds a None Partition Key value to the path. An error will be raised if used with other paths.
      * @return The current PartitionKeyBuilder object
+     * @deprecated PartitionKey.None value should only be used with PartitionKey constructor.
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated
     public PartitionKeyBuilder addNoneValue() {
         this.partitionKeyValues.add(PartitionKey.NONE);
         return this;
@@ -82,8 +77,8 @@ public final class PartitionKeyBuilder {
     /**
      * Builds a new instance of the type PartitionKey with the specified Partition Key values.
      * @return PartitionKey object
+     * @throws IllegalStateException when using PartitionKey.None with other values
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKey build() {
         // Why these checks?
         // These changes are being added for SDK to support multiple paths in a partition key.
@@ -101,6 +96,10 @@ public final class PartitionKeyBuilder {
 
         if(this.partitionKeyValues.size() == 1 && PartitionKey.NONE.equals(this.partitionKeyValues.get(0))) {
             return PartitionKey.NONE;
+        }
+
+        if(this.partitionKeyValues.size() > 1 && this.partitionKeyValues.contains(PartitionKey.NONE)) {
+            throw new IllegalStateException("PartitionKey.None can't be used with multiple paths");
         }
 
         PartitionKeyInternal partitionKeyInternal;

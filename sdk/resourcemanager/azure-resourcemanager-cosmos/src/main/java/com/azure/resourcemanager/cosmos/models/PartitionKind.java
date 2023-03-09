@@ -23,6 +23,15 @@ public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
     public static final PartitionKind MULTI_HASH = fromString("MultiHash");
 
     /**
+     * Creates a new instance of PartitionKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartitionKind() {
+    }
+
+    /**
      * Creates or finds a PartitionKind from its string representation.
      *
      * @param name a name to look for.

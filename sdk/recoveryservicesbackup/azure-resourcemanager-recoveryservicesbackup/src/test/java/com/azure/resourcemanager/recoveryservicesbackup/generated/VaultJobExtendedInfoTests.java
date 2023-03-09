@@ -9,23 +9,23 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.VaultJobExtendedI
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VaultJobExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultJobExtendedInfo model =
             BinaryData
-                .fromString("{\"propertyBag\":{\"ecjxe\":\"iziesfuughtuq\"}}")
+                .fromString("{\"propertyBag\":{\"qyggagfl\":\"dnb\",\"byrplrohkpig\":\"lgmtrwahzjmucf\"}}")
                 .toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("iziesfuughtuq", model.propertyBag().get("ecjxe"));
+        Assertions.assertEquals("dnb", model.propertyBag().get("qyggagfl"));
     }
 
-    @Test
-    public void testSerialize() {
-        VaultJobExtendedInfo model = new VaultJobExtendedInfo().withPropertyBag(mapOf("ecjxe", "iziesfuughtuq"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VaultJobExtendedInfo model =
+            new VaultJobExtendedInfo().withPropertyBag(mapOf("qyggagfl", "dnb", "byrplrohkpig", "lgmtrwahzjmucf"));
         model = BinaryData.fromObject(model).toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("iziesfuughtuq", model.propertyBag().get("ecjxe"));
+        Assertions.assertEquals("dnb", model.propertyBag().get("qyggagfl"));
     }
 
     @SuppressWarnings("unchecked")

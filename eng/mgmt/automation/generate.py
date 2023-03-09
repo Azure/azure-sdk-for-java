@@ -19,6 +19,7 @@ from generate_utils import (
     generate,
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
+    update_spec,
 )
 
 os.chdir(pwd)
@@ -117,16 +118,17 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     for readme in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/resource-manager/readme.md',
+            'specification/([^/]+)/resource-manager(/.*)*/readme.md',
             readme,
             re.IGNORECASE,
         )
         if not match:
             logging.info(
-                '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
+                '[Skip] readme path does not format as specification/*/resource-manager/*/readme.md'
             )
         else:
             spec = match.group(1)
+            spec = update_spec(spec, match.group(2))
             service = get_and_update_service_from_api_specs(
                 api_specs_file, spec)
 
@@ -209,7 +211,7 @@ def main():
 
     readme = args['readme']
     match = re.match(
-        'specification/([^/]+)/resource-manager/readme.md',
+        'specification/([^/]+)/resource-manager(/.*)*/readme.md',
         readme,
         re.IGNORECASE,
     )
@@ -218,6 +220,7 @@ def main():
         readme = 'specification/{0}/resource-manager/readme.md'.format(spec)
     else:
         spec = match.group(1)
+        spec = update_spec(spec, match.group(2))
 
     args['readme'] = readme
     args['spec'] = spec
@@ -231,7 +234,7 @@ def main():
     module = ARTIFACT_FORMAT.format(service)
     stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
-    output_folder = OUTPUT_FOLDER_FORMAT.format(service),
+    output_folder = OUTPUT_FOLDER_FORMAT.format(service)
     namespace = NAMESPACE_FORMAT.format(service)
     succeeded = generate(
         sdk_root,

@@ -35,6 +35,9 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.linkedService", required = true)
     private LinkedServiceReference linkedService;
 
+    /** Creates an instance of BlobTrigger class. */
+    public BlobTrigger() {}
+
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
      *

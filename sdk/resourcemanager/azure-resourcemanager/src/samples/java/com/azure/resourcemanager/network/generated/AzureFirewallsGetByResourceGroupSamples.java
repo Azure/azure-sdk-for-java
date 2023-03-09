@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AzureFirewalls GetByResourceGroup. */
 public final class AzureFirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallGetWithAdditionalProperties.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallGetWithAdditionalProperties.json
      */
     /**
      * Sample code: Get Azure Firewall With Additional Properties.
@@ -22,11 +20,11 @@ public final class AzureFirewallsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .getByResourceGroupWithResponse("rg1", "azurefirewall", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallGetWithIpGroups.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallGetWithIpGroups.json
      */
     /**
      * Sample code: Get Azure Firewall With IpGroups.
@@ -39,11 +37,11 @@ public final class AzureFirewallsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .getByResourceGroupWithResponse("rg1", "azurefirewall", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallGetWithZones.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallGetWithZones.json
      */
     /**
      * Sample code: Get Azure Firewall With Zones.
@@ -56,11 +54,11 @@ public final class AzureFirewallsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .getByResourceGroupWithResponse("rg1", "azurefirewall", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallGetWithMgmtSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallGetWithMgmtSubnet.json
      */
     /**
      * Sample code: Get Azure Firewall With management subnet.
@@ -73,11 +71,11 @@ public final class AzureFirewallsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .getByResourceGroupWithResponse("rg1", "azurefirewall", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallGet.json
      */
     /**
      * Sample code: Get Azure Firewall.
@@ -90,6 +88,6 @@ public final class AzureFirewallsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .getByResourceGroupWithResponse("rg1", "azurefirewall", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 }

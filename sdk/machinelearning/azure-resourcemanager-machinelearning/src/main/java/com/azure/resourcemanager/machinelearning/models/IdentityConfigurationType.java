@@ -20,6 +20,15 @@ public final class IdentityConfigurationType extends ExpandableStringEnum<Identi
     public static final IdentityConfigurationType USER_IDENTITY = fromString("UserIdentity");
 
     /**
+     * Creates a new instance of IdentityConfigurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IdentityConfigurationType() {
+    }
+
+    /**
      * Creates or finds a IdentityConfigurationType from its string representation.
      *
      * @param name a name to look for.

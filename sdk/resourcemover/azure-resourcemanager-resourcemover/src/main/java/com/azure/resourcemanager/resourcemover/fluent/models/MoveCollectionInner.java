@@ -6,18 +6,14 @@ package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.models.Identity;
 import com.azure.resourcemanager.resourcemover.models.MoveCollectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Define the move collection. */
 @Fluent
 public final class MoveCollectionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveCollectionInner.class);
-
     /*
      * The etag of the resource.
      */
@@ -35,6 +31,10 @@ public final class MoveCollectionInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private MoveCollectionProperties properties;
+
+    /** Creates an instance of MoveCollectionInner class. */
+    public MoveCollectionInner() {
+    }
 
     /**
      * Get the etag property: The etag of the resource.

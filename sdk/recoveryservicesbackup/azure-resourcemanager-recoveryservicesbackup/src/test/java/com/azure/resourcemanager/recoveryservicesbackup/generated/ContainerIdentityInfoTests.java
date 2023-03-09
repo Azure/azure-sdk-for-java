@@ -7,34 +7,33 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ContainerIdentityInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerIdentityInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerIdentityInfo model =
             BinaryData
                 .fromString(
-                    "{\"uniqueName\":\"ihwuhvctafsrbxrb\",\"aadTenantId\":\"li\",\"servicePrincipalClientId\":\"xihspnxwq\",\"audience\":\"nepzwakls\"}")
+                    "{\"uniqueName\":\"yvpkpatlbijpzgsk\",\"aadTenantId\":\"fhfv\",\"servicePrincipalClientId\":\"mknbnxwcdommpv\",\"audience\":\"awz\"}")
                 .toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("ihwuhvctafsrbxrb", model.uniqueName());
-        Assertions.assertEquals("li", model.aadTenantId());
-        Assertions.assertEquals("xihspnxwq", model.servicePrincipalClientId());
-        Assertions.assertEquals("nepzwakls", model.audience());
+        Assertions.assertEquals("yvpkpatlbijpzgsk", model.uniqueName());
+        Assertions.assertEquals("fhfv", model.aadTenantId());
+        Assertions.assertEquals("mknbnxwcdommpv", model.servicePrincipalClientId());
+        Assertions.assertEquals("awz", model.audience());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerIdentityInfo model =
             new ContainerIdentityInfo()
-                .withUniqueName("ihwuhvctafsrbxrb")
-                .withAadTenantId("li")
-                .withServicePrincipalClientId("xihspnxwq")
-                .withAudience("nepzwakls");
+                .withUniqueName("yvpkpatlbijpzgsk")
+                .withAadTenantId("fhfv")
+                .withServicePrincipalClientId("mknbnxwcdommpv")
+                .withAudience("awz");
         model = BinaryData.fromObject(model).toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("ihwuhvctafsrbxrb", model.uniqueName());
-        Assertions.assertEquals("li", model.aadTenantId());
-        Assertions.assertEquals("xihspnxwq", model.servicePrincipalClientId());
-        Assertions.assertEquals("nepzwakls", model.audience());
+        Assertions.assertEquals("yvpkpatlbijpzgsk", model.uniqueName());
+        Assertions.assertEquals("fhfv", model.aadTenantId());
+        Assertions.assertEquals("mknbnxwcdommpv", model.servicePrincipalClientId());
+        Assertions.assertEquals("awz", model.audience());
     }
 }

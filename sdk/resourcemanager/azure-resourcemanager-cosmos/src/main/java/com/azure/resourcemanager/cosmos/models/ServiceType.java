@@ -23,6 +23,15 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
     public static final ServiceType MATERIALIZED_VIEWS_BUILDER = fromString("MaterializedViewsBuilder");
 
     /**
+     * Creates a new instance of ServiceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceType() {
+    }
+
+    /**
      * Creates or finds a ServiceType from its string representation.
      *
      * @param name a name to look for.

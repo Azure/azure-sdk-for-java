@@ -22,7 +22,7 @@ public interface CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CreatorInner> listByAccount(String resourceGroupName, String accountName);
@@ -36,10 +36,33 @@ public interface CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CreatorInner> listByAccount(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
+     * custom set of mapping data. It requires an account to exist before it can be created.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param creatorResource The new or updated parameters for the Creator resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
+     *     data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CreatorInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String creatorName,
+        CreatorInner creatorResource,
+        Context context);
 
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
@@ -60,26 +83,25 @@ public interface CreatorsClient {
         String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource);
 
     /**
-     * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
-     * custom set of mapping data. It requires an account to exist before it can be created.
+     * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
-     * @param creatorResource The new or updated parameters for the Creator resource.
+     * @param creatorUpdateParameters The update parameters for Maps Creator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> createOrUpdateWithResponse(
+    Response<CreatorInner> updateWithResponse(
         String resourceGroupName,
         String accountName,
         String creatorName,
-        CreatorInner creatorResource,
+        CreatorUpdateParameters creatorUpdateParameters,
         Context context);
 
     /**
@@ -103,26 +125,20 @@ public interface CreatorsClient {
         CreatorUpdateParameters creatorUpdateParameters);
 
     /**
-     * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
+     * Delete a Maps Creator resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
-     * @param creatorUpdateParameters The update parameters for Maps Creator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String creatorName, Context context);
 
     /**
      * Delete a Maps Creator resource.
@@ -138,7 +154,7 @@ public interface CreatorsClient {
     void delete(String resourceGroupName, String accountName, String creatorName);
 
     /**
-     * Delete a Maps Creator resource.
+     * Get a Maps Creator resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
@@ -147,10 +163,10 @@ public interface CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a Maps Creator resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
+    Response<CreatorInner> getWithResponse(
         String resourceGroupName, String accountName, String creatorName, Context context);
 
     /**
@@ -166,20 +182,4 @@ public interface CreatorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreatorInner get(String resourceGroupName, String accountName, String creatorName);
-
-    /**
-     * Get a Maps Creator resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
 }

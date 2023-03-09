@@ -24,6 +24,10 @@ public final class ManagedDatabaseListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ManagedDatabaseListResult class. */
+    public ManagedDatabaseListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

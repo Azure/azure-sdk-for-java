@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ErrorResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorResponse.class);
-
     /*
      * Http status code.
      */
@@ -34,6 +30,10 @@ public final class ErrorResponse {
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
+
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {
+    }
 
     /**
      * Get the httpStatus property: Http status code.

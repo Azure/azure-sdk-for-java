@@ -6,19 +6,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LongTermSchedulePolicy;
-import org.junit.jupiter.api.Test;
 
 public final class LongTermSchedulePolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         LongTermSchedulePolicy model =
             BinaryData
                 .fromString("{\"schedulePolicyType\":\"LongTermSchedulePolicy\"}")
                 .toObject(LongTermSchedulePolicy.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         LongTermSchedulePolicy model = new LongTermSchedulePolicy();
         model = BinaryData.fromObject(model).toObject(LongTermSchedulePolicy.class);
     }

@@ -23,6 +23,15 @@ public final class GallerySharingPermissionTypes extends ExpandableStringEnum<Ga
     public static final GallerySharingPermissionTypes COMMUNITY = fromString("Community");
 
     /**
+     * Creates a new instance of GallerySharingPermissionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GallerySharingPermissionTypes() {
+    }
+
+    /**
      * Creates or finds a GallerySharingPermissionTypes from its string representation.
      *
      * @param name a name to look for.

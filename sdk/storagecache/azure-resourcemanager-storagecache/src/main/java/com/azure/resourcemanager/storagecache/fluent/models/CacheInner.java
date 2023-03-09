@@ -53,6 +53,10 @@ public final class CacheInner extends Resource {
     @JsonProperty(value = "sku")
     private CacheSku sku;
 
+    /** Creates an instance of CacheInner class. */
+    public CacheInner() {
+    }
+
     /**
      * Get the identity property: The identity of the cache, if configured.
      *

@@ -50,6 +50,10 @@ public final class H265Layer extends H265VideoLayer {
     @JsonProperty(value = "referenceFrames")
     private Integer referenceFrames;
 
+    /** Creates an instance of H265Layer class. */
+    public H265Layer() {
+    }
+
     /**
      * Get the profile property: We currently support Main. Default is Auto.
      *

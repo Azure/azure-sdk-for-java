@@ -3,10 +3,15 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
+
 /**
 * The result from uploading the blob.
 */
 public final class UploadBlobResult {
+    static {
+        ConstructorAccessors.setUploadBlobResultAccessor(UploadBlobResult::new);
+    }
 
     private final String digest;
 
@@ -14,7 +19,7 @@ public final class UploadBlobResult {
      * Instantiate the upload blob result.
      * @param digest The digest of the blob that was uploaded.
      */
-    public UploadBlobResult(String digest) {
+    private UploadBlobResult(String digest) {
         this.digest = digest;
     }
 
@@ -23,6 +28,6 @@ public final class UploadBlobResult {
      * @return The digest value returned by the upload operation.
      */
     public String getDigest() {
-        return this.digest;
+        return digest;
     }
 }

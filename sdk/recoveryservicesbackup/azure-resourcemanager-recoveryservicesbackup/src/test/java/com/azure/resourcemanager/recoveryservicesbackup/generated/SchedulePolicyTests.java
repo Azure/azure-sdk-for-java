@@ -6,17 +6,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
-import org.junit.jupiter.api.Test;
 
 public final class SchedulePolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SchedulePolicy model =
             BinaryData.fromString("{\"schedulePolicyType\":\"SchedulePolicy\"}").toObject(SchedulePolicy.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SchedulePolicy model = new SchedulePolicy();
         model = BinaryData.fromObject(model).toObject(SchedulePolicy.class);
     }

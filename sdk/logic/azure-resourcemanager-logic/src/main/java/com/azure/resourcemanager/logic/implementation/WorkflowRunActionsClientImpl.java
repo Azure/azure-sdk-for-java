@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowRunActionsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionInner;
 import com.azure.resourcemanager.logic.models.ExpressionRoot;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkflowRunActionsClient. */
 public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowRunActionsService service;
 
@@ -61,7 +58,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface WorkflowRunActionsService {
+    public interface WorkflowRunActionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
@@ -136,7 +133,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(
@@ -203,7 +200,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listSinglePageAsync(
@@ -266,7 +263,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunActionInner> listAsync(
@@ -285,7 +282,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunActionInner> listAsync(String resourceGroupName, String workflowName, String runName) {
@@ -308,7 +305,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunActionInner> listAsync(
@@ -327,7 +324,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunActionInner> list(String resourceGroupName, String workflowName, String runName) {
@@ -348,7 +345,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunActionInner> list(
@@ -366,7 +363,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action.
+     * @return a workflow run action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(
@@ -425,7 +422,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action.
+     * @return a workflow run action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowRunActionInner>> getWithResponseAsync(
@@ -480,20 +477,32 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action.
+     * @return a workflow run action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowRunActionInner> getAsync(
         String resourceGroupName, String workflowName, String runName, String actionName) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName)
-            .flatMap(
-                (Response<WorkflowRunActionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a workflow run action.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run action along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkflowRunActionInner> getWithResponse(
+        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, context).block();
     }
 
     /**
@@ -511,26 +520,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowRunActionInner get(
         String resourceGroupName, String workflowName, String runName, String actionName) {
-        return getAsync(resourceGroupName, workflowName, runName, actionName).block();
-    }
-
-    /**
-     * Gets a workflow run action.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowRunActionInner> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, context).block();
+        return getWithResponse(resourceGroupName, workflowName, runName, actionName, Context.NONE).getValue();
     }
 
     /**
@@ -543,7 +533,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
@@ -606,7 +596,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
@@ -665,7 +655,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressionRoot> listExpressionTracesAsync(
@@ -685,7 +675,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressionRoot> listExpressionTracesAsync(
@@ -704,7 +694,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressionRoot> listExpressionTraces(
@@ -723,7 +713,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressionRoot> listExpressionTraces(
@@ -735,11 +725,13 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions.
+     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink) {
@@ -770,12 +762,14 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions.
+     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink, Context context) {

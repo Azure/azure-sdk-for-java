@@ -20,6 +20,15 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
     public static final DataFlowDebugCommandType EXECUTE_EXPRESSION_QUERY = fromString("executeExpressionQuery");
 
     /**
+     * Creates a new instance of DataFlowDebugCommandType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFlowDebugCommandType() {
+    }
+
+    /**
      * Creates or finds a DataFlowDebugCommandType from its string representation.
      *
      * @param name a name to look for.

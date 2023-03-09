@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCrossConnections ListRoutesTableSummary. */
 public final class ExpressRouteCrossConnectionsListRoutesTableSummarySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCrossConnectionsRouteTableSummary.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCrossConnectionsRouteTableSummary.json
      */
     /**
      * Sample code: GetExpressRouteCrossConnectionsRouteTableSummary.
@@ -24,6 +22,10 @@ public final class ExpressRouteCrossConnectionsListRoutesTableSummarySamples {
             .serviceClient()
             .getExpressRouteCrossConnections()
             .listRoutesTableSummary(
-                "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", Context.NONE);
+                "CrossConnection-SiliconValley",
+                "<circuitServiceKey>",
+                "AzurePrivatePeering",
+                "primary",
+                com.azure.core.util.Context.NONE);
     }
 }

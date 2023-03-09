@@ -11,32 +11,40 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecoveryPointTierInformationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecoveryPointTierInformation model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Invalid\",\"extendedInfo\":{\"talhsnvkcdmxzr\":\"jwltlwtjjgu\",\"aaomylweazu\":\"oaimlnw\",\"hwwn\":\"cse\"}}")
+                    "{\"type\":\"Invalid\",\"status\":\"Deleted\",\"extendedInfo\":{\"ghfcfiwrxgkneuvy\":\"m\",\"hoxgsgbpf\":\"nzqodfvpg\",\"aqvlgafcqusr\":\"zdjtxvzflbqv\",\"lduycv\":\"vetnwsdtutn\"}}")
                 .toObject(RecoveryPointTierInformation.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.INVALID, model.status());
-        Assertions.assertEquals("jwltlwtjjgu", model.extendedInfo().get("talhsnvkcdmxzr"));
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
+        Assertions.assertEquals("m", model.extendedInfo().get("ghfcfiwrxgkneuvy"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecoveryPointTierInformation model =
             new RecoveryPointTierInformation()
-                .withType(RecoveryPointTierType.ARCHIVED_RP)
-                .withStatus(RecoveryPointTierStatus.INVALID)
-                .withExtendedInfo(mapOf("talhsnvkcdmxzr", "jwltlwtjjgu", "aaomylweazu", "oaimlnw", "hwwn", "cse"));
+                .withType(RecoveryPointTierType.INVALID)
+                .withStatus(RecoveryPointTierStatus.DELETED)
+                .withExtendedInfo(
+                    mapOf(
+                        "ghfcfiwrxgkneuvy",
+                        "m",
+                        "hoxgsgbpf",
+                        "nzqodfvpg",
+                        "aqvlgafcqusr",
+                        "zdjtxvzflbqv",
+                        "lduycv",
+                        "vetnwsdtutn"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformation.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.INVALID, model.status());
-        Assertions.assertEquals("jwltlwtjjgu", model.extendedInfo().get("talhsnvkcdmxzr"));
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
+        Assertions.assertEquals("m", model.extendedInfo().get("ghfcfiwrxgkneuvy"));
     }
 
     @SuppressWarnings("unchecked")

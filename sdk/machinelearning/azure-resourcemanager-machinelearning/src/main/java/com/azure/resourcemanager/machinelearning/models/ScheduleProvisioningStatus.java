@@ -29,6 +29,15 @@ public final class ScheduleProvisioningStatus extends ExpandableStringEnum<Sched
     public static final ScheduleProvisioningStatus CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ScheduleProvisioningStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleProvisioningStatus() {
+    }
+
+    /**
      * Creates or finds a ScheduleProvisioningStatus from its string representation.
      *
      * @param name a name to look for.

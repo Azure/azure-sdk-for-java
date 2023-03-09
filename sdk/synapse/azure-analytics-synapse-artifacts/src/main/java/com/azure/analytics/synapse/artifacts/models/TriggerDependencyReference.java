@@ -30,6 +30,9 @@ public class TriggerDependencyReference extends DependencyReference {
     @JsonProperty(value = "referenceTrigger", required = true)
     private TriggerReference referenceTrigger;
 
+    /** Creates an instance of TriggerDependencyReference class. */
+    public TriggerDependencyReference() {}
+
     /**
      * Get the referenceTrigger property: Referenced trigger.
      *

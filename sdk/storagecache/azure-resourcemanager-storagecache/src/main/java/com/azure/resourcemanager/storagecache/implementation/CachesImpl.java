@@ -59,15 +59,6 @@ public final class CachesImpl implements Caches {
         this.serviceClient().delete(resourceGroupName, cacheName, context);
     }
 
-    public Cache getByResourceGroup(String resourceGroupName, String cacheName) {
-        CacheInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, cacheName);
-        if (inner != null) {
-            return new CacheImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Cache> getByResourceGroupWithResponse(String resourceGroupName, String cacheName, Context context) {
         Response<CacheInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cacheName, context);
@@ -77,6 +68,15 @@ public final class CachesImpl implements Caches {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CacheImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Cache getByResourceGroup(String resourceGroupName, String cacheName) {
+        CacheInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, cacheName);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -114,20 +114,12 @@ public final class CachesImpl implements Caches {
         this.serviceClient().stop(resourceGroupName, cacheName, context);
     }
 
-    public void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob) {
-        this.serviceClient().startPrimingJob(resourceGroupName, cacheName, primingjob);
-    }
-
     public void startPrimingJob(String resourceGroupName, String cacheName) {
         this.serviceClient().startPrimingJob(resourceGroupName, cacheName);
     }
 
     public void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob, Context context) {
         this.serviceClient().startPrimingJob(resourceGroupName, cacheName, primingjob, context);
-    }
-
-    public void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
-        this.serviceClient().stopPrimingJob(resourceGroupName, cacheName, primingJobId);
     }
 
     public void stopPrimingJob(String resourceGroupName, String cacheName) {
@@ -139,10 +131,6 @@ public final class CachesImpl implements Caches {
         this.serviceClient().stopPrimingJob(resourceGroupName, cacheName, primingJobId, context);
     }
 
-    public void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
-        this.serviceClient().pausePrimingJob(resourceGroupName, cacheName, primingJobId);
-    }
-
     public void pausePrimingJob(String resourceGroupName, String cacheName) {
         this.serviceClient().pausePrimingJob(resourceGroupName, cacheName);
     }
@@ -150,10 +138,6 @@ public final class CachesImpl implements Caches {
     public void pausePrimingJob(
         String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context) {
         this.serviceClient().pausePrimingJob(resourceGroupName, cacheName, primingJobId, context);
-    }
-
-    public void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
-        this.serviceClient().resumePrimingJob(resourceGroupName, cacheName, primingJobId);
     }
 
     public void resumePrimingJob(String resourceGroupName, String cacheName) {
@@ -171,11 +155,6 @@ public final class CachesImpl implements Caches {
 
     public void upgradeFirmware(String resourceGroupName, String cacheName, Context context) {
         this.serviceClient().upgradeFirmware(resourceGroupName, cacheName, context);
-    }
-
-    public void spaceAllocation(
-        String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation) {
-        this.serviceClient().spaceAllocation(resourceGroupName, cacheName, spaceAllocation);
     }
 
     public void spaceAllocation(String resourceGroupName, String cacheName) {

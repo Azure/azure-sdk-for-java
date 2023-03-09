@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NotificationStageName. */
+/** Name of the stage. */
 public enum NotificationStageName {
     /** Enum value DevicePrepared. */
     DEVICE_PREPARED("DevicePrepared"),
@@ -42,6 +42,9 @@ public enum NotificationStageName {
      */
     @JsonCreator
     public static NotificationStageName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NotificationStageName[] items = NotificationStageName.values();
         for (NotificationStageName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum NotificationStageName {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -24,6 +24,17 @@ public final class ImportRdbParameters {
     @JsonProperty(value = "files", required = true)
     private List<String> files;
 
+    /*
+     * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
+     * default value is SAS
+     */
+    @JsonProperty(value = "preferred-data-archive-auth-method")
+    private String preferredDataArchiveAuthMethod;
+
+    /** Creates an instance of ImportRdbParameters class. */
+    public ImportRdbParameters() {
+    }
+
     /**
      * Get the format property: File format.
      *
@@ -61,6 +72,28 @@ public final class ImportRdbParameters {
      */
     public ImportRdbParameters withFiles(List<String> files) {
         this.files = files;
+        return this;
+    }
+
+    /**
+     * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
+     * @return the preferredDataArchiveAuthMethod value.
+     */
+    public String preferredDataArchiveAuthMethod() {
+        return this.preferredDataArchiveAuthMethod;
+    }
+
+    /**
+     * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
+     * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
+     * @return the ImportRdbParameters object itself.
+     */
+    public ImportRdbParameters withPreferredDataArchiveAuthMethod(String preferredDataArchiveAuthMethod) {
+        this.preferredDataArchiveAuthMethod = preferredDataArchiveAuthMethod;
         return this;
     }
 

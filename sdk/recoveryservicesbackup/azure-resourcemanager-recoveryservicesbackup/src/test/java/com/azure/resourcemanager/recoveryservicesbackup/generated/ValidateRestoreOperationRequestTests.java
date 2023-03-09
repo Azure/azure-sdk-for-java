@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateRestoreOperationRequest;
-import org.junit.jupiter.api.Test;
 
 public final class ValidateRestoreOperationRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ValidateRestoreOperationRequest model =
             BinaryData
                 .fromString(
@@ -19,8 +18,8 @@ public final class ValidateRestoreOperationRequestTests {
                 .toObject(ValidateRestoreOperationRequest.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ValidateRestoreOperationRequest model =
             new ValidateRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
         model = BinaryData.fromObject(model).toObject(ValidateRestoreOperationRequest.class);

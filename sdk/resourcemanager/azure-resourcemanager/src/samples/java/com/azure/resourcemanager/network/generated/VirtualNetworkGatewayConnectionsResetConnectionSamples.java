@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkGatewayConnections ResetConnection. */
 public final class VirtualNetworkGatewayConnectionsResetConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayConnectionReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionReset.json
      */
     /**
      * Sample code: ResetVirtualNetworkGatewayConnection.
@@ -22,6 +20,6 @@ public final class VirtualNetworkGatewayConnectionsResetConnectionSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .resetConnection("rg1", "conn1", Context.NONE);
+            .resetConnection("rg1", "conn1", com.azure.core.util.Context.NONE);
     }
 }

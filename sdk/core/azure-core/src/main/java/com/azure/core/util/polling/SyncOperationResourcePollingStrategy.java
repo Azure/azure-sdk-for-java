@@ -194,8 +194,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null) {
+            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
             } else {
                 throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));

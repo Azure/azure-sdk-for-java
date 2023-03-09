@@ -13,11 +13,10 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupEngineBaseResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupEngineBaseResourceInner model =
             BinaryData
                 .fromString(
@@ -49,8 +48,8 @@ public final class BackupEngineBaseResourceInnerTests {
         Assertions.assertEquals("ojvpa", model.etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupEngineBaseResourceInner model =
             new BackupEngineBaseResourceInner()
                 .withLocation("qgxy")

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedIdentitySqlControlSettings Get. */
 public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     /*
@@ -19,6 +17,6 @@ public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     public static void getManagedIdentitySqlControlSettings(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedIdentitySqlControlSettings()
-            .getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+            .getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

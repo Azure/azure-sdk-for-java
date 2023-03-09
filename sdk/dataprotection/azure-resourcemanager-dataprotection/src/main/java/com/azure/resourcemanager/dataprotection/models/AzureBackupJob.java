@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** AzureBackup Job Class. */
 @Fluent
 public final class AzureBackupJob {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupJob.class);
-
     /*
      * Job Activity Id
      */
@@ -95,8 +92,8 @@ public final class AzureBackupJob {
     private boolean isUserTriggered;
 
     /*
-     * It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR;
-     * Tiering:Backup/Archive ; Management:ConfigureProtection/UnConfigure
+     * It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR; Tiering:Backup/Archive ;
+     * Management:ConfigureProtection/UnConfigure
      */
     @JsonProperty(value = "operation", required = true)
     private String operation;
@@ -132,8 +129,7 @@ public final class AzureBackupJob {
     private String progressUrl;
 
     /*
-     * It indicates the sub type of operation i.e. in case of Restore it can be
-     * ALR/OLR
+     * It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR
      */
     @JsonProperty(value = "restoreType", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreType;
@@ -157,8 +153,7 @@ public final class AzureBackupJob {
     private OffsetDateTime startTime;
 
     /*
-     * Status of the job like
-     * InProgress/Success/Failed/Cancelled/SuccessWithWarning
+     * Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning
      */
     @JsonProperty(value = "status", required = true)
     private String status;
@@ -198,6 +193,10 @@ public final class AzureBackupJob {
      */
     @JsonProperty(value = "destinationDataStoreName")
     private String destinationDataStoreName;
+
+    /** Creates an instance of AzureBackupJob class. */
+    public AzureBackupJob() {
+    }
 
     /**
      * Get the activityId property: Job Activity Id.
@@ -720,34 +719,34 @@ public final class AzureBackupJob {
      */
     public void validate() {
         if (activityId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property activityId in model AzureBackupJob"));
         }
         if (backupInstanceFriendlyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupInstanceFriendlyName in model AzureBackupJob"));
         }
         if (dataSourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceId in model AzureBackupJob"));
         }
         if (dataSourceLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataSourceLocation in model AzureBackupJob"));
         }
         if (dataSourceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceName in model AzureBackupJob"));
         }
         if (dataSourceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceType in model AzureBackupJob"));
         }
@@ -758,52 +757,54 @@ public final class AzureBackupJob {
             extendedInfo().validate();
         }
         if (operation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operation in model AzureBackupJob"));
         }
         if (operationCategory() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operationCategory in model AzureBackupJob"));
         }
         if (sourceResourceGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceResourceGroup in model AzureBackupJob"));
         }
         if (sourceSubscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceSubscriptionId in model AzureBackupJob"));
         }
         if (startTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property startTime in model AzureBackupJob"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model AzureBackupJob"));
         }
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property subscriptionId in model AzureBackupJob"));
         }
         if (supportedActions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property supportedActions in model AzureBackupJob"));
         }
         if (vaultName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property vaultName in model AzureBackupJob"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupJob.class);
 }

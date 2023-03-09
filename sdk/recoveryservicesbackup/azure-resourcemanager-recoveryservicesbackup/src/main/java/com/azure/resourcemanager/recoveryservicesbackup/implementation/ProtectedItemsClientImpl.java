@@ -53,7 +53,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectedItemsService {
+    public interface ProtectedItemsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

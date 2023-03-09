@@ -16,13 +16,6 @@ public interface StorageAccountInformation {
     String id();
 
     /**
-     * Gets the suffix property: The optional suffix for the storage account.
-     *
-     * @return the suffix value.
-     */
-    String suffix();
-
-    /**
      * Gets the name property: The resource name.
      *
      * @return the name value.
@@ -35,6 +28,13 @@ public interface StorageAccountInformation {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the suffix property: The optional suffix for the storage account.
+     *
+     * @return the suffix value.
+     */
+    String suffix();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageAccountInformationInner object.

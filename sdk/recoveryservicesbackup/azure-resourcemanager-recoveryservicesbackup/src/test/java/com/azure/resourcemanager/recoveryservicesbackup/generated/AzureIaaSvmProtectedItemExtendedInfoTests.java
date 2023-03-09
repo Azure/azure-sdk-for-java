@@ -8,40 +8,39 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSvmProtectedItemExtendedInfo;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureIaaSvmProtectedItemExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureIaaSvmProtectedItemExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"oldestRecoveryPoint\":\"2021-05-27T13:13:34Z\",\"oldestRecoveryPointInVault\":\"2021-10-18T14:47:31Z\",\"oldestRecoveryPointInArchive\":\"2021-11-19T12:22:46Z\",\"newestRecoveryPointInArchive\":\"2021-03-21T00:50:35Z\",\"recoveryPointCount\":390337220,\"policyInconsistent\":false}")
+                    "{\"oldestRecoveryPoint\":\"2021-12-05T05:54:43Z\",\"oldestRecoveryPointInVault\":\"2021-03-18T03:28:02Z\",\"oldestRecoveryPointInArchive\":\"2021-11-07T01:02:12Z\",\"newestRecoveryPointInArchive\":\"2021-03-29T10:48:47Z\",\"recoveryPointCount\":1356605173,\"policyInconsistent\":true}")
                 .toObject(AzureIaaSvmProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T13:13:34Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-18T14:47:31Z"), model.oldestRecoveryPointInVault());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T12:22:46Z"), model.oldestRecoveryPointInArchive());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T00:50:35Z"), model.newestRecoveryPointInArchive());
-        Assertions.assertEquals(390337220, model.recoveryPointCount());
-        Assertions.assertEquals(false, model.policyInconsistent());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T05:54:43Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T03:28:02Z"), model.oldestRecoveryPointInVault());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T01:02:12Z"), model.oldestRecoveryPointInArchive());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T10:48:47Z"), model.newestRecoveryPointInArchive());
+        Assertions.assertEquals(1356605173, model.recoveryPointCount());
+        Assertions.assertEquals(true, model.policyInconsistent());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureIaaSvmProtectedItemExtendedInfo model =
             new AzureIaaSvmProtectedItemExtendedInfo()
-                .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-27T13:13:34Z"))
-                .withOldestRecoveryPointInVault(OffsetDateTime.parse("2021-10-18T14:47:31Z"))
-                .withOldestRecoveryPointInArchive(OffsetDateTime.parse("2021-11-19T12:22:46Z"))
-                .withNewestRecoveryPointInArchive(OffsetDateTime.parse("2021-03-21T00:50:35Z"))
-                .withRecoveryPointCount(390337220)
-                .withPolicyInconsistent(false);
+                .withOldestRecoveryPoint(OffsetDateTime.parse("2021-12-05T05:54:43Z"))
+                .withOldestRecoveryPointInVault(OffsetDateTime.parse("2021-03-18T03:28:02Z"))
+                .withOldestRecoveryPointInArchive(OffsetDateTime.parse("2021-11-07T01:02:12Z"))
+                .withNewestRecoveryPointInArchive(OffsetDateTime.parse("2021-03-29T10:48:47Z"))
+                .withRecoveryPointCount(1356605173)
+                .withPolicyInconsistent(true);
         model = BinaryData.fromObject(model).toObject(AzureIaaSvmProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T13:13:34Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-18T14:47:31Z"), model.oldestRecoveryPointInVault());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T12:22:46Z"), model.oldestRecoveryPointInArchive());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T00:50:35Z"), model.newestRecoveryPointInArchive());
-        Assertions.assertEquals(390337220, model.recoveryPointCount());
-        Assertions.assertEquals(false, model.policyInconsistent());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T05:54:43Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T03:28:02Z"), model.oldestRecoveryPointInVault());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T01:02:12Z"), model.oldestRecoveryPointInArchive());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T10:48:47Z"), model.newestRecoveryPointInArchive());
+        Assertions.assertEquals(1356605173, model.recoveryPointCount());
+        Assertions.assertEquals(true, model.policyInconsistent());
     }
 }

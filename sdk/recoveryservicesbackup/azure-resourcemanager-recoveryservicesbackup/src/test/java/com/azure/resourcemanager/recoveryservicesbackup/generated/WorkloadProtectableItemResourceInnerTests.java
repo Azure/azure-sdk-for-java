@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadProtectab
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkloadProtectableItemResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkloadProtectableItemResourceInner model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class WorkloadProtectableItemResourceInnerTests {
         Assertions.assertEquals("onok", model.etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkloadProtectableItemResourceInner model =
             new WorkloadProtectableItemResourceInner()
                 .withLocation("xrjqcirgzpfrlazs")

@@ -19,6 +19,18 @@ public final class DataConnectionKind extends ExpandableStringEnum<DataConnectio
     /** Static value IotHub for DataConnectionKind. */
     public static final DataConnectionKind IOT_HUB = fromString("IotHub");
 
+    /** Static value CosmosDb for DataConnectionKind. */
+    public static final DataConnectionKind COSMOS_DB = fromString("CosmosDb");
+
+    /**
+     * Creates a new instance of DataConnectionKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataConnectionKind() {
+    }
+
     /**
      * Creates or finds a DataConnectionKind from its string representation.
      *

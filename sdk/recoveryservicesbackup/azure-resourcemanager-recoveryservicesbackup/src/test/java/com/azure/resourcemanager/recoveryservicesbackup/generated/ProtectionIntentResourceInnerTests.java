@@ -12,11 +12,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionIntentResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectionIntentResourceInner model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class ProtectionIntentResourceInnerTests {
         Assertions.assertEquals("nryrtihf", model.etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectionIntentResourceInner model =
             new ProtectionIntentResourceInner()
                 .withLocation("tijbpzvgnwzsymgl")

@@ -16,6 +16,9 @@ public final class LibraryResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private LibraryResourceProperties properties;
 
+    /** Creates an instance of LibraryResource class. */
+    public LibraryResource() {}
+
     /**
      * Get the properties property: Library/package properties.
      *

@@ -16,15 +16,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileshareProtectedItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureFileshareProtectedItem model =
             BinaryData
                 .fromString(
-                    "{\"protectedItemType\":\"AzureFileShareProtectedItem\",\"friendlyName\":\"xtqmieoxor\",\"protectionStatus\":\"ufhyaomtbgh\",\"protectionState\":\"ProtectionStopped\",\"lastBackupStatus\":\"rvk\",\"lastBackupTime\":\"2021-11-21T11:52:27Z\",\"kpisHealths\":{\"bibgjmfxumv\":{\"resourceHealthStatus\":\"TransientUnhealthy\",\"resourceHealthDetails\":[]},\"ovwxnbkfezzxsc\":{\"resourceHealthStatus\":\"PersistentDegraded\",\"resourceHealthDetails\":[]},\"g\":{\"resourceHealthStatus\":\"Invalid\",\"resourceHealthDetails\":[]},\"zbomvzzbtdcqvpni\":{\"resourceHealthStatus\":\"TransientDegraded\",\"resourceHealthDetails\":[]}},\"extendedInfo\":{\"oldestRecoveryPoint\":\"2021-07-28T02:37:45Z\",\"recoveryPointCount\":277819924,\"policyState\":\"wdsh\",\"resourceState\":\"snrbgyefrymsgao\",\"resourceStateSyncTime\":\"2020-12-25T11:28:29Z\"},\"backupManagementType\":\"AzureBackupServer\",\"workloadType\":\"VMwareVM\",\"containerName\":\"mrfhirctymox\",\"sourceResourceId\":\"tpipiwyczuhx\",\"policyId\":\"pqjlihhyusps\",\"lastRecoveryPoint\":\"2021-06-21T18:35:02Z\",\"backupSetName\":\"vlmfwdgzxulucv\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-10-14T22:40:57Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"zvxurisjnhny\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"gxmrhublwp\",\"esutrgjupauutpw\"],\"isArchiveEnabled\":true,\"policyName\":\"hej\",\"softDeleteRetentionPeriod\":248529956}")
+                    "{\"protectedItemType\":\"AzureFileShareProtectedItem\",\"friendlyName\":\"xtqmieoxor\",\"protectionStatus\":\"ufhyaomtbgh\",\"protectionState\":\"ProtectionPaused\",\"lastBackupStatus\":\"rvk\",\"lastBackupTime\":\"2021-11-21T11:52:27Z\",\"kpisHealths\":{\"bibgjmfxumv\":{\"resourceHealthStatus\":\"TransientUnhealthy\",\"resourceHealthDetails\":[]},\"ovwxnbkfezzxsc\":{\"resourceHealthStatus\":\"PersistentDegraded\",\"resourceHealthDetails\":[]},\"g\":{\"resourceHealthStatus\":\"Invalid\",\"resourceHealthDetails\":[]},\"zbomvzzbtdcqvpni\":{\"resourceHealthStatus\":\"TransientDegraded\",\"resourceHealthDetails\":[]}},\"extendedInfo\":{\"oldestRecoveryPoint\":\"2021-07-28T02:37:45Z\",\"recoveryPointCount\":277819924,\"policyState\":\"wdsh\",\"resourceState\":\"snrbgyefrymsgao\",\"resourceStateSyncTime\":\"2020-12-25T11:28:29Z\"},\"backupManagementType\":\"AzureBackupServer\",\"workloadType\":\"VMwareVM\",\"containerName\":\"mrfhirctymox\",\"sourceResourceId\":\"tpipiwyczuhx\",\"policyId\":\"pqjlihhyusps\",\"lastRecoveryPoint\":\"2021-06-21T18:35:02Z\",\"backupSetName\":\"vlmfwdgzxulucv\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-10-14T22:40:57Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"zvxurisjnhny\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"gxmrhublwp\",\"esutrgjupauutpw\"],\"isArchiveEnabled\":true,\"policyName\":\"hej\",\"softDeleteRetentionPeriod\":248529956}")
                 .toObject(AzureFileshareProtectedItem.class);
         Assertions.assertEquals("mrfhirctymox", model.containerName());
         Assertions.assertEquals("tpipiwyczuhx", model.sourceResourceId());
@@ -43,7 +42,7 @@ public final class AzureFileshareProtectedItemTests {
         Assertions.assertEquals(248529956, model.softDeleteRetentionPeriod());
         Assertions.assertEquals("xtqmieoxor", model.friendlyName());
         Assertions.assertEquals("ufhyaomtbgh", model.protectionStatus());
-        Assertions.assertEquals(ProtectionState.PROTECTION_STOPPED, model.protectionState());
+        Assertions.assertEquals(ProtectionState.PROTECTION_PAUSED, model.protectionState());
         Assertions.assertEquals("rvk", model.lastBackupStatus());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T11:52:27Z"), model.lastBackupTime());
         Assertions
@@ -56,8 +55,8 @@ public final class AzureFileshareProtectedItemTests {
         Assertions.assertEquals("wdsh", model.extendedInfo().policyState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureFileshareProtectedItem model =
             new AzureFileshareProtectedItem()
                 .withContainerName("mrfhirctymox")
@@ -77,7 +76,7 @@ public final class AzureFileshareProtectedItemTests {
                 .withSoftDeleteRetentionPeriod(248529956)
                 .withFriendlyName("xtqmieoxor")
                 .withProtectionStatus("ufhyaomtbgh")
-                .withProtectionState(ProtectionState.PROTECTION_STOPPED)
+                .withProtectionState(ProtectionState.PROTECTION_PAUSED)
                 .withLastBackupStatus("rvk")
                 .withLastBackupTime(OffsetDateTime.parse("2021-11-21T11:52:27Z"))
                 .withKpisHealths(
@@ -121,7 +120,7 @@ public final class AzureFileshareProtectedItemTests {
         Assertions.assertEquals(248529956, model.softDeleteRetentionPeriod());
         Assertions.assertEquals("xtqmieoxor", model.friendlyName());
         Assertions.assertEquals("ufhyaomtbgh", model.protectionStatus());
-        Assertions.assertEquals(ProtectionState.PROTECTION_STOPPED, model.protectionState());
+        Assertions.assertEquals(ProtectionState.PROTECTION_PAUSED, model.protectionState());
         Assertions.assertEquals("rvk", model.lastBackupStatus());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T11:52:27Z"), model.lastBackupTime());
         Assertions

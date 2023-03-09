@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Compute Start. */
 public final class ComputeStartSamples {
     /*
@@ -18,6 +16,6 @@ public final class ComputeStartSamples {
      */
     public static void startComputeInstanceCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().start("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().start("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }

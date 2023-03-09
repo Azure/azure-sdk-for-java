@@ -64,7 +64,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualRouterPeeringsService {
+    public interface VirtualRouterPeeringsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -177,7 +177,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -233,7 +233,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -307,7 +307,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualRouterName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).getSyncPoller();
     }
 
     /**
@@ -325,7 +325,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).getSyncPoller();
     }
 
     /**
@@ -435,7 +435,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -492,7 +492,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -602,7 +602,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -669,7 +669,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -760,7 +760,9 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -783,7 +785,8 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         String peeringName,
         VirtualRouterPeeringInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context)
             .getSyncPoller();
     }
 
@@ -907,7 +910,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -968,7 +971,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -16,6 +16,10 @@ import java.util.Map;
 /** Resource properties. */
 @Fluent
 public final class DataCollectionRuleResourceProperties extends DataCollectionRule {
+    /** Creates an instance of DataCollectionRuleResourceProperties class. */
+    public DataCollectionRuleResourceProperties() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionRuleResourceProperties withDescription(String description) {

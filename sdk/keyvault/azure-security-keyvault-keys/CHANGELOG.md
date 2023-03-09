@@ -5,10 +5,29 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.5.4`. Only code written against a beta version such as `4.6.0-beta.1` may be affected.
+- Removed support for Octet Key Pair (OKP) operations.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.5.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 4.5.3 (2023-01-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
 ## 4.6.0-beta.1 (2022-11-11)
 

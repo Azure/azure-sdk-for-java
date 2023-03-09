@@ -483,7 +483,7 @@ public final class WeatherAsyncClient {
      * 
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
      * <pre>
-     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;, 
+     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
      *     null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->
@@ -534,7 +534,7 @@ public final class WeatherAsyncClient {
      * 
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
      * <pre>
-     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;, 
+     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
      *     null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->
@@ -580,7 +580,7 @@ public final class WeatherAsyncClient {
      * 
      * <!-- src_embed com.azure.maps.weather.async.get_current_conditions -->
      * <pre>
-     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;, 
+     * asyncClient.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
      *     null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.async.get_current_conditions -->

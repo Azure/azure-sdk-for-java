@@ -71,7 +71,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ApplicationGatewayPrivateEndpointConnectionsService {
+    public interface ApplicationGatewayPrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -185,7 +185,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,7 +242,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -316,7 +316,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).getSyncPoller();
     }
 
     /**
@@ -334,7 +334,9 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -455,7 +457,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +526,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -632,7 +634,9 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             String applicationGatewayName,
             String connectionName,
             ApplicationGatewayPrivateEndpointConnectionInner parameters) {
-        return beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -658,7 +662,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             String connectionName,
             ApplicationGatewayPrivateEndpointConnectionInner parameters,
             Context context) {
-        return beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -793,7 +798,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -851,7 +856,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -955,7 +960,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1017,7 +1022,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -20,6 +20,15 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
     public static final NetworkPlugin NONE = fromString("none");
 
     /**
+     * Creates a new instance of NetworkPlugin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkPlugin() {
+    }
+
+    /**
      * Creates or finds a NetworkPlugin from its string representation.
      *
      * @param name a name to look for.

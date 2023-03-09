@@ -14,6 +14,15 @@ public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPr
     public static final PublicIpPrefixSkuName STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of PublicIpPrefixSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpPrefixSkuName() {
+    }
+
+    /**
      * Creates or finds a PublicIpPrefixSkuName from its string representation.
      *
      * @param name a name to look for.

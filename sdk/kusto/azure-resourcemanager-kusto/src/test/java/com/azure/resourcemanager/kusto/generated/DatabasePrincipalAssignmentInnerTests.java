@@ -9,34 +9,33 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignment
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabasePrincipalAssignmentInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DatabasePrincipalAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"principalId\":\"misgwbnb\",\"role\":\"Viewer\",\"tenantId\":\"dawkzbali\",\"principalType\":\"Group\",\"tenantName\":\"qhakauhashsf\",\"principalName\":\"osow\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"gicjooxdjeb\"},\"id\":\"pucwwfvovbvme\",\"name\":\"ecivyh\",\"type\":\"ce\"}")
+                    "{\"properties\":{\"principalId\":\"vmkfssxqu\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"plgmgsxnk\",\"principalType\":\"User\",\"tenantName\":\"deslp\",\"principalName\":\"opwi\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"xpkd\"},\"id\":\"zb\",\"name\":\"iuebbaumny\",\"type\":\"upedeojnabckhs\"}")
                 .toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("misgwbnb", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dawkzbali", model.tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vmkfssxqu", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
+        Assertions.assertEquals("plgmgsxnk", model.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DatabasePrincipalAssignmentInner model =
             new DatabasePrincipalAssignmentInner()
-                .withPrincipalId("misgwbnb")
-                .withRole(DatabasePrincipalRole.VIEWER)
-                .withTenantId("dawkzbali")
-                .withPrincipalType(PrincipalType.GROUP);
+                .withPrincipalId("vmkfssxqu")
+                .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
+                .withTenantId("plgmgsxnk")
+                .withPrincipalType(PrincipalType.USER);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("misgwbnb", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dawkzbali", model.tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
+        Assertions.assertEquals("vmkfssxqu", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
+        Assertions.assertEquals("plgmgsxnk", model.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, model.principalType());
     }
 }

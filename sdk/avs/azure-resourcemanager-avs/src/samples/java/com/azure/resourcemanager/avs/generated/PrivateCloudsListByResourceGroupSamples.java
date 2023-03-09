@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds ListByResourceGroup. */
 public final class PrivateCloudsListByResourceGroupSamples {
     /*
@@ -17,7 +15,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listByResourceGroup("group1", Context.NONE);
+        manager.privateClouds().listByResourceGroup("group1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,6 +27,6 @@ public final class PrivateCloudsListByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listByResourceGroup("group1", Context.NONE);
+        manager.privateClouds().listByResourceGroup("group1", com.azure.core.util.Context.NONE);
     }
 }

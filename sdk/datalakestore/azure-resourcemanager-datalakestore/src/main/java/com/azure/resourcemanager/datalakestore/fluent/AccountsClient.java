@@ -26,7 +26,7 @@ public interface AccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountBasicInner> list();
@@ -49,7 +49,7 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountBasicInner> list(
@@ -63,7 +63,7 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(String resourceGroupName);
@@ -87,7 +87,7 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(
@@ -109,9 +109,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
         String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters);
 
@@ -125,9 +125,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
         String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters, Context context);
 
@@ -161,6 +161,21 @@ public interface AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     DataLakeStoreAccountInner create(
         String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters, Context context);
+
+    /**
+     * Gets the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified Data Lake Store account.
@@ -176,21 +191,6 @@ public interface AccountsClient {
     DataLakeStoreAccountInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Gets the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
-
-    /**
      * Updates the specified Data Lake Store account information.
      *
      * @param resourceGroupName The name of the Azure resource group.
@@ -199,9 +199,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
         String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters);
 
@@ -215,9 +215,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
         String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters, Context context);
 
@@ -260,9 +260,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
@@ -274,9 +274,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
@@ -309,6 +309,20 @@ public interface AccountsClient {
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,18 +331,19 @@ public interface AccountsClient {
     void enableKeyVault(String resourceGroupName, String accountName);
 
     /**
-     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
+     * Checks whether the specified account name is available or taken.
      *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
+     * @param location The resource location without whitespace.
+     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return data Lake Store account name availability result information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(
+        String location, CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks whether the specified account name is available or taken.
@@ -342,19 +357,4 @@ public interface AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NameAvailabilityInformationInner checkNameAvailability(String location, CheckNameAvailabilityParameters parameters);
-
-    /**
-     * Checks whether the specified account name is available or taken.
-     *
-     * @param location The resource location without whitespace.
-     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context);
 }

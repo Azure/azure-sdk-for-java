@@ -15,6 +15,19 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Delete a Maps Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -22,7 +35,7 @@ public interface Accounts {
     void deleteByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Delete a Maps Account.
+     * Get a Maps Account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
@@ -30,9 +43,9 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a Maps Account along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<MapsAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * Get a Maps Account.
@@ -47,26 +60,13 @@ public interface Accounts {
     MapsAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Get a Maps Account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
-     */
-    Response<MapsAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
-
-    /**
      * Get all Maps Accounts in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName);
 
@@ -78,7 +78,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -87,7 +87,7 @@ public interface Accounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MapsAccount> list();
 
@@ -98,9 +98,23 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MapsAccount> list(Context context);
+
+    /**
+     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
+     * Only one key is needed at a time; two are given to provide seamless key regeneration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keys to use with the Maps APIs along with {@link Response}.
+     */
+    Response<MapsAccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
@@ -116,18 +130,20 @@ public interface Accounts {
     MapsAccountKeys listKeys(String resourceGroupName, String accountName);
 
     /**
-     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
-     * Only one key is needed at a time; two are given to provide seamless key regeneration.
+     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
+     * immediately.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
+     * @param keySpecification Which key to regenerate: primary or secondary.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
+     * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response}.
      */
-    Response<MapsAccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<MapsAccountKeys> regenerateKeysWithResponse(
+        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context);
 
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
@@ -144,29 +160,13 @@ public interface Accounts {
     MapsAccountKeys regenerateKeys(String resourceGroupName, String accountName, MapsKeySpecification keySpecification);
 
     /**
-     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
-     * immediately.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param keySpecification Which key to regenerate: primary or secondary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
-     */
-    Response<MapsAccountKeys> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context);
-
-    /**
      * Get a Maps Account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
+     * @return a Maps Account along with {@link Response}.
      */
     MapsAccount getById(String id);
 
@@ -178,7 +178,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
+     * @return a Maps Account along with {@link Response}.
      */
     Response<MapsAccount> getByIdWithResponse(String id, Context context);
 
@@ -200,7 +200,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

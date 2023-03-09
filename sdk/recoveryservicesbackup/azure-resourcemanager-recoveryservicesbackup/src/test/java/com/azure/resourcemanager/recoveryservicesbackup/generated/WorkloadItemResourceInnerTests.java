@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadItem;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkloadItemResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkloadItemResourceInner model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class WorkloadItemResourceInnerTests {
         Assertions.assertEquals("eburu", model.etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkloadItemResourceInner model =
             new WorkloadItemResourceInner()
                 .withLocation("dmovsm")

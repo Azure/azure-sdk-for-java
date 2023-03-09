@@ -21,6 +21,10 @@ containerregistry:
   suffix: generated
 containerservice:
   suffix: generated
+containerservice/Microsoft.ContainerService/aks:
+  suffix: generated
+containerservice/Microsoft.ContainerService/fleet:
+  service: containerservicefleet
 cosmos-db:
   service: cosmos
   suffix: generated
@@ -47,6 +51,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+loadtestservice:
+  service: loadtesting
 machinelearningservices:
   service: machinelearning
 monitor:

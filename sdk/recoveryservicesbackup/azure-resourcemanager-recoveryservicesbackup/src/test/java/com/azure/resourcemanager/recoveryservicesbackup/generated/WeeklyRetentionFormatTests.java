@@ -10,27 +10,27 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WeeklyRetentionFormatTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WeeklyRetentionFormat model =
             BinaryData
-                .fromString("{\"daysOfTheWeek\":[\"Friday\"],\"weeksOfTheMonth\":[\"Last\"]}")
+                .fromString(
+                    "{\"daysOfTheWeek\":[\"Thursday\",\"Saturday\",\"Thursday\"],\"weeksOfTheMonth\":[\"First\"]}")
                 .toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weeksOfTheMonth().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WeeklyRetentionFormat model =
             new WeeklyRetentionFormat()
-                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.FRIDAY))
-                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST));
+                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.THURSDAY, DayOfWeek.SATURDAY, DayOfWeek.THURSDAY))
+                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weeksOfTheMonth().get(0));
     }
 }

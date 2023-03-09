@@ -24,6 +24,10 @@ public final class DataNetworkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DataNetworkListResult class. */
+    public DataNetworkListResult() {
+    }
+
     /**
      * Get the value property: A list of data networks.
      *

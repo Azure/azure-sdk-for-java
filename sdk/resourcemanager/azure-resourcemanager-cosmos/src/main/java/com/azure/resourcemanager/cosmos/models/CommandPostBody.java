@@ -44,6 +44,10 @@ public final class CommandPostBody {
     @JsonProperty(value = "readwrite")
     private Boolean readwrite;
 
+    /** Creates an instance of CommandPostBody class. */
+    public CommandPostBody() {
+    }
+
     /**
      * Get the command property: The command which should be run.
      *

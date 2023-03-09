@@ -145,6 +145,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerInner innerModel() {
         return this.innerObject;
     }
@@ -326,8 +330,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withVersion(ServerVersion version) {
-        this.innerModel().withVersion(version);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withVersion(version);
+            return this;
+        } else {
+            this.updateParameters.withVersion(version);
+            return this;
+        }
     }
 
     public ServerImpl withAvailabilityZone(String availabilityZone) {

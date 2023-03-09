@@ -20,6 +20,10 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private CassandraKeyspaceGetProperties innerProperties;
 
+    /** Creates an instance of CassandraKeyspaceGetResultsInner class. */
+    public CassandraKeyspaceGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Cassandra keyspace.
      *

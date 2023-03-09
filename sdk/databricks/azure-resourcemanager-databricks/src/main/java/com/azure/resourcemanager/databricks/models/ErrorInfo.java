@@ -6,20 +6,24 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains details when the response code indicates an error. */
+/**
+ * Error response.
+ *
+ * <p>Contains details when the response code indicates an error.
+ */
 @Immutable
 public final class ErrorInfo extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorInfo.class);
-
     /*
      * Inner error details if they exist.
      */
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private String innererror;
+
+    /** Creates an instance of ErrorInfo class. */
+    public ErrorInfo() {
+    }
 
     /**
      * Get the innererror property: Inner error details if they exist.

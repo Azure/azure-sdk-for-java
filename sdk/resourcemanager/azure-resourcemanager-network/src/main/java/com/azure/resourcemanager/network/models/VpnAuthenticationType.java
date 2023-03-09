@@ -20,6 +20,15 @@ public final class VpnAuthenticationType extends ExpandableStringEnum<VpnAuthent
     public static final VpnAuthenticationType AAD = fromString("AAD");
 
     /**
+     * Creates a new instance of VpnAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a VpnAuthenticationType from its string representation.
      *
      * @param name a name to look for.

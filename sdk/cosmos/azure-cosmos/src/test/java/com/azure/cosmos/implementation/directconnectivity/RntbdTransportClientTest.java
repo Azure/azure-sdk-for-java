@@ -105,7 +105,13 @@ public final class RntbdTransportClientTest {
     private static final Uri physicalAddress = new Uri("rntbd://host:10251/replica-path/");
     private static final Duration requestTimeout = Duration.ofSeconds(1000);
     private static final int sslHandshakeTimeoutInMillis = 5000;
-    private static final int transitTimeoutDetectionThreshold = 3;
+    private static final boolean timeoutDetectionEnabled = true;
+    private static final Duration timeoutDetectionTimeLimit = Duration.ofSeconds(60L);
+    private static final int timeoutDetectionHighFrequencyThreshold = 3;
+    private static final Duration timeoutDetectionHighFrequencyTimeLimit = Duration.ofSeconds(10L);
+    private static final int timeoutDetectionOnWriteThreshold = 1;
+    private static final Duration timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
+    private static final double timeoutDetectionDisableCPUThreshold = 90.0;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -742,7 +748,13 @@ public final class RntbdTransportClientTest {
                 .build();
 
         assertEquals(options.sslHandshakeTimeoutInMillis(), sslHandshakeTimeoutInMillis);
-        assertEquals(options.transientTimeoutDetectionThreshold(), transitTimeoutDetectionThreshold);
+        assertEquals(options.timeoutDetectionEnabled(), timeoutDetectionEnabled);
+        assertEquals(options.timeoutDetectionTimeLimit(), timeoutDetectionTimeLimit);
+        assertEquals(options.timeoutDetectionHighFrequencyThreshold(), timeoutDetectionHighFrequencyThreshold);
+        assertEquals(options.timeoutDetectionHighFrequencyTimeLimit(), timeoutDetectionHighFrequencyTimeLimit);
+        assertEquals(options.timeoutDetectionOnWriteThreshold(), timeoutDetectionOnWriteThreshold);
+        assertEquals(options.timeoutDetectionOnWriteTimeLimit(), timeoutDetectionOnWriteTimeLimit);
+        assertEquals(options.timeoutDetectionDisableCPUThreshold(), timeoutDetectionDisableCPUThreshold);
     }
 
     // TODO: add validations for other properties
@@ -750,7 +762,13 @@ public final class RntbdTransportClientTest {
     @Test(enabled = false, groups = "unit")
     public void transportClientCustomizedOptionsTests() {
         try {
-            System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\",\"transitTimeoutDetectionThreshold\":\"10\" }");
+            System.setProperty("COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED", "false");
+            System.setProperty(
+                "azure.cosmos.directTcp.defaultOptions",
+                "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"," +
+                    "\"timeoutDetectionTimeLimit\":\"PT61S\", \"timeoutDetectionHighFrequencyThreshold\":\"4\", " +
+                    "\"timeoutDetectionHighFrequencyTimeLimit\":\"PT11S\", \"timeoutDetectionOnWriteThreshold\":\"2\"," +
+                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"}");
 
             ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -760,10 +778,17 @@ public final class RntbdTransportClientTest {
                     .build();
 
             assertEquals(options.sslHandshakeTimeoutInMillis(), Duration.ofSeconds(15).toMillis());
-            assertEquals(options.transientTimeoutDetectionThreshold(), 10);
+            assertEquals(options.timeoutDetectionEnabled(), false);
+            assertEquals(options.timeoutDetectionTimeLimit(), Duration.ofSeconds(61));
+            assertEquals(options.timeoutDetectionHighFrequencyThreshold(), 4);
+            assertEquals(options.timeoutDetectionHighFrequencyTimeLimit(), Duration.ofSeconds(11));
+            assertEquals(options.timeoutDetectionOnWriteThreshold(), 2);
+            assertEquals(options.timeoutDetectionOnWriteTimeLimit(), Duration.ofSeconds(7));
+            assertEquals(options.timeoutDetectionDisableCPUThreshold(), 80.0);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");
+            System.clearProperty("COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED");
         }
     }
 
@@ -797,9 +822,11 @@ public final class RntbdTransportClientTest {
     }
 
     @Test(groups = "unit")
-    public void cancelRequestMono() throws InterruptedException {
+    public void cancelRequestMono() throws InterruptedException, URISyntaxException {
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        URI locationToRoute = new URI("http://localhost-west:8080");
+        request.requestContext.locationEndpointToRoute = locationToRoute;
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
@@ -808,13 +835,13 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.get(physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
             .invokeStoreAsync(
                 physicalAddress,
-                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document))
+                request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()
             .dispose();
@@ -956,7 +983,9 @@ public final class RntbdTransportClientTest {
                     new RntbdClientChannelHealthChecker(config),
                     30,
                     null,
-                    Duration.ofMillis(100).toNanos());
+                    Duration.ofMillis(100).toNanos(),
+                    null,
+                    config.tcpNetworkRequestTimeoutInNanos());
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
@@ -977,6 +1006,16 @@ public final class RntbdTransportClientTest {
 
         @Override
         public int channelsAcquiredMetric() {
+            return 0;
+        }
+
+        @Override
+        public int totalChannelsAcquiredMetric() {
+            return 0;
+        }
+
+        @Override
+        public int totalChannelsClosedMetric() {
             return 0;
         }
 
@@ -1066,6 +1105,16 @@ public final class RntbdTransportClientTest {
             return 0;
         }
 
+        @Override
+        public URI serviceEndpoint() {
+            return null;
+        }
+
+        @Override
+        public void injectConnectionErrors(String ruleId, double threshold, Class<?> eventType) {
+            throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
+        }
+
         // endregion
 
         // region Methods
@@ -1125,6 +1174,11 @@ public final class RntbdTransportClientTest {
             @Override
             public int evictions() {
                 return 0;
+            }
+
+            @Override
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
+                return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
             @Override

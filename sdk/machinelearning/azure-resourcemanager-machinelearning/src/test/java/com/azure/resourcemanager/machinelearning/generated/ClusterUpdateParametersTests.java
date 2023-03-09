@@ -7,17 +7,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ClusterUpdateParameters;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterUpdateParameters model =
             BinaryData.fromString("{\"properties\":{\"properties\":{}}}").toObject(ClusterUpdateParameters.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterUpdateParameters model = new ClusterUpdateParameters().withProperties(new ScaleSettingsInformation());
         model = BinaryData.fromObject(model).toObject(ClusterUpdateParameters.class);
     }

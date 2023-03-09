@@ -20,6 +20,15 @@ public final class NetworkIntentPolicyBasedService extends ExpandableStringEnum<
     public static final NetworkIntentPolicyBasedService ALLOW_RULES_ONLY = fromString("AllowRulesOnly");
 
     /**
+     * Creates a new instance of NetworkIntentPolicyBasedService value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkIntentPolicyBasedService() {
+    }
+
+    /**
      * Creates or finds a NetworkIntentPolicyBasedService from its string representation.
      *
      * @param name a name to look for.

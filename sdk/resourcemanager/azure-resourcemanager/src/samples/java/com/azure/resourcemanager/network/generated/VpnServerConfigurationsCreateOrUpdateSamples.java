@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPolicyGroupInner;
 import com.azure.resourcemanager.network.models.DhGroup;
@@ -29,7 +28,7 @@ import java.util.Map;
 /** Samples for VpnServerConfigurations CreateOrUpdate. */
 public final class VpnServerConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnServerConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnServerConfigurationPut.json
      */
     /**
      * Sample code: VpnServerConfigurationCreate.
@@ -93,7 +92,7 @@ public final class VpnServerConfigurationsCreateOrUpdateSamples {
                                 new RadiusServer()
                                     .withRadiusServerAddress("10.0.0.0")
                                     .withRadiusServerScore(25L)
-                                    .withRadiusServerSecret("radiusServerSecret")))
+                                    .withRadiusServerSecret("fakeTokenPlaceholder")))
                     .withConfigurationPolicyGroups(
                         Arrays
                             .asList(
@@ -125,7 +124,7 @@ public final class VpnServerConfigurationsCreateOrUpdateSamples {
                                                     .withAttributeType(
                                                         VpnPolicyMemberAttributeType.CERTIFICATE_GROUP_ID)
                                                     .withAttributeValue("red.com"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

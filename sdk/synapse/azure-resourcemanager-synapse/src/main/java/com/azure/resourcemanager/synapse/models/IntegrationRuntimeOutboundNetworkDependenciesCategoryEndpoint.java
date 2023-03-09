@@ -23,6 +23,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
     @JsonProperty(value = "endpoints")
     private List<IntegrationRuntimeOutboundNetworkDependenciesEndpoint> endpoints;
 
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint() {
+    }
+
     /**
      * Get the category property: The category of outbound network dependency.
      *

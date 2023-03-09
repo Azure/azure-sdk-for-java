@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /** The properties of a server. */
 @Fluent
 public final class ServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerProperties.class);
-
     /*
-     * The administrator's login name of a server. Can only be specified when
-     * the server is being created (and is required for creation).
+     * The administrator's login name of a server. Can only be specified when the server is being created (and is
+     * required for creation).
      */
     @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
@@ -69,6 +66,18 @@ public final class ServerProperties {
     private Storage storage;
 
     /*
+     * AuthConfig properties of a server.
+     */
+    @JsonProperty(value = "authConfig")
+    private AuthConfig authConfig;
+
+    /*
+     * Data encryption properties of a server.
+     */
+    @JsonProperty(value = "dataEncryption")
+    private DataEncryption dataEncryption;
+
+    /*
      * Backup properties of a server.
      */
     @JsonProperty(value = "backup")
@@ -93,15 +102,15 @@ public final class ServerProperties {
     private MaintenanceWindow maintenanceWindow;
 
     /*
-     * The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
+     * 'GeoRestore' or 'Replica'.
      */
     @JsonProperty(value = "sourceServerResourceId")
     private String sourceServerResourceId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      */
     @JsonProperty(value = "pointInTimeUTC")
     private OffsetDateTime pointInTimeUtc;
@@ -113,17 +122,26 @@ public final class ServerProperties {
     private String availabilityZone;
 
     /*
+     * Replication role of the server
+     */
+    @JsonProperty(value = "replicationRole")
+    private ReplicationRole replicationRole;
+
+    /*
+     * Replicas allowed for a server.
+     */
+    @JsonProperty(value = "replicaCapacity")
+    private Integer replicaCapacity;
+
+    /*
      * The mode to create a new PostgreSQL server.
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
-    /*
-     * Application-specific metadata in the form of key-value pairs.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    /** Creates an instance of ServerProperties class. */
+    public ServerProperties() {
+    }
 
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
@@ -235,6 +253,46 @@ public final class ServerProperties {
     }
 
     /**
+     * Get the authConfig property: AuthConfig properties of a server.
+     *
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: AuthConfig properties of a server.
+     *
+     * @param authConfig the authConfig value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withAuthConfig(AuthConfig authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
+     * Get the dataEncryption property: Data encryption properties of a server.
+     *
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.dataEncryption;
+    }
+
+    /**
+     * Set the dataEncryption property: Data encryption properties of a server.
+     *
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withDataEncryption(DataEncryption dataEncryption) {
+        this.dataEncryption = dataEncryption;
+        return this;
+    }
+
+    /**
      * Get the backup property: Backup properties of a server.
      *
      * @return the backup value.
@@ -316,7 +374,7 @@ public final class ServerProperties {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
      *
      * @return the sourceServerResourceId value.
      */
@@ -326,7 +384,7 @@ public final class ServerProperties {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerProperties object itself.
@@ -338,7 +396,7 @@ public final class ServerProperties {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -348,7 +406,7 @@ public final class ServerProperties {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerProperties object itself.
@@ -379,6 +437,46 @@ public final class ServerProperties {
     }
 
     /**
+     * Get the replicationRole property: Replication role of the server.
+     *
+     * @return the replicationRole value.
+     */
+    public ReplicationRole replicationRole() {
+        return this.replicationRole;
+    }
+
+    /**
+     * Set the replicationRole property: Replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withReplicationRole(ReplicationRole replicationRole) {
+        this.replicationRole = replicationRole;
+        return this;
+    }
+
+    /**
+     * Get the replicaCapacity property: Replicas allowed for a server.
+     *
+     * @return the replicaCapacity value.
+     */
+    public Integer replicaCapacity() {
+        return this.replicaCapacity;
+    }
+
+    /**
+     * Set the replicaCapacity property: Replicas allowed for a server.
+     *
+     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withReplicaCapacity(Integer replicaCapacity) {
+        this.replicaCapacity = replicaCapacity;
+        return this;
+    }
+
+    /**
      * Get the createMode property: The mode to create a new PostgreSQL server.
      *
      * @return the createMode value.
@@ -399,26 +497,6 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @param tags the tags value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -426,6 +504,12 @@ public final class ServerProperties {
     public void validate() {
         if (storage() != null) {
             storage().validate();
+        }
+        if (authConfig() != null) {
+            authConfig().validate();
+        }
+        if (dataEncryption() != null) {
+            dataEncryption().validate();
         }
         if (backup() != null) {
             backup().validate();

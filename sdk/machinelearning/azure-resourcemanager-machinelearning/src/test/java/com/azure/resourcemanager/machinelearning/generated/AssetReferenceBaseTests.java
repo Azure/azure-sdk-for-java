@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssetReferenceBase;
-import org.junit.jupiter.api.Test;
 
 public final class AssetReferenceBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssetReferenceBase model =
             BinaryData.fromString("{\"referenceType\":\"AssetReferenceBase\"}").toObject(AssetReferenceBase.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssetReferenceBase model = new AssetReferenceBase();
         model = BinaryData.fromObject(model).toObject(AssetReferenceBase.class);
     }

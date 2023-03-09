@@ -37,6 +37,9 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
+    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    public DatabricksSparkPythonActivity() {}
+
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).

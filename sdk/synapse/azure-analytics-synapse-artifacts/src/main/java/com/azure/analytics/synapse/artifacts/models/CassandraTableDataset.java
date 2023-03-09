@@ -30,6 +30,9 @@ public class CassandraTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.keyspace")
     private Object keyspace;
 
+    /** Creates an instance of CassandraTableDataset class. */
+    public CassandraTableDataset() {}
+
     /**
      * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
      * string).

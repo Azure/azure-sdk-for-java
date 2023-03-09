@@ -36,6 +36,9 @@ public class SqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of SqlServerTableDataset class. */
+    public SqlServerTableDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

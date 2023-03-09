@@ -9,31 +9,30 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DailySchedule;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DailyScheduleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DailySchedule model =
             BinaryData
                 .fromString(
-                    "{\"scheduleRunTimes\":[\"2020-12-25T09:47:06Z\",\"2021-05-12T13:55:02Z\",\"2021-03-24T15:15:46Z\",\"2021-10-30T01:14:58Z\"]}")
+                    "{\"scheduleRunTimes\":[\"2021-11-12T18:26:07Z\",\"2021-01-20T21:27:07Z\",\"2020-12-30T18:21:45Z\",\"2021-04-06T21:21:13Z\"]}")
                 .toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T09:47:06Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T18:26:07Z"), model.scheduleRunTimes().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DailySchedule model =
             new DailySchedule()
                 .withScheduleRunTimes(
                     Arrays
                         .asList(
-                            OffsetDateTime.parse("2020-12-25T09:47:06Z"),
-                            OffsetDateTime.parse("2021-05-12T13:55:02Z"),
-                            OffsetDateTime.parse("2021-03-24T15:15:46Z"),
-                            OffsetDateTime.parse("2021-10-30T01:14:58Z")));
+                            OffsetDateTime.parse("2021-11-12T18:26:07Z"),
+                            OffsetDateTime.parse("2021-01-20T21:27:07Z"),
+                            OffsetDateTime.parse("2020-12-30T18:21:45Z"),
+                            OffsetDateTime.parse("2021-04-06T21:21:13Z")));
         model = BinaryData.fromObject(model).toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T09:47:06Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T18:26:07Z"), model.scheduleRunTimes().get(0));
     }
 }

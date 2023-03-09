@@ -6,16 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.Seasonality;
-import org.junit.jupiter.api.Test;
 
 public final class SeasonalityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Seasonality model = BinaryData.fromString("{\"mode\":\"Seasonality\"}").toObject(Seasonality.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Seasonality model = new Seasonality();
         model = BinaryData.fromObject(model).toObject(Seasonality.class);
     }

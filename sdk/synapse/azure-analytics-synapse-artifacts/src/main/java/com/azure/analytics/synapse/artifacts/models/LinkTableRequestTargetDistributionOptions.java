@@ -22,6 +22,9 @@ public final class LinkTableRequestTargetDistributionOptions {
     @JsonProperty(value = "distributionColumn")
     private String distributionColumn;
 
+    /** Creates an instance of LinkTableRequestTargetDistributionOptions class. */
+    public LinkTableRequestTargetDistributionOptions() {}
+
     /**
      * Get the type property: Target table distribution type.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses GetAPrivateEndpointConnection. */
 public final class DiskAccessesGetAPrivateEndpointConnectionSamples {
     /*
@@ -24,6 +22,6 @@ public final class DiskAccessesGetAPrivateEndpointConnectionSamples {
             .serviceClient()
             .getDiskAccesses()
             .getAPrivateEndpointConnectionWithResponse(
-                "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", Context.NONE);
+                "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
     }
 }

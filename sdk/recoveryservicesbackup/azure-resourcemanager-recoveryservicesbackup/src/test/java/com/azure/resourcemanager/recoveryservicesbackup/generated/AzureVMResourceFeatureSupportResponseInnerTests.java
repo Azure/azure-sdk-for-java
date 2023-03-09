@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMResourceFeatureSupportResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SupportStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVMResourceFeatureSupportResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureVMResourceFeatureSupportResponseInner model =
             BinaryData
                 .fromString("{\"supportStatus\":\"DefaultOFF\"}")
@@ -20,8 +19,8 @@ public final class AzureVMResourceFeatureSupportResponseInnerTests {
         Assertions.assertEquals(SupportStatus.DEFAULT_OFF, model.supportStatus());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureVMResourceFeatureSupportResponseInner model =
             new AzureVMResourceFeatureSupportResponseInner().withSupportStatus(SupportStatus.DEFAULT_OFF);
         model = BinaryData.fromObject(model).toObject(AzureVMResourceFeatureSupportResponseInner.class);

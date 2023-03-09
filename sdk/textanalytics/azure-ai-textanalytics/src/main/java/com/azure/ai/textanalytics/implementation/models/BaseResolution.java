@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "TemperatureResolution", value = TemperatureResolution.class),
     @JsonSubTypes.Type(name = "WeightResolution", value = WeightResolution.class),
     @JsonSubTypes.Type(name = "CurrencyResolution", value = CurrencyResolution.class),
-    @JsonSubTypes.Type(name = "BooleanResolution", value = BooleanResolution.class),
     @JsonSubTypes.Type(name = "DateTimeResolution", value = DateTimeResolution.class),
     @JsonSubTypes.Type(name = "NumberResolution", value = NumberResolution.class),
     @JsonSubTypes.Type(name = "OrdinalResolution", value = OrdinalResolution.class),
@@ -34,4 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "NumericRangeResolution", value = NumericRangeResolution.class)
 })
 @Immutable
-public class BaseResolution {}
+public class BaseResolution {
+    /** Creates an instance of BaseResolution class. */
+    public BaseResolution() {}
+}

@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -81,6 +82,7 @@ public final class CallAutomationClientBuilder implements
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private CommunicationUserIdentifier sourceIdentity;
 
     /**
      * Public default constructor
@@ -161,6 +163,16 @@ public final class CallAutomationClientBuilder implements
     public CallAutomationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Set Source Identity used to create and answer call
+     * @param sourceIdentity {@link CommunicationUserIdentifier} to used to create and answer call.
+     * @return {@link CallAutomationClientBuilder} object.
+     */
+    public CallAutomationClientBuilder sourceIdentity(CommunicationUserIdentifier sourceIdentity) {
+        this.sourceIdentity = sourceIdentity;
         return this;
     }
 
@@ -298,7 +310,7 @@ public final class CallAutomationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
     }
 
     /**
@@ -325,14 +337,13 @@ public final class CallAutomationClientBuilder implements
             "false");
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
+        if (!(isConnectionStringSet && isEndpointSet && isCustomEndpointUsed)) {
+            isCustomEndpointUsed = false;
+        }
+
         if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
-        }
-
-        if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isCustomEndpointUsed) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Custom Endpoint mode requires 'ConnectionString/TokenCredential' and 'Endpoint' both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -376,12 +387,7 @@ public final class CallAutomationClientBuilder implements
         }
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
-        try {
-            clientBuilder.endpoint(new URL(endpoint)).pipeline(builderPipeline);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
-
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
         return clientBuilder.buildClient();
     }
 

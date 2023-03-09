@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallPolicies ListByResourceGroup. */
 public final class FirewallPoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyListByResourceGroup.json
      */
     /**
      * Sample code: List all Firewall Policies for a given resource group.
@@ -18,6 +16,11 @@ public final class FirewallPoliciesListByResourceGroupSamples {
      */
     public static void listAllFirewallPoliciesForAGivenResourceGroup(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicies().listByResourceGroup("rg1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicies()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

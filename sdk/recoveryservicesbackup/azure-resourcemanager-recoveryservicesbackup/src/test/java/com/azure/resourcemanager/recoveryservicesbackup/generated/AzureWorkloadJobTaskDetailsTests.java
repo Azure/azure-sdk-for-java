@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadJobTaskDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadJobTaskDetails model =
             BinaryData
                 .fromString("{\"taskId\":\"fdn\",\"status\":\"ydvfvfcjnae\"}")
@@ -20,8 +19,8 @@ public final class AzureWorkloadJobTaskDetailsTests {
         Assertions.assertEquals("ydvfvfcjnae", model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadJobTaskDetails model =
             new AzureWorkloadJobTaskDetails().withTaskId("fdn").withStatus("ydvfvfcjnae");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadJobTaskDetails.class);

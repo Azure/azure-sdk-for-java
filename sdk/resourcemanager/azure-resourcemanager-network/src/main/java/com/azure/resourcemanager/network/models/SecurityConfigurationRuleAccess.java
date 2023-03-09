@@ -20,6 +20,15 @@ public final class SecurityConfigurationRuleAccess extends ExpandableStringEnum<
     public static final SecurityConfigurationRuleAccess ALWAYS_ALLOW = fromString("AlwaysAllow");
 
     /**
+     * Creates a new instance of SecurityConfigurationRuleAccess value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityConfigurationRuleAccess() {
+    }
+
+    /**
      * Creates or finds a SecurityConfigurationRuleAccess from its string representation.
      *
      * @param name a name to look for.

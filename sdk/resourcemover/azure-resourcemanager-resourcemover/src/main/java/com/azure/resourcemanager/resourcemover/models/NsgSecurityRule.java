@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Security Rule data model for Network Security Groups. */
 @Fluent
 public final class NsgSecurityRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NsgSecurityRule.class);
-
     /*
      * Gets or sets the Security rule name.
      */
@@ -36,8 +32,7 @@ public final class NsgSecurityRule {
     /*
      * Gets or sets destination address prefix. CIDR or source IP range.
      * A “*” can also be used to match all source IPs. Default tags such
-     * as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be
-     * used.
+     * as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used.
      */
     @JsonProperty(value = "destinationAddressPrefix")
     private String destinationAddressPrefix;
@@ -51,34 +46,29 @@ public final class NsgSecurityRule {
 
     /*
      * Gets or sets the direction of the rule.InBound or Outbound. The
-     * direction specifies if rule will be evaluated on incoming or outgoing
-     * traffic.
+     * direction specifies if rule will be evaluated on incoming or outgoing traffic.
      */
     @JsonProperty(value = "direction")
     private String direction;
 
     /*
      * Gets or sets the priority of the rule. The value can be between
-     * 100 and 4096. The priority number must be unique for each rule in the
-     * collection.
+     * 100 and 4096. The priority number must be unique for each rule in the collection.
      * The lower the priority number, the higher the priority of the rule.
      */
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
-     * Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or
-     * All(*).
+     * Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or All(*).
      */
     @JsonProperty(value = "protocol")
     private String protocol;
 
     /*
      * Gets or sets source address prefix. CIDR or source IP range. A
-     * “*” can also be used to match all source IPs.  Default tags such as
-     * ‘VirtualNetwork’,
-     * ‘AzureLoadBalancer’ and ‘Internet’ can also be used. If this is an
-     * ingress
+     * “*” can also be used to match all source IPs.  Default tags such as ‘VirtualNetwork’,
+     * ‘AzureLoadBalancer’ and ‘Internet’ can also be used. If this is an ingress
      * rule, specifies where network traffic originates from.
      */
     @JsonProperty(value = "sourceAddressPrefix")
@@ -90,6 +80,10 @@ public final class NsgSecurityRule {
      */
     @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
+
+    /** Creates an instance of NsgSecurityRule class. */
+    public NsgSecurityRule() {
+    }
 
     /**
      * Get the name property: Gets or sets the Security rule name.

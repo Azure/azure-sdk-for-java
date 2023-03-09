@@ -6,15 +6,16 @@ package com.azure.resourcemanager.dataprotection.fluent;
 
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
+import java.util.UUID;
 
 /** The interface for DataProtectionClient class. */
 public interface DataProtectionClient {
     /**
-     * Gets The subscription Id.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    String getSubscriptionId();
+    UUID getSubscriptionId();
 
     /**
      * Gets server parameter.
@@ -64,6 +65,20 @@ public interface DataProtectionClient {
      * @return the OperationStatusClient object.
      */
     OperationStatusClient getOperationStatus();
+
+    /**
+     * Gets the OperationStatusBackupVaultContextsClient object to access its operations.
+     *
+     * @return the OperationStatusBackupVaultContextsClient object.
+     */
+    OperationStatusBackupVaultContextsClient getOperationStatusBackupVaultContexts();
+
+    /**
+     * Gets the OperationStatusResourceGroupContextsClient object to access its operations.
+     *
+     * @return the OperationStatusResourceGroupContextsClient object.
+     */
+    OperationStatusResourceGroupContextsClient getOperationStatusResourceGroupContexts();
 
     /**
      * Gets the BackupVaultOperationResultsClient object to access its operations.
@@ -134,6 +149,13 @@ public interface DataProtectionClient {
      * @return the ExportJobsOperationResultsClient object.
      */
     ExportJobsOperationResultsClient getExportJobsOperationResults();
+
+    /**
+     * Gets the DeletedBackupInstancesClient object to access its operations.
+     *
+     * @return the DeletedBackupInstancesClient object.
+     */
+    DeletedBackupInstancesClient getDeletedBackupInstances();
 
     /**
      * Gets the ResourceGuardsClient object to access its operations.

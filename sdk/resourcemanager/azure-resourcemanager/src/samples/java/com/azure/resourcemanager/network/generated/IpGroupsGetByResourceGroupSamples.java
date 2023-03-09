@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IpGroups GetByResourceGroup. */
 public final class IpGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/IpGroupsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/IpGroupsGet.json
      */
     /**
      * Sample code: Get_IpGroups.
@@ -22,6 +20,6 @@ public final class IpGroupsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getIpGroups()
-            .getByResourceGroupWithResponse("myResourceGroup", "ipGroups1", null, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "ipGroups1", null, com.azure.core.util.Context.NONE);
     }
 }
