@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/paloaltonetworks/ci.yml
+      - sdk/paloaltonetworks/azure-resourcemanager-paloaltonetworks/
+    exclude:
+      - sdk/paloaltonetworks/pom.xml
+      - sdk/paloaltonetworks/azure-resourcemanager-paloaltonetworks/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/paloaltonetworks/ci.yml
+      - sdk/paloaltonetworks/azure-resourcemanager-paloaltonetworks/
+    exclude:
+      - sdk/paloaltonetworks/pom.xml
+      - sdk/paloaltonetworks/azure-resourcemanager-paloaltonetworks/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerpaloaltonetworks
+    displayName: azure-resourcemanager-paloaltonetworks
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: paloaltonetworks
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-paloaltonetworks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerpaloaltonetworks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerpaloaltonetworks }}
