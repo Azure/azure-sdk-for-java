@@ -34,7 +34,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -377,7 +376,7 @@ public final class CommunicationIdentityClientBuilder implements
 
         CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
-        return new CommunicationIdentityClientImpl(builderPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion.getVersion());
+        return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {

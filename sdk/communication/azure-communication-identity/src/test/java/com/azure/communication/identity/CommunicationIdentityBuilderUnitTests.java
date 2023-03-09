@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.identity.unit;
+package com.azure.communication.identity;
 
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
-import com.azure.communication.identity.CommunicationIdentityClient;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -27,7 +23,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CommunicationIdentityBuilderTests {
+public class CommunicationIdentityBuilderUnitTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
     static final String MOCK_ACCESS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
     static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";

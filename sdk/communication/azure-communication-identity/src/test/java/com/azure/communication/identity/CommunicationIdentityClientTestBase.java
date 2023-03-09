@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity.functional;
+package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
-import com.azure.communication.identity.CommunicationIdentityClient;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;

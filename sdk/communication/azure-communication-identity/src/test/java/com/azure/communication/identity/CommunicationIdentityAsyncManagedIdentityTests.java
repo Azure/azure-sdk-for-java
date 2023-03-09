@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity.functional;
+package com.azure.communication.identity;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
@@ -20,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.azure.communication.identity.functional.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 
 public class CommunicationIdentityAsyncManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
@@ -147,7 +145,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                                     return asyncClient.getToken(communicationUser, scopes);
                                 }))
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+                .assertNext(this::verifyTokenNotEmpty)
                 .verifyComplete();
     }
 
@@ -169,7 +167,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -181,12 +179,12 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+                .assertNext(this::verifyTokenNotEmpty)
                 .verifyComplete();
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.communication.identity.functional.CteTestHelper#getValidParams")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         if (skipExchangeAadTeamsTokenTest()) {
             return;
@@ -204,5 +202,4 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                 })
                 .verifyComplete();
     }
-
 }

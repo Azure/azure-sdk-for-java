@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.identity.unit.implementation;
+package com.azure.communication.identity.implementation;
 
 import com.azure.communication.identity.implementation.converters.IdentityErrorConverter;
 import com.azure.communication.identity.implementation.models.CommunicationError;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IdentityErrorConverterTests {
+public class IdentityErrorConverterUnitTests {
 
     private HttpResponse httpResponse;
     private CommunicationErrorResponseException communicationResponseException;

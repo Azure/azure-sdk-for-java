@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "79854f3f-2c85-4687-8ec3-865031b1c384",
+      "x-ms-client-request-id" : "c05855c0-f09c-4b38-862c-ddfa4058d5d4",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Wed, 08 Mar 2023 13:04:17 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:04 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "103ms",
-      "MS-CV" : "QF++B/geyUmnFK7958/KhQ.0",
-      "X-Azure-Ref" : "00YcIZAAAAAClC3N4Lb1+RJUSzGosAPzlSEVMMDFFREdFMjAxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "MS-CV" : "Y7cr72a5EkyE2O/zITnJZg.0",
+      "X-Azure-Ref" : "0cJ4JZAAAAAAvoAhn2I4fTaEYkshzllLLSEVMMDFFREdFMjAxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"AAD application is not the expected one.\",\"target\":\"appId\"}}",
-      "x-ms-client-request-id" : "79854f3f-2c85-4687-8ec3-865031b1c384",
+      "x-ms-client-request-id" : "c05855c0-f09c-4b38-862c-ddfa4058d5d4",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

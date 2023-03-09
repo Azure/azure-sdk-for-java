@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "9cbded61-4d3f-4dee-836c-48e20b9ea8dd",
+      "x-ms-client-request-id" : "ac6bb862-d7f8-4e2c-baab-75092da9c1a8",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,14 +12,14 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 08 Mar 2023 13:04:14 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:52:58 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "81ms",
-      "MS-CV" : "CMW21JwlIEyxD0yJsDFHZA.2.0",
-      "X-Azure-Ref" : "0zocIZAAAAAALHwJ7Pp1XTbu0PES7noR4SEVMMDFFREdFMjAxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "80ms",
+      "MS-CV" : "UHywHm8D0k2wkmaHozrKmQ.2.0",
+      "X-Azure-Ref" : "0ap4JZAAAAABoPi0yB3UJSZGCkUdl1K6vSEVMMDFFREdFMjAwNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Content-Length" : "101",
       "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
-      "x-ms-client-request-id" : "9cbded61-4d3f-4dee-836c-48e20b9ea8dd",
+      "x-ms-client-request-id" : "ac6bb862-d7f8-4e2c-baab-75092da9c1a8",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -29,7 +29,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED/:issueAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6786d2ae-5818-4535-be15-3a3aadf4ec5a",
+      "x-ms-client-request-id" : "39aac17e-758e-4eff-9d58-319e61a0fbc6",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -38,13 +38,13 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Wed, 08 Mar 2023 13:04:14 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:52:59 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "12ms",
-      "MS-CV" : "EKjOaL/zF0aBROYkStpmbA.2.0",
-      "X-Azure-Ref" : "0z4cIZAAAAAAzfxvd+mWKRrYb8IHXjo9+SEVMMDFFREdFMjAwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "11ms",
+      "MS-CV" : "hDQUpGt5RkOeUCCaspwtUw.2.0",
+      "X-Azure-Ref" : "0a54JZAAAAABZPxKcC88RR4GQ5R4k1g6ASEVMMDFFREdFMjAxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 1441 is invalid. Value must be within the [60, 1440] interval.\",\"target\":\"ExpiresInMinutes\"}}",
-      "x-ms-client-request-id" : "6786d2ae-5818-4535-be15-3a3aadf4ec5a",
+      "x-ms-client-request-id" : "39aac17e-758e-4eff-9d58-319e61a0fbc6",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

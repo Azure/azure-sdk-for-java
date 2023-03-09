@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity.functional;
+package com.azure.communication.identity;
 
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.test.TestMode;

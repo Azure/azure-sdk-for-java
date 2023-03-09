@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "46c7b434-6592-40d6-9112-3a9d9d3a3af2",
+      "x-ms-client-request-id" : "a872a094-dc6d-486f-ae95-8a48ca40b6e8",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Wed, 08 Mar 2023 13:04:19 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:05 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "0ms",
-      "MS-CV" : "oU/4S4bzNkOAYw8vnrcxkA.0",
-      "X-Azure-Ref" : "004cIZAAAAADL9RqwS8BMQIAjNtjOFh1kSEVMMDFFREdFMjAwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "MS-CV" : "Nz1HVNi60U+76qsjczPcmw.0",
+      "X-Azure-Ref" : "0cZ4JZAAAAACza0dgH64rRa/lnnXpFyJSSEVMMDFFREdFMjAxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"The body is either missing or doesn't contain any token.\"}}",
-      "x-ms-client-request-id" : "46c7b434-6592-40d6-9112-3a9d9d3a3af2",
+      "x-ms-client-request-id" : "a872a094-dc6d-486f-ae95-8a48ca40b6e8",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

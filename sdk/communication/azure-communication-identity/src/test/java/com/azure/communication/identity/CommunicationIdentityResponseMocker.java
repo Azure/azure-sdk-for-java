@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.identity.unit;
+package com.azure.communication.identity;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c9eaa8f9-137c-48b8-85c6-44fe3c619c24",
+      "x-ms-client-request-id" : "c829fa8f-b362-4388-af2f-418d8fe216a3",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Wed, 08 Mar 2023 13:04:19 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:04 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "13ms",
-      "MS-CV" : "9uVZOx7toEacn8vmzqDqrg.2.0",
-      "X-Azure-Ref" : "004cIZAAAAABR0SDHR81kQYuh34hhiNHUSEVMMDFFREdFMjAxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "12ms",
+      "MS-CV" : "ytX/J7QRx06wsNFfkrLf8g.2.0",
+      "X-Azure-Ref" : "0cZ4JZAAAAADIOvQ/NCVtSKQHcU4XSUNvSEVMMDFFREdFMjAwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 1441 is invalid. Value must be within the [60, 1440] interval.\",\"target\":\"ExpiresInMinutes\"}}",
-      "x-ms-client-request-id" : "c9eaa8f9-137c-48b8-85c6-44fe3c619c24",
+      "x-ms-client-request-id" : "c829fa8f-b362-4388-af2f-418d8fe216a3",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },
