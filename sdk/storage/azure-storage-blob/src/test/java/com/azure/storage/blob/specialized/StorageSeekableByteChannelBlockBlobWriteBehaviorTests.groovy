@@ -4,7 +4,7 @@ import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
-import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteMode
+
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions
 import com.azure.storage.common.test.shared.TestDataFactory
 import spock.lang.Specification
@@ -15,7 +15,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
 
     StorageSeekableByteChannelBlockBlobWriteBehavior getSimpleBehavior(BlockBlobClient client) {
        return new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
-           BlockBlobSeekableByteChannelWriteMode.OVERWRITE, null)
+           StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null)
     }
 
     def testStringMap() {
@@ -27,7 +27,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         given:
         BlockBlobClient client = Mock()
         def behavior = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, conditions,
-            BlockBlobSeekableByteChannelWriteMode.OVERWRITE, null)
+            StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null)
 
         when: "WriteBehavior.write() called"
         behavior.write(data.defaultData, offset)
@@ -49,7 +49,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         given:
         BlockBlobClient client = Mock()
         def behavior = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, headers, metadata, tags, tier,
-            conditions, BlockBlobSeekableByteChannelWriteMode.OVERWRITE, null)
+            conditions, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null)
 
         when: "Three writes"
         behavior.write(data.defaultData, 0)
@@ -90,7 +90,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         and: "behavior set to overwrite"
         BlockBlobClient client = Mock()
         def behavior = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
-            BlockBlobSeekableByteChannelWriteMode.OVERWRITE, blocks)
+            StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, blocks)
 
         when: "Three writes"
         behavior.write(data.defaultData, 0)
@@ -116,7 +116,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         and: "behavior set to append"
         BlockBlobClient client = Mock()
         def behavior = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
-            BlockBlobSeekableByteChannelWriteMode.APPEND, blocks)
+            StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.APPEND, blocks)
 
         when: "Three writes"
         behavior.write(data.defaultData, 0)
@@ -142,7 +142,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         and: "behavior set to append"
         BlockBlobClient client = Mock()
         def behavior = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
-            BlockBlobSeekableByteChannelWriteMode.PREPEND, blocks)
+            StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.PREPEND, blocks)
 
         when: "Three writes"
         behavior.write(data.defaultData, 0)
