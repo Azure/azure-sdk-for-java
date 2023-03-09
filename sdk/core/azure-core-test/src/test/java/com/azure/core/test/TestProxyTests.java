@@ -198,6 +198,20 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
+    @Tag("Live")
+    public void testCannotGetPlaybackClient() {
+        RuntimeException thrown = assertThrows(IllegalStateException.class, () -> interceptorManager.getPlaybackClient());
+        assertEquals("A playback client can only be requested in PLAYBACK mode.", thrown.getMessage());
+    }
+
+    @Test
+    @Tag("Live")
+    public void testCannotGetRecordPolicy() {
+        RuntimeException thrown = assertThrows(IllegalStateException.class, () -> interceptorManager.getRecordPolicy());
+        assertEquals("A recording policy can only be requested in RECORD mode.", thrown.getMessage());
+    }
+
+    @Test
     @Tag("Record")
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
