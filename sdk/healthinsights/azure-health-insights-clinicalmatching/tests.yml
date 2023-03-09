@@ -1,0 +1,10 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: healthinsights
+      Artifacts:
+        - name: azure-health-insights-clinicalmatching
+          groupId: com.azure
+          safeName: azurehealthinsightsclinicalmatching

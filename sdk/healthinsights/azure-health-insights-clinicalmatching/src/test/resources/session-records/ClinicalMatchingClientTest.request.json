@@ -1,0 +1,50 @@
+{
+  "configuration": {
+    "clinicalTrials": {
+      "registryFilters": [
+        {
+          "conditions": [
+            "Diabetes"
+          ],
+          "phases": [
+            "phase1"
+          ],
+          "sources": [
+            "clinicaltrials.gov"
+          ],
+          "facilityLocations": [
+            {
+              "state": "CA",
+              "country": "United States"
+            }
+          ]
+        }
+      ]
+    },
+    "verbose": false,
+    "includeEvidence": true
+  },
+  "patients": [
+    {
+      "id": "98824209",
+      "info": {
+        "sex": "female",
+        "birthDate": "1980-12-26T00:00:00\u002B00:00",
+        "clinicalInfo": [
+          {
+            "system": "http://www.nlm.nih.gov/research/umls",
+            "code": "C0006826",
+            "name": "MalignantNeoplasms",
+            "value": "true"
+          },
+          {
+            "system": "http://www.nlm.nih.gov/research/umls",
+            "code": "C0018802",
+            "name": "MalignantNeoplasms",
+            "value": "false"
+          }
+        ]
+      }
+    }
+  ]
+}
