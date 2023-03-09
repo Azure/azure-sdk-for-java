@@ -3,6 +3,7 @@
 ## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2022-11-02 service version.
 
 ### Breaking Changes
 
