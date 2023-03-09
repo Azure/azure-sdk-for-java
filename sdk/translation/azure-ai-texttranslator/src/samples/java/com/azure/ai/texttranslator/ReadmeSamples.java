@@ -3,7 +3,8 @@
 
 package com.azure.ai.texttranslator;
 
-import com.azure.ai.texttranslator.authentication;
+import com.azure.ai.texttranslator.authentication.AzureRegionalKeyCredential;
+import com.azure.ai.texttranslator.authentication.CustomEndpoint;
 import com.azure.core.credential.AzureKeyCredential;
 
 public final class ReadmeSamples {

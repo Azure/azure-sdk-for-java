@@ -26,7 +26,7 @@ public class GetLanguagesAcceptLanguage {
     public static void main(final String[] args) {
         TranslatorClient client = new TranslatorClientBuilder()
             .endpoint("https://api.cognitive.microsofttranslator.com")
-            .buildRestClient();
+            .buildClient();
 
         String acceptLanguage = "es";
         GetLanguagesResult languages = client.getLanguages(null, null, acceptLanguage, null);

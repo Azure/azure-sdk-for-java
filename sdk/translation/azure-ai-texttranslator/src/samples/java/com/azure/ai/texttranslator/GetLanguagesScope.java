@@ -24,7 +24,7 @@ public class GetLanguagesScope {
     public static void main(final String[] args) {
         TranslatorClient client = new TranslatorClientBuilder()
             .endpoint("https://api.cognitive.microsofttranslator.com")
-            .buildRestClient();
+            .buildClient();
 
         String scope = "translation";
         GetLanguagesResult languages = client.getLanguages(null, scope, null, null);
