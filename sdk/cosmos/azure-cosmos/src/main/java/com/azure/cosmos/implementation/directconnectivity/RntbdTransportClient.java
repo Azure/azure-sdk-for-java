@@ -22,10 +22,11 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMappe
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -102,6 +103,7 @@ public class RntbdTransportClient extends TransportClient {
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
     private final CosmosClientTelemetryConfig metricConfig;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     // endregion
 
@@ -128,7 +130,8 @@ public class RntbdTransportClient extends TransportClient {
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
-            clientTelemetry, globalEndpointManager);
+            clientTelemetry,
+            globalEndpointManager);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -139,6 +142,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
+        this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
     RntbdTransportClient(
@@ -148,12 +152,14 @@ public class RntbdTransportClient extends TransportClient {
         final ClientTelemetry clientTelemetry,
         final GlobalEndpointManager globalEndpointManager) {
 
+        this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
             options,
             checkNotNull(sslContext, "expected non-null sslContext"),
             addressResolver,
-            clientTelemetry);
+            clientTelemetry,
+            this.serverErrorInjector);
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
@@ -244,10 +250,11 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
+        request.requestContext.storePhysicalAddress = address;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
@@ -269,6 +276,8 @@ public class RntbdTransportClient extends TransportClient {
             storeResponse.setRntbdResponseLength(record.responseLength());
             storeResponse.setRntbdRequestLength(record.requestLength());
             storeResponse.setRequestPayloadLength(request.getContentLength());
+            storeResponse.setFaultInjectionRuleId(
+                request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
@@ -315,6 +324,12 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
             BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionRuleId(
+                    cosmosException,
+                    request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
             if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }
@@ -334,15 +349,24 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+        checkNotNull(serviceEndpoint, "Argument 'serviceEndpoint' should not be null");
 
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
 
-        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(serviceEndpoint, address);
         return Mono.fromFuture(endpoint.openConnection(addressUri));
+    }
+
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        injectorProvider.registerConnectionErrorInjector(this.endpointProvider);
+        if (this.serverErrorInjector != null) {
+            this.serverErrorInjector
+                .registerServerErrorInjector(injectorProvider.getRntbdServerErrorInjector());
+        }
     }
 
     /**

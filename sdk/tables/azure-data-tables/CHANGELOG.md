@@ -1,15 +1,14 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.3.9 (2023-03-08)
 
 ### Other Changes
 - Removed Reactor from synchronous clients
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 
 ## 12.3.8 (2023-02-16)
 

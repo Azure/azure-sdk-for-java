@@ -165,8 +165,11 @@ class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specificatio
         given:
         def behavior = getSimpleBehavior(Mock(BlockBlobClient))
 
-        expect:
-        !behavior.canSeek(10)
+        when:
+        behavior.assertCanSeek(10)
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 
     def "WriteBehavior truncate unsupported"(){

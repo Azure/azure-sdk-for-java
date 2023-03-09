@@ -54,7 +54,7 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
@@ -455,7 +455,7 @@ public class BlobClientBase {
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
             behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
 
-        return new StorageSeekableByteChannel(chunkSize, behavior, null, initialPosition);
+        return new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
     }
 
     /**

@@ -101,6 +101,29 @@ public class LocationCache {
         return this.locationInfo.writeEndpoints;
     }
 
+
+    /***
+     * Get the list of available read endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableReadEndpoints() {
+        return this.locationInfo.availableReadEndpointByLocation.values().stream().collect(Collectors.toList());
+    }
+
+    /***
+     * Get the list of available write endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableWriteEndpoints() {
+        return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
+    }
+
     /**
      * Marks the current location unavailable for read
      */
@@ -177,6 +200,21 @@ public class LocationCache {
             UnmodifiableList<URI> endpoints = request.getOperationType().isWriteOperation()? this.getWriteEndpoints() : this.getReadEndpoints();
             return endpoints.get(locationIndex % endpoints.size());
         }
+    }
+
+    public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
+        Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
+        if (writeOnly) {
+            Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder);
+        } else {
+            Utils.tryGetValue(this.locationInfo.availableReadEndpointByLocation, region, endpointValueHolder);
+        }
+
+        if (endpointValueHolder.v != null) {
+            return endpointValueHolder.v;
+        }
+
+        throw new IllegalArgumentException("Can not find service endpoint for region " + region);
     }
 
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
