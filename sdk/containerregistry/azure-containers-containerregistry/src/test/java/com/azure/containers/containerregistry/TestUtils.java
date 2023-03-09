@@ -7,8 +7,8 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciAnnotations;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciDescriptor;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -42,7 +42,7 @@ public class TestUtils {
     public static final String CONFIG_DIGEST = computeDigest(CONFIG_DATA.toByteBuffer());
     public static final BinaryData LAYER_DATA = BinaryData.fromString("hello world");
     public static final String LAYER_DIGEST = computeDigest(LAYER_DATA.toByteBuffer());
-    public static final OciManifest MANIFEST = createManifest();
+    public static final OciImageManifest MANIFEST = createManifest();
     public static final String MANIFEST_DIGEST = "sha256:f1e8b959aa4250751da92d2f79263e35e9d4b00fe0166a2aa3a31e104fbe2284";
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration();
@@ -214,20 +214,20 @@ public class TestUtils {
         } while (++index < 3);
     }
 
-    private static OciManifest createManifest() {
-        OciManifest manifest = new OciManifest()
+    private static OciImageManifest createManifest() {
+        OciImageManifest manifest = new OciImageManifest()
             .setSchemaVersion(2)
-            .setConfig(new OciBlobDescriptor()
+            .setConfig(new OciDescriptor()
                 .setMediaType("application/vnd.acme.rocket.config.v1+json")
                 .setDigest(CONFIG_DIGEST)
-                .setSize(171L));
+                .setSizeInBytes(171L));
 
 
-        List<OciBlobDescriptor> layers = new ArrayList<>();
+        List<OciDescriptor> layers = new ArrayList<>();
 
-        layers.add(new OciBlobDescriptor()
+        layers.add(new OciDescriptor()
             .setMediaType("application/vnd.oci.image.layer.v1.tar")
-            .setSize(28L)
+            .setSizeInBytes(28L)
             .setDigest(LAYER_DIGEST)
             .setAnnotations(new OciAnnotations()
                 .setName("654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed")));

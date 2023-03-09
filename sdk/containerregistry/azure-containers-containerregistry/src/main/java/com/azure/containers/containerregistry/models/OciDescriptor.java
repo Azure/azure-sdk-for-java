@@ -14,7 +14,7 @@ import java.util.List;
 
 /** Docker V2 image layer descriptor including config and layers. */
 @Fluent
-public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescriptor> {
+public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
     /*
      * Layer media type
      */
@@ -23,7 +23,7 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
     /*
      * Layer size
      */
-    private Long size;
+    private Long sizeInBytes;
 
     /*
      * Layer digest
@@ -40,8 +40,8 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
      */
     private OciAnnotations annotations;
 
-    /** Creates an instance of OciBlobDescriptor class. */
-    public OciBlobDescriptor() {}
+    /** Creates an instance of OciDescriptor class. */
+    public OciDescriptor() {}
 
     /**
      * Get the mediaType property: Layer media type.
@@ -56,30 +56,30 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
      * Set the mediaType property: Layer media type.
      *
      * @param mediaType the mediaType value to set.
-     * @return the OciBlobDescriptor object itself.
+     * @return the OciDescriptor object itself.
      */
-    public OciBlobDescriptor setMediaType(String mediaType) {
+    public OciDescriptor setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
     }
 
     /**
-     * Get the size property: Layer size.
+     * Get the sizeInBytes property: Layer size.
      *
-     * @return the size value.
+     * @return the sizeInBytes value.
      */
-    public Long getSize() {
-        return this.size;
+    public Long getSizeInBytes() {
+        return this.sizeInBytes;
     }
 
     /**
-     * Set the size property: Layer size.
+     * Set the sizeInBytes property: Layer size.
      *
-     * @param size the size value to set.
-     * @return the OciBlobDescriptor object itself.
+     * @param sizeInBytes the sizeInBytes value to set.
+     * @return the OciDescriptor object itself.
      */
-    public OciBlobDescriptor setSize(Long size) {
-        this.size = size;
+    public OciDescriptor setSizeInBytes(Long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
         return this;
     }
 
@@ -96,9 +96,9 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
      * Set the digest property: Layer digest.
      *
      * @param digest the digest value to set.
-     * @return the OciBlobDescriptor object itself.
+     * @return the OciDescriptor object itself.
      */
-    public OciBlobDescriptor setDigest(String digest) {
+    public OciDescriptor setDigest(String digest) {
         this.digest = digest;
         return this;
     }
@@ -116,9 +116,9 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
      * Set the urls property: Specifies a list of URIs from which this object may be downloaded.
      *
      * @param urls the urls value to set.
-     * @return the OciBlobDescriptor object itself.
+     * @return the OciDescriptor object itself.
      */
-    public OciBlobDescriptor setUrls(List<String> urls) {
+    public OciDescriptor setUrls(List<String> urls) {
         this.urls = urls;
         return this;
     }
@@ -136,9 +136,9 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
      * Set the annotations property: Additional information provided through arbitrary metadata.
      *
      * @param annotations the annotations value to set.
-     * @return the OciBlobDescriptor object itself.
+     * @return the OciDescriptor object itself.
      */
-    public OciBlobDescriptor setAnnotations(OciAnnotations annotations) {
+    public OciDescriptor setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }
@@ -147,7 +147,7 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mediaType", this.mediaType);
-        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeNumberField("size", this.sizeInBytes);
         jsonWriter.writeStringField("digest", this.digest);
         jsonWriter.writeArrayField("urls", this.urls, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("annotations", this.annotations);
@@ -155,18 +155,18 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
     }
 
     /**
-     * Reads an instance of OciBlobDescriptor from the JsonReader.
+     * Reads an instance of OciDescriptor from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OciBlobDescriptor if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of OciDescriptor if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OciBlobDescriptor.
+     * @throws IOException If an error occurs while reading the OciDescriptor.
      */
-    public static OciBlobDescriptor fromJson(JsonReader jsonReader) throws IOException {
+    public static OciDescriptor fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     String mediaType = null;
-                    Long size = null;
+                    Long sizeInBytes = null;
                     String digest = null;
                     List<String> urls = null;
                     OciAnnotations annotations = null;
@@ -177,7 +177,7 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
                         if ("mediaType".equals(fieldName)) {
                             mediaType = reader.getString();
                         } else if ("size".equals(fieldName)) {
-                            size = reader.getNullable(JsonReader::getLong);
+                            sizeInBytes = reader.getNullable(JsonReader::getLong);
                         } else if ("digest".equals(fieldName)) {
                             digest = reader.getString();
                         } else if ("urls".equals(fieldName)) {
@@ -188,9 +188,9 @@ public final class OciBlobDescriptor implements JsonSerializable<OciBlobDescript
                             reader.skipChildren();
                         }
                     }
-                    OciBlobDescriptor deserializedValue = new OciBlobDescriptor();
+                    OciDescriptor deserializedValue = new OciDescriptor();
                     deserializedValue.mediaType = mediaType;
-                    deserializedValue.size = size;
+                    deserializedValue.sizeInBytes = sizeInBytes;
                     deserializedValue.digest = digest;
                     deserializedValue.urls = urls;
                     deserializedValue.annotations = annotations;
