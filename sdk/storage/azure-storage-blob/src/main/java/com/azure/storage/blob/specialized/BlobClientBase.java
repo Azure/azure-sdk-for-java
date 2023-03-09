@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CpkInfo;
@@ -400,8 +401,8 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public SeekableByteChannel openSeekableByteChannelRead(BlobSeekableByteChannelReadOptions options,
-        Context context) {
+    public Response<BlobSeekableByteChannelReadResult> openSeekableByteChannelRead(
+        BlobSeekableByteChannelReadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
@@ -411,13 +412,14 @@ public class BlobClientBase {
 
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
+        BlobDownloadResponse response;
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
-            BlobDownloadResponse response = this.downloadStreamWithResponse(dstStream,
+            response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
 
         initialRange.limit(initialRange.position());
@@ -455,7 +457,8 @@ public class BlobClientBase {
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
             behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
 
-        return new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
+        SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
+        return new SimpleResponse<>(response, new BlobSeekableByteChannelReadResult(channel, properties));
     }
 
     /**
