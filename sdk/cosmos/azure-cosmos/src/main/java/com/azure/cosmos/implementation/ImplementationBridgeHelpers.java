@@ -727,6 +727,15 @@ public class ImplementationBridgeHelpers {
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
+            void recordOperation(
+                CosmosDiagnosticsContext ctx,
+                int statusCode,
+                int subStatusCode,
+                Integer actualItemCount,
+                Double requestCharge,
+                CosmosDiagnostics diagnostics,
+                Throwable finalError);
+
             void endOperation(
                 CosmosDiagnosticsContext ctx,
                 int statusCode,
@@ -1132,7 +1141,7 @@ public class ImplementationBridgeHelpers {
             String getAccountTagValue(CosmosAsyncClient client);
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
-            boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
+            boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client);
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);

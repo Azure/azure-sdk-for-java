@@ -72,7 +72,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(capturingHandler.getDiagnosticsContexts()).hasSize(1);
         CosmosDiagnosticsContext ctx = capturingHandler.getDiagnosticsContexts().get(0);
         assertThat(ctx).isNotNull();
-        assertThat(ctx.hasCompleted()).isEqualTo(true);
+        assertThat(ctx.isCompleted()).isEqualTo(true);
         assertThat(ctx.getDiagnostics()).isNotEmpty();
         assertThat(ctx.getContainerName()).isEqualTo(container.getId());
         assertThat(ctx.getDatabaseName()).isEqualTo(container.asyncContainer.getDatabase().getId());

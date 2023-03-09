@@ -49,7 +49,7 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
      */
     protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
 
-        if (!diagnosticsContext.hasCompleted()) {
+        if (!diagnosticsContext.isCompleted()) {
             return false;
         }
 

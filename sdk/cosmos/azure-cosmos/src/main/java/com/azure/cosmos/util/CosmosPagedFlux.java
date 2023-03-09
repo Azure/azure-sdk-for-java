@@ -42,6 +42,8 @@ import java.util.function.Function;
  * @see FeedResponse
  */
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFlux.class);
+
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
@@ -155,6 +157,43 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return tracerProvider.runUnderSpanInContext(publisher);
     }
 
+    private void recordFeedResponse(
+        Context traceCtx,
+        DiagnosticsProvider tracerProvider,
+        FeedResponse<T> response,
+        AtomicLong feedResponseConsumerLatencyInNanos) {
+
+        CosmosDiagnostics diagnostics = response != null ? response.getCosmosDiagnostics() : null;
+
+        Integer actualItemCount = response != null && response.getResults() != null ?
+            response.getResults().size() : null;
+
+        if (diagnostics != null &&
+            cosmosDiagnosticsAccessor
+                .isDiagnosticsCapturedInPagedFlux(diagnostics)
+                .compareAndSet(false, true)) {
+
+            if (isTracerEnabled(tracerProvider)) {
+                tracerProvider.recordPage(
+                    traceCtx,
+                    response != null ? response.getCosmosDiagnostics() : null,
+                    actualItemCount,
+                    response != null ? response.getRequestCharge() : null);
+            }
+
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (feedResponseConsumer != null) {
+                // NOTE this call is happening in a span counted against client telemetry / metric latency
+                // So, the latency of the user's callback is accumulated here to correct the latency
+                // reported to client telemetry and client metrics
+                Instant feedResponseConsumerStart = Instant.now();
+                feedResponseConsumer.accept(response);
+                feedResponseConsumerLatencyInNanos.addAndGet(
+                    Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
+            }
+        }
+    }
+
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
@@ -168,28 +207,27 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             })
             .doOnEach(signal -> {
 
+                FeedResponse<T> response = signal.get();
+                Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
+                        this.recordFeedResponse(traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-
-                            FeedResponse<T> response = signal.get();
-                            Integer actualItemCount = response != null && response.getResults() != null ?
-                                response.getResults().size() :
-                                null;
-                            tracerProvider.endSpan(
-                                signal,
-                                HttpConstants.StatusCodes.OK,
-                                actualItemCount,
-                                response != null ? response.getRequestCharge() : null,
-                                response != null ? response.getCosmosDiagnostics() : null);
+                            tracerProvider.endSpan(traceCtx);
                         }
 
                         break;
+                    case ON_NEXT:
+                        this.recordFeedResponse(traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+
+                        break;
+
                     case ON_ERROR:
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.recordFeedResponseConsumerLatency(
@@ -198,48 +236,22 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                             // all info is extracted from CosmosException when applicable
                             tracerProvider.endSpan(
-                                signal,
-                                DiagnosticsProvider.ERROR_CODE,
-                                null,
-                                null,
-                                null);
+                                traceCtx,
+                                signal.getThrowable()
+                            );
                         }
 
                         break;
-                    case ON_NEXT:
-                        FeedResponse<T> feedResponse = signal.get();
-                        CosmosDiagnostics diagnostics = feedResponse != null ?
-                            feedResponse.getCosmosDiagnostics() : null;
 
-                        if (diagnostics != null &&
-                            cosmosDiagnosticsAccessor
-                                .isDiagnosticsCapturedInPagedFlux(diagnostics)
-                                .compareAndSet(false, true)) {
-
-                            if (isTracerEnabled(tracerProvider)) {
-                                tracerProvider.recordPage(signal, diagnostics);
-                             }
-
-                            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
-                            if (feedResponseConsumer != null) {
-                                // NOTE this call is happening in a span counted against client telemetry / metric latency
-                                // So, the latency of the user's callback is accumulated here to correct the latency
-                                // reported to client telemetry and client metrics
-                                Instant feedResponseConsumerStart = Instant.now();
-                                feedResponseConsumer.accept(feedResponse);
-                                feedResponseConsumerLatencyInNanos.addAndGet(
-                                    Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
-                            }
-                        }
-
-                        break;
                     default:
                         break;
             }});
 
-        if (isTracerEnabled(pagedFluxOptions.getTracerProvider())) {
 
-            CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+        final DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
+        if (isTracerEnabled(tracerProvider)) {
+
+            final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
                 pagedFluxOptions.getTracerSpanName(),
                 pagedFluxOptions.getAccountTag(),
                 BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
@@ -252,11 +264,22 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 pagedFluxOptions.getMaxItemCount(),
                 pagedFluxOptions.getDiagnosticsThresholds());
 
-            return result.contextWrite(DiagnosticsProvider.setContextInReactor(
-                pagedFluxOptions.getTracerProvider().startSpan(
-                    pagedFluxOptions.getTracerSpanName(),
-                    cosmosCtx,
-                    context)));
+            return Flux
+                .deferContextual(reactorCtx -> result
+                    .doOnCancel(() -> {
+                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                        tracerProvider.endSpan(traceCtx);
+                    })
+                    .doOnComplete(() -> {
+                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                        tracerProvider.endSpan(traceCtx);
+                    }))
+                .contextWrite(DiagnosticsProvider.setContextInReactor(
+                    pagedFluxOptions.getTracerProvider().startSpan(
+                        pagedFluxOptions.getTracerSpanName(),
+                        cosmosCtx,
+                        context)));
+
         }
 
         return result;

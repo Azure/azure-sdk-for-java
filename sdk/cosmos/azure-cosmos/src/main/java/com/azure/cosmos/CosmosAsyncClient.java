@@ -69,6 +69,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
+    private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
@@ -824,6 +825,23 @@ public final class CosmosAsyncClient implements Closeable {
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
 
+    boolean isTransportLevelTracingEnabled() {
+
+        CosmosClientTelemetryConfig effectiveConfig = this.clientTelemetryConfig != null ?
+            this.clientTelemetryConfig
+            : DEFAULT_TELEMETRY_CONFIG;
+
+        if (telemetryConfigAccessor.isLegacyTracingEnabled(effectiveConfig)) {
+            return false;
+        }
+
+        if (this.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            return false;
+        }
+
+        return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
+    }
+
     String getAccountTagValue() {
         return this.accountTagValue;
     }
@@ -858,8 +876,8 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client) {
-                    return client.clientMetricsEnabled;
+                public boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client) {
+                    return client.clientMetricsEnabled || client.isTransportLevelTracingEnabled();
                 }
 
                 @Override

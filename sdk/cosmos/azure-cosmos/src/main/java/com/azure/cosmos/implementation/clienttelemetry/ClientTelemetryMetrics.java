@@ -162,7 +162,7 @@ public final class ClientTelemetryMetrics {
         float requestCharge,
         Duration latency
     ) {
-        boolean isClientTelemetryMetricsEnabled = clientAccessor.isClientTelemetryMetricsEnabled(client);
+        boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
 
         if (compositeRegistry.getRegistries().isEmpty() ||
             !isClientTelemetryMetricsEnabled) {

@@ -50,7 +50,6 @@ public final class CosmosClientTelemetryConfig {
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
-
     private Boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
     private final int maxConnectionPoolSize;

@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -60,6 +59,7 @@ public final class CosmosDiagnosticsContext {
     private int maxRequestSize = 0;
     private int maxResponseSize = 0;
     private String cachedRequestDiagnostics = null;
+    private boolean isCompleted = false;
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -196,6 +196,10 @@ public final class CosmosDiagnosticsContext {
      * exceeded its threshold.
      */
     public boolean isThresholdViolated() {
+        if (!this.isCompleted()) {
+            return false;
+        }
+
         if (this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode)) {
             return true;
         }
@@ -346,8 +350,8 @@ public final class CosmosDiagnosticsContext {
      * Returns a flag indicating whether the operation has been completed yet.
      * @return a flag indicating whether the operation has been completed yet.
      */
-    public boolean hasCompleted() {
-        return this.duration != null;
+    public boolean isCompleted() {
+        return this.isCompleted;
     }
 
     /**
@@ -365,6 +369,10 @@ public final class CosmosDiagnosticsContext {
      * @return a flag indicating whether the operation should be considered failed or not
      */
     public boolean isFailure() {
+        if (!this.isCompleted()) {
+            return false;
+        }
+
         return this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode);
     }
 
@@ -379,15 +387,30 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
-        if (this.duration != null) {
-            return;
-        }
+    synchronized void recordOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
         synchronized (this.spanName) {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
-            this.actualItemCount = actualItemCount;
+            this.actualItemCount += actualItemCount;
+            this.duration = Duration.between(this.startTime, Instant.now());
+            this.cachedRequestDiagnostics = null;
+        }
+    }
+
+    synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+        synchronized (this.spanName) {
+            this.isCompleted = true;
+            this.statusCode = statusCode;
+            this.subStatusCode = subStatusCode;
+            this.finalError = finalError;
+            if (actualItemCount != null) {
+                if (this.actualItemCount != null) {
+                    this.actualItemCount += actualItemCount;
+                } else {
+                    this.actualItemCount = actualItemCount;
+                }
+            }
             this.duration = Duration.between(this.startTime, Instant.now());
             this.cachedRequestDiagnostics = null;
         }
@@ -506,6 +529,21 @@ public final class CosmosDiagnosticsContext {
                     public void startOperation(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.startOperation();
+                    }
+
+                    @Override
+                    public void recordOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
+                                                Integer actualItemCount, Double requestCharge,
+                                                CosmosDiagnostics diagnostics, Throwable finalError) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        if (diagnostics != null) {
+                            ctx.addDiagnostics(diagnostics);
+                        }
+
+                        if (requestCharge != null) {
+                            ctx.addRequestCharge(requestCharge.floatValue());
+                        }
+                        ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
                     }
 
                     @Override

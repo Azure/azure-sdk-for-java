@@ -420,7 +420,7 @@ public class CosmosAsyncContainer {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions requestOptions = clientAccessor.isClientTelemetryMetricsEnabled(client) ?
+            CosmosQueryRequestOptions requestOptions = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
             pagedFluxOptions.setTracerAndTelemetryInformation(
@@ -678,7 +678,7 @@ public class CosmosAsyncContainer {
             CosmosAsyncClient client = this.getDatabase().getClient();
             CosmosQueryRequestOptions nonNullOptions =
                 cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions options = clientAccessor.isClientTelemetryMetricsEnabled(client) ?
+            CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
             String spanName = this.queryItemsSpanName;
@@ -712,7 +712,7 @@ public class CosmosAsyncContainer {
             CosmosAsyncClient client = this.getDatabase().getClient();
             CosmosQueryRequestOptions nonNullOptions =
                 cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions options = clientAccessor.isClientTelemetryMetricsEnabled(client) ?
+            CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
             String spanName = this.queryItemsSpanName;
@@ -1139,8 +1139,8 @@ public class CosmosAsyncContainer {
         final CosmosQueryRequestOptions requestOptions = options == null
             ? queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(
                 new CosmosQueryRequestOptions(),
-                clientAccessor.isClientTelemetryMetricsEnabled(client))
-            : clientAccessor.isClientTelemetryMetricsEnabled(client)
+                clientAccessor.shouldEnableEmptyPageDiagnostics(client))
+            : clientAccessor.shouldEnableEmptyPageDiagnostics(client)
                 ? queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(options, true)
                 : options;
         requestOptions.setPartitionKey(partitionKey);

@@ -15,22 +15,14 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.DistributionSummary;
-import io.micrometer.core.instrument.Tags;
-import io.micrometer.core.instrument.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
@@ -288,14 +280,52 @@ public final class DiagnosticsProvider {
         }
     }
 
+    public void endSpan(Context context, Throwable throwable) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+            int statusCode = DiagnosticsProvider.ERROR_CODE;
+            int subStatusCode = 0;
+            Double effectiveRequestCharge = null;
+            CosmosDiagnostics effectiveDiagnostics = null;
 
-    public <T> void recordPage(
-        Signal<T> signal,
-        CosmosDiagnostics diagnostics
+            if (throwable instanceof CosmosException) {
+                CosmosException exception = (CosmosException) throwable;
+                statusCode = exception.getStatusCode();
+                subStatusCode = exception.getSubStatusCode();
+
+                if (effectiveRequestCharge != null) {
+                    effectiveRequestCharge += exception.getRequestCharge();
+                } else {
+                    effectiveRequestCharge = exception.getRequestCharge();
+                }
+                effectiveDiagnostics = exception.getDiagnostics();
+            }
+            end(statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
+            System.exit(9905);
+        }
+    }
+
+    public void endSpan(Context context) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+            end(200, 0, null, null, null,null, context);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
+            System.exit(9904);
+        }
+    }
+
+    public void recordPage(
+        Context context,
+        CosmosDiagnostics diagnostics,
+        Integer actualItemCount,
+        Double requestCharge
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.recordPageCore(signal, diagnostics);
+            this.recordPageCore(context, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
             System.exit(9902);
@@ -303,23 +333,18 @@ public final class DiagnosticsProvider {
     }
 
     private <T> void recordPageCore(
-        Signal<T> signal,
-         CosmosDiagnostics diagnostics
+        Context context,
+        CosmosDiagnostics diagnostics,
+        Integer actualItemCount,
+        Double requestCharge
     ) {
-
-        Objects.requireNonNull(signal, "'signal' cannot be null.");
-        checkArgument(
-            signal.getType() == SignalType.ON_NEXT,
-            "recordPage should only be used on ON_NEXT");
-
-        Context context = getContextFromReactorOrNull(signal.getContextView());
         if (context == null) {
             return;
         }
 
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
-        ctxAccessor
-            .addDiagnostics(cosmosCtx, diagnostics);
+        ctxAccessor.recordOperation(
+            cosmosCtx, 200, 0, actualItemCount, requestCharge, diagnostics, null);
     }
 
     public <T> void recordFeedResponseConsumerLatency(
@@ -328,7 +353,34 @@ public final class DiagnosticsProvider {
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.recordFeedResponseConsumerLatencyCore(signal, feedResponseConsumerLatency);
+            Objects.requireNonNull(signal, "'signal' cannot be null.");
+            Objects.requireNonNull(feedResponseConsumerLatency, "'feedResponseConsumerLatency' cannot be null.");
+            checkArgument(
+                signal.getType() == SignalType.ON_COMPLETE || signal.getType() == SignalType.ON_ERROR,
+                "recordFeedResponseConsumerLatency should only be used for terminal signal");
+
+            Context context = getContextFromReactorOrNull(signal.getContextView());
+            CosmosDiagnosticsContext cosmosCtx = null;
+
+            if (context != null) {
+                cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrNull(context);
+            }
+
+            this.recordFeedResponseConsumerLatencyCore(context, cosmosCtx, feedResponseConsumerLatency);
+        } catch (Throwable error) {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
+            System.exit(9902);
+        }
+    }
+
+    public <T> void recordFeedResponseConsumerLatency(
+        Context context,
+        CosmosDiagnosticsContext cosmosCtx,
+        Duration feedResponseConsumerLatency
+    ) {
+        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
+        try {
+             this.recordFeedResponseConsumerLatencyCore(context, cosmosCtx, feedResponseConsumerLatency);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
             System.exit(9902);
@@ -336,25 +388,17 @@ public final class DiagnosticsProvider {
     }
 
     private <T> void recordFeedResponseConsumerLatencyCore(
-        Signal<T> signal,
+        Context context,
+        CosmosDiagnosticsContext cosmosCtx,
         Duration feedResponseConsumerLatency
     ) {
-        Objects.requireNonNull(signal, "'signal' cannot be null.");
+        Objects.requireNonNull(cosmosCtx, "'cosmosCtx' cannot be null.");
         Objects.requireNonNull(feedResponseConsumerLatency, "'feedResponseConsumerLatency' cannot be null.");
-        checkArgument(
-            signal.getType() == SignalType.ON_COMPLETE || signal.getType() == SignalType.ON_ERROR,
-            "recordFeedResponseConsumerLatency should only be used for terminal signal");
 
         if (feedResponseConsumerLatency.compareTo(FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD) <= 0 &&
             !LOGGER.isDebugEnabled()) {
 
             return;
-        }
-
-        CosmosDiagnosticsContext cosmosCtx = null;
-        Context context = getContextFromReactorOrNull(signal.getContextView());
-        if (context != null) {
-            cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrNull(context);
         }
 
         if (feedResponseConsumerLatency.compareTo(FEED_RESPONSE_CONSUMER_LATENCY_THRESHOLD) <= 0 &&
@@ -954,6 +998,7 @@ public final class DiagnosticsProvider {
                     .setAttribute("db.operation", spanName)
                     .setAttribute("net.peer.name", cosmosCtx.getAccountName())
                     .setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType())
+                    .setAttribute("db.cosmosdb.resource_type",cosmosCtx.getResourceType())
                     .setAttribute("db.name", cosmosCtx.getDatabaseName());
 
                 if (!cosmosCtx.getOperationId().isEmpty()) {
@@ -976,7 +1021,7 @@ public final class DiagnosticsProvider {
                 return;
             }
 
-            if (!cosmosCtx.hasCompleted()) {
+            if (!cosmosCtx.isCompleted()) {
                 tracer.end("CosmosCtx not completed yet.", null, context);
                 return;
             }
@@ -1143,25 +1188,38 @@ public final class DiagnosticsProvider {
              }
         }
 
-        private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
+        private void traceTransportLevelRequests(
+            List<ClientSideRequestStatistics> clientSideRequestStatistics,
+            Context context) {
 
+            if (clientSideRequestStatistics != null) {
+                for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+
+                    recordStoreResponseStatistics(
+                        requestStatistics.getResponseStatisticsList(),
+                        context);
+                    recordStoreResponseStatistics(
+                        requestStatistics.getSupplementalResponseStatisticsList(),
+                        context);
+                }
+            }
+        }
+
+        private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
             // TODO @fabianm - assumption is that in java HTTP calls are automatically captured as well
             // Validate this
 
             for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-                List<ClientSideRequestStatistics> clientSideRequestStatistics =
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+                traceTransportLevelRequests(
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics),
+                    context);
 
-                if (clientSideRequestStatistics != null) {
-                    for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
-
-                        recordStoreResponseStatistics(
-                            requestStatistics.getResponseStatisticsList(),
-                            context);
-                        recordStoreResponseStatistics(
-                            requestStatistics.getSupplementalResponseStatisticsList(),
-                            context);
-                    }
+                FeedResponseDiagnostics feedResponseDiagnostics =
+                    diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics);
+                if (feedResponseDiagnostics != null) {
+                    traceTransportLevelRequests(
+                        feedResponseDiagnostics.getClientSideRequestStatisticsList(),
+                        context);
                 }
             }
         }
