@@ -235,10 +235,14 @@ public class BlockBlobClient extends BlobClientBase {
         Objects.requireNonNull(options);
 
         // Behavior can support more modes but this client does not currently support them
-        StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode internalMode = null;
+        StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode internalMode;
         long startingPosition = 0L;
         if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
             internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
+        }
+        else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Unsupported value for `options.getWriteMode()`."));
         }
 
         return new StorageSeekableByteChannel(
