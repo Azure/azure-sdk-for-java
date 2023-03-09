@@ -29,12 +29,14 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,6 +44,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -218,6 +221,25 @@ public class BlockBlobClient extends BlobClientBase {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
         return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
+    }
+
+    public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options) {
+        Objects.requireNonNull(options);
+
+        // Behavior can support more modes but this client does not currently support them
+        StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode internalMode = null;
+        long startingPosition = 0L;
+        if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
+            internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
+        }
+
+        return new StorageSeekableByteChannel(
+            options.getChunkSize() != null
+                ? options.getChunkSize().intValue()
+                : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
+            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
+                options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
+            startingPosition);
     }
 
     private BlobClientBuilder prepareBuilder() {
