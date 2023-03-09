@@ -8,22 +8,22 @@ import com.azure.ai.texttranslator.models.GetLanguagesResult;
 import com.azure.ai.texttranslator.models.SourceDictionaryLanguage;
 import com.azure.ai.texttranslator.models.TranslationLanguage;
 import com.azure.ai.texttranslator.models.TransliterationLanguage;
-import com.azure.core.test.annotation.DoNotRecord;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class GetLanguagesTests {
-
-    @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void getLanguagesTest() throws Exception {
+/**
+ * Sample for getting supported languages.
+ */
+public class GetLanguages {
+    /**
+     * Main method to invoke this demo.
+     *
+     * @param args Unused arguments to the program.
+     */
+    public static void main(final String[] args) {
         TranslatorClient client = new TranslatorClientBuilder()
-                .endpoint("https://api.cognitive.microsofttranslator.com")
-                .buildClient();
+            .endpoint("https://api.cognitive.microsofttranslator.com")
+            .buildRestClient();
 
-        String acceptLanguage = "es";
-        GetLanguagesResult languages = client.getLanguages(null, null, acceptLanguage, null);
+        GetLanguagesResult languages = client.getLanguages();
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");
@@ -43,7 +43,5 @@ public class GetLanguagesTests {
         for (Map.Entry<String, SourceDictionaryLanguage> dictionaryLanguage : languages.getDictionary().entrySet()) {
             System.out.println(dictionaryLanguage.getKey() + " -- name: " + dictionaryLanguage.getValue().getName() + ", supported target languages count: " + dictionaryLanguage.getValue().getTranslations().size());
         }
-        
-        assertEquals(124, languages.getTranslation().size());
     }
 }
