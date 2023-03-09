@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
