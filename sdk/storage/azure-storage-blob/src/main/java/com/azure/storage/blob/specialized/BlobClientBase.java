@@ -397,7 +397,7 @@ public class BlobClientBase {
      *
      * @param options {@link BlobSeekableByteChannelReadOptions}
      * @param context {@link Context}
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @return A <code>SeekableByteChannel</code> that represents the channel to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public SeekableByteChannel openSeekableByteChannelRead(BlobSeekableByteChannelReadOptions options,

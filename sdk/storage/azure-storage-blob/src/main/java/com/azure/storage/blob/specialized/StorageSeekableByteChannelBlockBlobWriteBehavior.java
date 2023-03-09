@@ -67,11 +67,11 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     }
 
     Map<String, String> getMetadata() {
-        return Collections.unmodifiableMap(this.metadata);
+        return this.metadata != null ? Collections.unmodifiableMap(this.metadata) : null;
     }
 
     Map<String, String> getTags() {
-        return Collections.unmodifiableMap(this.tags);
+        return this.tags != null ? Collections.unmodifiableMap(this.tags) : null;
     }
 
     AccessTier getTier() {
@@ -87,11 +87,11 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     }
 
     List<String> getExistingBlockIds() {
-        return Collections.unmodifiableList(existingBlockIds);
+        return this.existingBlockIds != null ? Collections.unmodifiableList(existingBlockIds) : null;
     }
 
     List<String> getNewBlockIds() {
-        return Collections.unmodifiableList(newBlockIds);
+        return this.newBlockIds != null ? Collections.unmodifiableList(newBlockIds) : null;
     }
 
     @Override

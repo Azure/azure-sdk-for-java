@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
@@ -223,6 +224,13 @@ public class BlockBlobClient extends BlobClientBase {
         return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
     }
 
+    /**
+     * Opens a seekable byte channel in write-only mode to upload the blob.
+     *
+     * @param options {@link BlobSeekableByteChannelReadOptions}
+     * @return A <code>SeekableByteChannel</code> object that represents the channel to use for writing to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
     public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options) {
         Objects.requireNonNull(options);
 
