@@ -280,7 +280,7 @@ public class InterceptorManager implements AutoCloseable {
      *
      * @return HttpPipelinePolicy to record network calls.
      *
-     * @throws RuntimeException A playback client was requested when the test proxy is enabled and test mode is LIVE.
+     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (testProxyEnabled) {
@@ -296,6 +296,8 @@ public class InterceptorManager implements AutoCloseable {
      * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
      * functions defined in {@link RecordingRedactor}.
      * @return {@link HttpPipelinePolicy} to record network calls.
+     *
+     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (testProxyEnabled) {
@@ -309,7 +311,7 @@ public class InterceptorManager implements AutoCloseable {
      *
      * @return An HTTP client that plays back network calls from its recorded data.
      *
-     * @throws RuntimeException A playback client was requested when the test proxy is enabled and test mode is LIVE.
+     * @throws IllegalStateException A playback client was requested when the test proxy is enabled and test mode is LIVE.
      */
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {
