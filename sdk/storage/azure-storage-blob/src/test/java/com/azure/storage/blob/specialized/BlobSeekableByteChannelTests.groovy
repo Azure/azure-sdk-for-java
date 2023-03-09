@@ -105,6 +105,11 @@ class BlobSeekableByteChannelTests extends APISpec {
     }
 
     def "Client creates appropriate channel readmode"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(generateContainerName())
+        versionedCC.create()
+        bc = versionedCC.getBlobClient(generateBlobName())
+
         when: "make channel in read mode"
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
