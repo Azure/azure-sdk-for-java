@@ -271,6 +271,8 @@ public class InterceptorManager implements AutoCloseable {
      * {@link InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
+     *
+     * @throws RuntimeException A playback client was requested when the test proxy is enabled and test mode is LIVE.
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (testProxyEnabled) {
@@ -298,6 +300,8 @@ public class InterceptorManager implements AutoCloseable {
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.
+     *
+     * @throws RuntimeException A playback client was requested when the test proxy is enabled and test mode is LIVE.
      */
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {

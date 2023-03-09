@@ -47,6 +47,8 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
+     *
+     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
      */
     public TestProxyPlaybackClient(HttpClient httpClient) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);

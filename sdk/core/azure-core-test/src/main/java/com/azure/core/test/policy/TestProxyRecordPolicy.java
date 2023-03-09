@@ -44,6 +44,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
+     *
+     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
      */
     public TestProxyRecordPolicy(HttpClient httpClient) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
