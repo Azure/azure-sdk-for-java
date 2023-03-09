@@ -427,6 +427,9 @@ public class InterceptorManager implements AutoCloseable {
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (testMode != TestMode.PLAYBACK) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
         } else {
