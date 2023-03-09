@@ -633,8 +633,7 @@ public final class ConfigurationAsyncClient {
             validateSetting(setting);
             return withContext(
                 context -> serviceClient.deleteKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    getIfMatchETag(ifUnchanged, setting),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    getIfMatchETag(ifUnchanged, setting), addTracingNamespace(context))
                                .map(response -> new SimpleResponse<>(response,
                                    toConfigurationSetting(response.getValue()))));
         } catch (RuntimeException ex) {
@@ -851,7 +850,8 @@ public final class ConfigurationAsyncClient {
                                        pagedResponse.getHeaders(),
                                        pagedResponse.getValue()
                                            .stream()
-                                           .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                                           .map(keyValue -> toConfigurationSetting(keyValue))
+                                           .collect(Collectors.toList()),
                                        pagedResponse.getContinuationToken(),
                                        null)))
             );
@@ -923,7 +923,8 @@ public final class ConfigurationAsyncClient {
                                 pagedResponse.getHeaders(),
                                 pagedResponse.getValue()
                                     .stream()
-                                    .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                                    .map(keyValue -> toConfigurationSetting(keyValue))
+                                    .collect(Collectors.toList()),
                                 pagedResponse.getContinuationToken(), null))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));

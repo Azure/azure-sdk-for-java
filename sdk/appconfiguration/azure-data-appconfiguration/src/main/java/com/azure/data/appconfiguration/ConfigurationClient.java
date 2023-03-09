@@ -821,7 +821,8 @@ public final class ConfigurationClient {
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                        .map(keyValue -> toConfigurationSetting(keyValue))
+                        .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             },
@@ -834,7 +835,8 @@ public final class ConfigurationClient {
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                        .map(keyValue -> toConfigurationSetting(keyValue))
+                        .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             }
@@ -923,7 +925,8 @@ public final class ConfigurationClient {
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                        .map(keyValue -> toConfigurationSetting(keyValue))
+                        .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             },
@@ -936,7 +939,8 @@ public final class ConfigurationClient {
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue)).collect(Collectors.toList()),
+                        .map(keyValue -> toConfigurationSetting(keyValue))
+                        .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             }

@@ -158,6 +158,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(getKey()).setValue("myNewValue");
 
         testRunner.accept(newConfiguration);
+        testRunner.accept(newConfiguration.setLabel(getLabel()));
     }
 
     @Test
