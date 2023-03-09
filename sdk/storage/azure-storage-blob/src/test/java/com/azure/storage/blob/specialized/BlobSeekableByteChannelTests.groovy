@@ -117,7 +117,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
             .setRequestConditions(conditions).setBlockSize(blockSize).setConsistentReadControl(control)
-            .setInitialPosition(position), null) as StorageSeekableByteChannel
+            .setInitialPosition(position), null).getValue().getChannel() as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
         channel.getWriteBehavior() == null
