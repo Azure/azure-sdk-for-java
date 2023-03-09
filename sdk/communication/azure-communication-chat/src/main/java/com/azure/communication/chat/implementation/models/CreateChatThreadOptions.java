@@ -23,6 +23,12 @@ public final class CreateChatThreadOptions {
     @JsonProperty(value = "participants")
     private List<ChatParticipant> participants;
 
+    /*
+     * Data retention policy for auto deletion.
+     */
+    @JsonProperty(value = "retentionPolicy")
+    private RetentionPolicy retentionPolicy;
+
     /**
      * Get the topic property: The chat thread topic.
      *
@@ -60,6 +66,26 @@ public final class CreateChatThreadOptions {
      */
     public CreateChatThreadOptions setParticipants(List<ChatParticipant> participants) {
         this.participants = participants;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @return the retentionPolicy value.
+     */
+    public RetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
         return this;
     }
 }

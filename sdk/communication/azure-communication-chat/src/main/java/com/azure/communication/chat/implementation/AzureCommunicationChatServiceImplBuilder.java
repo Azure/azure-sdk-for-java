@@ -190,7 +190,7 @@ public final class AzureCommunicationChatServiceImplBuilder {
      */
     public AzureCommunicationChatServiceImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-09-07";
+            this.apiVersion = "2023-07-01-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

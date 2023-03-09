@@ -4,6 +4,7 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.models.RetentionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -36,6 +37,12 @@ public final class ChatThreadItem {
      */
     @JsonProperty(value = "lastMessageReceivedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastMessageReceivedOn;
+
+    /*
+     * Data retention policy for auto deletion.
+     */
+    @JsonProperty(value = "retentionPolicy")
+    private RetentionPolicy retentionPolicy;
 
     /**
      * Get the id property: Chat thread id.
@@ -107,5 +114,25 @@ public final class ChatThreadItem {
      */
     public OffsetDateTime getLastMessageReceivedOn() {
         return this.lastMessageReceivedOn;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @return the retentionPolicy value.
+     */
+    public RetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the ChatThreadItem object itself.
+     */
+    public ChatThreadItem setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
     }
 }

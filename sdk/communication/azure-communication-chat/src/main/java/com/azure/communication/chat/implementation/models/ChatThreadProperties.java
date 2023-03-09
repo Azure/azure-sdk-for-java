@@ -46,6 +46,12 @@ public final class ChatThreadProperties {
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
+    /*
+     * Data retention policy for auto deletion.
+     */
+    @JsonProperty(value = "retentionPolicy")
+    private RetentionPolicy retentionPolicy;
+
     /**
      * Get the id property: Chat thread id.
      *
@@ -152,6 +158,26 @@ public final class ChatThreadProperties {
      */
     public ChatThreadProperties setDeletedOn(OffsetDateTime deletedOn) {
         this.deletedOn = deletedOn;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @return the retentionPolicy value.
+     */
+    public RetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the ChatThreadProperties object itself.
+     */
+    public ChatThreadProperties setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
         return this;
     }
 }
