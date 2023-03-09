@@ -474,4 +474,53 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals("Succeeded", agentPool.provisioningState());
         Assertions.assertEquals(agentPoolName1, agentPool.name());
     }
+
+    @Test
+    public void testFipsEnabled() {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+        String agentPoolName1 = generateRandomResourceName("ap1", 10);
+        String agentPoolName2 = generateRandomResourceName("ap2", 10);
+
+        // create cluster
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+            .withRegion(Region.US_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
+            .defineAgentPool(agentPoolName1)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.USER)
+                .withFipsEnabled() // enable FIPS
+                .attach()
+            .create();
+
+        Assertions.assertFalse(kubernetesCluster.agentPools().get(agentPoolName).isFipsEnabled());
+        Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName1).isFipsEnabled());
+
+        // create a new agent pool with FIPS enabled
+        AgentPoolData request = new AgentPoolData()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.USER)
+            .withFipsEnabled();
+
+        AgentPool agentPool3 = kubernetesCluster.beginCreateAgentPool(agentPoolName2, request).getFinalResult();
+        Assertions.assertTrue(agentPool3.isFipsEnabled());
+
+        kubernetesCluster.refresh();
+        Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName2).isFipsEnabled());
+    }
 }
