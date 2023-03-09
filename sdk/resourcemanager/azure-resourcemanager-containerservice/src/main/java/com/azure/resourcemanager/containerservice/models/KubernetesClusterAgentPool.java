@@ -436,6 +436,22 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify FIPS-enabled OS for an agent pool machines.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithFips<ParentT> {
+            /**
+             * Specify to use an FIPS-enabled OS for agent pool machines.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview">
+             *     Add a FIPS-enabled node pool</a> for more details.
+             */
+            WithAttach<ParentT> withFipsEnabled();
+        }
+
+        /**
          * The final stage of a container service agent pool definition. At this stage, any remaining optional settings
          * can be specified, or the container service agent pool can be attached to the parent container service
          * definition.
@@ -456,6 +472,7 @@ public interface KubernetesClusterAgentPool
                 WithVMPriority<ParentT>,
                 WithBillingProfile<ParentT>,
                 WithDiskType<ParentT>,
+                WithFips<ParentT>,
                 WithTags<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
