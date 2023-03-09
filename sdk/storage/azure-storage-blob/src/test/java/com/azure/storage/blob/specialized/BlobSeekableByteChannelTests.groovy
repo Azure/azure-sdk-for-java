@@ -23,6 +23,7 @@ import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.W
 import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 
 import java.nio.ByteBuffer
 import java.time.Duration
@@ -65,6 +66,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         Constants.KB + 50 | 40             | Constants.KB // initial fetch larger than resource size
     }
 
+    @LiveOnly
     def "E2E channel write - block"() {
         when: "Channel initialized"
         def channel = blockClient.openSeekableByteChannelWrite(
