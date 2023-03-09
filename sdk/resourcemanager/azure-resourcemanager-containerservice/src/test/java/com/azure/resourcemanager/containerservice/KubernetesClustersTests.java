@@ -504,6 +504,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withAgentPoolMode(AgentPoolMode.USER)
                 .withFipsEnabled() // enable FIPS
                 .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
         Assertions.assertFalse(kubernetesCluster.agentPools().get(agentPoolName).isFipsEnabled());

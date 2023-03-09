@@ -235,6 +235,14 @@ public class AgentPoolData implements AgentPool, HasInnerModel<AgentPoolInner> {
      * {@inheritDoc}
      */
     @Override
+    public boolean isFipsEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableFips());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Map<String, String> tags() {
         return innerModel().tags();
     }
@@ -484,6 +492,20 @@ public class AgentPoolData implements AgentPool, HasInnerModel<AgentPoolInner> {
             innerModel().withTags(new TreeMap<>());
         }
         innerModel().tags().put(key, value);
+        return this;
+    }
+
+    /**
+     * Specify to use an FIPS-enabled OS for agent pool machines.
+     *
+     * <p>See [Add a FIPS-enabled node
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
+     * details.
+     *
+     * @return the AgentPoolData object itself
+     */
+    public AgentPoolData withFipsEnabled() {
+        innerModel().withEnableFips(true);
         return this;
     }
 
