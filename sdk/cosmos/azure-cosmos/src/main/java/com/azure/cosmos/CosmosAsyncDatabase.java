@@ -429,6 +429,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.DocumentCollection,
@@ -619,6 +620,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.User,
@@ -681,6 +683,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.ClientEncryptionKey,
@@ -781,6 +784,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.Query,
                 ResourceType.ClientEncryptionKey,
@@ -942,6 +946,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.Query,
                 ResourceType.DocumentCollection,
@@ -969,6 +974,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 getId(),
+                null,
                 operationId,
                 OperationType.Query,
                 ResourceType.User,

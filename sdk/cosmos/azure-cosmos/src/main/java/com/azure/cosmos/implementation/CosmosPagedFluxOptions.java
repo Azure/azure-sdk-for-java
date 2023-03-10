@@ -161,6 +161,7 @@ public class CosmosPagedFluxOptions {
     public void setTracerInformation(
         String tracerSpanName,
         String databaseId,
+        String containerId,
         String operationId,
         OperationType operationType,
         ResourceType resourceType,
@@ -175,6 +176,7 @@ public class CosmosPagedFluxOptions {
         checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
 
         this.databaseId = databaseId;
+        this.containerId = containerId;
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);

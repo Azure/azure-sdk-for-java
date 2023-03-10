@@ -124,6 +124,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.StoredProcedure,
@@ -257,6 +258,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.UserDefinedFunction,
@@ -388,6 +390,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.Trigger,
@@ -470,6 +473,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.Query,
                 ResourceType.StoredProcedure,
@@ -500,6 +504,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.Query,
                 ResourceType.UserDefinedFunction,
@@ -537,6 +542,7 @@ public class CosmosAsyncScripts {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.container.getDatabase().getId(),
+                this.container.getId(),
                 operationId,
                 OperationType.Query,
                 ResourceType.Trigger,

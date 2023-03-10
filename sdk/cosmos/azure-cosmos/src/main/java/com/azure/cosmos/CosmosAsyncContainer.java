@@ -1393,6 +1393,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerInformation(
                 this.readAllConflictsSpanName,
                 database.getId(),
+                this.getId(),
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.Conflict,
@@ -1439,6 +1440,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerInformation(
                 this.queryConflictsSpanName,
                 database.getId(),
+                this.getId(),
                 operationId,
                 OperationType.Query,
                 ResourceType.Conflict,

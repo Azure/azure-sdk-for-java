@@ -540,6 +540,7 @@ public final class CosmosAsyncClient implements Closeable {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 null,
+                null,
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.Database,
@@ -719,6 +720,7 @@ public final class CosmosAsyncClient implements Closeable {
                 .getQueryNameOrDefault(nonNullOptions, spanName);
             pagedFluxOptions.setTracerInformation(
                 spanName,
+                null,
                 null,
                 operationId,
                 OperationType.Query,

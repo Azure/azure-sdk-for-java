@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -656,16 +657,6 @@ public final class DiagnosticsProvider {
             diagnosticFunc);
     }
 
-    private boolean isNoneExceptional(int statusCode, CosmosException cosmosException) {
-        // @TODO implement other non-exceptional cases to short-circuit relatively expensive
-        // exception propagation
-        if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
-            return true;
-        }
-
-        return false;
-    }
-
     private void end(
         int statusCode,
         int subStatusCode,
@@ -675,14 +666,6 @@ public final class DiagnosticsProvider {
         Throwable throwable,
         Context context) {
 
-        Throwable throwableForDiagnostics = throwable;
-        if (throwable instanceof CosmosException) {
-            CosmosException cosmosException = (CosmosException) throwable;
-            if (isNoneExceptional(statusCode, cosmosException)) {
-                throwableForDiagnostics = null;
-            }
-        }
-
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
         ctxAccessor.endOperation(
             cosmosCtx,
@@ -691,7 +674,7 @@ public final class DiagnosticsProvider {
             actualItemCount,
             requestCharge,
             diagnostics,
-            throwableForDiagnostics);
+            throwable);
 
         this.handleDiagnostics(context, cosmosCtx);
 
@@ -813,21 +796,18 @@ public final class DiagnosticsProvider {
             }
         }
 
-        private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics, Context context) throws JsonProcessingException {
-            if (cosmosDiagnostics == null || context == null) {
+        private void addClientSideRequestStatisticsOnTracerEvent(
+            ClientSideRequestStatistics clientSideRequestStatistics,
+            Context context) throws JsonProcessingException {
+
+            if (clientSideRequestStatistics == null || context == null) {
                 return;
             }
-
-            ClientSideRequestStatistics clientSideRequestStatistics =
-                BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
 
             Map<String, Object> attributes;
+
             //adding storeResponse
             int diagnosticsCounter = 1;
-            if (clientSideRequestStatistics == null) {
-                return;
-            }
-
             for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
                 clientSideRequestStatistics.getResponseStatisticsList()) {
                 attributes = new HashMap<>();
@@ -947,6 +927,67 @@ public final class DiagnosticsProvider {
                 mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
             this.addEvent("ClientCfgs", attributes,
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+
+            if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
+                && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
+                String eventName =
+                    "Diagnostics for PKRange "
+                        + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
+                this.addEvent(eventName, attributes,
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+            } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {
+                String eventName =
+                    "Diagnostics for PKRange " + clientSideRequestStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                this.addEvent(eventName, attributes,
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+
+            } else {
+                String eventName = "Diagnostics " + diagnosticsCounter++;
+                this.addEvent(eventName, attributes,
+                    OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
+            }
+        }
+
+        private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics, Context context) throws JsonProcessingException {
+            if (cosmosDiagnostics == null || context == null) {
+                return;
+            }
+
+            Map<String, Object> attributes;
+            FeedResponseDiagnostics feedResponseDiagnostics =
+                diagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+            if (feedResponseDiagnostics != null) {
+                QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics = feedResponseDiagnostics
+                    .getQueryPlanDiagnosticsContext();
+                if (queryPlanDiagnostics != null) {
+                    attributes = new HashMap<>();
+                    attributes.put("JSON",
+                        mapper.writeValueAsString(queryPlanDiagnostics));
+                    this.addEvent(
+                        "Query Plan Statistics",
+                        attributes,
+                        OffsetDateTime.ofInstant(queryPlanDiagnostics.getStartTimeUTC(), ZoneOffset.UTC),
+                        context);
+                }
+
+                Map<String, QueryMetrics> queryMetrics = feedResponseDiagnostics.getQueryMetricsMap();
+                if (queryMetrics != null && queryMetrics.size() > 0) {
+                    for(Map.Entry<String, QueryMetrics> entry : queryMetrics.entrySet()) {
+                        attributes = new HashMap<>();
+                        attributes.put("Query Metrics", entry.getValue().toString());
+                        this.addEvent("Query Metrics for PKRange " + entry.getKey(), attributes,
+                            OffsetDateTime.now(), context);
+                    }
+                }
+
+                for (ClientSideRequestStatistics c: feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
+                    addClientSideRequestStatisticsOnTracerEvent(c, context);
+                }
+            }
+
+            addClientSideRequestStatisticsOnTracerEvent(
+                BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics),
+                context);
         }
 
         void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
@@ -1055,8 +1096,16 @@ public final class DiagnosticsProvider {
             }
 
             if (finalError != null) {
+
+                String exceptionType;
+                if (finalError instanceof  CosmosException) {
+                    exceptionType = CosmosException.class.getCanonicalName();
+                } else {
+                    exceptionType = finalError.getClass().getCanonicalName();
+                }
+
                 tracer.setAttribute("exception.escaped", Boolean.toString(cosmosCtx.isFailure()), context);
-                tracer.setAttribute("exception.type", finalError.getClass().getCanonicalName(), context);
+                tracer.setAttribute("exception.type", exceptionType, context);
                 tracer.setAttribute("exception.message", errorMessage, context);
                 tracer.setAttribute("exception.stacktrace", prettifyCallstack(finalError), context);
             }

@@ -57,6 +57,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                 "testSpan",
                 "testDb",
                 null,
+                null,
                 OperationType.ReadFeed,
                 ResourceType.Database,
                 client,

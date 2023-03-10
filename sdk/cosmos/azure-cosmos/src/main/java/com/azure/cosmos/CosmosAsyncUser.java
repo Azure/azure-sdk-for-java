@@ -164,6 +164,7 @@ public class CosmosAsyncUser {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.getDatabase().getId(),
+                null,
                 operationId,
                 OperationType.ReadFeed,
                 ResourceType.Permission,
@@ -219,6 +220,7 @@ public class CosmosAsyncUser {
             pagedFluxOptions.setTracerInformation(
                 spanName,
                 this.getDatabase().getId(),
+                null,
                 operationId,
                 OperationType.Query,
                 ResourceType.Permission,
