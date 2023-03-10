@@ -8,10 +8,6 @@ public class BodyKeySanitizer extends TestProxySanitizer {
     private String jsonPath;
     private String redactedValue;
 
-    BodyKeySanitizer() {
-        super(TestProxySanitizerType.BODY_KEY);
-    }
-
     /**
      * Creates an instance of BodyKeySanitizer
      *
