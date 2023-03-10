@@ -2937,7 +2937,7 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;;
+     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, &quot;en&quot;, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
      *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
@@ -2984,7 +2984,6 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
         Iterable<String> documents, String language, AbstractSummaryOptions options) {
@@ -3027,7 +3026,7 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;;
+     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
      *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
@@ -3239,7 +3238,6 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
         Iterable<String> documents, String language, ExtractSummaryOptions options) {

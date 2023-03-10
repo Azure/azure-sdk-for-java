@@ -11,12 +11,14 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -1632,6 +1634,19 @@ public interface AsyncDocumentClient {
      */
     RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
+    /***
+     * Get the global endpoint manager.
+     *
+     * @return the global endpoint manager.
+     */
+    GlobalEndpointManager getGlobalEndpointManager();
+
+    /***
+     * Get the address selector.
+     * @return the address selector.
+     */
+    AddressSelector getAddressSelector();
+
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
@@ -1657,4 +1672,11 @@ public interface AsyncDocumentClient {
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
+    
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 }

@@ -19,8 +19,7 @@ public final class KeySignRequest {
      * {@link SignatureAlgorithm#PS512 PS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512}, 'RSNULL',
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#ES256K ES256K},
-     * {@link SignatureAlgorithm#EDDSA EdDSA}.
+     * {@link SignatureAlgorithm#RS512 RS512} and {@link SignatureAlgorithm#ES256K ES256K}.
      */
     @JsonProperty(value = "alg", required = true)
     private SignatureAlgorithm algorithm;

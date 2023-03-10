@@ -5,9 +5,9 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage model. */
 @Fluent
@@ -62,7 +62,7 @@ public final class HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage
 
     /** {@inheritDoc} */
     @Override
-    public HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage setFhirBundle(BinaryData fhirBundle) {
+    public HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage setFhirBundle(Map<String, Object> fhirBundle) {
         super.setFhirBundle(fhirBundle);
         return this;
     }

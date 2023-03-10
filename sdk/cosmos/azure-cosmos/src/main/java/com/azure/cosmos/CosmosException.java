@@ -144,6 +144,11 @@ public class CosmosException extends AzureException {
     private final List<String> replicaStatusList = new ArrayList<>();
 
     /**
+     * Fault injection ruleId
+     */
+    private String faultInjectionRuleId;
+
+    /**
      * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
@@ -436,17 +441,29 @@ public class CosmosException extends AzureException {
                 exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
             }
 
+            if (StringUtils.isNotEmpty(this.faultInjectionRuleId)) {
+                exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
+            }
+
             if(this.cosmosDiagnostics != null) {
                 cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
             }
 
             return mapper.writeValueAsString(exceptionMessageNode);
         } catch (JsonProcessingException ex) {
-            return getClass().getSimpleName() + "{" + USER_AGENT_KEY +"=" + USER_AGENT + ", error=" + cosmosError + ", " +
-                "resourceAddress='"
-                + resourceAddress + ", statusCode=" + statusCode + ", message=" + getMessage()
-                + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                + filterSensitiveData(requestHeaders) + '}';
+            return String.format(
+                "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
+                getClass().getSimpleName(),
+                USER_AGENT_KEY,
+                USER_AGENT,
+                cosmosError,
+                resourceAddress,
+                statusCode,
+                getMessage(),
+                causeInfo(),
+                responseHeaders,
+                filterSensitiveData(requestHeaders),
+                this.faultInjectionRuleId);
         }
     }
 
@@ -546,6 +563,14 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
+    void setFaultInjectionRuleId(String faultInjectionRUleId) {
+        this.faultInjectionRuleId = faultInjectionRUleId;
+    }
+
+    String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
+    }
+
     List<String> getReplicaStatusList() {
         return this.replicaStatusList;
     }
@@ -578,6 +603,16 @@ public class CosmosException extends AzureException {
                     @Override
                     public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
                         return cosmosException.getRntbdChannelStatistics();
+                    }
+
+                    @Override
+                    public void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId) {
+                        cosmosException.setFaultInjectionRuleId(faultInjectionRuleId);
+                    }
+
+                    @Override
+                    public String getFaultInjectionRuleId(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionRuleId();
                     }
 
                 });

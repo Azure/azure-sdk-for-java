@@ -1547,7 +1547,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setMaxSentenceCount(4);
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, "en", options)
             .flatMap(result -> {
                 AbstractSummaryOperationDetail operationDetail = result.getValue();
@@ -1601,7 +1601,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setMaxSentenceCount(4);
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, options)
             .flatMap(result -> {
                 AbstractSummaryOperationDetail operationDetail = result.getValue();

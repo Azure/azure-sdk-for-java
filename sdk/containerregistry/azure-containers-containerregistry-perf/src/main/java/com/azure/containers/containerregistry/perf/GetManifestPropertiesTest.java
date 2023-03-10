@@ -12,12 +12,6 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.azure.containers.containerregistry.perf.core.Utils.REPOSITORY_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG1_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG2_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG3_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG4_NAME;
-
 /**
  * Get manifest properties performance test.
  */

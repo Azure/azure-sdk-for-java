@@ -4,7 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -44,15 +44,12 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public void write(ByteBuffer src, long destOffset) {
-        try (InputStream uploadStream = new ByteBufferMarkableInputStream(src)) {
-            client.uploadRangeWithResponse(
-                new ShareFileUploadRangeOptions(uploadStream, src.remaining())
-                    .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
-                null, null);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+    public void write(ByteBuffer src, long destOffset) throws IOException {
+        InputStream uploadStream = new ByteBufferMarkableInputStream(src);
+        client.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(uploadStream, src.remaining())
+                .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
+            null, null);
     }
 
     @Override
@@ -61,15 +58,19 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public boolean canSeek(long position) {
+    public void assertCanSeek(long position) {
         if (fileSize == null) {
             fileSize = client.getProperties().getContentLength();
         }
-        return 0 <= position && position <= fileSize;
+        if (0 <= position && position <= fileSize) {
+            return;
+        }
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot seek beyond bounds of file."));
     }
 
     @Override
     public void resize(long newSize) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            "Setting share file size not supported through SeekableByteChannel interface."));
     }
 }

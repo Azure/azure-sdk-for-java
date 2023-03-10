@@ -138,14 +138,4 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
 
         super.releaseKey(httpClient, serviceVersion);
     }
-
-    /**
-     * Tests that an RSA key is created.
-     */
-    @Override
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        super.createOkpKey(httpClient, serviceVersion);
-    }
 }

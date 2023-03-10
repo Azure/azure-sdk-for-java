@@ -27,8 +27,9 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in AnalyzeTexts. */
 public final class AnalyzeTextsImpl {

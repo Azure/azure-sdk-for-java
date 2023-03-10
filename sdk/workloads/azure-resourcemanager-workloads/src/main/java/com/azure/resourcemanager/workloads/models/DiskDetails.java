@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DiskDetails {
     /*
-     * The disk sku.
+     * The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -57,7 +57,7 @@ public final class DiskDetails {
     }
 
     /**
-     * Get the sku property: The disk sku.
+     * Get the sku property: The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
      *
      * @return the sku value.
      */
@@ -66,7 +66,7 @@ public final class DiskDetails {
     }
 
     /**
-     * Set the sku property: The disk sku.
+     * Set the sku property: The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
      *
      * @param sku the sku value to set.
      * @return the DiskDetails object itself.

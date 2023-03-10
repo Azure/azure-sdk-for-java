@@ -35,7 +35,7 @@ public final class SapVirtualInstancesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"S4HANA\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"eoybfhjxakvvjgs\"},\"status\":\"Unavailable\",\"health\":\"Unknown\",\"state\":\"SoftwareInstallationFailed\",\"provisioningState\":\"Creating\",\"errors\":{}},\"location\":\"gkxnyedabg\",\"tags\":{\"ewbcihxuuw\":\"dtj\",\"yxccyb\":\"c\",\"px\":\"payakkud\"},\"id\":\"wjplma\",\"name\":\"stcyohpfkyrkdbd\",\"type\":\"iogsjkmnwq\"}]}";
+            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ctxtgzukxi\"},\"status\":\"Running\",\"health\":\"Unknown\",\"state\":\"DiscoveryPending\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"n\",\"tags\":{\"okqdzfvaz\":\"cpjuisa\",\"ajlkatnw\":\"vjlfrqtt\",\"kqqfk\":\"yiopi\",\"dmligovibrxk\":\"vscx\"},\"id\":\"mloazuru\",\"name\":\"cbgoor\",\"type\":\"te\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,12 +66,11 @@ public final class SapVirtualInstancesListMockTests {
         PagedIterable<SapVirtualInstance> response =
             manager.sapVirtualInstances().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gkxnyedabg", response.iterator().next().location());
-        Assertions.assertEquals("dtj", response.iterator().next().tags().get("ewbcihxuuw"));
+        Assertions.assertEquals("n", response.iterator().next().location());
+        Assertions.assertEquals("cpjuisa", response.iterator().next().tags().get("okqdzfvaz"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, response.iterator().next().environment());
-        Assertions.assertEquals(SapProductType.S4HANA, response.iterator().next().sapProduct());
-        Assertions
-            .assertEquals("eoybfhjxakvvjgs", response.iterator().next().managedResourceGroupConfiguration().name());
+        Assertions.assertEquals(SapProductType.OTHER, response.iterator().next().sapProduct());
+        Assertions.assertEquals("ctxtgzukxi", response.iterator().next().managedResourceGroupConfiguration().name());
     }
 }

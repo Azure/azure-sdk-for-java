@@ -2814,7 +2814,7 @@ public final class TextAnalyticsClient {
      * &#125;
      * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
      *     textAnalyticsClient.beginAbstractSummary&#40;documents, &quot;en&quot;,
-     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;&#41;;
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
      *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
@@ -2895,7 +2895,7 @@ public final class TextAnalyticsClient {
      * &#125;
      * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
      *     textAnalyticsClient.beginAbstractSummary&#40;documents,
-     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;,
      *         Context.NONE&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;

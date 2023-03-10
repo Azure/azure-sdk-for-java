@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 /** Samples for Monitors ListByResourceGroup. */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_ListByRG.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_ListByRG.json
      */
     /**
      * Sample code: List all SAP monitors in a resource group.
