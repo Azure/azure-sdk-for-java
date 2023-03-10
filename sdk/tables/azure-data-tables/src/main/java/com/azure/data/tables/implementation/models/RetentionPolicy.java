@@ -5,24 +5,25 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The retention policy. */
-@JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
-public final class RetentionPolicy {
+public final class RetentionPolicy implements XmlSerializable<RetentionPolicy> {
     /*
      * Indicates whether a retention policy is enabled for the service.
      */
-    @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
     /*
      * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older
      * than this value will be deleted.
      */
-    @JsonProperty(value = "Days")
     private Integer days;
 
     /** Creates an instance of RetentionPolicy class. */
@@ -68,5 +69,46 @@ public final class RetentionPolicy {
     public RetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("RetentionPolicy");
+        xmlWriter.writeBooleanElement("Enabled", this.enabled);
+        xmlWriter.writeNumberElement("Days", this.days);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of RetentionPolicy from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static RetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "RetentionPolicy",
+                reader -> {
+                    boolean enabled = false;
+                    Integer days = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Enabled".equals(fieldName.getLocalPart())) {
+                            enabled = reader.getBooleanElement();
+                        } else if ("Days".equals(fieldName.getLocalPart())) {
+                            days = reader.getNullableElement(Integer::parseInt);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    RetentionPolicy deserializedRetentionPolicy = new RetentionPolicy();
+                    deserializedRetentionPolicy.enabled = enabled;
+                    deserializedRetentionPolicy.days = days;
+
+                    return deserializedRetentionPolicy;
+                });
     }
 }

@@ -5,23 +5,24 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** A signed identifier. */
-@JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
-public final class SignedIdentifier {
+public final class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     /*
      * A unique id.
      */
-    @JsonProperty(value = "Id", required = true)
     private String id;
 
     /*
      * The access policy.
      */
-    @JsonProperty(value = "AccessPolicy", required = true)
     private AccessPolicy accessPolicy;
 
     /** Creates an instance of SignedIdentifier class. */
@@ -65,5 +66,46 @@ public final class SignedIdentifier {
     public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("SignedIdentifier");
+        xmlWriter.writeStringElement("Id", this.id);
+        xmlWriter.writeXml(this.accessPolicy);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of SignedIdentifier from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SignedIdentifier if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static SignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "SignedIdentifier",
+                reader -> {
+                    String id = null;
+                    AccessPolicy accessPolicy = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Id".equals(fieldName.getLocalPart())) {
+                            id = reader.getStringElement();
+                        } else if ("AccessPolicy".equals(fieldName.getLocalPart())) {
+                            accessPolicy = AccessPolicy.fromXml(reader);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    SignedIdentifier deserializedSignedIdentifier = new SignedIdentifier();
+                    deserializedSignedIdentifier.id = id;
+                    deserializedSignedIdentifier.accessPolicy = accessPolicy;
+
+                    return deserializedSignedIdentifier;
+                });
     }
 }

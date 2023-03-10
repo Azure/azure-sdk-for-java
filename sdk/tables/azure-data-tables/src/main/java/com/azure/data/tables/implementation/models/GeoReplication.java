@@ -6,25 +6,27 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The GeoReplication model. */
-@JacksonXmlRootElement(localName = "GeoReplication")
 @Fluent
-public final class GeoReplication {
+public final class GeoReplication implements XmlSerializable<GeoReplication> {
     /*
      * The status of the secondary location.
      */
-    @JsonProperty(value = "Status", required = true)
     private GeoReplicationStatusType status;
 
     /*
      * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
      * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
-    @JsonProperty(value = "LastSyncTime", required = true)
     private DateTimeRfc1123 lastSyncTime;
 
     /** Creates an instance of GeoReplication class. */
@@ -79,5 +81,46 @@ public final class GeoReplication {
             this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
         }
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("GeoReplication");
+        xmlWriter.writeStringElement("Status", Objects.toString(this.status, null));
+        xmlWriter.writeStringElement("LastSyncTime", Objects.toString(this.lastSyncTime, null));
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of GeoReplication from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static GeoReplication fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "GeoReplication",
+                reader -> {
+                    GeoReplicationStatusType status = null;
+                    OffsetDateTime lastSyncTime = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Status".equals(fieldName.getLocalPart())) {
+                            status = reader.getNullableElement(GeoReplicationStatusType::fromString);
+                        } else if ("LastSyncTime".equals(fieldName.getLocalPart())) {
+                            lastSyncTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    GeoReplication deserializedGeoReplication = new GeoReplication();
+                    deserializedGeoReplication.status = status;
+                    deserializedGeoReplication.setLastSyncTime(lastSyncTime);
+
+                    return deserializedGeoReplication;
+                });
     }
 }

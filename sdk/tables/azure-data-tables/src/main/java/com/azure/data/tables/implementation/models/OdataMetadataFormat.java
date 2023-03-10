@@ -5,7 +5,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for OdataMetadataFormat. */
@@ -23,12 +22,19 @@ public final class OdataMetadataFormat extends ExpandableStringEnum<OdataMetadat
             fromString("application/json;odata=fullmetadata");
 
     /**
+     * Creates a new instance of OdataMetadataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OdataMetadataFormat() {}
+
+    /**
      * Creates or finds a OdataMetadataFormat from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding OdataMetadataFormat.
      */
-    @JsonCreator
     public static OdataMetadataFormat fromString(String name) {
         return fromString(name, OdataMetadataFormat.class);
     }

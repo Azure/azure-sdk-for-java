@@ -5,30 +5,31 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** An Access policy. */
-@JacksonXmlRootElement(localName = "AccessPolicy")
 @Fluent
-public final class AccessPolicy {
+public final class AccessPolicy implements XmlSerializable<AccessPolicy> {
     /*
      * The start datetime from which the policy is active.
      */
-    @JsonProperty(value = "Start", required = true)
     private OffsetDateTime start;
 
     /*
      * The datetime that the policy expires.
      */
-    @JsonProperty(value = "Expiry", required = true)
     private OffsetDateTime expiry;
 
     /*
      * The permissions for the acl policy.
      */
-    @JsonProperty(value = "Permission", required = true)
     private String permission;
 
     /** Creates an instance of AccessPolicy class. */
@@ -92,5 +93,51 @@ public final class AccessPolicy {
     public AccessPolicy setPermission(String permission) {
         this.permission = permission;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("AccessPolicy");
+        xmlWriter.writeStringElement("Start", Objects.toString(this.start, null));
+        xmlWriter.writeStringElement("Expiry", Objects.toString(this.expiry, null));
+        xmlWriter.writeStringElement("Permission", this.permission);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of AccessPolicy from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of AccessPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static AccessPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "AccessPolicy",
+                reader -> {
+                    OffsetDateTime start = null;
+                    OffsetDateTime expiry = null;
+                    String permission = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Start".equals(fieldName.getLocalPart())) {
+                            start = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("Expiry".equals(fieldName.getLocalPart())) {
+                            expiry = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("Permission".equals(fieldName.getLocalPart())) {
+                            permission = reader.getStringElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    AccessPolicy deserializedAccessPolicy = new AccessPolicy();
+                    deserializedAccessPolicy.start = start;
+                    deserializedAccessPolicy.expiry = expiry;
+                    deserializedAccessPolicy.permission = permission;
+
+                    return deserializedAccessPolicy;
+                });
     }
 }

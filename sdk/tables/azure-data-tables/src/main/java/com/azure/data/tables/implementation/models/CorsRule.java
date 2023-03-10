@@ -5,8 +5,12 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * CORS is an HTTP feature that enables a web application running under one domain to access resources in another
@@ -14,41 +18,35 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs
  * in another domain.
  */
-@JacksonXmlRootElement(localName = "CorsRule")
 @Fluent
-public final class CorsRule {
+public final class CorsRule implements XmlSerializable<CorsRule> {
     /*
      * The origin domains that are permitted to make a request against the service via CORS. The origin domain is the
      * domain from which the request originates. Note that the origin must be an exact case-sensitive match with the
      * origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin
      * domains to make requests via CORS.
      */
-    @JsonProperty(value = "AllowedOrigins", required = true)
     private String allowedOrigins;
 
     /*
      * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
      */
-    @JsonProperty(value = "AllowedMethods", required = true)
     private String allowedMethods;
 
     /*
      * The request headers that the origin domain may specify on the CORS request.
      */
-    @JsonProperty(value = "AllowedHeaders", required = true)
     private String allowedHeaders;
 
     /*
      * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
      * request issuer.
      */
-    @JsonProperty(value = "ExposedHeaders", required = true)
     private String exposedHeaders;
 
     /*
      * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
-    @JsonProperty(value = "MaxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
 
     /** Creates an instance of CorsRule class. */
@@ -164,5 +162,61 @@ public final class CorsRule {
     public CorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("CorsRule");
+        xmlWriter.writeStringElement("AllowedOrigins", this.allowedOrigins);
+        xmlWriter.writeStringElement("AllowedMethods", this.allowedMethods);
+        xmlWriter.writeStringElement("AllowedHeaders", this.allowedHeaders);
+        xmlWriter.writeStringElement("ExposedHeaders", this.exposedHeaders);
+        xmlWriter.writeIntElement("MaxAgeInSeconds", this.maxAgeInSeconds);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of CorsRule from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of CorsRule if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     *     XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static CorsRule fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "CorsRule",
+                reader -> {
+                    String allowedOrigins = null;
+                    String allowedMethods = null;
+                    String allowedHeaders = null;
+                    String exposedHeaders = null;
+                    int maxAgeInSeconds = 0;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("AllowedOrigins".equals(fieldName.getLocalPart())) {
+                            allowedOrigins = reader.getStringElement();
+                        } else if ("AllowedMethods".equals(fieldName.getLocalPart())) {
+                            allowedMethods = reader.getStringElement();
+                        } else if ("AllowedHeaders".equals(fieldName.getLocalPart())) {
+                            allowedHeaders = reader.getStringElement();
+                        } else if ("ExposedHeaders".equals(fieldName.getLocalPart())) {
+                            exposedHeaders = reader.getStringElement();
+                        } else if ("MaxAgeInSeconds".equals(fieldName.getLocalPart())) {
+                            maxAgeInSeconds = reader.getIntElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    CorsRule deserializedCorsRule = new CorsRule();
+                    deserializedCorsRule.allowedOrigins = allowedOrigins;
+                    deserializedCorsRule.allowedMethods = allowedMethods;
+                    deserializedCorsRule.allowedHeaders = allowedHeaders;
+                    deserializedCorsRule.exposedHeaders = exposedHeaders;
+                    deserializedCorsRule.maxAgeInSeconds = maxAgeInSeconds;
+
+                    return deserializedCorsRule;
+                });
     }
 }

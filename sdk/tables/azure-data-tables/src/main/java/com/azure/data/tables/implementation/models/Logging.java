@@ -5,41 +5,39 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Azure Analytics Logging settings. */
-@JacksonXmlRootElement(localName = "Logging")
 @Fluent
-public final class Logging {
+public final class Logging implements XmlSerializable<Logging> {
     /*
      * The version of Analytics to configure.
      */
-    @JsonProperty(value = "Version", required = true)
     private String version;
 
     /*
      * Indicates whether all delete requests should be logged.
      */
-    @JsonProperty(value = "Delete", required = true)
     private boolean delete;
 
     /*
      * Indicates whether all read requests should be logged.
      */
-    @JsonProperty(value = "Read", required = true)
     private boolean read;
 
     /*
      * Indicates whether all write requests should be logged.
      */
-    @JsonProperty(value = "Write", required = true)
     private boolean write;
 
     /*
      * The retention policy.
      */
-    @JsonProperty(value = "RetentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
     /** Creates an instance of Logging class. */
@@ -143,5 +141,61 @@ public final class Logging {
     public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("Logging");
+        xmlWriter.writeStringElement("Version", this.version);
+        xmlWriter.writeBooleanElement("Delete", this.delete);
+        xmlWriter.writeBooleanElement("Read", this.read);
+        xmlWriter.writeBooleanElement("Write", this.write);
+        xmlWriter.writeXml(this.retentionPolicy);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of Logging from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of Logging if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     *     XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static Logging fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "Logging",
+                reader -> {
+                    String version = null;
+                    boolean delete = false;
+                    boolean read = false;
+                    boolean write = false;
+                    RetentionPolicy retentionPolicy = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Version".equals(fieldName.getLocalPart())) {
+                            version = reader.getStringElement();
+                        } else if ("Delete".equals(fieldName.getLocalPart())) {
+                            delete = reader.getBooleanElement();
+                        } else if ("Read".equals(fieldName.getLocalPart())) {
+                            read = reader.getBooleanElement();
+                        } else if ("Write".equals(fieldName.getLocalPart())) {
+                            write = reader.getBooleanElement();
+                        } else if ("RetentionPolicy".equals(fieldName.getLocalPart())) {
+                            retentionPolicy = RetentionPolicy.fromXml(reader);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    Logging deserializedLogging = new Logging();
+                    deserializedLogging.version = version;
+                    deserializedLogging.delete = delete;
+                    deserializedLogging.read = read;
+                    deserializedLogging.write = write;
+                    deserializedLogging.retentionPolicy = retentionPolicy;
+
+                    return deserializedLogging;
+                });
     }
 }

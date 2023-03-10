@@ -17,7 +17,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
-import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableAccountSasGenerator;
 import com.azure.data.tables.implementation.TablePaged;
@@ -91,12 +90,7 @@ public final class TableServiceClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.implementation = new AzureTableImplBuilder()
-            .serializerAdapter(serializerAdapter)
-            .url(url)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.implementation = new AzureTableImpl(pipeline, serializerAdapter, url, serviceVersion.getVersion());
         this.pipeline = implementation.getHttpPipeline();
     }
 

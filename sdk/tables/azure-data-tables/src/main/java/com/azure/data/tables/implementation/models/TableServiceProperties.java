@@ -5,49 +5,79 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Table Service Properties. */
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class TableServiceProperties {
+public final class TableServiceProperties implements XmlSerializable<TableServiceProperties> {
     /*
      * Azure Analytics Logging settings.
      */
-    @JsonProperty(value = "Logging")
     private Logging logging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for tables.
      */
-    @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for tables.
      */
-    @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
 
-    private static final class CorsWrapper {
-        @JacksonXmlProperty(localName = "CorsRule")
+    private static final class CorsWrapper implements XmlSerializable<CorsWrapper> {
         private final List<CorsRule> items;
 
-        @JsonCreator
-        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<CorsRule> items) {
+        private CorsWrapper(List<CorsRule> items) {
             this.items = items;
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            xmlWriter.writeStartElement("Cors");
+            if (items != null) {
+                for (CorsRule element : items) {
+                    xmlWriter.writeXml(element);
+                }
+            }
+            return xmlWriter.writeEndElement();
+        }
+
+        public static CorsWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return xmlReader.readObject(
+                    "Cors",
+                    reader -> {
+                        List<CorsRule> items = null;
+
+                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                            String elementName = reader.getElementName().getLocalPart();
+
+                            if ("CorsRule".equals(elementName)) {
+                                if (items == null) {
+                                    items = new ArrayList<>();
+                                }
+
+                                items.add(CorsRule.fromXml(reader));
+                            } else {
+                                reader.nextElement();
+                            }
+                        }
+                        return new CorsWrapper(items);
+                    });
         }
     }
 
     /*
      * The set of CORS rules.
      */
-    @JsonProperty(value = "Cors")
     private CorsWrapper cors;
 
     /** Creates an instance of TableServiceProperties class. */
@@ -134,5 +164,55 @@ public final class TableServiceProperties {
     public TableServiceProperties setCors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("StorageServiceProperties");
+        xmlWriter.writeXml(this.logging);
+        xmlWriter.writeXml(this.hourMetrics);
+        xmlWriter.writeXml(this.minuteMetrics);
+        xmlWriter.writeXml(this.cors);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of TableServiceProperties from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of TableServiceProperties if the XmlReader was pointing to an instance of it, or null if it
+     *     was pointing to XML null.
+     */
+    public static TableServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "StorageServiceProperties",
+                reader -> {
+                    Logging logging = null;
+                    Metrics hourMetrics = null;
+                    Metrics minuteMetrics = null;
+                    CorsWrapper cors = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Logging".equals(fieldName.getLocalPart())) {
+                            logging = Logging.fromXml(reader);
+                        } else if ("HourMetrics".equals(fieldName.getLocalPart())) {
+                            hourMetrics = Metrics.fromXml(reader);
+                        } else if ("MinuteMetrics".equals(fieldName.getLocalPart())) {
+                            minuteMetrics = Metrics.fromXml(reader);
+                        } else if ("Cors".equals(fieldName.getLocalPart())) {
+                            cors = CorsWrapper.fromXml(reader);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    TableServiceProperties deserializedTableServiceProperties = new TableServiceProperties();
+                    deserializedTableServiceProperties.logging = logging;
+                    deserializedTableServiceProperties.hourMetrics = hourMetrics;
+                    deserializedTableServiceProperties.minuteMetrics = minuteMetrics;
+                    deserializedTableServiceProperties.cors = cors;
+
+                    return deserializedTableServiceProperties;
+                });
     }
 }

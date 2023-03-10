@@ -5,35 +5,34 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The Metrics model. */
-@JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class Metrics {
+public final class Metrics implements XmlSerializable<Metrics> {
     /*
      * The version of Analytics to configure.
      */
-    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * Indicates whether metrics are enabled for the Table service.
      */
-    @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
     /*
      * Indicates whether metrics should generate summary statistics for called API operations.
      */
-    @JsonProperty(value = "IncludeAPIs")
     private Boolean includeAPIs;
 
     /*
      * The retention policy.
      */
-    @JsonProperty(value = "RetentionPolicy")
     private RetentionPolicy retentionPolicy;
 
     /** Creates an instance of Metrics class. */
@@ -119,5 +118,56 @@ public final class Metrics {
     public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("Metrics");
+        xmlWriter.writeStringElement("Version", this.version);
+        xmlWriter.writeBooleanElement("Enabled", this.enabled);
+        xmlWriter.writeBooleanElement("IncludeAPIs", this.includeAPIs);
+        xmlWriter.writeXml(this.retentionPolicy);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of Metrics from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of Metrics if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     *     XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static Metrics fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "Metrics",
+                reader -> {
+                    String version = null;
+                    boolean enabled = false;
+                    Boolean includeAPIs = null;
+                    RetentionPolicy retentionPolicy = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Version".equals(fieldName.getLocalPart())) {
+                            version = reader.getStringElement();
+                        } else if ("Enabled".equals(fieldName.getLocalPart())) {
+                            enabled = reader.getBooleanElement();
+                        } else if ("IncludeAPIs".equals(fieldName.getLocalPart())) {
+                            includeAPIs = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("RetentionPolicy".equals(fieldName.getLocalPart())) {
+                            retentionPolicy = RetentionPolicy.fromXml(reader);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    Metrics deserializedMetrics = new Metrics();
+                    deserializedMetrics.enabled = enabled;
+                    deserializedMetrics.version = version;
+                    deserializedMetrics.includeAPIs = includeAPIs;
+                    deserializedMetrics.retentionPolicy = retentionPolicy;
+
+                    return deserializedMetrics;
+                });
     }
 }

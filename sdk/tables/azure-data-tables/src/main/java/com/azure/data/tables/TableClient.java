@@ -18,7 +18,6 @@ import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
-import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.EntityPaged;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableSasGenerator;
@@ -68,7 +67,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
@@ -131,12 +129,8 @@ public final class TableClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(serviceUrl)
-            .serializerAdapter(tablesSerializer)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.tablesImplementation = new AzureTableImpl(pipeline, tablesSerializer, serviceUrl,
+            serviceVersion.getVersion());
         this.transactionalBatchImplementation =
             new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
@@ -148,12 +142,8 @@ public final class TableClient {
         this.accountName = client.getAccountName();
         this.tableEndpoint = client.getTableEndpoint();
         this.pipeline = BuilderHelper.buildNullClientPipeline();
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(client.getTablesImplementation().getUrl())
-            .serializerAdapter(tablesSerializer)
-            .pipeline(this.pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.tablesImplementation = new AzureTableImpl(this.pipeline, tablesSerializer,
+            client.getTablesImplementation().getUrl(), serviceVersion.getVersion());
         this.tableName = client.getTableName();
         this.transactionalBatchImplementation = null;
         this.transactionalBatchClient = null;

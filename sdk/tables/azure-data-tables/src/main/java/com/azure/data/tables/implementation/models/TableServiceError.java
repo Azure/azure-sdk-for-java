@@ -5,36 +5,76 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Table Service error. */
-@JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class TableServiceError {
+public final class TableServiceError implements XmlSerializable<TableServiceError> {
     /*
-     * The odata error.
+     * The error message.
      */
-    @JsonProperty(value = "odata.error")
-    private TableServiceErrorOdataError odataError;
+    private String message;
+
+    /** Creates an instance of TableServiceError class. */
+    public TableServiceError() {}
 
     /**
-     * Get the odataError property: The odata error.
+     * Get the message property: The error message.
      *
-     * @return the odataError value.
+     * @return the message value.
      */
-    public TableServiceErrorOdataError getOdataError() {
-        return this.odataError;
+    public String getMessage() {
+        return this.message;
     }
 
     /**
-     * Set the odataError property: The odata error.
+     * Set the message property: The error message.
      *
-     * @param odataError the odataError value to set.
+     * @param message the message value to set.
      * @return the TableServiceError object itself.
      */
-    public TableServiceError setOdataError(TableServiceErrorOdataError odataError) {
-        this.odataError = odataError;
+    public TableServiceError setMessage(String message) {
+        this.message = message;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("TableServiceError");
+        xmlWriter.writeStringElement("Message", this.message);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of TableServiceError from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of TableServiceError if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static TableServiceError fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "TableServiceError",
+                reader -> {
+                    String message = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("Message".equals(fieldName.getLocalPart())) {
+                            message = reader.getStringElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    TableServiceError deserializedTableServiceError = new TableServiceError();
+                    deserializedTableServiceError.message = message;
+
+                    return deserializedTableServiceError;
+                });
     }
 }

@@ -5,35 +5,33 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** The properties for the table response. */
-@JacksonXmlRootElement(localName = "TableResponseProperties")
 @Fluent
-public class TableResponseProperties {
+public class TableResponseProperties implements JsonSerializable<TableResponseProperties> {
     /*
      * The name of the table.
      */
-    @JsonProperty(value = "TableName")
     private String tableName;
 
     /*
      * The odata type of the table.
      */
-    @JsonProperty(value = "odata.type")
     private String odataType;
 
     /*
      * The id of the table.
      */
-    @JsonProperty(value = "odata.id")
     private String odataId;
 
     /*
      * The edit link of the table.
      */
-    @JsonProperty(value = "odata.editLink")
     private String odataEditLink;
 
     /** Creates an instance of TableResponseProperties class. */
@@ -117,5 +115,48 @@ public class TableResponseProperties {
     public TableResponseProperties setOdataEditLink(String odataEditLink) {
         this.odataEditLink = odataEditLink;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("TableName", this.tableName);
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeStringField("odata.id", this.odataId);
+        jsonWriter.writeStringField("odata.editLink", this.odataEditLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableResponseProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableResponseProperties if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableResponseProperties.
+     */
+    public static TableResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    TableResponseProperties deserializedTableResponseProperties = new TableResponseProperties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("TableName".equals(fieldName)) {
+                            deserializedTableResponseProperties.tableName = reader.getString();
+                        } else if ("odata.type".equals(fieldName)) {
+                            deserializedTableResponseProperties.odataType = reader.getString();
+                        } else if ("odata.id".equals(fieldName)) {
+                            deserializedTableResponseProperties.odataId = reader.getString();
+                        } else if ("odata.editLink".equals(fieldName)) {
+                            deserializedTableResponseProperties.odataEditLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedTableResponseProperties;
+                });
     }
 }

@@ -5,17 +5,19 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Stats for the service. */
-@JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
-public final class TableServiceStats {
+public final class TableServiceStats implements XmlSerializable<TableServiceStats> {
     /*
      * Geo-Replication information for the Secondary Storage Service.
      */
-    @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
 
     /** Creates an instance of TableServiceStats class. */
@@ -39,5 +41,40 @@ public final class TableServiceStats {
     public TableServiceStats setGeoReplication(GeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("StorageServiceStats");
+        xmlWriter.writeXml(this.geoReplication);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of TableServiceStats from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of TableServiceStats if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static TableServiceStats fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "StorageServiceStats",
+                reader -> {
+                    GeoReplication geoReplication = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName fieldName = reader.getElementName();
+
+                        if ("GeoReplication".equals(fieldName.getLocalPart())) {
+                            geoReplication = GeoReplication.fromXml(reader);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    TableServiceStats deserializedTableServiceStats = new TableServiceStats();
+                    deserializedTableServiceStats.geoReplication = geoReplication;
+
+                    return deserializedTableServiceStats;
+                });
     }
 }

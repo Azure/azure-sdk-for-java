@@ -92,7 +92,7 @@ public final class AzureTableImpl {
      * @param url The URL of the service account or table that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureTableImpl(String url, String version) {
+    public AzureTableImpl(String url, String version) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -109,7 +109,7 @@ public final class AzureTableImpl {
      * @param url The URL of the service account or table that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureTableImpl(HttpPipeline httpPipeline, String url, String version) {
+    public AzureTableImpl(HttpPipeline httpPipeline, String url, String version) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
@@ -121,7 +121,7 @@ public final class AzureTableImpl {
      * @param url The URL of the service account or table that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureTableImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
+    public AzureTableImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;

@@ -5,26 +5,27 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /** The properties for the table entity query response. */
-@JacksonXmlRootElement(localName = "TableEntityQueryResponse")
 @Fluent
-public final class TableEntityQueryResponse {
+public final class TableEntityQueryResponse implements JsonSerializable<TableEntityQueryResponse> {
     /*
      * The metadata response of the table.
      */
-    @JsonProperty(value = "odata.metadata")
     private String odataMetadata;
 
     /*
      * List of table entities.
      */
-    @JsonProperty(value = "value")
-    private List<Map<String, Object>> value;
+    private List<Map<String, Object>> value = new ArrayList<>();
 
     /** Creates an instance of TableEntityQueryResponse class. */
     public TableEntityQueryResponse() {}
@@ -67,5 +68,47 @@ public final class TableEntityQueryResponse {
     public TableEntityQueryResponse setValue(List<Map<String, Object>> value) {
         this.value = value;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.metadata", this.odataMetadata);
+        jsonWriter.writeArrayField(
+                "value",
+                this.value,
+                (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableEntityQueryResponse from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableEntityQueryResponse if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableEntityQueryResponse.
+     */
+    public static TableEntityQueryResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    TableEntityQueryResponse deserializedTableEntityQueryResponse = new TableEntityQueryResponse();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("odata.metadata".equals(fieldName)) {
+                            deserializedTableEntityQueryResponse.odataMetadata = reader.getString();
+                        } else if ("value".equals(fieldName)) {
+                            List<Map<String, Object>> value =
+                                    reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                            deserializedTableEntityQueryResponse.value = value;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedTableEntityQueryResponse;
+                });
     }
 }

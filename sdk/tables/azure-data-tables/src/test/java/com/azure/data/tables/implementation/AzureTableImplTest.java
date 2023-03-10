@@ -106,12 +106,8 @@ public class AzureTableImplTest extends TestBase {
             .httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
-        azureTable = new AzureTableImplBuilder()
-                .pipeline(pipeline)
-                .serializerAdapter(new TablesJacksonSerializer())
-                .version(TableServiceVersion.getLatest().getVersion())
-                .url(storageConnectionString.getTableEndpoint().getPrimaryUri())
-                .buildClient();
+        azureTable = new AzureTableImpl(pipeline, new TablesJacksonSerializer(),
+            storageConnectionString.getTableEndpoint().getPrimaryUri(), TableServiceVersion.getLatest().getVersion());
     }
 
     @Override
