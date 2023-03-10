@@ -58,6 +58,7 @@ import java.util.Set;
  * @see EventProcessorClientBuilder
  */
 public final class JedisCheckpointStore implements CheckpointStore {
+    private static final String PARTITION_ID_KEY = "partitionId";
 
     private static final ClientLogger LOGGER = new ClientLogger(JedisCheckpointStore.class);
     static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
@@ -69,6 +70,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * Constructor for JedisRedisCheckpointStore
      *
      * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
+     *
      * @throws IllegalArgumentException thrown when JedisPool object supplied is null
      */
     public JedisCheckpointStore(JedisPool jedisPool) {
@@ -84,47 +86,72 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * This method returns the list of partitions that were owned successfully.
      *
      * @param requestedPartitionOwnerships List of partition ownerships from the current instance
+     *
      * @return Flux of PartitionOwnership objects
      */
     @Override
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
-
-        return Flux.fromIterable(requestedPartitionOwnerships).handle(((partitionOwnership, sink) -> {
+        return Flux.fromIterable(requestedPartitionOwnerships).handle((partitionOwnership, sink) -> {
             String partitionId = partitionOwnership.getPartitionId();
-            byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
+            byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(),
+                partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
+            byte[] serializedOwnership = DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership);
 
             try (Jedis jedis = jedisPool.getResource()) {
+                // Start watching for any updates.
+                jedis.watch(key);
 
                 List<byte[]> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
                 byte[] currentPartitionOwnership = keyInformation.get(0);
 
                 if (currentPartitionOwnership == null) {
-                    // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
+                    // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the
+                    // field
                     Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
                     partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
-                    jedis.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
-                    sink.next(partitionOwnership);
+
+                    try {
+                        long result = jedis.hsetnx(key, PARTITION_OWNERSHIP, serializedOwnership);
+
+                        if (result == 1) {
+                            sink.next(partitionOwnership);
+                            sink.complete();
+                        } else {
+                            // Sometime between fetching the ownership information and trying to set it, someone else
+                            // updated/added ownership.
+                            LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId)
+                                .log("Unable to create new partition ownership entry.");
+
+                            sink.complete();
+                        }
+                    } finally {
+                        jedis.unwatch();
+                    }
+
+                    return;
+                }
+
+                Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0)) - jedis.objectIdletime(key);
+                partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
+                partitionOwnership.setETag("default eTag");
+
+                Transaction transaction = jedis.multi();
+                transaction.hset(key, PARTITION_OWNERSHIP, serializedOwnership);
+                List<Object> executionResponse = transaction.exec();
+
+                if (executionResponse == null) {
+                    // This means that the transaction did not execute, which implies that another client has
+                    // changed the ownership during this transaction
+                    LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Unable to claim partition.");
                     sink.complete();
                 } else {
-                    // otherwise we have to change the ownership and "watch" the transaction
-                    jedis.watch(key);
-                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0)) - jedis.objectIdletime(key);
-                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
-                    partitionOwnership.setETag("default eTag");
-                    Transaction transaction = jedis.multi();
-                    transaction.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
-                    List<Object> executionResponse = transaction.exec();
+                    LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Claimed partition.");
 
-                    if (executionResponse == null) {
-                        //This means that the transaction did not execute, which implies that another client has changed the ownership during this transaction
-                        LOGGER.verbose("Unable to claim partition with id: " + partitionId);
-                    } else {
-                        sink.next(partitionOwnership);
-                        sink.complete();
-                    }
+                    sink.next(partitionOwnership);
+                    sink.complete();
                 }
             }
-        }));
+        });
     }
 
     /**
@@ -133,6 +160,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance  Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
+     *
      * @return Flux of Checkpoint objects
      */
     @Override
@@ -147,6 +175,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
             if (members.isEmpty()) {
                 return Flux.fromIterable(listStoredCheckpoints);
             }
+
             for (byte[] member : members) {
                 //get the associated JSON representation for each for the members
                 List<byte[]> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
@@ -174,6 +203,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
+     *
      * @return Flux of PartitionOwnership objects
      */
     @Override
@@ -211,6 +241,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * This method updates the checkpoint in the Jedis resource for a given partition.
      *
      * @param checkpoint Checkpoint information for this partition
+     *
      * @return Mono that completes if no errors take place
      */
     @Override
@@ -248,5 +279,4 @@ public final class JedisCheckpointStore implements CheckpointStore {
     private static Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
     }
-
 }

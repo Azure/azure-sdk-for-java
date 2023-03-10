@@ -24,6 +24,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Answers.RETURNS_SMART_NULLS;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -145,6 +146,7 @@ public class JedisCheckpointStoreTests {
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.hmget(KEY, JedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
+        when(jedis.hsetnx(eq(KEY), eq(JedisCheckpointStore.PARTITION_OWNERSHIP), any())).thenReturn(1L);
         when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
