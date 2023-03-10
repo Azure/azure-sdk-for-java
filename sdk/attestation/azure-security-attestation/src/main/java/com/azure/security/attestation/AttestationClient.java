@@ -440,9 +440,9 @@ public final class AttestationClient {
     }
 
     /**
-     * @brief Performs TPM attestation.
+     * Performs TPM attestation.
      *
-     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
      * <p><strong>Attest using TPM.</strong></p>
      * <pre>
@@ -462,9 +462,9 @@ public final class AttestationClient {
     }
 
     /**
-     * @brief Performs TPM attestation.
+     * Performs TPM attestation.
      *
-     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
      * <p><strong>Attest using TPM.</strong></p>
      * <pre>
