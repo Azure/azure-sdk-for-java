@@ -10,6 +10,7 @@
 * Bug fixed in `ReactiveCosmosTemplate` where returning a Flux<JsonNode> was causing an error - See [PR 33730](https://github.com/Azure/azure-sdk-for-java/pull/33730)
 
 #### Other Changes
+* The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
 
 ### 3.32.0 (2023-02-17)
 
