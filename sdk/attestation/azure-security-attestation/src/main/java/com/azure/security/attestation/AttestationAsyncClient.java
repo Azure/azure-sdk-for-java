@@ -34,7 +34,6 @@ import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.TpmAttestationResult;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;

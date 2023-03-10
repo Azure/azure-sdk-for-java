@@ -473,6 +473,7 @@ public final class AttestationClient {
      * </pre>
      * 
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @param @param context Context for operation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException    thrown if the request is rejected by server.
