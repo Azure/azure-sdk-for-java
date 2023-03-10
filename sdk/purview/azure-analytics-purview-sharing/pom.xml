@@ -9,7 +9,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-sharing</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for PurviewShareClient Management</name>
