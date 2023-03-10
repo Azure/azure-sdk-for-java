@@ -91,8 +91,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private final RntbdConnectionStateListener connectionStateListener;
     private final URI serviceEndpoint;
+    private final RntbdDurableEndpointMetrics durableMetrics;
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
+
 
     // endregion
 
@@ -106,8 +108,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI physicalAddress,
         final ClientTelemetry clientTelemetry,
         final RntbdServerErrorInjector faultInjectionInterceptors,
-        final URI serviceEndpoint) {
+        final URI serviceEndpoint,
+        final RntbdDurableEndpointMetrics durableMetrics) {
 
+        this.durableMetrics = durableMetrics;
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
         this.serviceEndpoint = serviceEndpoint;
 
@@ -145,7 +149,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 config,
                 clientTelemetry,
                 this.connectionStateListener,
-                faultInjectionInterceptors);
+                faultInjectionInterceptors,
+                durableMetrics);
 
         if (clientTelemetry != null &&
             clientTelemetry.isClientMetricsEnabled() &&
@@ -216,20 +221,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return this.channelPool.channelsAcquiredMetrics();
     }
 
-    /**
-     * @return approximate number of acquired channels.
-     */
     @Override
-    public int totalChannelsAcquiredMetric() {
-        return this.channelPool.totalChannelsAcquiredMetrics();
-    }
-
-    /**
-     * @return approximate number of closed channels.
-     */
-    @Override
-    public int totalChannelsClosedMetric() {
-        return this.channelPool.totalChannelsClosedMetrics();
+    public RntbdDurableEndpointMetrics durableEndpointMetrics() {
+        return this.durableMetrics;
     }
 
     /**
@@ -622,6 +616,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final AtomicBoolean closed;
         private final Config config;
         private final ConcurrentHashMap<String, RntbdEndpoint> endpoints;
+        private final ConcurrentHashMap<String, RntbdDurableEndpointMetrics> durableMetrics;
         private final EventLoopGroup eventLoopGroup;
         private final AtomicInteger evictions;
         private final RntbdEndpointMonitoringProvider monitoring;
@@ -661,6 +656,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
             this.eventLoopGroup = this.getEventLoopGroup(options);
             this.endpoints = new ConcurrentHashMap<>();
+            this.durableMetrics = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
@@ -728,15 +724,30 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         @Override
         public RntbdEndpoint createIfAbsent(final URI serviceEndpoint, final URI physicalAddress) {
-            return endpoints.computeIfAbsent(physicalAddress.getAuthority(), authority -> new RntbdServiceEndpoint(
-                this,
-                this.config,
-                this.eventLoopGroup,
-                this.requestTimer,
-                physicalAddress,
-                this.clientTelemetry,
-                this.serverErrorInjector,
-                serviceEndpoint));
+            return endpoints.computeIfAbsent(
+                physicalAddress.getAuthority(),
+                authority -> {
+
+                    RntbdDurableEndpointMetrics durableEndpointMetrics = durableMetrics.computeIfAbsent(
+                        physicalAddress.getAuthority(),
+                        ignoreMe -> new RntbdDurableEndpointMetrics()
+                    );
+
+                    RntbdServiceEndpoint endpoint = new RntbdServiceEndpoint(
+                        this,
+                        this.config,
+                        this.eventLoopGroup,
+                        this.requestTimer,
+                        physicalAddress,
+                        this.clientTelemetry,
+                        this.serverErrorInjector,
+                        serviceEndpoint,
+                        durableEndpointMetrics);
+
+                    durableEndpointMetrics.setEndpoint(endpoint);
+
+                    return endpoint;
+                });
         }
 
         @Override
@@ -754,7 +765,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             return this.endpoints.values().stream();
         }
 
-        private void evict(final RntbdEndpoint endpoint) {
+        public void evict(final RntbdEndpoint endpoint) {
             if (this.endpoints.remove(endpoint.serverKey().getAuthority()) != null) {
                 this.evictions.incrementAndGet();
             }

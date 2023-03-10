@@ -15,6 +15,9 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosBatch;
@@ -820,6 +823,32 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.Legacy)).isEqualTo(true);
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.AddressResolutions)).isEqualTo(true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void endpointMetricsAreDurable() {
+        this.beforeTest(CosmosMetricCategory.ALL);
+        try {
+            if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+                return;
+            }
+
+            RntbdTransportClient transportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(client);
+            RntbdServiceEndpoint.Provider endpointProvider =
+                (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
+
+            String address = "https://localhost:12345";
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
+            endpointProvider.evict(firstEndpoint);
+
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
+
+            // ensure metrics are durable across multiple endpoint instances
+            assertThat(firstEndpoint).isNotSameAs(secondEndpoint);
+            assertThat(firstEndpoint.durableEndpointMetrics()).isSameAs(secondEndpoint.durableEndpointMetrics());
         } finally {
             this.afterTest();
         }
