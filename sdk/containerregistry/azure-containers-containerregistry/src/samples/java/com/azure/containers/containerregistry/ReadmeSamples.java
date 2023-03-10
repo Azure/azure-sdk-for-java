@@ -6,6 +6,12 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.OciDescriptor;
+import com.azure.containers.containerregistry.models.OciImageManifest;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -21,8 +27,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  *
  */
 public class ReadmeSamples {
-
     private String endpoint = "endpoint";
+    private String repository = "samples/nginx";
 
     public void createClient() {
         // BEGIN: readme-sample-createClient
@@ -253,6 +259,64 @@ public class ReadmeSamples {
             .listRepositoryNames()
             .forEach(name -> System.out.println(name));
         // END: readme-sample-armTokenPublic
+    }
+
+    public void deleteBlob()  {
+        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint())
+            .repository(repository)
+            .credential(credential)
+            .buildClient();
+
+        // BEGIN: readme-sample-deleteBlob
+        DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+
+        OciImageManifest manifest = manifestResult.asOciManifest();
+        for (OciDescriptor layer : manifest.getLayers()) {
+            blobClient.deleteBlob(layer.getDigest());
+        }
+        // END: readme-sample-deleteBlob
+    }
+
+    public void deleteManifest()  {
+        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint())
+            .repository(repository)
+            .credential(credential)
+            .buildClient();
+
+        // BEGIN: readme-sample-deleteManifest
+        DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+        blobClient.deleteManifest(manifestResult.getDigest());
+        // END: readme-sample-deleteManifest
+    }
+
+    public void deleteBlobAsync()  {
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint())
+            .repository(repository)
+            .credential(credential)
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-deleteBlobAsync
+        blobClient.downloadManifest("latest")
+            .flatMap(manifest -> blobClient.deleteBlob(manifest.getDigest()))
+            .block();
+        // END: readme-sample-deleteBlobAsync
+    }
+
+    public void deleteManifestAsync()  {
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint())
+            .repository(repository)
+            .credential(credential)
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-deleteManifestAsync
+        blobClient.downloadManifest("latest")
+            .flatMap(manifest -> blobClient.deleteManifest(manifest.getDigest()))
+            .block();
+        // END: readme-sample-deleteManifestAsync
     }
 }
 

@@ -41,6 +41,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -105,50 +106,51 @@ public final class ContainerRegistryBlobAsyncClient {
 
     /**
      * Upload the Oci manifest to the repository.
-     * The upload is done as a single operation.
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadManifestAsync -->
+     * <pre>
+     * OciImageManifest manifest = new OciImageManifest&#40;&#41;
+     *         .setConfig&#40;configDescriptor&#41;
+     *         .setSchemaVersion&#40;2&#41;
+     *         .setLayers&#40;Collections.singletonList&#40;layerDescriptor&#41;&#41;;
+     * Mono&lt;UploadManifestResult&gt; result = blobClient.uploadManifest&#40;manifest, &quot;latest&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadManifestAsync -->
+     *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
-     * @param manifest The OciManifest that needs to be uploaded.
-     * @return operation result.
+     * @param manifest The {@link OciImageManifest} that needs to be uploaded.
+     * @param tag Tag to apply on uploaded manifest. If {@code null} is passed, no tags will be applied.
+     * @return upload result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadManifestResult> uploadManifest(OciImageManifest manifest) {
+    public Mono<UploadManifestResult> uploadManifest(OciImageManifest manifest, String tag) {
         if (manifest == null) {
             return monoError(LOGGER, new NullPointerException("'manifest' can't be null."));
         }
 
-        return withContext(context -> uploadManifestWithResponse(BinaryData.fromObject(manifest), null, ManifestMediaType.OCI_MANIFEST, context))
+        return withContext(context -> uploadManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, context))
             .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Uploads a manifest to the repository.
-     * The client currently only supports uploading OciManifests to the repository.
-     * And this operation makes the assumption that the data provided is a valid OCI manifest.
-     * <p>
-     * Also, the data is read into memory and then an upload operation is performed as a single operation.
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
-     * @param options The options for the upload manifest operation.
-     * @return operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadManifestResult> uploadManifest(UploadManifestOptions options) {
-        return uploadManifestWithResponse(options).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Uploads a manifest to the repository.
-     * The client currently only supports uploading OciManifests to the repository.
-     * And this operation makes the assumption that the data provided is a valid OCI manifest.
-     * <p>
-     * Also, the data is read into memory and then an upload operation is performed as a single operation.
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifestAsync -->
+     * <pre>
+     * UploadManifestOptions options = new UploadManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;
+     *     .setTag&#40;&quot;v2&quot;&#41;;
+     *
+     * blobClient.uploadManifestWithResponse&#40;options&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.println&#40;&quot;Manifest uploaded, digest - &quot; + response.getValue&#40;&#41;.getDigest&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadCustomManifestAsync -->
+     *
+     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      * @param options The options for the upload manifest operation.
-     * @return The rest response containing the operation result.
+     * @return The rest response containing the upload result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
@@ -240,21 +242,38 @@ public final class ContainerRegistryBlobAsyncClient {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' can't be null."));
         }
+
+        AtomicLong streamLength = new AtomicLong(0);
         MessageDigest sha256 = createSha256();
-        Flux<ByteBuffer> chunks = chunkSource(data, sha256);
+        Flux<ByteBuffer> chunks = chunkSource(data, sha256, streamLength);
 
         return blobsImpl
             .startUploadWithResponseAsync(repositoryName, context)
             .flatMap(response -> upload(chunks, getLocation(response), context))
             // TODO (limolkova) if we knew when's the last chunk, we could upload it in complete call instead.
             .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
-            .map(response -> ConstructorAccessors.createUploadBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME)))
+            .map(response -> ConstructorAccessors.createUploadBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME), streamLength.get()))
             .onErrorMap(UtilsImpl::mapException);
     }
 
     /**
      * Download the manifest associated with the given tag or digest.
-     * We currently only support downloading OCI manifests.
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestAsync -->
+     * <pre>
+     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     *     .doOnNext&#40;downloadResult -&gt; &#123;
+     *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;downloadResult.getMediaType&#40;&#41;&#41;
+     *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;downloadResult.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *             OciImageManifest manifest = downloadResult.asOciManifest&#40;&#41;;
+     *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
+     *         &#125; else &#123;
+     *             throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + downloadResult.getMediaType&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestAsync -->
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
@@ -270,9 +289,26 @@ public final class ContainerRegistryBlobAsyncClient {
 
     /**
      * Download the manifest associated with the given tag or digest.
-     * We currently only support downloading OCI manifests.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <!-- src_embed com.azure.containers.containerregistry.downloadCustomManifestAsync -->
+     * <pre>
+     * blobClient.downloadManifestWithResponse&#40;&quot;latest&quot;, Arrays.asList&#40;DOCKER_MANIFEST_LIST_TYPE, OCI_INDEX_TYPE&#41;&#41;
+     *     .doOnNext&#40;downloadResult -&gt; &#123;
+     *         if &#40;DOCKER_MANIFEST_LIST_TYPE.equals&#40;downloadResult.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *             &#47;&#47; DockerManifestList manifestList =
+     *             &#47;&#47;     downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;DockerManifestList.class&#41;;
+     *             System.out.println&#40;&quot;Got docker manifest list&quot;&#41;;
+     *         &#125; else if &#40;OCI_INDEX_TYPE.equals&#40;downloadResult.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *             &#47;&#47; OciIndex ociIndex = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;OciIndex.class&#41;;
+     *             System.out.println&#40;&quot;Got OCI index&quot;&#41;;
+     *         &#125; else &#123;
+     *             throw new IllegalArgumentException&#40;&quot;Got unexpected content type: &quot;
+     *                 + downloadResult.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadCustomManifestAsync -->
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
      * @param mediaTypes List of {@link  ManifestMediaType} to request.
@@ -341,6 +377,14 @@ public final class ContainerRegistryBlobAsyncClient {
     /**
      * Delete the image associated with the given digest
      *
+     * <!-- src_embed readme-sample-deleteBlobAsync -->
+     * <pre>
+     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     *     .flatMap&#40;manifest -&gt; blobClient.deleteBlob&#40;manifest.getDigest&#40;&#41;&#41;&#41;
+     *     .block&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-deleteBlobAsync -->
+     *
      * @param digest The digest for the given image layer.
      * @return The completion signal.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -384,9 +428,14 @@ public final class ContainerRegistryBlobAsyncClient {
 
     /**
      * Delete the manifest associated with the given digest.
-     * We currently only support downloading OCI manifests.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <!-- src_embed readme-sample-deleteManifestAsync -->
+     * <pre>
+     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     *     .flatMap&#40;manifest -&gt; blobClient.deleteManifest&#40;manifest.getDigest&#40;&#41;&#41;&#41;
+     *     .block&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-deleteManifestAsync -->
      *
      * @param digest The digest of the manifest.
      * @return The completion.
@@ -400,9 +449,6 @@ public final class ContainerRegistryBlobAsyncClient {
 
     /**
      * Delete the manifest associated with the given digest.
-     * We currently only support downloading OCI manifests.
-     *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
      * @param digest The digest of the manifest.
      * @return The REST response for completion.
@@ -427,12 +473,14 @@ public final class ContainerRegistryBlobAsyncClient {
      * filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
      * ordering of the buffers, but we don't really care if one is split before another.
      * @param data Data to chunk
+     * @param length stream length
      * @return Chunked data
      */
-    private static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, MessageDigest sha256) {
+    private static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, MessageDigest sha256, AtomicLong length) {
         // TODO (limolkova) unify with storage, taken from it.
         return data
             .flatMapSequential(buffer -> {
+                length.addAndGet(buffer.remaining());
                 if (buffer.remaining() <= CHUNK_SIZE) {
                     sha256.update(buffer.asReadOnlyBuffer());
                     return Flux.just(buffer);

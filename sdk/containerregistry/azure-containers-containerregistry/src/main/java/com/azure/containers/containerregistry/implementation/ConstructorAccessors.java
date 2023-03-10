@@ -35,7 +35,7 @@ public final class ConstructorAccessors {
     }
 
     public interface UploadBlobResultConstructorAccessor {
-        UploadBlobResult create(String digest);
+        UploadBlobResult create(String digest, long length);
     }
 
     public static void setDownloadBlobResultAccessor(final DownloadBlobAsyncResultConstructorAccessor accessor) {
@@ -80,7 +80,7 @@ public final class ConstructorAccessors {
         return downloadManifestAccessor.create(digest, mediaType, rawData);
     }
 
-    public static UploadBlobResult createUploadBlobResult(String digest) {
+    public static UploadBlobResult createUploadBlobResult(String digest, long length) {
         if (uploadBlobResultAccessor == null) {
             try {
                 // it's possible that nobody yet created BlobDownloadAsyncResult, so we'll need to force its static section to run and set accessor.
@@ -90,7 +90,7 @@ public final class ConstructorAccessors {
             }
         }
         assert uploadBlobResultAccessor != null;
-        return uploadBlobResultAccessor.create(digest);
+        return uploadBlobResultAccessor.create(digest, length);
     }
 
     public static UploadManifestResult createUploadManifestResult(String digest) {

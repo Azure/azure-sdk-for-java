@@ -3,8 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactArchitecture;
-import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
@@ -15,42 +13,42 @@ import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobC
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Random;
 
 public class UploadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
     private static final String REPOSITORY = "hello/world";
-
+    private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
     public static void main(String[] args) {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         // BEGIN: readme-sample-uploadImageAsync
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
             .repository(REPOSITORY)
-            .credential(credential)
+            .credential(CREDENTIAL)
             .buildAsyncClient();
 
-        BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("async client"));
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
         Mono<OciDescriptor> uploadConfig = blobClient
             .uploadBlob(configContent)
-            .doOnSuccess(configUploadResult -> System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength()))
-            .map(configUploadResult -> new OciDescriptor()
+            .map(result -> new OciDescriptor()
                 .setMediaType("application/vnd.unknown.config.v1+json")
-                .setDigest(configUploadResult.getDigest())
-                .setSizeInBytes(configContent.getLength()));
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes()));
 
-        BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
+        Flux<ByteBuffer> layerContent = generateAsyncStream(1024 * 1024 * 1024); // 1 GB
         Mono<OciDescriptor> uploadLayer = blobClient
             .uploadBlob(layerContent)
-            .doOnSuccess(layerUploadResult -> System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength()))
-            .map(layerUploadResult -> new OciDescriptor()
-                .setDigest(layerUploadResult.getDigest())
-                .setSizeInBytes(layerContent.getLength())
+            .map(result -> new OciDescriptor()
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes())
                 .setMediaType("application/octet-stream"));
 
         Mono.zip(uploadConfig, uploadLayer)
@@ -58,12 +56,72 @@ public class UploadImageAsync {
                 .setConfig(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
-            .flatMap(manifest -> blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest")))
+            .flatMap(manifest -> blobClient.uploadManifest(manifest, "latest"))
             .doOnSuccess(manifestResult -> System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
             .block();
         // END: readme-sample-uploadImageAsync
 
         System.out.println("Done");
+    }
+
+    private static Flux<ByteBuffer> generateAsyncStream(long size) {
+        Random rand = new Random(42);
+        byte[] data = new byte[12 * 1024 * 1024];
+        rand.nextBytes(data);
+        return Flux.generate(() -> 0L, (pos, sink) -> {
+            long remaining = size - pos;
+            if (remaining <= 0) {
+                sink.complete();
+                return size;
+            }
+
+            ByteBuffer buffer = ByteBuffer.wrap(data);
+            if (remaining < data.length) {
+                buffer.limit((int) remaining);
+            }
+            sink.next(buffer);
+
+            return pos + data.length;
+        });
+    }
+
+    private void uploadManifest() {
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+
+        Mono<OciDescriptor> config = blobClient
+            .uploadBlob(configContent)
+            .map(configUploadResult -> new OciDescriptor()
+                .setMediaType("application/vnd.unknown.config.v1+json")
+                .setDigest(configUploadResult.getDigest())
+                .setSizeInBytes(configContent.getLength()));
+
+        Flux<ByteBuffer> layerContent = generateAsyncStream(1024 * 1024 * 1024); // 1 GB
+        Mono<OciDescriptor> layer = blobClient
+            .uploadBlob(layerContent)
+            .map(result -> new OciDescriptor()
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes())
+                .setMediaType("application/octet-stream"));
+
+        config
+            .flatMap(configDescriptor ->
+                layer.flatMap(layerDescriptor -> {
+                    // BEGIN: com.azure.containers.containerregistry.uploadManifestAsync
+                    OciImageManifest manifest = new OciImageManifest()
+                            .setConfig(configDescriptor)
+                            .setSchemaVersion(2)
+                            .setLayers(Collections.singletonList(layerDescriptor));
+                    Mono<UploadManifestResult> result = blobClient.uploadManifest(manifest, "latest");
+                    // END: com.azure.containers.containerregistry.uploadManifestAsync
+                    return result;
+                }))
+            .subscribe(result -> System.out.println("Manifest uploaded, digest - " + result.getDigest()));
     }
 
     private void uploadCustomManifestMediaType() {
@@ -74,35 +132,32 @@ public class UploadImageAsync {
             .credential(credential)
             .buildAsyncClient();
 
-        ManifestMediaType manifestListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        DockerV2ManifestList manifestList = new DockerV2ManifestList()
-            .setSchemaVersion(2)
-            .setMediaType(manifestListType.toString())
-            .setManifests(Collections.singletonList(new DockerV2ManifestList.DockerV2ManifestListAttributes()
-                .setDigest("sha256:f54a58bc1aac5ea1a25d796ae155dc228b3f0e11d046ae276b39c4bf2f13d8c4")
-                .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
-                .setPlatform(new DockerV2ManifestList.Platform()
-                    .setArchitecture(ArtifactArchitecture.AMD64.toString())
-                    .setOs(ArtifactOperatingSystem.LINUX.toString())))
-            );
+        // get manifest in custom format as string or an object of your custom type
+        String manifest = "{"
+            + "\"schemaVersion\": 2,"
+            + "\"mediaType\": \"application/vnd.docker.distribution.manifest.list.v2+json\","
+            + "\"manifests\": ["
+            + "{"
+            + "\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\","
+            +   "\"digest\": \"sha256:e692418e4cbaf90ca69d05a66403747baa33ee08806650b51fab815ad7fc331f\","
+            +   "\"size\": 7143,"
+            +   "\"platform\": { \"architecture\": \"ppc64le\", \"os\": \"linux\" }"
+            + "},{"
+            +   "\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\","
+            +   "\"digest\": \"sha256:5b0bcabd1ed22e9fb1310cf6c2dec7cdef19f0ad69efa1f392e94a4333501270\","
+            +   "\"size\": 7682,"
+            +   "\"platform\": { \"architecture\": \"amd64\", \"os\": \"linux\", \"features\": [\"sse4\"]}"
+            + "}]}";
+        // then create a binary data from it
+        BinaryData manifestList = BinaryData.fromString(manifest);
 
-        UploadManifestResult result = blobClient.uploadManifest(new UploadManifestOptions(BinaryData.fromObject(manifestList), manifestListType))
-            .block();
+        // BEGIN: com.azure.containers.containerregistry.uploadCustomManifestAsync
+        UploadManifestOptions options = new UploadManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE)
+            .setTag("v2");
 
-        System.out.println("Manifest uploaded, digest - " + result.getDigest());
-    }
-
-    private static class ManifestConfig {
-        @JsonProperty("property")
-        private String property;
-
-        public String getProperty() {
-            return property;
-        }
-
-        public ManifestConfig setProperty(String property) {
-            this.property = property;
-            return this;
-        }
+        blobClient.uploadManifestWithResponse(options)
+            .subscribe(response ->
+                System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest()));
+        // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
     }
 }

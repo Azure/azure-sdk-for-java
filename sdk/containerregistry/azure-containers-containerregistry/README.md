@@ -251,10 +251,10 @@ for (String repositoryName : client.listRepositoryNames()) {
 ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
     .endpoint(ENDPOINT)
     .repository(REPOSITORY)
-    .credential(credential)
+    .credential(CREDENTIAL)
     .buildClient();
 
-BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("sync client"));
+BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
 UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
 System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
@@ -277,7 +277,7 @@ OciImageManifest manifest = new OciImageManifest()
             .setSizeInBytes(layerContent.getLength())
             .setMediaType("application/octet-stream")));
 
-UploadManifestResult manifestResult = blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest"));
+UploadManifestResult manifestResult = blobClient.uploadManifest(manifest, "latest");
 System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest());
 ```
 
@@ -287,7 +287,7 @@ System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()
 ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
     .endpoint(ENDPOINT)
     .repository(REPOSITORY)
-    .credential(credential)
+    .credential(CREDENTIAL)
     .buildClient();
 
 DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
@@ -296,15 +296,32 @@ OciImageManifest manifest = manifestResult.asOciManifest();
 System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
 
 String configFileName = manifest.getConfig().getDigest() + ".json";
-blobClient.downloadStream(manifest.getConfig().getDigest(), createWriteChannel(configFileName));
+blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));
 System.out.printf("Got config: %s\n", configFileName);
 
 for (OciDescriptor layer : manifest.getLayers()) {
-    blobClient.downloadStream(layer.getDigest(), createWriteChannel(layer.getDigest()));
+    blobClient.downloadStream(layer.getDigest(), createFileChannel(layer.getDigest()));
     System.out.printf("Got layer: %s\n", layer.getDigest());
 }
 ```
 
+### Delete blob
+
+```java readme-sample-deleteBlob
+DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+
+OciImageManifest manifest = manifestResult.asOciManifest();
+for (OciDescriptor layer : manifest.getLayers()) {
+    blobClient.deleteBlob(layer.getDigest());
+}
+```
+
+### Delete manifest
+
+```java readme-sample-deleteManifest
+DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+blobClient.deleteManifest(manifestResult.getDigest());
+```
 
 ### Delete a repository with anonymous access throws
 ```java readme-sample-anonymousClientThrows
