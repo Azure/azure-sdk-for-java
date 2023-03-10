@@ -3,19 +3,19 @@
 
 package com.azure.core.test.models;
 
-import java.util.List;
-
 /**
  * Keeps track of different sanitizers that redact the sensitive information when recording
  */
 public class TestProxySanitizer {
-    private final TestProxySanitizerType testProxySanitizerType;
-    private final String regexKey;
-    private final String redactedValue;
+    private TestProxySanitizerType testProxySanitizerType;
+    private String regexKey;
+    private String redactedValue;
     private String headerKey;
 
     private String groupForReplace;
 
+    public TestProxySanitizer() {
+    }
 
     /**
      * Creates an instance of TestProxySanitizer
@@ -30,17 +30,18 @@ public class TestProxySanitizer {
     }
 
     /**
-     * Creates an instance of TestProxySanitizer with header key with a specified regex pattern
+     * Creates an instance of header TestProxySanitizer with header key with a specified regex pattern
      *
      * @param headerKey the header key to target for redaction
      * @param regex the regex to use for redaction
      * @param redactedValue the replacement text for the regex matched content
      */
-    public TestProxySanitizer(String headerKey, String regex, String redactedValue) {
+    public TestProxySanitizer addHeaderKeyRegexSanitizer(String headerKey, String regex, String redactedValue) {
         this.headerKey = headerKey;
-        this.testProxySanitizerType = TestProxySanitizerType.HEADER;
         this.regexKey = regex;
         this.redactedValue = redactedValue;
+        this.testProxySanitizerType = TestProxySanitizerType.HEADER;
+        return this;
     }
 
     /**
