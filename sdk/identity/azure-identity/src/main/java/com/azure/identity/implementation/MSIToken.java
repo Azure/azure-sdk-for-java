@@ -115,7 +115,7 @@ public final class MSIToken extends AccessToken {
      * less than two hours, at which point it is the same as time to expiry.
      * @return The number of seconds until refresh.
      */
-    public long getRefreshIn() {
+    public long getRefreshInSeconds() {
         if (refreshIn != null) {
             return Long.parseLong(refreshIn);
         }

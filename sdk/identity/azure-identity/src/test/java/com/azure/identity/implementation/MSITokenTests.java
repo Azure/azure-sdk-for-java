@@ -66,16 +66,16 @@ public class MSITokenTests {
                 String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()),
                 String.valueOf(240));
 
-            Assert.assertEquals(240, hasRefresh.getRefreshIn());
-            Assert.assertEquals(Duration.ofHours(1).getSeconds(), expirationMinus11HoursToken.getRefreshIn());
-            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds() / 2, expirationMinusOneHourToken.getRefreshIn());
+            Assert.assertEquals(240, hasRefresh.getRefreshInSeconds());
+            Assert.assertEquals(Duration.ofHours(1).getSeconds(), expirationMinus11HoursToken.getRefreshInSeconds());
+            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds() / 2, expirationMinusOneHourToken.getRefreshInSeconds());
 
         }
 
     }
 
     @Test
-    public void canDeserialize() {
+    public void canDeserializeWithRefreshIn() {
         String json = "{\n"
             + "  \"access_token\": \"fake_token\",\n"
             + "  \"refresh_token\": \"\",\n"
@@ -94,7 +94,28 @@ public class MSITokenTests {
         }
 
         Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
-        Assert.assertEquals(3599, token.getRefreshIn());
+        Assert.assertEquals(3599, token.getRefreshInSeconds());
+    }
+
+    @Test
+    public void canDeserialize() {
+        String json = "{\n"
+            + "  \"access_token\": \"fake_token\",\n"
+            + "  \"refresh_token\": \"\",\n"
+            + "  \"expires_in\": \"3599\",\n"
+            + "  \"expires_on\": \"1506484173\",\n"
+            + "  \"not_before\": \"1506480273\",\n"
+            + "  \"resource\": \"https://managementazurecom/\",\n"
+            + "  \"token_type\": \"Bearer\"\n"
+            + "}";
+        MSIToken token;
+        try {
+            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
     }
 
     @Test
