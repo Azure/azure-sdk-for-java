@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -15,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -26,7 +28,8 @@ public class AadCredentialTest extends TestProxyTestBase {
     private static ConfigurationClient client;
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     static String connectionString;
-    static TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();;
+    static TokenCredential tokenCredential;
+
     private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
         throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
@@ -34,21 +37,27 @@ public class AadCredentialTest extends TestProxyTestBase {
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             // In playback mode use connection string because CI environment doesn't set up to support AAD
             client = new ConfigurationClientBuilder()
-                .credential(tokenCredential)
+                .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
+            // since running in playback mode won't have the token credential, so skipping matching it.
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-content-sha256"))));
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
-            client = new ConfigurationClientBuilder()
+            ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .httpClient(httpClient)
                 .credential(tokenCredential)
                 .endpoint(endpoint)
-                .addPolicy(interceptorManager.getRecordPolicy()) // Record
-                .serviceVersion(serviceVersion)
-                .buildClient();
+                .serviceVersion(serviceVersion);
+
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy()); // Record
+            }
+            client = builder.buildClient();
         }
     }
 

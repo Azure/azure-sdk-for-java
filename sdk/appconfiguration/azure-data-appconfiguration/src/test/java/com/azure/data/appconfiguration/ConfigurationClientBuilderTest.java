@@ -14,7 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConfigurationClientBuilderTest extends TestBase {
+public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -191,7 +191,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .serviceVersion(null)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -214,7 +214,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -222,9 +222,13 @@ public class ConfigurationClientBuilderTest extends TestBase {
             : HttpClient.createDefault();
 
         ConfigurationSetting addedSetting = clientBuilder
-                                                .httpClient(defaultHttpClient)
-                                                .buildClient()
-                                                .setConfigurationSetting(key, null, value);
+            .httpClient(defaultHttpClient)
+            .buildClient()
+            .setConfigurationSetting(key, null, value);
+
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(defaultHttpClient);
+        }
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
     }
