@@ -14,7 +14,7 @@
 # performance improvement or new features, they should go ahead with their release during release week and not worry
 # about updating this file. The automated release process will happen the week after release week, followed by
 # the release of the Azure SDK BOM the week after that.
-# 
+#
 # Test owners listed here are responsible for ensuring their library works properly before and after releases and for
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
@@ -41,3 +41,13 @@ com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
+com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+
+
