@@ -213,9 +213,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-
-
-
     @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncDatabase(
                                     boolean useLegacyTracing,
@@ -405,7 +402,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         FeedResponse<ObjectNode> feedItemResponse = flux
             .blockFirst();
         assertThat(feedItemResponse).isNotNull();
-        flux.cancelOn(Schedulers.boundedElastic());
         verifyTracerAttributes(
             mockTracer,
             "readAllItems." + cosmosAsyncContainer.getId(),
