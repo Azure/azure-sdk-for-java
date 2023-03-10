@@ -444,6 +444,12 @@ public final class AttestationClient {
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
+     * <p><strong>Attest using TPM.</strong></p>
+     * <pre>
+     * TpmAttestationResult result = client.attestTpm&#40;BinaryData.fromString&#40;attestInitialPayload&#41;&#41;;
+     * 
+     * </pre>
+     * 
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,6 +466,12 @@ public final class AttestationClient {
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
      *
+     * <p><strong>Attest using TPM.</strong></p>
+     * <pre>
+     * Response&lt;TpmAttestationResult&gt; result = client.attestTpmWithResponse&#40;BinaryData.fromString&#40;attestInitialPayload&#41;, Context.NONE&#41;;
+     * 
+     * </pre>
+     * 
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
