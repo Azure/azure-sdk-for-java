@@ -34,12 +34,12 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
-import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;

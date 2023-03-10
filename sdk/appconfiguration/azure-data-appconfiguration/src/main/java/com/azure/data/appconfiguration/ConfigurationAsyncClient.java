@@ -35,13 +35,11 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.data.appconfiguration.implementation.Utility.APP_CONFIG_TRACING_NAMESPACE_VALUE;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
-import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
