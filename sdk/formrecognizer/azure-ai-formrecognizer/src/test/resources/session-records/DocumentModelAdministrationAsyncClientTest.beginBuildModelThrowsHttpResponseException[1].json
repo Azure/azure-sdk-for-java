@@ -1,81 +1,44 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "318",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:37:54 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b13dcad0-2083-4678-b5c5-8c6d228aac90"
-      },
-      "RequestBody": {
-        "modelId": "d0f2d992-1c24-499c-93ac-45c150781511",
-        "buildMode": "template",
-        "azureBlobSource": {
-          "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata-error?sp=rl\u0026st=2022-01-24T21:35:02Z\u0026se=2025-01-25T05:35:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=Jh%2B4x2BQAzp1ldIn1%2BqDHU60Bqqu1HCDwWmMeiIxqTo%3D"
-        }
-      },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "apim-request-id": "b0dedc8c-c1f4-4310-afd8-f88db655d318",
-        "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:37:56 GMT",
-        "operation-location": "REDACTED",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "2495",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": null
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e4e9380e-26de-4913-a5cd-5fb906c9803a",
+      "Content-Type" : "application/json"
     },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31488063726_b0dedc8c-c1f4-4310-afd8-f88db655d318?api-version=2022-08-31",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:38:02 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "3601f4bb-f336-41fa-828e-172d54b98759"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "75350c87-f3f8-40d5-8450-2a15243c42ce",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:38:01 GMT",
-        "ms-azure-ai-errorcode": "InvalidRequest",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "32",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "operationId": "31488063726_b0dedc8c-c1f4-4310-afd8-f88db655d318",
-        "kind": "documentModelBuild",
-        "status": "failed",
-        "createdDateTime": "2023-03-08T19:37:54Z",
-        "lastUpdatedDateTime": "2023-03-08T19:37:57Z",
-        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/d0f2d992-1c24-499c-93ac-45c150781511?api-version=2022-08-31",
-        "percentCompleted": 100,
-        "error": {
-          "code": "InvalidRequest",
-          "message": "Invalid request.",
-          "details": [
-            {
-              "code": "ModelBuildError",
-              "message": "Could not build the model: Can\u0027t find any OCR files for training."
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "Variables": {}
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2442",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1b5260e6-3771-4123-80c6-081a3cfb0e3a",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 19 Aug 2022 22:42:35 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7c79aba2-733d-4848-b75d-2b8644d54b63"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "21",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e6a56729-e8de-4a95-bf6e-3464291c3cf9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"failed\",\n  \"createdDateTime\": \"2022-08-19T22:42:32Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:42:35Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/dc36c443-aa98-40dc-8514-8a126f60beea?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"details\": [\n      {\n        \"code\": \"ModelBuildError\",\n        \"message\": \"Could not build the model: Can\\u0027t find any OCR files for training.\"\n      }\n    ]\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:42:40 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

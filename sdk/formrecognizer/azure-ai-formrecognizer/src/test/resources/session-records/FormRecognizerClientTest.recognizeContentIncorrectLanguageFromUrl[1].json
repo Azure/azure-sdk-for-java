@@ -1,39 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/layout/analyze?language=language",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "234",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:39:33 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "69c41c7a-d9d0-4ab1-ade6-cf93c27ccdb3"
-      },
-      "RequestBody": {
-        "source": "https://azuresdktrainingdata.blob.core.windows.net/testingdata/content_german.pdf?sp=rl\u0026st=2022-01-24T21:29:24Z\u0026se=2026-01-25T05:29:24Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=BXATNJ3QrTx0OY%2Fw6YF%2FQlpckZ97q3LxbtfHCn%2F4aUs%3D"
-      },
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "88a50ec7-f0f2-4d6b-9522-5c8e54e2841e",
-        "Content-Length": "121",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:39:33 GMT",
-        "ms-azure-ai-errorcode": "NotSupportedLanguage",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "511",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "NotSupportedLanguage",
-          "message": "The requested operation is not supported in the language specified."
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/layout/analyze?language=language",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c84cc841-4383-43ad-857d-8eeb716884d5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "121",
+      "x-envoy-upstream-service-time" : "4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1c76b4bc-2dfb-4dea-8608-657b1729433d",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"NotSupportedLanguage\",\"message\":\"The requested operation is not supported in the language specified.\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

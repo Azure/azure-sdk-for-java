@@ -1,41 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "7",
-        "Content-Type": "application/octet-stream",
-        "Date": "Wed, 08 Mar 2023 19:44:12 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a8264fec-e402-4031-bb6d-865c55a2c4a2"
-      },
-      "RequestBody": "JVBERlVVVQ==",
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "fb11ea52-a55a-4e52-a928-5d26cbe155be",
-        "Content-Length": "221",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:44:11 GMT",
-        "ms-azure-ai-errorcode": "InvalidRequest",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "InvalidRequest",
-          "message": "Invalid request.",
-          "innererror": {
-            "code": "InvalidContent",
-            "message": "The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats."
-          }
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4c1d421d-1032-4c2d-865c-9dc60587116f",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "221",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f9caa016-afb4-4332-9daf-3282cbb10235",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
+      "Date" : "Fri, 19 Aug 2022 22:36:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

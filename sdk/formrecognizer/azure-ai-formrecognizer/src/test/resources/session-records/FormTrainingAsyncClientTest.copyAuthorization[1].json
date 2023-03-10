@@ -1,35 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/copyAuthorization",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:40:39 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5bb99df8-295e-489a-b2e2-69682b3a92fc"
-      },
-      "RequestBody": null,
-      "StatusCode": 201,
-      "ResponseHeaders": {
-        "apim-request-id": "63e23353-93e2-4d13-aade-dfc9e9667290",
-        "Content-Length": "112",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:40:38 GMT",
-        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/c2c1c994-2b58-4ce2-8690-230ceca536c6",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "385",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "modelId": "c2c1c994-2b58-4ce2-8690-230ceca536c6",
-        "accessToken": "REDACTED",
-        "expirationDateTimeTicks": 1678390839
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/copyAuthorization",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8a6a3cc2-b804-4e89-ab11-d98353b9a02a"
+    },
+    "Response" : {
+      "content-length" : "140",
+      "x-envoy-upstream-service-time" : "2560",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "09e444bf-9d7a-4963-acf9-c123c4b8f646",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Body" : "{\"modelId\":\"0dcf7589-93f9-485a-b9ab-b218e2f38a6f\",\"accessToken\":\"REDACTED\",\"expirationDateTimeTicks\":1661538325}",
+      "Date" : "Thu, 25 Aug 2022 18:25:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/0dcf7589-93f9-485a-b9ab-b218e2f38a6f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

@@ -1,43 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "172",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:43:37 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "34c590f9-8e3e-4796-bf35-38e1ea8ccfa4"
-      },
-      "RequestBody": {
-        "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/Form_1.jpg"
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "apim-request-id": "b003d7d0-e9a7-4f67-bdbf-9a7a4c42779d",
-        "Content-Length": "146",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:43:37 GMT",
-        "ms-azure-ai-errorcode": "NotFound",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "245",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "NotFound",
-          "message": "Resource not found.",
-          "innererror": {
-            "code": "ModelNotFound",
-            "message": "The requested model was not found."
-          }
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dfdc529e-7cec-4f50-aef6-2a8950763b96",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "146",
+      "x-envoy-upstream-service-time" : "278",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0fa01e8b-b634-490f-a611-a4055cab373c",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Resource not found.\",\"innererror\":{\"code\":\"ModelNotFound\",\"message\":\"The requested model was not found.\"}}}",
+      "Date" : "Fri, 19 Aug 2022 22:35:47 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

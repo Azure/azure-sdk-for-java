@@ -1,42 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/invoice/analyze?includeTextDetails=false",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "74",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:38:24 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d4738783-8745-4984-8dcd-d294e6dcc0b7"
-      },
-      "RequestBody": {
-        "source": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
-      },
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "466acbf3-2b7a-4388-a7d8-1b8e8d1756ce",
-        "Content-Length": "170",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:38:23 GMT",
-        "ms-azure-ai-errorcode": "InvalidImage",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "36",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "innerError": {
-            "requestId": "466acbf3-2b7a-4388-a7d8-1b8e8d1756ce"
-          },
-          "code": "InvalidImage",
-          "message": "The input data is not a valid image or password protected."
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/invoice/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "030549b1-1edb-4edb-9a9c-3dffeb77627f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "161",
+      "x-envoy-upstream-service-time" : "3107",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c52c4495-54e2-46ab-b01b-70406739f8a3",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"c52c4495-54e2-46ab-b01b-70406739f8a3\"},\"message\":\"Failed to download image from input URL.\"}}",
+      "Date" : "Thu, 25 Aug 2022 18:17:48 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }
