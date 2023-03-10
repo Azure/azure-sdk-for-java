@@ -1,83 +1,45 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "306",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:41:10 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "882adfe1-af9f-4ce2-a8d9-c775fd1f23d8"
-      },
-      "RequestBody": {
-        "source": "https://azuresdktrainingdata.blob.core.windows.net/multipage-training-data?sp=rl\u0026st=2022-01-24T21:28:33Z\u0026se=2026-01-25T05:28:33Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=CWjKGuJXpYtcn%2Bh3Z4FPW8Bu1Tw09t4%2FlY3N9hnU5gU%3D",
-        "sourceFilter": {
-          "prefix": "XXXXX",
-          "includeSubFolders": false
-        },
-        "useLabelFile": false
-      },
-      "StatusCode": 201,
-      "ResponseHeaders": {
-        "apim-request-id": "7201189f-7b9b-4f55-b465-ad261d957609",
-        "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:41:10 GMT",
-        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/ceee9838-37b8-4c62-a598-4d5b57e3b9b9",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "833",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": null
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bfbbe35e-a857-43ad-a29a-4cef9812111c",
+      "Content-Type" : "application/json"
     },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/ceee9838-37b8-4c62-a598-4d5b57e3b9b9?includeKeys=true",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:41:16 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "fb220874-2305-4e38-b175-12e0ef59efc1"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "8c471e6e-2329-44a9-83a5-c4d9f70fe654",
-        "Content-Length": "403",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:41:14 GMT",
-        "ms-azure-ai-errorcode": "2014",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "19",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "modelInfo": {
-          "modelId": "ceee9838-37b8-4c62-a598-4d5b57e3b9b9",
-          "status": "invalid",
-          "createdDateTime": "2023-03-08T19:41:10Z",
-          "lastUpdatedDateTime": "2023-03-08T19:41:11Z"
-        },
-        "keys": {
-          "clusters": {}
-        },
-        "trainResult": {
-          "trainingDocuments": [],
-          "errors": [
-            {
-              "code": "2014",
-              "message": "No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements."
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "Variables": {}
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "838",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b2436b8e-2e3b-48ae-9ade-68e2188b6dc7",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Thu, 25 Aug 2022 18:22:19 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/982de9e1-516c-4b8c-8af5-f8e716d96bcb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/982de9e1-516c-4b8c-8af5-f8e716d96bcb?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "848d11f7-8228-4ab3-884e-0d9749a79624"
+    },
+    "Response" : {
+      "content-length" : "403",
+      "x-envoy-upstream-service-time" : "23",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f765ff3b-fe41-4b8e-9819-eed0add07096",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"982de9e1-516c-4b8c-8af5-f8e716d96bcb\",\"status\":\"invalid\",\"createdDateTime\":\"2022-08-25T18:22:18Z\",\"lastUpdatedDateTime\":\"2022-08-25T18:22:20Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2014\",\"message\":\"No valid blobs found in the specified Azure blob container. Please conform to the document format/size/page/dimensions requirements.\"}]}}",
+      "Date" : "Thu, 25 Aug 2022 18:22:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "ms-azure-ai-errorcode" : "2014"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

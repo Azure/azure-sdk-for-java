@@ -56,8 +56,6 @@ import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.TEST_PROXY_SANITIZER_LIST;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -142,14 +140,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        builder.credential(getCredentialByAuthority(endpoint));
-
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
         return builder;
     }
 
@@ -166,13 +164,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        builder.credential(getCredentialByAuthority(endpoint));
-
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
-
         return builder;
     }
 

@@ -37,8 +37,6 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.TEST_PROXY_SANITIZER_LIST;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -94,14 +92,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        builder.credential(getCredentialByAuthority(getEndpoint()));
-
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
         return builder;
     }
 

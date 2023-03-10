@@ -1,40 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:authorizeCopy?api-version=2022-08-31",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "50",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:38:24 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "4a4f8a69-d2e2-4b26-a7dd-99d16ea27b29"
-      },
-      "RequestBody": {
-        "modelId": "ba1660f5-5096-4a71-823b-40c138e57311"
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "a747cce0-0718-4097-82f2-5cd87d9e8673",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:38:24 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "508",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "targetResourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR",
-        "targetResourceRegion": "eastus",
-        "targetModelId": "ba1660f5-5096-4a71-823b-40c138e57311",
-        "targetModelLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/ba1660f5-5096-4a71-823b-40c138e57311?api-version=2022-08-31",
-        "accessToken": "REDACTED",
-        "expirationDateTime": "2023-03-08T20:38:24Z"
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9b413aae-2927-4d74-be49-2616ff2d2e38",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "410",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "6590c45c-c8d7-4fca-bec5-52b03bfdde6b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"075cd16c-df0d-4670-919d-617427c221df\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/075cd16c-df0d-4670-919d-617427c221df?api-version=2022-08-31\",\n  \"accessToken\": \"1f7e3e1b-2aa6-4581-828d-f2c5b2333f82\",\n  \"expirationDateTime\": \"2022-08-19T23:35:11Z\"\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

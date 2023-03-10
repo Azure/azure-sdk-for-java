@@ -4,15 +4,10 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
@@ -104,27 +99,9 @@ public final class TestUtils {
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
 
-    public static final List<TestProxySanitizer> TEST_PROXY_SANITIZER_LIST =
-        Arrays.asList(new TestProxySanitizer("Operation-Location", "REDACTED", TestProxySanitizerType.HEADER));
-
     private TestUtils() {
     }
 
-    public static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
-        }
-    }
     static InputStream getContentDetectionFileData(String localFileUrl) {
         try {
             return new FileInputStream(localFileUrl);

@@ -1,42 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/receipt/analyze?includeTextDetails=false",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "74",
-        "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:40:06 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "9bc3ecf5-2bf2-49e2-992c-d4b7008e1350"
-      },
-      "RequestBody": {
-        "source": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
-      },
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "e410f07c-1e25-4cb9-8434-b6bc7de9be8b",
-        "Content-Length": "170",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:40:05 GMT",
-        "ms-azure-ai-errorcode": "InvalidImage",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "107",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "innerError": {
-            "requestId": "e410f07c-1e25-4cb9-8434-b6bc7de9be8b"
-          },
-          "code": "InvalidImage",
-          "message": "The input data is not a valid image or password protected."
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "72de6956-6b2d-499f-a5ea-e2a06032af2d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "144",
+      "x-envoy-upstream-service-time" : "201",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "65af0ea2-145f-4ed4-83c3-a78eefa5f658",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"65af0ea2-145f-4ed4-83c3-a78eefa5f658\"},\"message\":\"Image URL is badly formatted.\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

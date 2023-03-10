@@ -1,37 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/receipt/analyze?includeTextDetails=true",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "7",
-        "Content-Type": "application/pdf",
-        "Date": "Wed, 08 Mar 2023 19:42:38 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b74f9a56-6433-43a3-88df-a51d6742ce09"
-      },
-      "RequestBody": "JVBERlVVVQ==",
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "e67efef0-6721-405d-b340-bc0d800df890",
-        "Content-Length": "95",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:42:37 GMT",
-        "ms-azure-ai-errorcode": "BadArgument",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "BadArgument",
-          "message": "Bad or unrecognizable request JSON or binary file."
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/receipt/analyze?includeTextDetails=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e32b433c-af2a-48ca-ae9a-f1197893d4e9",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : {
+      "content-length" : "161",
+      "x-envoy-upstream-service-time" : "3",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a563bb22-e73d-48d8-9e48-e76e171142cd",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"BadArgument\",\"innerError\":{\"requestId\":\"a563bb22-e73d-48d8-9e48-e76e171142cd\"},\"message\":\"Bad or unrecognizable request JSON or binary file.\"}}",
+      "Date" : "Thu, 25 Aug 2022 18:16:33 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }
