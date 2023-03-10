@@ -19,6 +19,10 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     @JsonProperty(value = "properties", required = true)
     private CassandraTableCreateUpdateProperties innerProperties = new CassandraTableCreateUpdateProperties();
 
+    /** Creates an instance of CassandraTableCreateUpdateParameters class. */
+    public CassandraTableCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Cassandra table.
      *

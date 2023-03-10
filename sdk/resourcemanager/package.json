@@ -44,7 +44,8 @@
     "credcheck_samples": "node credcheck.js --path=./azure-resourcemanager-samples/src/test/resources/session-records/",
     "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_appplatform credcheck_redis credcheck_eventhubs credcheck_trafficmanager credcheck_cdn credcheck_containerinstance credcheck_privatedns credcheck_search credcheck_servicebus credcheck_azure credcheck_samples",
     "servcheck": "node servcheck.js",
-    "autocent": "node autocent.js"
+    "autocent": "node autocent.js",
+    "format": "prettier --write *.js"
   },
   "devDependencies": {
     "colors": "1.1.2",
@@ -60,6 +61,7 @@
     "pom-parser": "1.2.0",
     "request": "2.88.2",
     "request-promise": "4.2.6",
-    "yaml": "2.1.0"
+    "yaml": "2.1.0",
+    "prettier": "2.8.4"
   }
 }

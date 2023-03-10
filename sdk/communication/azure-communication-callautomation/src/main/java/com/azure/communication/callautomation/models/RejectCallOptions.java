@@ -5,9 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
-import java.util.UUID;
-
 /**
  * The options for creating a call.
  */
@@ -24,11 +21,6 @@ public class RejectCallOptions {
     private CallRejectReason callRejectReason;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
-    /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
@@ -36,7 +28,6 @@ public class RejectCallOptions {
     public RejectCallOptions(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         this.callRejectReason = CallRejectReason.NONE;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -58,15 +49,6 @@ public class RejectCallOptions {
     }
 
     /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
      * Set the callRejectReason
      *
      * @param callRejectReason The callRejectReason
@@ -74,17 +56,6 @@ public class RejectCallOptions {
      */
     public RejectCallOptions setCallRejectReason(CallRejectReason callRejectReason) {
         this.callRejectReason = callRejectReason;
-        return this;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the RejectCallOptions object itself.
-     */
-    public RejectCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

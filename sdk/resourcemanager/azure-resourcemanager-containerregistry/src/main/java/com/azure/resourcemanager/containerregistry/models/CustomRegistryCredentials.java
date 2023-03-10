@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the credentials that will be used to access a custom registry during a run. */
 @Fluent
 public final class CustomRegistryCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRegistryCredentials.class);
-
     /*
      * The username for logging into the custom registry.
      */
@@ -21,26 +17,25 @@ public final class CustomRegistryCredentials {
     private SecretObject username;
 
     /*
-     * The password for logging into the custom registry. The password is a
-     * secret
+     * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      */
     @JsonProperty(value = "password")
     private SecretObject password;
 
     /*
-     * Indicates the managed identity assigned to the custom credential. If a
-     * user-assigned identity
-     * this value is the Client ID. If a system-assigned identity, the value
-     * will be `system`. In
-     * the case of a system-assigned identity, the Client ID will be determined
-     * by the runner. This
-     * identity may be used to authenticate to key vault to retrieve
-     * credentials or it may be the only
+     * Indicates the managed identity assigned to the custom credential. If a user-assigned identity
+     * this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined by the runner. This
+     * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
      * source of authentication used for accessing the registry.
      */
     @JsonProperty(value = "identity")
     private String identity;
+
+    /** Creates an instance of CustomRegistryCredentials class. */
+    public CustomRegistryCredentials() {
+    }
 
     /**
      * Get the username property: The username for logging into the custom registry.

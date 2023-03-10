@@ -17,24 +17,6 @@ public interface DatabasePrincipalAssignments {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
-
-    /**
-     * Checks that the database principal assignment is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,19 +31,22 @@ public interface DatabasePrincipalAssignments {
         Context context);
 
     /**
-     * Gets a Kusto cluster database principalAssignment.
+     * Checks that the database principal assignment is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @param principalAssignmentName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster database principalAssignment.
+     * @return the result returned from a check name availability request.
      */
-    DatabasePrincipalAssignment get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+    CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Gets a Kusto cluster database principalAssignment.
@@ -82,6 +67,21 @@ public interface DatabasePrincipalAssignments {
         String databaseName,
         String principalAssignmentName,
         Context context);
+
+    /**
+     * Gets a Kusto cluster database principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster database principalAssignment.
+     */
+    DatabasePrincipalAssignment get(
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
 
     /**
      * Deletes a Kusto principalAssignment.

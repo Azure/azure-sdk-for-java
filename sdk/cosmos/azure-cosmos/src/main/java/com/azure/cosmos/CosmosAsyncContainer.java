@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
@@ -64,8 +65,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -110,6 +113,7 @@ public class CosmosAsyncContainer {
     private final String batchSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
+    private IFaultInjectorProvider faultInjectorProvider;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -478,7 +482,7 @@ public class CosmosAsyncContainer {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
-                    .setProactiveConnectionRegions(1)
+                    .setProactiveConnectionRegionsCount(1)
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
@@ -538,7 +542,7 @@ public class CosmosAsyncContainer {
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
                 new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
-                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
@@ -1886,6 +1890,25 @@ public class CosmosAsyncContainer {
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
+    void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {
+        this.database.getClient().configureFaultInjectorProvider(injectorProvider);
+    }
+
+    synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(Callable<IFaultInjectorProvider> injectorProviderCallable) {
+        checkNotNull(injectorProviderCallable, "Argument 'injectorProviderCallable' can not be null");
+
+        try {
+            if (this.faultInjectorProvider == null) {
+                this.faultInjectorProvider = injectorProviderCallable.call();
+                this.configureFaultInjectionProvider(this.faultInjectorProvider);
+            }
+
+            return this.faultInjectorProvider;
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to configure fault injector provider " + e);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1907,6 +1930,14 @@ public class CosmosAsyncContainer {
                     GlobalThroughputControlConfig globalControlConfig,
                     Mono<Integer> throughputQueryMono) {
                     cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, throughputQueryMono);
+                }
+
+                @Override
+                public IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    Callable<IFaultInjectorProvider> injectorProviderCallable) {
+
+                    return cosmosAsyncContainer.getOrConfigureFaultInjectorProvider(injectorProviderCallable);
                 }
             });
     }

@@ -791,7 +791,7 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultInner vault) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, vault).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, vault).getSyncPoller();
     }
 
     /**
@@ -809,7 +809,7 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultInner vault, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, vault, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, vault, context).getSyncPoller();
     }
 
     /**
@@ -1188,7 +1188,7 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
         String resourceGroupName, String vaultName, PatchVault vault) {
-        return beginUpdateAsync(resourceGroupName, vaultName, vault).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vaultName, vault).getSyncPoller();
     }
 
     /**
@@ -1206,7 +1206,7 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
         String resourceGroupName, String vaultName, PatchVault vault, Context context) {
-        return beginUpdateAsync(resourceGroupName, vaultName, vault, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vaultName, vault, context).getSyncPoller();
     }
 
     /**

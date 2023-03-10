@@ -191,7 +191,7 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
-    <graalvm.enable>false</graalvm.enable>
+    <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
@@ -877,12 +877,11 @@
               </revapi.reporter.json>
             </analysisConfiguration>
             <pipelineConfiguration>
-              <transformationBlocks>
-                <block>
-                  <item>revapi.differences</item>
-                  <item>transitive-core-changes</item>
-                </block>
-              </transformationBlocks>
+              <filters>
+                <include>
+                  <item>azure-sdk-tree-provider</item>
+                </include>
+              </filters>
             </pipelineConfiguration>
           </configuration>
           <dependencies>
@@ -1541,9 +1540,10 @@
             <artifactId>native-maven-plugin</artifactId>
             <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
-              <skip>${graalvm.enable}</skip>
-              <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
+              <skip>${graalvm.disable}</skip>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
             </configuration>
+            <extensions>true</extensions>
             <executions>
               <execution>
                 <id>test-native</id>

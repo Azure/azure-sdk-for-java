@@ -416,8 +416,4 @@ public class ReflectionUtils {
     public static Set<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
         return get(Set.class, gatewayAddressCache, "replicaValidationScopes");
     }
-
-    public static RntbdClientChannelHealthChecker.Timestamps getTimestamps(RntbdRequestManager rntbdRequestManager) {
-        return get(RntbdClientChannelHealthChecker.Timestamps.class, rntbdRequestManager, "timestamps");
-    }
 }

@@ -13,22 +13,23 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
+import java.util.UUID;
 
 /** A builder for creating a new instance of the DataProtectionClientImpl type. */
 @ServiceClientBuilder(serviceClients = {DataProtectionClientImpl.class})
 public final class DataProtectionClientBuilder {
     /*
-     * The subscription Id.
+     * The ID of the target subscription. The value must be an UUID.
      */
-    private String subscriptionId;
+    private UUID subscriptionId;
 
     /**
-     * Sets The subscription Id.
+     * Sets The ID of the target subscription. The value must be an UUID.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the DataProtectionClientBuilder.
      */
-    public DataProtectionClientBuilder subscriptionId(String subscriptionId) {
+    public DataProtectionClientBuilder subscriptionId(UUID subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }

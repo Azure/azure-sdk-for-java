@@ -33,7 +33,7 @@ public final class JobsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"created\":\"2021-08-17T17:54:59Z\",\"state\":\"Canceled\",\"description\":\"hsgqc\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-09-14T21:14:21Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{\"mcmuapc\":\"mcdzsufcohdxbz\",\"zinkfkbgbzbowxeq\":\"hdbevwqqxeyskon\",\"ygvkzqkjj\":\"clj\"},\"startTime\":\"2021-09-05T08:47Z\",\"endTime\":\"2021-08-21T19:47:29Z\"},\"id\":\"fezrx\",\"name\":\"czurtlei\",\"type\":\"q\"}]}";
+            "{\"value\":[{\"properties\":{\"created\":\"2021-09-17T21:14:53Z\",\"state\":\"Scheduled\",\"description\":\"w\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-04-13T14:08:06Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{\"tobkauxofshfph\":\"tdherngbtcjuahok\",\"whslwkoj\":\"pnulaiywzej\",\"rpqaf\":\"llndnpd\"},\"startTime\":\"2021-05-07T14:23:25Z\",\"endTime\":\"2021-09-16T14:06:24Z\"},\"id\":\"n\",\"name\":\"hyet\",\"type\":\"fypococtfjgti\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,10 @@ public final class JobsListMockTests {
         PagedIterable<Job> response =
             manager
                 .jobs()
-                .list(
-                    "bmftpmdt", "fjltfvnzcyjtotp", "opv", "bdb", "qgqqihedsvqwthmk", com.azure.core.util.Context.NONE);
+                .list("xffi", "hx", "rsnewmozqvbubqma", "hsycxhxzgaz", "taboidvmf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hsgqc", response.iterator().next().description());
-        Assertions.assertEquals(Priority.HIGH, response.iterator().next().priority());
-        Assertions.assertEquals("mcdzsufcohdxbz", response.iterator().next().correlationData().get("mcmuapc"));
+        Assertions.assertEquals("w", response.iterator().next().description());
+        Assertions.assertEquals(Priority.LOW, response.iterator().next().priority());
+        Assertions.assertEquals("tdherngbtcjuahok", response.iterator().next().correlationData().get("tobkauxofshfph"));
     }
 }

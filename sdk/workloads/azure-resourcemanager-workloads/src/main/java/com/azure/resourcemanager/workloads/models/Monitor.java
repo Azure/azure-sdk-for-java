@@ -48,7 +48,7 @@ public interface Monitor {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: Managed service identity (user assigned identities).
+     * Gets the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @return the identity value.
      */
@@ -244,9 +244,10 @@ public interface Monitor {
         /** The stage of the Monitor definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Managed service identity (user assigned identities).
+             * Specifies the identity property: [currently not in use] Managed service identity(user assigned
+             * identities).
              *
-             * @param identity Managed service identity (user assigned identities).
+             * @param identity [currently not in use] Managed service identity(user assigned identities).
              * @return the next definition stage.
              */
             WithCreate withIdentity(UserAssignedServiceIdentity identity);
@@ -359,9 +360,10 @@ public interface Monitor {
         /** The stage of the Monitor update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Managed service identity (user assigned identities).
+             * Specifies the identity property: [currently not in use] Managed service identity(user assigned
+             * identities).
              *
-             * @param identity Managed service identity (user assigned identities).
+             * @param identity [currently not in use] Managed service identity(user assigned identities).
              * @return the next definition stage.
              */
             Update withIdentity(UserAssignedServiceIdentity identity);

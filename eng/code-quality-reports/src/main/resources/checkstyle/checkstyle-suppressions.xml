@@ -22,6 +22,9 @@
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.implementation.jackson.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
 
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
+  <suppress checks="Header" files="com.azure.core.serializer.json.jackson.implementation.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
+
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
 
@@ -188,6 +191,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.jca.implementation.signature.(KeyVaultKeyLessECSignature|KeyVaultKeyLessRsaSignature|AbstractKeyVaultKeyLessSignature).java"/>
 
+  <!-- suppress eceptions caught to for tracing-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient.java"/>
+
+
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.(AvroSchema|AvroType).java"/>
 
@@ -353,6 +361,8 @@ the main ServiceBusClientBuilder. -->
             files=".*[/\\]azure-cosmos-encryption[/\\]((?!(EncryptionBridgeInternal)).*)"/>
 
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-test[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck" files="[/\\]azure-cosmos-test[/\\]"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.cosmos.CosmosResponseDiagnostics"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
@@ -455,7 +465,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="506,540,554"/>
+            lines="511,545,559"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
@@ -494,8 +504,8 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
   <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
-  <suppress checks="VisibilityModifier"
-            files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.core.serializer.json.jackson.implementation.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->

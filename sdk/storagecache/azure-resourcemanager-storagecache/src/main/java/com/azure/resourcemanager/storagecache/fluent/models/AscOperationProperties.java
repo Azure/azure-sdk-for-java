@@ -19,6 +19,10 @@ public final class AscOperationProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> output;
 
+    /** Creates an instance of AscOperationProperties class. */
+    public AscOperationProperties() {
+    }
+
     /**
      * Get the output property: Additional operation-specific output.
      *

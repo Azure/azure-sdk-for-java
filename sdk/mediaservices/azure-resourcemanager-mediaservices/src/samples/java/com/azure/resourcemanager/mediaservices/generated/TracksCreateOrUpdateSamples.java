@@ -21,7 +21,7 @@ public final class TracksCreateOrUpdateSamples {
         manager
             .tracks()
             .define("text3")
-            .withExistingAsset("contoso", "contosomedia", "ClimbingMountRainer")
+            .withExistingAsset("contosorg", "contosomedia", "ClimbingMountRainer")
             .withTrack(
                 new TextTrack()
                     .withFileName("text3.ttml")

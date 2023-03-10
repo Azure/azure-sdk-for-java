@@ -26,6 +26,15 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
     public static final ResourceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
 
     /**
+     * Creates a new instance of ResourceIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceIdentityType() {
+    }
+
+    /**
      * Creates or finds a ResourceIdentityType from its string representation.
      *
      * @param name a name to look for.

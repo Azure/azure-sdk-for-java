@@ -24,6 +24,10 @@ public final class IotHubDataConnection extends DataConnectionInner {
     @JsonProperty(value = "properties")
     private IotHubConnectionProperties innerProperties;
 
+    /** Creates an instance of IotHubDataConnection class. */
+    public IotHubDataConnection() {
+    }
+
     /**
      * Get the innerProperties property: The Iot Hub data connection properties.
      *

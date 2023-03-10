@@ -9,34 +9,33 @@ import com.azure.resourcemanager.kusto.fluent.models.ClusterPrincipalProperties;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterPrincipalProperties model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"kqsleyyvxy\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"k\",\"principalType\":\"App\",\"tenantName\":\"tpngjcrcczsqpjh\",\"principalName\":\"daj\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"ounqecano\"}")
+                    "{\"principalId\":\"hwxmnteiwa\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"km\",\"principalType\":\"Group\",\"tenantName\":\"mmxdcu\",\"principalName\":\"fsrpymzidnse\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"bzsgfyccsne\"}")
                 .toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("kqsleyyvxy", model.principalId());
+        Assertions.assertEquals("hwxmnteiwa", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("k", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+        Assertions.assertEquals("km", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterPrincipalProperties model =
             new ClusterPrincipalProperties()
-                .withPrincipalId("kqsleyyvxy")
+                .withPrincipalId("hwxmnteiwa")
                 .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                .withTenantId("k")
-                .withPrincipalType(PrincipalType.APP);
+                .withTenantId("km")
+                .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("kqsleyyvxy", model.principalId());
+        Assertions.assertEquals("hwxmnteiwa", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("k", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+        Assertions.assertEquals("km", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

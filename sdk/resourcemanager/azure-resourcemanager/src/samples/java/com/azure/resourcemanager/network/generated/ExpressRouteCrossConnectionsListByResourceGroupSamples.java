@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCrossConnections ListByResourceGroup. */
 public final class ExpressRouteCrossConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCrossConnectionListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCrossConnectionListByResourceGroup.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionListByResourceGroup.
@@ -23,6 +21,6 @@ public final class ExpressRouteCrossConnectionsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
-            .listByResourceGroup("CrossConnection-SiliconValley", Context.NONE);
+            .listByResourceGroup("CrossConnection-SiliconValley", com.azure.core.util.Context.NONE);
     }
 }

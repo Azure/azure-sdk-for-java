@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230206.1
+      ref: refs/tags/azure-sdk-build-tools_20230307.1
 
 parameters:
 - name: Artifacts
@@ -65,6 +65,9 @@ parameters:
 - name: ReleaseDependsOnLiveTests
   type: string
   default: not-specified
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: Build

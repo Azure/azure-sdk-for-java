@@ -8,28 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkuRestrictionInfo;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceSkuRestrictionInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceSkuRestrictionInfo model =
             BinaryData
-                .fromString(
-                    "{\"locations\":[\"dntwndeicbtw\",\"pzaoqvuhr\",\"cffcyddglmj\"],\"zones\":[\"qkwpyeicxmqc\",\"wqvhkhixuigdt\",\"pbobjo\"]}")
+                .fromString("{\"locations\":[\"a\"],\"zones\":[\"z\",\"yvvtpgvdfgio\"]}")
                 .toObject(ResourceSkuRestrictionInfo.class);
-        Assertions.assertEquals("dntwndeicbtw", model.locations().get(0));
-        Assertions.assertEquals("qkwpyeicxmqc", model.zones().get(0));
+        Assertions.assertEquals("a", model.locations().get(0));
+        Assertions.assertEquals("z", model.zones().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceSkuRestrictionInfo model =
             new ResourceSkuRestrictionInfo()
-                .withLocations(Arrays.asList("dntwndeicbtw", "pzaoqvuhr", "cffcyddglmj"))
-                .withZones(Arrays.asList("qkwpyeicxmqc", "wqvhkhixuigdt", "pbobjo"));
+                .withLocations(Arrays.asList("a"))
+                .withZones(Arrays.asList("z", "yvvtpgvdfgio"));
         model = BinaryData.fromObject(model).toObject(ResourceSkuRestrictionInfo.class);
-        Assertions.assertEquals("dntwndeicbtw", model.locations().get(0));
-        Assertions.assertEquals("qkwpyeicxmqc", model.zones().get(0));
+        Assertions.assertEquals("a", model.locations().get(0));
+        Assertions.assertEquals("z", model.zones().get(0));
     }
 }

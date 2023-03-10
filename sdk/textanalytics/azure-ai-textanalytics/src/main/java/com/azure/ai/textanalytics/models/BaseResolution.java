@@ -4,5 +4,5 @@
 package com.azure.ai.textanalytics.models;
 
 /** Base class for all resolution types */
-public class BaseResolution {
+public abstract class BaseResolution {
 }

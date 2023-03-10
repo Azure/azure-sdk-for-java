@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoutingIntent Delete. */
 public final class RoutingIntentDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RoutingIntentDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RoutingIntentDelete.json
      */
     /**
      * Sample code: RouteTableDelete.
@@ -22,6 +20,6 @@ public final class RoutingIntentDeleteSamples {
             .manager()
             .serviceClient()
             .getRoutingIntents()
-            .delete("rg1", "virtualHub1", "Intent1", Context.NONE);
+            .delete("rg1", "virtualHub1", "Intent1", com.azure.core.util.Context.NONE);
     }
 }

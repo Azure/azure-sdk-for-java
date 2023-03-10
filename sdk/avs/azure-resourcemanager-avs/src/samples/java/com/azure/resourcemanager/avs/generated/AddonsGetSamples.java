@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Addons Get. */
 public final class AddonsGetSamples {
     /*
@@ -17,7 +15,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetSRM(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "srm", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "srm", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,7 +27,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetVR(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "vr", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "vr", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +39,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "hcx", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "hcx", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,6 +51,6 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetArcReg(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "arc", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "arc", com.azure.core.util.Context.NONE);
     }
 }

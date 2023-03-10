@@ -18,7 +18,7 @@ public final class ContentKeyPoliciesListSamples {
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .contentKeyPolicies()
-            .list("contoso", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
+            .list("contosorg", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +34,7 @@ public final class ContentKeyPoliciesListSamples {
         manager
             .contentKeyPolicies()
             .list(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "properties/lastModified gt 2016-06-01 and properties/created lt 2013-07-01",
                 null,
@@ -54,6 +54,6 @@ public final class ContentKeyPoliciesListSamples {
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .contentKeyPolicies()
-            .list("contoso", "contosomedia", null, null, "properties/lastModified", com.azure.core.util.Context.NONE);
+            .list("contosorg", "contosomedia", null, null, "properties/lastModified", com.azure.core.util.Context.NONE);
     }
 }

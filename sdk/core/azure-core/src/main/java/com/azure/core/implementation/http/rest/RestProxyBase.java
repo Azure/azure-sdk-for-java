@@ -22,6 +22,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
@@ -207,7 +208,7 @@ public abstract class RestProxyBase {
         if (httpDecodedResponse != null) {
             //noinspection ConstantConditions
             int statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-            tracer.end(statusCode >= 400 ? "error" : null, null, span);
+            tracer.end(statusCode >= 400 ? "" : null, null, span);
         }
     }
 
@@ -403,7 +404,7 @@ public abstract class RestProxyBase {
      * @throws IOException If an error occurs during serialization.
      */
     static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
-        return ReflectionSerializable.serializeAsJsonSerializable(jsonSerializable);
+        return ReflectionSerializable.serializeJsonSerializableToByteBuffer(jsonSerializable);
     }
 
     /**
@@ -424,7 +425,7 @@ public abstract class RestProxyBase {
      * @throws IOException If the XmlWriter fails to close properly.
      */
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
-        return ReflectionSerializable.serializeAsXmlSerializable(bodyContent);
+        return ReflectionSerializable.serializeXmlSerializableToByteBuffer(bodyContent);
     }
 }
 

@@ -76,6 +76,10 @@ public final class ReadOnlyFollowingDatabaseProperties {
     @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseShareOrigin databaseShareOrigin;
 
+    /** Creates an instance of ReadOnlyFollowingDatabaseProperties class. */
+    public ReadOnlyFollowingDatabaseProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioned state of the resource.
      *

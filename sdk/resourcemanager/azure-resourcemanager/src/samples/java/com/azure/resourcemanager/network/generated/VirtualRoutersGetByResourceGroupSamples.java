@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualRouters GetByResourceGroup. */
 public final class VirtualRoutersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualRouterGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterGet.json
      */
     /**
      * Sample code: Get VirtualRouter.
@@ -22,6 +20,6 @@ public final class VirtualRoutersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualRouters()
-            .getByResourceGroupWithResponse("rg1", "virtualRouter", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "virtualRouter", null, com.azure.core.util.Context.NONE);
     }
 }

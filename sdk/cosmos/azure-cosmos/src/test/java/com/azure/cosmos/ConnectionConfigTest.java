@@ -182,9 +182,9 @@ public class ConnectionConfigTest extends TestSuiteBase {
     @Test(groups = { "unit" })
     public void directConnectionConfigWithNetworkRequestTimeout() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-        assertThatThrownBy(() -> directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(4)))
+        assertThatThrownBy(() -> directConnectionConfig.setNetworkRequestTimeout(Duration.ofMillis(500)))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("NetworkRequestTimeout can not be less than 5000 Millis");
+            .hasMessage("NetworkRequestTimeout can not be less than 1000 Millis");
         assertThatThrownBy(() -> directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(11)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("NetworkRequestTimeout can not be larger than 10000 Millis");

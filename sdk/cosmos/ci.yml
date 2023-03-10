@@ -21,6 +21,8 @@ trigger:
       - sdk/cosmos/azure-spring-data-cosmos/
       - sdk/cosmos/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
+      - eng/pipelines/templates/stages/archetype-sdk-client.yml
+      - eng/pipelines/templates/jobs/ci.yml
     exclude:
       - sdk/cosmos/pom.xml
       - sdk/cosmos/azure-cosmos/pom.xml

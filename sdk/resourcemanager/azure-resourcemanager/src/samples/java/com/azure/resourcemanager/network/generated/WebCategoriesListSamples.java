@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebCategories List. */
 public final class WebCategoriesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/AzureWebCategoriesListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureWebCategoriesListBySubscription.json
      */
     /**
      * Sample code: List all Azure Web Categories for a given subscription.
@@ -18,6 +16,6 @@ public final class WebCategoriesListSamples {
      */
     public static void listAllAzureWebCategoriesForAGivenSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getWebCategories().list(Context.NONE);
+        azure.networks().manager().serviceClient().getWebCategories().list(com.azure.core.util.Context.NONE);
     }
 }

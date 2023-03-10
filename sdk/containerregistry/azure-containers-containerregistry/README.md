@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.0.11</version>
+  <version>1.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -71,7 +71,6 @@ More information at [Azure Container Registry portal][container_registry_create_
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 ```
@@ -80,22 +79,44 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildAsyncClient();
 ```
 
 For more information on using AAD with Azure Container Registry, please see the service's [Authentication Overview](https://docs.microsoft.com/azure/container-registry/container-registry-authentication).
 
-#### National Clouds
-To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
-- Set the authorityHost in the credential builder.
-- Set the authenticationScope in ContainerRegistryClientBuilder.
+#### Authenticating with ARM AAD token
 
-```java readme-sample-nationalCloudSample
+By default, Container Registry SDK for Java uses ACR access tokens. If you want to authenticate with ARM AAD token and have corresponding policy enabled,
+make sure to set audience when building container Registry client.
+Please refer to [ACR CLI reference](https://learn.microsoft.com/cli/azure/acr/config/authentication-as-arm?view=azure-cli-latest) for information
+on how to check ARM authentication policy configuration.
+
+`ContainerRegistryAudience` value is specific to the cloud:
+
+```java readme-sample-armTokenPublic
 ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
     .endpoint(getEndpoint())
-    .credential(credentials)
+    .credential(credential)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+    .buildClient();
+
+containerRegistryClient
+    .listRepositoryNames()
+    .forEach(name -> System.out.println(name));
+```
+
+#### National Clouds
+
+To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+- Set the `authorityHost` in the credential builder following [Identity client library documentation](https://learn.microsoft.com/java/api/overview/azure/identity-readme) 
+- If ACR access token authentication is disabled for yourcontainer Registry resource, you need to configure the audience on the Container Registry client builder.
+
+```java readme-sample-armTokenChina
+ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+    .endpoint(getEndpoint())
+    .credential(credential)
+    // only if ACR access tokens are disabled or not supported
     .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
     .buildClient();
 
@@ -113,14 +134,12 @@ For more information please read [Anonymous Pull Access](https://docs.microsoft.
 ```java readme-sample-createAnonymousAccessClient
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 ```
 
 ```java readme-sample-createAnonymousAsyncAccessClient
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildAsyncClient();
 ```
 
@@ -138,6 +157,8 @@ For more information please see [Container Registry Concepts](https://docs.micro
 - [List tags with anonymous access](#list-tags-with-anonymous-access)
 - [Set artifact properties](#set-artifact-properties)
 - [Delete images](#delete-images)
+- [Upload images](#upload-images)
+- [Download images](#download-images)
 - [Delete repository with anonymous access throws](#delete-a-repository-with-anonymous-access-throws)
 
 ### List repository names
@@ -148,7 +169,6 @@ Iterate through the collection of repositories in the registry.
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 
@@ -160,7 +180,6 @@ client.listRepositoryNames().forEach(repository -> System.out.println(repository
 ```java readme-sample-listTagProperties
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
@@ -180,7 +199,6 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -200,7 +218,6 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -228,6 +245,67 @@ for (String repositoryName : client.listRepositoryNames()) {
 }
 ```
 
+### Upload Images
+
+```java readme-sample-uploadImage
+ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    .endpoint(ENDPOINT)
+    .repository(REPOSITORY)
+    .credential(credential)
+    .buildClient();
+
+BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("sync client"));
+
+UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
+System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
+
+OciDescriptor configDescriptor = new OciDescriptor()
+    .setMediaType("application/vnd.unknown.config.v1+json")
+    .setDigest(configUploadResult.getDigest())
+    .setSizeInBytes(configContent.getLength());
+
+BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
+UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
+System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
+
+OciImageManifest manifest = new OciImageManifest()
+    .setConfig(configDescriptor)
+    .setSchemaVersion(2)
+    .setLayers(Collections.singletonList(
+        new OciDescriptor()
+            .setDigest(layerUploadResult.getDigest())
+            .setSizeInBytes(layerContent.getLength())
+            .setMediaType("application/octet-stream")));
+
+UploadManifestResult manifestResult = blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest"));
+System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest());
+```
+
+### Download Images
+
+```java readme-sample-downloadImage
+ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    .endpoint(ENDPOINT)
+    .repository(REPOSITORY)
+    .credential(credential)
+    .buildClient();
+
+DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+
+OciImageManifest manifest = manifestResult.asOciManifest();
+System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
+
+String configFileName = manifest.getConfig().getDigest() + ".json";
+blobClient.downloadStream(manifest.getConfig().getDigest(), createWriteChannel(configFileName));
+System.out.printf("Got config: %s\n", configFileName);
+
+for (OciDescriptor layer : manifest.getLayers()) {
+    blobClient.downloadStream(layer.getDigest(), createWriteChannel(layer.getDigest()));
+    System.out.printf("Got layer: %s\n", layer.getDigest());
+}
+```
+
+
 ### Delete a repository with anonymous access throws
 ```java readme-sample-anonymousClientThrows
 final String endpoint = getEndpoint();
@@ -235,7 +313,6 @@ final String repositoryName = getRepositoryName();
 
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 try {

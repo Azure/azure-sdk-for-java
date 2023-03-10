@@ -138,11 +138,4 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
 
         super.releaseKey(httpClient, serviceVersion);
     }
-
-    @Override
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        super.createOkpKey(httpClient, serviceVersion);
-    }
 }

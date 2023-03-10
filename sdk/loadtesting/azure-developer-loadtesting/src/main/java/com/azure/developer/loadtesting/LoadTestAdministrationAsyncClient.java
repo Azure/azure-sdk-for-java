@@ -27,7 +27,7 @@ import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous LoadTestingClient type. */
-@ServiceClient(builder = LoadTestingClientBuilder.class, isAsync = true)
+@ServiceClient(builder = LoadTestAdministrationClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameAvailabilityParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckNameAvailabilityParameters model =
             BinaryData
                 .fromString("{\"type\":\"slwejdpvw\",\"name\":\"oqpsoa\"}")
@@ -20,8 +19,8 @@ public final class CheckNameAvailabilityParametersTests {
         Assertions.assertEquals("oqpsoa", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckNameAvailabilityParameters model =
             new CheckNameAvailabilityParameters().withType("slwejdpvw").withName("oqpsoa");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityParameters.class);

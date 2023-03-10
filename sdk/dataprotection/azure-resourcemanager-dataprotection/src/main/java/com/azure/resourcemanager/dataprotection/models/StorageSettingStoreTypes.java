@@ -13,8 +13,8 @@ public final class StorageSettingStoreTypes extends ExpandableStringEnum<Storage
     /** Static value ArchiveStore for StorageSettingStoreTypes. */
     public static final StorageSettingStoreTypes ARCHIVE_STORE = fromString("ArchiveStore");
 
-    /** Static value SnapshotStore for StorageSettingStoreTypes. */
-    public static final StorageSettingStoreTypes SNAPSHOT_STORE = fromString("SnapshotStore");
+    /** Static value OperationalStore for StorageSettingStoreTypes. */
+    public static final StorageSettingStoreTypes OPERATIONAL_STORE = fromString("OperationalStore");
 
     /** Static value VaultStore for StorageSettingStoreTypes. */
     public static final StorageSettingStoreTypes VAULT_STORE = fromString("VaultStore");

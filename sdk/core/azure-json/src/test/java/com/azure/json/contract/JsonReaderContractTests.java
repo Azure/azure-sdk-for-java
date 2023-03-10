@@ -613,6 +613,26 @@ public abstract class JsonReaderContractTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("bufferHandlesEncodedTextSupplier")
+    public void bufferHandlesEncodedText(String json) throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            reader.nextToken(); // Initiate reading.
+
+            String buffered = reader.readRemainingFieldsAsJsonObject();
+
+            assertEquals(json, buffered);
+        }
+    }
+
+    private static Stream<String> bufferHandlesEncodedTextSupplier() {
+        return Stream.of(
+            "{\"encoded\\\"fieldname\":42}",
+            "{\"fieldname\":\"encoded\\\"value\"}",
+            "{\"encoded\\\"fieldname\":\"andencoded\\\"value\"}"
+        );
+    }
+
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) throws IOException {
         assertNull(reader.currentToken());
         reader.nextToken();

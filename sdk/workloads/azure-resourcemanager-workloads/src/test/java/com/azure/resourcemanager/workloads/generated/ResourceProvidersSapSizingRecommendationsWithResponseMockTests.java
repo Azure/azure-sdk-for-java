@@ -68,17 +68,17 @@ public final class ResourceProvidersSapSizingRecommendationsWithResponseMockTest
             manager
                 .resourceProviders()
                 .sapSizingRecommendationsWithResponse(
-                    "kmr",
+                    "dxeclzedqbcvh",
                     new SapSizingRecommendationRequest()
-                        .withAppLocation("emvvhm")
+                        .withAppLocation("lhpl")
                         .withEnvironment(SapEnvironmentType.PROD)
-                        .withSapProduct(SapProductType.OTHER)
+                        .withSapProduct(SapProductType.S4HANA)
                         .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                        .withSaps(2260254657949075974L)
-                        .withDbMemory(6456404305549505373L)
-                        .withDatabaseType(SapDatabaseType.HANA)
+                        .withSaps(4899977279662435855L)
+                        .withDbMemory(6839901350584080017L)
+                        .withDatabaseType(SapDatabaseType.DB2)
                         .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
+                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }
