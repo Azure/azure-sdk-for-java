@@ -243,7 +243,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.serverErrorInjector = serverErrorInjector;
         this.durableEndpointMetrics = durableEndpointMetrics;
 
-        this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<>() {
+        this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(final Channel channel) throws Exception {
                 checkState(channel.eventLoop().inEventLoop());
@@ -293,26 +293,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pendingAcquisitionExpirationFuture = null;
         }
         this.clientTelemetry = clientTelemetry;
-
-//        this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
-//            () -> {
-//                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
-//
-//                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-//                    if (logger.isDebugEnabled()) {
-//                        logger.debug(
-//                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-//                            endpoint,
-//                            Duration.ofNanos(elapsedTimeInNanos),
-//                            Duration.ofNanos(idleEndpointTimeoutInNanos));
-//                    }
-//                    endpoint.close();
-//                    return;
-//                }
-//
-//                this.runTasksInPendingAcquisitionQueue();
-//
-//            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
     }
 
     // region Accessors
