@@ -338,6 +338,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     public void close() {
         if (this.closed.compareAndSet(false, true)) {
             this.provider.evict(this);
+            this.durableMetrics.clearEndpoint(this);
             this.channelPool.close();
         }
     }

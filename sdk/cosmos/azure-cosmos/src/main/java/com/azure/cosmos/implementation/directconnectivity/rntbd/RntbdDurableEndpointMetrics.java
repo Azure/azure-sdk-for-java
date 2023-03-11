@@ -11,6 +11,16 @@ public final class RntbdDurableEndpointMetrics {
     private final AtomicInteger totalClosedChannels;
     private final AtomicReference<RntbdEndpoint> latestEndpoint;
 
+    /**
+     * Rntbd metrics have a dimension for an endpoint - because we can evict endpoints for the same
+     * logical endpoint address over time there might be multiple RntbdServiceEndpoint instances
+     * For ChannelsClosed/ChannelsAcquired metrics we need a monotonic increasing counter across all the
+     * RntbdServiceEndpoint instances with the same logical address. For the available channels it is a snapshot
+     * of the latest RntbdServiceEndpoint instance. This class is a hondler for the monotonic counters and gets
+     * updated with a reference to the current endpoint to be able to report on available channels.
+     * That way meters can be created lazily based off of an RntbdServiceEndpoint.durableEndpointMetrics() instance
+     * which will continue to report correct metrics even if the endpoint gets evicted and recreated.
+     */
     public RntbdDurableEndpointMetrics() {
         this.totalAcquiredChannels = new AtomicInteger(0);
         this.totalClosedChannels = new AtomicInteger(0);
@@ -19,6 +29,10 @@ public final class RntbdDurableEndpointMetrics {
 
     public void setEndpoint(RntbdEndpoint endpoint) {
         this.latestEndpoint.set(endpoint);
+    }
+
+    public void clearEndpoint(RntbdEndpoint endpoint) {
+        this.latestEndpoint.compareAndSet(endpoint, null);
     }
 
     public void incrementAcquiredChannels() {
