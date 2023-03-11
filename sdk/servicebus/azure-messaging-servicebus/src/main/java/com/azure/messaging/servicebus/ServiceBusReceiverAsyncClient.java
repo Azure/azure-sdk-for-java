@@ -19,6 +19,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
@@ -230,7 +231,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final ServiceBusConnectionSupport connectionSupport;
+    private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
@@ -252,20 +254,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityPath The name of the topic or queue.
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
-     * @param connectionProcessor The AMQP connection to the Service Bus resource.
+     * @param connectionSupport The AMQP connection to the Service Bus resource.
      * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+        ReceiverOptions receiverOptions, ServiceBusConnectionSupport connectionSupport, Duration cleanupInterval,
         ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionSupport = Objects.requireNonNull(connectionSupport, "'connectionSupport' cannot be null.");
+        this.connectionProcessor = this.connectionSupport.getConnection();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -291,15 +294,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-                                  ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-                                  ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-                                  ServiceBusSessionManager sessionManager) {
+        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
+        ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionSupport = new ServiceBusConnectionSupport(connectionProcessor);
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -821,14 +825,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
-        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
-        // We turn this one-time non-backpressure request to continuous requests with backpressure.
-        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
-        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
-        // If receiverOptions.prefetchCount is 0 (default value),
-        // the request will add a link credit so one message is retrieved from the service.
-        return receiveMessagesNoBackPressure().limitRate(1, 0);
+        if (canUseNewStack()) {
+            // TODO: anu Apply publishOn or allow use to do it.
+            return receiveSessionUnawareMessagesUsingNewStack();
+        } else {
+            // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
+            // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
+            // We turn this one-time non-backpressure request to continuous requests with backpressure.
+            // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
+            // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+            // If receiverOptions.prefetchCount is 0 (default value),
+            // the request will add a link credit so one message is retrieved from the service.
+            return receiveMessagesNoBackPressure().limitRate(1, 0);
+        }
     }
 
     @SuppressWarnings("try")
@@ -891,6 +900,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+    }
+
+    boolean canUseNewStack() {
+        return !isSessionEnabled && !connectionSupport.isLegacyStack();
+    }
+
+    Flux<ServiceBusReceivedMessage> receiveSessionUnawareMessagesUsingNewStack() {
+        if (!canUseNewStack()) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("receiveSessionUnawareMessagesUsingNewStack is unsupported (Requires disabling legacy-stack and entity to be session-unaware)."));
+        }
+        return getOrCreateConsumer().receive();
     }
 
     /**
@@ -1535,7 +1555,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     // to the current connection being disposed as retry-able so that retry can obtain new connection.
                     return new AmqpException(true, e.getMessage(), e, null);
                 }),
-            connectionProcessor.getRetryOptions(),
+            connectionSupport.getRetryOptions(),
             "Failed to create receive link " + linkName,
             true);
 
@@ -1554,7 +1574,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionSupport.getRetryOptions());
+
+//        TODO: anuchan; Legacy vs new
+//        if (connectionSupport.isLegacyStack()) {
+//           use ServiceBusReceiveLinkProcessor
+//        } else {
+//           use MessageFlux
+//        }
+
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
 
@@ -1673,7 +1701,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     boolean isConnectionClosed() {
-        return this.connectionProcessor.isChannelClosed();
+        return this.connectionSupport.isChannelClosed();
     }
 
     boolean isManagementNodeLocksClosed() {
