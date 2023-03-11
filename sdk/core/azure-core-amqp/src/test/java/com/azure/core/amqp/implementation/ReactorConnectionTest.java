@@ -46,6 +46,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -63,10 +64,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import static com.azure.core.amqp.exception.AmqpErrorCondition.TIMEOUT_ERROR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -129,6 +130,7 @@ class ReactorConnectionTest {
     private Event connectionEvent;
     @Mock
     private Event sessionEvent;
+    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
     @BeforeEach
     void setup() throws IOException {
@@ -153,6 +155,9 @@ class ReactorConnectionTest {
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
+            any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
+            .then(answerByCreatingExecutor());
 
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
@@ -165,7 +170,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler, sessionHandler2, null);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
 
         // Setting up onConnectionRemoteOpen.
         when(connectionEvent.getConnection()).thenReturn(connectionProtonJ);
@@ -491,6 +496,9 @@ class ReactorConnectionTest {
         when(reactorProvider.createReactor(anyString(), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
+            any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
+            .then(answerByCreatingExecutor());
 
         when(dispatcher.getShutdownSignal()).thenReturn(Mono.never());
 
@@ -504,8 +512,8 @@ class ReactorConnectionTest {
 
         // Act and Assert
         final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, handlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            reactorProvider, handlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST, true);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
             .expectErrorSatisfies(error -> {
@@ -513,7 +521,7 @@ class ReactorConnectionTest {
 
                 final AmqpException amqpException = (AmqpException) error;
                 assertTrue(amqpException.isTransient());
-                assertNull(amqpException.getErrorCondition());
+                assertEquals(TIMEOUT_ERROR, amqpException.getErrorCondition());
 
                 assertNotNull(amqpException.getMessage());
 
@@ -744,7 +752,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
     }
 
     @Test
@@ -753,8 +761,8 @@ class ReactorConnectionTest {
         final ReactorProvider provider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
-            reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            reactorHandlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST, true);
         final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
@@ -785,8 +793,8 @@ class ReactorConnectionTest {
         final ReactorProvider provider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
-            reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            reactorHandlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST, true);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -876,5 +884,19 @@ class ReactorConnectionTest {
             .assertNext(node -> assertTrue(node instanceof ManagementChannel))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
+    }
+
+    private Answer<ReactorExecutor> answerByCreatingExecutor() {
+        // Even before introducing 'ReactorProvider.createExecutorForReactor', the tests used to rely on a real
+        // 'ReactorExecutor' object, not on a mock(ReactorExecutor), continue using a real 'ReactorExecutor'
+        //  object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
+        return invocation -> {
+            final Reactor r = invocation.getArgument(0);
+            final String conId = invocation.getArgument(1);
+            final String fqdn = invocation.getArgument(2);
+            final ReactorConnection.ReactorExceptionHandler exceptionHandler = invocation.getArgument(3);
+            final AmqpRetryOptions retry = invocation.getArgument(4);
+            return (new ReactorProvider()).createExecutor(r, conId, fqdn, exceptionHandler, retry);
+        };
     }
 }
