@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndpointMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
@@ -842,13 +843,15 @@ public class ClientMetricsTest extends BatchTestBase {
 
             String address = "https://localhost:12345";
             RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
-            endpointProvider.evict(firstEndpoint);
+            RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
+            firstEndpoint.close();
+            assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
             RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);
-            assertThat(firstEndpoint.durableEndpointMetrics()).isSameAs(secondEndpoint.durableEndpointMetrics());
+            assertThat(firstDurableMetricsInstance).isSameAs(secondEndpoint.durableEndpointMetrics());
         } finally {
             this.afterTest();
         }

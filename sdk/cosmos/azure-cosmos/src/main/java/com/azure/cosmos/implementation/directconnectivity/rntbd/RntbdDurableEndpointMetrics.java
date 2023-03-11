@@ -27,6 +27,10 @@ public final class RntbdDurableEndpointMetrics {
         this.latestEndpoint = new AtomicReference<>();
     }
 
+    public RntbdEndpoint getEndpoint() {
+        return this.latestEndpoint.get();
+    }
+
     public void setEndpoint(RntbdEndpoint endpoint) {
         this.latestEndpoint.set(endpoint);
     }
