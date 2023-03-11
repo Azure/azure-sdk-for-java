@@ -3,10 +3,13 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
@@ -158,6 +161,26 @@ public class ReactorHandlerProvider {
         String receiverName, String entityPath) {
 
         return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, getMetricProvider(hostname, entityPath));
+    }
+
+    /**
+     * Creates a new link handler for receiving messages.
+     *
+     * @param connectionId Identifier of the parent connection that created this session.
+     * @param hostname Fully qualified namespace of the parent connection.
+     * @param receiverName Name of the send link.
+     * @param entityPath The relative path to the messaging entity streaming the messages.
+     * @param deliverySettleMode Indicate how each {@link org.apache.qpid.proton.engine.Delivery} holding message should be settled.
+     * @param includeDeliveryTagInMessage Indicate if the delivery tag should be included in the message.
+     * @param dispatcher The dispatcher for handler to invoke any ProtonJ API call.
+     * @param retryOptions The retry option user set while building the client.
+     * @return A new {@link ReceiveLinkHandler2}.
+     */
+    public ReceiveLinkHandler2 createReceiveLinkHandler2(String connectionId, String hostname, String receiverName, String entityPath,
+        DeliverySettleMode deliverySettleMode, boolean includeDeliveryTagInMessage, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+        return new ReceiveLinkHandler2(connectionId, hostname, receiverName, entityPath,
+            deliverySettleMode, dispatcher, retryOptions, includeDeliveryTagInMessage,
+            getMetricProvider(hostname, entityPath));
     }
 
     /**
