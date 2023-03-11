@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -27,13 +28,28 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
     private final Flux<ServiceBusReceivedMessage> processor;
+    private final MessageFlux messageFlux;
+    private final boolean isLegacyStack;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
+        this.messageFlux = null;
+        this.isLegacyStack = true;
         this.messageSerializer = messageSerializer;
         this.processor = linkProcessor
+            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
+    }
+
+    ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux,
+                            MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this.linkName = linkName;
+        this.messageFlux = messageFlux;
+        this.linkProcessor = null;
+        this.isLegacyStack = false;
+        this.messageSerializer = messageSerializer;
+        this.processor = messageFlux
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
     }
 
@@ -47,9 +63,9 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     /**
-     * Begin consuming events until there are no longer any subscribers.
+     * Begin consuming messages until there are no longer any subscribers.
      *
-     * @return A stream of events received from the partition.
+     * @return A stream of messages from the Service Bus entity.
      */
     Flux<ServiceBusReceivedMessage> receive() {
         return processor;
@@ -66,7 +82,11 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             return monoError(LOGGER,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        return linkProcessor.updateDisposition(lockToken, deliveryState);
+        if (isLegacyStack) {
+            return linkProcessor.updateDisposition(lockToken, deliveryState);
+        } else {
+            return messageFlux.updateDisposition(lockToken, deliveryState);
+        }
     }
 
     /**
@@ -75,7 +95,9 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            linkProcessor.dispose();
+            if (isLegacyStack) {
+                linkProcessor.dispose();
+            }
         }
     }
 }
