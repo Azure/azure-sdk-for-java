@@ -33,13 +33,13 @@ public class UploadImageAsync {
     private static final int CHUNK_SIZE = 4 * 1024 * 1024; // content will be uploaded in chunks of up to 4MB size
     public static void main(String[] args) {
 
-        // BEGIN: readme-sample-uploadImageAsync
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
             .repository(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
+        // BEGIN: readme-sample-uploadImageAsync
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
         Mono<OciDescriptor> uploadConfig = blobClient

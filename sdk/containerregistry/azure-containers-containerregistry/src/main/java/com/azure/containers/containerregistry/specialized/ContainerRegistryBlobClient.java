@@ -269,14 +269,19 @@ public final class ContainerRegistryBlobClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadCustomManifest -->
      * <pre>
+     * ManifestMediaType dockerListType = ManifestMediaType
+     *     .fromString&#40;&quot;application&#47;vnd.docker.distribution.manifest.list.v2+json&quot;&#41;;
+     * ManifestMediaType ociIndexType = ManifestMediaType
+     *     .fromString&#40;&quot;application&#47;vnd.oci.image.index.v1+json&quot;&#41;;
+     *
      * Response&lt;DownloadManifestResult&gt; response = blobClient.downloadManifestWithResponse&#40;
      *     &quot;latest&quot;,
-     *     Arrays.asList&#40;DOCKER_MANIFEST_LIST_TYPE, OCI_INDEX_TYPE&#41;,
+     *     Arrays.asList&#40;dockerListType, ociIndexType&#41;,
      *     Context.NONE&#41;;
-     * if &#40;DOCKER_MANIFEST_LIST_TYPE.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     * if &#40;dockerListType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
      *     &#47;&#47; DockerManifestList manifestList = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;DockerManifestList.class&#41;;
      *     System.out.println&#40;&quot;Got docker manifest list&quot;&#41;;
-     * &#125; else if &#40;OCI_INDEX_TYPE.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     * &#125; else if &#40;ociIndexType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
      *     &#47;&#47; OciIndex ociIndex = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;OciIndex.class&#41;;
      *     System.out.println&#40;&quot;Got OCI index&quot;&#41;;
      * &#125; else &#123;

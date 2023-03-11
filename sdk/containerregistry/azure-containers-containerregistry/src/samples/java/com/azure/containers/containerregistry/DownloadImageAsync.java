@@ -31,17 +31,15 @@ public class DownloadImageAsync {
     private static final ObjectMapper PRETTY_PRINT = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String OUT_DIRECTORY = getTempDirectory();
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
-    private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-    private static final ManifestMediaType OCI_INDEX_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
     public static void main(String[] args) {
-        // BEGIN: readme-sample-downloadImageAsync
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
             .repository(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
+        // BEGIN: readme-sample-downloadImageAsync
         blobClient
             .downloadManifest("latest")
             .map(manifestResult -> manifestResult.asOciManifest())
@@ -149,13 +147,18 @@ public class DownloadImageAsync {
             .buildAsyncClient();
 
         // BEGIN: com.azure.containers.containerregistry.downloadCustomManifestAsync
-        blobClient.downloadManifestWithResponse("latest", Arrays.asList(DOCKER_MANIFEST_LIST_TYPE, OCI_INDEX_TYPE))
+        ManifestMediaType dockerListType = ManifestMediaType
+            .fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType ociIndexType = ManifestMediaType
+            .fromString("application/vnd.oci.image.index.v1+json");
+
+        blobClient.downloadManifestWithResponse("latest", Arrays.asList(dockerListType, ociIndexType))
             .doOnNext(downloadResult -> {
-                if (DOCKER_MANIFEST_LIST_TYPE.equals(downloadResult.getValue().getMediaType())) {
+                if (dockerListType.equals(downloadResult.getValue().getMediaType())) {
                     // DockerManifestList manifestList =
                     //     downloadResult.getValue().getContent().toObject(DockerManifestList.class);
                     System.out.println("Got docker manifest list");
-                } else if (OCI_INDEX_TYPE.equals(downloadResult.getValue().getMediaType())) {
+                } else if (ociIndexType.equals(downloadResult.getValue().getMediaType())) {
                     // OciIndex ociIndex = downloadResult.getValue().getContent().toObject(OciIndex.class);
                     System.out.println("Got OCI index");
                 } else {

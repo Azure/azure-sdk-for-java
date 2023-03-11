@@ -30,13 +30,13 @@ public class UploadImage {
     private static final String OUT_DIRECTORY = getTempDirectory();
     public static void main(String[] args) {
 
-        // BEGIN: readme-sample-uploadImage
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
             .repository(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
+        // BEGIN: readme-sample-uploadImage
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
         UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);

@@ -53,7 +53,7 @@ Reviewing the HTTP request sent or response received over the wire to/from the A
 troubleshooting issues. To enable logging the HTTP request and response payload, the `ContainerRegistryClient` can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
-ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .credential(defaultCredential)
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
