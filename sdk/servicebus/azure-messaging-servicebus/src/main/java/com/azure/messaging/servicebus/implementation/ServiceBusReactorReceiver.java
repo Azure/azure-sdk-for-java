@@ -5,8 +5,8 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -64,9 +64,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<OffsetDateTime> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, AmqpRetryPolicy retryPolicy) {
-        super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
-            retryPolicy.getRetryOptions());
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+        super(connection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions);
         this.receiver = receiver;
         this.handler = handler;
         this.isSettled = receiver.getSenderSettleMode() == SenderSettleMode.SETTLED;
@@ -77,7 +76,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         this.logger = new ClientLogger(ServiceBusReactorReceiver.class, loggingContext);
 
         this.receiverUnsettledDeliveries = new ReceiverUnsettledDeliveries(handler.getHostname(), entityPath, handler.getLinkName(),
-            provider.getReactorDispatcher(), retryPolicy.getRetryOptions(), MessageUtils.ZERO_LOCK_TOKEN, logger);
+            dispatcher, retryOptions, MessageUtils.ZERO_LOCK_TOKEN, logger);
 
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
