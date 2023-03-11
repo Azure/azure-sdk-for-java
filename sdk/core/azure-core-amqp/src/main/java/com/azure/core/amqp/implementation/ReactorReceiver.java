@@ -12,6 +12,7 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -222,6 +223,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     @Override
+    public Mono<Void> updateDisposition(String deliveryTag, DeliveryState deliveryState) {
+        return monoError(logger, new IllegalStateException("updateDisposition is not supported in ReactorReceiver."));
+    }
+
+    @Override
     public Mono<Void> addCredits(int credits) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
@@ -242,6 +248,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.error(e);
             }
         });
+    }
+
+    @Override
+    public void scheduleCredit(Supplier<Long> creditSupplier) {
+        throw logger.logExceptionAsError(new IllegalStateException("scheduleCredit is not supported in ReactorReceiver."));
     }
 
     @Override

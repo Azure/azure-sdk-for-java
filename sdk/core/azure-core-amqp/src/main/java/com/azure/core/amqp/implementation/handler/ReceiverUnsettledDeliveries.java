@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
@@ -64,7 +65,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     private final Duration timeout;
     private final UUID deliveryEmptyTag;
     private final ClientLogger logger;
+    // The timer to timeout in progress but expired dispositions.
     private final Disposable timoutTimer;
+    private final boolean settleOnClose;
 
     // The deliveries received, for those the application haven't sent disposition frame to the broker requesting
     // settlement or disposition frame is sent, but yet to receive acknowledgment disposition frame from
@@ -88,6 +91,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @param retryOptions     the retry configuration to use when resending a disposition frame that the broker 'Rejected'.
      * @param deliveryEmptyTag reference to static UUID indicating absence of delivery tag in deliveries.
      * @param logger           the logger.
+     * Note: This Ctr and settleOnClose will be removed once the legacy receiver is removed
      */
     public ReceiverUnsettledDeliveries(String hostName, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, UUID deliveryEmptyTag, ClientLogger logger) {
@@ -100,6 +104,34 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         this.deliveryEmptyTag = deliveryEmptyTag;
         this.logger = logger;
         this.timoutTimer = Flux.interval(timeout).subscribe(__ -> completeDispositionWorksOnTimeout("timer"));
+        this.settleOnClose = false;
+    }
+
+    /**
+     * Creates ReceiverUnsettledDeliveries.
+     *
+     * @param hostName        the name of the host hosting the messaging entity identified by {@code entityPath}.
+     * @param entityPath      the relative path identifying the messaging entity from which the deliveries are
+     *                        received from, the application can later disposition these deliveries by sending
+     *                        disposition frames to the broker.
+     * @param receiveLinkName the name of the amqp receive-link 'Attach'-ed to the messaging entity from
+     *                        which the deliveries are received from.
+     * @param dispatcher      the dispatcher to invoke the ProtonJ library API to send disposition frame.
+     * @param retryOptions    the retry configuration to use when resending a disposition frame that the broker 'Rejected'.
+     * @param logger          the logger.
+     */
+    ReceiverUnsettledDeliveries(String hostName, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, ClientLogger logger) {
+        this.hostName = hostName;
+        this.entityPath = entityPath;
+        this.receiveLinkName = receiveLinkName;
+        this.dispatcher = dispatcher;
+        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        this.timeout = retryOptions.getTryTimeout();
+        this.deliveryEmptyTag = com.azure.core.amqp.implementation.handler.ReceiverDeliveryHandler.DELIVERY_EMPTY_TAG;
+        this.logger = logger;
+        this.timoutTimer = Flux.interval(timeout).subscribe(__ -> completeDispositionWorksOnTimeout("timer"));
+        this.settleOnClose = true;
     }
 
     /**
@@ -128,6 +160,8 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @return {@code true} if delivery with the given delivery tag exists {@code false} otherwise.
      */
     public boolean containsDelivery(UUID deliveryTag) {
+        // Note: This method, by design, does not check 'isTerminated' flag since 'onDispositionAck' needs to
+        // stay open during termination.
         return deliveryTag != deliveryEmptyTag && deliveries.containsKey(deliveryTag.toString());
     }
 
@@ -166,6 +200,10 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @param delivery    the delivery object updated from the broker's transfer frame ack.
      */
     public void onDispositionAck(UUID deliveryTag, Delivery delivery) {
+        // Note: It's by design that this method doesn't check for the 'isTerminated' flag. This ack route needs to
+        // stay open for potential concurrent termination-route awaiting for in-progress dispositions completion/timeout.
+        // termination-route == 'terminateAndAwaitForDispositionsInProgressToComplete'
+
         final DeliveryState remoteState = delivery.getRemoteState();
 
         logger.atVerbose()
@@ -223,18 +261,16 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     }
 
     /**
-     * Terminate this {@link ReceiverUnsettledDeliveries} including expired disposition works, and await to complete
-     * disposition work in progress, with AmqpRetryOptions_tryTimeout as the upper bound for the wait time.
-     * <p>
-     * Given this is a terminal API in which the disposition timeout timer will be used last time, termination disposes
-     * the timer as well. Future attempts to notify unsettled deliveries or send delivery dispositions will be rejected.
+     * Terminate this {@link ReceiverUnsettledDeliveries} including already expired disposition works, and await to
+     * complete all disposition work in progress, with AmqpRetryOptions_tryTimeout as the upper bound for the wait time.
+     * Future attempts to notify unsettled deliveries or send delivery dispositions will be rejected.
      * <p>
      * From the point of view of this function's call site, it is still possible that the receive-link and dispatcher
      * may healthy, but not guaranteed. If healthy, send-receive of disposition frames are possible, enabling
      * 'graceful' completion of works.
      * <p>
-     * e.g., if the user proactively initiates the closing of client, it is likely that the receive-link may be
-     * healthy. On the other hand, if the broker initiates the closing of the link, further frame transfer may not be
+     * e.g., if the user proactively initiates the closing of client, it is likely that the receive-link may be healthy.
+     * On the other hand, if the broker initiates the closing of the link, further frame transfer may not be
      * possible.
      *
      * @return a {@link Mono} that await to complete disposition work in progress, the wait has an upper bound
@@ -245,12 +281,12 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         //    or disposition requests
         isTerminated.getAndSet(true);
 
-        // 2. then complete timed out works if any
+        // 2. then complete already expired (timed-out) works,
         completeDispositionWorksOnTimeout("terminateAndAwaitForDispositionsInProgressToComplete");
 
         // 3. then obtain a Mono that wait, with AmqpRetryOptions_tryTimeout as the upper bound for the maximum
-        //    wait, for the completion of any disposition work in progress, which includes committing open transaction
-        //    work. The upper bound for the wait time is imposed through timeoutTimer.
+        //    wait, for the completion of all disposition work in progress, including committing open transactions.
+        //    The AmqpRetryOptions_tryTimeout is applied implicitly through timeoutTimer.
         final List<Mono<Void>> workMonoList = new ArrayList<>();
         final StringJoiner deliveryTags = new StringJoiner(", ");
         for (DispositionWork work : pendingDispositions.values()) {
@@ -277,10 +313,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         } else {
             workMonoListMerged = Mono.empty();
         }
-        final Mono<Void> dispositionsWithTimeout = workMonoListMerged;
-
-        // 4. finally, disposes the timeoutTimer after its final use (to timeout disposition works in-progress).
-        return dispositionsWithTimeout.doFinally(__ -> timoutTimer.dispose());
+        // 4. finally, Given this is a terminal API in which the timeoutTimer will be used last time,
+        //    termination also disposes of the timer.
+        return workMonoListMerged.doFinally(__ -> timoutTimer.dispose());
     }
 
     /**
@@ -291,14 +326,31 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     public void close() {
         isTerminated.getAndSet(true);
 
-        // Disposes of timeoutTimer's internal subscription to the global interval timer.
-        timoutTimer.dispose();
+        if (settleOnClose) {
+            // Settle unsettled deliveries to remove them from receive-link's parent ProtonJ TransportSession.
+            //
+            if (!deliveries.isEmpty()) {
+                final Runnable localSettlement = () -> {
+                    for (Delivery delivery : deliveries.values()) {
+                        delivery.disposition(new Modified());
+                        delivery.settle();
+                    }
+                };
 
-        // Note: Once disposition API support is enabled in ReceiveLinkHandler - this close() method should have
-        // logic to free the tracked QPID deliveries. The ReceiveLinkHandler will no longer track "ALL" QPID
-        // deliveries (using 'queuedDeliveries' set), because, the plan is, upon arrival of any delivery in
-        // reactor-thread, we will be draining the delivery buffer and settle those deliveries already settled
-        // by the broker, so we need settle only the deliveries in ReceiverUnsettledDeliveries.deliveries in this close.
+                try {
+                    dispatcher.invoke(localSettlement);
+                } catch (IOException e) {
+                    logger.warning("IO sink was closed when scheduling local settlement. Manually settling.", e);
+                    localSettlement.run();
+                } catch (RejectedExecutionException e) {
+                    logger.info("RejectedExecutionException when scheduling local settlement. Manually settling.", e);
+                    localSettlement.run();
+                }
+            }
+        }
+
+        // Disposes of subscription to the global interval timer.
+        timoutTimer.dispose();
 
         // Force complete all uncompleted works.
         completeDispositionWorksOnClose();

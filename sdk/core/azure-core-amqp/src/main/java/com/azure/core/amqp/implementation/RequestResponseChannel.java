@@ -9,7 +9,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
@@ -50,6 +52,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -70,7 +73,9 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final SendLinkHandler sendLinkHandler;
-    private final ReceiveLinkHandler receiveLinkHandler;
+    // ReceiveLinkHandlerWrapper is a temporary type to support either legacy or new receiver. This type will be deleted,
+    // when removing support for the legacy receiver; instead, the 'ReceiveLinkHandler' for the new receiver will be used.
+    private final ReceiveLinkHandlerWrapper receiveLinkHandler;
     private final SenderSettleMode senderSettleMode;
     // The request-response-channel endpoint states derived from the latest state of the send and receive links.
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
@@ -124,6 +129,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     * @param useLegacyReceiver (temporary) flag to use either legacy or new receiver.
      *
      * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
@@ -131,7 +137,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
         AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider) {
+        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider, boolean useLegacyReceiver) {
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(LINK_NAME_KEY, linkName);
@@ -171,9 +177,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
-            linkName, entityPath);
-        BaseHandler.setHandler(receiveLink, receiveLinkHandler);
+        this.receiveLinkHandler = new ReceiveLinkHandlerWrapper(connectionId, fullyQualifiedNamespace,
+            linkName, entityPath, receiveLink, handlerProvider, provider, retryOptions, useLegacyReceiver);
 
         this.metricsProvider = metricsProvider;
 
@@ -181,8 +186,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         //
         //@formatter:off
         this.subscriptions = Disposables.composite(
-            receiveLinkHandler.getDeliveredMessages()
-                .map(this::decodeDelivery)
+            this.receiveLinkHandler.getDeliveredMessages(this::decodeDelivery)
                 .subscribe(message -> {
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
@@ -541,6 +545,56 @@ public class RequestResponseChannel implements AsyncCloseable {
                     ((Instant) startTimestamp).toEpochMilli(),
                     (String) operationName,
                     responseCode);
+            }
+        }
+    }
+
+    // Temporary type to support either legacy or new receiver.
+    private static final class ReceiveLinkHandlerWrapper {
+        private final boolean useLegacyReceiver;
+        private final ReceiveLinkHandler receiveLinkHandler;
+        private final ReceiveLinkHandler2 receiveLinkHandler2;
+
+        ReceiveLinkHandlerWrapper(String connectionId, String fullyQualifiedNamespace, String linkName, String entityPath,
+            Receiver receiveLink, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
+            AmqpRetryOptions retryOptions, boolean useLegacyReceiver) {
+            this.useLegacyReceiver = useLegacyReceiver;
+            if (useLegacyReceiver) {
+                this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
+                    linkName, entityPath);
+                BaseHandler.setHandler(receiveLink, receiveLinkHandler);
+                this.receiveLinkHandler2 = null;
+            } else {
+                this.receiveLinkHandler2 = handlerProvider.createReceiveLinkHandler2(connectionId, fullyQualifiedNamespace,
+                    linkName, entityPath, DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false,
+                    provider.getReactorDispatcher(), retryOptions);
+                BaseHandler.setHandler(receiveLink, receiveLinkHandler2);
+                this.receiveLinkHandler = null;
+            }
+        }
+
+        Flux<EndpointState> getEndpointStates() {
+            if (useLegacyReceiver) {
+                return receiveLinkHandler.getEndpointStates();
+            } else {
+                return receiveLinkHandler2.getEndpointStates();
+            }
+        }
+
+        Flux<Message> getDeliveredMessages(Function<Delivery, Message> decodeDelivery) {
+            if (useLegacyReceiver) {
+                return receiveLinkHandler.getDeliveredMessages()
+                    .map(decodeDelivery);
+            } else {
+                return receiveLinkHandler2.getMessages();
+            }
+        }
+
+        public AmqpErrorContext getErrorContext(Receiver link) {
+            if (useLegacyReceiver) {
+                return receiveLinkHandler.getErrorContext(link);
+            } else {
+                return receiveLinkHandler2.getErrorContext(link);
             }
         }
     }
