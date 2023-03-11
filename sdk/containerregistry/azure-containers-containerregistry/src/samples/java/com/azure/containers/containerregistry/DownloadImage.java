@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class DownloadImage {
         DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
         OciImageManifest manifest = manifestResult.asOciManifest();
-        System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
+        System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
         String configFileName = manifest.getConfig().getDigest() + ".json";
         blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));
@@ -74,6 +75,22 @@ public class DownloadImage {
         }
         System.out.printf("Writing content to %s\n", outDir);
         return outDir;
+    }
+
+    private void downloadStream() throws IOException {
+        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildClient();
+
+        String digest = "sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311";
+
+        // BEGIN: com.azure.containers.containerregistry.downloadStream
+        Path file = Files.createTempFile(digest, ".tmp");
+        SeekableByteChannel channel = Files.newByteChannel(file, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+        blobClient.downloadStream(digest, channel);
+        // END: com.azure.containers.containerregistry.downloadStream
     }
 
     private void downloadManifest() {

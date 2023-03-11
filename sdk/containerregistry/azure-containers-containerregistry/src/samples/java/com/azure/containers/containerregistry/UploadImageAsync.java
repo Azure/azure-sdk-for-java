@@ -11,11 +11,16 @@ import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Random;
@@ -25,6 +30,7 @@ public class UploadImageAsync {
     private static final String REPOSITORY = "hello/world";
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+    private static final int CHUNK_SIZE = 4 * 1024 * 1024; // content will be uploaded in chunks of up to 4MB size
     public static void main(String[] args) {
 
         // BEGIN: readme-sample-uploadImageAsync
@@ -43,7 +49,7 @@ public class UploadImageAsync {
                 .setDigest(result.getDigest())
                 .setSizeInBytes(result.getSizeInBytes()));
 
-        Flux<ByteBuffer> layerContent = generateAsyncStream(1024 * 1024 * 1024); // 1 GB
+        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
         Mono<OciDescriptor> uploadLayer = blobClient
             .uploadBlob(layerContent)
             .map(result -> new OciDescriptor()
@@ -64,7 +70,7 @@ public class UploadImageAsync {
         System.out.println("Done");
     }
 
-    private static Flux<ByteBuffer> generateAsyncStream(long size) {
+    private static Flux<ByteBuffer> getData(long size) {
         Random rand = new Random(42);
         byte[] data = new byte[12 * 1024 * 1024];
         rand.nextBytes(data);
@@ -101,7 +107,7 @@ public class UploadImageAsync {
                 .setDigest(configUploadResult.getDigest())
                 .setSizeInBytes(configContent.getLength()));
 
-        Flux<ByteBuffer> layerContent = generateAsyncStream(1024 * 1024 * 1024); // 1 GB
+        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
         Mono<OciDescriptor> layer = blobClient
             .uploadBlob(layerContent)
             .map(result -> new OciDescriptor()
@@ -159,5 +165,41 @@ public class UploadImageAsync {
             .subscribe(response ->
                 System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest()));
         // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
+    }
+
+    private void uploadBlob() throws FileNotFoundException {
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.containers.containerregistry.uploadBlobAsync
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+
+        blobClient
+            .uploadBlob(configContent)
+            .subscribe(uploadResult -> System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+                    uploadResult.getDigest(), uploadResult.getSizeInBytes()));
+        // END: com.azure.containers.containerregistry.uploadBlobAsync
+
+        // BEGIN: com.azure.containers.containerregistry.uploadStreamAsync
+        Flux.using(
+                () -> new FileInputStream("artifact.tar.gz"),
+                fileStream -> blobClient.uploadBlob(FluxUtil.toFluxByteBuffer(fileStream, CHUNK_SIZE)),
+                this::closeStream)
+            .subscribe(uploadResult ->
+                System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+                    uploadResult.getDigest(), uploadResult.getSizeInBytes()));
+        // END: com.azure.containers.containerregistry.uploadStreamAsync
+    }
+
+    private void closeStream(InputStream stream) {
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

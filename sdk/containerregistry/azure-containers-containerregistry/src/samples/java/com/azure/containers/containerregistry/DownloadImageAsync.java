@@ -7,7 +7,6 @@ import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
-import com.azure.core.util.io.IOUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,9 +15,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -34,8 +35,6 @@ public class DownloadImageAsync {
     private static final ManifestMediaType OCI_INDEX_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
     public static void main(String[] args) {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
         // BEGIN: readme-sample-downloadImageAsync
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
@@ -49,17 +48,22 @@ public class DownloadImageAsync {
             .doOnSuccess(manifest -> System.out.printf("Got manifest:\n%s\n", prettyPrint(manifest)))
             .flatMapMany(manifest -> {
                 String configFileName = manifest.getConfig().getDigest() + ".json";
+                FileChannel configChannel = createFileChannel(configFileName);
 
                 Mono<Void> downloadConfig = blobClient
                         .downloadStream(manifest.getConfig().getDigest())
-                        .flatMap(downloadResponse -> downloadResponse.writeValueToAsync(createFileChannel(configFileName)))
-                        .doOnSuccess(i -> System.out.printf("Got config: %s\n", configFileName));
+                        .flatMap(downloadResponse -> downloadResponse.writeValueTo(configChannel))
+                        .doOnSuccess(i -> System.out.printf("Got config: %s\n", configFileName))
+                        .doFinally(i -> closeStream(configChannel));
 
                 Flux<Void> downloadLayers = Flux.fromIterable(manifest.getLayers())
-                    .flatMap(layer -> blobClient
-                        .downloadStream(layer.getDigest())
-                        .flatMap(downloadResponse -> downloadResponse.writeValueToAsync(createFileChannel(layer.getDigest())))
-                        .doOnSuccess(i -> System.out.printf("Got layer: %s\n", layer.getDigest())));
+                    .flatMap(layer -> {
+                        FileChannel layerChannel = createFileChannel(layer.getDigest());
+                        return blobClient.downloadStream(layer.getDigest())
+                            .flatMap(downloadResponse -> downloadResponse.writeValueTo(layerChannel))
+                            .doOnSuccess(i -> System.out.printf("Got layer: %s\n", layer.getDigest()))
+                            .doFinally(i -> closeStream(layerChannel));
+                    });
 
                 return Flux.concat(downloadConfig, downloadLayers);
             })
@@ -69,7 +73,52 @@ public class DownloadImageAsync {
         System.out.println("Done");
     }
 
-    private void downloadManifest() {
+    private static void downloadBlob() {
+        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+        String digest = "sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311";
+
+        // BEGIN: com.azure.containers.containerregistry.downloadStreamAsyncFile
+        blobClient
+            .downloadStream(digest)
+            .flatMap(downloadResult ->
+                Mono.using(() -> new FileOutputStream(trimSha(digest)),
+                    fileStream -> downloadResult.writeValueTo(fileStream.getChannel()),
+                    fileStream -> closeStream(fileStream)))
+            .block();
+        // END: com.azure.containers.containerregistry.downloadStreamAsyncFile
+
+
+        // BEGIN: com.azure.containers.containerregistry.downloadStreamAsyncSocket
+        blobClient
+            .downloadStream(digest)
+            .flatMap(downloadResult ->
+                Mono.using(
+                    () -> openSocket(),
+                    socket -> downloadResult.writeValueToAsync(socket),
+                    socket -> closeStream(socket)))
+            .block();
+        // END: com.azure.containers.containerregistry.downloadStreamAsyncSocket
+    }
+
+    private static FileChannel createFileChannel(String name) {
+        try {
+            return FileChannel.open(Paths.get(OUT_DIRECTORY, trimSha(name)), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static AsynchronousSocketChannel openSocket() {
+        // new AsynchronousSocketChannel(...).bind(...);
+        return null;
+    }
+
+    private static void downloadManifest() {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
             .repository(REPOSITORY)
@@ -91,7 +140,7 @@ public class DownloadImageAsync {
         // END: com.azure.containers.containerregistry.downloadManifestAsync
     }
 
-    private void downloadCustomManifestMediaType() {
+    private static void downloadCustomManifestMediaType() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
@@ -127,18 +176,8 @@ public class DownloadImageAsync {
         }
     }
 
-    private static AsynchronousByteChannel createFileChannel(String name) {
-        if (name.startsWith("sha256:")) {
-            name = name.substring(7);
-        }
-
-        try {
-            AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(Paths.get(OUT_DIRECTORY, name), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            return IOUtils.toAsynchronousByteChannel(fileChannel, 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+    private static String trimSha(String digest) {
+        return digest.startsWith("sha256:") ? digest.substring(7) : digest;
     }
 
     private static String getTempDirectory() {
@@ -151,5 +190,14 @@ public class DownloadImageAsync {
         }
         System.out.printf("Writing content to %s\n", outDir);
         return outDir;
+    }
+
+    private static void closeStream(Closeable stream) {
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

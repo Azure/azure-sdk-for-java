@@ -293,7 +293,7 @@ ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder(
 DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
 OciImageManifest manifest = manifestResult.asOciManifest();
-System.out.printf("Got manifest:\n%s\n\n", PRETTY_PRINT.writeValueAsString(manifest));
+System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
 String configFileName = manifest.getConfig().getDigest() + ".json";
 blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));

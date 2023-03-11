@@ -17,6 +17,9 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Collections;
 
 public class UploadImage {
@@ -24,6 +27,7 @@ public class UploadImage {
     private static final String REPOSITORY = "hello/world";
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+    private static final String OUT_DIRECTORY = getTempDirectory();
     public static void main(String[] args) {
 
         // BEGIN: readme-sample-uploadImage
@@ -63,6 +67,37 @@ public class UploadImage {
         System.out.println("Done");
     }
 
+    private void uploadBlobBinaryData() {
+        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildClient();
+
+        // BEGIN: com.azure.containers.containerregistry.uploadBlob
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+
+        UploadBlobResult uploadResult = blobClient.uploadBlob(configContent);
+        System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(), uploadResult.getSizeInBytes());
+        // END: com.azure.containers.containerregistry.uploadBlob
+    }
+
+    private void uploadStream() throws IOException {
+        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+            .endpoint(ENDPOINT)
+            .repository(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildClient();
+
+        // BEGIN: com.azure.containers.containerregistry.uploadStream
+        try (FileInputStream content = new FileInputStream("artifact.tar.gz")) {
+            UploadBlobResult uploadResult = blobClient.uploadBlob(content.getChannel(), Context.NONE);
+            System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+                uploadResult.getDigest(), uploadResult.getSizeInBytes());
+        }
+        // END: com.azure.containers.containerregistry.uploadStream
+    }
+
     private void uploadManifest() {
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
@@ -91,9 +126,9 @@ public class UploadImage {
                     .setSizeInBytes(layerContent.getLength())
                     .setMediaType("application/octet-stream")));
 
-        // BEGIN: com.azure.containers.containerregistry.ContainerRegistryBlobClient.uploadManifest
+        // BEGIN: com.azure.containers.containerregistry.uploadManifest
         blobClient.uploadManifest(manifest, "v1");
-        // END: com.azure.containers.containerregistry.ContainerRegistryBlobClient.uploadManifest
+        // END: com.azure.containers.containerregistry.uploadManifest
     }
 
     private void uploadCustomManifestMediaType() {
@@ -128,5 +163,26 @@ public class UploadImage {
         Response<UploadManifestResult> response = blobClient.uploadManifestWithResponse(options, Context.NONE);
         System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest());
         // END: com.azure.containers.containerregistry.uploadCustomManifest
+    }
+
+    private static FileInputStream getFileStream(String name) {
+        try {
+            return new FileInputStream(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String getTempDirectory() {
+        String outDir = null;
+        try {
+            outDir = Files.createTempDirectory(null).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        System.out.printf("Writing content to %s\n", outDir);
+        return outDir;
     }
 }
