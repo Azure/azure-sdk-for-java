@@ -453,8 +453,8 @@ public final class AttestationClient {
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TpmAttestationResult attestTpm(BinaryData request) {
@@ -476,8 +476,8 @@ public final class AttestationClient {
      * @param context Context for operation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException    thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TpmAttestationResult> attestTpmWithResponse(BinaryData request, Context context) {
