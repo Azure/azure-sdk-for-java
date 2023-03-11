@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -997,9 +998,10 @@ public class EventHubClientBuilder implements
                     connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+                final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
+                    connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
                     messageSerializer);
 
                 sink.next(connection);

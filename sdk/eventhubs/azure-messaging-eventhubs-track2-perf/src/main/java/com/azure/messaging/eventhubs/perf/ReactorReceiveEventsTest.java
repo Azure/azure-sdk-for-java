@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -90,9 +91,10 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
             connectionOptions.getAuthorizationScope());
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+        final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
         final PerfMessageSerializer messageSerializer = new PerfMessageSerializer();
         connection = new ReactorConnection(connectionId,
-            connectionOptions, provider, handlerProvider, tokenManagerProvider,
+            connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
 
         return Mono.empty();
