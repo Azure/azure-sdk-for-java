@@ -36,5 +36,6 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink, AsyncCloseable {
      *
      * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
      */
+    // TODO (anu,connie): remove updateDisposition from this contract as it is now exported by the updated base AmqpReceiveLink.
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
 }

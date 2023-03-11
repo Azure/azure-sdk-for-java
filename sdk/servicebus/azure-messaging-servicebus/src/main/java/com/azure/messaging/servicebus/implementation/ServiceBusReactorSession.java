@@ -9,15 +9,15 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ConsumerSettings;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,7 +26,6 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
@@ -55,11 +54,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
+    private final ServiceBusAmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private final AmqpConnection amqpConnection;
     private final AmqpRetryOptions retryOptions;
     private final boolean distributedTransactionsSupport;
+    private final boolean useLegacyReceiver;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -69,25 +70,29 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param retryOptions Retry options.
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
+     * @param useLegacyReceiver (temporary) flag indicating which receiver, legacy or new, to create.
      */
     ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+        ServiceBusAmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
-        ServiceBusCreateSessionOptions createOptions) {
-        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier,
+        ServiceBusCreateSessionOptions createOptions, boolean useLegacyReceiver) {
+        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
         this.retryOptions = retryOptions;
+        this.linkProvider = linkProvider;
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.distributedTransactionsSupport = createOptions.isDistributedTransactionsSupported();
+        this.useLegacyReceiver = useLegacyReceiver;
     }
 
     @Override
@@ -163,13 +168,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
     }
 
-    @Override
-    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
-        ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, retryPolicy);
-    }
-
     private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         Map<Symbol, Object> filter, String clientIdentifier) {
@@ -187,30 +185,39 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
         }
 
-
         final SenderSettleMode senderSettleMode;
         final ReceiverSettleMode receiverSettleMode;
+        final DeliverySettleMode deliverySettleMode;
         switch (receiveMode) {
             case PEEK_LOCK:
                 senderSettleMode = SenderSettleMode.UNSETTLED;
                 receiverSettleMode = ReceiverSettleMode.SECOND;
+                deliverySettleMode = DeliverySettleMode.SETTLE_VIA_DISPOSITION;
                 break;
             case RECEIVE_AND_DELETE:
                 senderSettleMode = SenderSettleMode.SETTLED;
                 receiverSettleMode = ReceiverSettleMode.FIRST;
+                deliverySettleMode = DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY;
                 break;
             default:
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
 
+        final ConsumerSettings consumerSettings;
+        if (useLegacyReceiver) {
+            consumerSettings = new ConsumerSettings();
+        } else {
+            consumerSettings = new ConsumerSettings(deliverySettleMode, true);
+        }
+
         if (distributedTransactionsSupport) {
-            return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> createConsumer(linkName,
+            return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> super.createConsumer(linkName,
                 entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
-                receiverSettleMode)
+                receiverSettleMode, consumerSettings)
                 .cast(ServiceBusReceiveLink.class));
         } else {
             return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
-                null, senderSettleMode, receiverSettleMode).cast(ServiceBusReceiveLink.class);
+                null, senderSettleMode, receiverSettleMode, consumerSettings).cast(ServiceBusReceiveLink.class);
         }
     }
 }

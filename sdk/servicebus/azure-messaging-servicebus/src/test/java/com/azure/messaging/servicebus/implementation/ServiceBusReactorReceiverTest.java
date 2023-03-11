@@ -70,7 +70,8 @@ class ServiceBusReactorReceiverTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorDispatcher reactorDispatcher;
-    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
     @Mock
@@ -95,8 +96,6 @@ class ServiceBusReactorReceiverTest {
 
         openMocks = MockitoAnnotations.openMocks(this);
 
-        when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
-
         doAnswer(invocation -> {
             LOGGER.info("Running work on dispatcher.");
             return null;
@@ -117,7 +116,7 @@ class ServiceBusReactorReceiverTest {
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
         reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
-            tokenManager, reactorProvider, retryPolicy);
+            tokenManager, reactorDispatcher, retryOptions);
     }
 
     @AfterEach
