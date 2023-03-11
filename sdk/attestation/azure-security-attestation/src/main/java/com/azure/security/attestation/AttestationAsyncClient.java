@@ -535,7 +535,7 @@ public final class AttestationAsyncClient {
     }
 
     /**
-     * @brief Performs TPM attestation.
+     * Performs TPM attestation.
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
@@ -557,7 +557,7 @@ public final class AttestationAsyncClient {
     }
 
     /**
-     * @brief Performs TPM attestation.
+     * Performs TPM attestation.
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
