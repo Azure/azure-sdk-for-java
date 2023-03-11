@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -54,12 +56,12 @@ public final class CosmosDiagnosticsContext {
     private Duration duration = null;
     private int statusCode = 0;
     private int subStatusCode = 0;
-    private Integer actualItemCount = 0;
+    private AtomicInteger actualItemCount = new AtomicInteger(-1);
     private float totalRequestCharge = 0;
     private int maxRequestSize = 0;
     private int maxResponseSize = 0;
     private String cachedRequestDiagnostics = null;
-    private boolean isCompleted = false;
+    private AtomicBoolean isCompleted = new AtomicBoolean(false);
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -179,7 +181,11 @@ public final class CosmosDiagnosticsContext {
      * @return the actual number of items returned by a feed operation. Will be null for point operations.
      */
     public Integer getActualItemCount() {
-        return this.actualItemCount;
+        int snapshot = this.actualItemCount.get();
+        if (snapshot < 0) {
+            return null;
+        }
+        return snapshot;
     }
 
     /**
@@ -351,7 +357,7 @@ public final class CosmosDiagnosticsContext {
      * @return a flag indicating whether the operation has been completed yet.
      */
     public boolean isCompleted() {
-        return this.isCompleted;
+        return this.isCompleted.get();
     }
 
     /**
@@ -392,7 +398,13 @@ public final class CosmosDiagnosticsContext {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
-            this.actualItemCount += actualItemCount;
+            if (actualItemCount != null) {
+                if (this.actualItemCount.get() >= 0) {
+                    this.actualItemCount.addAndGet(actualItemCount);
+                } else {
+                    this.actualItemCount.set(actualItemCount);
+                }
+            }
             this.duration = Duration.between(this.startTime, Instant.now());
             this.cachedRequestDiagnostics = null;
         }
@@ -400,15 +412,15 @@ public final class CosmosDiagnosticsContext {
 
     synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
         synchronized (this.spanName) {
-            this.isCompleted = true;
+            this.isCompleted.set(true);
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
             if (actualItemCount != null) {
-                if (this.actualItemCount != null) {
-                    this.actualItemCount += actualItemCount;
+                if (this.actualItemCount.get() >= 0) {
+                    this.actualItemCount.addAndGet(actualItemCount);
                 } else {
-                    this.actualItemCount = actualItemCount;
+                    this.actualItemCount.set(actualItemCount);
                 }
             }
             this.duration = Duration.between(this.startTime, Instant.now());
@@ -444,7 +456,7 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.actualItemCount != null) {
-            ctxNode.put("actualItems", this.actualItemCount);
+            ctxNode.put("actualItems", this.actualItemCount.get());
         }
 
         if (this.finalError != null) {

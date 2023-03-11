@@ -293,12 +293,7 @@ public final class DiagnosticsProvider {
                 CosmosException exception = (CosmosException) throwable;
                 statusCode = exception.getStatusCode();
                 subStatusCode = exception.getSubStatusCode();
-
-                if (effectiveRequestCharge != null) {
-                    effectiveRequestCharge += exception.getRequestCharge();
-                } else {
-                    effectiveRequestCharge = exception.getRequestCharge();
-                }
+                effectiveRequestCharge = exception.getRequestCharge();
                 effectiveDiagnostics = exception.getDiagnostics();
             }
             end(statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
@@ -361,13 +356,12 @@ public final class DiagnosticsProvider {
                 "recordFeedResponseConsumerLatency should only be used for terminal signal");
 
             Context context = getContextFromReactorOrNull(signal.getContextView());
-            CosmosDiagnosticsContext cosmosCtx = null;
-
-            if (context != null) {
-                cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrNull(context);
+            if (context == null) {
+                return;
             }
 
-            this.recordFeedResponseConsumerLatencyCore(context, cosmosCtx, feedResponseConsumerLatency);
+            this.recordFeedResponseConsumerLatencyCore(
+                context, getCosmosDiagnosticsContextFromTraceContextOrNull(context), feedResponseConsumerLatency);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
             System.exit(9902);
@@ -416,9 +410,7 @@ public final class DiagnosticsProvider {
 
         if (context != null && this.isRealTracer()) {
             Map<String, Object> attributes = new HashMap<>();
-            if (cosmosCtx != null) {
-                attributes.put("Diagnostics", cosmosCtx.toString());
-            }
+            attributes.put("Diagnostics", cosmosCtx.toString());
 
             this.tracer.addEvent("SlowFeedResponseConsumer", attributes, OffsetDateTime.now(), context);
             return;
