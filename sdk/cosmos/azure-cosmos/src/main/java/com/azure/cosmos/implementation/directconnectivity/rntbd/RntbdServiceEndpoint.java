@@ -729,7 +729,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 authority -> {
 
                     RntbdDurableEndpointMetrics durableEndpointMetrics = durableMetrics.computeIfAbsent(
-                        physicalAddress.getAuthority(),
+                        authority,
                         ignoreMe -> new RntbdDurableEndpointMetrics()
                     );
 
