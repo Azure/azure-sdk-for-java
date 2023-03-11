@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.CreditFlowMode;
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
@@ -1576,18 +1578,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionSupport.getRetryOptions());
 
-//        TODO: anuchan; Legacy vs new
-//        if (connectionSupport.isLegacyStack()) {
-//           use ServiceBusReceiveLinkProcessor
-//        } else {
-//           use MessageFlux
-//        }
-
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
-
-        final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, receiverOptions);
+        final ServiceBusAsyncConsumer newConsumer;
+        if (connectionSupport.isLegacyStack()) {
+            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
+                new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
+            newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, receiverOptions);
+        } else {
+            final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
+                CreditFlowMode.RequestDriven, retryPolicy);
+            newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions);
+        }
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.

@@ -447,7 +447,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private boolean tryReceiveUsingNewStack() {
-        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
+        final ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         final boolean canUseNewStack = receiverClient.canUseNewStack();
         if (!canUseNewStack) {
             return false;
