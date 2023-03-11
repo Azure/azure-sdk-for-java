@@ -95,7 +95,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
 
-
     // endregion
 
     // region Constructors
