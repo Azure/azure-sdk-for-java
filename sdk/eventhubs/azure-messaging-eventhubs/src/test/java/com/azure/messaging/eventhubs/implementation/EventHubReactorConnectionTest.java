@@ -6,10 +6,13 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorExecutor;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -44,6 +47,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
@@ -94,6 +98,7 @@ public class EventHubReactorConnectionTest {
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler connectionHandler;
+    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
     @BeforeAll
     public static void init() {
@@ -139,6 +144,9 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
+            any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
+            .then(answerByCreatingExecutor());
 
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
             reactorDispatcher, Duration.ofSeconds(20), AmqpMetricsProvider.noop());
@@ -185,7 +193,7 @@ public class EventHubReactorConnectionTest {
             .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path", AmqpMetricsProvider.noop()));
 
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
+            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer);
 
         // Act & Assert
@@ -198,5 +206,19 @@ public class EventHubReactorConnectionTest {
     @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMock(this);
+    }
+
+    private Answer<ReactorExecutor> answerByCreatingExecutor() {
+        // Even before introducing 'ReactorProvider.createExecutorForReactor', the tests used to rely on a real
+        // 'ReactorExecutor' object, not on a mock(ReactorExecutor), continue using a real 'ReactorExecutor'
+        //  object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
+        return invocation -> {
+            final Reactor r = invocation.getArgument(0);
+            final String conId = invocation.getArgument(1);
+            final String fqdn = invocation.getArgument(2);
+            final ReactorConnection.ReactorExceptionHandler exceptionHandler = invocation.getArgument(3);
+            final AmqpRetryOptions retry = invocation.getArgument(4);
+            return (new ReactorProvider()).createExecutor(r, conId, fqdn, exceptionHandler, retry);
+        };
     }
 }
