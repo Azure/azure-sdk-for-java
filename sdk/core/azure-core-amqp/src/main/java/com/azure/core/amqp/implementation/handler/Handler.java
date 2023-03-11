@@ -20,9 +20,11 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
  * Base class for all proton-j handlers.
  */
 public abstract class Handler extends BaseHandler implements Closeable {
-    private final AtomicBoolean isTerminal = new AtomicBoolean();
+    // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
     private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
         .latestOrDefault(EndpointState.UNINITIALIZED);
+    // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
+    private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final String connectionId;
     private final String hostname;
 
@@ -76,6 +78,13 @@ public abstract class Handler extends BaseHandler implements Closeable {
     }
 
     /**
+     * The function notified when the state of the amqp endpoint (connection, session, link) become terminal.
+     */
+    protected void onEndpointTerminalState() {
+        // NO-OP
+    }
+
+    /**
      * Emits the next endpoint. If the previous endpoint was emitted, it is skipped. If the handler is closed, the
      * endpoint state is not emitted.
      *
@@ -111,6 +120,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
+        onEndpointTerminalState();
         endpointStates.emitError(error, (signalType, emitResult) -> {
             if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
                 addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
@@ -136,6 +146,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
+        onEndpointTerminalState();
         // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
         // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
         endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
