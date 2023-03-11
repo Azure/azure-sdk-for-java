@@ -8,6 +8,8 @@ public class BodyKeySanitizer extends TestProxySanitizer {
     private String jsonPath;
     private String redactedValue;
 
+    private String regex;
+
     /**
      * Creates an instance of BodyKeySanitizer
      *
@@ -31,5 +33,20 @@ public class BodyKeySanitizer extends TestProxySanitizer {
     @Override
     public String getRedactedValue() {
         return redactedValue;
+    }
+
+    @Override
+    public String getRegex() {
+        return regex;
+    }
+
+    /**
+     * Set regex to apply for a specific body key
+     * @param regex the regex to apply
+     * @return the {@link BodyKeySanitizer} itself.
+     */
+    public BodyKeySanitizer setRegex(String regex) {
+        this.regex = regex;
+        return this;
     }
 }

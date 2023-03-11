@@ -169,8 +169,12 @@ public class TestProxyUtils {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
     }
 
-    private static String createBodyJsonKeyRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
+    private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
+        if (regex == null) {
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
+        } else {
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey, regex);
+        }
     }
 
 
@@ -215,8 +219,9 @@ public class TestProxyUtils {
                 case BODY_KEY:
                     sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
                     BodyKeySanitizer bodyKeySanitizer = (BodyKeySanitizer) testProxySanitizer;
-                    requestBody = createBodyJsonKeyRequestBody(bodyKeySanitizer.getJsonPath(),
-                        testProxySanitizer.getRedactedValue());
+                        requestBody = createBodyJsonKeyRequestBody(bodyKeySanitizer.getJsonPath(),
+                            bodyKeySanitizer.getRegex(),
+                            bodyKeySanitizer.getRedactedValue());
                     return createHttpRequest(requestBody, sanitizerType);
                 case HEADER:
                     sanitizerType = HEADER.getName();

@@ -14,7 +14,6 @@ import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.BodyKeySanitizer;
 import com.azure.core.test.models.BodyRegexSanitizer;
 import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.HeaderRegexSanitizer;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestUtils;
@@ -67,7 +66,7 @@ public class TestProxyTests extends TestProxyTestBase {
     static {
         customSanitizer.add(new BodyKeySanitizer("$..modelId", REDACTED));
         customSanitizer.add(new BodyRegexSanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED).setGroupForReplace("tablename"));
-        customSanitizer.add(new HeaderRegexSanitizer("Operation-Location", URL_REGEX, REDACTED));
+        customSanitizer.add(new BodyKeySanitizer("Operation-Location", REDACTED).setRegex(URL_REGEX));
     }
 
     @BeforeAll
@@ -246,13 +245,15 @@ public class TestProxyTests extends TestProxyTestBase {
         assertEquals(response.getStatusCode(), 200);
 
         assertEquals(200, response.getStatusCode());
-        // RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-        // RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-        // // default sanitizers
-        // assertEquals("http://REDACTED/fr/path/1", record.getUri());
-        // assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-        // // custom sanitizers
-        // assertEquals(REDACTED, record.getResponse().get("modelId"));
+        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // default sanitizers
+        assertEquals("http://REDACTED/fr/path/1", record.getUri());
+        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        assertTrue(record.getResponse().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
+
+        // custom sanitizers
+        assertEquals(REDACTED, record.getResponse().get("modelId"));
 
     }
 
