@@ -17,7 +17,6 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
@@ -61,9 +60,12 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         // OpenTelemetry reactor instrumentation needs a bit of help
         // to pick up Azure SDK context. While we're working on explicit
         // context propagation, ScalarPropagatingMono.INSTANCE is the workaround
-        return next.process()
-            .doOnEach(this::handleResponse)
-            .contextWrite(reactor.util.context.Context.of(REACTOR_HTTP_TRACE_CONTEXT_KEY, startSpan(context)));
+        return Mono.defer(() -> {
+            Context span = startSpan(context);
+            return next.process()
+                .doOnSuccess(response -> endSpan(response, null, span))
+                .doOnError(exception -> endSpan(null, exception, span));
+        });
     }
 
     @SuppressWarnings("try")
@@ -116,22 +118,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         if (!CoreUtils.isNullOrEmpty(requestId)) {
             tracer.setAttribute(CLIENT_REQUEST_ID_ATTRIBUTE, requestId, span);
         }
-    }
-
-    /**
-     * Handles retrieving the information from the service response and ending the span.
-     *
-     * @param signal Reactive Stream signal fired by Reactor.
-     */
-    private void handleResponse(Signal<? extends HttpResponse> signal) {
-        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
-        if (signal.isOnComplete() || signal.isOnSubscribe()) {
-            return;
-        }
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Context span = signal.getContextView().getOrDefault(REACTOR_HTTP_TRACE_CONTEXT_KEY, null);
-        endSpan(signal.get(), signal.getThrowable(), span);
     }
 
     private void endSpan(HttpResponse response, Throwable error, Context span) {
