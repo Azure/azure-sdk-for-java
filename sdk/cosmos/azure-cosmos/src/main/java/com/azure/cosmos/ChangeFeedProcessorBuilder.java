@@ -152,7 +152,8 @@ public class ChangeFeedProcessorBuilder {
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
-    ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+    @Beta(value = Beta.SinceVersion.V4_42_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         checkNotNull(consumer, "Argument 'consumer' can not be null");
         checkArgument(
             this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
