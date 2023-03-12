@@ -27,75 +27,75 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class StorageServiceController {
 
-	private final StorageService storageService;
+    private final StorageService storageService;
 
-	@Autowired
-	public StorageServiceController(final StorageService storageService) {
-		this.storageService = storageService;
-	}
+    @Autowired
+    public StorageServiceController(final StorageService storageService) {
+        this.storageService = storageService;
+    }
 
-	@GetMapping("/")
-	public String listUploadedFiles(final Model model,
-									final HttpServletResponse response) {
-		model.addAttribute("files", storageService.listAllFiles().collect(Collectors.toList()));
-		response.addHeader("Cache-Control", "no-cache");
-		return "uploadForm";
-	}
+    @GetMapping("/")
+    public String listUploadedFiles(final Model model,
+                                    final HttpServletResponse response) {
+        model.addAttribute("files", storageService.listAllFiles().collect(Collectors.toList()));
+        response.addHeader("Cache-Control", "no-cache");
+        return "uploadForm";
+    }
 
-	@GetMapping("/files/{filename:.+}")
-	public ResponseEntity<Resource> serveFile(@PathVariable final String filename) {
-		final StorageItem storageItem = storageService.getFile(filename);
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable final String filename) {
+        final StorageItem storageItem = storageService.getFile(filename);
 
-		final String contentDisposition;
-		switch (storageItem.getContentDisplayMode()) {
-			default:
-			case DOWNLOAD: {
-				contentDisposition = "attachment";
-				break;
-			}
-			case MODAL_POPUP:
-			case NEW_BROWSER_TAB: {
-				contentDisposition = "inline";
-			}
-		}
+        final String contentDisposition;
+        switch (storageItem.getContentDisplayMode()) {
+            default:
+            case DOWNLOAD: {
+                contentDisposition = "attachment";
+                break;
+            }
+            case MODAL_POPUP:
+            case NEW_BROWSER_TAB: {
+                contentDisposition = "inline";
+            }
+        }
 
-		final Resource body = new InputStreamResource(storageItem.getContent(), storageItem.getFileName());
+        final Resource body = new InputStreamResource(storageItem.getContent(), storageItem.getFileName());
 
-		return ResponseEntity.ok()
-		   .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition + "; filename=\"" + filename + "\"")
-		   .contentType(MediaType.parseMediaType(storageItem.getContentType()))
-		   .body(body);
-	}
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition + "; filename=\"" + filename + "\"")
+            .contentType(MediaType.parseMediaType(storageItem.getContentType()))
+            .body(body);
+    }
 
-	@PostMapping("/")
-	public String handleFileUpload(@RequestParam("file") final MultipartFile file,
-								   final RedirectAttributes redirectAttributes) {
-		boolean success = false;
-		try {
-			storageService.store(file.getOriginalFilename(), file.getInputStream(), file.getSize());
-			success = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    @PostMapping("/")
+    public String handleFileUpload(@RequestParam("file") final MultipartFile file,
+                                   final RedirectAttributes redirectAttributes) {
+        boolean success = false;
+        try {
+            storageService.store(file.getOriginalFilename(), file.getInputStream(), file.getSize());
+            success = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		redirectAttributes.addFlashAttribute("success", success);
-		redirectAttributes.addFlashAttribute("message", success ?
-				"You successfully uploaded " + file.getOriginalFilename() + "!" :
-				"Failed to upload " + file.getOriginalFilename());
+        redirectAttributes.addFlashAttribute("success", success);
+        redirectAttributes.addFlashAttribute("message", success ?
+            "You successfully uploaded " + file.getOriginalFilename() + "!" :
+            "Failed to upload " + file.getOriginalFilename());
 
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 
-	@GetMapping("/files/delete/{filename}")
-	public String deleteFile(@PathVariable final String filename,
-							 final RedirectAttributes redirectAttributes) {
-		final boolean success = storageService.deleteFile(filename);
+    @GetMapping("/files/delete/{filename}")
+    public String deleteFile(@PathVariable final String filename,
+                             final RedirectAttributes redirectAttributes) {
+        final boolean success = storageService.deleteFile(filename);
 
-		redirectAttributes.addFlashAttribute("success", success);
-		redirectAttributes.addFlashAttribute("message", success ?
-			"You successfully deleted " + filename + "!" :
-			"Failed to delete " + filename + ".");
+        redirectAttributes.addFlashAttribute("success", success);
+        redirectAttributes.addFlashAttribute("message", success ?
+            "You successfully deleted " + filename + "!" :
+            "Failed to delete " + filename + ".");
 
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 }

@@ -39,9 +39,12 @@ public interface StorageItem {
                     case "gif":
                     case "jpg":
                     case "jpeg":
-                    case "png": return DisplayMode.MODAL_POPUP;
-                    case "pdf": return DisplayMode.NEW_BROWSER_TAB;
-                    default: return DisplayMode.DOWNLOAD;
+                    case "png":
+                        return DisplayMode.MODAL_POPUP;
+                    case "pdf":
+                        return DisplayMode.NEW_BROWSER_TAB;
+                    default:
+                        return DisplayMode.DOWNLOAD;
                 }
             }
         }

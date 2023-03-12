@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication(proxyBeanMethods = false)
 public class SpringNativeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringNativeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringNativeApplication.class, args);
+    }
 
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return (args) -> {
-			storageService.init();
-		};
-	}
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.init();
+        };
+    }
 }

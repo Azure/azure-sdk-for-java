@@ -54,8 +54,8 @@ public class AzureBlobStorageService implements StorageService {
         }
 
         final BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-              .connectionString(blobStorageConnectionString)
-              .buildClient();
+            .connectionString(blobStorageConnectionString)
+            .buildClient();
 
         blobContainerClient = blobServiceClient.getBlobContainerClient(blobStorageContainerName);
         if (!blobContainerClient.exists()) {
