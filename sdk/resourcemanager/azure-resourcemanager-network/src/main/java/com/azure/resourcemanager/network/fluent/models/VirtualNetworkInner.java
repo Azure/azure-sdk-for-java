@@ -404,6 +404,15 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
+     * Get the flowLogs property: A collection of references to flow log resources.
+     *
+     * @return the flowLogs value.
+     */
+    public List<FlowLogInner> flowLogs() {
+        return this.innerProperties() == null ? null : this.innerProperties().flowLogs();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

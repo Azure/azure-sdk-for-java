@@ -19,10 +19,10 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.BinaryData;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -123,7 +123,7 @@ public class AnalyzeHealthcareEntitiesAsync {
                     }
                     System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
                     // FHIR bundle in JSON format
-                    final BinaryData fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
                     if (fhirBundle != null) {
                         System.out.printf("FHIR bundle: %s%n", fhirBundle);
                     }

@@ -20,6 +20,15 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
     public static final NetworkInterfaceAuxiliaryMode FLOATING = fromString("Floating");
 
     /**
+     * Creates a new instance of NetworkInterfaceAuxiliaryMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkInterfaceAuxiliaryMode() {
+    }
+
+    /**
      * Creates or finds a NetworkInterfaceAuxiliaryMode from its string representation.
      *
      * @param name a name to look for.

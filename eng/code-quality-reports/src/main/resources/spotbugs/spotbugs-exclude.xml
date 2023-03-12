@@ -190,6 +190,7 @@
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
+      <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -577,6 +578,13 @@
       <Method name="testMSIEndpointWithSystemAssigned"/>
       <Method name="testMSIEndpointWithUserAssigned"/>
     </Or>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, null is checked in signal.hasValue() -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer"/>
+    <Method name="~(.*)\$reportSyncReceiveSpan\$(.*)"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
@@ -1475,6 +1483,13 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Method name="injectConnectionErrorsInternal"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
         https://github.com/spotbugs/spotbugs/issues/1001 -->
   <Match>
@@ -2044,7 +2059,10 @@
   </Match>
 
   <Match>
-    <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    <Or>
+      <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+      <Class name="~com.azure.cosmos.test.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
 
@@ -2565,4 +2583,17 @@
       <Field name="searchClient"/>
     </Or>
   </Match>
+  <!-- Derived type changes this field as a marker. -->
+  <Match>
+    <Class name="com.azure.core.test.TestBase"/>
+    <Field name="enableTestProxy"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+  <!-- Exception is ignored in a loop waiting for an http endpoint -->
+  <Match>
+    <Class name="com.azure.core.test.utils.TestProxyManager"/>
+    <Method name="startProxy"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
 </FindBugsFilter>

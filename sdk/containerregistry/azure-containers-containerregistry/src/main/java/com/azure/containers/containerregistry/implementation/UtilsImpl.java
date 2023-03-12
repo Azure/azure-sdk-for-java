@@ -13,6 +13,8 @@ import com.azure.containers.containerregistry.implementation.models.TagAttribute
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -40,7 +42,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -50,21 +54,21 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -74,16 +78,19 @@ public final class UtilsImpl {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-containers-containerregistry.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final ContainerRegistryAudience ACR_ACCESS_TOKEN_AUDIENCE = ContainerRegistryAudience.fromString("https://containerregistry.azure.net");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-
+    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
+    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.uploadBlob";
+    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.downloadBlob";
+
     private UtilsImpl() { }
 
     /**
@@ -113,7 +120,8 @@ public final class UtilsImpl {
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
-        ContainerRegistryServiceVersion serviceVersion) {
+        ContainerRegistryServiceVersion serviceVersion,
+        Tracer tracer) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -145,10 +153,10 @@ public final class UtilsImpl {
         credentialPolicies.add(loggingPolicy);
 
         if (audience == null)  {
-            audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
+            audience = ACR_ACCESS_TOKEN_AUDIENCE;
         }
 
-        Tracer tracer = createTracer(clientOptions);
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
@@ -157,6 +165,7 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .clientOptions(clientOptions)
                 .tracer(tracer)
                 .build());
 
@@ -169,6 +178,7 @@ public final class UtilsImpl {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
     }
@@ -178,7 +188,7 @@ public final class UtilsImpl {
         return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
-    private static Tracer createTracer(ClientOptions clientOptions) {
+    public static Tracer createTracer(ClientOptions clientOptions) {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions);
@@ -191,16 +201,9 @@ public final class UtilsImpl {
      * @return SHA-256 digest for the given buffer.
      */
     public static String computeDigest(ByteBuffer buffer) {
-        ByteBuffer readOnlyBuffer = buffer.asReadOnlyBuffer();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(readOnlyBuffer);
-            byte[] digest = md.digest();
-            return "sha256:" + byteArrayToHex(digest);
-
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        MessageDigest md = createSha256();
+        md.update(buffer.asReadOnlyBuffer());
+        return "sha256:" + bytesToHexString(md.digest());
     }
 
     public static MessageDigest createSha256() {
@@ -213,10 +216,8 @@ public final class UtilsImpl {
     }
 
     public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
-        String sha256 = byteArrayToHex(messageDigest.digest());
-        if (requestedDigest.length() != 71
-            || !requestedDigest.startsWith("sha256:")
-            || !requestedDigest.endsWith(sha256)) {
+        String sha256 = bytesToHexString(messageDigest.digest());
+        if (isDigest(requestedDigest) && !requestedDigest.endsWith(sha256)) {
             throw LOGGER.atError()
                 .addKeyValue("requestedDigest", requestedDigest)
                 .addKeyValue("actualDigest", () -> "sha256:" + sha256)
@@ -224,15 +225,23 @@ public final class UtilsImpl {
         }
     }
 
-    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    public static String byteArrayToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+    public static Response<DownloadManifestResult> toDownloadManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+        String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+        String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
+
+        if (!Objects.equals(responseSha256, digest)
+            || (isDigest(tagOrDigest) && !Objects.equals(responseSha256, tagOrDigest))) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
-        return new String(hexChars);
+
+        String contentType = rawResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        ManifestMediaType responseMediaType = contentType != null ? ManifestMediaType.fromString(contentType) : null;
+
+        return new SimpleResponse<>(
+            rawResponse.getRequest(),
+            rawResponse.getStatusCode(),
+            rawResponse.getHeaders(),
+            ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     /**
@@ -437,7 +446,8 @@ public final class UtilsImpl {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static String trimNextLink(String locationHeader) {
+    public static <H, T> String getLocation(ResponseBase<H, T> response) {
+        String locationHeader = response.getHeaders().getValue(HttpHeaderName.LOCATION);
         // The location header returned in the nextLink for upload chunk operations starts with a '/'
         // which the service expects us to remove before calling it.
         if (locationHeader != null && locationHeader.startsWith("/")) {
@@ -458,15 +468,31 @@ public final class UtilsImpl {
         throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
     }
 
-    public static String convertToJson(JsonSerializable<?> jsonSerializable) {
-        StringBuilder builder = new StringBuilder();
-        try (Writer writer = new StringBuilderWriter(builder);
-             JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-            jsonSerializable.toJson(jsonWriter);
-            jsonWriter.flush();
-            return builder.toString();
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+    /**
+     * Checks if string represents tag or digest.
+     *
+     * @param tagOrDigest string to check
+     * @return true if digest, false otherwise.
+     */
+    public static boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.length() == 71 && tagOrDigest.startsWith("sha256:");
+    }
+
+    public static String formatFullyQualifiedReference(String endpoint, String repositoryName, String tagOrDigest) {
+        try {
+            URL endpointUrl = new URL(endpoint);
+            return endpointUrl.getHost() + "/" + repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
+        } catch (MalformedURLException ex) {
+            // This will not happen.
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
+    }
+
+    public static String getContentTypeString(Collection<ManifestMediaType> mediaTypes) {
+        return CoreUtils.isNullOrEmpty(mediaTypes)
+            ? SUPPORTED_MANIFEST_TYPES
+            : mediaTypes.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
     }
 }

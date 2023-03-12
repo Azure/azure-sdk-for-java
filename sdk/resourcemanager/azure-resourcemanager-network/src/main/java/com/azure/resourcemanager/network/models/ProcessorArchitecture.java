@@ -17,6 +17,15 @@ public final class ProcessorArchitecture extends ExpandableStringEnum<ProcessorA
     public static final ProcessorArchitecture X86 = fromString("X86");
 
     /**
+     * Creates a new instance of ProcessorArchitecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProcessorArchitecture() {
+    }
+
+    /**
      * Creates or finds a ProcessorArchitecture from its string representation.
      *
      * @param name a name to look for.

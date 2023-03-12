@@ -822,9 +822,11 @@ public final class RntbdTransportClientTest {
     }
 
     @Test(groups = "unit")
-    public void cancelRequestMono() throws InterruptedException {
+    public void cancelRequestMono() throws InterruptedException, URISyntaxException {
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        URI locationToRoute = new URI("http://localhost-west:8080");
+        request.requestContext.locationEndpointToRoute = locationToRoute;
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
@@ -833,13 +835,13 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.get(physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
             .invokeStoreAsync(
                 physicalAddress,
-                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document))
+                request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()
             .dispose();
@@ -981,7 +983,9 @@ public final class RntbdTransportClientTest {
                     new RntbdClientChannelHealthChecker(config),
                     30,
                     null,
-                    Duration.ofMillis(100).toNanos());
+                    Duration.ofMillis(100).toNanos(),
+                    null,
+                    config.tcpNetworkRequestTimeoutInNanos());
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
@@ -1101,6 +1105,16 @@ public final class RntbdTransportClientTest {
             return 0;
         }
 
+        @Override
+        public URI serviceEndpoint() {
+            return null;
+        }
+
+        @Override
+        public void injectConnectionErrors(String ruleId, double threshold, Class<?> eventType) {
+            throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
+        }
+
         // endregion
 
         // region Methods
@@ -1160,6 +1174,11 @@ public final class RntbdTransportClientTest {
             @Override
             public int evictions() {
                 return 0;
+            }
+
+            @Override
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
+                return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
             @Override

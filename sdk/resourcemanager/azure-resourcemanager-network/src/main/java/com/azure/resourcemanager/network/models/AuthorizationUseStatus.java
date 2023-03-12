@@ -17,6 +17,15 @@ public final class AuthorizationUseStatus extends ExpandableStringEnum<Authoriza
     public static final AuthorizationUseStatus IN_USE = fromString("InUse");
 
     /**
+     * Creates a new instance of AuthorizationUseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthorizationUseStatus() {
+    }
+
+    /**
      * Creates or finds a AuthorizationUseStatus from its string representation.
      *
      * @param name a name to look for.

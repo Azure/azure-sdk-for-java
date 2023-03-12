@@ -53,6 +53,11 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
+    /**
+     * Specifies that the out of process test proxy should be used.
+     */
+    private static boolean enableTestProxy;
+
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
     private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
         .get(AZURE_TEST_HTTP_CLIENTS);
@@ -75,7 +80,10 @@ public abstract class TestBase implements BeforeEachCallback {
         }
     }
 
-    private static TestMode testMode;
+    /**
+     * The {@link TestMode} used for this execution.
+     */
+    static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
@@ -98,6 +106,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
+
 
     /**
      * Creates a new instance of {@link TestBase}.
@@ -127,9 +136,18 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        TestMode localTestMode = testMode;
+        // for unit tests of playback/recording in azure-core-test, allow for changing the mode per-test.
+        if (testInfo.getTags().contains("Record")) {
+            localTestMode = TestMode.RECORD;
+        } else if (testInfo.getTags().contains("Playback")) {
+            localTestMode = TestMode.PLAYBACK;
+        } else if (testInfo.getTags().contains("Live")) {
+            localTestMode = TestMode.LIVE;
+        }
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled());
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
-        logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
+        logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
         try {
             interceptorManager = new InterceptorManager(testContextManager);
@@ -137,7 +155,24 @@ public abstract class TestBase implements BeforeEachCallback {
             logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
             Assertions.fail(e);
         }
-        testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+
+        if (isTestProxyEnabled()) {
+            interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
+            // The supplier/consumer are used to retrieve/store variables over the wire.
+            testResourceNamer = new TestResourceNamer(testContextManager,
+                interceptorManager.getProxyVariableConsumer(),
+                interceptorManager.getProxyVariableSupplier());
+            if (localTestMode == TestMode.PLAYBACK && !testContextManager.doNotRecordTest()) {
+                // We create the playback client here, so that it is available for returning recorded variables
+                // in a shared @BeforeEach in a test class.
+                interceptorManager.getPlaybackClient();
+            } else if (localTestMode == TestMode.RECORD && !testContextManager.doNotRecordTest()) {
+                // Similarly we create the record policy early so matchers/sanitizers can be added.
+                interceptorManager.getRecordPolicy();
+            }
+        } else {
+            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+        }
 
         beforeTest();
     }
@@ -206,7 +241,7 @@ public abstract class TestBase implements BeforeEachCallback {
          * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
          * implementation it will use.
          */
-        if (testMode == TestMode.PLAYBACK) {
+        if (testMode == TestMode.PLAYBACK && !enableTestProxy) {
             return Stream.of(new HttpClient[] { null });
         }
 
@@ -258,6 +293,21 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     static TestMode initializeTestMode() {
         return TestingHelpers.getTestMode();
+    }
+
+    /**
+     * Indicates whether the out of process test recording proxy is in use.
+     * @return true if test proxy is to be used.
+     */
+    protected static boolean isTestProxyEnabled() {
+        return enableTestProxy;
+    }
+
+    /**
+     * Enables use of the test proxy.
+     */
+    protected static void setTestProxyEnabled() {
+        enableTestProxy = true;
     }
 
     /**

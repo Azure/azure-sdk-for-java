@@ -105,6 +105,12 @@ public final class ExpressRouteCircuitPropertiesFormat {
     @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
+    /*
+     * The authorization status of the Circuit.
+     */
+    @JsonProperty(value = "authorizationStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private String authorizationStatus;
+
     /** Creates an instance of ExpressRouteCircuitPropertiesFormat class. */
     public ExpressRouteCircuitPropertiesFormat() {
     }
@@ -392,6 +398,15 @@ public final class ExpressRouteCircuitPropertiesFormat {
     public ExpressRouteCircuitPropertiesFormat withAuthorizationKey(String authorizationKey) {
         this.authorizationKey = authorizationKey;
         return this;
+    }
+
+    /**
+     * Get the authorizationStatus property: The authorization status of the Circuit.
+     *
+     * @return the authorizationStatus value.
+     */
+    public String authorizationStatus() {
+        return this.authorizationStatus;
     }
 
     /**

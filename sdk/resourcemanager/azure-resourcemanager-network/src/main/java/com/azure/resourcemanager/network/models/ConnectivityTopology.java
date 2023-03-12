@@ -17,6 +17,15 @@ public final class ConnectivityTopology extends ExpandableStringEnum<Connectivit
     public static final ConnectivityTopology MESH = fromString("Mesh");
 
     /**
+     * Creates a new instance of ConnectivityTopology value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityTopology() {
+    }
+
+    /**
      * Creates or finds a ConnectivityTopology from its string representation.
      *
      * @param name a name to look for.

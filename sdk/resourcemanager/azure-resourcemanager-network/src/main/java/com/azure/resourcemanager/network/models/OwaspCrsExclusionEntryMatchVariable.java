@@ -39,6 +39,15 @@ public final class OwaspCrsExclusionEntryMatchVariable
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_VALUES = fromString("RequestArgValues");
 
     /**
+     * Creates a new instance of OwaspCrsExclusionEntryMatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OwaspCrsExclusionEntryMatchVariable() {
+    }
+
+    /**
      * Creates or finds a OwaspCrsExclusionEntryMatchVariable from its string representation.
      *
      * @param name a name to look for.

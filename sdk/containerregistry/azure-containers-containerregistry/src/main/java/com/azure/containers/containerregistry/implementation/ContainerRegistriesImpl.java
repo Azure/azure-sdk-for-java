@@ -17,7 +17,6 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsNextHeaders;
 import com.azure.containers.containerregistry.implementation.models.DeleteRepositoryResult;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
-import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.Repositories;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
@@ -50,10 +49,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /** An instance of this class provides access to all the operations defined in ContainerRegistries. */
 public final class ContainerRegistriesImpl {
@@ -97,7 +95,7 @@ public final class ContainerRegistriesImpl {
         @Get("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<ManifestWrapper>> getManifest(
+        Mono<Response<BinaryData>> getManifest(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -107,7 +105,7 @@ public final class ContainerRegistriesImpl {
         @Get("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Response<ManifestWrapper> getManifestSync(
+        Response<BinaryData> getManifestSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
@@ -574,7 +572,7 @@ public final class ContainerRegistriesImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(String name, String reference, String accept) {
+    public Mono<Response<BinaryData>> getManifestWithResponseAsync(String name, String reference, String accept) {
         return FluxUtil.withContext(
                 context -> service.getManifest(this.client.getUrl(), name, reference, accept, context));
     }
@@ -594,7 +592,7 @@ public final class ContainerRegistriesImpl {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManifestWrapper>> getManifestWithResponseAsync(
+    public Mono<Response<BinaryData>> getManifestWithResponseAsync(
             String name, String reference, String accept, Context context) {
         return service.getManifest(this.client.getUrl(), name, reference, accept, context);
     }
@@ -613,7 +611,7 @@ public final class ContainerRegistriesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestWrapper> getManifestAsync(String name, String reference, String accept) {
+    public Mono<BinaryData> getManifestAsync(String name, String reference, String accept) {
         return getManifestWithResponseAsync(name, reference, accept).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -632,7 +630,7 @@ public final class ContainerRegistriesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManifestWrapper> getManifestAsync(String name, String reference, String accept, Context context) {
+    public Mono<BinaryData> getManifestAsync(String name, String reference, String accept, Context context) {
         return getManifestWithResponseAsync(name, reference, accept, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -652,8 +650,7 @@ public final class ContainerRegistriesImpl {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManifestWrapper> getManifestWithResponse(
-            String name, String reference, String accept, Context context) {
+    public Response<BinaryData> getManifestWithResponse(String name, String reference, String accept, Context context) {
         return service.getManifestSync(this.client.getUrl(), name, reference, accept, context);
     }
 
@@ -670,7 +667,7 @@ public final class ContainerRegistriesImpl {
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManifestWrapper getManifest(String name, String reference, String accept) {
+    public BinaryData getManifest(String name, String reference, String accept) {
         return getManifestWithResponse(name, reference, accept, Context.NONE).getValue();
     }
 

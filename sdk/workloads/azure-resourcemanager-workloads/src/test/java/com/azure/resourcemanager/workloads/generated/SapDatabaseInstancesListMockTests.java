@@ -32,7 +32,7 @@ public final class SapDatabaseInstancesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"subnet\":\"szcofizeht\",\"databaseSid\":\"gbjkvreljeamur\",\"databaseType\":\"mlovuanashcxl\",\"ipAddress\":\"jerbdkelvidizozs\",\"loadBalancerDetails\":{\"id\":\"cxjmonfdgnwncyp\"},\"vmDetails\":[],\"status\":\"Offline\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"ctzenkeifzzhmkd\",\"tags\":{\"xcudchxgsr\":\"flyh\",\"lvizb\":\"oldforobw\",\"dxe\":\"hfovvacqpbtu\"},\"id\":\"zab\",\"name\":\"elawumu\",\"type\":\"slzkwrrwoycqu\"}]}";
+            "{\"value\":[{\"properties\":{\"subnet\":\"ddtvqctt\",\"databaseSid\":\"ijaeukm\",\"databaseType\":\"ieekpndzaa\",\"ipAddress\":\"udqmeqwigpibudq\",\"loadBalancerDetails\":{\"id\":\"eb\"},\"vmDetails\":[],\"status\":\"Stopping\",\"provisioningState\":\"Creating\",\"errors\":{}},\"location\":\"ff\",\"tags\":{\"qaqhvseufu\":\"itmhhei\",\"smjqfrddgam\":\"yrxpdlcgqls\",\"vfcdisyirn\":\"uhiosrsju\",\"vwrevkhgnlnzon\":\"zhczexrxzbujrtrh\"},\"id\":\"lrpiqywnc\",\"name\":\"jtszcof\",\"type\":\"zehtdhgb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class SapDatabaseInstancesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SapDatabaseInstance> response =
-            manager.sapDatabaseInstances().list("rtrhqvwrevkhgnl", "zonzlrpiqywnc", com.azure.core.util.Context.NONE);
+            manager.sapDatabaseInstances().list("lxveabfqx", "mwmqtibx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ctzenkeifzzhmkd", response.iterator().next().location());
-        Assertions.assertEquals("flyh", response.iterator().next().tags().get("xcudchxgsr"));
+        Assertions.assertEquals("ff", response.iterator().next().location());
+        Assertions.assertEquals("itmhhei", response.iterator().next().tags().get("qaqhvseufu"));
     }
 }

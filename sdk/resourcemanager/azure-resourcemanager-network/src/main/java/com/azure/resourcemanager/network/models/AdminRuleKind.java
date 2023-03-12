@@ -17,6 +17,15 @@ public final class AdminRuleKind extends ExpandableStringEnum<AdminRuleKind> {
     public static final AdminRuleKind DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of AdminRuleKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdminRuleKind() {
+    }
+
+    /**
      * Creates or finds a AdminRuleKind from its string representation.
      *
      * @param name a name to look for.
