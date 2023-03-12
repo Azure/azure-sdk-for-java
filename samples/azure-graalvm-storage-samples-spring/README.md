@@ -49,34 +49,3 @@ Then, you can run the app like any other container:
 ```
 $ docker run --rm spring-native-sample:1.0.0-SNAPSHOT
 ```
-
-```
-┌───────────────────────────────────────────────────────────────┐
-│  azure-groupname-servicename                                  │
-│    │                                                          │
-│    │                                                          │
-│    └────── src/main/java                                      │
-│              │                                                │
-│              │                                                │
-│              ├──── com.azure.groupname.servicename            │
-│              │        │                                       │
-│              │        │                                       │
-│              │        ├─────FooClientBuilder.java             │
-│              │        │                                       │
-│              │        │                                       │
-│              │        ├─────FooClient.java                    │
-│              │        │                                       │
-│              │        │                                       │
-│              │        └─────FooAsyncClient.java               │
-│              │                                                │
-│              │                                                │
-│              └──── com.azure.groupname.servicename.models     │
-│                       │                                       │
-│                       │                                       │
-│                       ├──────InputModel.java                  │
-│                       │                                       │
-│                       │                                       │
-│                       └──────OuputModel.java                  │
-│                                                               │
-└───────────────────────────────────────────────────────────────┘
-```
