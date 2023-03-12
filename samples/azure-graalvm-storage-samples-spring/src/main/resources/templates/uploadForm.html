@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Azure Storage Explorer</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="styles.css" rel="stylesheet">
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1><img src="azure.png" class="img-fluid" style="max-width: 100px" alt="Microsoft Azure Logo"/>Azure Storage Explorer</h1>
+
+                <div th:if="${message}" class="alert" th:classappend="${success ? 'alert-success' : 'alert-danger'}" role="alert">
+                    <strong th:text="${message}"/>
+                </div>
+
+                <p>This web app demonstrates the <a href="https://github.com/Azure/azure-sdk-for-java">Azure SDK for Java</a>
+                    combined with <a href="https://spring.io/blog/2021/03/11/announcing-spring-native-beta">Spring Native</a>
+                    and <a href="https://www.graalvm.org/">GraalVM</a>. It lets users upload any file (so long as it is
+                    below the maximum allowed size) into an Azure Blob Storage container, and subsequently download it or
+                    delete it.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3>Upload New File</h3>
+                <form method="POST" enctype="multipart/form-data" action="/">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-11 custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="file">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <div class="col-1">
+                                <button type="submit" class="submit-button btn btn-primary" disabled="true">Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3>Currently Uploaded Files</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="d-flex">
+                            <th scope="col" class="col-1">#</th>
+                            <th scope="col" class="col-8">File Name</th>
+                            <th scope="col" class="col-1">Size</th>
+                            <th style="text-align: right" scope="col" class="col-2">Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex" th:each="storageItem, itr : ${files}">
+                            <th class="col-1" scope="row" th:text="${itr.index + 1}"></th>
+                            <td class="col-8" th:text="${storageItem.getFileName()}"></td>
+                            <td class="col-1" th:text="${#numbers.formatDecimal(storageItem.getFileSize() == null ? 0 : storageItem.getFileSize(), 0, 0)} + 'kB'"></td>
+                            <td style="text-align: right" class="col-2">
+                                <a th:if="${storageItem.getContentDisplayMode().name() == 'MODAL_POPUP'}"
+                                   href="" data-bs-toggle="popover" data-trigger="hover" data-placement="bottom" title="Preview File" data-content="Display the content in-browser."
+                                    data-toggle="modal" data-target="#previewModal" th:attr="data-url='/files/' + ${storageItem.getFileName()}"><i class="bi bi-display"></i></a>
+
+                                <a th:if="${storageItem.getContentDisplayMode().name() == 'NEW_BROWSER_TAB'}"
+                                   data-bs-toggle="popover" data-trigger="hover" data-placement="bottom" title="Preview File" data-content="Display the content in-browser."
+                                  th:href="'/files/' + ${storageItem.getFileName()}" target="_blank"><i class="bi bi-display"></i></a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a th:href="'/files/' + ${storageItem.getFileName()}" data-bs-toggle="popover" data-trigger="hover" data-placement="bottom" title="Download File" data-content="This will download the file to your machine"><i class="bi bi-cloud-download"></i></a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a href="" data-bs-toggle="popover" data-trigger="hover" data-placement="bottom" title="Delete File" data-content="This will delete the file from the server!"
+                                   data-toggle="modal" data-target="#deleteModal" th:attr="data-url='files/delete/' + ${storageItem.getFileName()}, data-filename=${storageItem.getFileName()}">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal file preview popup -->
+    <div class="modal fade bd-example-modal-lg" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel">File Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal confirm dialog for file deletion -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete File</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-body-content">Are you sure you wish to delete the file?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-danger delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // modal preview dialog customization - we load the image *after* the modal is showing
+        $('#previewModal').on('shown.bs.modal', function (event) {
+            var e = $(event.relatedTarget)
+            var url = e.data('url')
+            var modal = $(this)
+            var imgWidth = $('.modal-body').width()
+
+            modal.find('.modal-body').html('<img src="' + url + '" width="' + imgWidth + '" />')
+        })
+
+        // modal confirmation dialog customization
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var e = $(event.relatedTarget)
+            var filename = e.data('filename')
+            var url = e.data('url')
+            var modal = $(this)
+            modal.find('.modal-body-content').text('Are you sure you wish to delete ' + filename + '?')
+            modal.find('.delete-button').on("click", function() {
+                location.href=url;
+            })
+        })
+    </script>
+
+    <script>
+        // Change the file upload form to show the filename, when one is selected
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+            $('.submit-button').attr('disabled',false);
+        });
+    </script>
+
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+    </body>
+</html>
