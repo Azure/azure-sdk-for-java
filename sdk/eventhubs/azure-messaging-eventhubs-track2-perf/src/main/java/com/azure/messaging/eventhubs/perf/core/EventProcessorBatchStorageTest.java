@@ -81,13 +81,6 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
 
         eventDataBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
 
-        final ArrayList<EventData> eventsList = new ArrayList<>();
-        for (int number = 0; number < options.getCount(); number++) {
-            final EventData eventData = new EventData(eventDataBytes);
-            eventData.getProperties().put("index", number);
-            eventsList.add(eventData);
-        }
-
         eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(eventhubsConnectionString, eventHubName)
             .consumerGroup(options.getConsumerGroup())

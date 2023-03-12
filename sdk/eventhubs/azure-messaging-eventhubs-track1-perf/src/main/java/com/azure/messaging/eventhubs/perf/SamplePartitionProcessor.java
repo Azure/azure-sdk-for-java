@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.messaging.eventhubs.perf.core.EventHubsPerfStressOptions;
+import com.azure.perf.test.core.EventPerfTest;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventprocessorhost.CloseReason;
 import com.microsoft.azure.eventprocessorhost.IEventProcessor;
@@ -19,19 +21,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Processes a single partition.
  */
-class SamplePartitionProcessor implements IEventProcessor {
+public class SamplePartitionProcessor implements IEventProcessor {
     private final Logger logger = LoggerFactory.getLogger(SamplePartitionProcessor.class);
     private final ConcurrentLinkedQueue<EventsCounter> currentCounters = new ConcurrentLinkedQueue<>();
     private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
     private final AtomicBoolean isStopped = new AtomicBoolean();
+    private EventPerfTest<EventHubsPerfStressOptions> perfInstance;
 
-    /**
-     * Gets the event counters opened while processing this partition.
-     *
-     * @return the event counters opened while processing this partition.
-     */
-    List<EventsCounter> getCounters() {
-        return allCounters;
+    public SamplePartitionProcessor() {}
+
+
+    public SamplePartitionProcessor(EventPerfTest<EventHubsPerfStressOptions> perfInstance) {
+        this.perfInstance = perfInstance;
     }
 
     /**
@@ -102,6 +103,9 @@ class SamplePartitionProcessor implements IEventProcessor {
         for (EventData event : events) {
             Objects.requireNonNull(event, "'event' can't be null.");
             eventsCounter.increment();
+            if (perfInstance != null) {
+                perfInstance.eventRaised();
+            }
         }
     }
 
