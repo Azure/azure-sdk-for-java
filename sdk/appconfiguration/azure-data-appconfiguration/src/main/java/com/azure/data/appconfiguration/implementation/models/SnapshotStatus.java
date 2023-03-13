@@ -23,6 +23,14 @@ public final class SnapshotStatus extends ExpandableStringEnum<SnapshotStatus> {
     public static final SnapshotStatus FAILED = fromString("failed");
 
     /**
+     * Creates a new instance of SnapshotStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotStatus() {}
+
+    /**
      * Creates or finds a SnapshotStatus from its string representation.
      *
      * @param name a name to look for.

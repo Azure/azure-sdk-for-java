@@ -151,7 +151,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(String syncToken, String endpoint, String apiVersion) {
+    public AzureAppConfigurationImpl(String syncToken, String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -170,7 +170,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint, String apiVersion) {
+    public AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), syncToken, endpoint, apiVersion);
     }
 
@@ -183,7 +183,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(
+    public AzureAppConfigurationImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String syncToken,

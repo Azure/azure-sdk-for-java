@@ -35,6 +35,14 @@ public final class KeyValueFields extends ExpandableStringEnum<KeyValueFields> {
     public static final KeyValueFields ETAG = fromString("etag");
 
     /**
+     * Creates a new instance of KeyValueFields value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyValueFields() {}
+
+    /**
      * Creates or finds a KeyValueFields from its string representation.
      *
      * @param name a name to look for.

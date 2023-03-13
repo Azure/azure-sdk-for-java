@@ -16,9 +16,6 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     /** Static value status for SnapshotFields. */
     public static final SnapshotFields STATUS = fromString("status");
 
-    /** Static value status_code for SnapshotFields. */
-    public static final SnapshotFields STATUS_CODE = fromString("status_code");
-
     /** Static value filters for SnapshotFields. */
     public static final SnapshotFields FILTERS = fromString("filters");
 
@@ -45,6 +42,14 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
 
     /** Static value etag for SnapshotFields. */
     public static final SnapshotFields ETAG = fromString("etag");
+
+    /**
+     * Creates a new instance of SnapshotFields value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotFields() {}
 
     /**
      * Creates or finds a SnapshotFields from its string representation.

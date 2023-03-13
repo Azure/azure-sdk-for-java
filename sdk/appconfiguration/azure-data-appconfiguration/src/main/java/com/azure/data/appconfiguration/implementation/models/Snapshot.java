@@ -26,13 +26,6 @@ public final class Snapshot {
     private SnapshotStatus status;
 
     /*
-     * Provides additional information about the status of the snapshot. The status code values are modeled after HTTP
-     * status codes.
-     */
-    @JsonProperty(value = "status_code", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer statusCode;
-
-    /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
     @JsonProperty(value = "filters", required = true)
@@ -109,16 +102,6 @@ public final class Snapshot {
      */
     public SnapshotStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the statusCode property: Provides additional information about the status of the snapshot. The status code
-     * values are modeled after HTTP status codes.
-     *
-     * @return the statusCode value.
-     */
-    public Integer getStatusCode() {
-        return this.statusCode;
     }
 
     /**
