@@ -15,19 +15,16 @@ public final class UnknownTargetTests {
     public void testDeserialize() throws Exception {
         UnknownTarget model =
             BinaryData
-                .fromString(
-                    "{\"attributes\":{\"pgylg\":\"opuhpig\",\"medjvcslynqwwncw\":\"git\",\"pkteo\":\"zhxgktrmgucn\"}}")
+                .fromString("{\"attributes\":{\"mv\":\"ultskzbbtdz\",\"wozuhkf\":\"ekg\"}}")
                 .toObject(UnknownTarget.class);
-        Assertions.assertEquals("opuhpig", model.attributes().get("pgylg"));
+        Assertions.assertEquals("ultskzbbtdz", model.attributes().get("mv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnknownTarget model =
-            new UnknownTarget()
-                .withAttributes(mapOf("pgylg", "opuhpig", "medjvcslynqwwncw", "git", "pkteo", "zhxgktrmgucn"));
+        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("mv", "ultskzbbtdz", "wozuhkf", "ekg"));
         model = BinaryData.fromObject(model).toObject(UnknownTarget.class);
-        Assertions.assertEquals("opuhpig", model.attributes().get("pgylg"));
+        Assertions.assertEquals("ultskzbbtdz", model.attributes().get("mv"));
     }
 
     @SuppressWarnings("unchecked")
