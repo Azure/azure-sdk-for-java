@@ -1,0 +1,229 @@
+<!--
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-cosmos-test</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+  <name>Microsoft Azure Java Cosmos Test Library</name>
+  <description>This package contains core fault injection types for Azure Java Cosmos client.</description>
+  <packaging>jar</packaging>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
+
+    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
+    <revapi.skip>true</revapi.skip>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.cosmos.test/com.azure.cosmos.test=ALL-UNNAMED
+      --add-opens com.azure.cosmos.test/com.azure.cosmos.test=com.fasterxml.jackson.databind
+      --add-opens com.azure.cosmos.test/com.azure.cosmos.test.faultinjection=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <scope>test</scope>
+      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <scope>test</scope>
+      <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->
+        <exclusion>
+          <groupId>org.apache.ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <groups>unit</groups>
+          <includes>
+            <include>%regex[.*]</include>
+          </includes>
+          <properties>
+            <property>
+              <name>surefire.testng.verbose</name>
+              <value>2</value>
+            </property>
+          </properties>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <!-- unit test -->
+      <id>unit</id>
+      <properties>
+        <env>default</env>
+        <test.groups>unit</test.groups>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint with multi region support -->
+      <id>multi-region</id>
+      <properties>
+        <test.groups>multi-region</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>fast</id>
+      <properties>
+        <test.groups>simple</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

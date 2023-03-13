@@ -85,6 +85,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.pkversion=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.epkversion=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Prevents Checkstyle validating implementation files. -->
@@ -127,7 +128,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 

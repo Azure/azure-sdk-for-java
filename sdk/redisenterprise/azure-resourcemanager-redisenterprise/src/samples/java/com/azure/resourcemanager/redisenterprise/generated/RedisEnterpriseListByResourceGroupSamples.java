@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RedisEnterprise ListByResourceGroup. */
 public final class RedisEnterpriseListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseListByResourceGroup.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseListByResourceGroup.json
      */
     /**
      * Sample code: RedisEnterpriseListByResourceGroup.
@@ -18,6 +16,6 @@ public final class RedisEnterpriseListByResourceGroupSamples {
      */
     public static void redisEnterpriseListByResourceGroup(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.redisEnterprises().listByResourceGroup("rg1", Context.NONE);
+        manager.redisEnterprises().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

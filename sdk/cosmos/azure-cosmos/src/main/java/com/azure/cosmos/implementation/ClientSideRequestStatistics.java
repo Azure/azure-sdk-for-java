@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -41,6 +42,7 @@ public class ClientSideRequestStatistics {
     private Set<String> regionsContacted;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
+    private FaultInjectionRequestContext requestContext;
     private GatewayStatistics gatewayStatistics;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;

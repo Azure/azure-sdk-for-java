@@ -35,7 +35,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
@@ -50,7 +49,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
