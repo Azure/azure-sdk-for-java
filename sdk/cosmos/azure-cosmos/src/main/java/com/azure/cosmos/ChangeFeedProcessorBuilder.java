@@ -110,6 +110,7 @@ public class ChangeFeedProcessorBuilder {
 
     /**
      * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
+     * Attention! This API is not merge proof, please use {@link #handleLatestVersionChanges(Consumer)} instead.
      *
      * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleChanges -->
      * <pre>

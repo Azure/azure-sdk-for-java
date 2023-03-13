@@ -63,7 +63,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
-    // TODO: Reenable the tests when enable the handleLatestVersionChanges public API change
     private final static Logger logger = LoggerFactory.getLogger(IncrementalChangeFeedProcessorTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
@@ -84,7 +83,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginning() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);

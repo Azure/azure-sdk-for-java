@@ -9,8 +9,11 @@
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": ""
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": ""
   },
   "include": [
     {
