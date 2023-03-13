@@ -7,6 +7,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** The CollectTonesResult model. */
 @Fluent
@@ -35,5 +36,17 @@ public final class CollectTonesResult extends RecognizeResult {
     public CollectTonesResult setTones(List<DtmfTone> dtmfTones) {
         this.dtmfTones = dtmfTones;
         return this;
+    }
+
+    /**
+     * Set the tones property: The tones property.
+     *
+     * @return the CollectTonesResult object itself.
+     */
+    public String convertToString() {
+        return dtmfTones.stream()
+                .map(x -> x.toChar())
+                .map(x -> x.toString())
+                .collect(Collectors.joining());
     }
 }

@@ -68,8 +68,72 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
         return fromString(name, DtmfTone.class);
     }
 
+    /** @return known Tone values in char. */
+    public char toChar() {
+        return convertToChar();
+    }
+
     /** @return known Tone values. */
     public static Collection<DtmfTone> values() {
         return values(DtmfTone.class);
+    }
+
+    private char convertToChar() {
+        String toneValue = this.toString();
+        char toneInChar = ' ';
+        switch (toneValue) {
+            case "zero":
+                toneInChar = '0';
+                break;
+            case "one":
+                toneInChar = '1';
+                break;
+            case "two":
+                toneInChar = '2';
+                break;
+            case "three":
+                toneInChar = '3';
+                break;
+            case "four":
+                toneInChar = '4';
+                break;
+            case "five":
+                toneInChar = '5';
+                break;
+            case "six":
+                toneInChar = '6';
+                break;
+            case "seven":
+                toneInChar = '7';
+                break;
+            case "eight":
+                toneInChar = '8';
+                break;
+            case "nine":
+                toneInChar = '9';
+                break;
+            case "a":
+                toneInChar = 'a';
+                break;
+            case "b":
+                toneInChar = 'b';
+                break;
+            case "c":
+                toneInChar = 'c';
+                break;
+            case "d":
+                toneInChar = 'd';
+                break;
+            case "pound":
+                toneInChar = '#';
+                break;
+            case "asterisk":
+                toneInChar = '*';
+                break;
+            default:
+                break;
+        }
+
+        return toneInChar;
     }
 }
