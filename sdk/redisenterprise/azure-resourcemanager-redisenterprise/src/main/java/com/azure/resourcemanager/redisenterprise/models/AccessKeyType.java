@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redisenterprise.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AccessKeyType. */
+/** Which access key to regenerate. */
 public enum AccessKeyType {
     /** Enum value Primary. */
     PRIMARY("Primary"),
@@ -30,6 +30,9 @@ public enum AccessKeyType {
      */
     @JsonCreator
     public static AccessKeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessKeyType[] items = AccessKeyType.values();
         for (AccessKeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AccessKeyType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
