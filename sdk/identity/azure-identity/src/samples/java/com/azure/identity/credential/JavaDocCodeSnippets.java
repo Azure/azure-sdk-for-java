@@ -9,6 +9,7 @@ import com.azure.core.http.ProxyOptions.Type;
 
 import com.azure.identity.AzureCliCredential;
 import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
@@ -32,22 +33,23 @@ import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.OnBehalfOfCredential;
+import com.azure.identity.OnBehalfOfCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 
 import java.net.InetSocketAddress;
 
 /**
- * This class contains code samples for generating javadocs through doclets for azure-identity.
- */
+    * This class contains code samples for generating javadocs through doclets for azure-identity.
+    */
 public final class JavaDocCodeSnippets {
-
     private String tenantId = System.getenv("AZURE_TENANT_ID");
+
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
     private String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
     private String fakePasswordPlaceholder = "fakePasswordPlaceholder";
-
     /**
      * Method to insert code snippets for {@link ClientSecretCredential}
      */
@@ -242,7 +244,7 @@ public final class JavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link AzurePowerShellCredential}
+     * Method to insert code snippets for {@link AuthorizationCodeCredential}
      */
     public void authorizationCodeCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.authorizationcodecredential.construct
@@ -252,5 +254,18 @@ public final class JavaDocCodeSnippets {
             .clientId("{clientId-of-application-being-authenticated")
             .build();
         // END: com.azure.identity.credential.authorizationcodecredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link OnBehalfOfCredential}
+     */
+    public void oboCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.obocredential.construct
+        TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder()
+            .clientId("<app-client-ID>")
+            .clientSecret("<app-Client-Secret>")
+            .userAssertion("<user-assertion>")
+            .build();
+        // END: com.azure.identity.credential.obocredential.construct
     }
 }

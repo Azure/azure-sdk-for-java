@@ -13,7 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * The base class for credential builders that allow specifying a client ID and tenant ID for an Azure Active Directory.
+ * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host and
+ * additionally allowed tenants for an Azure Active Directory.</p>
+ *
  * @param <T> the type of the credential builder
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
