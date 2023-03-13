@@ -68,18 +68,14 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
         return fromString(name, DtmfTone.class);
     }
 
-    /** @return known Tone values in char. */
-    public char toChar() {
-        return convertToChar();
-    }
-
     /** @return known Tone values. */
     public static Collection<DtmfTone> values() {
         return values(DtmfTone.class);
     }
 
-    private char convertToChar() {
-        String toneValue = this.toString();
+    /** @return known Tone values in char. */
+    public char toChar() {
+        String toneValue = this.toString().toLowerCase();
         char toneInChar = ' ';
         switch (toneValue) {
             case "zero":
