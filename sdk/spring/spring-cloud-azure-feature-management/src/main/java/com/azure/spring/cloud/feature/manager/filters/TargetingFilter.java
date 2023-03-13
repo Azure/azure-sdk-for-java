@@ -21,8 +21,8 @@ import com.azure.spring.cloud.feature.manager.implementation.targeting.Targeting
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 import com.azure.spring.cloud.feature.manager.models.TargetingException;
-import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
-import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingContextAccessor;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,7 +58,7 @@ public class TargetingFilter implements IFeatureFilter {
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
 
     /**
-     * Object Mapper for converting configurations to variants
+     * Object Mapper for converting configurations to features
      */
     protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
@@ -66,7 +66,7 @@ public class TargetingFilter implements IFeatureFilter {
     /**
      * Accessor for identifying the current user/group when evaluating
      */
-    protected final ITargetingContextAccessor contextAccessor;
+    protected final TargetingContextAccessor contextAccessor;
 
     /**
      * Options for evaluating the filter
@@ -77,7 +77,7 @@ public class TargetingFilter implements IFeatureFilter {
      * Filter for targeting a user/group/percentage of users.
      * @param contextAccessor Accessor for identifying the current user/group when evaluating
      */
-    public TargetingFilter(ITargetingContextAccessor contextAccessor) {
+    public TargetingFilter(TargetingContextAccessor contextAccessor) {
         this.contextAccessor = contextAccessor;
         this.options = new TargetingEvaluationOptions();
     }
@@ -87,7 +87,7 @@ public class TargetingFilter implements IFeatureFilter {
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
      */
-    public TargetingFilter(ITargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
+    public TargetingFilter(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
         this.contextAccessor = contextAccessor;
         this.options = options;
     }
@@ -99,7 +99,7 @@ public class TargetingFilter implements IFeatureFilter {
             throw new IllegalArgumentException("Targeting Context not configured.");
         }
 
-        TargetingContext targetingContext = new TargetingContext();
+        TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         contextAccessor.getContextAsync(targetingContext);
 

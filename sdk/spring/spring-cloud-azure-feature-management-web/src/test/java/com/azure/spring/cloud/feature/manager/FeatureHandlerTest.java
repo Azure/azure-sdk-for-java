@@ -46,7 +46,7 @@ public class FeatureHandlerTest {
     FeatureManagerSnapshot featureManagerSnapshot;
 
     @Mock
-    IDisabledFeaturesHandler disabledFeaturesHandler;
+    DisabledFeaturesHandler disabledFeaturesHandler;
 
     @Mock
     HttpServletRequest request;

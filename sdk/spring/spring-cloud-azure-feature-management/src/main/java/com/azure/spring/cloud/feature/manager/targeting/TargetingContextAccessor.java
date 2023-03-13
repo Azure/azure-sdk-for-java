@@ -5,12 +5,12 @@ package com.azure.spring.cloud.feature.manager.targeting;
 /**
  * Interface for providing a Targeting Context to the `Microsoft.TargetingFilter`.
  */
-public interface ITargetingContextAccessor {
+public interface TargetingContextAccessor {
 
     /**
      * Returns the Targeting Context for Feature Targeting evaluation.
      * @param context Targeting Context for selecting feature
      */
-    void getContextAsync(ITargetingContext context);
+    void getContextAsync(TargetingContext context);
 
 }
