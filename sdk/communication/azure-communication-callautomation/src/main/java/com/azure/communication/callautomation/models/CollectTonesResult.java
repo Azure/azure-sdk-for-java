@@ -44,9 +44,13 @@ public final class CollectTonesResult extends RecognizeResult {
      * @return the CollectTonesResult object itself.
      */
     public String convertToString() {
-        return dtmfTones.stream()
-                .map(x -> x.toChar())
-                .map(x -> x.toString())
-                .collect(Collectors.joining());
+        if (this.dtmfTones == null) {
+            return "";
+        }
+
+        return this.dtmfTones.stream()
+                    .map(x -> x.toChar())
+                    .map(x -> x.toString())
+                    .collect(Collectors.joining());
     }
 }
