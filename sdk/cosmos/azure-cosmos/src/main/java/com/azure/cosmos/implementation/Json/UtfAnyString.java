@@ -1,7 +1,5 @@
 package com.azure.cosmos.implementation.Json;
 
-import java.util.Objects;
-
 public class UtfAnyString implements Comparable<String> {
     private final Object buffer;
 

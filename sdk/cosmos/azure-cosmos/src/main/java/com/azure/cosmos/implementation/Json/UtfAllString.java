@@ -1,8 +1,6 @@
 package com.azure.cosmos.implementation.Json;
 
-import javax.json.Json;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public final class UtfAllString
 {
