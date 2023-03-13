@@ -160,29 +160,30 @@ public class TestProxyUtils {
             .collect(Collectors.joining(","));
     }
 
-    private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
-    }
-
-    private static String createBodyJsonKeyRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
-    }
-
-
-    private static String createBodyRegexRequestBody(String regexValue, String redactedValue, String groupForReplace) {
-        return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", redactedValue, regexValue, groupForReplace);
-    }
-
-    private static String createHeaderKeyRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
-    }
-
-    private static String createHeaderRegexRequestBody(String headerKey, String regexValue, String redactedValue, String groupForReplace) {
-        if (groupForReplace == null) {
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\"}", headerKey, redactedValue, regexValue);
+    private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
+        if (regex == null) {
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
         } else {
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", headerKey, redactedValue, regexValue, groupForReplace);
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey, regex);
         }
+    }
+
+    private static String createRegexRequestBody(String key, String regex, String value, String groupForReplace) {
+         if (key == null) {
+             if (groupForReplace == null) {
+                 // regex pattern and redaction value
+                 return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
+             } else {
+                 // regex pattern and redaction value with group replace
+                 return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
+                     groupForReplace);
+             }
+         } else if (regex == null) {
+             // header key value
+             return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
+         }
+         // header key with regex
+        return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key, value, regex, groupForReplace);
     }
 
     /**
@@ -198,37 +199,30 @@ public class TestProxyUtils {
             String sanitizerType;
             switch (testProxySanitizer.getType()) {
                 case URL:
-                    requestBody =
-                        createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
                     sanitizerType = TestProxySanitizerType.URL.getName();
+                    requestBody =
+                        createRegexRequestBody(null, testProxySanitizer.getRegex(),
+                            testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     return createHttpRequest(requestBody, sanitizerType);
                 case BODY_REGEX:
-                    requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
+                    requestBody = createRegexRequestBody(null, testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     return createHttpRequest(requestBody, sanitizerType);
                 case BODY_KEY:
-                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue());
                     sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
+                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue());
                     return createHttpRequest(requestBody, sanitizerType);
                 case HEADER:
                     sanitizerType = HEADER.getName();
-                    if (testProxySanitizer.getHeaderKey() == null && testProxySanitizer.getRegex() == null) {
+                    if (testProxySanitizer.getKey() == null && testProxySanitizer.getRegex() == null) {
                         throw new RuntimeException(
-                            String.format("Missing headerKey or regexKey for sanitizer type {%s}", sanitizerType));
+                            String.format("Missing regexKey and/or headerKey for sanitizer type {%s}", sanitizerType));
                     }
-                    // create header sanitizer for header key/regexKey without regex
-                    if (testProxySanitizer.getHeaderKey() == null && testProxySanitizer.getRegex() != null) {
-                        requestBody = createHeaderKeyRequestBody(testProxySanitizer.getRegex(),
-                            testProxySanitizer.getRedactedValue());
-                    }
-                    // create header sanitizer for header key with regex
-                    else {
-                        requestBody = createHeaderRegexRequestBody(testProxySanitizer.getHeaderKey(),
-                            testProxySanitizer.getRegex(),
-                            testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    }
+                    requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
+                        testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     return createHttpRequest(requestBody, sanitizerType);
                 default:
                     throw new RuntimeException(
@@ -289,7 +283,7 @@ public class TestProxyUtils {
     private static List<TestProxySanitizer> addDefaultBodySanitizers() {
         return JSON_PROPERTIES_TO_REDACT.stream()
             .map(jsonProperty ->
-                new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE,
+                new TestProxySanitizer(String.format("$..%s", jsonProperty), null, REDACTED_VALUE,
                     TestProxySanitizerType.BODY_KEY))
             .collect(Collectors.toList());
     }
@@ -308,8 +302,8 @@ public class TestProxyUtils {
 
     private static List<TestProxySanitizer> addDefaultHeaderKeySanitizers() {
         return HEADER_KEYS_TO_REDACT.stream()
-            .map(headerProperty ->
-                new TestProxySanitizer(headerProperty, REDACTED_VALUE, HEADER))
+            .map(headerKey ->
+                new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
             .collect(Collectors.toList());
     }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 public class TestProxyTestServer implements Closeable {
     private final DisposableServer server;
 
-    private static final String TEST_JSON_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\",  \"Operation-Location\" : \"https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62\"}";
+    private static final String TEST_JSON_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\",  \"accountKey\" : \"secret_account_key\", \"Operation-Location\" : \"https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62\"}";
     private static final String TEST_XML_RESPONSE_BODY = "{\"Body\":\"<UserDelegationKey><SignedTid>sensitiveInformation=</SignedTid></UserDelegationKey>\",\"primaryKey\":\"<PrimaryKey>fakePrimaryKey</PrimaryKey>\", \"TableName\":\"listtable09bf2a3d\"}";
     /**
      * Constructor for TestProxyTestServer

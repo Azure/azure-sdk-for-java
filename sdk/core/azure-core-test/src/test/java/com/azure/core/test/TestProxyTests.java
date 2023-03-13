@@ -63,9 +63,9 @@ public class TestProxyTests extends TestProxyTestBase {
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
-        customSanitizer.add(new TestProxySanitizer().addHeaderKeyRegexSanitizer("Operation-Location", URL_REGEX, REDACTED));
+        customSanitizer.add(new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
     }
 
     @BeforeAll
@@ -244,13 +244,14 @@ public class TestProxyTests extends TestProxyTestBase {
         assertEquals(response.getStatusCode(), 200);
 
         assertEquals(200, response.getStatusCode());
-        // RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-        // RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-        // // default sanitizers
-        // assertEquals("http://REDACTED/fr/path/1", record.getUri());
-        // assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-        // // custom sanitizers
-        // assertEquals(REDACTED, record.getResponse().get("modelId"));
+        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // default sanitizers
+        assertEquals("http://REDACTED/fr/path/1", record.getUri());
+        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        // custom sanitizers
+        assertEquals(REDACTED, record.getResponse().get("modelId"));
+        assertTrue(record.getResponse().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
 
     }
 

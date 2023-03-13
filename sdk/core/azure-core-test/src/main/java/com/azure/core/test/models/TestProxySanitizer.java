@@ -8,40 +8,36 @@ package com.azure.core.test.models;
  */
 public class TestProxySanitizer {
     private TestProxySanitizerType testProxySanitizerType;
-    private String regexKey;
+    private String regex;
     private String redactedValue;
-    private String headerKey;
-
+    private String key;
     private String groupForReplace;
 
-    public TestProxySanitizer() {
+    /**
+     * Creates an instance of TestProxySanitizer
+     * @param regex the regex or the json key to lookup for redaction
+     * @param redactedValue the replacement text for the regex matched content
+     * @param testProxySanitizerType the type of sanitizer
+     */
+    public TestProxySanitizer(String regex, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+        this.testProxySanitizerType = testProxySanitizerType;
+        this.regex = regex;
+        this.redactedValue = redactedValue;
     }
 
     /**
      * Creates an instance of TestProxySanitizer
-     * @param regexKey the regex or the json key to lookup for redaction
+     *
+     * @param key the body json key or header key to apply regex to
+     * @param regex the regex or the json key to lookup for redaction
      * @param redactedValue the replacement text for the regex matched content
      * @param testProxySanitizerType the type of sanitizer
      */
-    public TestProxySanitizer(String regexKey, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+    public TestProxySanitizer(String key, String regex, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+        this.key = key;
+        this.regex = regex;
+        this.redactedValue = redactedValue;
         this.testProxySanitizerType = testProxySanitizerType;
-        this.regexKey = regexKey;
-        this.redactedValue = redactedValue;
-    }
-
-    /**
-     * Creates an instance of header TestProxySanitizer with header key with a specified regex pattern
-     *
-     * @param headerKey the header key to target for redaction
-     * @param regex the regex to use for redaction
-     * @param redactedValue the replacement text for the regex matched content
-     */
-    public TestProxySanitizer addHeaderKeyRegexSanitizer(String headerKey, String regex, String redactedValue) {
-        this.headerKey = headerKey;
-        this.regexKey = regex;
-        this.redactedValue = redactedValue;
-        this.testProxySanitizerType = TestProxySanitizerType.HEADER;
-        return this;
     }
 
     /**
@@ -57,7 +53,7 @@ public class TestProxySanitizer {
      * @return the regex key to lookup for redaction
      */
     public String getRegex() {
-        return regexKey;
+        return regex;
     }
 
     /**
@@ -91,7 +87,7 @@ public class TestProxySanitizer {
      * Get the header key that is being redacted.
      * @return the header key being redacted.
      */
-    public String getHeaderKey() {
-        return headerKey;
+    public String getKey() {
+        return key;
     }
 }
