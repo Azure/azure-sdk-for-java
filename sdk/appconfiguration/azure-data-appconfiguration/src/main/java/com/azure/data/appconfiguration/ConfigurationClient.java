@@ -12,10 +12,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
@@ -32,14 +30,13 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
-import java.util.stream.Collectors;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
-import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
@@ -201,7 +198,7 @@ public final class ConfigurationClient {
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
             serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, ETAG_ANY,
                 toKeyValue(setting), enableSyncRestProxy(addTracingNamespace(context)));
-        return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+        return toConfigurationSettingWithResponse(response);
     }
 
     /**
@@ -338,9 +335,9 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final ResponseBase<PutKeyValueHeaders, KeyValue> response =
             serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getIfMatchETag(ifUnchanged, setting), null, toKeyValue(setting),
+                getEtag(ifUnchanged, setting), null, toKeyValue(setting),
                 enableSyncRestProxy(addTracingNamespace(context)));
-        return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+        return toConfigurationSettingWithResponse(response);
     }
 
     /**
@@ -481,9 +478,8 @@ public final class ConfigurationClient {
             final ResponseBase<GetKeyValueHeaders, KeyValue> response =
                 serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
                     acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                    getIfNoneMatchETag(ifChanged, setting), null,
-                    enableSyncRestProxy(addTracingNamespace(context)));
-            return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+                    getEtag(ifChanged, setting), null, enableSyncRestProxy(addTracingNamespace(context)));
+            return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
             if (httpResponse.getStatusCode() == 304) {
@@ -604,8 +600,8 @@ public final class ConfigurationClient {
         validateSetting(setting);
         final ResponseBase<DeleteKeyValueHeaders, KeyValue> response =
             serviceClient.deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getIfMatchETag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
-        return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+                getEtag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
+        return toConfigurationSettingWithResponse(response);
     }
 
     /**
@@ -744,11 +740,11 @@ public final class ConfigurationClient {
         if (isReadOnly) {
             final ResponseBase<PutLockHeaders, KeyValue> response =
                 serviceClient.putLockWithResponse(key, label, null, null, context);
-            return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+            return toConfigurationSettingWithResponse(response);
         } else {
             final ResponseBase<DeleteLockHeaders, KeyValue> response =
                 serviceClient.deleteLockWithResponse(key, label, null, null, context);
-            return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+            return toConfigurationSettingWithResponse(response);
         }
     }
 
@@ -815,30 +811,12 @@ public final class ConfigurationClient {
                     selector == null ? null : toKeyValueFieldsList(selector.getFields()),
                     null,
                     enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
                     selector.getAcceptDateTime(), enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
     }
@@ -919,30 +897,12 @@ public final class ConfigurationClient {
                     acceptDateTime,
                     selector == null ? null : toKeyValueFieldsList(selector.getFields()),
                     enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
                     acceptDateTime, enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(keyValue -> toConfigurationSetting(keyValue))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
     }

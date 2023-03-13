@@ -11,10 +11,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
@@ -31,18 +30,16 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
-import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getIfNoneMatchETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -190,20 +187,15 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponse(ConfigurationSetting setting) {
-        try {
-            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
-            validateSetting(setting);
-            // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
-            // If the service finds any existing configuration settings, then its e-tag will match and the service will
-            // return an error.
-            return withContext(
-                context -> serviceClient.putKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    null, ETAG_ANY, toKeyValue(setting),
+        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+        // If the service finds any existing configuration settings, then its e-tag will match and the service will
+        // return an error.
+        return withContext(
+            context -> validateSettingAsync(setting).flatMap(
+                settingInternal -> serviceClient.putKeyValueWithResponseAsync(settingInternal.getKey(),
+                    settingInternal.getLabel(), null, ETAG_ANY, toKeyValue(settingInternal),
                     addTracingNamespace(context))
-            .map(response -> new SimpleResponse<>(response, toConfigurationSetting(response.getValue()))));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+                                       .map(response -> toConfigurationSettingWithResponse(response))));
     }
 
     /**
@@ -332,18 +324,12 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        try {
-            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
-            validateSetting(setting);
-            return withContext(
-                context -> serviceClient.putKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    getIfMatchETag(ifUnchanged, setting), null, toKeyValue(setting),
-                    addTracingNamespace(context))
-                               .map(response -> new SimpleResponse<>(response,
-                                   toConfigurationSetting(response.getValue()))));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return withContext(
+            context -> validateSettingAsync(setting).flatMap(
+                settingInternal -> serviceClient.putKeyValueWithResponseAsync(settingInternal.getKey(),
+                    settingInternal.getLabel(), getEtag(ifUnchanged, settingInternal), null,
+                    toKeyValue(settingInternal), addTracingNamespace(context))
+                                       .map(response -> toConfigurationSettingWithResponse(response))));
     }
 
     /**
@@ -479,39 +465,25 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged) {
-        try {
-            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
-            validateSetting(setting);
-            return withContext(
-                context -> serviceClient.getKeyValueWithResponseAsync(
-                    setting.getKey(),
-                    setting.getLabel(),
-                    acceptDateTime == null ? null : acceptDateTime.toString(),
-                    null,
-                    getIfNoneMatchETag(ifChanged, setting),
-                    null,
-                    addTracingNamespace(context))
-                               .onErrorResume(HttpResponseException.class,
-                                   (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>)
-                                    throwable -> {
-                                        HttpResponseException e = (HttpResponseException) throwable;
-                                        HttpResponse httpResponse = e.getResponse();
-                                        if (httpResponse.getStatusCode() == 304) {
-                                            return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
-                                                httpResponse.getRequest(),
-                                                httpResponse.getStatusCode(),
-                                                httpResponse.getHeaders(),
-                                                null,
-                                                null));
-                                        }
-                                        return Mono.error(throwable);
-                                    })
-                               .map(response ->
-                                        new SimpleResponse<>(response, toConfigurationSetting(response.getValue())))
-            );
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return withContext(
+            context -> validateSettingAsync(setting).flatMap(
+                settingInternal ->
+                    serviceClient.getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+                        acceptDateTime == null ? null : acceptDateTime.toString(), null,
+                        getEtag(ifChanged, settingInternal), null, addTracingNamespace(context))
+                        .onErrorResume(
+                            HttpResponseException.class,
+                            (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
+                                HttpResponseException e = (HttpResponseException) throwable;
+                                HttpResponse httpResponse = e.getResponse();
+                                if (httpResponse.getStatusCode() == 304) {
+                                    return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
+                                        httpResponse.getRequest(), httpResponse.getStatusCode(),
+                                        httpResponse.getHeaders(), null, null));
+                                }
+                                return Mono.error(throwable);
+                            })
+                        .map(response -> toConfigurationSettingWithResponse(response))));
     }
 
     /**
@@ -626,17 +598,10 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        try {
-            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
-            validateSetting(setting);
-            return withContext(
-                context -> serviceClient.deleteKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
-                    getIfMatchETag(ifUnchanged, setting), addTracingNamespace(context))
-                               .map(response -> new SimpleResponse<>(response,
-                                   toConfigurationSetting(response.getValue()))));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return withContext(context -> validateSettingAsync(setting).flatMap(
+            settingInternal -> serviceClient.deleteKeyValueWithResponseAsync(settingInternal.getKey(),
+                settingInternal.getLabel(), getEtag(ifUnchanged, settingInternal), addTracingNamespace(context))
+                                   .map(response -> toConfigurationSettingWithResponse(response))));
     }
 
     /**
@@ -768,23 +733,16 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
         boolean isReadOnly) {
-        try {
-            // Validate that setting and key is not null. The key is used in the service URL, so it cannot be null.
-            validateSetting(setting);
-            return withContext(
-                context -> {
-                    final String key = setting.getKey();
-                    final String label = setting.getLabel();
-                    context = addTracingNamespace(context);
-                    return (isReadOnly
-                                ? serviceClient.putLockWithResponseAsync(key, label, null, null, context)
-                                : serviceClient.deleteLockWithResponseAsync(key, label, null, null, context))
-                               .map(response -> new SimpleResponse<>(response,
-                                   toConfigurationSetting(response.getValue())));
-                });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return withContext(context -> validateSettingAsync(setting).flatMap(
+            settingInternal -> {
+                final String key = settingInternal.getKey();
+                final String label = settingInternal.getLabel();
+                final Context contextInternal = addTracingNamespace(context);
+                return (isReadOnly
+                            ? serviceClient.putLockWithResponseAsync(key, label, null, null, contextInternal)
+                            : serviceClient.deleteLockWithResponseAsync(key, label, null, null, contextInternal))
+                           .map(response -> toConfigurationSettingWithResponse(response));
+            }));
     }
 
     /**
@@ -811,51 +769,29 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
-        try {
-            final String keyFilter = selector == null ? null : selector.getKeyFilter();
-            final String labelFilter = selector == null ? null : selector.getLabelFilter();
-            final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-            final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                            : toKeyValueFieldsList(selector.getFields());
-            return new PagedFlux<>(
-                () -> withContext(
-                    context -> serviceClient.getKeyValuesSinglePageAsync(
-                        keyFilter,
-                        labelFilter,
-                        null,
-                        acceptDateTime,
-                        keyValueFields,
-                        null,
-                        addTracingNamespace(context))
-                                   .map(pagedResponse -> new PagedResponseBase<>(
-                                       pagedResponse.getRequest(),
-                                       pagedResponse.getStatusCode(),
-                                       pagedResponse.getHeaders(),
-                                       pagedResponse.getValue()
-                                           .stream()
-                                           .map(keyValue -> toConfigurationSetting(keyValue))
-                                           .collect(Collectors.toList()),
-                                       pagedResponse.getContinuationToken(),
-                                       null))),
-                nextLink -> withContext(
-                    context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                        nextLink,
-                        acceptDateTime,
-                        addTracingNamespace(context))
-                                   .map(pagedResponse -> new PagedResponseBase<>(
-                                       pagedResponse.getRequest(),
-                                       pagedResponse.getStatusCode(),
-                                       pagedResponse.getHeaders(),
-                                       pagedResponse.getValue()
-                                           .stream()
-                                           .map(keyValue -> toConfigurationSetting(keyValue))
-                                           .collect(Collectors.toList()),
-                                       pagedResponse.getContinuationToken(),
-                                       null)))
-            );
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(LOGGER, ex));
-        }
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<KeyValueFields> keyValueFields = selector == null ? null
+                                                        : toKeyValueFieldsList(selector.getFields());
+        return new PagedFlux<>(
+            () -> withContext(
+                context -> serviceClient.getKeyValuesSinglePageAsync(
+                    keyFilter,
+                    labelFilter,
+                    null,
+                    acceptDateTime,
+                    keyValueFields,
+                    null,
+                    addTracingNamespace(context))
+                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            nextLink -> withContext(
+                context -> serviceClient.getKeyValuesNextSinglePageAsync(
+                    nextLink,
+                    acceptDateTime,
+                    addTracingNamespace(context))
+                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
+        );
     }
 
     /**
@@ -886,47 +822,26 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {
-        try {
-            final String keyFilter = selector == null ? null : selector.getKeyFilter();
-            final String labelFilter = selector == null ? null : selector.getLabelFilter();
-            final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-            final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                            : toKeyValueFieldsList(selector.getFields());
-            return new PagedFlux<>(
-                () -> withContext(
-                    context -> serviceClient.getRevisionsSinglePageAsync(
-                        keyFilter,
-                        labelFilter,
-                        null,
-                        acceptDateTime,
-                        keyValueFields,
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<KeyValueFields> keyValueFields = selector == null ? null
+                                                        : toKeyValueFieldsList(selector.getFields());
+        return new PagedFlux<>(
+            () -> withContext(
+                context -> serviceClient.getRevisionsSinglePageAsync(
+                    keyFilter,
+                    labelFilter,
+                    null,
+                    acceptDateTime,
+                    keyValueFields,
+                    addTracingNamespace(context))
+                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            nextLink -> withContext(
+                context ->
+                    serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
                         addTracingNamespace(context))
-                                   .map(pagedResponse -> new PagedResponseBase<>(
-                                       pagedResponse.getRequest(),
-                                       pagedResponse.getStatusCode(),
-                                       pagedResponse.getHeaders(),
-                                       pagedResponse.getValue()
-                                           .stream()
-                                           .map(keyValue -> toConfigurationSetting(keyValue))
-                                           .collect(Collectors.toList()),
-                                       pagedResponse.getContinuationToken(),
-                                       null))),
-                nextLink -> withContext(
-                    context ->
-                        serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
-                            addTracingNamespace(context))
-                            .map(pagedResponse -> new PagedResponseBase<>(
-                                pagedResponse.getRequest(),
-                                pagedResponse.getStatusCode(),
-                                pagedResponse.getHeaders(),
-                                pagedResponse.getValue()
-                                    .stream()
-                                    .map(keyValue -> toConfigurationSetting(keyValue))
-                                    .collect(Collectors.toList()),
-                                pagedResponse.getContinuationToken(), null))));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(LOGGER, ex));
-        }
+                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))));
     }
 
     /**

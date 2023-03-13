@@ -3,6 +3,10 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.Utility.CLIENT_FILTERS;
 import static com.azure.data.appconfiguration.implementation.Utility.CONDITIONS;
@@ -43,6 +48,30 @@ public final class ConfigurationSettingDeserializationHelper {
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
 
     /*
+     * Utility method for translating KeyValue to ConfigurationSetting with PagedResponse.
+     */
+    public static PagedResponseBase<Object, ConfigurationSetting> toConfigurationSettingWithPagedResponse(
+        PagedResponse<KeyValue> pagedResponse) {
+        return new PagedResponseBase<>(
+            pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue()
+                .stream()
+                .map(keyValue -> toConfigurationSetting(keyValue))
+                .collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
+    }
+
+    /*
+     *  Utility method for translating KeyValue to ConfigurationSetting with response.
+     */
+    public static Response<ConfigurationSetting> toConfigurationSettingWithResponse(Response<KeyValue> response) {
+        return new SimpleResponse<>(response, toConfigurationSetting(response.getValue()));
+    }
+
+    /*
      * Translate generated class KeyValue to public-explored ConfigurationSetting.
      */
     public static ConfigurationSetting toConfigurationSetting(KeyValue keyValue) {
@@ -65,8 +94,7 @@ public final class ConfigurationSettingDeserializationHelper {
         ConfigurationSettingHelper.setLastModified(setting, keyValue.getLastModified());
         ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked() == null ? false : keyValue.isLocked());
         try {
-            if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
-                    && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
+            if (FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 return subclassConfigurationSettingReflection(setting, parseFeatureFlagValue(setting.getValue()))
                            .setKey(setting.getKey())
                            .setValue(setting.getValue())

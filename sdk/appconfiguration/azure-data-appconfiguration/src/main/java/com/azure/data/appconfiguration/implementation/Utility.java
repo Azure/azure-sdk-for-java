@@ -8,11 +8,11 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
+import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -55,10 +55,12 @@ public class Utility {
 
     // Translate generated List<KeyValueFields> to public-explored SettingFields[].
     public static SettingFields[] toSettingFieldsArray(List<KeyValueFields> kvFieldsList) {
-        return kvFieldsList.stream()
-                   .map(keyValueFields -> toSettingFields(keyValueFields))
-                   .collect(Collectors.toList())
-                   .toArray(new SettingFields[kvFieldsList.size()]);
+        int size = kvFieldsList.size();
+        SettingFields[] fields = new SettingFields[size];
+        for (int i = 0; i < size; i++) {
+            fields[i] = toSettingFields(kvFieldsList.get(i));
+        }
+        return fields;
     }
 
     // Translate generated KeyValueFields to public-explored SettingFields.
@@ -68,9 +70,12 @@ public class Utility {
 
     // Translate public-explored SettingFields[] to generated List<KeyValueFields>.
     public static List<KeyValueFields> toKeyValueFieldsList(SettingFields[] settingFieldsArray) {
-        return Arrays.stream(settingFieldsArray)
-                   .map(settingFields -> toKeyValueFields(settingFields))
-                   .collect(Collectors.toList());
+        int size = settingFieldsArray.length;
+        List<KeyValueFields> keyValueFields = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            keyValueFields.add(toKeyValueFields(settingFieldsArray[i]));
+        }
+        return keyValueFields;
     }
 
     // Translate public-explored SettingFields to generated KeyValueFields.
@@ -89,19 +94,11 @@ public class Utility {
     }
 
     /*
-     * Get HTTP header value, if-match. Used to perform an operation only if the targeted resource's etag matches the
-     *  value provided.
+     * Get HTTP header value, if-match or if-none-match.. Used to perform an operation only if the targeted resource's
+     * etag matches the value provided.
      */
-    public static String getIfMatchETag(boolean ifUnchanged, ConfigurationSetting setting) {
-        return ifUnchanged ? getETagValue(setting.getETag()) : null;
-    }
-
-    /*
-     * Get HTTP header value, if-none-match. Used to perform an operation only if the targeted resource's etag does not
-     * match the value provided.
-     */
-    public static String getIfNoneMatchETag(boolean onlyIfChanged, ConfigurationSetting setting) {
-        return onlyIfChanged ? getETagValue(setting.getETag()) : null;
+    public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
+        return isEtagRequired ? getETagValue(setting.getETag()) : null;
     }
 
     /*
@@ -114,6 +111,19 @@ public class Utility {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
     }
+    /*
+     * Asynchronously validate that setting and key is not null. The key is used in the service URL,
+     *  so it cannot be null.
+     */
+    public static Mono<ConfigurationSetting> validateSettingAsync(ConfigurationSetting setting) {
+        if (setting == null) {
+            return Mono.error(new NullPointerException("Configuration setting cannot be null"));
+        }
+        if (setting.getKey() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter 'key' is required and cannot be null."));
+        }
+        return Mono.just(setting);
+    }
 
     /**
      * Enable the sync stack rest proxy.
@@ -124,6 +134,7 @@ public class Utility {
      * @return The Context.
      */
     public static Context enableSyncRestProxy(Context context) {
+        context = context == null ? Context.NONE : context;
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
