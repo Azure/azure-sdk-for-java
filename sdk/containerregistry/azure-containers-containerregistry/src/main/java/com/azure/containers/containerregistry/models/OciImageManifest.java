@@ -15,6 +15,8 @@ import java.util.List;
 /** Returns the requested OCI Manifest file. */
 @Fluent
 public final class OciImageManifest implements JsonSerializable<OciImageManifest> {
+    // TODO (limolkova) should default value be auto-generated?
+    private static final int DEFAULT_VERSION = 2;
     /*
      * V2 image config descriptor
      */

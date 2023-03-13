@@ -260,15 +260,6 @@ directive:
         }
 ```
 
-# Rename ArtifactBlobDescriptor.size to sizeInBytes
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.Descriptor
-  transform: >
-    $.properties.size["x-ms-client-name"] = "sizeInBytes";
-```
-
 # Rename ArtifactBlobDescriptor to OciDescriptor
 ```yaml
 directive:
@@ -276,6 +267,7 @@ directive:
   where: $.definitions.Descriptor
   transform: >
     $["x-ms-client-name"] = "OciDescriptor";
+    $.properties.size["x-ms-client-name"] = "sizeInBytes";      
     delete $["x-accessibility"]
 ```
 
