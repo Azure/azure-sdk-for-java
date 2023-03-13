@@ -31,14 +31,9 @@ public interface RntbdEndpoint extends AutoCloseable {
     int channelsAcquiredMetric();
 
     /**
-     * @return total number of acquired channels.
+     * @return durable monotonic counters for total acquired/closed channels.
      */
-    int totalChannelsAcquiredMetric();
-
-    /**
-     * @return total number of closed channels.
-     */
-    int totalChannelsClosedMetric();
+    RntbdDurableEndpointMetrics durableEndpointMetrics();
 
     /**
      * @return approximate number of available channels.
