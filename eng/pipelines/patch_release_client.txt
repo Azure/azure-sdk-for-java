@@ -41,13 +41,13 @@ com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
-com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
-com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft, alzimmermsft
+com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft
 
 
