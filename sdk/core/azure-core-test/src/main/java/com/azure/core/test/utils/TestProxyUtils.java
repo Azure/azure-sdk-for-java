@@ -20,10 +20,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 
 /**
@@ -40,6 +43,10 @@ public class TestProxyUtils {
         = new ArrayList<String>(
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
             "connectionString", "url", "host", "password", "userName"));
+
+    private static final Map<String, String> BODY_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
+        put("Operation-Location", URL_REGEX);
+    }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
         = new ArrayList<>(Arrays.asList("(?:<Value>)(?<secret>.*)(?:</Value>)", "(?:Password=)(?<secret>.*)(?:;)",
@@ -289,15 +296,21 @@ public class TestProxyUtils {
     }
 
     private static List<TestProxySanitizer> addDefaultRegexSanitizers() {
-        List<TestProxySanitizer> userDelegationSanitizers = getUserDelegationSanitizers();
+        List<TestProxySanitizer> regexSanitizers = getUserDelegationSanitizers();
 
-        userDelegationSanitizers.addAll(BODY_REGEX_TO_REDACT.stream()
+        regexSanitizers.addAll(BODY_REGEX_TO_REDACT.stream()
             .map(bodyRegex -> new TestProxySanitizer(bodyRegex, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"))
             .collect(Collectors.toList()));
 
-        // can add default url and header regex sanitizer same way
-        return userDelegationSanitizers;
+        // add body key with regex sanitizers
+        List<TestProxySanitizer> keyRegexSanitizers = new ArrayList<>();
+        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) -> {
+            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY));
+        });
 
+        regexSanitizers.addAll(keyRegexSanitizers);
+
+        return regexSanitizers;
     }
 
     private static List<TestProxySanitizer> addDefaultHeaderKeySanitizers() {

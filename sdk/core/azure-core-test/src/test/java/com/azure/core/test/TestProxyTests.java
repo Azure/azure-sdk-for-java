@@ -60,12 +60,10 @@ public class TestProxyTests extends TestProxyTestBase {
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
 
     static {
         customSanitizer.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
-        customSanitizer.add(new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
     }
 
     @BeforeAll
