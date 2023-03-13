@@ -238,11 +238,6 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
-    }
-
-    @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         throw new NotImplementedException("configureFaultInjectorProvider is not supported in httpTransportClient");
     }

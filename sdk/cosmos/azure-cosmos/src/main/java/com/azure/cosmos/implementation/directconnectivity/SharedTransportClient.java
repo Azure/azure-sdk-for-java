@@ -96,11 +96,6 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-        return this.transportClient.openConnection(serviceEndpoint, addressUri);
-    }
-
-    @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }

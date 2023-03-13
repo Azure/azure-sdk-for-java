@@ -47,15 +47,6 @@ public abstract class TransportClient implements AutoCloseable {
         Uri physicalAddress,
         RxDocumentServiceRequest request);
 
-    /***
-     * Only open new connection if there is no existed established connection.
-     *
-     * @param addressUri the replica address.
-     *
-     * @return the {@link OpenConnectionResponse}.
-     */
-    public abstract Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, final Uri addressUri);
-
     public abstract void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
