@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -28,6 +29,8 @@ public class RntbdConnectionStateListener {
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
     private final AtomicBoolean openConnectionsInProgress = new AtomicBoolean(false);
 
+    private static final Integer maxOpenConnectionRetryAttempts = 5;
+    private final AtomicInteger openConnectionRetryAttempts = new AtomicInteger(0);
     // endregion
 
     // region Constructors
@@ -88,11 +91,15 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (this.openConnectionsInProgress.compareAndSet(false, true)) {
+        if (this.openConnectionsInProgress.compareAndSet(false, true) &&
+                this.openConnectionRetryAttempts.get() < maxOpenConnectionRetryAttempts
+        ) {
             this.rntbdOpenConnectionsHandler.openConnection(this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
-                    // .repeat(4)
                     .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .doOnTerminate(() -> this.openConnectionsInProgress.set(false))
+                    .doOnTerminate(() -> {
+                        this.openConnectionsInProgress.set(false);
+                        this.openConnectionRetryAttempts.incrementAndGet();
+                    })
                     .subscribe();
         }
     }
