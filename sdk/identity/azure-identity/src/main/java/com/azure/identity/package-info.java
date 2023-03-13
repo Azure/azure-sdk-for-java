@@ -133,7 +133,7 @@
  * A client secret and/or a client certificate associated with the registered service principal is used as the password
  * when authenticating the service principal.</p>
  *
- * </p>The Azure Identity library supports both client secret and client
+ * <p>The Azure Identity library supports both client secret and client
  * certificate based service principal authentication via {@link com.azure.identity.ClientSecretCredential} and
  * {@link com.azure.identity.ClientCertificateCredential} respectively. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/docs">service principal authentication

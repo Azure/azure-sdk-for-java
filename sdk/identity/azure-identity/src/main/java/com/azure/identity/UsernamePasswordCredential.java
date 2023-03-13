@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
  * <pre>
- * TokenCredential deviceCodeCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;your app client ID&gt;&quot;&#41;
  *     .username&#40;&quot;&lt;your username&gt;&quot;&#41;
  *     .password&#40;&quot;&lt;your password&gt;&quot;&#41;

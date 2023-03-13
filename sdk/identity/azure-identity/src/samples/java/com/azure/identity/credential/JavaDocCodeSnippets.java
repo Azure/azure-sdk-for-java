@@ -9,6 +9,9 @@ import com.azure.core.http.ProxyOptions.Type;
 
 import com.azure.identity.AzureCliCredential;
 import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AuthorizationCodeCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ClientAssertionCredential;
 import com.azure.identity.ClientAssertionCredentialBuilder;
 import com.azure.identity.ClientCertificateCredential;
@@ -220,11 +223,34 @@ public final class JavaDocCodeSnippets {
      */
     public void usernamePasswordCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.usernamepasswordcredential.construct
-        TokenCredential deviceCodeCredential = new UsernamePasswordCredentialBuilder()
+        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
             .clientId("<your app client ID>")
             .username("<your username>")
             .password("<your password>")
             .build();
         // END: com.azure.identity.credential.usernamepasswordcredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link AzurePowerShellCredential}
+     */
+    public void azurePowershellCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.azurepowershellcredential.construct
+        TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.azurepowershellcredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link AzurePowerShellCredential}
+     */
+    public void authorizationCodeCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.authorizationcodecredential.construct
+        TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder()
+            .authorizationCode("{authorization-code-received-at-redirectURL}")
+            .redirectUrl("{redirectUrl-where-authorization-code-is-received}")
+            .clientId("{clientId-of-application-being-authenticated")
+            .build();
+        // END: com.azure.identity.credential.authorizationcodecredential.construct
     }
 }

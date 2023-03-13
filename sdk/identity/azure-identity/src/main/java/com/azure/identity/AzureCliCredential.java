@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
  * organization. Generally, the refresh token validity period is a few weeks to a few months. AzureCliCredential will
  * prompt you to sign in again.</p>
  *
- * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ * <p><strong>Sample: Construct AzureCliCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
  * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it. Once this credential is
