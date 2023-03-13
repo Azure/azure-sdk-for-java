@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
+import java.util.Locale;
 
 /** Defines values for Tone. */
 public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
@@ -75,7 +76,7 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
 
     /** @return known Tone values in char. */
     public char toChar() {
-        String toneValue = this.toString().toLowerCase();
+        String toneValue = this.toString().toLowerCase(Locale.getDefault());
         char toneInChar = ' ';
         switch (toneValue) {
             case "zero":
