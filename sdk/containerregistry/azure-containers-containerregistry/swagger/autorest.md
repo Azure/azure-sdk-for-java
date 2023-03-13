@@ -226,11 +226,13 @@ directive:
   where: $.definitions.OCIManifest
   transform: >
     $["x-ms-client-name"] = "OciImageManifest";
+    $["required"] = ["schemaVersion"];
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
           "type": "integer",
-          "description": "Schema version"
+          "description": "Schema version",
+          "x-ms-client-default": 2
         };
 ```
 
@@ -258,15 +260,6 @@ directive:
         }
 ```
 
-# Rename ArtifactBlobDescriptor.size to sizeInBytes
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.Descriptor
-  transform: >
-    $.properties.size["x-ms-client-name"] = "sizeInBytes";
-```
-
 # Rename ArtifactBlobDescriptor to OciDescriptor
 ```yaml
 directive:
@@ -274,6 +267,7 @@ directive:
   where: $.definitions.Descriptor
   transform: >
     $["x-ms-client-name"] = "OciDescriptor";
+    $.properties.size["x-ms-client-name"] = "sizeInBytes";      
     delete $["x-accessibility"]
 ```
 

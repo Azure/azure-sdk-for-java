@@ -53,7 +53,7 @@ Reviewing the HTTP request sent or response received over the wire to/from the A
 troubleshooting issues. To enable logging the HTTP request and response payload, the `ContainerRegistryClient` can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
-ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .credential(defaultCredential)
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -102,7 +102,7 @@ AcrErrorsException: Status code 401, "{"errors":[{"code":"UNAUTHORIZED","message
 ```
 
 The error indicates that authentication with ARM access token was disabled on accessed Container Registry resource. Check if audience was provided to
-Container Registry client builder.  When ARM AAD tokens are disabled on the Container Registry resource, audience should not be set.
+Container Registry client builder. When ARM AAD tokens are disabled on the Container Registry resource, audience should not be set.
 Refer to [ACR CLI reference](https://learn.microsoft.com/cli/azure/acr/config/authentication-as-arm?view=azure-cli-latest) for information on how to
 check and configure authentication with ARM tokens.
 
