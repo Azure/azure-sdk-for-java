@@ -33,7 +33,8 @@ public class PartitionProcessorImplTests {
 
     @Test
     public void partitionSplitHappenOnFirstRequest() {
-        ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = (ChangeFeedObserver<ChangeFeedProcessorItem>) Mockito.mock(ChangeFeedObserver.class);
+        @SuppressWarnings("unchecked")  ChangeFeedObserver<ChangeFeedProcessorItem> observerMock =
+            (ChangeFeedObserver<ChangeFeedProcessorItem>) Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
         Mockito
             .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
