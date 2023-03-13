@@ -63,6 +63,7 @@ public class UtfAnyString implements Comparable<String> {
         return other.equals((String)buffer);
     }
 
+    @Override
     public boolean equals(Object obj)
     {
         String text = (String)obj;
@@ -144,10 +145,7 @@ public class UtfAnyString implements Comparable<String> {
         return left.compareTo(right) > 0;
     }
 
-    public static boolean greaterThanEqualTo(UtfAnyString left, UtfAnyString right)
-    {
-        return left.compareTo(right) >= 0;
-    }
+    public static boolean greaterThanEqualTo(UtfAnyString left, UtfAnyString right) { return left.compareTo(right) >= 0; }
 
     public static boolean lessThan(UtfAnyString left, String right)
     {
@@ -187,6 +185,11 @@ public class UtfAnyString implements Comparable<String> {
     public static boolean greaterThanEqualTo(String left, UtfAnyString right)
     {
         return right.compareTo(left) < 0;
+    }
+
+    @Override
+    public int hashCode(){
+        return this.buffer.hashCode();
     }
 
     public int compareTo(UtfAnyString other)

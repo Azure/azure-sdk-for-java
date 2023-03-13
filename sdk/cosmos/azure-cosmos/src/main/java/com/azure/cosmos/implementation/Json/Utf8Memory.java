@@ -56,6 +56,11 @@ public final class Utf8Memory
     }
 
     @Override
+    public int hashCode(){
+        return this.Memory.hashCode();
+    }
+
+    @Override
     public String toString() {
         byte[] bytes = new byte[this.Memory.remaining()];
         this.Memory.get(bytes);
