@@ -40,7 +40,8 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <graalvm.enable>true</graalvm.enable>
+    <graalvm.disable>false</graalvm.disable>
+    <nativeImage.buildArgs>--initialize-at-build-time=com.azure.data.appconfiguration.TestHelper</nativeImage.buildArgs>
   </properties>
 
   <dependencies>
@@ -101,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

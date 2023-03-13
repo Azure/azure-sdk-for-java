@@ -2985,6 +2985,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }, null);
     }
 
+    @Disabled("Disable tests by service request")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
@@ -2998,7 +2999,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
+    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -3013,6 +3014,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("Disable tests by service request.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -3024,6 +3026,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     Context.NONE)));
     }
 
+    @Disabled("Disable tests by service request.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -3034,6 +3037,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null, options)));
     }
 
+    @Disabled("Disable tests by service request.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -3049,7 +3053,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 ));
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
+    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,

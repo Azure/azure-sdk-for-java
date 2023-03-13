@@ -19,7 +19,7 @@ public final class UploadManifestOptions {
      * Instantiate an instance of upload manifest options with the ocimanifest information.
      * @param ociManifest The Oci manifest.
      */
-    public UploadManifestOptions(OciManifest ociManifest) {
+    public UploadManifestOptions(OciImageManifest ociManifest) {
         Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
         this.manifest = BinaryData.fromObject(ociManifest);
         this.mediaType = ManifestMediaType.OCI_MANIFEST;

@@ -20,6 +20,12 @@
   <description>Libraries built on Microsoft Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
+    </javaModulesSurefireArgLine>
+  </properties>
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
@@ -49,7 +55,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -89,7 +95,6 @@
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
 
     <dependency>
       <groupId>com.azure</groupId>

@@ -8,8 +8,9 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+
+import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link AnalyzeHealthcareEntitiesResult} instance.
@@ -30,7 +31,7 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
             IterableStream<TextAnalyticsWarning> warnings);
         void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
             IterableStream<HealthcareEntityRelation> entityRelations);
-        void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, BinaryData fhirBundle);
+        void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, Map<String, Object> fhirBundle);
     }
 
     /**
@@ -63,7 +64,7 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
         accessor.setEntityRelations(entitiesResult, entityRelations);
     }
 
-    public static void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, BinaryData fhirBundle) {
+    public static void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, Map<String, Object> fhirBundle) {
         accessor.setFhirBundle(entitiesResult, fhirBundle);
     }
 }

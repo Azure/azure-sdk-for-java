@@ -86,6 +86,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
+    public List<URI> getAvailableReadEndpoints() {
+        return this.locationCache.getAvailableReadEndpoints();
+    }
+
+    public List<URI> getAvailableWriteEndpoints() {
+        return this.locationCache.getAvailableWriteEndpoints();
+    }
+
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
 
@@ -108,6 +116,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
         return this.locationCache.resolveServiceEndpoint(request);
+    }
+
+    public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
+        return this.locationCache.resolveFaultInjectionEndpoint(region, writeOnly);
     }
 
     public void markEndpointUnavailableForRead(URI endpoint) {

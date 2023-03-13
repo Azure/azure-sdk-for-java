@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -41,7 +42,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -63,6 +63,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -122,6 +123,8 @@ public class ImplementationBridgeHelpers {
             Configs getConfigs(CosmosClientBuilder builder);
 
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
+
+            String getEndpoint(CosmosClientBuilder builder);
         }
     }
 
@@ -713,6 +716,10 @@ public class ImplementationBridgeHelpers {
                 ThroughputControlGroupConfig groupConfig,
                 GlobalThroughputControlConfig globalControlConfig,
                 Mono<Integer> throughputQueryMono);
+
+            IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                Callable<IFaultInjectorProvider> injectorProviderCallable);
         }
     }
 
@@ -1093,6 +1100,9 @@ public class ImplementationBridgeHelpers {
             List<String> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
+
+            void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
+            String getFaultInjectionRuleId(CosmosException cosmosException);
         }
     }
 

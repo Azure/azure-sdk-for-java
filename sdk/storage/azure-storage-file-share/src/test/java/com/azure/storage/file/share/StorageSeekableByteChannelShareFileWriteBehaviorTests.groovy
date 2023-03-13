@@ -35,26 +35,43 @@ class StorageSeekableByteChannelShareFileWriteBehaviorTests extends APISpec {
         0      | null                         | FileLastWrittenMode.PRESERVE
     }
 
-    def "WriteBehavior canSeek anywhere in file range"() {
+    def "WriteBehavior can seek anywhere in file range"() {
         given:
         ShareFileClient client = Mock()
         def behavior = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null)
 
-        when: "WriteBehavior.canSeek() is called"
-        boolean result = behavior.canSeek(position)
+        when: "WriteBehavior.assertCanSeek() is called"
+        behavior.assertCanSeek(position)
 
         then: "Expected behavior"
-        result == expected
+        notThrown(Throwable)
         1 * client.getProperties() >> new ShareFileProperties(null, null, null, null, fileSize as Long, null, null,
             null, null, null, null, null, null, null, null, null, null, null)
 
         where:
-        fileSize     | position         | expected
-        Constants.KB | 0                | true
-        Constants.KB | 500              | true
-        Constants.KB | Constants.KB     | true
-        Constants.KB | Constants.KB + 1 | false
-        Constants.KB | -1               | false
+        fileSize     | position
+        Constants.KB | 0
+        Constants.KB | 500
+        Constants.KB | Constants.KB
+    }
+
+    def "WriteBehavior throws when seeking beyond range"() {
+        given:
+        ShareFileClient client = Mock()
+        def behavior = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null)
+
+        when: "WriteBehavior.assertCanSeek() is called"
+        behavior.assertCanSeek(position)
+
+        then: "Expected behavior"
+        thrown(UnsupportedOperationException)
+        1 * client.getProperties() >> new ShareFileProperties(null, null, null, null, fileSize as Long, null, null,
+            null, null, null, null, null, null, null, null, null, null, null)
+
+        where:
+        fileSize     | position
+        Constants.KB | Constants.KB + 1
+        Constants.KB | -1
     }
 
     def "WriteBehavior truncate unsupported"(){

@@ -9,7 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Import RDB files into a target database Parameters for a Redis Enterprise import operation. */
+/**
+ * Import RDB files into a target database
+ *
+ * <p>Parameters for a Redis Enterprise import operation.
+ */
 @Fluent
 public final class ImportClusterParameters {
     /*
@@ -17,6 +21,10 @@ public final class ImportClusterParameters {
      */
     @JsonProperty(value = "sasUris", required = true)
     private List<String> sasUris;
+
+    /** Creates an instance of ImportClusterParameters class. */
+    public ImportClusterParameters() {
+    }
 
     /**
      * Get the sasUris property: SAS URIs for the target blobs to import from.
