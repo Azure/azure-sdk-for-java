@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -22,6 +23,7 @@ import redis.clients.jedis.Transaction;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstants.CONSUMER_GROUP_KEY;
@@ -132,7 +134,8 @@ public final class JedisCheckpointStore implements CheckpointStore {
                                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                                 .log("Unable to create new partition ownership entry.");
 
-                            sink.complete();
+                            sink.error(new AzureException("Unable to claim partition: " + partitionId
+                                + " Partition ownership created already."));
                         }
                     } finally {
                         jedis.unwatch();
@@ -147,6 +150,9 @@ public final class JedisCheckpointStore implements CheckpointStore {
 
                 Transaction transaction = jedis.multi();
                 transaction.hset(key, PARTITION_OWNERSHIP, serializedOwnership);
+
+                // If at least one watched key is modified before the EXEC command, the whole transaction aborts, and
+                // EXEC returns a Null reply to notify that the transaction failed.
                 List<Object> executionResponse = transaction.exec();
 
                 if (executionResponse == null) {
@@ -156,7 +162,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Unable to claim partition.");
 
-                    sink.complete();
+                    sink.error(new AzureException("Unable to claim partition: " + partitionId));
                 } else {
                     addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -264,20 +270,28 @@ public final class JedisCheckpointStore implements CheckpointStore {
      * @param checkpoint Checkpoint information for this partition
      *
      * @return Mono that completes if no errors take place
+     * @throws NullPointerException if {@code checkpoint} is null.
+     * @throws IllegalArgumentException if {@code checkpoint} does not have a sequenceNumber or offset.
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+        if (Objects.isNull(checkpoint)) {
+            return Mono.error(new NullPointerException("'checkpoint' cannot be null."));
+        }
+
         if (!isCheckpointValid(checkpoint)) {
-            throw addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
+            return Mono.error(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
                 checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
                 .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
-                .log(new IllegalStateException(
-                    "Checkpoint is either null, or both the offset and the sequence number are null."));
+                .log(new IllegalArgumentException(
+                    "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
 
         return Mono.fromRunnable(() -> {
-            byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-            byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
+            byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+                checkpoint.getConsumerGroup());
+            byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+                checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
 
             try (Jedis jedis = jedisPool.getResource()) {
                 if (!jedis.exists(prefix) || !jedis.exists(key)) {
@@ -301,7 +315,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
     }
 
     private static Boolean isCheckpointValid(Checkpoint checkpoint) {
-        return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
+        return !(checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null);
     }
 
     private static LoggingEventBuilder addEventHubInformation(LoggingEventBuilder builder,
