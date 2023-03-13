@@ -45,8 +45,8 @@ public class TestProxyUtils {
             "connectionString", "url", "host", "password", "userName"));
 
     private static final Map<String, String> BODY_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
-        put("Operation-Location", URL_REGEX);
-    }};
+            put("Operation-Location", URL_REGEX);
+            }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
         = new ArrayList<>(Arrays.asList("(?:<Value>)(?<secret>.*)(?:</Value>)", "(?:Password=)(?<secret>.*)(?:;)",
@@ -176,20 +176,20 @@ public class TestProxyUtils {
     }
 
     private static String createRegexRequestBody(String key, String regex, String value, String groupForReplace) {
-         if (key == null) {
-             if (groupForReplace == null) {
-                 // regex pattern and redaction value
-                 return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
-             } else {
-                 // regex pattern and redaction value with group replace
-                 return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
-                     groupForReplace);
-             }
-         } else if (regex == null) {
-             // header key value
-             return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
-         }
-         // header key with regex
+        if (key == null) {
+            if (groupForReplace == null) {
+                // regex pattern and redaction value
+                return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
+            } else {
+                // regex pattern and redaction value with group replace
+                return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
+                    groupForReplace);
+            }
+        } else if (regex == null) {
+            // header key value
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
+        }
+        // header key with regex
         return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key, value, regex, groupForReplace);
     }
 
