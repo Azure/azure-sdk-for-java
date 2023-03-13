@@ -58,6 +58,7 @@ class SoftDeleteTest extends APISpec{
 
         def dirDeletionId = paths.next().getDeletionId()
         def fileDeletionId = paths.next().getDeletionId()
+        sleepIfRecord(3000)
 
         when:
         def returnedClient = fileSystemClient.undeletePath(dir.getDirectoryName(), dirDeletionId)
@@ -93,6 +94,7 @@ class SoftDeleteTest extends APISpec{
 
         def dirDeletionId = paths.next().getDeletionId()
         def fileDeletionId = paths.next().getDeletionId()
+        sleepIfRecord(3000)
 
         when:
         def returnedClient = fileSystemClient.undeletePath(Utility.urlEncode(dir.getDirectoryName()), dirDeletionId)
@@ -142,6 +144,7 @@ class SoftDeleteTest extends APISpec{
         def fc3 = fileSystemClient.getFileClient(generatePathName())
         fc3.create()
         fc3.delete()
+        sleepIfRecord(3000)
 
         expect:
         def pagedIterable = fileSystemClient.listDeletedPaths();
@@ -175,6 +178,7 @@ class SoftDeleteTest extends APISpec{
         def fc2 = fileSystemClient.getFileClient(generatePathName()) // Create another file not under the path
         fc2.create()
         fc2.delete()
+        sleepIfRecord(3000)
 
         when:
         def deletedBlobs = fileSystemClient.listDeletedPaths(dir.getDirectoryName(), null, null)
@@ -192,6 +196,7 @@ class SoftDeleteTest extends APISpec{
         def fc1 = fileSystemClient.getFileClient(generatePathName())
         fc1.create(true)
         fc1.delete()
+        sleepIfRecord(3000)
 
         when:
         List<PathDeletedItem> deletedBlobs = fileSystemClient.listDeletedPaths().stream().collect(Collectors.toList())
