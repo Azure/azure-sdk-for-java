@@ -41,3 +41,4 @@ com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
+com.azure:azure-communication-chat # Tests owner: jiminwen
