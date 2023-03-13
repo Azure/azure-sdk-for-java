@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.convert.DurationStyle;
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -183,7 +185,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
         Integer replicaCount) {
-        TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount);
+        TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount, Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
         if (clientProvider != null) {

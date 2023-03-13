@@ -35,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -125,7 +126,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
-        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
         propertySource.initProperties();
@@ -151,7 +152,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     public void testFeatureFlagThrowError() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any())).thenReturn(featureListMock);
-        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         try {
             propertySource.initProperties();
         } catch (Exception e) {
@@ -181,7 +182,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS_TARGETING.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
-        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0));
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
         propertySource.initProperties();
