@@ -2,13 +2,11 @@
 
 ## 1.0.0-beta.5 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Modified `getSampleBusinessMetadataTemplate` method, method returns `BinaryData`.
+- Modified `exportGlossaryTermsAsCsv` method, method returns `BinaryData`.
+- Removed `importGlossaryTermsViaCsvByGlossaryName` and `importGlossaryTermsViaCsv` method. Please use `beginImportGlossaryTermsViaCsvByGlossaryName` and `beginImportGlossaryTermsViaCsv`, respectively.
 
 ## 1.0.0-beta.4 (2022-06-15)
 
