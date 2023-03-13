@@ -325,7 +325,7 @@ public class TargetingFilterTest {
 
         private ArrayList<String> groups;
 
-        public TargetingContextAccessor(String user, ArrayList<String> groups) {
+        TargetingContextAccessor(String user, ArrayList<String> groups) {
             this.user = user;
             this.groups = groups;
         }

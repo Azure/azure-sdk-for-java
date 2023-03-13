@@ -9,7 +9,7 @@ public interface ITargetingContextAccessor {
 
     /**
      * Returns the Targeting Context for Feature Targeting evaluation.
-     * @return Mono{@literal <}TargetContext{@literal >}
+     * @param context Targeting Context for selecting feature
      */
     void getContextAsync(ITargetingContext context);
 

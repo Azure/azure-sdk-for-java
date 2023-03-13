@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.azure.spring.cloud.config.implementation.RequestTracingConstants;
+import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 
 public class TracingInfoTest {
 

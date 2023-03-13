@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.appconfiguration.config.implementation.HostType;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestType;
