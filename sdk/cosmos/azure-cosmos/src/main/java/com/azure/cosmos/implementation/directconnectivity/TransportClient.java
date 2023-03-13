@@ -3,11 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
@@ -58,6 +54,8 @@ public abstract class TransportClient implements AutoCloseable {
     public abstract void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
+
+    public abstract IOpenConnectionsHandler getOpenConnectionsHandler();
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(

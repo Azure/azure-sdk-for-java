@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -22,6 +23,8 @@ import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportC
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public interface RntbdEndpoint extends AutoCloseable {
+
+    int MIN_CHANNELS_PER_ENDPOINT = 1;
 
     // region Accessors
 
@@ -100,6 +103,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     OpenConnectionRntbdRequestRecord openConnection(Uri addressUri);
 
+
+
     // endregion
 
     // region Types
@@ -121,6 +126,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        IOpenConnectionsHandler getOpenConnectionHandler();
     }
 
     final class Config {

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -23,13 +25,16 @@ public class RntbdConnectionStateListener {
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
+    private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
+    private final AtomicBoolean openConnectionsInProgress = new AtomicBoolean(false);
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint) {
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final RntbdOpenConnectionsHandler openConnectionsHandler) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
+        this.rntbdOpenConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
     }
@@ -65,12 +70,32 @@ public class RntbdConnectionStateListener {
                 logger.debug("Will not raise the connection state change event for error", exception);
             }
         }
+
+        openConnectionIfNeeded();
     }
 
     public RntbdConnectionStateListenerMetrics getMetrics() {
         return this.metrics;
     }
 
+    private void openConnectionIfNeeded() {
+
+        if (this.endpoint.isClosed()) {
+            return;
+        }
+
+        if (this.endpoint.channelsMetrics() >= RntbdEndpoint.MIN_CHANNELS_PER_ENDPOINT) {
+            return;
+        }
+
+        if (this.openConnectionsInProgress.compareAndSet(false, true)) {
+            this.rntbdOpenConnectionsHandler.openConnection(this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
+                    // .repeat(4)
+                    .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                    .doOnTerminate(() -> this.openConnectionsInProgress.set(false))
+                    .subscribe();
+        }
+    }
     // endregion
 
     // region Privates

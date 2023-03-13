@@ -535,6 +535,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         protected GlobalEndpointManager getGlobalEndpointManager() {
             return this.globalEndpointManager;
         }
+
+        @Override
+        public IOpenConnectionsHandler getOpenConnectionsHandler() {
+            throw new NotImplementedException("getOpenConnectionsHandler is not implemented in SessionNotAvailableRetryTest");
+        }
     }
 
     private class TestItem {

@@ -79,7 +79,7 @@ public class StoreClient implements IStoreClient {
             false,
             useMultipleWriteLocations);
 
-        addressResolver.setOpenConnectionsHandler(new RntbdOpenConnectionsHandler(transportClient));
+        addressResolver.setOpenConnectionsHandler(transportClient.getOpenConnectionsHandler());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

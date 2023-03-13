@@ -5,10 +5,14 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
 
 public interface IOpenConnectionsHandler {
+    Mono<OpenConnectionResponse> openConnection(Uri addressUri);
+    Mono<OpenConnectionResponse> openConnection(Uri addressUri, String semaphoreSettingsMode);
     Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses);
+    Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode);
 }

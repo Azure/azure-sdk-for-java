@@ -5,43 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.ForbiddenException;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Integers;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.Lists;
-import com.azure.cosmos.implementation.LockedException;
-import com.azure.cosmos.implementation.Longs;
-import com.azure.cosmos.implementation.MethodNotAllowedException;
-import com.azure.cosmos.implementation.MutableVolatile;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.PathsHelper;
-import com.azure.cosmos.implementation.PreconditionFailedException;
-import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.implementation.RequestEntityTooLargeException;
-import com.azure.cosmos.implementation.RequestRateTooLargeException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RetryWithException;
-import com.azure.cosmos.implementation.RuntimeConstants;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.UnauthorizedException;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -249,6 +213,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     protected GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
+    }
+
+    @Override
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
+        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
