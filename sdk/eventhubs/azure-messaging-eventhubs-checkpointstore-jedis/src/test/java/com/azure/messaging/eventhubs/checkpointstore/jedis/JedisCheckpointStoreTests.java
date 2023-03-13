@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.messaging.eventhubs.models.Checkpoint;
@@ -17,6 +18,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +65,7 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void testListCheckpoints() {
-        Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+        Checkpoint checkpoint = createCheckpoint();
         Set<byte[]> value = new HashSet<>();
         value.add(KEY);
         byte[] checkpointInBytes = JSON_SERIALIZER.serializeToBytes(checkpoint);
@@ -109,7 +111,7 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void testListOwnership() {
-        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+        PartitionOwnership partitionOwnership = createPartitionOwnership();
         Set<byte[]> value = new HashSet<>();
         value.add(KEY);
         byte[] partitionOwnershipToBytes = JSON_SERIALIZER.serializeToBytes(partitionOwnership);
@@ -141,8 +143,8 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void testClaimOwnershipEmptyField() {
-        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID);
+        PartitionOwnership partitionOwnership = createPartitionOwnership(
+        );
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
 
         when(jedisPool.getResource()).thenReturn(jedis);
@@ -162,7 +164,7 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void testClaimOwnershipNonEmptyField() {
-        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+        PartitionOwnership partitionOwnership = createPartitionOwnership();
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
         Transaction transaction = mock(Transaction.class, RETURNS_SMART_NULLS);
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
@@ -184,22 +186,37 @@ public class JedisCheckpointStoreTests {
     }
 
     @Test
-    public void transactionFailsClaimOwnership() {
-        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+    public void transactionFailsClaimOwnershipNoExistingOwnerships() {
+        PartitionOwnership partitionOwnership = createPartitionOwnership();
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
         Transaction transaction = mock(Transaction.class);
 
         when(jedisPool.getResource()).thenReturn(jedis);
+
+        // No existing partition ownerships.
         when(jedis.hmget(KEY, JedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
-        when(jedis.watch(KEY)).thenThrow(RuntimeException.class);
+        when(jedis.watch(KEY)).thenReturn("OK");
+        when(jedis.multi()).thenReturn(transaction);
+
+        // 2023-03-13T20:45:44Z and 0 ms.
+        when(jedis.time()).thenReturn(Arrays.asList("1678740344", "0"));
+
+        // Returns 1 on success. Any other value is an error.
+        when(jedis.hsetnx(eq(KEY), eq(JedisCheckpointStore.PARTITION_OWNERSHIP), any(byte[].class))).thenReturn(0L);
+
+        // WATCHed keys are monitored in order to detect changes against them. If at least one watched key is modified
+        // before the EXEC command, the whole transaction aborts, and EXEC returns a Null reply to notify that the
+        // transaction failed.
+        when(transaction.exec()).thenReturn(null);
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .expectError(RuntimeException.class);
+            .expectError(AzureException.class)
+            .verify();
     }
 
     @Test
     public void testUpdateCheckpoint() {
-        Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+        Checkpoint checkpoint = createCheckpoint();
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.exists(PREFIX)).thenReturn(true);
@@ -208,22 +225,42 @@ public class JedisCheckpointStoreTests {
             .verifyComplete();
     }
 
-    private static PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
+    @Test
+    public void updateInvalidCheckpoint() {
+        // Arrange
+        Checkpoint invalidCheckpoint = createCheckpoint()
+            .setOffset(null)
+            .setSequenceNumber(null);
+
+        // Act
+        StepVerifier.create(store.updateCheckpoint(invalidCheckpoint))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+    }
+
+    @Test
+    public void updateNullCheckpoint() {
+        StepVerifier.create(store.updateCheckpoint(null))
+            .expectError(NullPointerException.class)
+            .verify();
+    }
+
+    private static PartitionOwnership createPartitionOwnership() {
         return new PartitionOwnership()
-            .setFullyQualifiedNamespace(fullyQualifiedNamespace)
-            .setEventHubName(eventHubName)
-            .setConsumerGroup(consumerGroup)
-            .setPartitionId(partitionId)
+            .setFullyQualifiedNamespace(JedisCheckpointStoreTests.FULLY_QUALIFIED_NAMESPACE)
+            .setEventHubName(JedisCheckpointStoreTests.EVENT_HUB_NAME)
+            .setConsumerGroup(JedisCheckpointStoreTests.CONSUMER_GROUP)
+            .setPartitionId(JedisCheckpointStoreTests.PARTITION_ID)
             .setOwnerId("ownerOne")
             .setETag("eTag");
     }
 
-    private static Checkpoint createCheckpoint(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
+    private static Checkpoint createCheckpoint() {
         return new Checkpoint()
-            .setFullyQualifiedNamespace(fullyQualifiedNamespace)
-            .setEventHubName(eventHubName)
-            .setConsumerGroup(consumerGroup)
-            .setPartitionId(partitionId)
+            .setFullyQualifiedNamespace(JedisCheckpointStoreTests.FULLY_QUALIFIED_NAMESPACE)
+            .setEventHubName(JedisCheckpointStoreTests.EVENT_HUB_NAME)
+            .setConsumerGroup(JedisCheckpointStoreTests.CONSUMER_GROUP)
+            .setPartitionId(JedisCheckpointStoreTests.PARTITION_ID)
             .setSequenceNumber(1L);
     }
 }
