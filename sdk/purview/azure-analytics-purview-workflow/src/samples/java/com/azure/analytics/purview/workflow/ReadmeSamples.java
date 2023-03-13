@@ -21,8 +21,8 @@ public final class ReadmeSamples {
             .password(Configuration.getGlobalConfiguration().get("PASSWORD", "password"))
             .build())
         .buildClient();
-
     // END: readme-sample-createWorkflowClient
+
     public void createWorkflow() {
         // BEGIN: readme-sample-createWorkflow
         BinaryData workflowCreateOrUpdateCommand =

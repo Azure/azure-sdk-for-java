@@ -17,8 +17,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
@@ -3729,7 +3727,7 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
+    public Mono<Response<BinaryData>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
         return this.serviceClient.exportGlossaryTermsAsCsvWithResponseAsync(glossaryGuid, termGuids, requestOptions);
     }

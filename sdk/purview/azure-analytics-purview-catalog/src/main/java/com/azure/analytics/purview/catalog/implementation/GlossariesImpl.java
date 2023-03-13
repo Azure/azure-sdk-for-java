@@ -34,9 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Glossaries. */
@@ -1361,7 +1359,7 @@ public final class GlossariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsv(
+        Mono<Response<BinaryData>> exportGlossaryTermsAsCsv(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
@@ -1382,7 +1380,7 @@ public final class GlossariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvSync(
+        Response<BinaryData> exportGlossaryTermsAsCsvSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
@@ -9199,7 +9197,7 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
+    public Mono<Response<BinaryData>> exportGlossaryTermsAsCsvWithResponseAsync(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
         final String accept = "text/csv";
         return FluxUtil.withContext(
