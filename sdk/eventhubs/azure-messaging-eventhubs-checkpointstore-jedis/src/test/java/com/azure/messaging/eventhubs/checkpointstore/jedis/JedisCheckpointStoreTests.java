@@ -141,7 +141,8 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void testClaimOwnershipEmptyField() {
-        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+        PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME,
+            CONSUMER_GROUP, PARTITION_ID);
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
 
         when(jedisPool.getResource()).thenReturn(jedis);

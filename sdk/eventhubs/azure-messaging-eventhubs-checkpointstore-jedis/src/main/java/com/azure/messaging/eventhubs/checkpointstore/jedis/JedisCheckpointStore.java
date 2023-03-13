@@ -3,6 +3,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
@@ -22,6 +23,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstants.CONSUMER_GROUP_KEY;
+import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstants.ENTITY_NAME_KEY;
+import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstants.HOSTNAME_KEY;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -93,8 +98,11 @@ public final class JedisCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
         return Flux.fromIterable(requestedPartitionOwnerships).handle((partitionOwnership, sink) -> {
             String partitionId = partitionOwnership.getPartitionId();
-            byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(),
-                partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
+            String fullyQualifiedNamespace = partitionOwnership.getFullyQualifiedNamespace();
+            String eventHubName = partitionOwnership.getEventHubName();
+            String consumerGroup = partitionOwnership.getConsumerGroup();
+
+            byte[] key = keyBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, partitionId);
             byte[] serializedOwnership = DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership);
 
             try (Jedis jedis = jedisPool.getResource()) {
@@ -119,7 +127,9 @@ public final class JedisCheckpointStore implements CheckpointStore {
                         } else {
                             // Sometime between fetching the ownership information and trying to set it, someone else
                             // updated/added ownership.
-                            LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId)
+                            addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName,
+                                consumerGroup)
+                                .addKeyValue(PARTITION_ID_KEY, partitionId)
                                 .log("Unable to create new partition ownership entry.");
 
                             sink.complete();
@@ -142,10 +152,15 @@ public final class JedisCheckpointStore implements CheckpointStore {
                 if (executionResponse == null) {
                     // This means that the transaction did not execute, which implies that another client has
                     // changed the ownership during this transaction
-                    LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Unable to claim partition.");
+                    addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Unable to claim partition.");
+
                     sink.complete();
                 } else {
-                    LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Claimed partition.");
+                    addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Claimed partition.");
 
                     sink.next(partitionOwnership);
                     sink.complete();
@@ -155,9 +170,10 @@ public final class JedisCheckpointStore implements CheckpointStore {
     }
 
     /**
-     * This method returns the list of checkpoints from the underlying data store, and if no checkpoints are available, then it returns empty results.
+     * This method returns the list of checkpoints from the underlying data store, and if no checkpoints are available,
+     * then it returns empty results.
      *
-     * @param fullyQualifiedNamespace The fully qualified namespace of the current instance  Event Hub
+     * @param fullyQualifiedNamespace The fully qualified namespace of the current Event Hub instance
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
      *
@@ -184,13 +200,16 @@ public final class JedisCheckpointStore implements CheckpointStore {
                     byte[] checkpointJson = checkpointJsonList.get(0);
 
                     if (checkpointJson == null) {
-                        LOGGER.verbose("No checkpoint persists yet.");
+                        addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+                            .log("No checkpoint persists yet.");
+
                         continue;
                     }
                     Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson, TypeReference.createInstance(Checkpoint.class));
                     listStoredCheckpoints.add(checkpoint);
                 } else {
-                    LOGGER.verbose("No checkpoint persists yet.");
+                    addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+                        .log("No checkpoint persists yet.");
                 }
             }
             return Flux.fromIterable(listStoredCheckpoints);
@@ -226,7 +245,9 @@ public final class JedisCheckpointStore implements CheckpointStore {
                     byte[] partitionOwnershipJson = partitionOwnershipJsonList.get(0);
                     // if PARTITION_OWNERSHIP field does not exist for member we will get a null
                     if (partitionOwnershipJson == null) {
-                        LOGGER.verbose("No partition ownership records exist for this checkpoint yet.");
+                        addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+                            .log("No partition ownership records exist for this checkpoint yet.");
+
                         continue;
                     }
                     PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson, TypeReference.createInstance(PartitionOwnership.class));
@@ -247,10 +268,13 @@ public final class JedisCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (!isCheckpointValid(checkpoint)) {
-            throw LOGGER.logExceptionAsWarning(Exceptions
-                .propagate(new IllegalStateException(
-                    "Checkpoint is either null, or both the offset and the sequence number are null.")));
+            throw addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
+                checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
+                .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
+                .log(new IllegalStateException(
+                    "Checkpoint is either null, or both the offset and the sequence number are null."));
         }
+
         return Mono.fromRunnable(() -> {
             byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
             byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
@@ -278,5 +302,13 @@ public final class JedisCheckpointStore implements CheckpointStore {
 
     private static Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
+    }
+
+    private static LoggingEventBuilder addEventHubInformation(LoggingEventBuilder builder,
+        String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+
+        return builder.addKeyValue(HOSTNAME_KEY, fullyQualifiedNamespace)
+            .addKeyValue(ENTITY_NAME_KEY, eventHubName)
+            .addKeyValue(CONSUMER_GROUP_KEY, consumerGroup);
     }
 }
