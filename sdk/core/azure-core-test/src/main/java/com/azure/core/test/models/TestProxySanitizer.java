@@ -26,7 +26,7 @@ public class TestProxySanitizer {
     }
 
     /**
-     * Creates an instance of TestProxySanitizer
+     * Creates an instance of TestProxySanitizer for a key with specified regex pattern
      *
      * @param key the body json key or header key to apply regex to
      * @param regex the regex or the json key to lookup for redaction

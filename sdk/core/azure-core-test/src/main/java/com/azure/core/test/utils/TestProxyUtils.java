@@ -304,9 +304,8 @@ public class TestProxyUtils {
 
         // add body key with regex sanitizers
         List<TestProxySanitizer> keyRegexSanitizers = new ArrayList<>();
-        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) -> {
-            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY));
-        });
+        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
+            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY)));
 
         regexSanitizers.addAll(keyRegexSanitizers);
 
