@@ -5,6 +5,7 @@ package com.azure.spring.cloud.config.implementation.http.policy;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.config.implementation.HostType;
 import com.azure.spring.cloud.config.implementation.RequestTracingConstants;
 import com.azure.spring.cloud.config.implementation.RequestType;
@@ -18,17 +19,20 @@ public class TracingInfo {
     private int replicaCount;
 
     private final FeatureFlagTracing featureFlagTracing;
+    
+    private final Configuration configuration;
 
-    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount) {
+    public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isDev = isDev;
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
         this.featureFlagTracing = new FeatureFlagTracing();
+        this.configuration = configuration;
     }
 
     public String getValue(boolean watchRequests) {
-        String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if (track != null && !Boolean.valueOf(track)) {
+        String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+        if (track != null && Boolean.valueOf(track)) {
             return "";
         }
 
