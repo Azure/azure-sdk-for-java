@@ -15,7 +15,7 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkHeaders;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -45,18 +45,19 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentTypeString;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
@@ -121,7 +122,7 @@ public final class ContainerRegistryBlobClient {
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(OciManifest manifest) {
+    public UploadManifestResult uploadManifest(OciImageManifest manifest) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
         return uploadManifestWithResponse(BinaryData.fromObject(manifest), null, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
     }
@@ -298,7 +299,7 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadManifestResult downloadManifest(String tagOrDigest) {
-        return downloadManifestWithResponse(tagOrDigest, SUPPORTED_MANIFEST_TYPES, Context.NONE).getValue();
+        return downloadManifestWithResponse(tagOrDigest, null, Context.NONE).getValue();
     }
 
     /**
@@ -308,20 +309,22 @@ public final class ContainerRegistryBlobClient {
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
-     * @param mediaType Manifest media type to request (or a comma separated list of media types).
+     * @param mediaTypes List of {@link  ManifestMediaType} to request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response for the manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, ManifestMediaType mediaType, Context context) {
+    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, Collection<ManifestMediaType> mediaTypes, Context context) {
         Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
+
+        String requestMediaTypes = getContentTypeString(mediaTypes);
 
         try {
             Response<BinaryData> response =
                 registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    mediaType.toString(), enableSync(context));
+                    requestMediaTypes, enableSync(context));
             return toDownloadManifestResponse(tagOrDigest, response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));

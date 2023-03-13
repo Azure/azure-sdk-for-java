@@ -4,12 +4,16 @@
 
 #### Features Added
 * Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
+* GA of subpartitioning functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `readMany` API to take in hierarchical partition keys - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 
 #### Other Changes
+* Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329).
 
 ### 4.41.0 (2023-02-17)
 

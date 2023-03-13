@@ -4,7 +4,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.util.io.IOUtils;
@@ -22,6 +22,7 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 
 public class DownloadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -76,8 +77,7 @@ public class DownloadImageAsync {
         ManifestMediaType manifestListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
         ManifestMediaType ociIndexType = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
-        ManifestMediaType supportedMediaTypes = ManifestMediaType.fromString(manifestListType.toString() + ", " + ociIndexType.toString());
-        blobClient.downloadManifestWithResponse("latest", supportedMediaTypes)
+        blobClient.downloadManifestWithResponse("latest", Arrays.asList(manifestListType, ociIndexType))
             .doOnNext(downloadResult -> {
                 if (manifestListType.equals(downloadResult.getValue().getMediaType())) {
                     DockerV2ManifestList list = downloadResult.getValue().getContent().toObject(DockerV2ManifestList.class);
@@ -92,7 +92,7 @@ public class DownloadImageAsync {
             .block();
     }
 
-    private static String prettyPrint(OciManifest manifest) {
+    private static String prettyPrint(OciImageManifest manifest) {
         try {
             return PRETTY_PRINT.writeValueAsString(manifest);
         } catch (JsonProcessingException e) {

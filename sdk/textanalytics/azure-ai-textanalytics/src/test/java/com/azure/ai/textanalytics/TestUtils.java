@@ -1372,13 +1372,14 @@ final class TestUtils {
                     + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
                 0.69, 0, 160),
             getExpectedSummarySentence(
-                "We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer "
-                    + "learning, spanning modalities and languages.",
-                1, 721, 134),
-            getExpectedSummarySentence(
                 "The goal is to have pretrained models that can jointly learn representations to support a broad"
                     + " range of downstream AI tasks, much in the way humans do today.",
-                0.81, 856, 158)
+                0.81, 856, 158),
+            getExpectedSummarySentence(
+                "Over the past five years, we have achieved human performance on benchmarks in conversational "
+                    + "speech recognition, machine translation, conversational question answering, machine reading"
+                    + " comprehension, and image captioning.",
+                0.79, 1015, 221)
         ));
 
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);

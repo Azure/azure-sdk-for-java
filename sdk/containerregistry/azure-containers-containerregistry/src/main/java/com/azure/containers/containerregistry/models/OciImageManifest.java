@@ -14,16 +14,16 @@ import java.util.List;
 
 /** Returns the requested OCI Manifest file. */
 @Fluent
-public final class OciManifest implements JsonSerializable<OciManifest> {
+public final class OciImageManifest implements JsonSerializable<OciImageManifest> {
     /*
      * V2 image config descriptor
      */
-    private OciBlobDescriptor config;
+    private OciDescriptor config;
 
     /*
      * List of V2 image layer information
      */
-    private List<OciBlobDescriptor> layers;
+    private List<OciDescriptor> layers;
 
     /*
      * Additional information provided through arbitrary metadata.
@@ -35,15 +35,15 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      */
     private Integer schemaVersion;
 
-    /** Creates an instance of OciManifest class. */
-    public OciManifest() {}
+    /** Creates an instance of OciImageManifest class. */
+    public OciImageManifest() {}
 
     /**
      * Get the config property: V2 image config descriptor.
      *
      * @return the config value.
      */
-    public OciBlobDescriptor getConfig() {
+    public OciDescriptor getConfig() {
         return this.config;
     }
 
@@ -51,9 +51,9 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      * Set the config property: V2 image config descriptor.
      *
      * @param config the config value to set.
-     * @return the OciManifest object itself.
+     * @return the OciImageManifest object itself.
      */
-    public OciManifest setConfig(OciBlobDescriptor config) {
+    public OciImageManifest setConfig(OciDescriptor config) {
         this.config = config;
         return this;
     }
@@ -63,7 +63,7 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      *
      * @return the layers value.
      */
-    public List<OciBlobDescriptor> getLayers() {
+    public List<OciDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -71,9 +71,9 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      * Set the layers property: List of V2 image layer information.
      *
      * @param layers the layers value to set.
-     * @return the OciManifest object itself.
+     * @return the OciImageManifest object itself.
      */
-    public OciManifest setLayers(List<OciBlobDescriptor> layers) {
+    public OciImageManifest setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -91,9 +91,9 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      * Set the annotations property: Additional information provided through arbitrary metadata.
      *
      * @param annotations the annotations value to set.
-     * @return the OciManifest object itself.
+     * @return the OciImageManifest object itself.
      */
-    public OciManifest setAnnotations(OciAnnotations annotations) {
+    public OciImageManifest setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }
@@ -111,9 +111,9 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
      * Set the schemaVersion property: Schema version.
      *
      * @param schemaVersion the schemaVersion value to set.
-     * @return the OciManifest object itself.
+     * @return the OciImageManifest object itself.
      */
-    public OciManifest setSchemaVersion(Integer schemaVersion) {
+    public OciImageManifest setSchemaVersion(Integer schemaVersion) {
         this.schemaVersion = schemaVersion;
         return this;
     }
@@ -129,18 +129,18 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
     }
 
     /**
-     * Reads an instance of OciManifest from the JsonReader.
+     * Reads an instance of OciImageManifest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OciManifest if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of OciImageManifest if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OciManifest.
+     * @throws IOException If an error occurs while reading the OciImageManifest.
      */
-    public static OciManifest fromJson(JsonReader jsonReader) throws IOException {
+    public static OciImageManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    OciBlobDescriptor config = null;
-                    List<OciBlobDescriptor> layers = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
                     OciAnnotations annotations = null;
                     Integer schemaVersion = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -148,9 +148,9 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
                         reader.nextToken();
 
                         if ("config".equals(fieldName)) {
-                            config = OciBlobDescriptor.fromJson(reader);
+                            config = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            layers = reader.readArray(reader1 -> OciBlobDescriptor.fromJson(reader1));
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
                         } else if ("annotations".equals(fieldName)) {
                             annotations = OciAnnotations.fromJson(reader);
                         } else if ("schemaVersion".equals(fieldName)) {
@@ -159,7 +159,7 @@ public final class OciManifest implements JsonSerializable<OciManifest> {
                             reader.skipChildren();
                         }
                     }
-                    OciManifest deserializedValue = new OciManifest();
+                    OciImageManifest deserializedValue = new OciImageManifest();
                     deserializedValue.config = config;
                     deserializedValue.layers = layers;
                     deserializedValue.annotations = annotations;

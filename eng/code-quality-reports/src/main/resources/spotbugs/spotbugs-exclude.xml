@@ -1483,6 +1483,13 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Method name="injectConnectionErrorsInternal"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
         https://github.com/spotbugs/spotbugs/issues/1001 -->
   <Match>
@@ -2052,7 +2059,10 @@
   </Match>
 
   <Match>
-    <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    <Or>
+      <Class name="~com.azure.cosmos.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+      <Class name="~com.azure.cosmos.test.implementation.ImplementationBridgeHelpers(\$.*)?"/>
+    </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
 

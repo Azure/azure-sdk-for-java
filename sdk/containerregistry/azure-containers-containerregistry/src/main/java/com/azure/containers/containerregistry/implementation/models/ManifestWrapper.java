@@ -5,7 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.OciAnnotations;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -29,12 +29,12 @@ public final class ManifestWrapper extends Manifest {
     /*
      * (V2, OCI) Image config descriptor
      */
-    private OciBlobDescriptor config;
+    private OciDescriptor config;
 
     /*
      * (V2, OCI) List of V2 image layer information
      */
-    private List<OciBlobDescriptor> layers;
+    private List<OciDescriptor> layers;
 
     /*
      * (OCI, OCIIndex) Additional metadata
@@ -119,7 +119,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the config value.
      */
-    public OciBlobDescriptor getConfig() {
+    public OciDescriptor getConfig() {
         return this.config;
     }
 
@@ -129,7 +129,7 @@ public final class ManifestWrapper extends Manifest {
      * @param config the config value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setConfig(OciBlobDescriptor config) {
+    public ManifestWrapper setConfig(OciDescriptor config) {
         this.config = config;
         return this;
     }
@@ -139,7 +139,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the layers value.
      */
-    public List<OciBlobDescriptor> getLayers() {
+    public List<OciDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -149,7 +149,7 @@ public final class ManifestWrapper extends Manifest {
      * @param layers the layers value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setLayers(List<OciBlobDescriptor> layers) {
+    public ManifestWrapper setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -333,8 +333,8 @@ public final class ManifestWrapper extends Manifest {
                     Integer schemaVersion = null;
                     String mediaType = null;
                     List<ManifestListAttributes> manifests = null;
-                    OciBlobDescriptor config = null;
-                    List<OciBlobDescriptor> layers = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
                     OciAnnotations annotations = null;
                     String architecture = null;
                     String name = null;
@@ -353,9 +353,9 @@ public final class ManifestWrapper extends Manifest {
                         } else if ("manifests".equals(fieldName)) {
                             manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
                         } else if ("config".equals(fieldName)) {
-                            config = OciBlobDescriptor.fromJson(reader);
+                            config = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            layers = reader.readArray(reader1 -> OciBlobDescriptor.fromJson(reader1));
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
                         } else if ("annotations".equals(fieldName)) {
                             annotations = OciAnnotations.fromJson(reader);
                         } else if ("architecture".equals(fieldName)) {
