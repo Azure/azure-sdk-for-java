@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -28,9 +29,9 @@ public class RntbdConnectionStateListener {
     private final Set<Uri> addressUris;
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
     private final AtomicBoolean openConnectionsInProgress = new AtomicBoolean(false);
-
     private static final Integer maxOpenConnectionRetryAttempts = 5;
     private final AtomicInteger openConnectionRetryAttempts = new AtomicInteger(0);
+    private final Integer proactiveConnectionsCount = 4;
     // endregion
 
     // region Constructors
@@ -87,19 +88,22 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (this.endpoint.channelsMetrics() >= RntbdEndpoint.MIN_CHANNELS_PER_ENDPOINT) {
+        if (this.endpoint.channelsMetrics() < proactiveConnectionsCount) {
             return;
         }
 
         if (this.openConnectionsInProgress.compareAndSet(false, true) &&
                 this.openConnectionRetryAttempts.get() < maxOpenConnectionRetryAttempts
         ) {
-            this.rntbdOpenConnectionsHandler.openConnection(this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
-                    .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            Mono.defer(() -> this.rntbdOpenConnectionsHandler
+                            .openConnection(this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE))
+                    // TODO: Should be wired to CosmosContainerProactiveInitConfig
+                    .repeat(proactiveConnectionsCount - this.endpoint.channelsMetrics() - 1)
                     .doOnTerminate(() -> {
                         this.openConnectionsInProgress.set(false);
                         this.openConnectionRetryAttempts.incrementAndGet();
                     })
+                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
     }
