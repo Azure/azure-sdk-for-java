@@ -34,7 +34,7 @@ public final class StorageTargetsListByCacheMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Failed\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"wiipfpub\",\"usageModel\":\"bwwift\",\"verificationTimer\":1744501450,\"writeBackTimer\":1368625669},\"clfs\":{\"target\":\"vksgplsaknynfsy\"},\"unknown\":{\"attributes\":{}},\"blobNfs\":{\"target\":\"uopxodlqiyntor\",\"usageModel\":\"hleosjsw\",\"verificationTimer\":1899163147,\"writeBackTimer\":2109654936},\"allocationPercentage\":1326847440},\"location\":\"pzbchck\",\"id\":\"zqioxiysuii\",\"name\":\"ynkedyatrwyhqmib\",\"type\":\"yhwitsmypyynpcdp\"}]}";
+            "{\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"unknown\",\"provisioningState\":\"Succeeded\",\"state\":\"Ready\",\"nfs3\":{\"target\":\"ed\",\"usageModel\":\"wwa\",\"verificationTimer\":1170623374,\"writeBackTimer\":1301478988},\"clfs\":{\"target\":\"c\"},\"unknown\":{\"attributes\":{}},\"blobNfs\":{\"target\":\"ouicybxarzgszu\",\"usageModel\":\"x\",\"verificationTimer\":95404001,\"writeBackTimer\":153808073},\"allocationPercentage\":1015925448},\"location\":\"amcio\",\"id\":\"khazxkhnzbonlwn\",\"name\":\"oegokdwbwh\",\"type\":\"szzcmrvexztv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,18 +63,18 @@ public final class StorageTargetsListByCacheMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<StorageTarget> response =
-            manager.storageTargets().listByCache("syrsndsytgadgvra", "aeneqnzarrwl", com.azure.core.util.Context.NONE);
+            manager.storageTargets().listByCache("tpuqujmq", "gkfbtndoaong", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(StorageTargetType.CLFS, response.iterator().next().targetType());
-        Assertions.assertEquals(OperationalStateType.FLUSHING, response.iterator().next().state());
-        Assertions.assertEquals("wiipfpub", response.iterator().next().nfs3().target());
-        Assertions.assertEquals("bwwift", response.iterator().next().nfs3().usageModel());
-        Assertions.assertEquals(1744501450, response.iterator().next().nfs3().verificationTimer());
-        Assertions.assertEquals(1368625669, response.iterator().next().nfs3().writeBackTimer());
-        Assertions.assertEquals("vksgplsaknynfsy", response.iterator().next().clfs().target());
-        Assertions.assertEquals("uopxodlqiyntor", response.iterator().next().blobNfs().target());
-        Assertions.assertEquals("hleosjsw", response.iterator().next().blobNfs().usageModel());
-        Assertions.assertEquals(1899163147, response.iterator().next().blobNfs().verificationTimer());
-        Assertions.assertEquals(2109654936, response.iterator().next().blobNfs().writeBackTimer());
+        Assertions.assertEquals(StorageTargetType.UNKNOWN, response.iterator().next().targetType());
+        Assertions.assertEquals(OperationalStateType.READY, response.iterator().next().state());
+        Assertions.assertEquals("ed", response.iterator().next().nfs3().target());
+        Assertions.assertEquals("wwa", response.iterator().next().nfs3().usageModel());
+        Assertions.assertEquals(1170623374, response.iterator().next().nfs3().verificationTimer());
+        Assertions.assertEquals(1301478988, response.iterator().next().nfs3().writeBackTimer());
+        Assertions.assertEquals("c", response.iterator().next().clfs().target());
+        Assertions.assertEquals("ouicybxarzgszu", response.iterator().next().blobNfs().target());
+        Assertions.assertEquals("x", response.iterator().next().blobNfs().usageModel());
+        Assertions.assertEquals(95404001, response.iterator().next().blobNfs().verificationTimer());
+        Assertions.assertEquals(153808073, response.iterator().next().blobNfs().writeBackTimer());
     }
 }

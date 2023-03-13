@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class ResourceSkusResult {
     /*
-     * The URI to fetch the next page of Cache SKUs.
+     * The URI to fetch the next page of cache SKUs.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -29,7 +29,7 @@ public final class ResourceSkusResult {
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of Cache SKUs.
+     * Get the nextLink property: The URI to fetch the next page of cache SKUs.
      *
      * @return the nextLink value.
      */
@@ -38,7 +38,7 @@ public final class ResourceSkusResult {
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of Cache SKUs.
+     * Set the nextLink property: The URI to fetch the next page of cache SKUs.
      *
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkusResult object itself.

@@ -56,6 +56,6 @@ public final class CachesFlushMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.caches().flush("ajqgxy", "mocmbqfqvmk", com.azure.core.util.Context.NONE);
+        manager.caches().flush("blylsyxkqjnsj", "r", com.azure.core.util.Context.NONE);
     }
 }
