@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 
-public class CommunicationIdentityUsingManagedIdentityTests extends CommunicationIdentityClientTestBase {
+public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
 
     @Test
@@ -154,5 +154,4 @@ public class CommunicationIdentityUsingManagedIdentityTests extends Communicatio
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
-
 }

@@ -16,9 +16,9 @@ import java.util.List;
 import static com.azure.communication.identity.CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CommunicationIdentityClientUtilsTests {
+public class CommunicationIdentityClientUtilsUnitTests {
 
-    private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
+    private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientUtils.class);
 
     @Test
     public void createCommunicationIdentityCreateRequestWithCustomTokenValidity() {
