@@ -17,8 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.azure.spring.cloud.feature.manager.TestConfiguration;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.models.TargetingException;
-import com.azure.spring.cloud.feature.manager.targeting.ITargetingContext;
-import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 
 @SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
@@ -52,7 +52,7 @@ public class TargetingFilterTest {
         context.setParameters(parameters);
         context.setFeatureName("testFeature");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("Doe", null));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
 
         assertTrue(filter.evaluate(context));
     }
@@ -73,7 +73,7 @@ public class TargetingFilterTest {
         context.setParameters(parameters);
         context.setFeatureName("testFeature");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("John", null));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("John", null));
 
         assertFalse(filter.evaluate(context));
     }
@@ -100,7 +100,7 @@ public class TargetingFilterTest {
         ArrayList<String> targetedGroups = new ArrayList<String>();
         targetedGroups.add("g1");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor(null, targetedGroups));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor(null, targetedGroups));
 
         assertTrue(filter.evaluate(context));
     }
@@ -127,7 +127,7 @@ public class TargetingFilterTest {
         ArrayList<String> targetedGroups = new ArrayList<String>();
         targetedGroups.add("g2");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor(null, targetedGroups));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor(null, targetedGroups));
 
         assertFalse(filter.evaluate(context));
     }
@@ -154,7 +154,7 @@ public class TargetingFilterTest {
         ArrayList<String> targetedGroups = new ArrayList<String>();
         targetedGroups.add("g1");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("Jane", targetedGroups));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Jane", targetedGroups));
 
         assertTrue(filter.evaluate(context));
     }
@@ -181,7 +181,7 @@ public class TargetingFilterTest {
         ArrayList<String> targetedGroups = new ArrayList<String>();
         targetedGroups.add("g1");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("Doe", targetedGroups));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", targetedGroups));
 
         assertFalse(filter.evaluate(context));
     }
@@ -204,7 +204,7 @@ public class TargetingFilterTest {
         context.setParameters(audienceObject);
         context.setFeatureName("testFeature");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("Doe", null));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
 
         assertTrue(filter.evaluate(context));
     }
@@ -219,7 +219,7 @@ public class TargetingFilterTest {
 
         context.setParameters(parameters);
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("John", null));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("John", null));
 
         Exception exception = assertThrows(TargetingException.class, () -> filter.evaluate(context));
         assertEquals("Audience.-1.0 : " + OUT_OF_RANGE, exception.getMessage());
@@ -248,7 +248,7 @@ public class TargetingFilterTest {
 
         context.setParameters(parameters);
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("Joe", null));
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Joe", null));
 
         Exception exception = assertThrows(TargetingException.class, () -> filter.evaluate(context));
         assertEquals("Audience[0].-1.0 : " + OUT_OF_RANGE, exception.getMessage());
@@ -289,7 +289,7 @@ public class TargetingFilterTest {
         context.setParameters(parameters);
         context.setFeatureName("testFeature");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("doe", null), options);
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("doe", null), options);
 
         assertTrue(filter.evaluate(context));
     }
@@ -313,25 +313,25 @@ public class TargetingFilterTest {
         context.setParameters(null);
         context.setFeatureName("testFeature");
 
-        TargetingFilter filter = new TargetingFilter(new TargetingContextAccessor("doe", null), options);
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("doe", null), options);
 
         Exception exception = assertThrows(TargetingException.class, () -> filter.evaluate(context));
         assertEquals("Audience : " + REQUIRED_PARAMETER, exception.getMessage());
     }
 
-    class TargetingContextAccessor implements ITargetingContextAccessor {
+    class TargetingFilterTestContextAccessor implements TargetingContextAccessor {
 
         private String user;
 
         private ArrayList<String> groups;
 
-        TargetingContextAccessor(String user, ArrayList<String> groups) {
+        TargetingFilterTestContextAccessor(String user, ArrayList<String> groups) {
             this.user = user;
             this.groups = groups;
         }
 
         @Override
-        public void getContextAsync(ITargetingContext context) {
+        public void getContextAsync(TargetingContext context) {
             context.setUserId(user);
             context.setGroups(groups);
         }

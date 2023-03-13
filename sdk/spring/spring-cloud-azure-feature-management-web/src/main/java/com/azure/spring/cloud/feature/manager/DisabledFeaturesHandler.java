@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
  * Interface for Disabled Features Handler. The Feature Handler checks to see if this Component is implemented before
  * blocking an endpoint. If not implemented a 404 is returned.
  */
-public interface IDisabledFeaturesHandler {
+public interface DisabledFeaturesHandler {
 
     /**
      * Called when an endpoint intercepter returns and no redirect is set.
