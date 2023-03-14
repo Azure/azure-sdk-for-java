@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps ListSiteBackupsSlot. */
 public final class WebAppsListSiteBackupsSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListSlotBackups.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListSlotBackups.json
      */
     /**
      * Sample code: List backups.
@@ -22,6 +20,6 @@ public final class WebAppsListSiteBackupsSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .listSiteBackupsSlot("testrg123", "tests346", "staging", Context.NONE);
+            .listSiteBackupsSlot("testrg123", "tests346", "staging", com.azure.core.util.Context.NONE);
     }
 }

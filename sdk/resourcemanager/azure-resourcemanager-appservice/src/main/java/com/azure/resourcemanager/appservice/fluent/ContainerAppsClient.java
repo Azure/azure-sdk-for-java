@@ -106,7 +106,10 @@ public interface ContainerAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
+     *     404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -119,7 +122,10 @@ public interface ContainerAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
+     *     404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App on successful completion of {@link Mono}.
      */
@@ -131,22 +137,12 @@ public interface ContainerAppsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Get the properties of a Container App.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
+     *     404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response}.
      */
@@ -154,7 +150,25 @@ public interface ContainerAppsClient
     Response<ContainerAppInner> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Create or update a Container App.
+     * Get the properties of a Container App.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
+     *     404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a Container App.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerAppInner getByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -170,7 +184,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -186,7 +202,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -202,7 +220,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -219,7 +239,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -235,7 +257,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -250,7 +274,9 @@ public interface ContainerAppsClient
     ContainerAppInner createOrUpdate(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope);
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -267,7 +293,9 @@ public interface ContainerAppsClient
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -281,7 +309,9 @@ public interface ContainerAppsClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -295,7 +325,9 @@ public interface ContainerAppsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -309,7 +341,9 @@ public interface ContainerAppsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -324,7 +358,9 @@ public interface ContainerAppsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -338,7 +374,9 @@ public interface ContainerAppsClient
     Mono<Void> deleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -351,7 +389,9 @@ public interface ContainerAppsClient
     void delete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -395,19 +435,6 @@ public interface ContainerAppsClient
      * List secrets for a container app.
      *
      * @param name Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Secrets Collection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecretsCollectionInner listSecrets(String name);
-
-    /**
-     * List secrets for a container app.
-     *
-     * @param name Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -417,4 +444,17 @@ public interface ContainerAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecretsCollectionInner> listSecretsWithResponse(String name, Context context);
+
+    /**
+     * List secrets for a container app.
+     *
+     * @param name Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Secrets Collection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecretsCollectionInner listSecrets(String name);
 }

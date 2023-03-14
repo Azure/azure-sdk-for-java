@@ -64,6 +64,10 @@ public final class DiagnosticDetectorResponseProperties {
     @JsonProperty(value = "responseMetaData")
     private ResponseMetadata responseMetadata;
 
+    /** Creates an instance of DiagnosticDetectorResponseProperties class. */
+    public DiagnosticDetectorResponseProperties() {
+    }
+
     /**
      * Get the startTime property: Start time of the period.
      *

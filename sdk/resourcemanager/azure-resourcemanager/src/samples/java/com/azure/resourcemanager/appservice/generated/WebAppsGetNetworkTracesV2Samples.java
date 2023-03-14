@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetNetworkTracesV2. */
 public final class WebAppsGetNetworkTracesV2Samples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebSiteNetworkTraces.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetWebSiteNetworkTraces.json
      */
     /**
      * Sample code: Get NetworkTraces for a site.
@@ -23,6 +21,6 @@ public final class WebAppsGetNetworkTracesV2Samples {
             .serviceClient()
             .getWebApps()
             .getNetworkTracesV2WithResponse(
-                "testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d", Context.NONE);
+                "testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d", com.azure.core.util.Context.NONE);
     }
 }

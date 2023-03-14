@@ -17,6 +17,10 @@ public final class StorageMigrationResponseInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StorageMigrationResponseProperties innerProperties;
 
+    /** Creates an instance of StorageMigrationResponseInner class. */
+    public StorageMigrationResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: StorageMigrationResponse resource specific properties.
      *

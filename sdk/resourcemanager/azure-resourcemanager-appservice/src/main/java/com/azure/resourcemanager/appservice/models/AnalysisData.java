@@ -42,6 +42,10 @@ public final class AnalysisData {
     @JsonProperty(value = "detectorMetaData")
     private ResponseMetadata detectorMetadata;
 
+    /** Creates an instance of AnalysisData class. */
+    public AnalysisData() {
+    }
+
     /**
      * Get the source property: Name of the Detector.
      *

@@ -17,6 +17,10 @@ public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnly
     @JsonProperty(value = "properties")
     private CsmPublishingCredentialsPoliciesEntityProperties innerProperties;
 
+    /** Creates an instance of CsmPublishingCredentialsPoliciesEntityInner class. */
+    public CsmPublishingCredentialsPoliciesEntityInner() {
+    }
+
     /**
      * Get the innerProperties property: CsmPublishingCredentialsPoliciesEntity resource specific properties.
      *

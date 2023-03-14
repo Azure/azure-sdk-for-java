@@ -20,13 +20,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -73,7 +73,7 @@ public final class ContainerAppsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface ContainerAppsService {
+    public interface ContainerAppsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/containerApps")
         @ExpectedResponses({200})
@@ -99,10 +99,12 @@ public final class ContainerAppsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(
+            value = HttpResponseException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ContainerAppInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -114,8 +116,7 @@ public final class ContainerAppsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -130,8 +131,7 @@ public final class ContainerAppsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/containerApps/{name}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -490,7 +490,8 @@ public final class ContainerAppsClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -539,7 +540,8 @@ public final class ContainerAppsClientImpl
      * @param name Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -584,36 +586,15 @@ public final class ContainerAppsClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerAppInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<ContainerAppInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the properties of a Container App.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerAppInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -623,7 +604,8 @@ public final class ContainerAppsClientImpl
      * @param name Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response}.
      */
@@ -634,7 +616,25 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Get the properties of a Container App.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a Container App.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContainerAppInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -690,7 +690,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -744,7 +746,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -770,7 +774,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -794,7 +800,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -807,11 +815,13 @@ public final class ContainerAppsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, containerAppEnvelope).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, name, containerAppEnvelope).getSyncPoller();
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -825,11 +835,13 @@ public final class ContainerAppsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(
         String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, containerAppEnvelope, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, name, containerAppEnvelope, context).getSyncPoller();
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -848,7 +860,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -868,7 +882,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -885,7 +901,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Create or update a Container App.
+     * Create or update a Container App.
+     *
+     * <p>Description for Create or update a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -903,7 +921,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -950,7 +970,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -996,7 +1018,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1015,7 +1039,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1036,7 +1062,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1047,11 +1075,13 @@ public final class ContainerAppsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1063,11 +1093,13 @@ public final class ContainerAppsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1082,7 +1114,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1098,7 +1132,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1112,7 +1148,9 @@ public final class ContainerAppsClientImpl
     }
 
     /**
-     * Description for Delete a Container App.
+     * Delete a Container App.
+     *
+     * <p>Description for Delete a Container App.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Container App.
@@ -1219,29 +1257,7 @@ public final class ContainerAppsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretsCollectionInner> listSecretsAsync(String name) {
-        return listSecretsWithResponseAsync(name)
-            .flatMap(
-                (Response<SecretsCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List secrets for a container app.
-     *
-     * @param name Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Secrets Collection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretsCollectionInner listSecrets(String name) {
-        return listSecretsAsync(name).block();
+        return listSecretsWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1260,9 +1276,24 @@ public final class ContainerAppsClientImpl
     }
 
     /**
+     * List secrets for a container app.
+     *
+     * @param name Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Secrets Collection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecretsCollectionInner listSecrets(String name) {
+        return listSecretsWithResponse(name, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1299,7 +1330,8 @@ public final class ContainerAppsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1337,7 +1369,8 @@ public final class ContainerAppsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1374,7 +1407,8 @@ public final class ContainerAppsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
