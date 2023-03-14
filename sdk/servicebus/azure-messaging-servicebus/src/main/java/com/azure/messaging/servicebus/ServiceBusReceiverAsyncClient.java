@@ -233,7 +233,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
-    private final ServiceBusConnectionSupport connectionSupport;
+    private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
@@ -256,21 +256,22 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityPath The name of the topic or queue.
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
-     * @param connectionSupport The AMQP connection to the Service Bus resource.
+     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
      * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
+    // Client to work with a non-session entity.
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionSupport connectionSupport, Duration cleanupInterval,
+        ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper, Duration cleanupInterval,
         ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionSupport = Objects.requireNonNull(connectionSupport, "'connectionSupport' cannot be null.");
-        this.connectionProcessor = this.connectionSupport.getConnection();
+        this.connectionCacheWrapper = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -295,17 +296,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
+    // Client to work with a session-enabled entity.
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-        ServiceBusSessionManager sessionManager) {
+                                  ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+                                  ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
+                                  ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
-        this.connectionSupport = new ServiceBusConnectionSupport(connectionProcessor);
+        this.connectionCacheWrapper = new ConnectionCacheWrapper(Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null."));
+        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -827,19 +829,30 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        if (canUseNewStack()) {
+        if (supportsNewStack()) {
             // TODO: anu Apply publishOn or allow use to do it.
-            return receiveSessionUnawareMessagesUsingNewStack();
-        } else {
-            // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
-            // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
-            // We turn this one-time non-backpressure request to continuous requests with backpressure.
-            // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
-            // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
-            // If receiverOptions.prefetchCount is 0 (default value),
-            // the request will add a link credit so one message is retrieved from the service.
-            return receiveMessagesNoBackPressure().limitRate(1, 0);
+            return receiveUsingNewStack();
         }
+        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
+        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
+        // We turn this one-time non-backpressure request to continuous requests with backpressure.
+        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
+        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+        // If receiverOptions.prefetchCount is 0 (default value),
+        // the request will add a link credit so one message is retrieved from the service.
+        return receiveMessagesNoBackPressure().limitRate(1, 0);
+    }
+
+    boolean supportsNewStack() {
+        // Session-enabled entity support is not in the first phase.
+        return !isSessionEnabled && connectionCacheWrapper.isNewStack();
+    }
+
+    Flux<ServiceBusReceivedMessage> receiveUsingNewStack() {
+        if (!supportsNewStack()) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("receiveUsingNewStack is unsupported (Requires non-session entity and not disabling new stack)."));
+        }
+        return getOrCreateConsumer().receive();
     }
 
     @SuppressWarnings("try")
@@ -902,17 +915,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
-    }
-
-    boolean canUseNewStack() {
-        return !isSessionEnabled && !connectionSupport.isLegacyStack();
-    }
-
-    Flux<ServiceBusReceivedMessage> receiveSessionUnawareMessagesUsingNewStack() {
-        if (!canUseNewStack()) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("receiveSessionUnawareMessagesUsingNewStack is unsupported (Requires disabling legacy-stack and entity to be session-unaware)."));
-        }
-        return getOrCreateConsumer().receive();
     }
 
     /**
@@ -1557,7 +1559,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     // to the current connection being disposed as retry-able so that retry can obtain new connection.
                     return new AmqpException(true, e.getMessage(), e, null);
                 }),
-            connectionSupport.getRetryOptions(),
+            connectionCacheWrapper.getRetryOptions(),
             "Failed to create receive link " + linkName,
             true);
 
@@ -1576,17 +1578,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionSupport.getRetryOptions());
-
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
         final ServiceBusAsyncConsumer newConsumer;
-        if (connectionSupport.isLegacyStack()) {
-            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
-                new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
-            newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, receiverOptions);
-        } else {
+        if (connectionCacheWrapper.isNewStack()) {
             final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
                 CreditFlowMode.RequestDriven, retryPolicy);
             newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions);
+        } else {
+            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
+                new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
+            newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, receiverOptions);
         }
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
@@ -1701,7 +1702,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     boolean isConnectionClosed() {
-        return this.connectionSupport.isChannelClosed();
+        return this.connectionCacheWrapper.isChannelClosed();
     }
 
     boolean isManagementNodeLocksClosed() {

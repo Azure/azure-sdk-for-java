@@ -178,16 +178,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionSupport connectionSupport, AmqpRetryOptions retryOptions, ServiceBusSenderInstrumentation instrumentation,
+        ConnectionCacheWrapper connectionCacheWrapper, AmqpRetryOptions retryOptions, ServiceBusSenderInstrumentation instrumentation,
         MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
-        Objects.requireNonNull(connectionSupport, "'connectionSupport' cannot be null.");
-        this.connectionProcessor = connectionSupport.getConnection();
-        this.fqdn = connectionSupport.getFullyQualifiedNamespace();
+        Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = connectionCacheWrapper.getConnection();
+        this.fqdn = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.tracer = instrumentation.getTracer();
         this.retryPolicy = getRetryPolicy(retryOptions);

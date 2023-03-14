@@ -23,20 +23,20 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private final boolean isLegacyStack;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
     private final Flux<ServiceBusReceivedMessage> processor;
     private final MessageFlux messageFlux;
-    private final boolean isLegacyStack;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this.isLegacyStack = true;
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageFlux = null;
-        this.isLegacyStack = true;
         this.messageSerializer = messageSerializer;
         this.processor = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
@@ -44,10 +44,10 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
 
     ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux,
                             MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this.isLegacyStack = false;
         this.linkName = linkName;
         this.messageFlux = messageFlux;
         this.linkProcessor = null;
-        this.isLegacyStack = false;
         this.messageSerializer = messageSerializer;
         this.processor = messageFlux
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
@@ -63,9 +63,9 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     /**
-     * Begin consuming messages until there are no longer any subscribers.
+     * Begin consuming events until there are no longer any subscribers.
      *
-     * @return A stream of messages from the Service Bus entity.
+     * @return A stream of events received from the partition.
      */
     Flux<ServiceBusReceivedMessage> receive() {
         return processor;
