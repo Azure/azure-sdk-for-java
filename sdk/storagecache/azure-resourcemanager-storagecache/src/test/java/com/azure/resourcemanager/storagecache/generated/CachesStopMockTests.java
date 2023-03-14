@@ -56,6 +56,6 @@ public final class CachesStopMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.caches().stop("dd", "kcbcue", com.azure.core.util.Context.NONE);
+        manager.caches().stop("psbzkfzbeyvpn", "icvi", com.azure.core.util.Context.NONE);
     }
 }

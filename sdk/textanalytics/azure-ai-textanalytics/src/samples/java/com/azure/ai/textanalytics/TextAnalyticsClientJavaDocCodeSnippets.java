@@ -1474,7 +1474,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents, "en",
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3));
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractSummaryResult documentResult : resultCollection) {
@@ -1520,7 +1520,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents,
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3),
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {

@@ -17,6 +17,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.IngestionStatusType;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
@@ -25,7 +26,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
@@ -41,6 +42,8 @@ import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
 import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
 import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionProgressHelper;
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionStatusHelper;
 import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DataSourceCredentialEntityTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
@@ -63,12 +66,14 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -90,7 +95,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = MetricsAdvisorAdministrationClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationAsyncClient.class);
-    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAdministrationAsyncClient} that sends requests to the Metrics Advisor
@@ -100,7 +105,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAdministrationAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
+    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
@@ -184,8 +189,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed -->
-     *
-     *
      * @param dataFeed The data feed to be created.
      * @return A {@link Response} of a {@link Mono} containing the created {@link DataFeed data feed}.
      * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
@@ -731,7 +734,27 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             context)
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
-            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error));
+            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()),
+                res.getContinuationToken(),
+                null));
+    }
+
+    private List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
+        return ingestionStatusList
+            .stream()
+            .map(ingestionStatus -> {
+                DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
+                DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
+                DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
+                DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
+                return dataFeedIngestionStatus;
+            })
+            .collect(Collectors.toList());
     }
 
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(
@@ -751,7 +774,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink, response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()),
+                res.getContinuationToken(),
+                null));
     }
 
     /**
@@ -918,7 +948,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         return service.getIngestionProgressWithResponseAsync(UUID.fromString(dataFeedId), context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ingestion progress for metric"))
             .doOnSuccess(response -> logger.info("Retrieved ingestion progress {}", response))
-            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error));
+            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error))
+            .map(response -> new SimpleResponse<>(response, toDataFeedIngestionProgress(response.getValue())));
+    }
+
+    private DataFeedIngestionProgress toDataFeedIngestionProgress(
+        com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress dataFeedIngestionProgressResponse) {
+        DataFeedIngestionProgress dataFeedIngestionProgress = new DataFeedIngestionProgress();
+        DataFeedIngestionProgressHelper.setLatestActiveTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestActiveTimestamp());
+        DataFeedIngestionProgressHelper.setLatestSuccessTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestSuccessTimestamp());
+        return dataFeedIngestionProgress;
     }
 
     /**
@@ -1774,7 +1813,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
             .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
-            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsNextPageAsync(
@@ -1789,7 +1828,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -2748,7 +2787,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
             .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
-            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
@@ -2763,7 +2802,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
     /**

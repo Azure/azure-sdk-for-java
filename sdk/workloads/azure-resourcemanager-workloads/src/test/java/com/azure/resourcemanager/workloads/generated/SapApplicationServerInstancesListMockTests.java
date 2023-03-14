@@ -32,7 +32,7 @@ public final class SapApplicationServerInstancesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"instanceNo\":\"xecwcro\",\"subnet\":\"hslhca\",\"hostname\":\"u\",\"kernelVersion\":\"fdwfmvigorqj\",\"kernelPatch\":\"tzh\",\"ipAddress\":\"glka\",\"gatewayPort\":8554452024860981836,\"icmHttpPort\":3051990138678035459,\"icmHttpsPort\":5810065088804263184,\"loadBalancerDetails\":{\"id\":\"pzvcpopmxelnwc\"},\"vmDetails\":[],\"status\":\"Unavailable\",\"health\":\"Unknown\",\"provisioningState\":\"Creating\",\"errors\":{}},\"location\":\"mkqscaz\",\"tags\":{\"uamwabzxrvxc\":\"xtzx\",\"sphaivmxyasflvg\":\"s\",\"ihknsmjbl\":\"gzwywak\"},\"id\":\"ljhlnymzotq\",\"name\":\"ryuzcbmqqv\",\"type\":\"mv\"}]}";
+            "{\"value\":[{\"properties\":{\"instanceNo\":\"wgnyfusfzsvtui\",\"subnet\":\"hajqglcfh\",\"hostname\":\"rqryxynqn\",\"kernelVersion\":\"dpsovwxznptgo\",\"kernelPatch\":\"ybbabpfhvfsl\",\"ipAddress\":\"ntjlr\",\"gatewayPort\":6781686946100316558,\"icmHttpPort\":2304330923879655449,\"icmHttpsPort\":5753806140523602225,\"loadBalancerDetails\":{\"id\":\"zid\"},\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Unknown\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"gznmmaxrizkzob\",\"tags\":{\"ieixynllxe\":\"xlhslnel\"},\"id\":\"wcrojphslhcaw\",\"name\":\"u\",\"type\":\"i\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,11 @@ public final class SapApplicationServerInstancesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SapApplicationServerInstance> response =
-            manager.sapApplicationServerInstances().list("zob", "opxlhslnelxieixy", com.azure.core.util.Context.NONE);
+            manager
+                .sapApplicationServerInstances()
+                .list("daultxijjumfq", "azlnqnmcjngzqdqx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mkqscaz", response.iterator().next().location());
-        Assertions.assertEquals("xtzx", response.iterator().next().tags().get("uamwabzxrvxc"));
+        Assertions.assertEquals("gznmmaxrizkzob", response.iterator().next().location());
+        Assertions.assertEquals("xlhslnel", response.iterator().next().tags().get("ieixynllxe"));
     }
 }

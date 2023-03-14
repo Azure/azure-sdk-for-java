@@ -6,20 +6,18 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.OrchestratorProfile;
-import org.junit.jupiter.api.Test;
 
 public final class OrchestratorProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OrchestratorProfile model =
             BinaryData
-                .fromString(
-                    "{\"isPreview\":true,\"orchestratorType\":\"ph\",\"orchestratorVersion\":\"pxodlqiyntorzih\"}")
+                .fromString("{\"isPreview\":false,\"orchestratorType\":\"osggbhc\",\"orchestratorVersion\":\"fwdsj\"}")
                 .toObject(OrchestratorProfile.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OrchestratorProfile model = new OrchestratorProfile();
         model = BinaryData.fromObject(model).toObject(OrchestratorProfile.class);
     }

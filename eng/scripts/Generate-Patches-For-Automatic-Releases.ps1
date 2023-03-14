@@ -21,7 +21,7 @@ try {
     # Generate the list of artifacts to update for a patch release.
     . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
 
-    # Checkout a branch to work on.
+    # Checkout a branch to work on based off of main in upstream.
     if ($currentBranchName -ne $branchName) {
         Write-Host "git checkout -b $branchName $remoteName/main"
         git checkout -b $branchName $remoteName/main

@@ -35,7 +35,7 @@ public final class ResourceProvidersSapDiskConfigurationsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"volumeConfigurations\":{\"bbdaxco\":{\"supportedConfigurations\":[]},\"auorsukokw\":{\"supportedConfigurations\":[]}}}";
+            "{\"volumeConfigurations\":{\"rbe\":{\"supportedConfigurations\":[]},\"o\":{\"supportedConfigurations\":[]},\"fkmr\":{\"supportedConfigurations\":[]}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,14 +67,14 @@ public final class ResourceProvidersSapDiskConfigurationsWithResponseMockTests {
             manager
                 .resourceProviders()
                 .sapDiskConfigurationsWithResponse(
-                    "orwmduvwpklv",
+                    "aryeu",
                     new SapDiskConfigurationsRequest()
-                        .withAppLocation("w")
+                        .withAppLocation("yjkqabqgzslesjcb")
                         .withEnvironment(SapEnvironmentType.PROD)
-                        .withSapProduct(SapProductType.OTHER)
-                        .withDatabaseType(SapDatabaseType.DB2)
+                        .withSapProduct(SapProductType.S4HANA)
+                        .withDatabaseType(SapDatabaseType.HANA)
                         .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                        .withDbVmSku("pgpqchiszepnnb"),
+                        .withDbVmSku("tiewdj"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

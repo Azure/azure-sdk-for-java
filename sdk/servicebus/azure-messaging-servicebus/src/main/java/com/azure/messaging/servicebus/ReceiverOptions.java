@@ -80,15 +80,6 @@ class ReceiverOptions {
     }
 
     /**
-     * Gets whether or not the receiver is a session-aware receiver.
-     *
-     * @return true if it is a session-aware receiver; false otherwise.
-     */
-    boolean isSessionReceiver() {
-        return sessionId != null || maxConcurrentSessions != null;
-    }
-
-    /**
      * Gets whether or not this receiver should roll over when a session has completed processing.
      *
      * @return {@code true} if this receiver should roll over to next session when it has completed processing; {@code

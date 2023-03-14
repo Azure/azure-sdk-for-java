@@ -23,11 +23,13 @@ public final class AzureTableParameter {
     private String table;
 
     /*
-     * The statement to query this table. Please find syntax and details from
-     * Azure Table documents.
+     * The statement to query this table. Please find syntax and details from Azure Table documents.
      */
     @JsonProperty(value = "query", required = true)
     private String query;
+
+    /** Creates an instance of AzureTableParameter class. */
+    public AzureTableParameter() {}
 
     /**
      * Get the connectionString property: The connection string of this Azure Table.

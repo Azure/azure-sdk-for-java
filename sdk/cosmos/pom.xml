@@ -20,5 +20,6 @@
       <module>azure-cosmos-spark_3-1_2-12</module>
       <module>azure-cosmos-spark_3-2_2-12</module>
       <module>azure-cosmos-spark_3-3_2-12</module>
+      <module>azure-cosmos-test</module>
   </modules>
 </project>
