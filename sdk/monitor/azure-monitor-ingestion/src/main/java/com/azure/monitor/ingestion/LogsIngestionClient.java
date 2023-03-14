@@ -17,11 +17,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.monitor.ingestion.implementation.ConcurrencyLimitingSpliterator;
+import com.azure.monitor.ingestion.implementation.Batcher;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.implementation.Utils;
 import com.azure.monitor.ingestion.models.LogsUploadError;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,8 +40,10 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
-import static com.azure.monitor.ingestion.implementation.Utils.createRequests;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
+import static com.azure.monitor.ingestion.implementation.Utils.getSerializer;
+import static com.azure.monitor.ingestion.implementation.Utils.getThreadPoolWithShutDownHook;
+import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -65,7 +67,7 @@ public final class LogsIngestionClient {
     private final IngestionUsingDataCollectionRulesClient client;
 
     // dynamic thread pool that scales up and down on demand.
-    private static final ExecutorService THREAD_POOL = Utils.getThreadPoolWithShutDownHook(5);
+    private static final ExecutorService THREAD_POOL = getThreadPoolWithShutDownHook(5);
 
     LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
         this.client = client;
@@ -149,32 +151,19 @@ public final class LogsIngestionClient {
         Objects.requireNonNull(logs, "'logs' cannot be null.");
 
         context = enableSync(context);
-        int concurrency = getConcurrency(options);
-        ObjectSerializer serializer = Utils.getSerializer(options);
+
         Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addHeader(CONTENT_ENCODING, GZIP);
         requestOptions.setContext(context);
 
-        List<LogsIngestionRequest> requests = new ArrayList<>();
-        createRequests(serializer, logs.iterator(), requests::add, this::mapException, DO_NOTHING);
+        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs)
+            .toStream()
+            .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
 
-        Stream<UploadLogsResponseHolder> responses;
-        if (concurrency == 1) {
-            responses = requests.stream().map(request -> uploadToService(ruleId, streamName, requestOptions, request));
-        } else {
-            try {
-                ConcurrencyLimitingSpliterator<LogsIngestionRequest> spliterator = new ConcurrencyLimitingSpliterator<>(requests, concurrency);
-                responses = THREAD_POOL.submit(() -> StreamSupport.stream(spliterator, true)
-                    .map(request -> uploadToService(ruleId, streamName, requestOptions, request)))
-                    .get();
-            } catch (InterruptedException | ExecutionException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        responses = responses.filter(response -> response.getException() != null);
+        responses = sumbit(responses, getConcurrency(options))
+            .filter(response -> response.getException() != null);
 
         if (uploadLogsErrorConsumer != null) {
             responses.forEach(response -> uploadLogsErrorConsumer.accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
@@ -194,8 +183,16 @@ public final class LogsIngestionClient {
         }
     }
 
-    private void mapException(IOException e) {
-        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+    private Stream<UploadLogsResponseHolder> sumbit(Stream<UploadLogsResponseHolder> responseStream, int concurrency) {
+        if (concurrency == 1) {
+            return responseStream;
+        }
+
+        try {
+            return THREAD_POOL.submit(() -> responseStream).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions, LogsIngestionRequest request) {
@@ -254,7 +251,7 @@ public final class LogsIngestionClient {
         requestOptions.addRequestCallback(request -> {
             HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
             if (httpHeader == null) {
-                BinaryData gzippedRequest = BinaryData.fromBytes(Utils.gzipRequest(logs.toBytes()));
+                BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
                 request.setBody(gzippedRequest);
                 request.setHeader(CONTENT_ENCODING, GZIP);
             }

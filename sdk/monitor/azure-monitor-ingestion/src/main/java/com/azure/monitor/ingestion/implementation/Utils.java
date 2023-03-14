@@ -81,13 +81,6 @@ public final class Utils {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public static void writeLogsAndCloseJsonGenerator(JsonGenerator generator, List<String> serializedLogs) throws IOException {
-        generator.writeRaw(serializedLogs.stream()
-            .collect(Collectors.joining(",")));
-        generator.writeEndArray();
-        generator.close();
-    }
-
     public static ObjectSerializer getSerializer(LogsUploadOptions options) {
         if (options != null && options.getObjectSerializer() != null) {
             return options.getObjectSerializer();
@@ -140,44 +133,5 @@ public final class Utils {
         });
         Runtime.getRuntime().addShutdownHook(hook);
         return hook;
-    }
-
-    public static void createRequests(ObjectSerializer serializer, Iterator<Object> iterator, Consumer<LogsIngestionRequest> onNext, Consumer<IOException> onError, Runnable onComplete) {
-        try {
-            long currentBatchSize = 0;
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-            generator.writeStartArray();
-            List<String> serializedLogs = new ArrayList<>();
-            List<Object> originalLogsRequest = new ArrayList<>();
-            while (iterator.hasNext()) {
-                Object currentLog = iterator.next();
-                byte[] bytes = serializer.serializeToBytes(currentLog);
-                int currentLogSize = bytes.length;
-                currentBatchSize += currentLogSize;
-                if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
-                    writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                    byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
-                    onNext.accept(new LogsIngestionRequest(originalLogsRequest, zippedRequestBody));
-                    byteArrayOutputStream = new ByteArrayOutputStream();
-                    generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-                    generator.writeStartArray();
-                    currentBatchSize = currentLogSize;
-                    originalLogsRequest = new ArrayList<>();
-                    serializedLogs.clear();
-                }
-                serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
-                originalLogsRequest.add(currentLog);
-            }
-            if (currentBatchSize > 0) {
-                writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
-                onNext.accept(new LogsIngestionRequest(originalLogsRequest, zippedRequestBody));
-            }
-
-            onComplete.run();
-        } catch (IOException e) {
-            onError.accept(e);
-        }
     }
 }

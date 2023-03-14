@@ -69,6 +69,8 @@ public final class IngestionUsingDataCollectionRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+        System.out.println("?????????????" + Thread.currentThread().getName());
+
         return this.serviceClient.uploadWithResponse(ruleId, stream, body, requestOptions);
     }
 }

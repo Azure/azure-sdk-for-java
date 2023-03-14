@@ -10,13 +10,28 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+/**
+ * Splits list of items into a given number of sub-lists allowing to process
+ * sub-lists concurrently.
+ *
+ * Follows example here: https://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html
+ *
+ * @param <T> the type of items in the list.
+ */
 public class ConcurrencyLimitingSpliterator<T> implements Spliterator<T> {
     private List<T> items;
     private final AtomicInteger position;
     private final int end;
     private final int count;
-    private int concurrency;
+    private volatile int concurrency;
 
+    /**
+     * Creates spliterator.
+     *
+     * @param items list of items to split.
+     * @param concurrency Number of sub-lists to split items to. When processing items concurrently,
+     *                    should match the number of threads to process items with.
+     */
     public ConcurrencyLimitingSpliterator(List<T> items, int concurrency) {
         Objects.requireNonNull(items, "'items' cannot be null.");
         if (concurrency == 0) {
@@ -49,12 +64,21 @@ public class ConcurrencyLimitingSpliterator<T> implements Spliterator<T> {
 
     @Override
     public Spliterator<T> trySplit() {
+        // each spliterator owns a part of the list with approx size of list.size() / concurrency.
+        // only the original spliterator is splittable, others are not.
+
+        // when this method is called, on the original spliterator
+        // we check if it can be split (concurrency > 1)
         ConcurrencyLimitingSpliterator<T> result = null;
         if (concurrency > 1) {
+            // create new unsplittable spliterator owning items from [pos, pos + count]
+            // position now points to pos + count
             result = new ConcurrencyLimitingSpliterator<>(items, position.getAndAdd(count), count);
         } else if (concurrency == 1) {
+            // if it's the last split, return original spliterator.
             result = this;
         }
+        // otherwise we'll return null - it indicates we're done splitting
 
         concurrency--;
         return result;

@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.monitor.ingestion.implementation.Batcher;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
@@ -25,9 +26,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -35,9 +36,7 @@ import java.util.function.Consumer;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
-import static com.azure.monitor.ingestion.implementation.Utils.createRequests;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
-import static com.azure.monitor.ingestion.implementation.Utils.getSerializer;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
@@ -190,14 +189,13 @@ public final class LogsIngestionAsyncClient {
                                       LogsUploadOptions options, Context context) {
 
         int concurrency = getConcurrency(options);
-        Iterator<Object> iterator = logs.iterator();
 
-        return Flux.<LogsIngestionRequest>create(emitter -> createRequests(getSerializer(options), iterator,
-                    emitter::next, emitter::error, emitter::complete))
-                .flatMapSequential(request -> uploadToService(ruleId, streamName, context, request), concurrency)
-                .<LogsUploadException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
-                .collectList()
-                .handle((result, sink) -> processExceptions(result, sink));
+        return new Batcher(options, logs)
+            .toFlux()
+            .flatMapSequential(request -> uploadToService(ruleId, streamName, context, request), concurrency)
+            .<LogsUploadException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
+            .collectList()
+            .handle((result, sink) -> processExceptions(result, sink));
     }
 
     private void processExceptions(List<LogsUploadException> result, SynchronousSink<Void> sink) {
