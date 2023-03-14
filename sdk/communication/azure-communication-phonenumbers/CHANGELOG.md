@@ -1,25 +1,5 @@
 # Release History
 
-## 1.1.0-beta.15 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.1.0-beta.14 (2023-02-14)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
-- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
-
-
 ## 1.0.19 (2023-02-14)
 
 ### Other Changes
@@ -28,7 +8,6 @@
 
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
-
 
 ## 1.0.18 (2023-01-13)
 
@@ -39,25 +18,6 @@
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-communication-common` from `1.2.3` to version `1.2.4`.
 
-## 1.1.0-beta.13 (2023-01-10)
-- Adds support for Azure Communication Services Phone Numbers Browse API Methods.
-
-### Features Added
-- Added support for API version `2022-12-01`, giving users the ability to: 
-  - Get all supported countries
-  - Get all supported localities given a country code.
-  - Get all Toll-Free area codes from a given country code.
-  - Get all Geographic area codes from a given country code / locality.
-  - Get all offerings from a given country code.
-
-## 1.1.0-beta.12 (2022-11-14)
-
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-core` from `1.33.0` to version `1.34.0`
-- Upgraded `azure-communication-common` from `1.2.2` to version `1.2.3`
-
 ## 1.0.17 (2022-11-09)
 
 ### Other Changes
@@ -67,7 +27,7 @@
 - Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
 - Upgraded `azure-communication-common` from `1.2.2` to version `1.2.3`.
 
-## 1.1.0-beta.11 (2022-10-18)
+## 1.0.16 (2022-10-18)
 
 ### Features Added
 
@@ -82,22 +42,14 @@
 - Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
 
 
-## 1.0.16 (2022-10-18)
-
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-core` from `1.32.0` to version `1.33.0`
-- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
-
 ## 1.1.0-beta.10 (2022-09-13)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.31.0` to version `1.32.0`
-- Upgraded `azure-communication-common` from `1.2.0` to version `1.2.1`
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`.
 
 ## 1.0.15 (2022-09-09)
 
@@ -108,32 +60,14 @@
 - Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
 - Upgraded `azure-communication-common` from `1.2.0` to version `1.2.1`.
 
-## 1.1.0-beta.9 (2022-08-11)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.30.0` to version `1.31.0`
-- Upgraded `azure-communication-common` from `1.1.5` to version `1.2.0`
-
 ## 1.0.14 (2022-08-11)
 
 ### Other Changes
 
 #### Dependency Updates
-- 
+
 - Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
 - Upgraded `azure-communication-common` from `1.1.5` to version `1.2.0`.
-
-## 1.1.0-beta.8 (2022-07-18)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.29.1` to version `1.30.0`
-- Upgraded `azure-communication-common` from `1.1.4` to version `1.1.5`
 
 ## 1.0.13 (2022-07-14)
 
@@ -144,24 +78,14 @@
 - Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
 - Upgraded `azure-communication-common` from `1.1.4` to version `1.1.5`.
 
-## 1.1.0-beta.7 (2022-06-13)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.28.0` to version `1.29.1`
-- Upgraded `azure-communication-common` from `1.1.3` to version `1.1.4`
-- Upgraded `azure-identity` from `1.5.1` to `1.5.2`
-
 ## 1.0.12 (2022-06-13)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.28.0` to version `1.29.1`
-- Upgraded `azure-communication-common` from `1.1.3` to version `1.1.4`
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-communication-common` from `1.1.3` to version `1.1.4`.
 
 ## 1.0.11 (2022-05-17)
 
@@ -172,15 +96,7 @@
 - Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
 - Upgraded `azure-communication-common` from `1.1.2` to version `1.1.3`.
 
-## 1.1.0-beta.5 (2022-05-11)
-
-### Other Changes
-
-#### Dependency updates
-- Upgraded `azure-communication-common` to 1.1.3
-- Upgraded `azure-core` to 1.28.0
-
-## 1.1.0-beta.4 (2022-04-11)
+## 1.0.10 (2022-04-11)
 
 ### Other Changes
 
@@ -189,29 +105,32 @@
 - Upgraded `azure-core` to 1.27.0
 - Upgraded `azure-identity` to 1.5.0
 
-## 1.1.0-beta.3 (2022-03-15)
-
-### Features Added
-- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
-- Added `retryOptions` to `PhoneNumbersClientBuilder`
-- Added environment variable `AZURE_USERAGENT_OVERRIDE`, that overrides the HTTP header `x-ms-useragent` on the tests
-- Upgraded `azure-communication-common` to 1.1.1
-- Upgraded `azure-identity` to 1.4.6
-
-## 1.1.0-beta.2 (2022-02-17)
+## 1.0.9 (2022-03-16)
 
 ### Other Changes
 
-#### Dependency updates
-- Upgraded `azure-communication-common` to 1.0.8
-- Upgraded `azure-core` to 1.25.0
-- Upgraded `azure-identity` to 1.4.4
+#### Dependency Updates
 
-## 1.1.0-beta.1 (2022-01-24)
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-communication-common` from `1.0.8` to version `1.1.1`.
 
-### Features Added
-- Users can now purchase United Kingdom (GB) toll free and geographic phone numbers for PSTN Calling
-- Users can now purchase Denmark (DK) toll free and geographic phone numbers for PSTN Calling
+## 1.0.8 (2022-02-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-communication-common` from `1.0.7` to version `1.0.8`.
+
+## 1.0.7 (2022-01-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-communication-common` from `1.0.6` to version `1.0.7`.
 
 ## 1.0.6 (2021-11-18)
 
