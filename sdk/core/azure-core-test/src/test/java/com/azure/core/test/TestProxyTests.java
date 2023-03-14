@@ -11,9 +11,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.TestProxyTestServer;
+import com.azure.core.test.models.BodyKeySanitizer;
+import com.azure.core.test.models.BodyRegexSanitizer;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
@@ -60,10 +61,12 @@ public class TestProxyTests extends TestProxyTestBase {
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
+        customSanitizer.add(new BodyKeySanitizer("$..modelId", REDACTED));
+        customSanitizer.add(new BodyRegexSanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED).setGroupForReplace("tablename"));
+        customSanitizer.add(new BodyKeySanitizer("Operation-Location", REDACTED).setRegex(URL_REGEX));
     }
 
     @BeforeAll
@@ -247,6 +250,8 @@ public class TestProxyTests extends TestProxyTestBase {
         // default sanitizers
         assertEquals("http://REDACTED/fr/path/1", record.getUri());
         assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        assertTrue(record.getResponse().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
+
         // custom sanitizers
         assertEquals(REDACTED, record.getResponse().get("modelId"));
 

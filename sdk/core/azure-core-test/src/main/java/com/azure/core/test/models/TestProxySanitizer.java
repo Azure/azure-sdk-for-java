@@ -7,11 +7,21 @@ package com.azure.core.test.models;
  * Keeps track of different sanitizers that redact the sensitive information when recording
  */
 public class TestProxySanitizer {
-    private final TestProxySanitizerType testProxySanitizerType;
-    private final String regexKey;
-    private final String redactedValue;
+    private TestProxySanitizerType testProxySanitizerType;
+    private String regexKey;
+    private String redactedValue;
 
     private String groupForReplace;
+
+
+    /**
+     * Creates an instance of TestProxySanitizer
+     *
+     * @param sanitizerType the type of sanitizer
+     */
+    public TestProxySanitizer(TestProxySanitizerType sanitizerType) {
+        this.testProxySanitizerType = sanitizerType;
+    }
 
     /**
      * Creates an instance of TestProxySanitizer
@@ -19,6 +29,7 @@ public class TestProxySanitizer {
      * @param redactedValue the replacement text for the regex matched content
      * @param testProxySanitizerType the type of sanitizer
      */
+    @Deprecated
     public TestProxySanitizer(String regexKey, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
         this.testProxySanitizerType = testProxySanitizerType;
         this.regexKey = regexKey;
