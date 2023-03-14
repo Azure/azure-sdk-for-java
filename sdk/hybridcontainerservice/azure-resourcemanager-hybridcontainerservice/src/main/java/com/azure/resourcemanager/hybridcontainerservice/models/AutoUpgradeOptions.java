@@ -20,6 +20,15 @@ public final class AutoUpgradeOptions extends ExpandableStringEnum<AutoUpgradeOp
     public static final AutoUpgradeOptions DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of AutoUpgradeOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoUpgradeOptions() {
+    }
+
+    /**
      * Creates or finds a AutoUpgradeOptions from its string representation.
      *
      * @param name a name to look for.

@@ -8,6 +8,7 @@ import static com.azure.spring.cloud.config.implementation.AppConfigurationConst
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
@@ -30,6 +31,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.feature.management.entity.Feature;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,13 +48,6 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-
-    /**
-     * App Configuration Feature Filter prefix.
-     */
-    private static final String KEY_FILTER_PREFIX = ".appconfig.featureflag/";
-
-    private static final String KEY_FILTER_DEFAULT = KEY_FILTER_PREFIX + "*";
 
     private final List<ConfigurationSetting> featureConfigurationSettings;
 
@@ -84,10 +79,10 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     public void initProperties() {
         SettingSelector settingSelector = new SettingSelector();
 
-        String keyFilter = KEY_FILTER_DEFAULT;
+        String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
         if (StringUtils.hasText(this.keyFilter)) {
-            keyFilter = KEY_FILTER_PREFIX + this.keyFilter;
+            keyFilter = FEATURE_FLAG_PREFIX + this.keyFilter;
         }
 
         settingSelector.setKeyFilter(keyFilter);
@@ -99,18 +94,21 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
             settingSelector.setLabelFilter(label);
 
             List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
+            TracingInfo tracing = replicaClient.getTracingInfo();
 
             // Reading In Features
             for (ConfigurationSetting setting : features) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                     featureConfigurationSettings.add(setting);
-                    Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
+                    FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
 
-                    String configName = FEATURE_MANAGEMENT_KEY      
+                    String configName = FEATURE_MANAGEMENT_KEY
                         + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
 
-                    properties.put(configName, feature);
+                    updateTelemetry(featureFlag, tracing);
+
+                    properties.put(configName, createFeature(featureFlag));
                 }
             }
         }
@@ -171,6 +169,18 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         }
         return feature;
 
+    }
+    
+    /**
+     * Looks at each filter used in a Feature Flag to check what types it is using.
+     * 
+     * @param featureFlag FeatureFlagConfigurationSetting
+     * @param tracing The TracingInfo for this store.
+     */
+    private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag, TracingInfo tracing) {
+        for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+            tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
+        }
     }
 
     private String getFeatureSimpleName(ConfigurationSetting setting) {

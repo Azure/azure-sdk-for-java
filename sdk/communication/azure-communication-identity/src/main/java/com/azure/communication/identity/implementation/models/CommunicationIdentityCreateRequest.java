@@ -19,12 +19,14 @@ public final class CommunicationIdentityCreateRequest {
     private List<CommunicationTokenScope> createTokenWithScopes;
 
     /*
-     * Optional custom validity period of the token within [60,1440] minutes
-     * range. If not provided, the default value of 1440 minutes (24 hours)
-     * will be used.
+     * Optional custom validity period of the token within [60,1440] minutes range. If not provided, the default value
+     * of 1440 minutes (24 hours) will be used.
      */
     @JsonProperty(value = "expiresInMinutes")
     private Integer expiresInMinutes;
+
+    /** Creates an instance of CommunicationIdentityCreateRequest class. */
+    public CommunicationIdentityCreateRequest() {}
 
     /**
      * Get the createTokenWithScopes property: Also create access token for the created identity.

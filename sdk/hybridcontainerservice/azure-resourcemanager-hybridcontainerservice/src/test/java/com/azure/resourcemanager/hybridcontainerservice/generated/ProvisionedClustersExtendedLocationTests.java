@@ -7,25 +7,24 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersExtendedLocation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersExtendedLocationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersExtendedLocation model =
             BinaryData
-                .fromString("{\"type\":\"bpg\",\"name\":\"ytxhp\"}")
+                .fromString("{\"type\":\"wrmjmwvvjektc\",\"name\":\"enhwlrs\"}")
                 .toObject(ProvisionedClustersExtendedLocation.class);
-        Assertions.assertEquals("bpg", model.type());
-        Assertions.assertEquals("ytxhp", model.name());
+        Assertions.assertEquals("wrmjmwvvjektc", model.type());
+        Assertions.assertEquals("enhwlrs", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersExtendedLocation model =
-            new ProvisionedClustersExtendedLocation().withType("bpg").withName("ytxhp");
+            new ProvisionedClustersExtendedLocation().withType("wrmjmwvvjektc").withName("enhwlrs");
         model = BinaryData.fromObject(model).toObject(ProvisionedClustersExtendedLocation.class);
-        Assertions.assertEquals("bpg", model.type());
-        Assertions.assertEquals("ytxhp", model.name());
+        Assertions.assertEquals("wrmjmwvvjektc", model.type());
+        Assertions.assertEquals("enhwlrs", model.name());
     }
 }

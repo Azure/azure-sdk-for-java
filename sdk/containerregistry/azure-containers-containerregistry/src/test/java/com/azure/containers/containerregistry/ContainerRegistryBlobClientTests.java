@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
@@ -68,7 +67,6 @@ import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -209,11 +207,8 @@ public class ContainerRegistryBlobClientTests {
 
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
         assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getMediaType());
-        OciImageManifest ociManifest = result.getValue().asOciManifest();
-        assertEquals(2, ociManifest.getSchemaVersion());
-        assertNull(ociManifest.getConfig());
-        assertNull(ociManifest.getLayers());
-        assertNull(ociManifest.getAnnotations());
+
+        assertThrows(IllegalStateException.class, () -> result.getValue().asOciManifest());
     }
 
     @SyncAsyncTest

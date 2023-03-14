@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An indication of Cache health. Gives more information about health than just that related to provisioning. */
+/** An indication of cache health. Gives more information about health than just that related to provisioning. */
 @Fluent
 public final class CacheHealth {
     /*
-     * List of Cache health states.
+     * List of cache health states. Down is when the cluster is not responding.  Degraded is when its functioning but
+     * has some alerts. Transitioning when it is creating or deleting. Unknown will be returned in old api versions
+     * when a new value is added in future versions. WaitingForKey is when the create is waiting for the system
+     * assigned identity to be given access to the encryption key in the encryption settings.
      */
     @JsonProperty(value = "state")
     private HealthStateType state;
@@ -34,7 +37,10 @@ public final class CacheHealth {
     }
 
     /**
-     * Get the state property: List of Cache health states.
+     * Get the state property: List of cache health states. Down is when the cluster is not responding. Degraded is when
+     * its functioning but has some alerts. Transitioning when it is creating or deleting. Unknown will be returned in
+     * old api versions when a new value is added in future versions. WaitingForKey is when the create is waiting for
+     * the system assigned identity to be given access to the encryption key in the encryption settings.
      *
      * @return the state value.
      */
@@ -43,7 +49,10 @@ public final class CacheHealth {
     }
 
     /**
-     * Set the state property: List of Cache health states.
+     * Set the state property: List of cache health states. Down is when the cluster is not responding. Degraded is when
+     * its functioning but has some alerts. Transitioning when it is creating or deleting. Unknown will be returned in
+     * old api versions when a new value is added in future versions. WaitingForKey is when the create is waiting for
+     * the system assigned identity to be given access to the encryption key in the encryption settings.
      *
      * @param state the state value to set.
      * @return the CacheHealth object itself.
