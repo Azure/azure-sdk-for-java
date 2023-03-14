@@ -4,7 +4,6 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
-import com.azure.ai.translation.text.authentication.CustomEndpoint;
 import com.azure.core.credential.AzureKeyCredential;
 
 public final class ReadmeSamples {
@@ -39,12 +38,11 @@ public final class ReadmeSamples {
         String apiKey = "<text-translator-api-key>";
         String endpoint = String.format("https://%s.cognitiveservices.azure.com/", "<text-translator-resource-name>");
 
-        CustomEndpoint customEndpoint = new CustomEndpoint(endpoint);
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         TranslatorClient client = new TranslatorClientBuilder()
                 .credential(credential)
-                .endpoint(customEndpoint)
+                .endpoint(endpoint)
                 .buildClient();
     }
 }

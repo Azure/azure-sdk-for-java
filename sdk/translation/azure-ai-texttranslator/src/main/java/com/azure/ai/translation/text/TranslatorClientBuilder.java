@@ -4,10 +4,9 @@
 
 package com.azure.ai.translation.text;
 
-
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
-import com.azure.ai.translation.text.authentication.CustomEndpoint;
 import com.azure.ai.translation.text.authentication.GlobalEndpointAuthenticationPolicy;
+import com.azure.ai.translation.text.CustomEndpointUtils;
 import com.azure.ai.translation.text.implementation.TranslatorClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -168,24 +167,14 @@ public final class TranslatorClientBuilder
      */
     @Generated private String endpoint;
 
+    private Boolean isCustomEndpoint = false;
+
     /** {@inheritDoc}. */
     @Generated
     @Override
     public TranslatorClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
-        return this;
-    }
-
-    private CustomEndpoint customEndpoint;
-
-    /**
-     * Sets service to use Custom Translator endpoint.
-     *
-     * @param customEndpoint Custom Translator endpoint.
-     * @return TranslatorClientBuilder instance.
-     */
-    public TranslatorClientBuilder endpoint(CustomEndpoint customEndpoint) {
-        this.customEndpoint = customEndpoint;
+        this.isCustomEndpoint = CustomEndpointUtils.isPlatformHost(endpoint);
         return this;
     }
 
@@ -276,9 +265,9 @@ public final class TranslatorClientBuilder
                 (serviceVersion != null) ? serviceVersion : TranslatorServiceVersion.getLatest();
 
         String serviceEndpoint;
-        if (this.customEndpoint != null) {
+        if (this.isCustomEndpoint) {
             try {
-                URL hostUri = new URL(customEndpoint.getEndpoint());
+                URL hostUri = new URL(endpoint);
                 URL fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
                 serviceEndpoint = fullUri.toString();
             } catch (MalformedURLException ex) {
