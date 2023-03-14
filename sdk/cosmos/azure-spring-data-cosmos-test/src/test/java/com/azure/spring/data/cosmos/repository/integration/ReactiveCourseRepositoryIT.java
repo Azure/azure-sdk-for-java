@@ -13,8 +13,10 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -317,6 +319,16 @@ public class ReactiveCourseRepositoryIT {
         final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
             COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
         StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
+    }
+
+    @Test
+    public void testFindByNameJsonNode() {
+        final Flux<JsonNode> findResult = repository.annotatedFindByName(COURSE_NAME_1);
+        StepVerifier.create(findResult).consumeNextWith(result -> {
+            Assert.assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
+            Assert.assertEquals(result.findValue("name").asText(), COURSE_1.getName());
+            Assert.assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
+        }).verifyComplete();
     }
 
     @Test

@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The Metrics model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class Metrics {
     /*
@@ -33,6 +35,9 @@ public final class Metrics {
      */
     @JsonProperty(value = "RetentionPolicy")
     private RetentionPolicy retentionPolicy;
+
+    /** Creates an instance of Metrics class. */
+    public Metrics() {}
 
     /**
      * Get the version property: The version of Analytics to configure.

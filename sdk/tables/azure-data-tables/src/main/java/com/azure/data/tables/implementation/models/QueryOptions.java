@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "QueryOptions")
 @Fluent
 public final class QueryOptions {
     /*
@@ -34,6 +36,9 @@ public final class QueryOptions {
      */
     @JsonProperty(value = "Filter")
     private String filter;
+
+    /** Creates an instance of QueryOptions class. */
+    public QueryOptions() {}
 
     /**
      * Get the format property: Specifies the media type for the response.
