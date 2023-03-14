@@ -44,7 +44,7 @@ class BlobSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def result = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setBlockSize(streamBufferSize), null).getValue()
+            .setBlockSize(streamBufferSize), null)
         def channel = result.getChannel()
 
         then: "Channel initialized to position zero"
@@ -156,7 +156,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
             .setRequestConditions(conditions).setBlockSize(blockSize).setConsistentReadControl(control)
-            .setInitialPosition(position), null).getValue().getChannel() as StorageSeekableByteChannel
+            .setInitialPosition(position), null).getChannel() as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
         channel.getWriteBehavior() == null

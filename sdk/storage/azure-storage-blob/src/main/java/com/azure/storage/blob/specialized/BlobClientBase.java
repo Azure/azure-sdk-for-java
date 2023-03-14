@@ -401,7 +401,7 @@ public class BlobClientBase {
      * @return A <code>SeekableByteChannel</code> that represents the channel to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public Response<BlobSeekableByteChannelReadResult> openSeekableByteChannelRead(
+    public BlobSeekableByteChannelReadResult openSeekableByteChannelRead(
         BlobSeekableByteChannelReadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
@@ -458,7 +458,7 @@ public class BlobClientBase {
             behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
 
         SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
-        return new SimpleResponse<>(response, new BlobSeekableByteChannelReadResult(channel, properties));
+        return new BlobSeekableByteChannelReadResult(channel, properties);
     }
 
     /**
