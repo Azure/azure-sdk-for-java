@@ -20,11 +20,11 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-texttranslator;current})
+[//]: # ({x-version-update-start;com.azure:azure-ai-translation-text;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-ai-texttranslator</artifactId>
+    <artifactId>azure-ai-translation-text</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -37,6 +37,9 @@ Various documentation is available to help you get started
 ## Key concepts
 
 ## Examples
+
+```java com.azure.ai.translation.text.readme
+```
 
 ## Troubleshooting
 
