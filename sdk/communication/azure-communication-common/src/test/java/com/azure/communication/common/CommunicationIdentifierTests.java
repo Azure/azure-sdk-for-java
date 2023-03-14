@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,23 @@ public class CommunicationIdentifierTests {
             new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId).getCloudEnvironment());
     }
 
+    @Test
+    public void exceptionThrownForMicrosoftBotWithNoId() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new MicrosoftTeamsUserIdentifier("");
+        });
+    }
+
+    @Test
+    public void defaultCloudIsPublicForMicrosoftBotIdentifier() {
+        assertEquals(CommunicationCloudEnvironment.PUBLIC,
+            new MicrosoftBotIdentifier(userId, true).setRawId(fullId).getCloudEnvironment());
+    }
+
+    @Test
+    public void defaultIsGlobalIsFalseForMicrosoftBotIdentifier() {
+        assertFalse(new MicrosoftBotIdentifier(userId).setRawId(fullId).isGlobal());
+    }
     @Test
     public void rawIdTakesPrecedenceInEqualityCheck() {
         // Teams users
