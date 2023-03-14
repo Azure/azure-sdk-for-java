@@ -12,11 +12,10 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedCluste
 import com.azure.resourcemanager.hybridcontainerservice.models.WindowsProfileResponse;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersPropertiesWithoutSecretsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersPropertiesWithoutSecrets model =
             BinaryData
                 .fromString(
@@ -38,8 +37,8 @@ public final class ProvisionedClustersPropertiesWithoutSecretsTests {
         Assertions.assertEquals("v", model.httpProxyConfig().username());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersPropertiesWithoutSecrets model =
             new ProvisionedClustersPropertiesWithoutSecrets()
                 .withAadProfile(
