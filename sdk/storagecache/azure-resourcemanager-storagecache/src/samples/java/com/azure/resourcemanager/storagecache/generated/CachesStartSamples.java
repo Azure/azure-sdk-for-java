@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagecache.generated;
 /** Samples for Caches Start. */
 public final class CachesStartSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Caches_Start.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_Start.json
      */
     /**
      * Sample code: Caches_Start.

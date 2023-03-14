@@ -1,7 +1,7 @@
 {
     "main": "dist/src/index.js",
     "dependencies": {
-      "@azure-tools/cadl-java": "0.4.1",
+      "@azure-tools/cadl-java": "0.4.2",
       "@azure-tools/cadl-autorest": "0.26.0",
       "@azure-tools/cadl-azure-core": "0.26.0",
       "@cadl-lang/compiler": "0.40.0",

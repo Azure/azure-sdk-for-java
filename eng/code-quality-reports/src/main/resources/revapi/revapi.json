@@ -180,6 +180,12 @@
         },
         {
           "ignore": true,
+          "code": "java.annotation.removed",
+          "new": "field com.azure.cosmos.models.PartitionKind.MULTI_HASH",
+          "justification": "removing beta tags on PartitionKind MultiHash for hierarchical partitioning GA"
+        },
+        {
+          "ignore": true,
           "code": "java.method.addedToInterface",
           "new": "method java.lang.String com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::getServiceBusDomainName()",
           "justification": "support configuration of Service Bus domain name."

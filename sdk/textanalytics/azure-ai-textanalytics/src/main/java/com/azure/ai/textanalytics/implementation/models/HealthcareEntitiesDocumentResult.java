@@ -5,9 +5,9 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The HealthcareEntitiesDocumentResult model. */
 @Fluent
@@ -29,7 +29,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * information see https://www.hl7.org/fhir/overview.html.
      */
     @JsonProperty(value = "fhirBundle")
-    private BinaryData fhirBundle;
+    private Map<String, Object> fhirBundle;
 
     /** Creates an instance of HealthcareEntitiesDocumentResult class. */
     public HealthcareEntitiesDocumentResult() {}
@@ -80,7 +80,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      *
      * @return the fhirBundle value.
      */
-    public BinaryData getFhirBundle() {
+    public Map<String, Object> getFhirBundle() {
         return this.fhirBundle;
     }
 
@@ -91,7 +91,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * @param fhirBundle the fhirBundle value to set.
      * @return the HealthcareEntitiesDocumentResult object itself.
      */
-    public HealthcareEntitiesDocumentResult setFhirBundle(BinaryData fhirBundle) {
+    public HealthcareEntitiesDocumentResult setFhirBundle(Map<String, Object> fhirBundle) {
         this.fhirBundle = fhirBundle;
         return this;
     }

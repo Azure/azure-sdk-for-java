@@ -9,7 +9,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-sharing</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for PurviewShareClient Management</name>
@@ -40,6 +40,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.25</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.fasterxml.jackson.databind
+      --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.azure.core
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <dependency>
@@ -79,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

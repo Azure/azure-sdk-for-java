@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a reference to Key Vault Key. */
+/** Describes a reference to key vault key. */
 @Fluent
 public final class KeyVaultKeyReference {
     /*
-     * The URL referencing a key encryption key in Key Vault.
+     * The URL referencing a key encryption key in key vault.
      */
     @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
     /*
-     * Describes a resource Id to source Key Vault.
+     * Describes a resource Id to source key vault.
      */
     @JsonProperty(value = "sourceVault", required = true)
     private KeyVaultKeyReferenceSourceVault sourceVault;
@@ -28,7 +28,7 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Get the keyUrl property: The URL referencing a key encryption key in Key Vault.
+     * Get the keyUrl property: The URL referencing a key encryption key in key vault.
      *
      * @return the keyUrl value.
      */
@@ -37,7 +37,7 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Set the keyUrl property: The URL referencing a key encryption key in Key Vault.
+     * Set the keyUrl property: The URL referencing a key encryption key in key vault.
      *
      * @param keyUrl the keyUrl value to set.
      * @return the KeyVaultKeyReference object itself.
@@ -48,7 +48,7 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Get the sourceVault property: Describes a resource Id to source Key Vault.
+     * Get the sourceVault property: Describes a resource Id to source key vault.
      *
      * @return the sourceVault value.
      */
@@ -57,7 +57,7 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Set the sourceVault property: Describes a resource Id to source Key Vault.
+     * Set the sourceVault property: Describes a resource Id to source key vault.
      *
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultKeyReference object itself.
