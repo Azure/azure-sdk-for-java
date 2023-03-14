@@ -108,7 +108,7 @@ public class SipRoutingClientBuilderTest {
     public void buildClientWithServiceVersion() {
         // Build client with required settings and mock configuration
         SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .serviceVersion(SipRoutingServiceVersion.V2021_05_01_PREVIEW)
+            .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
             .buildClient();
 
         // Validate client created with expected settings
@@ -227,7 +227,7 @@ public class SipRoutingClientBuilderTest {
         // Build client with required settings and mock configuration
         SipRoutingAsyncClient sipRoutingAsyncClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(SipRoutingServiceVersion.V2021_05_01_PREVIEW)
+                .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
                 .buildAsyncClient();
 
         // Validate client created with expected settings

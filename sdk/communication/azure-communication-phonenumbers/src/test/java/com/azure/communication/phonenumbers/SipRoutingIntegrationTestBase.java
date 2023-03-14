@@ -34,6 +34,8 @@ import static java.util.Arrays.asList;
 public class SipRoutingIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    private static final String AZURE_TEST_DOMAIN = Configuration.getGlobalConfiguration()
+        .get("AZURE_TEST_DOMAIN", "testdomain.com");
 
     protected static final String SET_TRUNK_ROUTE_NAME = "route99";
     protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
@@ -98,8 +100,8 @@ public class SipRoutingIntegrationTestBase extends TestBase {
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
-    private static final Pattern UUID_DOMAIN_REDACTION_PATTERN =
-        Pattern.compile("(\\.[0-9a-f]{32})\\.", Pattern.CASE_INSENSITIVE);
+    private static final Pattern UUID_FQDN_REDACTION_PATTERN =
+        Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
 
     protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
@@ -154,7 +156,7 @@ public class SipRoutingIntegrationTestBase extends TestBase {
     private void addRedactors(SipRoutingClientBuilder builder) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-        redactors.add(data -> redact(data, UUID_DOMAIN_REDACTION_PATTERN.matcher(data), ""));
+        redactors.add(data -> redact(data, UUID_FQDN_REDACTION_PATTERN.matcher(data), ".redacted.com"));
         builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
     }
 
@@ -194,9 +196,9 @@ public class SipRoutingIntegrationTestBase extends TestBase {
 
     private String redact(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
-            String captureGroup = matcher.group(1);
+            String captureGroup = matcher.group();
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
+                content = content.replace(matcher.group(), replacement);
             }
         }
 
@@ -205,10 +207,10 @@ public class SipRoutingIntegrationTestBase extends TestBase {
 
     private static String getUniqueFqdn(String order) {
         if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return order + ".com";
+            return order + ".redacted.com";
         }
-        String uniqueDomain = UUID.randomUUID().toString().replace("-", "");
-        return order + "." + uniqueDomain + ".com";
+        String unique = UUID.randomUUID().toString().replace("-", "");
+        return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
 
 }
