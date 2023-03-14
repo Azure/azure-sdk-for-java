@@ -129,6 +129,26 @@ public final class ChatThreadAsyncClient {
     }
 
     /**
+     * Updates a thread's topic.
+     *
+     * @param retentionPolicy The new retention policy.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateRetentionPolicy(RetentionPolicy retentionPolicy) {
+        try {
+            return withContext(context -> updateRetentionPolicy(retentionPolicy, context)
+                .flatMap((Response<Void> res) -> {
+                    return Mono.empty();
+                }));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Updates a thread's properties.
      *
      * @param topic The new topic.
