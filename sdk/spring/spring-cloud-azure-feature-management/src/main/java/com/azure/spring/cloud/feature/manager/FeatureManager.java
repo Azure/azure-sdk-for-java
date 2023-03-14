@@ -95,7 +95,7 @@ public class FeatureManager {
 
         return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
             .filter(featureFilter -> featureFilter.getName() != null)
-            .map(featureFilter -> isFeatureOn(featureFilter, feature)).findAny().orElse(false);
+            .map(featureFilter -> isFeatureOn(featureFilter, feature)).anyMatch(value -> value);
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {

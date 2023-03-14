@@ -17,9 +17,8 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
      *
-     * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
+     * @return Mono with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
-     * @throws Exception re-throws any exception caught
      */
     @Async
     Mono<Boolean> refreshConfigurations();
