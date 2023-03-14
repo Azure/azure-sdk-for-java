@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.convert.DurationStyle;
@@ -16,7 +15,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
@@ -29,6 +27,9 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.service.AzureServiceType.AppConfiguration;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
@@ -60,8 +61,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     /**
      * Invalid Formatted Connection String Error message
      */
-    public static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.",
-        CONN_STRING_REGEXP);
+    public static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.", CONN_STRING_REGEXP);
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
@@ -79,8 +79,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final int defaultMaxRetries;
 
-    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries,
-        ConfigurationClientBuilderFactory clientFactory, boolean credentialConfigured) {
+    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory, boolean credentialConfigured) {
         this.defaultMaxRetries = defaultMaxRetries;
         this.clientFactory = clientFactory;
         this.credentialConfigured = credentialConfigured;
@@ -133,15 +132,13 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
 
         if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
-            throw new IllegalArgumentException(
-                "More than 1 Connection method was set for connecting to App Configuration.");
+            throw new IllegalArgumentException("More than 1 Connection method was set for connecting to App Configuration.");
         }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null;
+        boolean connectionStringIsPresent = configStore.getConnectionString() != null || configStore.getConnectionStrings().size() > 0;
 
         if (credentialConfigured && connectionStringIsPresent) {
-            throw new IllegalArgumentException(
-                "More than 1 Connection method was set for connecting to App Configuration.");
+            throw new IllegalArgumentException("More than 1 Connection method was set for connecting to App Configuration.");
         }
 
         List<String> connectionStrings = configStore.getConnectionStrings();
@@ -157,9 +154,11 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         if (connectionStrings.size() > 0) {
             for (String connectionString : connectionStrings) {
+                clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
                 String endpoint = getEndpointFromConnectionString(connectionString);
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
                 ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
+                
                 clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
             }
         } else {
@@ -168,8 +167,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 if (!credentialConfigured) {
                     // System Assigned Identity. Needs to be checked last as all of the above should
                     // have an Endpoint.
-                    LOGGER.debug("Connecting to " + endpoint
-                        + " using Azure System Assigned Identity or Azure User Assigned Identity.");
+                    LOGGER.debug("Connecting to " + endpoint + " using Azure System Assigned Identity or Azure User Assigned Identity.");
                     ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
                     builder.credential(micBuilder.build());
                 }
@@ -182,8 +180,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         return clients;
     }
 
-    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
-        Integer replicaCount) {
+    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint, Integer replicaCount) {
         TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount, Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
@@ -214,13 +211,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
             Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
 
-            int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
-                " isn't a valid integer, using default value.", checkPropertyInt);
+            int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries, " isn't a valid integer, using default value.", checkPropertyInt);
 
-            Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-            Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
+            Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY, " isn't a valid Duration, using default value.", checkPropertyDuration);
+            Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY, " isn't a valid Duration, using default value.", checkPropertyDuration);
 
             retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
         }
@@ -254,5 +248,24 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         }
 
         return value;
+    }
+    
+    private static class ConnectionStringConnector implements ServiceConnectionStringProvider<AzureServiceType.AppConfiguration> {
+        
+        private final String connectionString;
+        
+        ConnectionStringConnector(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        @Override
+        public AppConfiguration getServiceType() {
+            return null;
+        }
     }
 }
