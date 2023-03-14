@@ -18,7 +18,7 @@ public class GetLanguagesTests {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void getLanguagesTest() throws Exception {
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 

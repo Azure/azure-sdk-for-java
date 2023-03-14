@@ -12,7 +12,7 @@ public final class ReadmeSamples {
      * Note: this will only work with GET languages operation.
      */
     public void createClientAnonymous() {
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
             .endpoint("https://api.cognitive.microsofttranslator.com")
             .buildClient();
     }
@@ -25,7 +25,7 @@ public final class ReadmeSamples {
         String region = "<text-translator-region>";
         AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
 
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .credential(regionalCredential)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
@@ -40,7 +40,7 @@ public final class ReadmeSamples {
 
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .credential(credential)
                 .endpoint(endpoint)
                 .buildClient();

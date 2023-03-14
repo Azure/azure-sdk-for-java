@@ -24,7 +24,7 @@ public class DictionaryExamples {
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
         AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
 
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .credential(regionalCredential)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
@@ -34,7 +34,7 @@ public class DictionaryExamples {
         List<DictionaryExampleTextElement> content = new ArrayList<>();
         content.add(new DictionaryExampleTextElement("fly", "volar"));
 
-        List<DictionaryExampleElement> dictionaryEntries = client.dictionaryExamples(sourceLanguage, targetLanguage, content);
+        List<DictionaryExampleElement> dictionaryEntries = client.lookupDictionaryExamples(sourceLanguage, targetLanguage, content);
 
         for (DictionaryExampleElement dictionaryEntry : dictionaryEntries)
         {

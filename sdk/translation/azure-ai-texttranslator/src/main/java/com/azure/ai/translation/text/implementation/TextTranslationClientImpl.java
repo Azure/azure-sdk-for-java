@@ -4,7 +4,7 @@
 
 package com.azure.ai.translation.text.implementation;
 
-import com.azure.ai.translation.text.TranslatorServiceVersion;
+import com.azure.ai.translation.text.TextTranslationServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -39,10 +39,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the TranslatorClient type. */
-public final class TranslatorClientImpl {
+/** Initializes a new instance of the TextTranslationClient type. */
+public final class TextTranslationClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final TranslatorClientService service;
+    private final TextTranslationClientService service;
 
     /**
      * Supported Text Translation endpoints (protocol and hostname, for example:
@@ -61,14 +61,14 @@ public final class TranslatorClientImpl {
     }
 
     /** Service version. */
-    private final TranslatorServiceVersion serviceVersion;
+    private final TextTranslationServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public TranslatorServiceVersion getServiceVersion() {
+    public TextTranslationServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -97,13 +97,13 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Initializes an instance of TranslatorClient client.
+     * Initializes an instance of TextTranslationClient client.
      *
      * @param endpoint Supported Text Translation endpoints (protocol and hostname, for example:
      *     https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
-    public TranslatorClientImpl(String endpoint, TranslatorServiceVersion serviceVersion) {
+    public TextTranslationClientImpl(String endpoint, TextTranslationServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -114,19 +114,20 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Initializes an instance of TranslatorClient client.
+     * Initializes an instance of TextTranslationClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Text Translation endpoints (protocol and hostname, for example:
      *     https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
-    public TranslatorClientImpl(HttpPipeline httpPipeline, String endpoint, TranslatorServiceVersion serviceVersion) {
+    public TextTranslationClientImpl(
+            HttpPipeline httpPipeline, String endpoint, TextTranslationServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of TranslatorClient client.
+     * Initializes an instance of TextTranslationClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -134,25 +135,26 @@ public final class TranslatorClientImpl {
      *     https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
-    public TranslatorClientImpl(
+    public TextTranslationClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            TranslatorServiceVersion serviceVersion) {
+            TextTranslationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(TranslatorClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service =
+                RestProxy.create(TextTranslationClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for TranslatorClient to be used by the proxy service to perform REST
+     * The interface defining all the services for TextTranslationClient to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "TranslatorClient")
-    public interface TranslatorClientService {
+    @ServiceInterface(name = "TextTranslationClien")
+    public interface TextTranslationClientService {
         @Get("/languages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -228,7 +230,7 @@ public final class TranslatorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> breakSentence(
+        Mono<Response<BinaryData>> findSentenceBoundaries(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -248,7 +250,7 @@ public final class TranslatorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> dictionaryLookup(
+        Mono<Response<BinaryData>> lookupDictionaryEntries(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("from") String from,
                 @QueryParam("to") String to,
@@ -270,7 +272,7 @@ public final class TranslatorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> dictionaryExamples(
+        Mono<Response<BinaryData>> lookupDictionaryExamples(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("from") String from,
                 @QueryParam("to") String to,
@@ -857,7 +859,7 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Break Sentence.
+     * Find Sentence Boundaries.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -917,12 +919,12 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> breakSentenceWithResponseAsync(
+    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponseAsync(
             BinaryData content, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.breakSentence(
+                        service.findSentenceBoundaries(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
@@ -932,7 +934,7 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Break Sentence.
+     * Find Sentence Boundaries.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -992,12 +994,12 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> breakSentenceWithResponse(BinaryData content, RequestOptions requestOptions) {
-        return breakSentenceWithResponseAsync(content, requestOptions).block();
+    public Response<BinaryData> findSentenceBoundariesWithResponse(BinaryData content, RequestOptions requestOptions) {
+        return findSentenceBoundariesWithResponseAsync(content, requestOptions).block();
     }
 
     /**
-     * Dictionary Lookup.
+     * Lookup Dictionary Entries.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1060,12 +1062,12 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dictionaryLookupWithResponseAsync(
+    public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponseAsync(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.dictionaryLookup(
+                        service.lookupDictionaryEntries(
                                 this.getEndpoint(),
                                 from,
                                 to,
@@ -1077,7 +1079,7 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Dictionary Lookup.
+     * Lookup Dictionary Entries.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1140,13 +1142,13 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dictionaryLookupWithResponse(
+    public Response<BinaryData> lookupDictionaryEntriesWithResponse(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return dictionaryLookupWithResponseAsync(from, to, content, requestOptions).block();
+        return lookupDictionaryEntriesWithResponseAsync(from, to, content, requestOptions).block();
     }
 
     /**
-     * Dictionary Examples.
+     * Lookup Dictionary Examples.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1203,12 +1205,12 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dictionaryExamplesWithResponseAsync(
+    public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponseAsync(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.dictionaryExamples(
+                        service.lookupDictionaryExamples(
                                 this.getEndpoint(),
                                 from,
                                 to,
@@ -1220,7 +1222,7 @@ public final class TranslatorClientImpl {
     }
 
     /**
-     * Dictionary Examples.
+     * Lookup Dictionary Examples.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1277,8 +1279,8 @@ public final class TranslatorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dictionaryExamplesWithResponse(
+    public Response<BinaryData> lookupDictionaryExamplesWithResponse(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return dictionaryExamplesWithResponseAsync(from, to, content, requestOptions).block();
+        return lookupDictionaryExamplesWithResponseAsync(from, to, content, requestOptions).block();
     }
 }

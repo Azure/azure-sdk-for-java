@@ -24,7 +24,7 @@ public class GetLanguagesAcceptLanguage {
      * @param args Unused arguments to the program.
      */
     public static void main(final String[] args) {
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
             .endpoint("https://api.cognitive.microsofttranslator.com")
             .buildClient();
 

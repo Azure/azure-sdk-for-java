@@ -1,8 +1,8 @@
-# Azure Translator client library for Java
+# Azure Text Translation client library for Java
 
-Azure Translator client library for Java.
+Azure Text Translation client library for Java.
 
-This package contains Microsoft Azure Translator client library.
+This package contains Microsoft Azure Text Translation client library.
 
 ## Documentation
 

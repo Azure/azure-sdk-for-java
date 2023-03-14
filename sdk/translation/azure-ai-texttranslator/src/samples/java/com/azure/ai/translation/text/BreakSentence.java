@@ -24,7 +24,7 @@ public class BreakSentence {
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
         AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
 
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .credential(regionalCredential)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
@@ -34,7 +34,7 @@ public class BreakSentence {
         List<InputTextElement> content = new ArrayList<>();
         content.add(new InputTextElement("zhè shì gè cè shì。"));
 
-        List<BreakSentenceElement> breakSentences = client.breakSentence(content, null, sourceLanguage, sourceScript);
+        List<BreakSentenceElement> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
         for (BreakSentenceElement breakSentence : breakSentences)
         {

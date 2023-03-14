@@ -4,8 +4,8 @@
 
 package com.azure.ai.translation.text.generated;
 
-import com.azure.ai.translation.text.TranslatorClient;
-import com.azure.ai.translation.text.TranslatorClientBuilder;
+import com.azure.ai.translation.text.TextTranslationClient;
+import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -13,21 +13,21 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
-class TranslatorClientTestBase extends TestBase {
-    protected TranslatorClient translatorClient;
+class TextTranslationClientTestBase extends TestBase {
+    protected TextTranslationClient textTranslationClient;
 
     @Override
     protected void beforeTest() {
-        TranslatorClientBuilder translatorClientbuilder =
-                new TranslatorClientBuilder()
+        TextTranslationClientBuilder textTranslationClientbuilder =
+                new TextTranslationClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            translatorClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+            textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            translatorClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+            textTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        translatorClient = translatorClientbuilder.buildClient();
+        textTranslationClient = textTranslationClientbuilder.buildClient();
     }
 }

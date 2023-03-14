@@ -4,6 +4,7 @@
 
 package com.azure.ai.translation.text;
 
+import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.ai.translation.text.models.BreakSentenceElement;
 import com.azure.ai.translation.text.models.DictionaryExampleElement;
 import com.azure.ai.translation.text.models.DictionaryExampleTextElement;
@@ -26,22 +27,24 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the synchronous TranslatorClient type. */
-@ServiceClient(builder = TranslatorClientBuilder.class)
-public final class TranslatorClient {
-    @Generated private final TranslatorAsyncClient client;
+/** Initializes a new instance of the asynchronous TextTranslationClient type. */
+@ServiceClient(builder = TextTranslationClientBuilder.class, isAsync = true)
+public final class TextTranslationAsyncClient {
+    @Generated private final TextTranslationClientImpl serviceClient;
 
     /**
-     * Initializes an instance of TranslatorClient class.
+     * Initializes an instance of TextTranslationAsyncClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    TranslatorClient(TranslatorAsyncClient client) {
-        this.client = client;
+    TextTranslationAsyncClient(TextTranslationClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -136,12 +139,12 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the set of languages currently supported by other operations of the Translator along with {@link
-     *     Response}.
+     *     Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLanguagesWithResponse(RequestOptions requestOptions) {
-        return this.client.getLanguagesWithResponse(requestOptions).block();
+    public Mono<Response<BinaryData>> getLanguagesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getLanguagesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -255,13 +258,13 @@ public final class TranslatorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(
+    public Mono<Response<BinaryData>> translateWithResponse(
             List<String> to, BinaryData content, RequestOptions requestOptions) {
-        return this.client.translateWithResponse(to, content, requestOptions).block();
+        return this.serviceClient.translateWithResponseAsync(to, content, requestOptions);
     }
 
     /**
@@ -310,17 +313,18 @@ public final class TranslatorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> transliterateWithResponse(
+    public Mono<Response<BinaryData>> transliterateWithResponse(
             String language, String fromScript, String toScript, BinaryData content, RequestOptions requestOptions) {
-        return this.client.transliterateWithResponse(language, fromScript, toScript, content, requestOptions).block();
+        return this.serviceClient.transliterateWithResponseAsync(
+                language, fromScript, toScript, content, requestOptions);
     }
 
     /**
-     * Break Sentence.
+     * Find Sentence Boundaries.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -377,16 +381,17 @@ public final class TranslatorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> breakSentenceWithResponse(BinaryData content, RequestOptions requestOptions) {
-        return this.client.breakSentenceWithResponse(content, requestOptions).block();
+    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponse(
+            BinaryData content, RequestOptions requestOptions) {
+        return this.serviceClient.findSentenceBoundariesWithResponseAsync(content, requestOptions);
     }
 
     /**
-     * Dictionary Lookup.
+     * Lookup Dictionary Entries.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -446,17 +451,17 @@ public final class TranslatorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dictionaryLookupWithResponse(
+    public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponse(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return this.client.dictionaryLookupWithResponse(from, to, content, requestOptions).block();
+        return this.serviceClient.lookupDictionaryEntriesWithResponseAsync(from, to, content, requestOptions);
     }
 
     /**
-     * Dictionary Examples.
+     * Lookup Dictionary Examples.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -510,13 +515,13 @@ public final class TranslatorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dictionaryExamplesWithResponse(
+    public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponse(
             String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return this.client.dictionaryExamplesWithResponse(from, to, content, requestOptions).block();
+        return this.serviceClient.lookupDictionaryExamplesWithResponseAsync(from, to, content, requestOptions);
     }
 
     /**
@@ -542,11 +547,12 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of languages currently supported by other operations of the Translator.
+     * @return the set of languages currently supported by other operations of the Translator on successful completion
+     *     of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetLanguagesResult getLanguages(
+    public Mono<GetLanguagesResult> getLanguages(
             String clientTraceId, String scope, String acceptLanguage, String ifNoneMatch) {
         // Generated convenience method for getLanguagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -562,7 +568,9 @@ public final class TranslatorClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader("If-None-Match", ifNoneMatch);
         }
-        return getLanguagesWithResponse(requestOptions).getValue().toObject(GetLanguagesResult.class);
+        return getLanguagesWithResponse(requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(GetLanguagesResult.class));
     }
 
     /**
@@ -573,14 +581,17 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of languages currently supported by other operations of the Translator.
+     * @return the set of languages currently supported by other operations of the Translator on successful completion
+     *     of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetLanguagesResult getLanguages() {
+    public Mono<GetLanguagesResult> getLanguages() {
         // Generated convenience method for getLanguagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getLanguagesWithResponse(requestOptions).getValue().toObject(GetLanguagesResult.class);
+        return getLanguagesWithResponse(requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(GetLanguagesResult.class));
     }
 
     /**
@@ -630,11 +641,11 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TranslatedTextElement> translate(
+    public Mono<List<TranslatedTextElement>> translate(
             List<String> to,
             List<InputTextElement> content,
             String clientTraceId,
@@ -688,8 +699,8 @@ public final class TranslatorClient {
             requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
         }
         return translateWithResponse(to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT);
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT));
     }
 
     /**
@@ -706,16 +717,16 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TranslatedTextElement> translate(List<String> to, List<InputTextElement> content) {
+    public Mono<List<TranslatedTextElement>> translate(List<String> to, List<InputTextElement> content) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return translateWithResponse(to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT);
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT));
     }
 
     /**
@@ -735,11 +746,11 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TransliteratedText> transliterate(
+    public Mono<List<TransliteratedText>> transliterate(
             String language, String fromScript, String toScript, List<InputTextElement> content, String clientTraceId) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -747,8 +758,8 @@ public final class TranslatorClient {
             requestOptions.setHeader("X-ClientTraceId", clientTraceId);
         }
         return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT));
     }
 
     /**
@@ -767,21 +778,21 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TransliteratedText> transliterate(
+    public Mono<List<TransliteratedText>> transliterate(
             String language, String fromScript, String toScript, List<InputTextElement> content) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT));
     }
 
     /**
-     * Break Sentence.
+     * Find Sentence Boundaries.
      *
      * @param content Array of the text for which values the sentence boundaries will be calculated.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
@@ -795,13 +806,13 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceElement> breakSentence(
+    public Mono<List<BreakSentenceElement>> findSentenceBoundaries(
             List<InputTextElement> content, String clientTraceId, String language, String script) {
-        // Generated convenience method for breakSentenceWithResponse
+        // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader("X-ClientTraceId", clientTraceId);
@@ -812,13 +823,13 @@ public final class TranslatorClient {
         if (script != null) {
             requestOptions.addQueryParam("script", script, false);
         }
-        return breakSentenceWithResponse(BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT);
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT));
     }
 
     /**
-     * Break Sentence.
+     * Find Sentence Boundaries.
      *
      * @param content Array of the text for which values the sentence boundaries will be calculated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,20 +838,20 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BreakSentenceElement> breakSentence(List<InputTextElement> content) {
-        // Generated convenience method for breakSentenceWithResponse
+    public Mono<List<BreakSentenceElement>> findSentenceBoundaries(List<InputTextElement> content) {
+        // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return breakSentenceWithResponse(BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT);
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT));
     }
 
     /**
-     * Dictionary Lookup.
+     * Lookup Dictionary Entries.
      *
      * @param from Specifies the language of the input text. The source language must be one of the supported languages
      *     included in the dictionary scope.
@@ -854,24 +865,24 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryLookupElement> dictionaryLookup(
+    public Mono<List<DictionaryLookupElement>> lookupDictionaryEntries(
             String from, String to, List<InputTextElement> content, String clientTraceId) {
-        // Generated convenience method for dictionaryLookupWithResponse
+        // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader("X-ClientTraceId", clientTraceId);
         }
-        return dictionaryLookupWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT);
+        return lookupDictionaryEntriesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT));
     }
 
     /**
-     * Dictionary Lookup.
+     * Lookup Dictionary Entries.
      *
      * @param from Specifies the language of the input text. The source language must be one of the supported languages
      *     included in the dictionary scope.
@@ -884,20 +895,21 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryLookupElement> dictionaryLookup(String from, String to, List<InputTextElement> content) {
-        // Generated convenience method for dictionaryLookupWithResponse
+    public Mono<List<DictionaryLookupElement>> lookupDictionaryEntries(
+            String from, String to, List<InputTextElement> content) {
+        // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return dictionaryLookupWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT);
+        return lookupDictionaryEntriesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT));
     }
 
     /**
-     * Dictionary Examples.
+     * Lookup Dictionary Examples.
      *
      * @param from Specifies the language of the input text. The source language must be one of the supported languages
      *     included in the dictionary scope.
@@ -911,24 +923,24 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryExampleElement> dictionaryExamples(
+    public Mono<List<DictionaryExampleElement>> lookupDictionaryExamples(
             String from, String to, List<DictionaryExampleTextElement> content, String clientTraceId) {
-        // Generated convenience method for dictionaryExamplesWithResponse
+        // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader("X-ClientTraceId", clientTraceId);
         }
-        return dictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT);
+        return lookupDictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT));
     }
 
     /**
-     * Dictionary Examples.
+     * Lookup Dictionary Examples.
      *
      * @param from Specifies the language of the input text. The source language must be one of the supported languages
      *     included in the dictionary scope.
@@ -941,17 +953,17 @@ public final class TranslatorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<DictionaryExampleElement> dictionaryExamples(
+    public Mono<List<DictionaryExampleElement>> lookupDictionaryExamples(
             String from, String to, List<DictionaryExampleTextElement> content) {
-        // Generated convenience method for dictionaryExamplesWithResponse
+        // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return dictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
-                .getValue()
-                .toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT);
+        return lookupDictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT));
     }
 
     private static final TypeReference<List<TranslatedTextElement>> TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT =

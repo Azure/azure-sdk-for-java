@@ -35,7 +35,7 @@ public class TranslateDictionary {
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
         AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
 
-        TranslatorClient client = new TranslatorClientBuilder()
+        TextTranslationClient client = new TextTranslationClientBuilder()
                 .credential(regionalCredential)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();

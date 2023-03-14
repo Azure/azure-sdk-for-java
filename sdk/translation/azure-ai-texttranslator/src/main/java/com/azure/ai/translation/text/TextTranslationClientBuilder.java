@@ -7,7 +7,7 @@ package com.azure.ai.translation.text;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.ai.translation.text.authentication.GlobalEndpointAuthenticationPolicy;
 import com.azure.ai.translation.text.CustomEndpointUtils;
-import com.azure.ai.translation.text.implementation.TranslatorClientImpl;
+import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -46,12 +46,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the TranslatorClient type. */
-@ServiceClientBuilder(serviceClients = {TranslatorClient.class, TranslatorAsyncClient.class})
-public final class TranslatorClientBuilder
-        implements HttpTrait<TranslatorClientBuilder>,
-                ConfigurationTrait<TranslatorClientBuilder>,
-                EndpointTrait<TranslatorClientBuilder> {
+/** A builder for creating a new instance of the TextTranslationClient type. */
+@ServiceClientBuilder(serviceClients = {TextTranslationClient.class, TextTranslationAsyncClient.class})
+public final class TextTranslationClientBuilder
+        implements HttpTrait<TextTranslationClientBuilder>,
+                ConfigurationTrait<TextTranslationClientBuilder>,
+                EndpointTrait<TextTranslationClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -69,9 +69,9 @@ public final class TranslatorClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the TranslatorClientBuilder. */
+    /** Create an instance of the TextTranslationClientBuilder. */
     @Generated
-    public TranslatorClientBuilder() {
+    public TextTranslationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -83,7 +83,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder pipeline(HttpPipeline pipeline) {
+    public TextTranslationClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -96,7 +96,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder httpClient(HttpClient httpClient) {
+    public TextTranslationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -109,7 +109,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public TextTranslationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -122,7 +122,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder clientOptions(ClientOptions clientOptions) {
+    public TextTranslationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -135,7 +135,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder retryOptions(RetryOptions retryOptions) {
+    public TextTranslationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -143,7 +143,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public TextTranslationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -157,7 +157,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder configuration(Configuration configuration) {
+    public TextTranslationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -172,7 +172,7 @@ public final class TranslatorClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public TranslatorClientBuilder endpoint(String endpoint) {
+    public TextTranslationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         this.isCustomEndpoint = CustomEndpointUtils.isPlatformHost(endpoint);
         return this;
@@ -181,16 +181,16 @@ public final class TranslatorClientBuilder
     /*
      * Service version
      */
-    @Generated private TranslatorServiceVersion serviceVersion;
+    @Generated private TextTranslationServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the TranslatorClientBuilder.
+     * @return the TextTranslationClientBuilder.
      */
     @Generated
-    public TranslatorClientBuilder serviceVersion(TranslatorServiceVersion serviceVersion) {
+    public TextTranslationClientBuilder serviceVersion(TextTranslationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -204,10 +204,10 @@ public final class TranslatorClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the TranslatorClientBuilder.
+     * @return the TextTranslationClientBuilder.
      */
     @Generated
-    public TranslatorClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public TextTranslationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -216,10 +216,10 @@ public final class TranslatorClientBuilder
      * Sets the {@link AzureKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link AzureKeyCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TranslatorClientBuilder} object.
+     * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code credential} is null.
      */
-    public TranslatorClientBuilder credential(AzureKeyCredential credential) {
+    public TextTranslationClientBuilder credential(AzureKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
@@ -229,10 +229,10 @@ public final class TranslatorClientBuilder
      * Sets the {@link AzureRegionalKeyCredential} used to authorize requests sent to the service.
      *
      * @param regionalCredential {@link AzureRegionalKeyCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TranslatorClientBuilder} object.
+     * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public TranslatorClientBuilder credential(AzureRegionalKeyCredential regionalCredential) {
+    public TextTranslationClientBuilder credential(AzureRegionalKeyCredential regionalCredential) {
         Objects.requireNonNull(regionalCredential, "'regionalCredential' cannot be null.");
         this.regionalCredential = regionalCredential;
         return this;
@@ -244,25 +244,25 @@ public final class TranslatorClientBuilder
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TranslatorClientBuilder} object.
+     * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public TranslatorClientBuilder credential(TokenCredential tokenCredential) {
+    public TextTranslationClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
         return this;
     }
 
     /**
-     * Builds an instance of TranslatorClientImpl with the provided parameters.
+     * Builds an instance of TextTranslationClientImpl with the provided parameters.
      *
-     * @return an instance of TranslatorClientImpl.
+     * @return an instance of TextTranslationClientImpl.
      */
     @Generated
-    private TranslatorClientImpl buildInnerClient() {
+    private TextTranslationClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        TranslatorServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : TranslatorServiceVersion.getLatest();
+        TextTranslationServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : TextTranslationServiceVersion.getLatest();
 
         String serviceEndpoint;
         if (this.isCustomEndpoint) {
@@ -277,8 +277,8 @@ public final class TranslatorClientBuilder
             serviceEndpoint = endpoint;
         }
 
-        TranslatorClientImpl client =
-                new TranslatorClientImpl(
+        TextTranslationClientImpl client =
+                new TextTranslationClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
         return client;
     }
@@ -336,22 +336,22 @@ public final class TranslatorClientBuilder
     }
 
     /**
-     * Builds an instance of TranslatorAsyncClient class.
+     * Builds an instance of TextTranslationAsyncClient class.
      *
-     * @return an instance of TranslatorAsyncClient.
+     * @return an instance of TextTranslationAsyncClient.
      */
     @Generated
-    public TranslatorAsyncClient buildAsyncClient() {
-        return new TranslatorAsyncClient(buildInnerClient());
+    public TextTranslationAsyncClient buildAsyncClient() {
+        return new TextTranslationAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of TranslatorClient class.
+     * Builds an instance of TextTranslationClient class.
      *
-     * @return an instance of TranslatorClient.
+     * @return an instance of TextTranslationClient.
      */
     @Generated
-    public TranslatorClient buildClient() {
-        return new TranslatorClient(new TranslatorAsyncClient(buildInnerClient()));
+    public TextTranslationClient buildClient() {
+        return new TextTranslationClient(new TextTranslationAsyncClient(buildInnerClient()));
     }
 }

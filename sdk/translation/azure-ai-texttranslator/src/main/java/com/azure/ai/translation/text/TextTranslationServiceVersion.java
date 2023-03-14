@@ -6,14 +6,14 @@ package com.azure.ai.translation.text;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of TranslatorClient. */
-public enum TranslatorServiceVersion implements ServiceVersion {
+/** Service version of TextTranslationClient. */
+public enum TextTranslationServiceVersion implements ServiceVersion {
     /** Enum value 3.0. */
     V3_0("3.0");
 
     private final String version;
 
-    TranslatorServiceVersion(String version) {
+    TextTranslationServiceVersion(String version) {
         this.version = version;
     }
 
@@ -26,9 +26,9 @@ public enum TranslatorServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      *
-     * @return The latest {@link TranslatorServiceVersion}.
+     * @return The latest {@link TextTranslationServiceVersion}.
      */
-    public static TranslatorServiceVersion getLatest() {
+    public static TextTranslationServiceVersion getLatest() {
         return V3_0;
     }
 }
