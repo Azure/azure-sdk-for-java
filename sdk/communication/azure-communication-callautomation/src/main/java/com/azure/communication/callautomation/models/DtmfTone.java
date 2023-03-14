@@ -77,7 +77,7 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
     /** @return known Tone values in char. */
     public String convertToString() {
         String toneValue = this.toString().toLowerCase(Locale.getDefault());
-        String toneStringValue ="";
+        String toneStringValue = "";
         switch (toneValue) {
             case "zero":
                 toneStringValue = "0";
