@@ -1,0 +1,75 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/14e09a5b14e09a5b12218564a616a2360a744bfaac?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f204d775-449d-4ccc-a3af-9600f08bdee8"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB0A31A02E1E01",
+      "Last-Modified" : "Thu, 09 Feb 2023 00:07:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "30e25802-f01a-0078-281a-3c8651000000",
+      "Date" : "Thu, 09 Feb 2023 00:07:25 GMT",
+      "x-ms-client-request-id" : "f204d775-449d-4ccc-a3af-9600f08bdee8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/14e09a5b14e09a5b12218564a616a2360a744bfaac/14e09a5b014e09a5b12226070af0927436063488695a?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c12727d5-5c8e-4a45-9fe0-ace1dfdff807"
+    },
+    "Response" : {
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-permission-key" : "8792472798472242479*1359530181238362790",
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2023-02-09T00:07:28.0303189Z",
+      "Last-Modified" : "Thu, 09 Feb 2023 00:07:28 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 09 Feb 2023 00:07:27 GMT",
+      "ETag" : "0x8DB0A31A1624055",
+      "x-ms-file-attributes" : "Directory",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-09T00:07:28.0303189Z",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "30e25807-f01a-0078-291a-3c8651000000",
+      "x-ms-file-last-write-time" : "2023-02-09T00:07:28.0303189Z",
+      "x-ms-client-request-id" : "c12727d5-5c8e-4a45-9fe0-ace1dfdff807"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/14e09a5b14e09a5b12218564a616a2360a744bfaac/14e09a5b014e09a5b12226070af0927436063488695a?comp=forceclosehandles",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7c6380dd-b5cf-42ff-956a-778569aee2b2"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-number-of-handles-failed" : "0",
+      "x-ms-number-of-handles-closed" : "0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "30e25809-f01a-0078-2a1a-3c8651000000",
+      "Date" : "Thu, 09 Feb 2023 00:07:27 GMT",
+      "x-ms-client-request-id" : "7c6380dd-b5cf-42ff-956a-778569aee2b2"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "14e09a5b14e09a5b12218564a616a2360a744bfaac", "14e09a5b14e09a5b12292016b924f197628e4cfaa0", "14e09a5b014e09a5b12226070af0927436063488695a" ]
+}

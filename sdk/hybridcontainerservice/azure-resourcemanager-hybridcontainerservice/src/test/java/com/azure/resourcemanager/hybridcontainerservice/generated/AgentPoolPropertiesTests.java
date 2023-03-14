@@ -17,95 +17,92 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"status\":{\"errorMessage\":\"ylgqgitxmedjvcsl\",\"provisioningStatus\":{\"operationId\":\"wncwzzhxgktrmg\",\"phase\":\"napkteoellw\",\"status\":\"fdygpfqbuaceopz\"},\"readyReplicas\":1355653581,\"replicas\":1863472171},\"count\":350693240,\"availabilityZones\":[\"ppcqeqxolz\",\"ahzxctobgbk\",\"moizpos\"],\"maxCount\":1176728044,\"maxPods\":919813735,\"minCount\":661321063,\"mode\":\"User\",\"nodeLabels\":{\"xxjyngudivkrtsw\":\"fqjhhkxbpvjymj\",\"vjfdx\":\"xqzvszjfa\",\"qtdo\":\"ivetvtcq\"},\"nodeTaints\":[\"bxvwv\",\"yslqbhsfx\",\"blytk\",\"lmpewwwfbkr\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"vshqjohxcr\",\"vmSize\":\"fovasr\",\"cloudProviderProfile\":{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"hsqfsubcgjbirxbp\",\"bsrfbj\",\"dtws\",\"otftpvjzbexilz\"]},\"infraStorageProfile\":{\"storageSpaceIds\":[\"q\",\"vwpm\"]}}}")
+                    "{\"provisioningState\":\"InProgress\",\"status\":{\"errorMessage\":\"obbc\",\"provisioningStatus\":{\"operationId\":\"tjrip\",\"phase\":\"bpbewtghfgb\",\"status\":\"gw\"},\"readyReplicas\":748159283,\"replicas\":161265854},\"count\":1837116433,\"availabilityZones\":[\"begibtnmxiebwwa\",\"oayqc\"],\"maxCount\":1214313613,\"maxPods\":1999029226,\"minCount\":350152394,\"mode\":\"System\",\"nodeLabels\":{\"xongmtsavjcbpwxq\":\"zmh\"},\"nodeTaints\":[\"knftguvriuh\",\"rwmdyvxqtay\",\"iwwroyqbexrmc\",\"ibycno\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"mefqsgzvahapjyzh\",\"vmSize\":\"gqzcjr\",\"cloudProviderProfile\":{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"lmwlxkvugfhzo\",\"awjvzunluthnnp\",\"nxipeil\",\"jzuaejxdultskzbb\"]},\"infraStorageProfile\":{\"storageSpaceIds\":[\"mv\",\"ekg\",\"wozuhkf\",\"bsjyofdx\"]}}}")
                 .toObject(AgentPoolProperties.class);
-        Assertions.assertEquals(350693240, model.count());
-        Assertions.assertEquals("ppcqeqxolz", model.availabilityZones().get(0));
-        Assertions.assertEquals(1176728044, model.maxCount());
-        Assertions.assertEquals(919813735, model.maxPods());
-        Assertions.assertEquals(661321063, model.minCount());
-        Assertions.assertEquals(Mode.USER, model.mode());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.nodeLabels().get("xxjyngudivkrtsw"));
-        Assertions.assertEquals("bxvwv", model.nodeTaints().get(0));
+        Assertions.assertEquals(1837116433, model.count());
+        Assertions.assertEquals("begibtnmxiebwwa", model.availabilityZones().get(0));
+        Assertions.assertEquals(1214313613, model.maxCount());
+        Assertions.assertEquals(1999029226, model.maxPods());
+        Assertions.assertEquals(350152394, model.minCount());
+        Assertions.assertEquals(Mode.SYSTEM, model.mode());
+        Assertions.assertEquals("zmh", model.nodeLabels().get("xongmtsavjcbpwxq"));
+        Assertions.assertEquals("knftguvriuh", model.nodeTaints().get(0));
         Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals("vshqjohxcr", model.nodeImageVersion());
-        Assertions.assertEquals("fovasr", model.vmSize());
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.nodeImageVersion());
+        Assertions.assertEquals("gqzcjr", model.vmSize());
         Assertions
-            .assertEquals(
-                "hsqfsubcgjbirxbp", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("q", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.status().errorMessage());
-        Assertions.assertEquals("wncwzzhxgktrmg", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("napkteoellw", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.status().provisioningStatus().status());
-        Assertions.assertEquals(1355653581, model.status().readyReplicas());
-        Assertions.assertEquals(1863472171, model.status().replicas());
+            .assertEquals("lmwlxkvugfhzo", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
+        Assertions.assertEquals("mv", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
+        Assertions.assertEquals("obbc", model.status().errorMessage());
+        Assertions.assertEquals("tjrip", model.status().provisioningStatus().operationId());
+        Assertions.assertEquals("bpbewtghfgb", model.status().provisioningStatus().phase());
+        Assertions.assertEquals("gw", model.status().provisioningStatus().status());
+        Assertions.assertEquals(748159283, model.status().readyReplicas());
+        Assertions.assertEquals(161265854, model.status().replicas());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolProperties model =
             new AgentPoolProperties()
-                .withCount(350693240)
-                .withAvailabilityZones(Arrays.asList("ppcqeqxolz", "ahzxctobgbk", "moizpos"))
-                .withMaxCount(1176728044)
-                .withMaxPods(919813735)
-                .withMinCount(661321063)
-                .withMode(Mode.USER)
-                .withNodeLabels(mapOf("xxjyngudivkrtsw", "fqjhhkxbpvjymj", "vjfdx", "xqzvszjfa", "qtdo", "ivetvtcq"))
-                .withNodeTaints(Arrays.asList("bxvwv", "yslqbhsfx", "blytk", "lmpewwwfbkr"))
+                .withCount(1837116433)
+                .withAvailabilityZones(Arrays.asList("begibtnmxiebwwa", "oayqc"))
+                .withMaxCount(1214313613)
+                .withMaxPods(1999029226)
+                .withMinCount(350152394)
+                .withMode(Mode.SYSTEM)
+                .withNodeLabels(mapOf("xongmtsavjcbpwxq", "zmh"))
+                .withNodeTaints(Arrays.asList("knftguvriuh", "rwmdyvxqtay", "iwwroyqbexrmc", "ibycno"))
                 .withOsType(OsType.LINUX)
-                .withNodeImageVersion("vshqjohxcr")
-                .withVmSize("fovasr")
+                .withNodeImageVersion("mefqsgzvahapjyzh")
+                .withVmSize("gqzcjr")
                 .withCloudProviderProfile(
                     new CloudProviderProfile()
                         .withInfraNetworkProfile(
                             new CloudProviderProfileInfraNetworkProfile()
                                 .withVnetSubnetIds(
-                                    Arrays.asList("hsqfsubcgjbirxbp", "bsrfbj", "dtws", "otftpvjzbexilz")))
+                                    Arrays.asList("lmwlxkvugfhzo", "awjvzunluthnnp", "nxipeil", "jzuaejxdultskzbb")))
                         .withInfraStorageProfile(
                             new CloudProviderProfileInfraStorageProfile()
-                                .withStorageSpaceIds(Arrays.asList("q", "vwpm"))))
+                                .withStorageSpaceIds(Arrays.asList("mv", "ekg", "wozuhkf", "bsjyofdx"))))
                 .withStatus(
                     new AgentPoolProvisioningStatusStatus()
-                        .withErrorMessage("ylgqgitxmedjvcsl")
+                        .withErrorMessage("obbc")
                         .withProvisioningStatus(
                             new AgentPoolProvisioningStatusStatusProvisioningStatus()
-                                .withOperationId("wncwzzhxgktrmg")
-                                .withPhase("napkteoellw")
-                                .withStatus("fdygpfqbuaceopz"))
-                        .withReadyReplicas(1355653581)
-                        .withReplicas(1863472171));
+                                .withOperationId("tjrip")
+                                .withPhase("bpbewtghfgb")
+                                .withStatus("gw"))
+                        .withReadyReplicas(748159283)
+                        .withReplicas(161265854));
         model = BinaryData.fromObject(model).toObject(AgentPoolProperties.class);
-        Assertions.assertEquals(350693240, model.count());
-        Assertions.assertEquals("ppcqeqxolz", model.availabilityZones().get(0));
-        Assertions.assertEquals(1176728044, model.maxCount());
-        Assertions.assertEquals(919813735, model.maxPods());
-        Assertions.assertEquals(661321063, model.minCount());
-        Assertions.assertEquals(Mode.USER, model.mode());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.nodeLabels().get("xxjyngudivkrtsw"));
-        Assertions.assertEquals("bxvwv", model.nodeTaints().get(0));
+        Assertions.assertEquals(1837116433, model.count());
+        Assertions.assertEquals("begibtnmxiebwwa", model.availabilityZones().get(0));
+        Assertions.assertEquals(1214313613, model.maxCount());
+        Assertions.assertEquals(1999029226, model.maxPods());
+        Assertions.assertEquals(350152394, model.minCount());
+        Assertions.assertEquals(Mode.SYSTEM, model.mode());
+        Assertions.assertEquals("zmh", model.nodeLabels().get("xongmtsavjcbpwxq"));
+        Assertions.assertEquals("knftguvriuh", model.nodeTaints().get(0));
         Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals("vshqjohxcr", model.nodeImageVersion());
-        Assertions.assertEquals("fovasr", model.vmSize());
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.nodeImageVersion());
+        Assertions.assertEquals("gqzcjr", model.vmSize());
         Assertions
-            .assertEquals(
-                "hsqfsubcgjbirxbp", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("q", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.status().errorMessage());
-        Assertions.assertEquals("wncwzzhxgktrmg", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("napkteoellw", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.status().provisioningStatus().status());
-        Assertions.assertEquals(1355653581, model.status().readyReplicas());
-        Assertions.assertEquals(1863472171, model.status().replicas());
+            .assertEquals("lmwlxkvugfhzo", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
+        Assertions.assertEquals("mv", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
+        Assertions.assertEquals("obbc", model.status().errorMessage());
+        Assertions.assertEquals("tjrip", model.status().provisioningStatus().operationId());
+        Assertions.assertEquals("bpbewtghfgb", model.status().provisioningStatus().phase());
+        Assertions.assertEquals("gw", model.status().provisioningStatus().status());
+        Assertions.assertEquals(748159283, model.status().readyReplicas());
+        Assertions.assertEquals(161265854, model.status().replicas());
     }
 
     @SuppressWarnings("unchecked")

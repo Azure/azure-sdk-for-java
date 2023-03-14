@@ -8,25 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.OrchestratorVersionProfileListResultInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.OrchestratorVersionProfile;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class OrchestratorVersionProfileListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OrchestratorVersionProfileListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"orchestrators\":[{\"isPreview\":false,\"default\":true,\"orchestratorType\":\"i\",\"orchestratorVersion\":\"byuqerpqlp\",\"upgrades\":[]},{\"isPreview\":true,\"default\":false,\"orchestratorType\":\"bdbutauvf\",\"orchestratorVersion\":\"kuwhh\",\"upgrades\":[]}],\"id\":\"ojoxafnndlp\",\"name\":\"hkoymkcdyhbp\",\"type\":\"pwdreqnovvqf\"}")
+                    "{\"orchestrators\":[{\"isPreview\":true,\"default\":false,\"orchestratorType\":\"agxti\",\"orchestratorVersion\":\"dxbx\",\"upgrades\":[]},{\"isPreview\":true,\"default\":false,\"orchestratorType\":\"ndlkzgxhurip\",\"orchestratorVersion\":\"podxunkb\",\"upgrades\":[]},{\"isPreview\":false,\"default\":false,\"orchestratorType\":\"ntwlrbqtkoie\",\"orchestratorVersion\":\"eotg\",\"upgrades\":[]}],\"id\":\"tmuwlauwzi\",\"name\":\"bm\",\"type\":\"cjefuzmu\"}")
                 .toObject(OrchestratorVersionProfileListResultInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OrchestratorVersionProfileListResultInner model =
             new OrchestratorVersionProfileListResultInner()
                 .withOrchestrators(
                     Arrays
                         .asList(
+                            new OrchestratorVersionProfile().withUpgrades(Arrays.asList()),
                             new OrchestratorVersionProfile().withUpgrades(Arrays.asList()),
                             new OrchestratorVersionProfile().withUpgrades(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OrchestratorVersionProfileListResultInner.class);

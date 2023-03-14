@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClustersOperationsClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersResponseInner;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersOperations;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersResponse;
 
@@ -29,9 +31,9 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
     }
 
     public Response<ProvisionedClustersResponse> getByResourceGroupWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         Response<ProvisionedClustersResponseInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, context);
+            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -43,9 +45,9 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
         }
     }
 
-    public ProvisionedClustersResponse getByResourceGroup(String resourceGroupName, String provisionedClustersName) {
+    public ProvisionedClustersResponse getByResourceGroup(String resourceGroupName, String resourceName) {
         ProvisionedClustersResponseInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, provisionedClustersName);
+            this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
             return new ProvisionedClustersResponseImpl(inner, this.manager());
         } else {
@@ -54,12 +56,12 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
     }
 
     public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, provisionedClustersName, context);
+        String resourceGroupName, String resourceName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String provisionedClustersName) {
-        this.serviceClient().delete(resourceGroupName, provisionedClustersName);
+    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
+        this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
     public PagedIterable<ProvisionedClustersResponse> listByResourceGroup(String resourceGroupName) {
@@ -84,6 +86,40 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
         return Utils.mapPage(inner, inner1 -> new ProvisionedClustersResponseImpl(inner1, this.manager()));
     }
 
+    public Response<ProvisionedClusterUpgradeProfile> getUpgradeProfileWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        Response<ProvisionedClusterUpgradeProfileInner> inner =
+            this.serviceClient().getUpgradeProfileWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ProvisionedClusterUpgradeProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProvisionedClusterUpgradeProfile getUpgradeProfile(String resourceGroupName, String resourceName) {
+        ProvisionedClusterUpgradeProfileInner inner =
+            this.serviceClient().getUpgradeProfile(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ProvisionedClusterUpgradeProfileImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void upgradeNodeImageVersionForEntireCluster(String resourceGroupName, String resourceName) {
+        this.serviceClient().upgradeNodeImageVersionForEntireCluster(resourceGroupName, resourceName);
+    }
+
+    public void upgradeNodeImageVersionForEntireCluster(
+        String resourceGroupName, String resourceName, Context context) {
+        this.serviceClient().upgradeNodeImageVersionForEntireCluster(resourceGroupName, resourceName, context);
+    }
+
     public ProvisionedClustersResponse getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -93,8 +129,8 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -102,7 +138,7 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, Context.NONE).getValue();
+        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<ProvisionedClustersResponse> getByIdWithResponse(String id, Context context) {
@@ -114,8 +150,8 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -123,7 +159,7 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, context);
+        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
@@ -135,8 +171,8 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -144,7 +180,7 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
         }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -156,8 +192,8 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -165,7 +201,7 @@ public final class ProvisionedClustersOperationsImpl implements ProvisionedClust
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'provisionedClusters'.", id)));
         }
-        return this.deleteByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     private ProvisionedClustersOperationsClient serviceClient() {

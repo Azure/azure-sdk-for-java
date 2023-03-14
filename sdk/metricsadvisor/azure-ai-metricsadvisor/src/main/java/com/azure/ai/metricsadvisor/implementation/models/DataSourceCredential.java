@@ -44,6 +44,9 @@ public class DataSourceCredential {
     @JsonProperty(value = "dataSourceCredentialDescription")
     private String dataSourceCredentialDescription;
 
+    /** Creates an instance of DataSourceCredential class. */
+    public DataSourceCredential() {}
+
     /**
      * Get the dataSourceCredentialId property: Unique id of data source credential.
      *

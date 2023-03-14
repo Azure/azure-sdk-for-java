@@ -28,6 +28,9 @@ public final class ServicePrincipalParam {
     @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
+    /** Creates an instance of ServicePrincipalParam class. */
+    public ServicePrincipalParam() {}
+
     /**
      * Get the clientId property: The client id of the service principal.
      *
