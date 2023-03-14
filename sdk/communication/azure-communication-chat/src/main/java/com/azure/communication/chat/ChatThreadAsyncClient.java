@@ -8,6 +8,7 @@ import com.azure.communication.chat.implementation.converters.AddChatParticipant
 import com.azure.communication.chat.implementation.converters.ChatErrorConverter;
 import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
 import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.chat.implementation.models.RetentionPolicy;
 import com.azure.communication.chat.models.ChatError;
 import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatThreadProperties;
@@ -161,6 +162,29 @@ public final class ChatThreadAsyncClient {
                 chatThreadId,
                 new UpdateChatThreadOptions()
                     .setTopic(topic),
+                context
+            ).onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates a thread's topic.
+     *
+     * @param retentionPolicy The new retention policy object.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    Mono<Response<Void>> updateRetentionPolicy(RetentionPolicy retentionPolicy, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            return this.chatThreadClient.updateChatThreadPropertiesWithResponseAsync(
+                chatThreadId,
+                new UpdateChatThreadOptions()
+                    .setRetentionPolicy(retentionPolicy),
                 context
             ).onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {

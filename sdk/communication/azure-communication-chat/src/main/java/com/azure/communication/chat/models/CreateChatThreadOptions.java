@@ -3,7 +3,9 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.models.RetentionPolicy;
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,12 @@ public final class CreateChatThreadOptions {
     private List<ChatParticipant> participants = new ArrayList<>();
 
     private String idempotencyToken;
+
+    /*
+     * Data retention policy for auto deletion.
+     */
+    @JsonProperty(value = "retentionPolicy")
+    private RetentionPolicy retentionPolicy;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -96,5 +104,25 @@ public final class CreateChatThreadOptions {
     public CreateChatThreadOptions(String topic) {
         this.topic = topic;
         this.idempotencyToken = UUID.randomUUID().toString();
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @return the retentionPolicy value.
+     */
+    public RetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the UpdateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
     }
 }
