@@ -230,7 +230,7 @@ public final class LogsQueryClient {
     }
 
     /**
-     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
      *
@@ -246,7 +246,7 @@ public final class LogsQueryClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.monitor.query.LogsQueryClient.queryResource#String-String-QueryTimeInterval -->
-     * @param resourceId The workspaceId where the query should be executed.
+     * @param resourceId The resourceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @return The logs matching the query.
@@ -257,8 +257,8 @@ public final class LogsQueryClient {
     }
 
     /**
-     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
-     * @param resourceId The workspaceId where the query should be executed.
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     * @param resourceId The resourceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @param type The type the result of this query should be mapped to.
@@ -275,8 +275,8 @@ public final class LogsQueryClient {
     }
 
     /**
-     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
-     * @param resourceId The workspaceId where the query should be executed.
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     * @param resourceId The resourceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @param type The type the result of this query should be mapped to.
@@ -297,7 +297,7 @@ public final class LogsQueryClient {
     }
 
     /**
-     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
@@ -317,7 +317,7 @@ public final class LogsQueryClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.monitor.query.LogsQueryClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context -->
-     * @param resourceId The workspaceId where the query should be executed.
+     * @param resourceId The resourceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @param options The log query options to configure server timeout, set additional workspaces or enable
@@ -333,9 +333,9 @@ public final class LogsQueryClient {
     }
 
     /**
-     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
      *
-     * @param resourceId The workspaceId where the query should be executed.
+     * @param resourceId The resourceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @param type The type the result of this query should be mapped to.
