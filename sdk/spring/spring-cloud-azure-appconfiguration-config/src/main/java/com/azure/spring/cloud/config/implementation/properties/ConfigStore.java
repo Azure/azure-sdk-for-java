@@ -89,6 +89,13 @@ public final class ConfigStore {
     }
 
     /**
+     * @param connectionStrings the connectionStrings to set
+     */
+    public void setConnectionStrings(List<String> connectionStrings) {
+        this.connectionStrings = connectionStrings;
+    }
+
+    /**
      * @return the failFast
      */
     public boolean isFailFast() {

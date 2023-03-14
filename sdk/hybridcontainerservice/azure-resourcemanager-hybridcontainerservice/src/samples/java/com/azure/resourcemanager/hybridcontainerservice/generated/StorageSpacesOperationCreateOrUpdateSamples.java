@@ -11,7 +11,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesProp
 /** Samples for StorageSpacesOperation CreateOrUpdate. */
 public final class StorageSpacesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutStorageSpace.json
      */
     /**
      * Sample code: PutStorageSpace.

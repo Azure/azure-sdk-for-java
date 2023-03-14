@@ -25,7 +25,12 @@ public enum HostType {
     /**
      * Host is Kubernetes
      */
-    KUBERNETES("Kubernetes");
+    KUBERNETES("Kubernetes"),
+    
+    /**
+     * Host is Container App
+     */
+    CONTAINER_APP("ContainerApps");
 
     private final String text;
 

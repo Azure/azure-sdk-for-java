@@ -20,9 +20,11 @@ import org.mockito.MockitoAnnotations;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.config.implementation.http.policy.TracingInfo;
 
 public class AppConfigurationReplicaClientTest {
 
@@ -47,7 +49,8 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void getWatchKeyTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("watch").setLabel("\0");
 
@@ -73,7 +76,8 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void listSettingsTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         List<ConfigurationSetting> configurations = new ArrayList<>();
 
@@ -99,7 +103,8 @@ public class AppConfigurationReplicaClientTest {
 
     @Test
     public void backoffTest() {
-        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         // Setups in the past and with no errors.
         assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));

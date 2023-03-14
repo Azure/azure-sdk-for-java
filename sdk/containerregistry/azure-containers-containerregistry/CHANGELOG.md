@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Replaced `uploadManifest(OciImageManifest)` method on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes
+  with `uploadManifest(OciImageManifest manifest, String tag)` method.
+
 ### Bugs Fixed
 
 ### Other Changes
