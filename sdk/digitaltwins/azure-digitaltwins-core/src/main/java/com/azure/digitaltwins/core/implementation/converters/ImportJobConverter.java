@@ -11,14 +11,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.digitaltwins.core.implementation.models.EventRoute} and
- * {@link DigitalTwinsEventRoute}.
+ * A converter between {@link com.azure.digitaltwins.core.implementation.models.ImportJob} and
+ * {@link DigitalTwinsImportJob}.
  */
 public final class ImportJobConverter {
 
     /**
-     * Maps from {@link com.azure.digitaltwins.core.implementation.models.EventRoute} to
-     * {@link DigitalTwinsEventRoute}. If the input is null, then the output will be null as well.
+     * Maps from {@link com.azure.digitaltwins.core.implementation.models.ImportJob} to
+     * {@link DigitalTwinsImportJob}. If the input is null, then the output will be null as well.
      */
     public static DigitalTwinsImportJob map(com.azure.digitaltwins.core.implementation.models.ImportJob input) {
         if (input == null) {
