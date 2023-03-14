@@ -44,7 +44,7 @@ class BlobSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def result = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setBlockSize(streamBufferSize), null)
+            .setReadSizeInBytes(streamBufferSize), null)
         def channel = result.getChannel()
 
         then: "Channel initialized to position zero"
@@ -73,7 +73,7 @@ class BlobSeekableByteChannelTests extends APISpec {
     def "E2E channel write - block"() {
         when: "Channel initialized"
         def channel = blockClient.openSeekableByteChannelWrite(
-            new BlockBlobSeekableByteChannelWriteOptions(WriteMode.OVERWRITE).setChunkSize(streamBufferSize))
+            new BlockBlobSeekableByteChannelWriteOptions(WriteMode.OVERWRITE).setBlockSizeInBytes(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -155,7 +155,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         when: "make channel in read mode"
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setRequestConditions(conditions).setBlockSize(blockSize).setConsistentReadControl(control)
+            .setRequestConditions(conditions).setReadSizeInBytes(blockSize).setConsistentReadControl(control)
             .setInitialPosition(position), null).getChannel() as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
@@ -198,7 +198,7 @@ class BlobSeekableByteChannelTests extends APISpec {
     def "Client creates appropriate channel writemode - block"() {
         when: "make channel in write mode"
         def channel = blockClient.openSeekableByteChannelWrite(
-            new BlockBlobSeekableByteChannelWriteOptions(writeMode).setChunkSize(blockSize).setHeaders(headers)
+            new BlockBlobSeekableByteChannelWriteOptions(writeMode).setBlockSizeInBytes(blockSize).setHeaders(headers)
                 .setMetadata(metadata).setTags(tags).setTier(tier).setRequestConditions(conditions)
         ) as StorageSeekableByteChannel
 

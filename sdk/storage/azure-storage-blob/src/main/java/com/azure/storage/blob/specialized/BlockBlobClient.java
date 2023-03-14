@@ -246,8 +246,8 @@ public class BlockBlobClient extends BlobClientBase {
         }
 
         return new StorageSeekableByteChannel(
-            options.getChunkSize() != null
-                ? options.getChunkSize().intValue()
+            options.getBlockSizeInBytes() != null
+                ? options.getBlockSizeInBytes().intValue()
                 : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
             new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
                 options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),

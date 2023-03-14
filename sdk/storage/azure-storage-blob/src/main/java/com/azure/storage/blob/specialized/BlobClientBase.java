@@ -407,7 +407,7 @@ public class BlobClientBase {
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+        int chunkSize = options.getReadSizeInBytes() == null ? 4 * Constants.MB : options.getReadSizeInBytes();
         long initialPosition = options.getInitialPosition() == null ? 0 : options.getInitialPosition();
 
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);

@@ -27,7 +27,7 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     }
 
     private final WriteMode writeMode;
-    private Long chunkSize;
+    private Long blockSizeInBytes;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
@@ -52,16 +52,16 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     /**
      * @return The size of individual writes to the service.
      */
-    public Long getChunkSize() {
-        return chunkSize;
+    public Long getBlockSizeInBytes() {
+        return blockSizeInBytes;
     }
 
     /**
-     * @param chunkSize The size of individual writes to the service.
+     * @param blockSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
-    public BlockBlobSeekableByteChannelWriteOptions setChunkSize(Long chunkSize) {
-        this.chunkSize = chunkSize;
+    public BlockBlobSeekableByteChannelWriteOptions setBlockSizeInBytes(Long blockSizeInBytes) {
+        this.blockSizeInBytes = blockSizeInBytes;
         return this;
     }
 
