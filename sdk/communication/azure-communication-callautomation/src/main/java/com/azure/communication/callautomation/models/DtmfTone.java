@@ -75,62 +75,62 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
     }
 
     /** @return known Tone values in char. */
-    public char toChar() {
+    public String convertToString() {
         String toneValue = this.toString().toLowerCase(Locale.getDefault());
-        char toneInChar = ' ';
+        String toneStringValue ="";
         switch (toneValue) {
             case "zero":
-                toneInChar = '0';
+                toneStringValue = "0";
                 break;
             case "one":
-                toneInChar = '1';
+                toneStringValue = "1";
                 break;
             case "two":
-                toneInChar = '2';
+                toneStringValue = "2";
                 break;
             case "three":
-                toneInChar = '3';
+                toneStringValue = "3";
                 break;
             case "four":
-                toneInChar = '4';
+                toneStringValue = "4";
                 break;
             case "five":
-                toneInChar = '5';
+                toneStringValue = "5";
                 break;
             case "six":
-                toneInChar = '6';
+                toneStringValue = "6";
                 break;
             case "seven":
-                toneInChar = '7';
+                toneStringValue = "7";
                 break;
             case "eight":
-                toneInChar = '8';
+                toneStringValue = "8";
                 break;
             case "nine":
-                toneInChar = '9';
+                toneStringValue = "9";
                 break;
             case "a":
-                toneInChar = 'a';
+                toneStringValue = "a";
                 break;
             case "b":
-                toneInChar = 'b';
+                toneStringValue = "b";
                 break;
             case "c":
-                toneInChar = 'c';
+                toneStringValue = "c";
                 break;
             case "d":
-                toneInChar = 'd';
+                toneStringValue = "d";
                 break;
             case "pound":
-                toneInChar = '#';
+                toneStringValue = "#";
                 break;
             case "asterisk":
-                toneInChar = '*';
+                toneStringValue = "*";
                 break;
             default:
                 break;
         }
 
-        return toneInChar;
+        return toneStringValue;
     }
 }
