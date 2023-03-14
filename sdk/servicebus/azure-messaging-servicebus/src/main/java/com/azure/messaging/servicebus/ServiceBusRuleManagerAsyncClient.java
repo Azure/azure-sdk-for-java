@@ -92,17 +92,17 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
-     * @param connectionSupport The AMQP connection to the Service Bus resource.
+     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionSupport connectionSupport, Runnable onClientClose) {
+        ConnectionCacheWrapper connectionCacheWrapper, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        Objects.requireNonNull(connectionSupport,
+        Objects.requireNonNull(connectionCacheWrapper,
             "'connectionSupport' cannot be null.");
-        this.connectionProcessor = connectionSupport.getConnection();
-        this.fqdn = connectionSupport.getFullyQualifiedNamespace();
+        this.connectionProcessor = connectionCacheWrapper.getConnection();
+        this.fqdn = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.onClientClose = onClientClose;
     }
 
