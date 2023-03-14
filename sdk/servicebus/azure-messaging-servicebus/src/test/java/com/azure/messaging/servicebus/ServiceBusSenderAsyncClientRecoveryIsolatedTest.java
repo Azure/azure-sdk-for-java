@@ -658,7 +658,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
     private ServiceBusSenderAsyncClient createSenderAsyncClient(
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, boolean isSharedConnection) {
-        final ServiceBusConnectionSupport connectionSupport = new ServiceBusConnectionSupport(connectionCache);
+        final ConnectionCacheWrapper connectionSupport = new ConnectionCacheWrapper(connectionCache);
         return new ServiceBusSenderAsyncClient(QUEUE_NAME, MessagingEntityType.QUEUE, connectionSupport, retryOptions,
             DEFAULT_INSTRUMENTATION, messageSerializer, onClientClosed, "", CLIENT_IDENTIFIER);
     }
