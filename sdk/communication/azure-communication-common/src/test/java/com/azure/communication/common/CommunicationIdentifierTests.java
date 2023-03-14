@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
