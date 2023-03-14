@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 public final class PreblittedBinaryJsonScope
 {
-    public final ByteBuffer bytes;
+    private final ByteBuffer bytes;
 
     public PreblittedBinaryJsonScope(ByteBuffer bytes) {
         this.bytes = bytes;

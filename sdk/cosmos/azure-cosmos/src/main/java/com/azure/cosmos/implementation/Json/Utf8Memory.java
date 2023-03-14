@@ -43,16 +43,12 @@ public final class Utf8Memory
         if(obj == this){
             return true;
         }
+
         if (!(obj instanceof Utf8Memory)) {
             return false;
         }
 
-        Utf8Memory other = (Utf8Memory) obj;
         return true;
-    }
-
-    public boolean equals(Utf8Memory utf8Memory){
-        return this.Memory.equals(utf8Memory);
     }
 
     @Override
