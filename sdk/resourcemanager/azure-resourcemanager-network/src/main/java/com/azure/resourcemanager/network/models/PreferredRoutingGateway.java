@@ -20,6 +20,15 @@ public final class PreferredRoutingGateway extends ExpandableStringEnum<Preferre
     public static final PreferredRoutingGateway NONE = fromString("None");
 
     /**
+     * Creates a new instance of PreferredRoutingGateway value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PreferredRoutingGateway() {
+    }
+
+    /**
      * Creates or finds a PreferredRoutingGateway from its string representation.
      *
      * @param name a name to look for.

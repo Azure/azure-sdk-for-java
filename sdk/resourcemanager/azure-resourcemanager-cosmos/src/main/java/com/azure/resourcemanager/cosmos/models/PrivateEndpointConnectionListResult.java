@@ -18,6 +18,10 @@ public final class PrivateEndpointConnectionListResult {
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
+    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    public PrivateEndpointConnectionListResult() {
+    }
+
     /**
      * Get the value property: Array of private endpoint connections.
      *

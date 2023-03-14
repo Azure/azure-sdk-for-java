@@ -16,21 +16,22 @@ public final class DeploymentConfigurationTests {
         DeploymentConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"configurationType\":\"Deployment\",\"appLocation\":\"wp\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"sutrgjup\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
+                    "{\"configurationType\":\"Deployment\",\"appLocation\":\"opqgikyzirtxdyux\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"jntpsewgioilqu\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
                 .toObject(DeploymentConfiguration.class);
-        Assertions.assertEquals("wp", model.appLocation());
-        Assertions.assertEquals("sutrgjup", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.appLocation());
+        Assertions.assertEquals("jntpsewgioilqu", model.infrastructureConfiguration().appResourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentConfiguration model =
             new DeploymentConfiguration()
-                .withAppLocation("wp")
-                .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("sutrgjup"))
+                .withAppLocation("opqgikyzirtxdyux")
+                .withInfrastructureConfiguration(
+                    new InfrastructureConfiguration().withAppResourceGroup("jntpsewgioilqu"))
                 .withSoftwareConfiguration(new SoftwareConfiguration());
         model = BinaryData.fromObject(model).toObject(DeploymentConfiguration.class);
-        Assertions.assertEquals("wp", model.appLocation());
-        Assertions.assertEquals("sutrgjup", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.appLocation());
+        Assertions.assertEquals("jntpsewgioilqu", model.infrastructureConfiguration().appResourceGroup());
     }
 }

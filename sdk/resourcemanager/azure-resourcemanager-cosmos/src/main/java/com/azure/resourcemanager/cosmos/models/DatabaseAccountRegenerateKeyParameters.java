@@ -17,6 +17,10 @@ public final class DatabaseAccountRegenerateKeyParameters {
     @JsonProperty(value = "keyKind", required = true)
     private KeyKind keyKind;
 
+    /** Creates an instance of DatabaseAccountRegenerateKeyParameters class. */
+    public DatabaseAccountRegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyKind property: The access key to regenerate.
      *

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The language codes supported for input text by TextTranslationSkill. */
@@ -229,12 +228,19 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
     public static final TextTranslationSkillLanguage PA = fromString("pa");
 
     /**
+     * Creates a new instance of TextTranslationSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextTranslationSkillLanguage() {}
+
+    /**
      * Creates or finds a TextTranslationSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding TextTranslationSkillLanguage.
      */
-    @JsonCreator
     public static TextTranslationSkillLanguage fromString(String name) {
         return fromString(name, TextTranslationSkillLanguage.class);
     }

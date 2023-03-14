@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyDefinitionInner;
 import java.util.Arrays;
 
 /** Samples for ServiceEndpointPolicyDefinitions CreateOrUpdate. */
 public final class ServiceEndpointPolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceEndpointPolicyDefinitionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceEndpointPolicyDefinitionCreate.json
      */
     /**
      * Sample code: Create service endpoint policy definition.
@@ -37,6 +36,6 @@ public final class ServiceEndpointPolicyDefinitionsCreateOrUpdateSamples {
                                 "/subscriptions/subid1",
                                 "/subscriptions/subid1/resourceGroups/storageRg",
                                 "/subscriptions/subid1/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

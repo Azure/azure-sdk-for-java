@@ -19,6 +19,10 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private ThroughputSettingsUpdateProperties innerProperties = new ThroughputSettingsUpdateProperties();
 
+    /** Creates an instance of ThroughputSettingsUpdateParameters class. */
+    public ThroughputSettingsUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to update Azure Cosmos DB resource throughput.
      *

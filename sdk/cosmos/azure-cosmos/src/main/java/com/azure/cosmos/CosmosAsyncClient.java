@@ -19,14 +19,18 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -62,6 +66,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
 
+    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+        telemetryConfigAccessor = ImplementationBridgeHelpers
+        .CosmosClientTelemetryConfigHelper
+        .getCosmosClientTelemetryConfigAccessor();
+
     // Async Cosmos client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
@@ -83,7 +92,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final String clientCorrelationId;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final EnumSet<TagName> metricTagNames;
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
@@ -114,10 +122,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-            telemetryConfigAccessor = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -137,8 +141,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.apiType = builder.apiType();
         this.clientCorrelationId =  telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
-        this.metricTagNames = telemetryConfigAccessor
-            .getMetricTagNames(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -167,7 +169,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
-                                       .withMetricTagNames(this.metricTagNames)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
@@ -190,8 +191,15 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientMetricRegistrySnapshot = telemetryConfigAccessor
             .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
+
+        CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
+        CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
+
+
         if (clientMetricRegistrySnapshot != null) {
-            ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
+            ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
         }
         this.accountTagValue = URI.create(this.serviceEndpoint).getHost().replace(
             ".documents.azure.com", ""
@@ -587,6 +595,16 @@ public final class CosmosAsyncClient implements Closeable {
         this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+        this.asyncDocumentClient.configureFaultInjectorProvider(injectorProvider);
+    }
+
     /**
      * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
      *
@@ -617,7 +635,7 @@ public final class CosmosAsyncClient implements Closeable {
                     .flatMap(
                         cosmosAsyncContainer -> cosmosAsyncContainer
                             .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()),
+                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
                         concurrency,
                         prefetch)
                     .collectList();
@@ -725,7 +743,14 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client) {
-                    return client.metricTagNames;
+                    return  telemetryConfigAccessor
+                        .getMetricTagNames(client.clientTelemetryConfig);
+                }
+
+                @Override
+                public EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client) {
+                    return  telemetryConfigAccessor
+                        .getMetricCategories(client.clientTelemetryConfig);
                 }
 
                 @Override
@@ -746,6 +771,12 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
                     return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
+
+                @Override
+                public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
+                    return  telemetryConfigAccessor
+                        .getMeterOptions(client.clientTelemetryConfig, name);
                 }
             }
         );

@@ -35,6 +35,10 @@ public final class RestorableSqlContainerGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of RestorableSqlContainerGetResultInner class. */
+    public RestorableSqlContainerGetResultInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a SQL container event.
      *

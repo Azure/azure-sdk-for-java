@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The retention policy for a container registry. */
 @Fluent
 public final class RetentionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicy.class);
-
     /*
-     * The number of days to retain an untagged manifest after which it gets
-     * purged.
+     * The number of days to retain an untagged manifest after which it gets purged.
      */
     @JsonProperty(value = "days")
     private Integer days;
@@ -33,6 +28,10 @@ public final class RetentionPolicy {
      */
     @JsonProperty(value = "status")
     private PolicyStatus status;
+
+    /** Creates an instance of RetentionPolicy class. */
+    public RetentionPolicy() {
+    }
 
     /**
      * Get the days property: The number of days to retain an untagged manifest after which it gets purged.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageTargets Get. */
 public final class StorageTargetsGetSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_Get.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/StorageTargets_Get.json
      */
     /**
      * Sample code: StorageTargets_Get.
@@ -17,6 +15,6 @@ public final class StorageTargetsGetSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void storageTargetsGet(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.storageTargets().getWithResponse("scgroup", "sc1", "st1", Context.NONE);
+        manager.storageTargets().getWithResponse("scgroup", "sc1", "st1", com.azure.core.util.Context.NONE);
     }
 }

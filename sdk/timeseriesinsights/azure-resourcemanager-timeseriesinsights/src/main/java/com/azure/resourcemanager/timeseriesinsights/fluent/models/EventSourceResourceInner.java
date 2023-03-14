@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.models.EventHubEventSourceResource;
 import com.azure.resourcemanager.timeseriesinsights.models.IoTHubEventSourceResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,9 +27,11 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceResource.class),
     @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceResource.class)
 })
-@Immutable
+@Fluent
 public class EventSourceResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSourceResourceInner.class);
+    /** Creates an instance of EventSourceResourceInner class. */
+    public EventSourceResourceInner() {
+    }
 
     /** {@inheritDoc} */
     @Override

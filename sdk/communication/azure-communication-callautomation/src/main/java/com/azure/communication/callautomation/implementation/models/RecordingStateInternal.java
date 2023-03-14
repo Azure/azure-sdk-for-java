@@ -27,7 +27,11 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
         return fromString(name, RecordingStateInternal.class);
     }
 
-    /** @return known RecordingStateInternal values. */
+    /**
+     * Gets known RecordingStateInternal values.
+     *
+     * @return known RecordingStateInternal values.
+     */
     public static Collection<RecordingStateInternal> values() {
         return values(RecordingStateInternal.class);
     }

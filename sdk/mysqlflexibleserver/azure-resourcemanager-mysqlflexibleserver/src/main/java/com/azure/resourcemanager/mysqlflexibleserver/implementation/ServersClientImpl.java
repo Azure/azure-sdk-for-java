@@ -66,7 +66,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
-    private interface ServersService {
+    public interface ServersService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
@@ -403,7 +403,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
         String resourceGroupName, String serverName, ServerInner parameters) {
-        return beginCreateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -421,7 +421,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
         String resourceGroupName, String serverName, ServerInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -667,7 +667,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerForUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -686,7 +686,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerForUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -910,7 +910,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
-        return beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
@@ -927,7 +927,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
@@ -1099,29 +1099,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serverName)
-            .flatMap(
-                (Response<ServerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about a server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
-        return getByResourceGroupAsync(resourceGroupName, serverName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1139,6 +1117,21 @@ public final class ServersClientImpl implements ServersClient {
     public Response<ServerInner> getByResourceGroupWithResponse(
         String resourceGroupName, String serverName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serverName, context).block();
+    }
+
+    /**
+     * Gets information about a server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
+        return getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
     }
 
     /**
@@ -1589,7 +1582,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName) {
-        return beginFailoverAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
@@ -1606,7 +1599,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
@@ -1837,7 +1830,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serverName, ServerRestartParameter parameters) {
-        return beginRestartAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -1855,7 +1848,7 @@ public final class ServersClientImpl implements ServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serverName, ServerRestartParameter parameters, Context context) {
-        return beginRestartAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2073,7 +2066,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName) {
-        return beginStartAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
@@ -2089,7 +2082,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName, Context context) {
-        return beginStartAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
@@ -2299,7 +2292,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serverName) {
-        return beginStopAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
@@ -2315,7 +2308,7 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serverName, Context context) {
-        return beginStopAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
@@ -2383,7 +2376,8 @@ public final class ServersClientImpl implements ServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2419,7 +2413,8 @@ public final class ServersClientImpl implements ServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2455,7 +2450,8 @@ public final class ServersClientImpl implements ServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2490,7 +2486,8 @@ public final class ServersClientImpl implements ServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

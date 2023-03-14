@@ -23,6 +23,15 @@ public final class RoutingState extends ExpandableStringEnum<RoutingState> {
     public static final RoutingState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of RoutingState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoutingState() {
+    }
+
+    /**
      * Creates or finds a RoutingState from its string representation.
      *
      * @param name a name to look for.

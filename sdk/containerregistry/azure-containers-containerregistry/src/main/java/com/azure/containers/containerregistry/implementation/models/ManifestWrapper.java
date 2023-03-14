@@ -5,9 +5,12 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.OciAnnotations;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** Returns the requested manifest file. */
@@ -16,67 +19,56 @@ public final class ManifestWrapper extends Manifest {
     /*
      * Media type for this Manifest
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * (ManifestList, OCIIndex) List of V2 image layer information
      */
-    @JsonProperty(value = "manifests")
     private List<ManifestListAttributes> manifests;
 
     /*
      * (V2, OCI) Image config descriptor
      */
-    @JsonProperty(value = "config")
-    private OciBlobDescriptor config;
+    private OciDescriptor config;
 
     /*
      * (V2, OCI) List of V2 image layer information
      */
-    @JsonProperty(value = "layers")
-    private List<OciBlobDescriptor> layers;
+    private List<OciDescriptor> layers;
 
     /*
      * (OCI, OCIIndex) Additional metadata
      */
-    @JsonProperty(value = "annotations")
     private OciAnnotations annotations;
 
     /*
      * (V1) CPU architecture
      */
-    @JsonProperty(value = "architecture")
     private String architecture;
 
     /*
      * (V1) Image name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * (V1) Image tag
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * (V1) List of layer information
      */
-    @JsonProperty(value = "fsLayers")
     private List<FsLayer> fsLayers;
 
     /*
      * (V1) Image history
      */
-    @JsonProperty(value = "history")
     private List<History> history;
 
     /*
      * (V1) Image signature
      */
-    @JsonProperty(value = "signatures")
     private List<ImageSignature> signatures;
 
     /** Creates an instance of ManifestWrapper class. */
@@ -127,7 +119,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the config value.
      */
-    public OciBlobDescriptor getConfig() {
+    public OciDescriptor getConfig() {
         return this.config;
     }
 
@@ -137,7 +129,7 @@ public final class ManifestWrapper extends Manifest {
      * @param config the config value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setConfig(OciBlobDescriptor config) {
+    public ManifestWrapper setConfig(OciDescriptor config) {
         this.config = config;
         return this;
     }
@@ -147,7 +139,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the layers value.
      */
-    public List<OciBlobDescriptor> getLayers() {
+    public List<OciDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -157,7 +149,7 @@ public final class ManifestWrapper extends Manifest {
      * @param layers the layers value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setLayers(List<OciBlobDescriptor> layers) {
+    public ManifestWrapper setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -307,5 +299,96 @@ public final class ManifestWrapper extends Manifest {
     public ManifestWrapper setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("schemaVersion", getSchemaVersion());
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeArrayField("manifests", this.manifests, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("annotations", this.annotations);
+        jsonWriter.writeStringField("architecture", this.architecture);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeArrayField("fsLayers", this.fsLayers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("history", this.history, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("signatures", this.signatures, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManifestWrapper from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManifestWrapper if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManifestWrapper.
+     */
+    public static ManifestWrapper fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Integer schemaVersion = null;
+                    String mediaType = null;
+                    List<ManifestListAttributes> manifests = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
+                    OciAnnotations annotations = null;
+                    String architecture = null;
+                    String name = null;
+                    String tag = null;
+                    List<FsLayer> fsLayers = null;
+                    List<History> history = null;
+                    List<ImageSignature> signatures = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("schemaVersion".equals(fieldName)) {
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
+                        } else if ("mediaType".equals(fieldName)) {
+                            mediaType = reader.getString();
+                        } else if ("manifests".equals(fieldName)) {
+                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                        } else if ("config".equals(fieldName)) {
+                            config = OciDescriptor.fromJson(reader);
+                        } else if ("layers".equals(fieldName)) {
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                        } else if ("annotations".equals(fieldName)) {
+                            annotations = OciAnnotations.fromJson(reader);
+                        } else if ("architecture".equals(fieldName)) {
+                            architecture = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("tag".equals(fieldName)) {
+                            tag = reader.getString();
+                        } else if ("fsLayers".equals(fieldName)) {
+                            fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                        } else if ("history".equals(fieldName)) {
+                            history = reader.readArray(reader1 -> History.fromJson(reader1));
+                        } else if ("signatures".equals(fieldName)) {
+                            signatures = reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    ManifestWrapper deserializedValue = new ManifestWrapper();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.manifests = manifests;
+                    deserializedValue.config = config;
+                    deserializedValue.layers = layers;
+                    deserializedValue.annotations = annotations;
+                    deserializedValue.architecture = architecture;
+                    deserializedValue.name = name;
+                    deserializedValue.tag = tag;
+                    deserializedValue.fsLayers = fsLayers;
+                    deserializedValue.history = history;
+                    deserializedValue.signatures = signatures;
+
+                    return deserializedValue;
+                });
     }
 }

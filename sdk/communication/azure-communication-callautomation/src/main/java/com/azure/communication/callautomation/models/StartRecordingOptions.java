@@ -6,10 +6,8 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -31,7 +29,7 @@ public class StartRecordingOptions {
 
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
-    private RepeatabilityHeaders repeatabilityHeaders;
+    private ExternalStorage externalStorage;
 
     /**
      * Constructor
@@ -41,7 +39,6 @@ public class StartRecordingOptions {
     public StartRecordingOptions(CallLocator callLocator) {
         Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -162,23 +159,22 @@ public class StartRecordingOptions {
     }
 
     /**
-     * Get the Repeatability headers configuration.
+     * Get the externalStorage property: Used to specify external storage for call recording
      *
-     * @return the repeatabilityHeaders
+     * @return the externalStorage value.
      */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
+    public ExternalStorage getExternalStorage() {
+        return this.externalStorage;
     }
 
-
     /**
-     * Set the repeatability headers
+     * Set the externalStorage property: Used to specify external storage for call recording
      *
-     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @param externalStorage the external storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
+    public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage) {
+        this.externalStorage = externalStorage;
         return this;
     }
 }

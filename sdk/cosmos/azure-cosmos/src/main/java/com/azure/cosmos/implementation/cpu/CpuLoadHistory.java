@@ -28,7 +28,7 @@ public class CpuLoadHistory {
 
     public boolean isCpuOverloaded() {
         if (cpuOverload.get() == null) {
-            cpuOverload.set(isCpuOverloadInternal());
+            cpuOverload.set(isCpuOverloadedInternal());
         }
 
         return cpuOverload.get();
@@ -55,13 +55,25 @@ public class CpuLoadHistory {
         return this.cpuLoad.get(this.cpuLoad.size() - 1).timestamp;
     }
 
-    private boolean isCpuOverloadInternal() {
+    private boolean isCpuOverloadedInternal() {
+        if (isCpuOverThreshold(90.0)) {
+            return true;
+        }
+
+        return delayInThreadScheduling();
+    }
+
+    public boolean isCpuOverThreshold(double cpuThreshold) {
         for (int index = 0; index < this.cpuLoad.size(); ++index) {
-            if ((double) this.cpuLoad.get(index).value > 90.0) {
+            if ((double) this.cpuLoad.get(index).value > cpuThreshold) {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    private boolean delayInThreadScheduling() {
         // This signal is fragile, because the timestamps come from
         // a non-monotonic clock that might have gotten adjusted by
         // e.g. NTP.

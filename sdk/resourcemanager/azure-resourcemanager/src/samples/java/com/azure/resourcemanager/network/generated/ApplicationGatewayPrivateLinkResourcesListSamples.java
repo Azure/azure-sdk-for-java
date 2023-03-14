@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationGatewayPrivateLinkResources List. */
 public final class ApplicationGatewayPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayPrivateLinkResourceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayPrivateLinkResourceList.json
      */
     /**
      * Sample code: Lists all private link resources on application gateway.
@@ -23,6 +21,6 @@ public final class ApplicationGatewayPrivateLinkResourcesListSamples {
             .manager()
             .serviceClient()
             .getApplicationGatewayPrivateLinkResources()
-            .list("rg1", "appgw", Context.NONE);
+            .list("rg1", "appgw", com.azure.core.util.Context.NONE);
     }
 }

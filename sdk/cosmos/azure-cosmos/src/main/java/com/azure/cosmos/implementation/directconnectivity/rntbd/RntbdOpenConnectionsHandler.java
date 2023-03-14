@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +36,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(List<Uri> addresses) {
+    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
         if (logger.isDebugEnabled()) {
@@ -48,7 +49,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                 .flatMap(addressUri -> {
                     try {
                         if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
-                            return this.transportClient.openConnection(addressUri)
+                            return this.transportClient.openConnection(serviceEndpoint, addressUri)
                                     .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                     .doOnNext(response -> {
                                         if (logger.isDebugEnabled()) {

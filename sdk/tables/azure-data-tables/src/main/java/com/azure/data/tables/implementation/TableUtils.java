@@ -6,13 +6,34 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.models.AccessPolicy;
+import com.azure.data.tables.implementation.models.CorsRule;
+import com.azure.data.tables.implementation.models.GeoReplication;
+import com.azure.data.tables.implementation.models.Logging;
+import com.azure.data.tables.implementation.models.Metrics;
+import com.azure.data.tables.implementation.models.RetentionPolicy;
+import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
+import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableAccessPolicy;
+import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceError;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceGeoReplication;
+import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
+import com.azure.data.tables.models.TableServiceLogging;
+import com.azure.data.tables.models.TableServiceMetrics;
+import com.azure.data.tables.models.TableServiceRetentionPolicy;
+import com.azure.data.tables.models.TableServiceStatistics;
+import com.azure.data.tables.models.TableSignedIdentifier;
+import com.azure.data.tables.models.TableTransactionFailedException;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,15 +43,26 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.OptionalLong;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * A class containing utility methods for the Azure Tables library.
  */
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS = 5;
 
     private TableUtils() {
         throw new UnsupportedOperationException("Cannot instantiate TablesUtils");
@@ -92,9 +124,13 @@ public final class TableUtils {
     public static Throwable mapThrowableToTableServiceException(Throwable throwable) {
         if (throwable instanceof TableServiceErrorException) {
             return toTableServiceException((TableServiceErrorException) throwable);
-        } else {
-            return throwable;
+        } else if (throwable.getCause() instanceof Exception) {
+            Throwable cause = throwable.getCause();
+            if (cause instanceof TableServiceErrorException) {
+                return toTableServiceException((TableServiceErrorException) cause);
+            }
         }
+        return throwable;
     }
 
     /**
@@ -157,6 +193,27 @@ public final class TableUtils {
         }
 
         return monoError(logger, httpResponseException);
+    }
+
+    public static Context setContext(Context context) {
+        return setContext(context, false);
+    }
+
+    public static Context setContext(Context context, boolean isSync) {
+        Context val = context != null ? context : Context.NONE;
+        return isSync ? enableSyncRestProxy(setTrailingContext(val)) : setTrailingContext(val);
+    }
+
+    private static Context setTrailingContext(Context context) {
+        return context.addData(AZ_TRACING_NAMESPACE_KEY, TABLES_TRACING_NAMESPACE_VALUE);
+    }
+
+    private static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    public static OptionalLong setTimeout(Duration timeout) {
+        return timeout != null ? OptionalLong.of(timeout.toMillis()) : OptionalLong.empty();
     }
 
     /**
@@ -303,6 +360,239 @@ public final class TableUtils {
             return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
+    }
+
+    public static TableServiceProperties toTableServiceProperties(
+        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
+
+        if (tableServiceProperties == null) {
+            return null;
+        }
+
+        return new TableServiceProperties()
+            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCorsRules(tableServiceProperties.getCors() == null ? null
+                : tableServiceProperties.getCors().stream()
+                .map(TableUtils::toTablesServiceCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    static TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
+        if (retentionPolicy == null) {
+            return null;
+        }
+
+        return new TableServiceRetentionPolicy()
+            .setEnabled(retentionPolicy.isEnabled())
+            .setDaysToRetain(retentionPolicy.getDays());
+    }
+
+    static TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
+        if (metrics == null) {
+            return null;
+        }
+
+        return new TableServiceMetrics()
+            .setVersion(metrics.getVersion())
+            .setEnabled(metrics.isEnabled())
+            .setIncludeApis(metrics.isIncludeAPIs())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
+    }
+
+    static TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new TableServiceCorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    static TableServiceLogging toTableServiceLogging(Logging logging) {
+        if (logging == null) {
+            return null;
+        }
+
+        return new TableServiceLogging()
+            .setAnalyticsVersion(logging.getVersion())
+            .setDeleteLogged(logging.isDelete())
+            .setReadLogged(logging.isRead())
+            .setWriteLogged(logging.isWrite())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
+    }
+
+    public static com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
+        TableServiceProperties tableServiceProperties) {
+
+        return new com.azure.data.tables.implementation.models.TableServiceProperties()
+            .setLogging(toLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCors(tableServiceProperties.getCorsRules() == null ? null
+                : tableServiceProperties.getCorsRules().stream()
+                .map(TableUtils::toCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    static Logging toLogging(TableServiceLogging tableServiceLogging) {
+        if (tableServiceLogging == null) {
+            return null;
+        }
+
+        return new Logging()
+            .setVersion(tableServiceLogging.getAnalyticsVersion())
+            .setDelete(tableServiceLogging.isDeleteLogged())
+            .setRead(tableServiceLogging.isReadLogged())
+            .setWrite(tableServiceLogging.isWriteLogged())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
+    }
+
+    static RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        if (tableServiceRetentionPolicy == null) {
+            return null;
+        }
+
+        return new RetentionPolicy()
+            .setEnabled(tableServiceRetentionPolicy.isEnabled())
+            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
+    }
+
+    static Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        if (tableServiceMetrics == null) {
+            return null;
+        }
+
+        return new Metrics()
+            .setVersion(tableServiceMetrics.getVersion())
+            .setEnabled(tableServiceMetrics.isEnabled())
+            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
+    }
+
+    static CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new CorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    public static TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        if (tableServiceStats == null) {
+            return null;
+        }
+
+        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
+    }
+
+    static TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        if (geoReplication == null) {
+            return null;
+        }
+
+        return new TableServiceGeoReplication(
+            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
+            geoReplication.getLastSyncTime());
+    }
+
+    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
+    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
+    public static String escapeSingleQuotes(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        return input.replace("'", "''");
+    }
+
+    public static TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
+        if (signedIdentifier == null) {
+            return null;
+        }
+
+        return new TableSignedIdentifier(signedIdentifier.getId())
+            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
+    }
+
+    static TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+
+        return new TableAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiry())
+            .setStartsOn(accessPolicy.getStart())
+            .setPermissions(accessPolicy.getPermission());
+    }
+
+    public static SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
+        if (tableSignedIdentifier == null) {
+            return null;
+        }
+
+        return new SignedIdentifier()
+            .setId(tableSignedIdentifier.getId())
+            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
+    }
+
+    static AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
+        if (tableAccessPolicy == null) {
+            return null;
+        }
+
+        return new AccessPolicy()
+            .setExpiry(tableAccessPolicy.getExpiresOn())
+            .setStart(tableAccessPolicy.getStartsOn())
+            .setPermission(tableAccessPolicy.getPermissions());
+    }
+
+    public static Exception interpretException(Exception ex) {
+        Throwable exception = ex;
+        if (exception instanceof ExecutionException) {
+            exception = exception.getCause();
+        }
+        Throwable cause = exception.getCause();
+        if (cause instanceof TableTransactionFailedException) {
+            TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
+            return failedException;
+        } else {
+            return (RuntimeException) mapThrowableToTableServiceException(exception);
         }
     }
 }

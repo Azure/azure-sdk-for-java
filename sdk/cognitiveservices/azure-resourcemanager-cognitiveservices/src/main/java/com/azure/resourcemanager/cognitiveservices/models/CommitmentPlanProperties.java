@@ -11,6 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CommitmentPlanProperties {
     /*
+     * Gets the status of the resource at the time the operation was called.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CommitmentPlanProvisioningState provisioningState;
+
+    /*
+     * Commitment plan guid.
+     */
+    @JsonProperty(value = "commitmentPlanGuid")
+    private String commitmentPlanGuid;
+
+    /*
      * Account hosting model.
      */
     @JsonProperty(value = "hostingModel")
@@ -48,6 +60,35 @@ public final class CommitmentPlanProperties {
 
     /** Creates an instance of CommitmentPlanProperties class. */
     public CommitmentPlanProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: Gets the status of the resource at the time the operation was called.
+     *
+     * @return the provisioningState value.
+     */
+    public CommitmentPlanProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the commitmentPlanGuid property: Commitment plan guid.
+     *
+     * @return the commitmentPlanGuid value.
+     */
+    public String commitmentPlanGuid() {
+        return this.commitmentPlanGuid;
+    }
+
+    /**
+     * Set the commitmentPlanGuid property: Commitment plan guid.
+     *
+     * @param commitmentPlanGuid the commitmentPlanGuid value to set.
+     * @return the CommitmentPlanProperties object itself.
+     */
+    public CommitmentPlanProperties withCommitmentPlanGuid(String commitmentPlanGuid) {
+        this.commitmentPlanGuid = commitmentPlanGuid;
+        return this;
     }
 
     /**

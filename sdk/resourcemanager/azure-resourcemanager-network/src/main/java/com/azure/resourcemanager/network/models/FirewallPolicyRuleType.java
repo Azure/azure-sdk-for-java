@@ -20,6 +20,15 @@ public final class FirewallPolicyRuleType extends ExpandableStringEnum<FirewallP
     public static final FirewallPolicyRuleType NAT_RULE = fromString("NatRule");
 
     /**
+     * Creates a new instance of FirewallPolicyRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyRuleType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyRuleType from its string representation.
      *
      * @param name a name to look for.

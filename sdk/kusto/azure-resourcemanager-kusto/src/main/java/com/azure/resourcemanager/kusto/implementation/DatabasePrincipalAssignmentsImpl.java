@@ -30,22 +30,6 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(resourceGroupName, clusterName, databaseName, principalAssignmentName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -68,12 +52,17 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
     }
 
-    public DatabasePrincipalAssignment get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        DatabasePrincipalAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, databaseName, principalAssignmentName);
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(resourceGroupName, clusterName, databaseName, principalAssignmentName);
         if (inner != null) {
-            return new DatabasePrincipalAssignmentImpl(inner, this.manager());
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -95,6 +84,17 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabasePrincipalAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DatabasePrincipalAssignment get(
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+        DatabasePrincipalAssignmentInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, databaseName, principalAssignmentName);
+        if (inner != null) {
+            return new DatabasePrincipalAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }

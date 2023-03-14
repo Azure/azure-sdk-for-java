@@ -12,19 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NfsAccessRule {
     /*
-     * Scope for this rule. The scope and filter determine which clients match
-     * the rule.
+     * Scope for this rule. The scope and filter determine which clients match the rule.
      */
     @JsonProperty(value = "scope", required = true)
     private NfsAccessRuleScope scope;
 
     /*
-     * Filter applied to the scope for this rule. The filter's format depends
-     * on its scope. 'default' scope matches all clients and has no filter
-     * value. 'network' scope takes a filter in CIDR format (for example,
-     * 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name
-     * as filter. If a client does not match any filter rule and there is no
-     * default rule, access is denied.
+     * Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all
+     * clients and has no filter value. 'network' scope takes a filter in CIDR format (for example, 10.99.1.0/24).
+     * 'host' takes an IP address or fully qualified domain name as filter. If a client does not match any filter rule
+     * and there is no default rule, access is denied.
      */
     @JsonProperty(value = "filter")
     private String filter;
@@ -42,9 +39,8 @@ public final class NfsAccessRule {
     private Boolean suid;
 
     /*
-     * For the default policy, allow access to subdirectories under the root
-     * export. If this is set to no, clients can only mount the path '/'. If
-     * set to yes, clients can mount a deeper path, like '/a/b'.
+     * For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can
+     * only mount the path '/'. If set to yes, clients can mount a deeper path, like '/a/b'.
      */
     @JsonProperty(value = "submountAccess")
     private Boolean submountAccess;
@@ -56,18 +52,20 @@ public final class NfsAccessRule {
     private Boolean rootSquash;
 
     /*
-     * UID value that replaces 0 when rootSquash is true. 65534 will be used if
-     * not provided.
+     * UID value that replaces 0 when rootSquash is true. 65534 will be used if not provided.
      */
     @JsonProperty(value = "anonymousUID")
     private String anonymousUid;
 
     /*
-     * GID value that replaces 0 when rootSquash is true. This will use the
-     * value of anonymousUID if not provided.
+     * GID value that replaces 0 when rootSquash is true. This will use the value of anonymousUID if not provided.
      */
     @JsonProperty(value = "anonymousGID")
     private String anonymousGid;
+
+    /** Creates an instance of NfsAccessRule class. */
+    public NfsAccessRule() {
+    }
 
     /**
      * Get the scope property: Scope for this rule. The scope and filter determine which clients match the rule.

@@ -7,25 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Defines a specific configuration to be used in the context of semantic capabilities. */
 @Immutable
-public final class SemanticConfiguration {
+public final class SemanticConfiguration implements JsonSerializable<SemanticConfiguration> {
     /*
      * The name of the semantic configuration.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * Describes the title, content, and keyword fields to be used for semantic ranking, captions, highlights, and
      * answers. At least one of the three sub properties (titleField, prioritizedKeywordsFields and
      * prioritizedContentFields) need to be set.
      */
-    @JsonProperty(value = "prioritizedFields", required = true)
-    private PrioritizedFields prioritizedFields;
+    private final PrioritizedFields prioritizedFields;
 
     /**
      * Creates an instance of SemanticConfiguration class.
@@ -33,10 +36,7 @@ public final class SemanticConfiguration {
      * @param name the name value to set.
      * @param prioritizedFields the prioritizedFields value to set.
      */
-    @JsonCreator
-    public SemanticConfiguration(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "prioritizedFields", required = true) PrioritizedFields prioritizedFields) {
+    public SemanticConfiguration(String name, PrioritizedFields prioritizedFields) {
         this.name = name;
         this.prioritizedFields = prioritizedFields;
     }
@@ -59,5 +59,61 @@ public final class SemanticConfiguration {
      */
     public PrioritizedFields getPrioritizedFields() {
         return this.prioritizedFields;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("prioritizedFields", this.prioritizedFields);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SemanticConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SemanticConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SemanticConfiguration.
+     */
+    public static SemanticConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean prioritizedFieldsFound = false;
+                    PrioritizedFields prioritizedFields = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("prioritizedFields".equals(fieldName)) {
+                            prioritizedFields = PrioritizedFields.fromJson(reader);
+                            prioritizedFieldsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound && prioritizedFieldsFound) {
+                        SemanticConfiguration deserializedValue = new SemanticConfiguration(name, prioritizedFields);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!prioritizedFieldsFound) {
+                        missingProperties.add("prioritizedFields");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

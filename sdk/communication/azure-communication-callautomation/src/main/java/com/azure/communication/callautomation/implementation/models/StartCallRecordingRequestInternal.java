@@ -48,17 +48,17 @@ public final class StartCallRecordingRequestInternal {
      * `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned
      * based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be
+     * first audio was detected. Channel to participant mapping details can be
      * found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
-     * Recording storage mode. `External` enables bring your own storage.
+     * Optional property to specify location where recording will be stored
      */
-    @JsonProperty(value = "recordingStorageType")
-    private RecordingStorageType recordingStorageType;
+    @JsonProperty(value = "externalStorage")
+    private ExternalStorageInternal externalStorage;
 
     /**
      * Get the callLocator property: The call locator.
@@ -190,22 +190,22 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Get the recordingStorageType property: Recording storage mode. `External` enables bring your own storage.
+     * Get the externalStorage property: Optional property to specify location where recording will be stored.
      *
-     * @return the recordingStorageType value.
+     * @return the externalStorage value.
      */
-    public RecordingStorageType getRecordingStorageType() {
-        return this.recordingStorageType;
+    public ExternalStorageInternal getExternalStorage() {
+        return this.externalStorage;
     }
 
     /**
-     * Set the recordingStorageType property: Recording storage mode. `External` enables bring your own storage.
+     * Set the externalStorage property: Optional property to specify location where recording will be stored.
      *
-     * @param recordingStorageType the recordingStorageType value to set.
+     * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setRecordingStorageType(RecordingStorageType recordingStorageType) {
-        this.recordingStorageType = recordingStorageType;
+    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
+        this.externalStorage = externalStorage;
         return this;
     }
 }

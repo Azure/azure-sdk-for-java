@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,12 +23,19 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
     public static final QueryAnswerType EXTRACTIVE = fromString("extractive");
 
     /**
+     * Creates a new instance of QueryAnswerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryAnswerType() {}
+
+    /**
      * Creates or finds a QueryAnswerType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding QueryAnswerType.
      */
-    @JsonCreator
     public static QueryAnswerType fromString(String name) {
         return fromString(name, QueryAnswerType.class);
     }

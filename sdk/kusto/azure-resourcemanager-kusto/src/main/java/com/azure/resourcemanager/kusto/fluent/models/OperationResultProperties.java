@@ -29,6 +29,10 @@ public final class OperationResultProperties {
     @JsonProperty(value = "operationState")
     private String operationState;
 
+    /** Creates an instance of OperationResultProperties class. */
+    public OperationResultProperties() {
+    }
+
     /**
      * Get the operationKind property: The kind of the operation.
      *

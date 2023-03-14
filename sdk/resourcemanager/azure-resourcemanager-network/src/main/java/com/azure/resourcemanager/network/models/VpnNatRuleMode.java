@@ -17,6 +17,15 @@ public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
     public static final VpnNatRuleMode INGRESS_SNAT = fromString("IngressSnat");
 
     /**
+     * Creates a new instance of VpnNatRuleMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnNatRuleMode() {
+    }
+
+    /**
      * Creates or finds a VpnNatRuleMode from its string representation.
      *
      * @param name a name to look for.

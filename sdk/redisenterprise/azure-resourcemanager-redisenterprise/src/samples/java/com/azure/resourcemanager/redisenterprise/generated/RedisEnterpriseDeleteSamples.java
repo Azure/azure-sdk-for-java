@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RedisEnterprise Delete. */
 public final class RedisEnterpriseDeleteSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDelete.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDelete.json
      */
     /**
      * Sample code: RedisEnterpriseDelete.
@@ -17,6 +15,6 @@ public final class RedisEnterpriseDeleteSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDelete(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.redisEnterprises().delete("rg1", "cache1", Context.NONE);
+        manager.redisEnterprises().delete("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

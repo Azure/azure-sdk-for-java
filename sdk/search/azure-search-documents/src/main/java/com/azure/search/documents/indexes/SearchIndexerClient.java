@@ -12,8 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
@@ -159,9 +157,9 @@ public class SearchIndexerClient {
         if (dataSource.getConnectionString() == null) {
             dataSource.setConnectionString("<unchanged>");
         }
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
-                .createOrUpdateWithResponse(dataSource.getName(), SearchIndexerDataSourceConverter.map(dataSource),
-                    ifMatch, null, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
+                .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements,
+                    null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -257,8 +255,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
-            .createWithResponse(SearchIndexerDataSourceConverter.map(dataSourceConnection), null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
+            .createWithResponse(dataSourceConnection, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -310,8 +308,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(
         String dataSourceConnectionName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalDataSource(restClient.getDataSources()
-            .getWithResponse(dataSourceConnectionName, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
+            .getWithResponse(dataSourceConnectionName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -532,8 +530,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
-            .createWithResponse(SearchIndexerConverter.map(indexer), null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .createWithResponse(indexer, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -596,14 +594,15 @@ public class SearchIndexerClient {
     }
 
     Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
-                                                                    Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
+        Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
         if (indexer == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'indexer' cannot be null."));
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
-            .createOrUpdateWithResponse(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch, null,
-                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null,
+                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
+                Utility.enableSyncRestProxy(context)));
 
     }
 
@@ -694,7 +693,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexer> listIndexers(Context context) {
         try {
-            return new PagedIterable<SearchIndexer>(() -> MappingUtils.mappingPagingSearchIndexer(listIndexersWithResponse(null, context)));
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexer(
+                listIndexersWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -752,7 +752,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexerNames(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexerNames(this.listIndexersWithResponse("name", context)));
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexerNames(
+                this.listIndexersWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -805,8 +806,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
-                .getWithResponse(indexerName, null, Utility.enableSyncRestProxy(context))));
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
+                .getWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1058,8 +1059,8 @@ public class SearchIndexerClient {
             DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds()
                 .setDocumentKeys(documentKeys)
                 .setDatasourceDocumentIds(datasourceDocumentIds);
-            return restClient.getIndexers()
-                .resetDocsWithResponse(indexer.getName(), overwrite, documentKeysOrIds, null, Utility.enableSyncRestProxy(context));
+            return restClient.getIndexers().resetDocsWithResponse(indexer.getName(), overwrite, documentKeysOrIds, null,
+                Utility.enableSyncRestProxy(context));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1254,7 +1255,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerSkillset> listSkillsets(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillset(listSkillsetsWithResponse(null, context)));
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillset(
+                listSkillsetsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1312,7 +1314,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSkillsetNames(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillsetNames(listSkillsetsWithResponse("name", context)));
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillsetNames(
+                listSkillsetsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1376,15 +1379,16 @@ public class SearchIndexerClient {
     }
 
     Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
-                                                                             boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
-                                                                             Context context) {
+        boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
+        Context context) {
         if (skillset == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'skillset' cannot be null."));
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
             .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null,
-                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, Utility.enableSyncRestProxy(context)));
+                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
+                Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -1516,6 +1520,7 @@ public class SearchIndexerClient {
     public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
         Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null, Utility.enableSyncRestProxy(context)));
+            .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null,
+                Utility.enableSyncRestProxy(context)));
     }
 }

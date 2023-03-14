@@ -23,6 +23,15 @@ public final class ApplicationGatewayProtocol extends ExpandableStringEnum<Appli
     public static final ApplicationGatewayProtocol TLS = fromString("Tls");
 
     /**
+     * Creates a new instance of ApplicationGatewayProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayProtocol() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayProtocol from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,10 @@ public final class ServiceResourceCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private ServiceResourceCreateUpdateProperties innerProperties;
 
+    /** Creates an instance of ServiceResourceCreateUpdateParameters class. */
+    public ServiceResourceCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties in ServiceResourceCreateUpdateParameters.
      *

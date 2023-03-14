@@ -17,6 +17,6 @@ public final class AccountFiltersGetSamples {
     public static void getAnAccountFilterByName(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .accountFilters()
-            .getWithResponse("contoso", "contosomedia", "accountFilterWithTrack", com.azure.core.util.Context.NONE);
+            .getWithResponse("contosorg", "contosomedia", "accountFilterWithTrack", com.azure.core.util.Context.NONE);
     }
 }

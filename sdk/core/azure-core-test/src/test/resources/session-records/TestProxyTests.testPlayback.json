@@ -1,0 +1,37 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://REDACTED/first/path",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "User-Agent": "Java/11.0.9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "10"
+      },
+      "ResponseBody": "Zmlyc3QgcGF0aA=="
+    }
+  ],
+  "Variables": {
+    "0": "2022-12-20T01:34:09.654867100Z",
+    "1": "playbacktest37304b",
+    "10": "2022-12-20T01:34:09.658552800Z",
+    "11": "198e2620-a55d-40c7-8635-4bf8385cc013",
+    "12": "2022-12-20T01:34:09.658552800Z",
+    "13": "playbacktest19443c",
+    "14": "2022-12-20T01:34:09.658552800Z",
+    "15": "bb309946-000b-4058-896f-853cd2271e94",
+    "2": "2022-12-20T01:34:09.657418600Z",
+    "3": "1d6ffce5-abce-481b-9db3-912fbf061764",
+    "4": "2022-12-20T01:34:09.658552800Z",
+    "5": "playbacktest125505",
+    "6": "2022-12-20T01:34:09.658552800Z",
+    "7": "618a5532-ec2d-4533-86c2-7c7a10b2eac0",
+    "8": "2022-12-20T01:34:09.658552800Z",
+    "9": "playbacktest39914b"
+  }
+}

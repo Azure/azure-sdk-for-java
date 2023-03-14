@@ -22,6 +22,10 @@ public final class PrivilegeResource {
     @JsonProperty(value = "collection")
     private String collection;
 
+    /** Creates an instance of PrivilegeResource class. */
+    public PrivilegeResource() {
+    }
+
     /**
      * Get the db property: The database name the role is applied.
      *
