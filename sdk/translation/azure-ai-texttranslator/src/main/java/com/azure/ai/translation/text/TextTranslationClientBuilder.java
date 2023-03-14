@@ -265,7 +265,7 @@ public final class TextTranslationClientBuilder
                 (serviceVersion != null) ? serviceVersion : TextTranslationServiceVersion.getLatest();
 
         String serviceEndpoint;
-        if (this.endpoint = null) {
+        if (this.endpoint == null) {
             serviceEndpoint = "https://api.cognitive.microsofttranslator.com";
         } else if (this.isCustomEndpoint) {
             try {
