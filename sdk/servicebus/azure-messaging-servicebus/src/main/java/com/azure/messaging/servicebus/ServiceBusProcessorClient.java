@@ -217,7 +217,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
-        this.processorOptions = Objects.requireNonNull(processorOptions,  "'processorOptions' cannot be null");
+        this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
         ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClient();
         this.asyncClient.set(client);
@@ -360,8 +360,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private synchronized void receiveMessages() {
-        final boolean canUseNewStack = tryReceiveUsingNewStack();
-        if (canUseNewStack) {
+        final boolean isSupported = receiveUsingNewStackIfSupported();
+        if (isSupported) {
             return;
         }
         if (receiverSubscriptions.size() > 0) {
@@ -451,10 +451,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
     }
 
-    private boolean tryReceiveUsingNewStack() {
+    private boolean receiveUsingNewStackIfSupported() {
         final ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-        final boolean canUseNewStack = receiverClient.canUseNewStack();
-        if (!canUseNewStack) {
+        final boolean isSupported = receiverClient.supportsNewStack();
+        if (!isSupported) {
             return false;
         }
 
@@ -480,7 +480,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             }).subscribeOn(Schedulers.boundedElastic()).then();
         };
 
-        receiverClient.receiveSessionUnawareMessagesUsingNewStack()
+        receiverClient.receiveUsingNewStack()
             .flatMap(onMessage, processorOptions.getMaxConcurrentCalls(), 1)
             .subscribe(__ -> { },
                 e -> {
