@@ -4,21 +4,21 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-/** Samples for ProvisionedClustersOperation GetByResourceGroup. */
-public final class ProvisionedClustersOperationGetByResourceGroupSamples {
+/** Samples for ProvisionedClustersOperation UpgradeNodeImageVersionForEntireCluster. */
+public final class ProvisionedClustersOperationUpgradeNodeImageVersionForEntireClust {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ProvisionedClustersUpgradeNodeImageVersionForEntireCluster.json
      */
     /**
-     * Sample code: GetProvisionedCluster.
+     * Sample code: UpgradeClusterNodeImageVersion.
      *
      * @param manager Entry point to HybridContainerServiceManager.
      */
-    public static void getProvisionedCluster(
+    public static void upgradeClusterNodeImageVersion(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .provisionedClustersOperations()
-            .getByResourceGroupWithResponse(
+            .upgradeNodeImageVersionForEntireCluster(
                 "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
     }
 }

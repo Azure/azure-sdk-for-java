@@ -19,7 +19,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @param body Defines the hybridIdentityMetadata.
      * @param context The context to associate with this operation.
@@ -31,7 +31,7 @@ public interface HybridIdentityMetadatasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridIdentityMetadataInner> putWithResponse(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String hybridIdentityMetadataResourceName,
         HybridIdentityMetadataInner body,
         Context context);
@@ -42,7 +42,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @param body Defines the hybridIdentityMetadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +53,7 @@ public interface HybridIdentityMetadatasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     HybridIdentityMetadataInner put(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String hybridIdentityMetadataResourceName,
         HybridIdentityMetadataInner body);
 
@@ -63,7 +63,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Get the hybrid identity metadata proxy resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,10 +73,7 @@ public interface HybridIdentityMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HybridIdentityMetadataInner> getWithResponse(
-        String resourceGroupName,
-        String provisionedClustersName,
-        String hybridIdentityMetadataResourceName,
-        Context context);
+        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
 
     /**
      * Get the hybrid identity metadata resource
@@ -84,7 +81,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Get the hybrid identity metadata proxy resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +90,7 @@ public interface HybridIdentityMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HybridIdentityMetadataInner get(
-        String resourceGroupName, String provisionedClustersName, String hybridIdentityMetadataResourceName);
+        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
 
     /**
      * Deletes the hybrid identity metadata resource
@@ -101,7 +98,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,10 +108,7 @@ public interface HybridIdentityMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String provisionedClustersName,
-        String hybridIdentityMetadataResourceName,
-        Context context);
+        String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName, Context context);
 
     /**
      * Deletes the hybrid identity metadata resource
@@ -122,14 +116,14 @@ public interface HybridIdentityMetadatasClient {
      * <p>Deletes the hybrid identity metadata proxy resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param hybridIdentityMetadataResourceName Parameter for the name of the hybrid identity metadata resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String provisionedClustersName, String hybridIdentityMetadataResourceName);
+    void delete(String resourceGroupName, String resourceName, String hybridIdentityMetadataResourceName);
 
     /**
      * Lists the hybrid identity metadata resources in a cluster
@@ -137,14 +131,14 @@ public interface HybridIdentityMetadatasClient {
      * <p>Lists the hybrid identity metadata proxy resource in a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of hybridIdentityMetadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HybridIdentityMetadataInner> listByCluster(String resourceGroupName, String provisionedClustersName);
+    PagedIterable<HybridIdentityMetadataInner> listByCluster(String resourceGroupName, String resourceName);
 
     /**
      * Lists the hybrid identity metadata resources in a cluster
@@ -152,7 +146,7 @@ public interface HybridIdentityMetadatasClient {
      * <p>Lists the hybrid identity metadata proxy resource in a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,5 +155,5 @@ public interface HybridIdentityMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridIdentityMetadataInner> listByCluster(
-        String resourceGroupName, String provisionedClustersName, Context context);
+        String resourceGroupName, String resourceName, Context context);
 }
