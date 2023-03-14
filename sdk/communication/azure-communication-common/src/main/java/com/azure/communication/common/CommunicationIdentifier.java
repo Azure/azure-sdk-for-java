@@ -9,80 +9,35 @@ import com.azure.core.util.CoreUtils;
  */
 public abstract class CommunicationIdentifier {
 
-    /**
-     * Prefix for a phone number.
-     */
-    static final String PHONE_NUMBER = "4:";
+    static final String PHONE_NUMBER_PREFIX = "4:";
 
-    /**
-     * Prefix for a bot.
-     */
-    static final String BOT_GLOBAL = "28:";
+    static final String BOT_GLOBAL_PREFIX = "28:";
 
-    /**
-     * Prefix for a bot with public cloud.
-     */
-    static final String BOT_PUBLIC_CLOUD = "28:orgid:";
+    static final String BOT_PUBLIC_CLOUD_PREFIX = "28:orgid:";
 
-    /**
-     * Prefix for a bot with DOD cloud.
-     */
-    static final String BOT_DOD_CLOUD = "28:dod:";
+    static final String BOT_DOD_CLOUD_PREFIX = "28:dod:";
 
-    /**
-     * Prefix for a global bot with DOD cloud.
-     */
-    static final String BOT_DOD_CLOUD_GLOBAL = "28:dod-global:";
+    static final String BOT_DOD_CLOUD_GLOBAL_PREFIX = "28:dod-global:";
 
-    /**
-     * Prefix for a bot with GCCH cloud.
-     */
-    static final String BOT_GCCH_CLOUD = "28:gcch:";
+    static final String BOT_GCCH_CLOUD_PREFIX = "28:gcch:";
 
-    /**
-     * Prefix for a global bot with GCCH cloud.
-     */
-    static final String BOT_GCCH_CLOUD_GLOBAL = "28:gcch-global:";
+    static final String BOT_GCCH_CLOUD_GLOBAL_PREFIX = "28:gcch-global:";
 
-    /**
-     * Prefix for an anonymous Teams user.
-     */
-    static final String TEAMS_USER_ANONYMOUS = "8:teamsvisitor:";
+    static final String TEAMS_USER_ANONYMOUS_PREFIX = "8:teamsvisitor:";
 
-    /**
-     * Prefix for a Teams user with public cloud.
-     */
-    static final String TEAMS_USER_PUBLIC_CLOUD = "8:orgid:";
+    static final String TEAMS_USER_PUBLIC_CLOUD_PREFIX = "8:orgid:";
 
-    /**
-     * Prefix for a Teams user with DOD cloud.
-     */
-    static final String TEAMS_USER_DOD_CLOUD = "8:dod:";
+    static final String TEAMS_USER_DOD_CLOUD_PREFIX = "8:dod:";
 
-    /**
-     * Prefix for a Teams user with GCCH cloud.
-     */
-    static final String TEAMS_USER_GCCH_CLOUD = "8:gcch:";
+    static final String TEAMS_USER_GCCH_CLOUD_PREFIX = "8:gcch:";
 
-    /**
-     * Prefix for an ACS user.
-     */
-    static final String ACS_USER = "8:acs:";
+    static final String ACS_USER_PREFIX = "8:acs:";
 
-    /**
-     * Prefix for an ACS user with DOD cloud.
-     */
-    static final String ACS_USER_DOD_CLOUD = "8:dod-acs:";
+    static final String ACS_USER_DOD_CLOUD_PREFIX = "8:dod-acs:";
 
-    /**
-     * Prefix for an ACS user with GCCH cloud.
-     */
-    static final String ACS_USER_GCCH_CLOUD = "8:gcch-acs:";
+    static final String ACS_USER_GCCH_CLOUD_PREFIX = "8:gcch-acs:";
 
-    /**
-     * Prefix for a Spool user.
-     */
-    static final String SPOOL_USER = "8:spool:";
+    static final String SPOOL_USER_PREFIX = "8:spool:";
 
     private String rawId;
 
@@ -98,12 +53,12 @@ public abstract class CommunicationIdentifier {
             throw new IllegalArgumentException("The parameter [rawId] cannot be null to empty.");
         }
 
-        if (rawId.startsWith(PHONE_NUMBER)) {
-            return new PhoneNumberIdentifier(rawId.substring(PHONE_NUMBER.length()));
+        if (rawId.startsWith(PHONE_NUMBER_PREFIX)) {
+            return new PhoneNumberIdentifier(rawId.substring(PHONE_NUMBER_PREFIX.length()));
         }
         final String[] segments = rawId.split(":");
         if (segments.length != 3) {
-            if (segments.length == 2 && rawId.startsWith(BOT_GLOBAL)) {
+            if (segments.length == 2 && rawId.startsWith(BOT_GLOBAL_PREFIX)) {
                 return new MicrosoftBotIdentifier(segments[1], CommunicationCloudEnvironment.PUBLIC, true);
             }
             return new UnknownIdentifier(rawId);
@@ -112,25 +67,25 @@ public abstract class CommunicationIdentifier {
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = rawId.substring(prefix.length());
 
-        if (TEAMS_USER_ANONYMOUS.equals(prefix)) {
+        if (TEAMS_USER_ANONYMOUS_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if (TEAMS_USER_PUBLIC_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if (TEAMS_USER_DOD_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_DOD_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if (TEAMS_USER_GCCH_CLOUD.equals(prefix)) {
+        } else if (TEAMS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (ACS_USER.equals(prefix) || SPOOL_USER.equals(prefix) || ACS_USER_DOD_CLOUD.equals(prefix) || ACS_USER_GCCH_CLOUD.equals(prefix)) {
+        } else if (ACS_USER_PREFIX.equals(prefix) || SPOOL_USER_PREFIX.equals(prefix) || ACS_USER_DOD_CLOUD_PREFIX.equals(prefix) || ACS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
-        } else if (BOT_GCCH_CLOUD_GLOBAL.equals(prefix)) {
+        } else if (BOT_GCCH_CLOUD_GLOBAL_PREFIX.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH, true);
-        } else if (BOT_PUBLIC_CLOUD.equals(prefix)) {
+        } else if (BOT_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC, false);
-        } else if (BOT_DOD_CLOUD_GLOBAL.equals(prefix)) {
+        } else if (BOT_DOD_CLOUD_GLOBAL_PREFIX.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.DOD, true);
-        } else if (BOT_GCCH_CLOUD.equals(prefix)) {
+        } else if (BOT_GCCH_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.GCCH, false);
-        } else if (BOT_DOD_CLOUD.equals(prefix)) {
+        } else if (BOT_DOD_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftBotIdentifier(suffix, CommunicationCloudEnvironment.DOD, false);
         }
 

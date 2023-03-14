@@ -18,9 +18,9 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     /**
      * Creates a MicrosoftBotIdentifier object
      *
-     * @param botId Id of the Microsoft bot.
-     * @param cloudEnvironment Cloud Environment of the Microsoft bot.
-     * @param isGlobal set this to true if the bot is global.
+     * @param botId botId The unique Microsoft app ID for the bot as registered with the Bot Framework.
+     * @param cloudEnvironment the cloud environment in which this identifier is created.
+     * @param isGlobal set this to true if the bot is global and false if the bot is tenantized.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isGlobal) {
@@ -123,18 +123,18 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
         if (!rawIdSet) {
             if (this.isGlobal) {
                 if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                    super.setRawId(BOT_DOD_CLOUD_GLOBAL + this.botId);
+                    super.setRawId(BOT_DOD_CLOUD_GLOBAL_PREFIX + this.botId);
                 } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                    super.setRawId(BOT_GCCH_CLOUD_GLOBAL + this.botId);
+                    super.setRawId(BOT_GCCH_CLOUD_GLOBAL_PREFIX + this.botId);
                 } else {
-                    super.setRawId(BOT_GLOBAL + this.botId);
+                    super.setRawId(BOT_GLOBAL_PREFIX + this.botId);
                 }
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                super.setRawId(BOT_DOD_CLOUD + this.botId);
+                super.setRawId(BOT_DOD_CLOUD_PREFIX + this.botId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                super.setRawId(BOT_GCCH_CLOUD + this.botId);
+                super.setRawId(BOT_GCCH_CLOUD_PREFIX + this.botId);
             } else {
-                super.setRawId(BOT_PUBLIC_CLOUD + this.botId);
+                super.setRawId(BOT_PUBLIC_CLOUD_PREFIX + this.botId);
             }
         }
     }
