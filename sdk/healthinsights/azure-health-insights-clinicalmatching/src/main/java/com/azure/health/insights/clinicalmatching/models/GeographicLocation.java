@@ -9,9 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A location given as a combination of city/state/country. It could specify a city, a state or a country.&lt;br /&gt;In
- * case a city is specified, either state + country or country (for countries where there are no states) should be
- * added. In case a state is specified (without a city), country should be added.
+ * A location given as a combination of city, state and country/region. It could specify a city, a state or a
+ * country/region. In case a city is specified, either state +country/region or country/region (for countries/regions
+ * where there are no states) should be added. In case a state is specified (without a city), country/region should be
+ * added.
  */
 @Fluent
 public final class GeographicLocation {
@@ -28,19 +29,19 @@ public final class GeographicLocation {
     private String state;
 
     /*
-     * Country name.
+     * Country/region name.
      */
-    @JsonProperty(value = "country", required = true)
-    private String country;
+    @JsonProperty(value = "countryOrRegion", required = true)
+    private String countryOrRegion;
 
     /**
      * Creates an instance of GeographicLocation class.
      *
-     * @param country the country value to set.
+     * @param countryOrRegion the countryOrRegion value to set.
      */
     @JsonCreator
-    public GeographicLocation(@JsonProperty(value = "country", required = true) String country) {
-        this.country = country;
+    public GeographicLocation(@JsonProperty(value = "countryOrRegion", required = true) String countryOrRegion) {
+        this.countryOrRegion = countryOrRegion;
     }
 
     /**
@@ -84,11 +85,11 @@ public final class GeographicLocation {
     }
 
     /**
-     * Get the country property: Country name.
+     * Get the countryOrRegion property: Country/region name.
      *
-     * @return the country value.
+     * @return the countryOrRegion value.
      */
-    public String getCountry() {
-        return this.country;
+    public String getCountryOrRegion() {
+        return this.countryOrRegion;
     }
 }

@@ -30,23 +30,23 @@ public final class ClinicalTrialResearchFacility {
     private String state;
 
     /*
-     * Country name.
+     * Country/region name.
      */
-    @JsonProperty(value = "country", required = true)
-    private String country;
+    @JsonProperty(value = "countryOrRegion", required = true)
+    private String countryOrRegion;
 
     /**
      * Creates an instance of ClinicalTrialResearchFacility class.
      *
      * @param name the name value to set.
-     * @param country the country value to set.
+     * @param countryOrRegion the countryOrRegion value to set.
      */
     @JsonCreator
     public ClinicalTrialResearchFacility(
             @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "country", required = true) String country) {
+            @JsonProperty(value = "countryOrRegion", required = true) String countryOrRegion) {
         this.name = name;
-        this.country = country;
+        this.countryOrRegion = countryOrRegion;
     }
 
     /**
@@ -99,11 +99,11 @@ public final class ClinicalTrialResearchFacility {
     }
 
     /**
-     * Get the country property: Country name.
+     * Get the countryOrRegion property: Country/region name.
      *
-     * @return the country value.
+     * @return the countryOrRegion value.
      */
-    public String getCountry() {
-        return this.country;
+    public String getCountryOrRegion() {
+        return this.countryOrRegion;
     }
 }

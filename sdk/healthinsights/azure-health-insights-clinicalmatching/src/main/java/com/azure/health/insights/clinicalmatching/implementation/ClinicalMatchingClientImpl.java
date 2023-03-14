@@ -273,7 +273,7 @@ public final class ClinicalMatchingClientImpl {
      *                                 name: String (Required)
      *                                 city: String (Optional)
      *                                 state: String (Optional)
-     *                                 country: String (Required)
+     *                                 countryOrRegion: String (Required)
      *                             }
      *                         ]
      *                     }
@@ -312,7 +312,7 @@ public final class ClinicalMatchingClientImpl {
      *                          (Optional){
      *                             city: String (Optional)
      *                             state: String (Optional)
-     *                             country: String (Required)
+     *                             countryOrRegion: String (Required)
      *                         }
      *                     ]
      *                     facilityAreas (Optional): [
@@ -403,7 +403,7 @@ public final class ClinicalMatchingClientImpl {
      *                                     name: String (Required)
      *                                     city: String (Optional)
      *                                     state: String (Optional)
-     *                                     country: String (Required)
+     *                                     countryOrRegion: String (Required)
      *                                 }
      *                             ]
      *                         }
@@ -547,7 +547,7 @@ public final class ClinicalMatchingClientImpl {
      *                                 name: String (Required)
      *                                 city: String (Optional)
      *                                 state: String (Optional)
-     *                                 country: String (Required)
+     *                                 countryOrRegion: String (Required)
      *                             }
      *                         ]
      *                     }
@@ -586,7 +586,7 @@ public final class ClinicalMatchingClientImpl {
      *                          (Optional){
      *                             city: String (Optional)
      *                             state: String (Optional)
-     *                             country: String (Required)
+     *                             countryOrRegion: String (Required)
      *                         }
      *                     ]
      *                     facilityAreas (Optional): [
@@ -677,7 +677,7 @@ public final class ClinicalMatchingClientImpl {
      *                                     name: String (Required)
      *                                     city: String (Optional)
      *                                     state: String (Optional)
-     *                                     country: String (Required)
+     *                                     countryOrRegion: String (Required)
      *                                 }
      *                             ]
      *                         }
@@ -818,7 +818,7 @@ public final class ClinicalMatchingClientImpl {
      *                                 name: String (Required)
      *                                 city: String (Optional)
      *                                 state: String (Optional)
-     *                                 country: String (Required)
+     *                                 countryOrRegion: String (Required)
      *                             }
      *                         ]
      *                     }
@@ -857,7 +857,7 @@ public final class ClinicalMatchingClientImpl {
      *                          (Optional){
      *                             city: String (Optional)
      *                             state: String (Optional)
-     *                             country: String (Required)
+     *                             countryOrRegion: String (Required)
      *                         }
      *                     ]
      *                     facilityAreas (Optional): [
@@ -948,7 +948,7 @@ public final class ClinicalMatchingClientImpl {
      *                                     name: String (Required)
      *                                     city: String (Optional)
      *                                     state: String (Optional)
-     *                                     country: String (Required)
+     *                                     countryOrRegion: String (Required)
      *                                 }
      *                             ]
      *                         }
@@ -1078,7 +1078,7 @@ public final class ClinicalMatchingClientImpl {
      *                                 name: String (Required)
      *                                 city: String (Optional)
      *                                 state: String (Optional)
-     *                                 country: String (Required)
+     *                                 countryOrRegion: String (Required)
      *                             }
      *                         ]
      *                     }
@@ -1117,7 +1117,7 @@ public final class ClinicalMatchingClientImpl {
      *                          (Optional){
      *                             city: String (Optional)
      *                             state: String (Optional)
-     *                             country: String (Required)
+     *                             countryOrRegion: String (Required)
      *                         }
      *                     ]
      *                     facilityAreas (Optional): [
@@ -1208,7 +1208,7 @@ public final class ClinicalMatchingClientImpl {
      *                                     name: String (Required)
      *                                     city: String (Optional)
      *                                     state: String (Optional)
-     *                                     country: String (Required)
+     *                                     countryOrRegion: String (Required)
      *                                 }
      *                             ]
      *                         }
@@ -1349,7 +1349,7 @@ public final class ClinicalMatchingClientImpl {
      *                                 name: String (Required)
      *                                 city: String (Optional)
      *                                 state: String (Optional)
-     *                                 country: String (Required)
+     *                                 countryOrRegion: String (Required)
      *                             }
      *                         ]
      *                     }
@@ -1388,7 +1388,7 @@ public final class ClinicalMatchingClientImpl {
      *                          (Optional){
      *                             city: String (Optional)
      *                             state: String (Optional)
-     *                             country: String (Required)
+     *                             countryOrRegion: String (Required)
      *                         }
      *                     ]
      *                     facilityAreas (Optional): [
@@ -1479,7 +1479,7 @@ public final class ClinicalMatchingClientImpl {
      *                                     name: String (Required)
      *                                     city: String (Optional)
      *                                     state: String (Optional)
-     *                                     country: String (Required)
+     *                                     countryOrRegion: String (Required)
      *                                 }
      *                             ]
      *                         }

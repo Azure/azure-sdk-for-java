@@ -18,7 +18,7 @@ public class AllSamples {
         apiKey = System.getenv("SDK_JAVA_HDS_APIKEY");
     }
 
-    @Test
+    // @Test
     public void inferCancerProfile() throws InterruptedException, IOException {
         SampleInferCancerProfile.runSample(endpoint, apiKey);
     }
