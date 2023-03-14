@@ -44,6 +44,17 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     }
 
     /**
+     * Creates a MicrosoftBotIdentifier object
+     *
+     * @param botId Id of the Microsoft bot.
+     * @param isGlobal set this to true if the bot is global and false if the bot is tenantized.
+     * @throws IllegalArgumentException thrown if botId parameter fail the validation.
+     */
+    public MicrosoftBotIdentifier(String botId, boolean isGlobal)  {
+        this(botId, CommunicationCloudEnvironment.PUBLIC, isGlobal);
+    }
+
+    /**
      * Get bot Id
      * @return bot Id of the Microsoft bot.
      */
@@ -91,27 +102,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
             return false;
         }
 
-        MicrosoftBotIdentifier thatId = (MicrosoftBotIdentifier) that;
-
-        if (cloudEnvironment != null && !cloudEnvironment.equals(thatId.cloudEnvironment)) {
-            return false;
-        }
-
-        if (thatId.cloudEnvironment != null && !thatId.cloudEnvironment.equals(this.cloudEnvironment)) {
-            return false;
-        }
-
-        if (thatId.isGlobal() != this.isGlobal()) {
-            return false;
-        }
-
-        if (!thatId.getBotId().equals(this.getBotId())) {
-            return false;
-        }
-
-        return getRawId() == null
-            || thatId.getRawId() == null
-            || thatId.getRawId().equals(this.getRawId());
+        return ((MicrosoftBotIdentifier) that).getRawId().equals(getRawId());
     }
 
     @Override

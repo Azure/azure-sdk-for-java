@@ -65,7 +65,7 @@ public abstract class CommunicationIdentifier {
         }
 
         final String prefix = segments[0] + ":" + segments[1] + ":";
-        final String suffix = rawId.substring(prefix.length());
+        final String suffix = segments[2];
 
         if (TEAMS_USER_ANONYMOUS_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, true);
