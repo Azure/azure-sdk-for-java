@@ -21,13 +21,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -118,7 +118,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanInner>> getByResourceGroup(
@@ -360,7 +360,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarm(
@@ -426,7 +426,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<VnetRouteInner>>> getRouteForVnet(
@@ -445,7 +445,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {400, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetRouteInner>> createOrUpdateVnetRoute(
@@ -465,7 +465,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteVnetRoute(
@@ -484,7 +484,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {400, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetRouteInner>> updateVnetRoute(
@@ -950,7 +950,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1002,7 +1002,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1050,7 +1050,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan on successful completion of {@link Mono}.
      */
@@ -1070,7 +1070,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan along with {@link Response}.
      */
@@ -1089,7 +1089,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -3917,7 +3917,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -3975,7 +3975,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -4029,7 +4029,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource on successful completion of {@link Mono}.
      */
@@ -4051,7 +4051,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource along with {@link Response}.
      */
@@ -4071,7 +4071,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource.
      */
@@ -4664,7 +4664,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4726,7 +4726,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4784,7 +4784,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute on successful completion of {@link Mono}.
      */
@@ -4807,7 +4807,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute along with {@link Response}.
      */
@@ -4828,7 +4828,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4850,7 +4850,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -4920,7 +4920,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -4991,7 +4991,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network on successful
      *     completion of {@link Mono}.
@@ -5016,7 +5016,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response}.
@@ -5045,7 +5045,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -5067,7 +5067,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5129,7 +5129,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5187,7 +5187,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5209,7 +5209,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -5230,7 +5230,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5250,7 +5250,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -5320,7 +5320,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -5391,7 +5391,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network on successful
      *     completion of {@link Mono}.
@@ -5416,7 +5416,7 @@ public final class AppServicePlansClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response}.
@@ -5444,7 +5444,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 404.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */

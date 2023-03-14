@@ -21,13 +21,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -294,7 +294,7 @@ public final class DomainsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/transferOut")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-            value = HttpResponseException.class,
+            value = ManagementException.class,
             code = {400})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DomainInner>> transferOut(
@@ -2993,7 +2993,7 @@ public final class DomainsClientImpl
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3042,7 +3042,7 @@ public final class DomainsClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3088,7 +3088,7 @@ public final class DomainsClientImpl
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain on successful completion of {@link Mono}.
      */
@@ -3106,7 +3106,7 @@ public final class DomainsClientImpl
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response}.
      */
@@ -3122,7 +3122,7 @@ public final class DomainsClientImpl
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400.
+     * @throws ManagementException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */

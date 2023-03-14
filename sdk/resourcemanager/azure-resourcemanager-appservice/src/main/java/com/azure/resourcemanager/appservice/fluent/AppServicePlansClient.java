@@ -154,8 +154,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -172,8 +172,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan on successful completion of {@link Mono}.
      */
@@ -191,8 +191,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan along with {@link Response}.
      */
@@ -210,8 +210,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -1308,8 +1308,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource along with {@link Response} on successful completion of {@link
      *     Mono}.
@@ -1329,8 +1329,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource on successful completion of {@link Mono}.
      */
@@ -1349,8 +1349,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource along with {@link Response}.
      */
@@ -1369,8 +1369,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network information ARM resource.
      */
@@ -1636,8 +1636,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1657,8 +1657,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute on successful completion of {@link Mono}.
      */
@@ -1679,8 +1679,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute along with {@link Response}.
      */
@@ -1700,8 +1700,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -1721,8 +1721,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -1744,8 +1744,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network on successful
      *     completion of {@link Mono}.
@@ -1768,8 +1768,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response}.
@@ -1796,8 +1796,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1817,8 +1817,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1838,8 +1838,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1859,8 +1859,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1880,8 +1880,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1900,8 +1900,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response} on successful completion of {@link Mono}.
@@ -1923,8 +1923,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network on successful
      *     completion of {@link Mono}.
@@ -1947,8 +1947,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network along with {@link
      *     Response}.
@@ -1975,8 +1975,8 @@ public interface AppServicePlansClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server on status code
-     *     400, 404.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 400, 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
