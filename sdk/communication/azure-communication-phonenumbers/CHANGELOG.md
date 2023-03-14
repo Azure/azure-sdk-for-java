@@ -6,10 +6,6 @@
 - Added support for SIP routing API version `2023-03-01`, releasing SIP routing functionality from public preview to GA.
 - Added environment variable `AZURE_TEST_DOMAIN` for SIP routing tests to support domain verification.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 ## 1.1.0-beta.14 (2023-02-14)
