@@ -36,7 +36,7 @@ public interface IJsonReader
     /// Gets the next JSON token from the JsonReader as a UTF-16 string.
     /// </summary>
     /// <returns>The next JSON token from the JsonReader as a string.</returns>
-    UtfAnyString getStringValue();
+    String getStringValue();
 
     /// <summary>
     /// Tries to get the buffered UTF-8 string value.

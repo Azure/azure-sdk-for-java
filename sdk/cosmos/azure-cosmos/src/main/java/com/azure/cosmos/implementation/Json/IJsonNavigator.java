@@ -43,7 +43,7 @@ public interface IJsonNavigator
     /// </summary>
     /// <param name="stringNode">The node to get the string value from.</param>
     /// <returns>The string value from the node.</returns>
-    UtfAnyString getStringValue(IJsonNavigatorNode stringNode);
+    String getStringValue(IJsonNavigatorNode stringNode);
 
     /// <summary>
     /// Gets the numeric value for a node as a signed byte.
