@@ -3,16 +3,16 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,18 +21,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.SECRET_REFERENCE_CONTENT_TYPE;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.parseFeatureFlagValue;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.parseSecretReferenceFieldValue;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests for {@link ConfigurationSettingJsonDeserializerTest}
+ * Tests for {@link ConfigurationSettingDeserializationHelper}
  */
-public class ConfigurationSettingJsonDeserializerTest {
-    private static final String FEATURE_FLAG_JSON =
-        "{\"key\":\".appconfig.featureflag/hello\",\"value\":\"{\\\"id\\\":\\\"hello\\\",\\\"description\\\":null,"
-            + "\\\"display_name\\\":\\\"Feature Flag X\\\",\\\"enabled\\\":false,\\\"conditions\\\":{"
-            + "\\\"client_filters\\\":[{\\\"name\\\":\\\"Microsoft.Percentage\\\",\\\"parameters\\\":{"
-            + "\\\"Value\\\":\\\"30\\\"}}]}}\",\"content_type\":\"application/vnd.microsoft.appconfig.ff+json;"
-            + "charset=utf-8\",\"etag\":null,\"locked\":false,\"tags\":{}}";
+public class ConfigurationSettingDeserializerTest {
+    private static final String KEY = "hello";
+    private static final String FEATURE_FLAG_DISPLAY_NAME = "Feature Flag X";
+    private static final String SECRET_REFERENCE_URI_VALUE = "https://localhost";
+    private static final String SETTING_VALUE = "world";
     private static final String FEATURE_FLAG_VALUE_JSON =
         "{\"id\":\"hello\",\"description\":null,\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
@@ -41,50 +44,65 @@ public class ConfigurationSettingJsonDeserializerTest {
     private static final String SECRET_REFERENCE_JSON =
         "{\"key\":\"hello\",\"value\":\"{\\\"uri\\\":\\\"https://localhost\\\"}\","
             + "\"content_type\":\"application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8\","
-            + "\"etag\":null,\"locked\":false,\"tags\":{}}";;
+            + "\"etag\":null,\"locked\":false,\"tags\":{}}";
     private static final String SECRET_REFERENCE_VALUE_JSON = "{\"uri\":\"https://localhost\"}";
 
     private static final String CONFIGURATION_SETTING_JSON =
         "{\"key\":\"hello\",\"value\":\"world\",\"etag\":null,\"locked\":false,\"tags\":{}}";
 
-    private static final ObjectMapper MAPPER;
+    @Test
+    public void parseFeatureFlagValueTest() {
+        assertFeatureFlagConfigurationSetting(getFeatureFlagConfigurationSetting(KEY,
+            FEATURE_FLAG_DISPLAY_NAME), parseFeatureFlagValue(FEATURE_FLAG_VALUE_JSON));
+    }
 
-    static {
-        MAPPER = new ObjectMapper().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+    @Test
+    public void parseSecretReferenceFieldValueTest() {
+        assertSecretReferenceConfigurationSetting(getSecretReferenceConfigurationSetting(KEY,
+            SECRET_REFERENCE_URI_VALUE), parseSecretReferenceFieldValue(KEY, SECRET_REFERENCE_VALUE_JSON));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeSupplier")
-    public <T extends ConfigurationSetting> void deserialize(String json, Class<T> type, T expectedGeo)
-        throws IOException {
+    public <T extends ConfigurationSetting> void deserialize(String json, Class<T> type, T expectedGeo) {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
+            final KeyValue mockFeatureFlagSetting = new KeyValue()
+                                          .setKey(".appconfig.featureflag/hello")
+                                          .setValue(FEATURE_FLAG_VALUE_JSON)
+                                          .setContentType(FEATURE_FLAG_CONTENT_TYPE);
             assertFeatureFlagConfigurationSetting(
                 (FeatureFlagConfigurationSetting) expectedGeo,
-                (FeatureFlagConfigurationSetting) MAPPER.readValue(json, type));
+                (FeatureFlagConfigurationSetting) toConfigurationSetting(mockFeatureFlagSetting));
         } else if (expectedGeo instanceof SecretReferenceConfigurationSetting) {
+            final KeyValue mockSecretReferenceSetting = new KeyValue()
+                                                            .setKey(KEY)
+                                                            .setValue(SECRET_REFERENCE_VALUE_JSON)
+                                                            .setContentType(SECRET_REFERENCE_CONTENT_TYPE);
             assertSecretReferenceConfigurationSetting(
                 (SecretReferenceConfigurationSetting) expectedGeo,
-                (SecretReferenceConfigurationSetting) MAPPER.readValue(json, type));
+                (SecretReferenceConfigurationSetting) toConfigurationSetting(mockSecretReferenceSetting));
         } else {
-            assertConfigurationSetting(expectedGeo, MAPPER.readValue(json, type));
+            final KeyValue mockSetting = new KeyValue()
+                                             .setKey(KEY)
+                                             .setValue(SETTING_VALUE);
+            assertConfigurationSetting(expectedGeo, toConfigurationSetting(mockSetting));
         }
     }
 
     public static Stream<Arguments> deserializeSupplier() {
-        final String key = "hello";
         return Stream.of(
             Arguments.of(deserializerFeatureFlagConfigurationSettingSupplier(
-                getFeatureFlagConfigurationSetting(key, "Feature Flag X"))),
+                getFeatureFlagConfigurationSetting(KEY, FEATURE_FLAG_DISPLAY_NAME))),
             Arguments.of(deserializerSecretReferenceConfigurationSettingSupplier(
-                getSecretReferenceConfigurationSetting(key, "https://localhost"))),
+                getSecretReferenceConfigurationSetting(KEY, SECRET_REFERENCE_URI_VALUE))),
             Arguments.of(deserializerConfigurationSettingSupplier(
-                getConfigurationSetting(key, "world")))
+                getConfigurationSetting(KEY, SETTING_VALUE)))
         );
     }
 
     public static Object[] deserializerFeatureFlagConfigurationSettingSupplier(
         FeatureFlagConfigurationSetting featureSetting) {
-        return new Object[]{FEATURE_FLAG_JSON, FeatureFlagConfigurationSetting.class, featureSetting};
+        return new Object[]{FEATURE_FLAG_VALUE_JSON, FeatureFlagConfigurationSetting.class, featureSetting};
     }
 
     public static Object[] deserializerSecretReferenceConfigurationSettingSupplier(
@@ -148,7 +166,6 @@ public class ConfigurationSettingJsonDeserializerTest {
     private static void assertSecretReferenceConfigurationSetting(SecretReferenceConfigurationSetting expect,
         SecretReferenceConfigurationSetting actual) {
         assertConfigurationSetting(expect, actual);
-
         assertEquals(expect.getSecretId(), actual.getSecretId());
     }
 

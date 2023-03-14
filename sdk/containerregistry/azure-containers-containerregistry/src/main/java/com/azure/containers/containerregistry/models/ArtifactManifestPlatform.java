@@ -81,29 +81,25 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
     public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String digest = null;
-                    ArtifactArchitecture architecture = null;
-                    ArtifactOperatingSystem operatingSystem = null;
+                    ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("digest".equals(fieldName)) {
-                            digest = reader.getString();
+                            deserializedArtifactManifestPlatform.digest = reader.getString();
                         } else if ("architecture".equals(fieldName)) {
-                            architecture = ArtifactArchitecture.fromString(reader.getString());
+                            deserializedArtifactManifestPlatform.architecture =
+                                    ArtifactArchitecture.fromString(reader.getString());
                         } else if ("os".equals(fieldName)) {
-                            operatingSystem = ArtifactOperatingSystem.fromString(reader.getString());
+                            deserializedArtifactManifestPlatform.operatingSystem =
+                                    ArtifactOperatingSystem.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    ArtifactManifestPlatform deserializedValue = new ArtifactManifestPlatform();
-                    deserializedValue.digest = digest;
-                    deserializedValue.architecture = architecture;
-                    deserializedValue.operatingSystem = operatingSystem;
 
-                    return deserializedValue;
+                    return deserializedArtifactManifestPlatform;
                 });
     }
 }

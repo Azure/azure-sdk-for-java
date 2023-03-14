@@ -56,7 +56,7 @@ autorest --java --use:@autorest/java@4.1.*
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.13'
+use: '@autorest/java@4.1.15'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
@@ -226,14 +226,14 @@ directive:
   where: $.definitions.OCIManifest
   transform: >
     $["x-ms-client-name"] = "OciImageManifest";
-    $["required"] = ["schemaVersion"];
+    $.required = ["schemaVersion"];
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
-          "type": "integer",
-          "description": "Schema version",
-          "x-ms-client-default": 2
-        };
+      "type": "integer",
+      "description": "Schema version",
+      "x-ms-client-default": 2
+    };
 ```
 
 # Take stream as manifest body

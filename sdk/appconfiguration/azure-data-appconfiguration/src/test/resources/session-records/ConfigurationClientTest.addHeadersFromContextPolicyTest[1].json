@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key5922903811e?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "053e3e62-106e-4713-8743-15e8f289a8e6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.21.4.1",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Wed, 08 Mar 2023 22:02:45 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 08 Mar 2023 22:02:45 GMT",
+      "x-ms-correlation-request-id" : "4446dda6-5bca-4793-9944-63664a5e96cf",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "ETag" : "\"JFAZh5_C3vfMvqWIxIsAuE3Nbqv3sk53VcBrj0Cs-CU\"",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCM0MjIyOTE2;sn=4222916",
+      "x-ms-request-id" : "4446dda6-5bca-4793-9944-63664a5e96cf",
+      "Body" : "{\"etag\":\"JFAZh5_C3vfMvqWIxIsAuE3Nbqv3sk53VcBrj0Cs-CU\",\"key\":\"key5922903811e\",\"label\":null,\"content_type\":null,\"value\":\"newValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2023-03-08T22:02:45+00:00\"}",
+      "x-ms-client-request-id" : "053e3e62-106e-4713-8743-15e8f289a8e6",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azconfig.io/kv?key=key59229%2A&api-version=1.0&$Select=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2775329-6657-43a4-898a-89137fb25908",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.21.4.1",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 08 Mar 2023 22:02:45 GMT",
+      "x-ms-correlation-request-id" : "a524c7b3-814f-4053-b7c9-314fa16c9e52",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCM0MjIyOTE2;sn=4222916",
+      "x-ms-request-id" : "a524c7b3-814f-4053-b7c9-314fa16c9e52",
+      "Body" : "{\"items\":[{\"etag\":\"JFAZh5_C3vfMvqWIxIsAuE3Nbqv3sk53VcBrj0Cs-CU\",\"key\":\"key5922903811e\",\"label\":null,\"content_type\":null,\"value\":\"newValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2023-03-08T22:02:45+00:00\"}]}",
+      "x-ms-client-request-id" : "a2775329-6657-43a4-898a-89137fb25908",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key5922903811e?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6db6fecf-8e06-4eb8-b28e-049755c6174f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.21.4.1",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Wed, 08 Mar 2023 22:02:45 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 08 Mar 2023 22:02:45 GMT",
+      "x-ms-correlation-request-id" : "e4b35c0b-fb5d-4c7a-b071-783cc345bb71",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "ETag" : "\"JFAZh5_C3vfMvqWIxIsAuE3Nbqv3sk53VcBrj0Cs-CU\"",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCM0MjIyOTE3;sn=4222917",
+      "x-ms-request-id" : "e4b35c0b-fb5d-4c7a-b071-783cc345bb71",
+      "Body" : "{\"etag\":\"JFAZh5_C3vfMvqWIxIsAuE3Nbqv3sk53VcBrj0Cs-CU\",\"key\":\"key5922903811e\",\"label\":null,\"content_type\":null,\"value\":\"newValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2023-03-08T22:02:45+00:00\"}",
+      "x-ms-client-request-id" : "6db6fecf-8e06-4eb8-b28e-049755c6174f",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "key59229", "05ea1782", "key5922903811e" ]
+}

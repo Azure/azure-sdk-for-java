@@ -142,33 +142,27 @@ public final class TagList implements JsonSerializable<TagList> {
     public static TagList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String registryLoginServer = null;
-                    String repository = null;
-                    List<TagAttributesBase> tagAttributeBases = null;
-                    String link = null;
+                    TagList deserializedTagList = new TagList();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("registry".equals(fieldName)) {
-                            registryLoginServer = reader.getString();
+                            deserializedTagList.registryLoginServer = reader.getString();
                         } else if ("imageName".equals(fieldName)) {
-                            repository = reader.getString();
+                            deserializedTagList.repository = reader.getString();
                         } else if ("tags".equals(fieldName)) {
-                            tagAttributeBases = reader.readArray(reader1 -> TagAttributesBase.fromJson(reader1));
+                            List<TagAttributesBase> tagAttributeBases =
+                                    reader.readArray(reader1 -> TagAttributesBase.fromJson(reader1));
+                            deserializedTagList.tagAttributeBases = tagAttributeBases;
                         } else if ("link".equals(fieldName)) {
-                            link = reader.getString();
+                            deserializedTagList.link = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    TagList deserializedValue = new TagList();
-                    deserializedValue.registryLoginServer = registryLoginServer;
-                    deserializedValue.repository = repository;
-                    deserializedValue.tagAttributeBases = tagAttributeBases;
-                    deserializedValue.link = link;
 
-                    return deserializedValue;
+                    return deserializedTagList;
                 });
     }
 }
