@@ -23,6 +23,10 @@ public final class DatabasePropertiesGeoReplication {
     @JsonProperty(value = "linkedDatabases")
     private List<LinkedDatabase> linkedDatabases;
 
+    /** Creates an instance of DatabasePropertiesGeoReplication class. */
+    public DatabasePropertiesGeoReplication() {
+    }
+
     /**
      * Get the groupNickname property: Name for the group of linked database resources.
      *

@@ -1,6 +1,16 @@
 # Release History
 
-## 5.3.0-beta.2 (Unreleased)
+## 5.3.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.3.0-beta.2 (2023-03-07)
 
 ### Features Added
 - Added the following methods for performing abstractive summarization and extractive summarization actions:
@@ -14,9 +24,8 @@
 - Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
 - Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
 - Changed `BaseResolution` to an abstract class.
-- Removed class `BooleanResolution`.
-
-### Bugs Fixed
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
 
 ### Other Changes
 - Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 

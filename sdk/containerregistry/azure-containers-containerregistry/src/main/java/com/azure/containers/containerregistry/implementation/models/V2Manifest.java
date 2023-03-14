@@ -4,7 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
+import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,12 +23,12 @@ public final class V2Manifest extends Manifest {
     /*
      * V2 image config descriptor
      */
-    private OciBlobDescriptor config;
+    private OciDescriptor config;
 
     /*
      * List of V2 image layer information
      */
-    private List<OciBlobDescriptor> layers;
+    private List<OciDescriptor> layers;
 
     /** Creates an instance of V2Manifest class. */
     public V2Manifest() {}
@@ -58,7 +58,7 @@ public final class V2Manifest extends Manifest {
      *
      * @return the config value.
      */
-    public OciBlobDescriptor getConfig() {
+    public OciDescriptor getConfig() {
         return this.config;
     }
 
@@ -68,7 +68,7 @@ public final class V2Manifest extends Manifest {
      * @param config the config value to set.
      * @return the V2Manifest object itself.
      */
-    public V2Manifest setConfig(OciBlobDescriptor config) {
+    public V2Manifest setConfig(OciDescriptor config) {
         this.config = config;
         return this;
     }
@@ -78,7 +78,7 @@ public final class V2Manifest extends Manifest {
      *
      * @return the layers value.
      */
-    public List<OciBlobDescriptor> getLayers() {
+    public List<OciDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -88,7 +88,7 @@ public final class V2Manifest extends Manifest {
      * @param layers the layers value to set.
      * @return the V2Manifest object itself.
      */
-    public V2Manifest setLayers(List<OciBlobDescriptor> layers) {
+    public V2Manifest setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -123,8 +123,8 @@ public final class V2Manifest extends Manifest {
                 reader -> {
                     Integer schemaVersion = null;
                     String mediaType = null;
-                    OciBlobDescriptor config = null;
-                    List<OciBlobDescriptor> layers = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -134,9 +134,9 @@ public final class V2Manifest extends Manifest {
                         } else if ("mediaType".equals(fieldName)) {
                             mediaType = reader.getString();
                         } else if ("config".equals(fieldName)) {
-                            config = OciBlobDescriptor.fromJson(reader);
+                            config = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            layers = reader.readArray(reader1 -> OciBlobDescriptor.fromJson(reader1));
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

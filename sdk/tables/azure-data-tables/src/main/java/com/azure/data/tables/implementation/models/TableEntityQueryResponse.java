@@ -6,10 +6,12 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.List;
 import java.util.Map;
 
 /** The properties for the table entity query response. */
+@JacksonXmlRootElement(localName = "TableEntityQueryResponse")
 @Fluent
 public final class TableEntityQueryResponse {
     /*
@@ -23,6 +25,9 @@ public final class TableEntityQueryResponse {
      */
     @JsonProperty(value = "value")
     private List<Map<String, Object>> value;
+
+    /** Creates an instance of TableEntityQueryResponse class. */
+    public TableEntityQueryResponse() {}
 
     /**
      * Get the odataMetadata property: The metadata response of the table.

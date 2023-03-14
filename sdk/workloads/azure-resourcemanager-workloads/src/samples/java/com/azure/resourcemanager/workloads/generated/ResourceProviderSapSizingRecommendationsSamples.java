@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 /** Samples for ResourceProvider SapSizingRecommendations. */
 public final class ResourceProviderSapSizingRecommendationsSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_Distributed.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_Distributed.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_Distributed.
@@ -22,7 +22,7 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_SingleServer.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_SingleServer.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_SingleServer.
@@ -37,7 +37,7 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvZone.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvZone.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_DistributedHA_AvZone.
@@ -52,7 +52,7 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvSet.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvSet.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_DistributedHA_AvSet.

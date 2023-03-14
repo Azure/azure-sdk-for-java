@@ -6,6 +6,7 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * CORS is an HTTP feature that enables a web application running under one domain to access resources in another
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs
  * in another domain.
  */
+@JacksonXmlRootElement(localName = "CorsRule")
 @Fluent
 public final class CorsRule {
     /*
@@ -48,6 +50,9 @@ public final class CorsRule {
      */
     @JsonProperty(value = "MaxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
+
+    /** Creates an instance of CorsRule class. */
+    public CorsRule() {}
 
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the service via

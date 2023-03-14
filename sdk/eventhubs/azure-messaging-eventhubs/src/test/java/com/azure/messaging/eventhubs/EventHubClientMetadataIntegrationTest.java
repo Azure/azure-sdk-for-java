@@ -13,6 +13,8 @@ import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -24,6 +26,7 @@ import java.util.stream.IntStream;
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final List<String> expectedPartitionIds;
     private EventHubAsyncClient client;

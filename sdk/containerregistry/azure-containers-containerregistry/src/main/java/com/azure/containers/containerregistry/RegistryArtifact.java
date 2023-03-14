@@ -48,7 +48,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * RegistryArtifact registryArtifact = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildClient&#40;&#41;.getArtifact&#40;repository, digest&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.RegistryArtifact.instantiation -->
