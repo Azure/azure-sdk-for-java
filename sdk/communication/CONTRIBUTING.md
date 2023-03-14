@@ -36,7 +36,7 @@ You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variabl
 
 RECORD mode is similar to LIVE mode because it also hits an actual resource. In addition to hitting the resource, RECORD mode will also record the successful calls to the service in json format. As mentioned, the recordings are stored in the package root folder under `target/test-classes/session-records`.
 
-These newly generated files will have to be copied to the previosly mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
+These newly generated files will have to be copied to the previously mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
 
 If you would like to generate new recordings for a single test, setting `AZURE_TEST_MODE` to `RECORD`, reopen Visual Studio, and run the test in Visual Studio normally.
 ### Managed Identity Tests
