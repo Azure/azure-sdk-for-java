@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
 import com.azure.resourcemanager.hybridcontainerservice.models.LicenseType;
 import com.azure.resourcemanager.hybridcontainerservice.models.LoadBalancerSku;
@@ -39,7 +38,7 @@ public final class ProvisionedClustersOperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"qmt\",\"tenantId\":\"ltmm\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":false,\"linuxProfile\":{\"adminUsername\":\"phvwauyqncygu\"},\"features\":{},\"addonProfiles\":{},\"controlPlane\":{\"name\":\"xqupevzhf\",\"count\":292167631,\"availabilityZones\":[],\"maxCount\":1386174682,\"maxPods\":2002904961,\"minCount\":1583022780,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"uvhixbjxyfwn\",\"vmSize\":\"r\"},\"kubernetesVersion\":\"lsttpkiwkkbnuj\",\"networkProfile\":{\"loadBalancerSku\":\"unmanaged\",\"dnsServiceIP\":\"lbfpncurd\",\"networkPolicy\":\"flannel\",\"podCidr\":\"ithtywu\",\"podCidrs\":[],\"serviceCidr\":\"bihwqknfdnt\",\"serviceCidrs\":[]},\"nodeResourceGroup\":\"hrdgoihxumwcto\",\"agentPoolProfiles\":[],\"cloudProviderProfile\":{},\"provisioningState\":\"Deleting\",\"status\":{\"addonStatus\":{},\"errorMessage\":\"gg\"},\"aadProfile\":{\"adminGroupObjectIDs\":[],\"clientAppID\":\"tov\",\"enableAzureRbac\":false,\"managed\":false,\"serverAppID\":\"nqfiufxqknpi\",\"tenantID\":\"nepttwqmsni\"},\"windowsProfile\":{\"adminUsername\":\"dmqnrojlpij\",\"enableCsiProxy\":false,\"licenseType\":\"None\"},\"httpProxyConfig\":{\"httpProxy\":\"dhcrati\",\"httpsProxy\":\"ronasxift\",\"noProxy\":[],\"trustedCa\":\"yzhftwesgogczh\",\"username\":\"nxkrlgnyhmossxkk\"}},\"extendedLocation\":{\"type\":\"rghxjb\",\"name\":\"qxvcxgfrpdsofb\"},\"location\":\"hrnsvbu\",\"tags\":{\"ybycnunvj\":\"vz\",\"ikyzirtxdy\":\"rtkfawnopq\",\"ejnt\":\"x\"},\"id\":\"sewgioilqukr\",\"name\":\"dxtqmieoxo\",\"type\":\"ggufhyaomtb\"}]}";
+            "{\"value\":[{\"identity\":{\"principalId\":\"lcrpw\",\"tenantId\":\"eznoig\",\"type\":\"None\"},\"properties\":{\"enableRbac\":false,\"linuxProfile\":{\"adminUsername\":\"kpnb\"},\"features\":{},\"addonProfiles\":{},\"controlPlane\":{\"name\":\"gfhsxttaugzxn\",\"count\":1764275997,\"availabilityZones\":[],\"maxCount\":1339153822,\"maxPods\":2134025822,\"minCount\":1884087819,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"wuenvr\",\"vmSize\":\"yo\"},\"kubernetesVersion\":\"bre\",\"networkProfile\":{\"loadBalancerSku\":\"unmanaged\",\"dnsServiceIP\":\"j\",\"networkPolicy\":\"calico\",\"podCidr\":\"tnqttezlwfffiak\",\"podCidrs\":[],\"serviceCidr\":\"qqmtedltmmji\",\"serviceCidrs\":[]},\"nodeResourceGroup\":\"ozphvwauyqncygu\",\"agentPoolProfiles\":[],\"cloudProviderProfile\":{},\"provisioningState\":\"Failed\",\"status\":{\"addonStatus\":{},\"errorMessage\":\"upev\"},\"aadProfile\":{\"adminGroupObjectIDs\":[],\"clientAppID\":\"otxhojujby\",\"enableAzureRbac\":true,\"managed\":false,\"serverAppID\":\"vhixbjxy\",\"tenantID\":\"n\"},\"windowsProfile\":{\"adminUsername\":\"coolsttpkiwkkb\",\"enableCsiProxy\":true,\"licenseType\":\"None\"},\"httpProxyConfig\":{\"httpProxy\":\"tylbfpncurdoiw\",\"httpsProxy\":\"thtywub\",\"noProxy\":[],\"trustedCa\":\"ihwqknfdntwjchr\",\"username\":\"oihxumwctondzjlu\"}},\"extendedLocation\":{\"type\":\"lwg\",\"name\":\"tsbwtovvtgse\"},\"location\":\"nqfiufxqknpi\",\"tags\":{\"dmqnrojlpij\":\"epttwqmsniff\",\"xfrdd\":\"k\",\"atiz\":\"c\"},\"id\":\"ronasxift\",\"name\":\"zq\",\"type\":\"zh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,52 +67,51 @@ public final class ProvisionedClustersOperationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProvisionedClustersResponse> response =
-            manager.provisionedClustersOperations().list(Context.NONE);
+            manager.provisionedClustersOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hrnsvbu", response.iterator().next().location());
-        Assertions.assertEquals("vz", response.iterator().next().tags().get("ybycnunvj"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("tov", response.iterator().next().properties().aadProfile().clientAppId());
-        Assertions.assertEquals(false, response.iterator().next().properties().aadProfile().enableAzureRbac());
+        Assertions.assertEquals("nqfiufxqknpi", response.iterator().next().location());
+        Assertions.assertEquals("epttwqmsniff", response.iterator().next().tags().get("dmqnrojlpij"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("otxhojujby", response.iterator().next().properties().aadProfile().clientAppId());
+        Assertions.assertEquals(true, response.iterator().next().properties().aadProfile().enableAzureRbac());
         Assertions.assertEquals(false, response.iterator().next().properties().aadProfile().managed());
-        Assertions.assertEquals("nqfiufxqknpi", response.iterator().next().properties().aadProfile().serverAppId());
-        Assertions.assertEquals("nepttwqmsni", response.iterator().next().properties().aadProfile().tenantId());
+        Assertions.assertEquals("vhixbjxy", response.iterator().next().properties().aadProfile().serverAppId());
+        Assertions.assertEquals("n", response.iterator().next().properties().aadProfile().tenantId());
         Assertions
-            .assertEquals("dmqnrojlpij", response.iterator().next().properties().windowsProfile().adminUsername());
-        Assertions.assertEquals(false, response.iterator().next().properties().windowsProfile().enableCsiProxy());
+            .assertEquals("coolsttpkiwkkb", response.iterator().next().properties().windowsProfile().adminUsername());
+        Assertions.assertEquals(true, response.iterator().next().properties().windowsProfile().enableCsiProxy());
         Assertions
             .assertEquals(LicenseType.NONE, response.iterator().next().properties().windowsProfile().licenseType());
-        Assertions.assertEquals("dhcrati", response.iterator().next().properties().httpProxyConfig().httpProxy());
-        Assertions.assertEquals("ronasxift", response.iterator().next().properties().httpProxyConfig().httpsProxy());
         Assertions
-            .assertEquals("yzhftwesgogczh", response.iterator().next().properties().httpProxyConfig().trustedCa());
+            .assertEquals("tylbfpncurdoiw", response.iterator().next().properties().httpProxyConfig().httpProxy());
+        Assertions.assertEquals("thtywub", response.iterator().next().properties().httpProxyConfig().httpsProxy());
         Assertions
-            .assertEquals("nxkrlgnyhmossxkk", response.iterator().next().properties().httpProxyConfig().username());
+            .assertEquals("ihwqknfdntwjchr", response.iterator().next().properties().httpProxyConfig().trustedCa());
+        Assertions
+            .assertEquals("oihxumwctondzjlu", response.iterator().next().properties().httpProxyConfig().username());
         Assertions.assertEquals(false, response.iterator().next().properties().enableRbac());
-        Assertions
-            .assertEquals("phvwauyqncygu", response.iterator().next().properties().linuxProfile().adminUsername());
-        Assertions.assertEquals(292167631, response.iterator().next().properties().controlPlane().count());
-        Assertions.assertEquals(1386174682, response.iterator().next().properties().controlPlane().maxCount());
-        Assertions.assertEquals(2002904961, response.iterator().next().properties().controlPlane().maxPods());
-        Assertions.assertEquals(1583022780, response.iterator().next().properties().controlPlane().minCount());
-        Assertions.assertEquals(Mode.SYSTEM, response.iterator().next().properties().controlPlane().mode());
-        Assertions.assertEquals(OsType.LINUX, response.iterator().next().properties().controlPlane().osType());
-        Assertions
-            .assertEquals("uvhixbjxyfwn", response.iterator().next().properties().controlPlane().nodeImageVersion());
-        Assertions.assertEquals("r", response.iterator().next().properties().controlPlane().vmSize());
-        Assertions.assertEquals("xqupevzhf", response.iterator().next().properties().controlPlane().name());
-        Assertions.assertEquals("lsttpkiwkkbnuj", response.iterator().next().properties().kubernetesVersion());
+        Assertions.assertEquals("kpnb", response.iterator().next().properties().linuxProfile().adminUsername());
+        Assertions.assertEquals(1764275997, response.iterator().next().properties().controlPlane().count());
+        Assertions.assertEquals(1339153822, response.iterator().next().properties().controlPlane().maxCount());
+        Assertions.assertEquals(2134025822, response.iterator().next().properties().controlPlane().maxPods());
+        Assertions.assertEquals(1884087819, response.iterator().next().properties().controlPlane().minCount());
+        Assertions.assertEquals(Mode.LB, response.iterator().next().properties().controlPlane().mode());
+        Assertions.assertEquals(OsType.WINDOWS, response.iterator().next().properties().controlPlane().osType());
+        Assertions.assertEquals("wuenvr", response.iterator().next().properties().controlPlane().nodeImageVersion());
+        Assertions.assertEquals("yo", response.iterator().next().properties().controlPlane().vmSize());
+        Assertions.assertEquals("gfhsxttaugzxn", response.iterator().next().properties().controlPlane().name());
+        Assertions.assertEquals("bre", response.iterator().next().properties().kubernetesVersion());
         Assertions
             .assertEquals(
                 LoadBalancerSku.UNMANAGED, response.iterator().next().properties().networkProfile().loadBalancerSku());
-        Assertions.assertEquals("lbfpncurd", response.iterator().next().properties().networkProfile().dnsServiceIp());
+        Assertions.assertEquals("j", response.iterator().next().properties().networkProfile().dnsServiceIp());
         Assertions
             .assertEquals(
-                NetworkPolicy.FLANNEL, response.iterator().next().properties().networkProfile().networkPolicy());
-        Assertions.assertEquals("ithtywu", response.iterator().next().properties().networkProfile().podCidr());
-        Assertions.assertEquals("bihwqknfdnt", response.iterator().next().properties().networkProfile().serviceCidr());
-        Assertions.assertEquals("hrdgoihxumwcto", response.iterator().next().properties().nodeResourceGroup());
-        Assertions.assertEquals("rghxjb", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("qxvcxgfrpdsofb", response.iterator().next().extendedLocation().name());
+                NetworkPolicy.CALICO, response.iterator().next().properties().networkProfile().networkPolicy());
+        Assertions.assertEquals("tnqttezlwfffiak", response.iterator().next().properties().networkProfile().podCidr());
+        Assertions.assertEquals("qqmtedltmmji", response.iterator().next().properties().networkProfile().serviceCidr());
+        Assertions.assertEquals("ozphvwauyqncygu", response.iterator().next().properties().nodeResourceGroup());
+        Assertions.assertEquals("lwg", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("tsbwtovvtgse", response.iterator().next().extendedLocation().name());
     }
 }

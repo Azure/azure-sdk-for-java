@@ -8,42 +8,41 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ResourceProviderOperationInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProviderOperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceProviderOperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceProviderOperationInner model =
             BinaryData
                 .fromString(
-                    "{\"isDataAction\":\"pxgy\",\"name\":\"gvr\",\"display\":{\"provider\":\"pkukghi\",\"resource\":\"blxgwimf\",\"operation\":\"hfjx\",\"description\":\"szkkfoqre\"}}")
+                    "{\"isDataAction\":\"kpzksmondjmq\",\"name\":\"vypomgkopkwho\",\"display\":{\"provider\":\"ajqgxy\",\"resource\":\"ocmbqfqvmkcxoza\",\"operation\":\"helxprglya\",\"description\":\"dckcbc\"}}")
                 .toObject(ResourceProviderOperationInner.class);
-        Assertions.assertEquals("pxgy", model.isDataAction());
-        Assertions.assertEquals("gvr", model.name());
-        Assertions.assertEquals("pkukghi", model.display().provider());
-        Assertions.assertEquals("blxgwimf", model.display().resource());
-        Assertions.assertEquals("hfjx", model.display().operation());
-        Assertions.assertEquals("szkkfoqre", model.display().description());
+        Assertions.assertEquals("kpzksmondjmq", model.isDataAction());
+        Assertions.assertEquals("vypomgkopkwho", model.name());
+        Assertions.assertEquals("ajqgxy", model.display().provider());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", model.display().resource());
+        Assertions.assertEquals("helxprglya", model.display().operation());
+        Assertions.assertEquals("dckcbc", model.display().description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceProviderOperationInner model =
             new ResourceProviderOperationInner()
-                .withIsDataAction("pxgy")
-                .withName("gvr")
+                .withIsDataAction("kpzksmondjmq")
+                .withName("vypomgkopkwho")
                 .withDisplay(
                     new ResourceProviderOperationDisplay()
-                        .withProvider("pkukghi")
-                        .withResource("blxgwimf")
-                        .withOperation("hfjx")
-                        .withDescription("szkkfoqre"));
+                        .withProvider("ajqgxy")
+                        .withResource("ocmbqfqvmkcxoza")
+                        .withOperation("helxprglya")
+                        .withDescription("dckcbc"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationInner.class);
-        Assertions.assertEquals("pxgy", model.isDataAction());
-        Assertions.assertEquals("gvr", model.name());
-        Assertions.assertEquals("pkukghi", model.display().provider());
-        Assertions.assertEquals("blxgwimf", model.display().resource());
-        Assertions.assertEquals("hfjx", model.display().operation());
-        Assertions.assertEquals("szkkfoqre", model.display().description());
+        Assertions.assertEquals("kpzksmondjmq", model.isDataAction());
+        Assertions.assertEquals("vypomgkopkwho", model.name());
+        Assertions.assertEquals("ajqgxy", model.display().provider());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", model.display().resource());
+        Assertions.assertEquals("helxprglya", model.display().operation());
+        Assertions.assertEquals("dckcbc", model.display().description());
     }
 }
