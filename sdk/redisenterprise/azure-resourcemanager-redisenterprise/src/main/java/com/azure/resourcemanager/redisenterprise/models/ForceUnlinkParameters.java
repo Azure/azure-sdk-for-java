@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Forcibly unlink another database from this database. Parameters for a Redis Enterprise Active Geo Replication Force
- * Unlink operation.
+ * Forcibly unlink another database from this database.
+ *
+ * <p>Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
  */
 @Fluent
 public final class ForceUnlinkParameters {
@@ -20,6 +21,10 @@ public final class ForceUnlinkParameters {
      */
     @JsonProperty(value = "ids", required = true)
     private List<String> ids;
+
+    /** Creates an instance of ForceUnlinkParameters class. */
+    public ForceUnlinkParameters() {
+    }
 
     /**
      * Get the ids property: The resource IDs of the database resources to be unlinked.

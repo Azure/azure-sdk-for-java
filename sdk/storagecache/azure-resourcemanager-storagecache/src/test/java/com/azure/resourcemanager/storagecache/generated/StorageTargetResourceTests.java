@@ -12,8 +12,7 @@ public final class StorageTargetResourceTests {
     public void testDeserialize() throws Exception {
         StorageTargetResource model =
             BinaryData
-                .fromString(
-                    "{\"location\":\"opppcqeq\",\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}")
+                .fromString("{\"location\":\"aboekqv\",\"id\":\"lns\",\"name\":\"vbxwyjsflhh\",\"type\":\"aalnjixi\"}")
                 .toObject(StorageTargetResource.class);
     }
 

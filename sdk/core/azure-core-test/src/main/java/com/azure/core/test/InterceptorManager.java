@@ -71,6 +71,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
+    private HttpClient httpClient;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -232,6 +233,14 @@ public class InterceptorManager implements AutoCloseable {
         return testMode == TestMode.LIVE;
     }
 
+    /**
+     * Gets whether this InterceptorManager is in record mode.
+     *
+     * @return true if the InterceptorManager is in record mode and false otherwise.
+     */
+    public boolean isRecordMode() {
+        return testMode == TestMode.RECORD;
+    }
 
     /**
      * Gets the recorded data InterceptorManager is keeping track of.
@@ -270,6 +279,8 @@ public class InterceptorManager implements AutoCloseable {
      * {@link InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
+     *
+     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (testProxyEnabled) {
@@ -285,6 +296,8 @@ public class InterceptorManager implements AutoCloseable {
      * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
      * functions defined in {@link RecordingRedactor}.
      * @return {@link HttpPipelinePolicy} to record network calls.
+     *
+     * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (testProxyEnabled) {
@@ -297,11 +310,16 @@ public class InterceptorManager implements AutoCloseable {
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.
+     *
+     * @throws IllegalStateException A playback client was requested when the test proxy is enabled and test mode is LIVE.
      */
     public HttpClient getPlaybackClient() {
         if (testProxyEnabled) {
+            if (!isPlaybackMode()) {
+                throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
+            }
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient();
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             }
             return testProxyPlaybackClient;
@@ -346,7 +364,10 @@ public class InterceptorManager implements AutoCloseable {
 
     private HttpPipelinePolicy getProxyRecordingPolicy() {
         if (testProxyRecordPolicy == null) {
-            testProxyRecordPolicy = new TestProxyRecordPolicy();
+            if (!isRecordMode()) {
+                throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
+            }
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
             testProxyRecordPolicy.startRecording(playbackRecordName);
         }
         return testProxyRecordPolicy;
@@ -423,14 +444,27 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (testMode != TestMode.PLAYBACK) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addMatcherRequests(testProxyMatchers);
         } else {
             throw new RuntimeException("Playback must have been started before adding matchers.");
         }
+    }
+
+    /**
+     * Sets the httpClient to be used for this test.
+     * @param httpClient The {@link HttpClient} implementation to use.
+     */
+    void setHttpClient(HttpClient httpClient) {
+
+        this.httpClient = httpClient;
     }
 }

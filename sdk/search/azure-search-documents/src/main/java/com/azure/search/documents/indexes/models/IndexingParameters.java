@@ -194,6 +194,9 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
+     * Set the configuration property: A dictionary of indexer-specific configuration properties. Each name is the name
+     * of a specific property. Each value must be of a primitive type.
+     *
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.
      */

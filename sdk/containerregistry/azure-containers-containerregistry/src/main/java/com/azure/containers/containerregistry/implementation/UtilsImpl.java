@@ -61,10 +61,12 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
@@ -76,12 +78,14 @@ public final class UtilsImpl {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-containers-containerregistry.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final ContainerRegistryAudience ACR_ACCESS_TOKEN_AUDIENCE = ContainerRegistryAudience.fromString("https://containerregistry.azure.net");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    public static final ManifestMediaType SUPPORTED_MANIFEST_TYPES = ManifestMediaType.fromString(ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST);
+    // TODO (limolkova) should we send index and list too so that we won't need to change the default later on?
+    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
@@ -150,7 +154,8 @@ public final class UtilsImpl {
         credentialPolicies.add(loggingPolicy);
 
         if (audience == null)  {
-            audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
+            audience = ACR_ACCESS_TOKEN_AUDIENCE;
         }
 
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
@@ -482,5 +487,13 @@ public final class UtilsImpl {
             // This will not happen.
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
+    }
+
+    public static String getContentTypeString(Collection<ManifestMediaType> mediaTypes) {
+        return CoreUtils.isNullOrEmpty(mediaTypes)
+            ? SUPPORTED_MANIFEST_TYPES
+            : mediaTypes.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
     }
 }

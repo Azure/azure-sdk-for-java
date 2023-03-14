@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterIdentity;
 import com.azure.resourcemanager.hybridcontainerservice.models.ResourceIdentityType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClusterIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClusterIdentity model =
             BinaryData
                 .fromString("{\"principalId\":\"felluwfzitonpe\",\"tenantId\":\"pjkjlxofpdv\",\"type\":\"None\"}")
@@ -20,8 +19,8 @@ public final class ProvisionedClusterIdentityTests {
         Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClusterIdentity model = new ProvisionedClusterIdentity().withType(ResourceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.type());

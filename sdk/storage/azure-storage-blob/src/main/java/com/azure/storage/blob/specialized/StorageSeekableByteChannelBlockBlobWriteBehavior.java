@@ -9,10 +9,10 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteMode;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -30,19 +30,23 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekableByteChannel.WriteBehavior {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannelBlockBlobWriteBehavior.class);
 
+    enum WriteMode {
+        OVERWRITE, APPEND, PREPEND
+    }
+
     private final BlockBlobClient client;
     private final BlobHttpHeaders headers;
     private final Map<String, String> metadata;
     private final Map<String, String> tags;
     private final AccessTier tier;
     private final BlobRequestConditions conditions;
-    private final BlockBlobSeekableByteChannelWriteMode mode;
+    private final WriteMode mode;
     private final List<String> existingBlockIds;
     private final List<String> newBlockIds = new ArrayList<>();
 
     StorageSeekableByteChannelBlockBlobWriteBehavior(BlockBlobClient client, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier, BlobRequestConditions conditions,
-        BlockBlobSeekableByteChannelWriteMode mode, List<String> existingBlockIds) {
+        WriteMode mode, List<String> existingBlockIds) {
         this.client = Objects.requireNonNull(client);
         this.headers = headers;
         this.metadata = metadata;
@@ -53,8 +57,44 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
         this.existingBlockIds = existingBlockIds != null ? existingBlockIds : Collections.emptyList();
     }
 
+    BlockBlobClient getClient() {
+        return this.client;
+    }
+
+    BlobHttpHeaders getHeaders() {
+        return this.headers;
+    }
+
+    Map<String, String> getMetadata() {
+        return this.metadata != null ? Collections.unmodifiableMap(this.metadata) : null;
+    }
+
+    Map<String, String> getTags() {
+        return this.tags != null ? Collections.unmodifiableMap(this.tags) : null;
+    }
+
+    AccessTier getTier() {
+        return this.tier;
+    }
+
+    BlobRequestConditions getRequestConditions() {
+        return this.conditions;
+    }
+
+    WriteMode getWriteMode() {
+        return this.mode;
+    }
+
+    List<String> getExistingBlockIds() {
+        return this.existingBlockIds != null ? Collections.unmodifiableList(existingBlockIds) : null;
+    }
+
+    List<String> getNewBlockIds() {
+        return this.newBlockIds != null ? Collections.unmodifiableList(newBlockIds) : null;
+    }
+
     @Override
-    public void write(ByteBuffer src, long destOffset) {
+    public void write(ByteBuffer src, long destOffset) throws IOException {
         String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId, BinaryData.fromByteBuffer(src));
         if (conditions != null) {
@@ -94,8 +134,9 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     }
 
     @Override
-    public boolean canSeek(long position) {
-        return false;
+    public void assertCanSeek(long position) {
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Block blob write channels support sequential write only."));
     }
 
     @Override

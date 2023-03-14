@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.15 (Unreleased)
+## 1.1.0-beta.15 (2023-03-15)
 
 ### Features Added
 - Added support for SIP routing API version `2023-03-01`, releasing SIP routing functionality from public preview to GA.
@@ -8,9 +8,12 @@
 
 ### Breaking Changes
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-communication-common` from `1.2.5` to version `1.2.6`.
 
 ## 1.1.0-beta.14 (2023-02-14)
 

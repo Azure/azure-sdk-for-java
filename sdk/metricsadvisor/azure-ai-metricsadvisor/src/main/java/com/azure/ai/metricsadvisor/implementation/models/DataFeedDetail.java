@@ -80,8 +80,8 @@ public class DataFeedDetail {
     private List<DataFeedDimension> dimension;
 
     /*
-     * user-defined timestamp column. if timestampColumn is null, start time of
-     * every time slice will be used as default value.
+     * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as
+     * default value.
      */
     @JsonProperty(value = "timestampColumn")
     private String timestampColumn;
@@ -93,15 +93,13 @@ public class DataFeedDetail {
     private OffsetDateTime dataStartFrom;
 
     /*
-     * the time that the beginning of data ingestion task will delay for every
-     * data slice according to this offset.
+     * the time that the beginning of data ingestion task will delay for every data slice according to this offset.
      */
     @JsonProperty(value = "startOffsetInSeconds")
     private Long startOffsetInSeconds;
 
     /*
-     * the max concurrency of data ingestion queries against user data source.
-     * 0 means no limitation.
+     * the max concurrency of data ingestion queries against user data source. 0 means no limitation.
      */
     @JsonProperty(value = "maxConcurrency")
     private Integer maxConcurrency;
@@ -113,8 +111,7 @@ public class DataFeedDetail {
     private Long minRetryIntervalInSeconds;
 
     /*
-     * stop retry data ingestion after the data slice first schedule time in
-     * seconds.
+     * stop retry data ingestion after the data slice first schedule time in seconds.
      */
     @JsonProperty(value = "stopRetryAfterInSeconds")
     private Long stopRetryAfterInSeconds;
@@ -214,6 +211,9 @@ public class DataFeedDetail {
      */
     @JsonProperty(value = "credentialId")
     private String credentialId;
+
+    /** Creates an instance of DataFeedDetail class. */
+    public DataFeedDetail() {}
 
     /**
      * Get the dataFeedId property: data feed unique id.
