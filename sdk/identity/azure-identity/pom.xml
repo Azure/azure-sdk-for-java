@@ -13,7 +13,7 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <jacoco.min.branchcoverage>0.28</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.35</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
