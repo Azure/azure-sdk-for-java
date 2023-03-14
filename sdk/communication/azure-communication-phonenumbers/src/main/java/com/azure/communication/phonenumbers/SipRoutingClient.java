@@ -93,7 +93,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SipTrunk> getTrunkWithResponse(String fqdn, Context context) {
-        return client.getSipConfigurationWithResponseAsync(context)
+        return client.getSipRoutings().getWithResponseAsync(context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getTrunks()).stream()
                 .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn())).findAny().orElse(null)))
@@ -141,7 +141,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<SipTrunk>> listTrunksWithResponse(Context context) {
-        return client.getSipConfigurationWithResponseAsync(context)
+        return client.getSipRoutings().getWithResponseAsync(context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getTrunks())))
             .block();
@@ -194,7 +194,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<SipTrunkRoute>> listRoutesWithResponse(Context context) {
-        return client.getSipConfigurationWithResponseAsync(context)
+        return client.getSipRoutings().getWithResponseAsync(context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getRoutes())))
             .block();
@@ -218,7 +218,7 @@ public final class SipRoutingClient {
     public void setTrunk(SipTrunk trunk) {
         Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunks = new HashMap<>();
         trunks.put(trunk.getFqdn(), convertToApi(trunk));
-        client.patchSipConfigurationWithResponseAsync(new SipConfiguration().setTrunks(trunks))
+        client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunks))
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
@@ -285,7 +285,7 @@ public final class SipRoutingClient {
         }
 
         if (!update.getTrunks().isEmpty()) {
-            return client.patchSipConfigurationWithResponseAsync(update, context)
+            return client.getSipRoutings().updateWithResponseAsync(update, context)
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .map(result -> new SimpleResponse<Void>(result, null))
                 .block();
@@ -335,7 +335,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setRoutesWithResponse(List<SipTrunkRoute> routes, Context context) {
-        return client.patchSipConfigurationWithResponseAsync(new SipConfiguration().setRoutes(convertToApi(routes)), context)
+        return client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setRoutes(convertToApi(routes)), context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<Void>(result, null))
             .block();
@@ -364,7 +364,7 @@ public final class SipRoutingClient {
         if (!deletedTrunks.isEmpty()) {
             Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate = new HashMap<>();
             trunksUpdate.put(fqdn, null);
-            client.patchSipConfigurationWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate))
+            client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate))
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .block();
         }
@@ -394,7 +394,7 @@ public final class SipRoutingClient {
         if (!deletedTrunks.isEmpty()) {
             Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate = new HashMap<>();
             trunksUpdate.put(fqdn, null);
-            return client.patchSipConfigurationWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate), context)
+            return client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate), context)
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .map(result -> new SimpleResponse<Void>(result, null)).block();
         }
@@ -402,13 +402,13 @@ public final class SipRoutingClient {
     }
 
     private SipConfiguration getSipConfiguration() {
-        return client.getSipConfigurationAsync()
+        return client.getSipRoutings().getAsync()
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
 
     private SipConfiguration setSipConfiguration(SipConfiguration update) {
-        return client.patchSipConfigurationAsync(update)
+        return client.getSipRoutings().updateAsync(update)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
