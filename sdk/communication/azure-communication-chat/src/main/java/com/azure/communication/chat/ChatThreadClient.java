@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.models.RetentionPolicy;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatMessage;
@@ -105,6 +106,20 @@ public final class ChatThreadClient {
     public Response<Void> updateTopicWithResponse(String topic, Context context) {
 
         return this.client.updateTopic(topic, context).block();
+    }
+
+    /**
+     * Updates a thread's topic.
+     *
+     * @param retentionPolicy The new retention policy.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateTopicWithResponse(RetentionPolicy retentionPolicy, Context context) {
+        return this.client.updateRetentionPolicy(retentionPolicy, context).block();
     }
 
     /**
