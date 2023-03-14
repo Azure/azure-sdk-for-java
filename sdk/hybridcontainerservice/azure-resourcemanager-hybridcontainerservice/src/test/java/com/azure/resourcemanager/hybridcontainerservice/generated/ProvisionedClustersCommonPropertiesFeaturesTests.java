@@ -9,11 +9,10 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ArcAgentProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.AutoUpgradeOptions;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersCommonPropertiesFeatures;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersCommonPropertiesFeaturesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersCommonPropertiesFeatures model =
             BinaryData
                 .fromString("{\"arcAgentProfile\":{\"agentVersion\":\"basyy\",\"agentAutoUpgrade\":\"Disabled\"}}")
@@ -22,8 +21,8 @@ public final class ProvisionedClustersCommonPropertiesFeaturesTests {
         Assertions.assertEquals(AutoUpgradeOptions.DISABLED, model.arcAgentProfile().agentAutoUpgrade());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersCommonPropertiesFeatures model =
             new ProvisionedClustersCommonPropertiesFeatures()
                 .withArcAgentProfile(

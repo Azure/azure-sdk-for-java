@@ -13,64 +13,64 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"type\":\"zxiavrm\",\"name\":\"onok\"},\"location\":\"xrjqcirgzpfrlazs\",\"tags\":{\"wp\":\"woiindf\",\"jvfbgofelja\":\"ylwbtlhflsjcdhsz\"},\"id\":\"rqmq\",\"name\":\"ldvriiiojnalghfk\",\"type\":\"tvsexsowuel\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"hmzk\",\"name\":\"jgwwspughftq\"},\"location\":\"xhqxujxukndxdigr\",\"tags\":{\"fi\":\"ufzdmsyq\",\"phoszqz\":\"whbotzingamv\",\"kfwynw\":\"dphqamv\",\"tnvyqiatkzwp\":\"vtbvkayh\"},\"id\":\"npwzcjaes\",\"name\":\"vvsccyajguq\",\"type\":\"hwyg\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"type\":\"emdwzrmuhapfc\",\"name\":\"psqxq\"},\"location\":\"psvuoymgc\",\"tags\":{\"erqwkyhkobopg\":\"vezrypqlmfeo\"},\"id\":\"edkowepbqpcrfk\",\"name\":\"wccsnjvcdwxlpqek\",\"type\":\"tn\"}],\"nextLink\":\"tjsyin\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"dvwvgpio\",\"name\":\"wxrt\"},\"location\":\"udxepxgyqagv\",\"tags\":{\"wi\":\"npkukghimdblx\",\"rey\":\"fnjhfjxwmszkkfo\",\"elpcirelsfeaenwa\":\"kzikfjawneaivxwc\",\"xbjhwuaanozjosph\":\"fatkld\"},\"id\":\"oulpjrv\",\"name\":\"ag\",\"type\":\"rvimjwosytxitcsk\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"ke\",\"name\":\"ikh\"},\"location\":\"yf\",\"tags\":{\"idb\":\"gqggebdunygae\",\"su\":\"fatpxllrxcyjmoa\",\"wdmjsjqbjhhyx\":\"arm\"},\"id\":\"rw\",\"name\":\"yc\",\"type\":\"duhpk\"},{\"properties\":{\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"ajxq\",\"name\":\"jhkycub\"},\"location\":\"ddg\",\"tags\":{\"i\":\"fwqmzqalkrmn\"},\"id\":\"pxacqqudfn\",\"name\":\"yxbaaabjyvayf\",\"type\":\"imrzrtuzqog\"}],\"nextLink\":\"xnevfdnwn\"}")
                 .toObject(StorageSpacesListResult.class);
-        Assertions.assertEquals("xrjqcirgzpfrlazs", model.value().get(0).location());
-        Assertions.assertEquals("woiindf", model.value().get(0).tags().get("wp"));
-        Assertions.assertEquals("zxiavrm", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("onok", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("tjsyin", model.nextLink());
+        Assertions.assertEquals("udxepxgyqagv", model.value().get(0).location());
+        Assertions.assertEquals("npkukghimdblx", model.value().get(0).tags().get("wi"));
+        Assertions.assertEquals("dvwvgpio", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("wxrt", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("xnevfdnwn", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StorageSpacesListResult model =
             new StorageSpacesListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new StorageSpacesInner()
-                                .withLocation("xrjqcirgzpfrlazs")
-                                .withTags(mapOf("wp", "woiindf", "jvfbgofelja", "ylwbtlhflsjcdhsz"))
-                                .withProperties(new StorageSpacesProperties())
-                                .withExtendedLocation(
-                                    new StorageSpacesExtendedLocation().withType("zxiavrm").withName("onok")),
-                            new StorageSpacesInner()
-                                .withLocation("xhqxujxukndxdigr")
+                                .withLocation("udxepxgyqagv")
                                 .withTags(
                                     mapOf(
-                                        "fi",
-                                        "ufzdmsyq",
-                                        "phoszqz",
-                                        "whbotzingamv",
-                                        "kfwynw",
-                                        "dphqamv",
-                                        "tnvyqiatkzwp",
-                                        "vtbvkayh"))
+                                        "wi",
+                                        "npkukghimdblx",
+                                        "rey",
+                                        "fnjhfjxwmszkkfo",
+                                        "elpcirelsfeaenwa",
+                                        "kzikfjawneaivxwc",
+                                        "xbjhwuaanozjosph",
+                                        "fatkld"))
                                 .withProperties(new StorageSpacesProperties())
                                 .withExtendedLocation(
-                                    new StorageSpacesExtendedLocation().withType("hmzk").withName("jgwwspughftq")),
+                                    new StorageSpacesExtendedLocation().withType("dvwvgpio").withName("wxrt")),
                             new StorageSpacesInner()
-                                .withLocation("psvuoymgc")
-                                .withTags(mapOf("erqwkyhkobopg", "vezrypqlmfeo"))
+                                .withLocation("yf")
+                                .withTags(
+                                    mapOf("idb", "gqggebdunygae", "su", "fatpxllrxcyjmoa", "wdmjsjqbjhhyx", "arm"))
                                 .withProperties(new StorageSpacesProperties())
                                 .withExtendedLocation(
-                                    new StorageSpacesExtendedLocation().withType("emdwzrmuhapfc").withName("psqxq"))))
-                .withNextLink("tjsyin");
+                                    new StorageSpacesExtendedLocation().withType("ke").withName("ikh")),
+                            new StorageSpacesInner()
+                                .withLocation("ddg")
+                                .withTags(mapOf("i", "fwqmzqalkrmn"))
+                                .withProperties(new StorageSpacesProperties())
+                                .withExtendedLocation(
+                                    new StorageSpacesExtendedLocation().withType("ajxq").withName("jhkycub"))))
+                .withNextLink("xnevfdnwn");
         model = BinaryData.fromObject(model).toObject(StorageSpacesListResult.class);
-        Assertions.assertEquals("xrjqcirgzpfrlazs", model.value().get(0).location());
-        Assertions.assertEquals("woiindf", model.value().get(0).tags().get("wp"));
-        Assertions.assertEquals("zxiavrm", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("onok", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("tjsyin", model.nextLink());
+        Assertions.assertEquals("udxepxgyqagv", model.value().get(0).location());
+        Assertions.assertEquals("npkukghimdblx", model.value().get(0).tags().get("wi"));
+        Assertions.assertEquals("dvwvgpio", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("wxrt", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("xnevfdnwn", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")
