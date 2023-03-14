@@ -18,6 +18,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -138,6 +139,10 @@ public final class CosmosClient implements Closeable {
 
     void openConnectionsAndInitCaches() {
         asyncClientWrapper.openConnectionsAndInitCaches();
+    }
+
+    void openConnectionsAndInitCaches(Duration timeout) {
+        asyncClientWrapper.openConnectionsAndInitCaches(timeout);
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {

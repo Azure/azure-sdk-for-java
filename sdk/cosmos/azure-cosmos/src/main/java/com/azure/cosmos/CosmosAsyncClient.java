@@ -7,16 +7,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Permission;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -43,14 +35,12 @@ import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.io.Closeable;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.time.Duration;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -617,35 +607,96 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        blockListVoidResponse(openConnectionsAndInitCachesInternal());
+        blockListVoidResponse(
+                openConnectionsAndInitCachesInternal(new HashSet<>())
+                        .flatMap(tuples -> Mono.just(new ArrayList<>())));
     }
 
-    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
+    void openConnectionsAndInitCaches(Duration timeout) {
+        Set<String> warmedUpContainerLinks = new HashSet<>();
+
+        blockListVoidResponseWithTimeout(
+                openConnectionsAndInitCachesInternal(warmedUpContainerLinks)
+                        .flatMap(tuples -> Mono.just(new ArrayList<>())), timeout);
+
+        openConnectionsInBackground(warmedUpContainerLinks);
+    }
+
+    private Mono<List<Tuple2<CosmosAsyncContainer, Void>>> openConnectionsAndInitCachesInternal(Set<String> warmedUpContainerLinks) {
         int concurrency = 1;
         int prefetch = 1;
+
         if (this.proactiveContainerInitConfig != null) {
             return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
                     .flatMap(
-                        cosmosContainerIdentity -> Mono.just(this
-                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                        concurrency,
-                        prefetch
+                            cosmosContainerIdentity -> Mono.just(this
+                                    .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
+                                    .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
+                            concurrency,
+                            prefetch
                     )
-                    .flatMap(
-                        cosmosAsyncContainer -> cosmosAsyncContainer
-                            .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
-                        concurrency,
-                        prefetch)
+                    .flatMap(cosmosAsyncContainer -> Mono.zip(
+                                    Mono.just(cosmosAsyncContainer),
+                                    cosmosAsyncContainer
+                                            .openConnectionsAndInitCaches(
+                                                    this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()
+                                            )
+                            ),
+                            concurrency,
+                            prefetch
+                    )
+                    .doOnNext(objects -> warmedUpContainerLinks.add(objects.getT1().getLink()))
                     .collectList();
         }
+
         return Mono.empty();
+    }
+
+    private void openConnectionsInBackground(Set<String> warmedUpContainerLinks) {
+
+        int concurrency = 1;
+        int prefetch = 1;
+
+        Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
+                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks
+                        .contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))
+                )
+                .flatMap(
+                        cosmosContainerIdentity -> Mono.just(this
+                                .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
+                                .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
+                        concurrency,
+                        prefetch
+                )
+                .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer
+                                .openConnectionsAndInitCaches(
+                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()
+                                ),
+                        concurrency,
+                        prefetch
+                )
+                .collectList()
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
     }
 
     private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
         try {
             voidListMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(throwable);
+            }
+        }
+    }
+
+    private void blockListVoidResponseWithTimeout(Mono<List<Void>> voidListMono, Duration timeout) {
+        try {
+            voidListMono.block(timeout);
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
 

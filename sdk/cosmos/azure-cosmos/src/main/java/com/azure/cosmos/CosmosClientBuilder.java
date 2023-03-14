@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -127,7 +128,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-
+    private Duration connectionWarmUpTimeout;
     /**
      * Instantiates a new Cosmos client builder.
      */
@@ -698,6 +699,13 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, Duration connectionWarmUpTimeout) {
+        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
+        this.connectionWarmUpTimeout = connectionWarmUpTimeout;
+        return this;
+    }
+
+
     /**
      * Gets the GATEWAY connection configuration to be used.
      *
@@ -850,7 +858,11 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
-        cosmosAsyncClient.openConnectionsAndInitCaches();
+        if (connectionWarmUpTimeout != null) {
+            cosmosAsyncClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
+        } else {
+            cosmosAsyncClient.openConnectionsAndInitCaches();
+        }
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;
     }
@@ -866,7 +878,11 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
-        cosmosClient.openConnectionsAndInitCaches();
+        if (connectionWarmUpTimeout != null) {
+            cosmosClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
+        } else {
+            cosmosClient.openConnectionsAndInitCaches();
+        }
         logStartupInfo(stopwatch, cosmosClient.asyncClient());
         return cosmosClient;
     }
