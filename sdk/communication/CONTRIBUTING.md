@@ -53,6 +53,10 @@ If you are testing against a personal resource, you can check the [Managed Ident
 
 For a more in-depth look on how to authenticate using managed identity, refer to the [Azure Identity client library for Java](https://docs.microsoft.com/java/api/overview/azure/identity-readme) documentation. This document also has more ways for you to authenticate using the DefaultAzureCredential object besides the ones we discussed in this contributing file.
 
+### Running the New-TestResources and Remove-TestResources Scripts
+
+You may want to run the `New-TestResources.ps1` or `Remove-TestResources.ps1` scripts to test resource deployments in the SDK Live Test pipelines locally. You will need to add the additional `-TestResourceDirectories` parameter when running these scripts. If you are using the shared `test-resources.json` you can point to `communication/test-resources/`. If you are using a custom `test-resources.json`, you can point to `communication/<package-name>/test-resources.json`.
+
 ### Samples and building
 
 As your code changes, the samples inside the `samples` folder should also change. The README file extracts code from the samples to avoid duplicated code. For a more in-depth look on how to extract the code from the samples into the README file, check this [guide](https://github.com/Azure/azure-sdk-for-java/wiki/Building#code-snippets-in-readme)
