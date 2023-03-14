@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -63,7 +64,10 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
             if (openConnectionsSemaphore.tryAcquire(timeout, TimeUnit.MINUTES)) {
                 return Mono.just(addressUri.getURI())
                         .flatMap(address -> {
+
                             RntbdEndpoint endpoint = endpointProvider.get(address);
+                            OpenConnectionRntbdRequestRecord openConnectionRequestRecord =
+                                    endpoint.openConnection(addressUri);
 
                             return Mono.fromFuture(endpoint.openConnection(addressUri))
                                     .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
@@ -72,7 +76,13 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                             logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
                                         }
                                     })
-                                    .doOnTerminate(() -> openConnectionsSemaphore.release());
+                                    .doFinally(signalType -> {
+                                        if (signalType.equals(SignalType.CANCEL)) {
+                                            openConnectionRequestRecord.cancel(true);
+                                        }
+
+                                        openConnectionsSemaphore.release();
+                                    });
                         });
             }
         } catch (InterruptedException e) {
