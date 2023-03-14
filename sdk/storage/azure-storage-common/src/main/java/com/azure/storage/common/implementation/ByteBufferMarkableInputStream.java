@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Wraps a {@link ByteBuffer} for access via the {@link InputStream} API.
@@ -15,7 +16,7 @@ public class ByteBufferMarkableInputStream extends InputStream {
     private final ByteBuffer bb;
 
     public ByteBufferMarkableInputStream(ByteBuffer buffer) {
-        bb = buffer;
+        bb = Objects.requireNonNull(buffer);
     }
 
     @Override

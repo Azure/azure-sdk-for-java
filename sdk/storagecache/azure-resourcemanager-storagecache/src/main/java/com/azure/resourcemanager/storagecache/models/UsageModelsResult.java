@@ -9,11 +9,11 @@ import com.azure.resourcemanager.storagecache.fluent.models.UsageModelInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Cache usage models. */
+/** A list of cache usage models. */
 @Fluent
 public final class UsageModelsResult {
     /*
-     * The URI to fetch the next page of Cache usage models.
+     * The URI to fetch the next page of cache usage models.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -29,7 +29,7 @@ public final class UsageModelsResult {
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of Cache usage models.
+     * Get the nextLink property: The URI to fetch the next page of cache usage models.
      *
      * @return the nextLink value.
      */
@@ -38,7 +38,7 @@ public final class UsageModelsResult {
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of Cache usage models.
+     * Set the nextLink property: The URI to fetch the next page of cache usage models.
      *
      * @param nextLink the nextLink value to set.
      * @return the UsageModelsResult object itself.

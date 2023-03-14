@@ -29,6 +29,9 @@ public final class DetectionAnomalyResultQuery {
     @JsonProperty(value = "filter")
     private DetectionAnomalyFilterCondition filter;
 
+    /** Creates an instance of DetectionAnomalyResultQuery class. */
+    public DetectionAnomalyResultQuery() {}
+
     /**
      * Get the startTime property: start time.
      *

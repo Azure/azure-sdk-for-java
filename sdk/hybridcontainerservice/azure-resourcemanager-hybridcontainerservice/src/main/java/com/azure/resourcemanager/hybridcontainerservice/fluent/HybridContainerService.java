@@ -80,16 +80,16 @@ public interface HybridContainerService {
     OperationsClient getOperations();
 
     /**
-     * Gets the VirtualNetworksOperationsClient object to access its operations.
-     *
-     * @return the VirtualNetworksOperationsClient object.
-     */
-    VirtualNetworksOperationsClient getVirtualNetworksOperations();
-
-    /**
      * Gets the StorageSpacesOperationsClient object to access its operations.
      *
      * @return the StorageSpacesOperationsClient object.
      */
     StorageSpacesOperationsClient getStorageSpacesOperations();
+
+    /**
+     * Gets the VirtualNetworksOperationsClient object to access its operations.
+     *
+     * @return the VirtualNetworksOperationsClient object.
+     */
+    VirtualNetworksOperationsClient getVirtualNetworksOperations();
 }

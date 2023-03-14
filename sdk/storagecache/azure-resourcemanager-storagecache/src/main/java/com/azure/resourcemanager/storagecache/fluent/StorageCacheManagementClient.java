@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for StorageCacheManagementClient class. */
 public interface StorageCacheManagementClient {
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -100,4 +99,18 @@ public interface StorageCacheManagementClient {
      * @return the StorageTargetOperationsClient object.
      */
     StorageTargetOperationsClient getStorageTargetOperations();
+
+    /**
+     * Gets the AmlFilesystemsClient object to access its operations.
+     *
+     * @return the AmlFilesystemsClient object.
+     */
+    AmlFilesystemsClient getAmlFilesystems();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
 }
