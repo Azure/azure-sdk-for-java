@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.ConnectionString;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
@@ -27,7 +26,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner
 import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
