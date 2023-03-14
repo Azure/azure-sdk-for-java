@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.ConnectionString;
@@ -102,14 +103,12 @@ abstract class DeploymentSlotBaseImpl<
     }
 
     public Mono<PublishingProfile> getPublishingProfileAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .listPublishingProfileXmlWithSecretsSlotAsync(
-                        resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptions()))
-            .map(bytes -> new PublishingProfileImpl(new String(bytes, StandardCharsets.UTF_8), this));
+        return manager()
+            .serviceClient()
+            .getWebApps()
+            .listPublishingProfileXmlWithSecretsSlotAsync(
+                resourceGroupName(), this.parent().name(), name(), new CsmPublishingProfileOptions())
+            .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
     }
 
     @Override
@@ -426,12 +425,11 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .getWebSiteContainerLogsSlotAsync(resourceGroupName(), parent().name(), name()));
+        return manager()
+            .serviceClient()
+            .getWebApps()
+            .getWebSiteContainerLogsSlotAsync(resourceGroupName(), parent().name(), name())
+            .map(BinaryData::toBytes);
     }
 
     @Override
@@ -441,10 +439,9 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsZipAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager().serviceClient().getWebApps()
-                    .getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name()));
+        return manager().serviceClient().getWebApps()
+            .getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name())
+            .map(BinaryData::toBytes);
     }
 
     @Override
