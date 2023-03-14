@@ -229,4 +229,131 @@ public final class LogsQueryClient {
         return asyncClient.queryBatchWithResponse(logsBatchQuery, context).block();
     }
 
+    /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     *
+     * <p><strong>Query logs from the last 24 hours</strong></p>
+     *
+     * <!-- src_embed com.azure.monitor.query.LogsQueryClient.queryResource#String-String-QueryTimeInterval -->
+     * <pre>
+     * LogsQueryResult queryResult = logsQueryClient.queryResource&#40;&quot;&#123;resource-id&#125;&quot;, &quot;&#123;kusto-query&#125;&quot;,
+     *     QueryTimeInterval.LAST_DAY&#41;;
+     * for &#40;LogsTableRow row : queryResult.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;row.getRow&#40;&#41;
+     *         .stream&#40;&#41;
+     *         .map&#40;LogsTableCell::getValueAsString&#41;
+     *         .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryClient.queryResource#String-String-QueryTimeInterval -->
+     * @param resourceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @return The logs matching the query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogsQueryResult queryResource(String resourceId, String query, QueryTimeInterval timeInterval) {
+        return asyncClient.queryResource(resourceId, query, timeInterval).block();
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param resourceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param <T> The type the result of this query should be mapped to.
+     * @return The logs matching the query as a list of objects of type T.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
+        LogsQueryResult logsQueryResult = asyncClient.queryResource(resourceId, query, timeInterval).block();
+        if (logsQueryResult != null) {
+            return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
+        }
+        return null;
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     * @param resourceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @param <T> The type the result of this query should be mapped to.
+     * @return The logs matching the query as a list of objects of type T.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval,
+                                      Class<T> type, LogsQueryOptions options) {
+        LogsQueryResult logsQueryResult = queryResourceWithResponse(resourceId, query, timeInterval, options, Context.NONE)
+            .getValue();
+        if (logsQueryResult != null) {
+            return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
+        }
+        return null;
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     *
+     * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
+     *
+     * <!-- src_embed com.azure.monitor.query.LogsQueryClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context -->
+     * <pre>
+     * Response&lt;LogsQueryResult&gt; queryResult = logsQueryClient.queryResourceWithResponse&#40;&quot;&#123;resource-id&#125;&quot;,
+     *     &quot;&#123;kusto-query&#125;&quot;,
+     *     QueryTimeInterval.LAST_7_DAYS,
+     *     new LogsQueryOptions&#40;&#41;.setServerTimeout&#40;Duration.ofMinutes&#40;2&#41;&#41;,
+     *     Context.NONE&#41;;
+     *
+     * for &#40;LogsTableRow row : queryResult.getValue&#40;&#41;.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;row.getRow&#40;&#41;
+     *         .stream&#40;&#41;
+     *         .map&#40;LogsTableCell::getValueAsString&#41;
+     *         .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context -->
+     * @param resourceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @param context Additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
+     * @return The logs matching the query including the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogsQueryResult> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
+                                                                LogsQueryOptions options, Context context) {
+        return asyncClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context).block();
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     *
+     * @param resourceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param <T> The type the result of this query should be mapped to.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @param context Additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
+     * @return The logs matching the query including the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Response<List<T>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
+                                                            Class<T> type, LogsQueryOptions options, Context context) {
+        return asyncClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context)
+            .map(response -> new SimpleResponse<>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(),
+                LogsQueryHelper.toObject(response.getValue().getTable(), type)))
+            .block();
+    }
+
 }
