@@ -241,6 +241,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @Test
+    @DoNotRecord
     public void singleAuthenticationPerBuilder() {
         ConfigurationClientBuilder builderWithConnectionString = new ConfigurationClientBuilder()
             .connectionString(FAKE_CONNECTION_STRING);
