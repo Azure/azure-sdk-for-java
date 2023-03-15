@@ -118,7 +118,7 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateTopicWithResponse(RetentionPolicy retentionPolicy, Context context) {
+    public Response<Void> updateRetentionPolicyWithResponse(RetentionPolicy retentionPolicy, Context context) {
         return this.client.updateRetentionPolicy(retentionPolicy, context).block();
     }
 
