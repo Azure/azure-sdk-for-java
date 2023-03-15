@@ -7,10 +7,19 @@ package com.azure.spring.cloud.appconfiguration.config;
  */
 public enum AppConfigurationStoreHealth {
     
+    /**
+     * The last connection to the App Configuration store was successful.
+     */
     UP("UP"),
     
+    /**
+     * The last connection to the App Configuration store was unsuccessful.
+     */
     DOWN("DOWN"),
     
+    /**
+     * Store is configured but disabled.
+     */
     NOT_LOADED("NOT_LOADED");
     
     private final String text;
