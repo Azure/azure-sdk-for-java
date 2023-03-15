@@ -15,10 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -70,25 +67,30 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             OpenConnectionRntbdRequestRecord openConnectionRequestRecord =
                                     endpoint.openConnection(addressUri);
 
-                            int minChannelsPerEndpoint = RntbdEndpoint.MIN_CHANNELS_PER_ENDPOINT;
-                            int endpointChannels = endpoint.channelsMetrics();
+                            int minChannelsCountPerEndpoint = RntbdEndpoint.MIN_CHANNELS_PER_ENDPOINT;
+                            int endpointChannelsCount = endpoint.channelsMetrics();
 
-                            return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(addressUri)))
-                                    .repeat(minChannelsPerEndpoint - endpointChannels - 1)
-                                    .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
-                                    .doOnNext(response -> {
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
-                                        }
-                                    })
-                                    .doFinally(signalType -> {
-                                        if (signalType.equals(SignalType.CANCEL)) {
-                                            openConnectionRequestRecord.cancel(true);
-                                        }
+                            if (minChannelsCountPerEndpoint > endpointChannelsCount) {
+                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(addressUri)))
+                                        .repeat(minChannelsCountPerEndpoint - endpointChannelsCount - 1)
+                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                        .doOnNext(response -> {
+                                            if (logger.isDebugEnabled()) {
+                                                logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
+                                            }
+                                        })
+                                        .doFinally(signalType -> {
+                                            if (signalType.equals(SignalType.CANCEL)) {
+                                                openConnectionRequestRecord.cancel(true);
+                                            }
 
-                                        openConnectionsSemaphore.release();
-                                    })
-                                    .collectList();
+                                            openConnectionsSemaphore.release();
+                                        })
+                                        .collectList();
+                            } else {
+                                openConnectionsSemaphore.release();
+                                return Mono.just(new ArrayList<>());
+                            }
                         });
             }
         } catch (InterruptedException e) {
@@ -113,7 +115,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode) {
+    public Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses, String openConnectionsConcurrencyMode) {
 
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
@@ -124,7 +126,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         }
 
         return Flux.fromIterable(addresses)
-                .flatMap(addressUri -> this.openConnection(serviceEndpoint, addressUri, semaphoreSettingsMode));
+                .flatMap(addressUri -> this.openConnection(serviceEndpoint, addressUri, openConnectionsConcurrencyMode));
     }
 
     private static final class SemaphoreSettings {

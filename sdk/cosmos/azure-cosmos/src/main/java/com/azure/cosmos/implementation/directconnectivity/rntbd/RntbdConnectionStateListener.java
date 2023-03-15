@@ -28,8 +28,6 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
-    private final Integer minChannelPoolPerEndpoint = 1;
-    private final Semaphore openProactiveConnectionsSemaphore;
 
     // endregion
 
@@ -40,11 +38,6 @@ public class RntbdConnectionStateListener {
         this.rntbdOpenConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
-        // only allow 1 permit since we do not need a high no. of permits
-        // to open connections on a single endpoint
-        // also a semaphore can help in the case of concurrent channel-related
-        // exceptions
-        this.openProactiveConnectionsSemaphore = new Semaphore(1);
     }
 
     // endregion
