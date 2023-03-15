@@ -43,6 +43,8 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.keyvault/com.azure.resourcemanager.keyvault=ALL-UNNAMED
+
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -79,6 +81,17 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
       <version>4.5.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-administration</artifactId>
+      <version>4.2.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
