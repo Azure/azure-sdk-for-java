@@ -80,7 +80,7 @@ abstract class AsyncBenchmark<T> {
 
         logger = LoggerFactory.getLogger(this.getClass());
         configuration = cfg;
-        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
@@ -90,18 +90,26 @@ abstract class AsyncBenchmark<T> {
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
 
+        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
+            logger.info("USING AZURE METRIC REGISTRY");
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
                 .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
             cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
-        }
+        } else {
+            registry = configuration.getGraphiteMeterRegistry();
 
-        registry = configuration.getGraphiteMeterRegistry();
-
-        if (registry != null) {
-            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
-                .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
-            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+            if (registry != null) {
+                logger.info("USING GRAPHITE METRIC REGISTRY");
+                CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                    .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
+                cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+            } else {
+                logger.info("USING DEFAULT?GLOBAL METRIC REGISTRY");
+                CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                    .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(null));
+                cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+            }
         }
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
