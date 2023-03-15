@@ -26,7 +26,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static com.azure.monitor.ingestion.implementation.Utils.MAX_REQUEST_PAYLOAD_SIZE;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
+import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
  *  Provides iterator and streams for batches over log objects.
@@ -106,7 +108,7 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
             Object currentLog = iterator.next();
             byte[] bytes = serializer.serializeToBytes(currentLog);
             currentBatchSize += bytes.length;
-            if (currentBatchSize > Utils.MAX_REQUEST_PAYLOAD_SIZE) {
+            if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
                 result = createRequest(false);
                 currentBatchSize = bytes.length;
             }
@@ -125,23 +127,24 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        try (JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream)) {
+        JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
+        try {
             generator.writeStartArray();
             generator.writeRaw(serializedLogs.stream().collect(Collectors.joining(",")));
             generator.writeEndArray();
+
+            byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
+
+            return new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
+        } finally {
+            generator.close();
+            byteArrayOutputStream.close();
+
+            if (!last) {
+                originalLogsRequest = new ArrayList<>();
+                serializedLogs.clear();
+            }
         }
-
-        byte[] zippedRequestBody = Utils.gzipRequest(byteArrayOutputStream.toByteArray());
-
-        LogsIngestionRequest request = new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
-
-        if (!last) {
-            originalLogsRequest = new ArrayList<>();
-            serializedLogs.clear();
-        }
-
-        return request;
     }
 
     private static ObjectSerializer getSerializer(LogsUploadOptions options) {
