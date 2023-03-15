@@ -37,6 +37,7 @@ public class TracingInfoTest {
         assertEquals("RequestType=Startup,ReplicaCount=1", tracingInfo.getValue(false));
 
         tracingInfo = new TracingInfo(false, false, 0, configuration);
+
         tracingInfo.getFeatureFlagTracing().updateFeatureFilterTelemetry("Random");
         assertEquals("RequestType=Startup,Filter=CSTM", tracingInfo.getValue(false));
     }

@@ -269,6 +269,29 @@ class AppConfigurationRefreshUtil {
         return watchedKeySize;
     }
 
+    private static int checkFeatureFlags(List<ConfigurationSetting> currentKeys, State state,
+        AppConfigurationReplicaClient client, RefreshEventData eventData) {
+        int watchedKeySize = 0;
+        for (ConfigurationSetting currentKey : currentKeys) {
+            if (currentKey instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(currentKey.getContentType())) {
+
+                watchedKeySize += 1;
+                for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
+
+                    // If there is no result, etag will be considered empty.
+                    // A refresh will trigger once the selector returns a value.
+                    if (compairKeys(watchFlag, currentKey, client.getEndpoint(), eventData)) {
+                        if (eventData.getDoRefresh()) {
+                            return watchedKeySize;
+                        }
+                    }
+                }
+            }
+        }
+        return watchedKeySize;
+    }
+
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
         FeatureFlagStore featureStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
         List<String> profiles) throws AppConfigurationStatusException {
