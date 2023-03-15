@@ -6,36 +6,42 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRecoveryPoint;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareRecoveryPointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureFileShareRecoveryPoint model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"ceacvlhvygdy\",\"recoveryPointTime\":\"2021-04-02T04:25:09Z\",\"fileShareSnapshotUri\":\"rtwnawjslbi\",\"recoveryPointSizeInGB\":1632414232}")
+                    "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"ceacvlhvygdy\",\"recoveryPointTime\":\"2021-04-02T04:25:09Z\",\"fileShareSnapshotUri\":\"rtwnawjslbi\",\"recoveryPointSizeInGB\":1632414232,\"recoveryPointProperties\":{\"expiryTime\":\"cyztsfmznbaeqp\",\"ruleName\":\"hqnrn\"}}")
                 .toObject(AzureFileShareRecoveryPoint.class);
         Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
         Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
         Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("cyztsfmznbaeqp", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("hqnrn", model.recoveryPointProperties().ruleName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureFileShareRecoveryPoint model =
             new AzureFileShareRecoveryPoint()
                 .withRecoveryPointType("ceacvlhvygdy")
                 .withRecoveryPointTime(OffsetDateTime.parse("2021-04-02T04:25:09Z"))
                 .withFileShareSnapshotUri("rtwnawjslbi")
-                .withRecoveryPointSizeInGB(1632414232);
+                .withRecoveryPointSizeInGB(1632414232)
+                .withRecoveryPointProperties(
+                    new RecoveryPointProperties().withExpiryTime("cyztsfmznbaeqp").withRuleName("hqnrn"));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRecoveryPoint.class);
         Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
         Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
         Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("cyztsfmznbaeqp", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("hqnrn", model.recoveryPointProperties().ruleName());
     }
 }

@@ -12,11 +12,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupResourceVaultConfigTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupResourceVaultConfig model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class BackupResourceVaultConfigTests {
         Assertions.assertEquals(true, model.isSoftDeleteFeatureStateEditable());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupResourceVaultConfig model =
             new BackupResourceVaultConfig()
                 .withStorageModelType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)

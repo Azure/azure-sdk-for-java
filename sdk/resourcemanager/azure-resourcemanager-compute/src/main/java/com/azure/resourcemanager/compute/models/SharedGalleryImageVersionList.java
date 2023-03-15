@@ -26,6 +26,10 @@ public final class SharedGalleryImageVersionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SharedGalleryImageVersionList class. */
+    public SharedGalleryImageVersionList() {
+    }
+
     /**
      * Get the value property: A list of shared gallery images versions.
      *

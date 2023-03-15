@@ -196,7 +196,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer
         CertificateIssuer issuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
-            .setPassword("temp2");
+            .setPassword("fakePasswordPlaceholder");
         certificateAsyncClient.createIssuer(issuer)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
@@ -208,7 +208,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer
         CertificateIssuer newIssuer = new CertificateIssuer("issuerName", "providerName")
             .setAccountId("keyvaultuser")
-            .setPassword("temp2");
+            .setPassword("fakePasswordPlaceholder");
         certificateAsyncClient.createIssuerWithResponse(newIssuer)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {

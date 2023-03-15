@@ -1,14 +1,39 @@
 ## Release History
 
-### 3.30.0-beta.1 (Unreleased)
+### 3.33.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Bug fixed in `ReactiveCosmosTemplate` where returning a Flux<JsonNode> was causing an error - See [PR 33730](https://github.com/Azure/azure-sdk-for-java/pull/33730)
 
 #### Other Changes
+
+### 3.32.0 (2023-02-17)
+
+#### Features Added
+* Added support for multi-tenancy at the Container level via `CosmosFactory` - See [PR 33400](https://github.com/Azure/azure-sdk-for-java/pull/33400)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.41.0`.
+* Updated `Spring Boot` to version `2.7.8`.
+* Updated `Spring Data Commons` to version `2.7.7`.
+
+### 3.31.0 (2023-01-13)
+#### Features Added
+* Added support for multi-tenancy at the Database level via `CosmosFactory` - See [PR 32516](https://github.com/Azure/azure-sdk-for-java/pull/32516)
+* Added support for Patch API in `CosmosRepository` and `ReactiveCosmosRepository` - See [PR 32630](https://github.com/Azure/azure-sdk-for-java/pull/32630)
+
+### Other Changes
+* Updated `azure-cosmos` to version `4.40.0`.
+* Updated `Spring Boot` to version `2.7.7`.
+* Updated `Spring Data Commons` to version `2.7.6`.
+
+### 3.30.0 (2022-11-16)
+### Other Changes
+* Updated `azure-cosmos` to version `4.39.0`.
 
 ### 3.29.1 (2022-10-21)
 #### Bugs Fixed

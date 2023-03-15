@@ -17,22 +17,20 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphWorkbookTableSort extends MicrosoftGraphEntity {
     /*
-     * Represents the current conditions used to last sort the table.
-     * Read-only.
+     * Represents the current conditions used to last sort the table. Read-only.
      */
     @JsonProperty(value = "fields")
     private List<MicrosoftGraphWorkbookSortField> fields;
 
     /*
-     * Represents whether the casing impacted the last sort of the table.
-     * Read-only.
+     * Represents whether the casing impacted the last sort of the table. Read-only.
      */
     @JsonProperty(value = "matchCase")
     private Boolean matchCase;
 
     /*
-     * Represents Chinese character ordering method last used to sort the
-     * table. The possible values are: PinYin, StrokeCount. Read-only.
+     * Represents Chinese character ordering method last used to sort the table. The possible values are: PinYin,
+     * StrokeCount. Read-only.
      */
     @JsonProperty(value = "method")
     private String method;
@@ -41,6 +39,10 @@ public final class MicrosoftGraphWorkbookTableSort extends MicrosoftGraphEntity 
      * workbookTableSort
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookTableSort class. */
+    public MicrosoftGraphWorkbookTableSort() {
+    }
 
     /**
      * Get the fields property: Represents the current conditions used to last sort the table. Read-only.

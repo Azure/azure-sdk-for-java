@@ -17,6 +17,10 @@ public class GremlinDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of GremlinDatabaseResource class. */
+    public GremlinDatabaseResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB Gremlin database.
      *

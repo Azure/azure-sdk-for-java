@@ -59,7 +59,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAlerts")
-    private interface AlertsSuppressionRulesService {
+    public interface AlertsSuppressionRulesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules")
         @ExpectedResponses({200})
@@ -397,20 +397,6 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
      *
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertsSuppressionRuleInner get(String alertsSuppressionRuleName) {
-        return getAsync(alertsSuppressionRuleName).block();
-    }
-
-    /**
-     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -421,6 +407,20 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertsSuppressionRuleInner> getWithResponse(String alertsSuppressionRuleName, Context context) {
         return getWithResponseAsync(alertsSuppressionRuleName, context).block();
+    }
+
+    /**
+     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertsSuppressionRuleInner get(String alertsSuppressionRuleName) {
+        return getWithResponse(alertsSuppressionRuleName, Context.NONE).getValue();
     }
 
     /**
@@ -551,22 +551,6 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      *
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertsSuppressionRuleInner update(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
-        return updateAsync(alertsSuppressionRuleName, alertsSuppressionRule).block();
-    }
-
-    /**
-     * Update existing rule or create new rule if it doesn't exist.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param alertsSuppressionRule Suppression rule object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -577,6 +561,22 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     public Response<AlertsSuppressionRuleInner> updateWithResponse(
         String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
         return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule, context).block();
+    }
+
+    /**
+     * Update existing rule or create new rule if it doesn't exist.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param alertsSuppressionRule Suppression rule object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the suppression rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertsSuppressionRuleInner update(
+        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
+        return updateWithResponse(alertsSuppressionRuleName, alertsSuppressionRule, Context.NONE).getValue();
     }
 
     /**
@@ -685,19 +685,6 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * Delete dismiss alert rule for this subscription.
      *
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String alertsSuppressionRuleName) {
-        deleteAsync(alertsSuppressionRuleName).block();
-    }
-
-    /**
-     * Delete dismiss alert rule for this subscription.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -707,6 +694,19 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context) {
         return deleteWithResponseAsync(alertsSuppressionRuleName, context).block();
+    }
+
+    /**
+     * Delete dismiss alert rule for this subscription.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String alertsSuppressionRuleName) {
+        deleteWithResponse(alertsSuppressionRuleName, Context.NONE);
     }
 
     /**

@@ -41,6 +41,10 @@ public final class GalleryTargetExtendedLocation {
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
 
+    /** Creates an instance of GalleryTargetExtendedLocation class. */
+    public GalleryTargetExtendedLocation() {
+    }
+
     /**
      * Get the name property: The name of the region.
      *

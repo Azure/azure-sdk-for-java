@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkServices DeletePrivateEndpointConnection. */
 public final class PrivateLinkServicesDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateLinkServiceDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: delete private end point connection for a private link service.
@@ -23,6 +21,6 @@ public final class PrivateLinkServicesDeletePrivateEndpointConnectionSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkServices()
-            .deletePrivateEndpointConnection("rg1", "testPls", "testPlePeConnection", Context.NONE);
+            .deletePrivateEndpointConnection("rg1", "testPls", "testPlePeConnection", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
 import com.azure.resourcemanager.recoveryservicesbackup.models.Job;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Job model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class JobTests {
         Assertions.assertEquals("vo", model.activityId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Job model =
             new Job()
                 .withEntityFriendlyName("rqhakauha")

@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * policyBase Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * policyBase
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner {
@@ -32,10 +34,14 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
     private String displayName;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPolicyBase class. */
+    public MicrosoftGraphPolicyBase() {
+    }
 
     /**
      * Get the description property: Description for this policy.

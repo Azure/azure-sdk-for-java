@@ -22,15 +22,13 @@ public final class MicrosoftGraphPersonOrGroupColumn {
     private Boolean allowMultipleSelection;
 
     /*
-     * Whether to allow selection of people only, or people and groups. Must be
-     * one of peopleAndGroups or peopleOnly.
+     * Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
      */
     @JsonProperty(value = "chooseFromType")
     private String chooseFromType;
 
     /*
-     * How to display the information about the person or group chosen. See
-     * below.
+     * How to display the information about the person or group chosen. See below.
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
@@ -39,6 +37,10 @@ public final class MicrosoftGraphPersonOrGroupColumn {
      * personOrGroupColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPersonOrGroupColumn class. */
+    public MicrosoftGraphPersonOrGroupColumn() {
+    }
 
     /**
      * Get the allowMultipleSelection property: Indicates whether multiple values can be selected from the source.

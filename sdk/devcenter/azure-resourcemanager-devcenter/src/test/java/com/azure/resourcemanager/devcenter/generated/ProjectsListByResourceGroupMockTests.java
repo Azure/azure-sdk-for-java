@@ -33,7 +33,7 @@ public final class ProjectsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"auorsukokw\",\"devCenterId\":\"plhlvnuuepzlrp\",\"description\":\"zsoldwey\"},\"location\":\"dunvmnnrwrbiorkt\",\"tags\":{\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\",\"s\":\"zaofjchvcyy\",\"onmacjekniz\":\"gdotcubiipuipwo\"},\"id\":\"hqvcimpevfgmblr\",\"name\":\"ilbywdxsm\",\"type\":\"ccwr\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"devCenterUri\":\"yhko\",\"devCenterId\":\"pg\",\"description\":\"dkow\"},\"location\":\"bqpc\",\"tags\":{\"ftnkhtj\":\"bwccsnjvcdwxlpqe\",\"ngwfqatm\":\"y\"},\"id\":\"dhtmdvypgikd\",\"name\":\"szywkbirryu\",\"type\":\"hlhkjoqrvqqaatj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,11 @@ public final class ProjectsListByResourceGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response =
-            manager.projects().listByResourceGroup("bjcrxgibbdaxco", 456255387, Context.NONE);
+        PagedIterable<Project> response = manager.projects().listByResourceGroup("rypqlmfeo", 1181848977, Context.NONE);
 
-        Assertions.assertEquals("dunvmnnrwrbiorkt", response.iterator().next().location());
-        Assertions.assertEquals("wjhhgdnhxmsivf", response.iterator().next().tags().get("miloxggdufiqndie"));
-        Assertions.assertEquals("plhlvnuuepzlrp", response.iterator().next().devCenterId());
-        Assertions.assertEquals("zsoldwey", response.iterator().next().description());
+        Assertions.assertEquals("bqpc", response.iterator().next().location());
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", response.iterator().next().tags().get("ftnkhtj"));
+        Assertions.assertEquals("pg", response.iterator().next().devCenterId());
+        Assertions.assertEquals("dkow", response.iterator().next().description());
     }
 }

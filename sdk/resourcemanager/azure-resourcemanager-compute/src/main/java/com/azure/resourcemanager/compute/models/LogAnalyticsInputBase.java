@@ -60,6 +60,10 @@ public class LogAnalyticsInputBase {
     @JsonProperty(value = "groupByUserAgent")
     private Boolean groupByUserAgent;
 
+    /** Creates an instance of LogAnalyticsInputBase class. */
+    public LogAnalyticsInputBase() {
+    }
+
     /**
      * Get the blobContainerSasUri property: SAS Uri of the logging blob container to which LogAnalytics Api writes
      * output logs to.

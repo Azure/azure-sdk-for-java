@@ -266,4 +266,9 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         this.innerModel().withDataSet(dataSet);
         return this;
     }
+
+    public ViewImpl withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        this.innerModel().withIncludeMonetaryCommitment(includeMonetaryCommitment);
+        return this;
+    }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Disable this IT in China cloud, because it can't provision MySQL resource in China cloud with test subscription.
- * Running test only on 1.1, 4.1, 7.1, 11.1 every year.
+ * This test will resume running after 2023-08-20 .
  */
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)

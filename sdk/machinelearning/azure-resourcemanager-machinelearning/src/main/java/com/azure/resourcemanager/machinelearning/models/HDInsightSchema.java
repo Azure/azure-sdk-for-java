@@ -16,6 +16,10 @@ public class HDInsightSchema {
     @JsonProperty(value = "properties")
     private HDInsightProperties properties;
 
+    /** Creates an instance of HDInsightSchema class. */
+    public HDInsightSchema() {
+    }
+
     /**
      * Get the properties property: HDInsight compute properties.
      *

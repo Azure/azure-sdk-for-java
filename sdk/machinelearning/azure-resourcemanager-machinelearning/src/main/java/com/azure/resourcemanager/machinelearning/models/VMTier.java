@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMTier. */
+/**
+ * VM tier
+ *
+ * <p>The type of the VM.
+ */
 public final class VMTier extends ExpandableStringEnum<VMTier> {
     /** Static value Standard for VMTier. */
     public static final VMTier STANDARD = fromString("Standard");
@@ -18,6 +22,15 @@ public final class VMTier extends ExpandableStringEnum<VMTier> {
 
     /** Static value Spot for VMTier. */
     public static final VMTier SPOT = fromString("Spot");
+
+    /**
+     * Creates a new instance of VMTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMTier() {
+    }
 
     /**
      * Creates or finds a VMTier from its string representation.

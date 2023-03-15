@@ -55,7 +55,8 @@ public class StoreResultDiagnosticsSerializerTests {
                 1,
                 1,
                 null,
-                0.3);
+                0.3,
+                90.0);
 
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);

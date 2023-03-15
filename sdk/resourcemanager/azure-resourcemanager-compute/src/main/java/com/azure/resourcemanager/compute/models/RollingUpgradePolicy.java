@@ -56,6 +56,23 @@ public final class RollingUpgradePolicy {
     @JsonProperty(value = "prioritizeUnhealthyInstances")
     private Boolean prioritizeUnhealthyInstances;
 
+    /*
+     * Rollback failed instances to previous model if the Rolling Upgrade policy is violated.
+     */
+    @JsonProperty(value = "rollbackFailedInstancesOnPolicyBreach")
+    private Boolean rollbackFailedInstancesOnPolicyBreach;
+
+    /*
+     * Create new virtual machines to upgrade the scale set, rather than updating the existing virtual machines.
+     * Existing virtual machines will be deleted once the new virtual machines are created for each batch.
+     */
+    @JsonProperty(value = "maxSurge")
+    private Boolean maxSurge;
+
+    /** Creates an instance of RollingUpgradePolicy class. */
+    public RollingUpgradePolicy() {
+    }
+
     /**
      * Get the maxBatchInstancePercent property: The maximum percent of total virtual machine instances that will be
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in
@@ -197,6 +214,53 @@ public final class RollingUpgradePolicy {
      */
     public RollingUpgradePolicy withPrioritizeUnhealthyInstances(Boolean prioritizeUnhealthyInstances) {
         this.prioritizeUnhealthyInstances = prioritizeUnhealthyInstances;
+        return this;
+    }
+
+    /**
+     * Get the rollbackFailedInstancesOnPolicyBreach property: Rollback failed instances to previous model if the
+     * Rolling Upgrade policy is violated.
+     *
+     * @return the rollbackFailedInstancesOnPolicyBreach value.
+     */
+    public Boolean rollbackFailedInstancesOnPolicyBreach() {
+        return this.rollbackFailedInstancesOnPolicyBreach;
+    }
+
+    /**
+     * Set the rollbackFailedInstancesOnPolicyBreach property: Rollback failed instances to previous model if the
+     * Rolling Upgrade policy is violated.
+     *
+     * @param rollbackFailedInstancesOnPolicyBreach the rollbackFailedInstancesOnPolicyBreach value to set.
+     * @return the RollingUpgradePolicy object itself.
+     */
+    public RollingUpgradePolicy withRollbackFailedInstancesOnPolicyBreach(
+        Boolean rollbackFailedInstancesOnPolicyBreach) {
+        this.rollbackFailedInstancesOnPolicyBreach = rollbackFailedInstancesOnPolicyBreach;
+        return this;
+    }
+
+    /**
+     * Get the maxSurge property: Create new virtual machines to upgrade the scale set, rather than updating the
+     * existing virtual machines. Existing virtual machines will be deleted once the new virtual machines are created
+     * for each batch.
+     *
+     * @return the maxSurge value.
+     */
+    public Boolean maxSurge() {
+        return this.maxSurge;
+    }
+
+    /**
+     * Set the maxSurge property: Create new virtual machines to upgrade the scale set, rather than updating the
+     * existing virtual machines. Existing virtual machines will be deleted once the new virtual machines are created
+     * for each batch.
+     *
+     * @param maxSurge the maxSurge value to set.
+     * @return the RollingUpgradePolicy object itself.
+     */
+    public RollingUpgradePolicy withMaxSurge(Boolean maxSurge) {
+        this.maxSurge = maxSurge;
         return this;
     }
 

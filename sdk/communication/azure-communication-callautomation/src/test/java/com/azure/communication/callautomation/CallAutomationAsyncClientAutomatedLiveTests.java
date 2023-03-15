@@ -5,13 +5,15 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -43,9 +46,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
          * 4. hang up the call.
          * 5. once call is hung up, verify disconnected event
          */
-        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
-            .buildAsyncClient();
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
@@ -55,15 +55,20 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
         try {
             // create caller and receiver
-            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier target = identityAsyncClient.createUser().block();
+            
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+                    .sourceIdentity(caller)
+                    .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
@@ -79,7 +84,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
@@ -113,12 +118,71 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
                 }
             }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndRejectAutomatedTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call but rejected
+         * 1. create a CallAutomationClient.
+         * 2. Reject
+         * 3. See if call is not established
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+            .buildAsyncClient();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+            
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+                    .sourceIdentity(caller)
+                    .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create a call
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
+            callAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
+
+            // check events
+            CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callDisconnectedEvent);
+            assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
         }
     }
 }

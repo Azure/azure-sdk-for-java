@@ -74,13 +74,11 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
     }
 
     /**
-     * PACKAGE INTERNAL CONSTRUCTOR, exists only to support the PRIVATE PagedIterable.ctr(Supplier, boolean) use case.
+     * Creates instance given the {@link PageRetrieverSync page retriever} {@link Supplier}.
      *
-     * Create PagedIterable backed by Page Retriever Function Supplier.
-     *
-     * @param provider the Page Retrieval Provider
+     * @param provider The page retriever {@link Supplier}.
      */
-    PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
+    public PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
         super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 }

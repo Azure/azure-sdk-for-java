@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupShortTermRetentionPolicies ListByDatabase. */
 public final class BackupShortTermRetentionPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ListShortTermRetentionPoliciesByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListShortTermRetentionPoliciesByDatabase.json
      */
     /**
      * Sample code: Get the short term retention policy for the database.

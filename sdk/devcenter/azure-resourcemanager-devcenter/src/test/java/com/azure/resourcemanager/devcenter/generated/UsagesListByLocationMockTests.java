@@ -34,7 +34,7 @@ public final class UsagesListByLocationMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"currentValue\":9141330197293347239,\"limit\":4228231057575135051,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"wtjjguktalhsnv\",\"value\":\"dmxzr\"}}]}";
+            "{\"value\":[{\"currentValue\":3098779210531372823,\"limit\":7252789736173175802,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"kkzjcjbtrga\",\"value\":\"vvib\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class UsagesListByLocationMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Usage> response = manager.usages().listByLocation("ozzwculkba", Context.NONE);
+        PagedIterable<Usage> response = manager.usages().listByLocation("bjoxs", Context.NONE);
 
-        Assertions.assertEquals(9141330197293347239L, response.iterator().next().currentValue());
-        Assertions.assertEquals(4228231057575135051L, response.iterator().next().limit());
+        Assertions.assertEquals(3098779210531372823L, response.iterator().next().currentValue());
+        Assertions.assertEquals(7252789736173175802L, response.iterator().next().limit());
         Assertions.assertEquals(UsageUnit.COUNT, response.iterator().next().unit());
-        Assertions.assertEquals("wtjjguktalhsnv", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("dmxzr", response.iterator().next().name().value());
+        Assertions.assertEquals("kkzjcjbtrga", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("vvib", response.iterator().next().name().value());
     }
 }

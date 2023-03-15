@@ -53,6 +53,10 @@ public final class ScanResultProperties {
     @JsonProperty(value = "ruleMetadata")
     private VaRule ruleMetadata;
 
+    /** Creates an instance of ScanResultProperties class. */
+    public ScanResultProperties() {
+    }
+
     /**
      * Get the ruleId property: The rule Id.
      *

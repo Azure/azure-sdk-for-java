@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class EnvironmentData {
+    /** Creates an instance of EnvironmentData class. */
+    public EnvironmentData() {
+    }
+
     /**
      * Validates the instance.
      *

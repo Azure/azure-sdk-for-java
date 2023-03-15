@@ -59,7 +59,14 @@ public interface Project {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    String devCenterUri();
 
     /**
      * Gets the devCenterId property: Resource Id of an associated DevCenter.
@@ -138,7 +145,7 @@ public interface Project {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);

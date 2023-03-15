@@ -9,7 +9,7 @@ import com.azure.resourcemanager.devcenter.models.GitCatalog;
 /** Samples for Catalogs CreateOrUpdate. */
 public final class CatalogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Catalogs_CreateAdo.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Catalogs_CreateAdo.json
      */
     /**
      * Sample code: Catalogs_CreateOrUpdateAdo.
@@ -19,19 +19,19 @@ public final class CatalogsCreateOrUpdateSamples {
     public static void catalogsCreateOrUpdateAdo(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .catalogs()
-            .define("{catalogName}")
+            .define("CentralCatalog")
             .withExistingDevcenter("rg1", "Contoso")
             .withAdoGit(
                 new GitCatalog()
                     .withUri("https://contoso@dev.azure.com/contoso/contosoOrg/_git/centralrepo-fakecontoso")
                     .withBranch("main")
-                    .withSecretIdentifier("https://contosokv.vault.azure.net/secrets/CentralRepoPat")
+                    .withSecretIdentifier("fakeTokenPlaceholder")
                     .withPath("/templates"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Catalogs_CreateGitHub.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Catalogs_CreateGitHub.json
      */
     /**
      * Sample code: Catalogs_CreateOrUpdateGitHub.
@@ -41,13 +41,13 @@ public final class CatalogsCreateOrUpdateSamples {
     public static void catalogsCreateOrUpdateGitHub(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .catalogs()
-            .define("{catalogName}")
+            .define("CentralCatalog")
             .withExistingDevcenter("rg1", "Contoso")
             .withGitHub(
                 new GitCatalog()
                     .withUri("https://github.com/Contoso/centralrepo-fake.git")
                     .withBranch("main")
-                    .withSecretIdentifier("https://contosokv.vault.azure.net/secrets/CentralRepoPat")
+                    .withSecretIdentifier("fakeTokenPlaceholder")
                     .withPath("/templates"))
             .create();
     }

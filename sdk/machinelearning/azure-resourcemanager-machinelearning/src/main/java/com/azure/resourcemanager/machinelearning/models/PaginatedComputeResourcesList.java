@@ -13,18 +13,20 @@ import java.util.List;
 @Fluent
 public final class PaginatedComputeResourcesList {
     /*
-     * An array of Machine Learning compute objects wrapped in ARM resource
-     * envelope.
+     * An array of Machine Learning compute objects wrapped in ARM resource envelope.
      */
     @JsonProperty(value = "value")
     private List<ComputeResourceInner> value;
 
     /*
-     * A continuation link (absolute URI) to the next page of results in the
-     * list.
+     * A continuation link (absolute URI) to the next page of results in the list.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PaginatedComputeResourcesList class. */
+    public PaginatedComputeResourcesList() {
+    }
 
     /**
      * Get the value property: An array of Machine Learning compute objects wrapped in ARM resource envelope.

@@ -22,7 +22,7 @@ public interface BillingAccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingAccountInner> list();
@@ -35,10 +35,24 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingAccountInner> list(String expand, Context context);
+
+    /**
+     * Gets a billing account by its ID.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a billing account by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingAccountInner> getWithResponse(String billingAccountName, String expand, Context context);
 
     /**
      * Gets a billing account by its ID.
@@ -53,20 +67,6 @@ public interface BillingAccountsClient {
     BillingAccountInner get(String billingAccountName);
 
     /**
-     * Gets a billing account by its ID.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingAccountInner> getWithResponse(String billingAccountName, String expand, Context context);
-
-    /**
      * Updates the properties of a billing account. Currently, displayName and address can be updated. The operation is
      * supported only for billing accounts with agreement type Microsoft Customer Agreement.
      *
@@ -75,7 +75,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
@@ -91,7 +91,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
@@ -134,7 +134,8 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(
@@ -149,7 +150,8 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(

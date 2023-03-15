@@ -163,6 +163,15 @@ public class TestUtils {
     }
 
     /**
+     * Gets the Service Bus rule name
+     *
+     * @return The Service Bus rule name.
+     */
+    public static String getRuleBaseName() {
+        return getPropertyValue("AZURE_SERVICEBUS_RULE_NAME");
+    }
+
+    /**
      * The Service Bus queue name (session enabled).
      *
      * @return The Service Bus queue name.

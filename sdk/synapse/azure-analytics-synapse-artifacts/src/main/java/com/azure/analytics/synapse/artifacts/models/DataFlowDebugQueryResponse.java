@@ -16,6 +16,9 @@ public final class DataFlowDebugQueryResponse {
     @JsonProperty(value = "runId")
     private String runId;
 
+    /** Creates an instance of DataFlowDebugQueryResponse class. */
+    public DataFlowDebugQueryResponse() {}
+
     /**
      * Get the runId property: The run ID of data flow debug session.
      *

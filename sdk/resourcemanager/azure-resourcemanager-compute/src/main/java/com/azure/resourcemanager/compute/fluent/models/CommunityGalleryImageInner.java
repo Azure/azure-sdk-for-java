@@ -28,6 +28,10 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     @JsonProperty(value = "properties")
     private CommunityGalleryImageProperties innerProperties;
 
+    /** Creates an instance of CommunityGalleryImageInner class. */
+    public CommunityGalleryImageInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a gallery image definition.
      *

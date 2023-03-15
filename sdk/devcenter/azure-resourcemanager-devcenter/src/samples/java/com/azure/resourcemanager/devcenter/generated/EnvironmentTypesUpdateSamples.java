@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes Update. */
 public final class EnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Patch.json
      */
     /**
      * Sample code: EnvironmentTypes_Update.
@@ -21,10 +21,7 @@ public final class EnvironmentTypesUpdateSamples {
      */
     public static void environmentTypesUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         EnvironmentType resource =
-            manager
-                .environmentTypes()
-                .getWithResponse("rg1", "Contoso", "{environmentTypeName}", Context.NONE)
-                .getValue();
+            manager.environmentTypes().getWithResponse("rg1", "Contoso", "DevTest", Context.NONE).getValue();
         resource.update().withTags(mapOf("Owner", "superuser")).apply();
     }
 

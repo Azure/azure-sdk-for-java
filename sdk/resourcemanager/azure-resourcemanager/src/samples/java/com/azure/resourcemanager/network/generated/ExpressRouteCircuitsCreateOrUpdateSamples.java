@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSku;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 /** Samples for ExpressRouteCircuits CreateOrUpdate. */
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCircuitCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit.
@@ -47,11 +46,11 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
                             .withServiceProviderName("Equinix")
                             .withPeeringLocation("Silicon Valley")
                             .withBandwidthInMbps(200)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCircuitCreateOnExpressRoutePort.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRoutePort.
@@ -80,7 +79,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
                             .withId(
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRoutePorts/portName"))
                     .withBandwidthInGbps(10.0F)
-                    .withAuthorizationKey("b0be57f5-1fba-463b-adec-ffe767354cdd"),
-                Context.NONE);
+                    .withAuthorizationKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

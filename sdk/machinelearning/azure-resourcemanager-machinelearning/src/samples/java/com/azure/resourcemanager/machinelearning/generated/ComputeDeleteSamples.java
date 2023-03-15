@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.UnderlyingResourceAction;
 
 /** Samples for Compute Delete. */
 public final class ComputeDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/delete.json
      */
     /**
      * Sample code: Delete Compute.
@@ -20,6 +19,11 @@ public final class ComputeDeleteSamples {
     public static void deleteCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
-            .delete("testrg123", "workspaces123", "compute123", UnderlyingResourceAction.DELETE, Context.NONE);
+            .delete(
+                "testrg123",
+                "workspaces123",
+                "compute123",
+                UnderlyingResourceAction.DELETE,
+                com.azure.core.util.Context.NONE);
     }
 }

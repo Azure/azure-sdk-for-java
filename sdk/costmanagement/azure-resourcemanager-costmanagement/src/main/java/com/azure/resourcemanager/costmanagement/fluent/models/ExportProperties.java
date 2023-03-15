@@ -5,25 +5,24 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.models.CommonExportProperties;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the export. */
 @Fluent
-public final class ExportProperties extends CommonExportProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportProperties.class);
-
+public final class ExportProperties extends CommonExportPropertiesInner {
     /*
      * Has schedule information for the export.
      */
     @JsonProperty(value = "schedule")
     private ExportSchedule schedule;
+
+    /** Creates an instance of ExportProperties class. */
+    public ExportProperties() {
+    }
 
     /**
      * Get the schedule property: Has schedule information for the export.
@@ -63,6 +62,20 @@ public final class ExportProperties extends CommonExportProperties {
     @Override
     public ExportProperties withDefinition(ExportDefinition definition) {
         super.withDefinition(definition);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExportProperties withRunHistory(ExportExecutionListResultInner runHistory) {
+        super.withRunHistory(runHistory);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExportProperties withPartitionData(Boolean partitionData) {
+        super.withPartitionData(partitionData);
         return this;
     }
 

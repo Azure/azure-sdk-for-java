@@ -12,12 +12,11 @@ import com.azure.resourcemanager.hdinsight.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner;
 import com.azure.resourcemanager.hdinsight.models.ClusterConfigurations;
 import com.azure.resourcemanager.hdinsight.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.Map;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class ConfigurationsImpl implements Configurations {
         ConfigurationsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ClusterConfigurations list(String resourceGroupName, String clusterName) {
-        ClusterConfigurationsInner inner = this.serviceClient().list(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ClusterConfigurationsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ClusterConfigurations> listWithResponse(
@@ -48,6 +38,15 @@ public final class ConfigurationsImpl implements Configurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterConfigurationsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterConfigurations list(String resourceGroupName, String clusterName) {
+        ClusterConfigurationsInner inner = this.serviceClient().list(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ClusterConfigurationsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -67,6 +66,11 @@ public final class ConfigurationsImpl implements Configurations {
         this.serviceClient().update(resourceGroupName, clusterName, configurationName, parameters, context);
     }
 
+    public Response<Map<String, String>> getWithResponse(
+        String resourceGroupName, String clusterName, String configurationName, Context context) {
+        return this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
+    }
+
     public Map<String, String> get(String resourceGroupName, String clusterName, String configurationName) {
         Map<String, String> inner = this.serviceClient().get(resourceGroupName, clusterName, configurationName);
         if (inner != null) {
@@ -74,11 +78,6 @@ public final class ConfigurationsImpl implements Configurations {
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public Response<Map<String, String>> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context) {
-        return this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
     }
 
     private ConfigurationsClient serviceClient() {

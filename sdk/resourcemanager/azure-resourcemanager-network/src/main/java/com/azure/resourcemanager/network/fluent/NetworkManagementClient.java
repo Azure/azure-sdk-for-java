@@ -172,6 +172,13 @@ public interface NetworkManagementClient {
     PublicIpAddressesClient getPublicIpAddresses();
 
     /**
+     * Gets the VipSwapsClient object to access its operations.
+     *
+     * @return the VipSwapsClient object.
+     */
+    VipSwapsClient getVipSwaps();
+
+    /**
      * Gets the CustomIpPrefixesClient object to access its operations.
      *
      * @return the CustomIpPrefixesClient object.
@@ -968,13 +975,6 @@ public interface NetworkManagementClient {
      * @return the WebApplicationFirewallPoliciesClient object.
      */
     WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies();
-
-    /**
-     * Gets the VipSwapsClient object to access its operations.
-     *
-     * @return the VipSwapsClient object.
-     */
-    VipSwapsClient getVipSwaps();
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.

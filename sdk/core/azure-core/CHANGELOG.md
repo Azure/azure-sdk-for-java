@@ -1,6 +1,6 @@
 # Release History
 
-## 1.34.0-beta.1 (Unreleased)
+## 1.38.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,110 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.37.0 (2023-03-02)
+
+### Features Added
+
+- Added `CoreUtils.bytesToHexString` as a common utility for creating hex strings.
+- Added `CoreUtils.extractSizeFromContentRange` as a common utility for extracting the entity size from a properly
+  formatted `Content-Range` header.
+- Added support for `JsonSerializable` and `XmlSerializable` in `JacksonAdapter` serialize and deserialize APIs. ([#33685](https://github.com/Azure/azure-sdk-for-java/pull/33685))
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency. XML serialization is still supported when `jackson-dataformat-xml`
+  is found on the classpath, if it's not a class not found exception/error will be thrown when attempting to use XML
+  serialization. ([#33401](https://github.com/Azure/azure-sdk-for-java/pull/33401))
+
+### Bugs Fixed
+
+- Fixed a bug where a method not found error would be thrown when attempting to reflectively access Jackson Databind 2.12+
+  APIs. ([#33448](https://github.com/Azure/azure-sdk-for-java/pull/33448))
+- Fixed a bug where HTTP headers and query parameters weren't included in HTTP request and response logging when
+  `INFORMATIONAL` log level was used.
+
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.26` to `3.4.27`.
+- Upgraded Jackson to the latest releases `2.13.5`.
+
+## 1.36.0 (2023-02-01)
+
+### Features Added
+
+- Added explicit support for `text`-based serialization, this is done by adding `SerializerEncoding.TEXT`. Previously,
+  `text` was being implicitly supported by using `SerializerEncoding.JSON` but there were edge cases when a `String`
+  wasn't a JSON string (`string` vs `"string"`). ([#32277](https://github.com/Azure/azure-sdk-for-java/pull/32277))
+- Added `BinaryData.fromListByteBuffer(List<ByteBuffer>)` to support additional ways to create `BinaryData`. ([#32932](https://github.com/Azure/azure-sdk-for-java/pull/32932))
+- Added `TracingOptions` to make tracing configurable. ([#32573](https://github.com/Azure/azure-sdk-for-java/pull/32573))
+- Added support for links, start timestamp, W3C trace-context propagation, and numerical attributes in tracing.
+- Tracing plugins are no longer required to implement `AfterRetryPolicyProvider` as tracing is now handled by
+  `InstrumentationPolicy` using the provided `Tracer` implementation.
+
+### Breaking Changes
+
+- Deprecated messaging-specific methods in tracing abstractions.
+
+### Bugs Fixed
+
+- Fixed a bug where `PollingStrategy.getResult` would guard getting results for `POST`-based on containing a `Location`
+  header which isn't guaranteed to exist. If the header doesn't exist the body of the last polling operation is used
+  as the final result. ([#32815](https://github.com/Azure/azure-sdk-for-java/pull/32815))
+- Fixed a bug where `HEAD`-based requests were checking for a body before deserializing. `HEAD` requests shouldn't have
+  a body or if they do it should be ignored. ([#32833](https://github.com/Azure/azure-sdk-for-java/pull/32833))
+
+### Other Changes
+
+- Exceptions when deserializing error HTTP responses now include the deserialization exception as the causal exception
+  in addition to logging it.
+- `ExpandableStringEnum` now uses `MethodHandle` instead of `Constructor` to create subtype instances when using
+  `fromString(String, Class<T>)`.
+
+## 1.35.0 (2023-01-05)
+
+### Features Added
+
+- Added corresponding `HttpHeaderName` APIs to `HttpRequest` and `HttpResponse`.
+- Enhanced exception based retrying by inspecting the causal exceptions in addition to the thrown exception.
+
+### Bugs Fixed
+
+- Fixed a bug where cancellation would result in an application stall by using `doFinally` instead of `doOnTermination` ([#32727](https://github.com/Azure/azure-sdk-for-java/pull/32727)).
+
+### Other Changes
+
+- Added more details to key exception messages.
+
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.23` to `3.4.26`.
+
+## 1.34.0 (2022-11-04)
+
+### Features Added
+
+- Added `HttpHeaderName`, and corresponding methods on `HttpHeaders`, which provides a way of adding, accessing, and 
+  removing `HttpHeader`s from `HttpHeaders` without needing to call `String.toLowercase`. ([#30924](https://github.com/Azure/azure-sdk-for-java/pull/30924))
+- Added `SyncPollingStrategy`, and implementations of it, to compliment the asynchronous `PollingStrategy`. ([#31923](https://github.com/Azure/azure-sdk-for-java/pull/31923))
+- Added a new factory method on `SyncPoller` matching the factory method on `PollerFlux`, except taking `SyncPollingStrategy`
+  instead of `PollingStrategy`.
+
+### Bugs Fixed
+
+- Fixed a bug where `void` and `Void` responses would attempt to create a `byte[]` the size of the response 
+  `Content-Length`. ([#31865](https://github.com/Azure/azure-sdk-for-java/pull/31865))
+- Fixed a bug where `SyncPoller` `waitUntil` or `waitForCompletion` didn't update the terminal poll context correctly. ([#31905](https://github.com/Azure/azure-sdk-for-java/pull/31905))
+
+### Other Changes
+
+- Removed size limit when creating a `BinaryData.fromFlux` when the `Flux<ByteBuffer>` is buffered.
+- Deprecated empty argument constructor in `ExpandableStringEnum` subtypes.
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.4` to `2.13.4.2`.
 
 ## 1.33.0 (2022-10-07)
 

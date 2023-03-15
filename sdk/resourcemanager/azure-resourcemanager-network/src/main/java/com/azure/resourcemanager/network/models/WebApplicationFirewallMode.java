@@ -17,6 +17,15 @@ public final class WebApplicationFirewallMode extends ExpandableStringEnum<WebAp
     public static final WebApplicationFirewallMode DETECTION = fromString("Detection");
 
     /**
+     * Creates a new instance of WebApplicationFirewallMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallMode() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallMode from its string representation.
      *
      * @param name a name to look for.

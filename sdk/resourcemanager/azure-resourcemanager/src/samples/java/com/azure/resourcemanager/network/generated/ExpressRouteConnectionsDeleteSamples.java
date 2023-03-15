@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteConnections Delete. */
 public final class ExpressRouteConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteConnectionDelete.json
      */
     /**
      * Sample code: ExpressRouteConnectionDelete.
@@ -22,6 +20,6 @@ public final class ExpressRouteConnectionsDeleteSamples {
             .manager()
             .serviceClient()
             .getExpressRouteConnections()
-            .delete("resourceGroupName", "expressRouteGatewayName", "connectionName", Context.NONE);
+            .delete("resourceGroupName", "expressRouteGatewayName", "connectionName", com.azure.core.util.Context.NONE);
     }
 }

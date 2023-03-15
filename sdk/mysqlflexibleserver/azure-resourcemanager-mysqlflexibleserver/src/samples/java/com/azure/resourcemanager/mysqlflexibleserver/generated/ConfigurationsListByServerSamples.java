@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Configurations ListByServer. */
 public final class ConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationsListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationsListByServer.json
      */
     /**
      * Sample code: List all configurations for a server.
@@ -18,6 +16,8 @@ public final class ConfigurationsListByServerSamples {
      */
     public static void listAllConfigurationsForAServer(
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.configurations().listByServer("testrg", "mysqltestserver", Context.NONE);
+        manager
+            .configurations()
+            .listByServer("testrg", "mysqltestserver", null, null, 1, 8, com.azure.core.util.Context.NONE);
     }
 }

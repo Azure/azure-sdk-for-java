@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
@@ -16,6 +15,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -443,7 +443,7 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Refresh data ingestion for a period.
      * <p>
-     * The data in the data source for the given period will be reingested
+     * The data in the data source for the given period will be re-ingested
      * and any ingested data for the same period will be overwritten.
      * </p>
      *
@@ -476,7 +476,7 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Refresh data ingestion for a period.
      * <p>
-     * The data in the data source for the given period will be reingested
+     * The data in the data source for the given period will be re-ingested
      * and any ingested data for the same period will be overwritten.
      * </p>
      *
@@ -1831,18 +1831,18 @@ public final class MetricsAdvisorAdministrationClient {
      *     = metricsAdvisorAdminClient.getAlertConfig&#40;alertConfigId&#41;;
      * List&lt;String&gt; hookIds = new ArrayList&lt;&gt;&#40;existingAnomalyConfig.getHookIdsToAlert&#40;&#41;&#41;;
      * hookIds.add&#40;additionalHookId&#41;;
-     * final AnomalyAlertConfiguration updatAnomalyAlertConfiguration
+     * final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration
      *     = metricsAdvisorAdminClient.updateAlertConfig&#40;
      *     existingAnomalyConfig
      *         .setHookIdsToAlert&#40;hookIds&#41;
      *         .setDescription&#40;&quot;updated to add more hook ids&quot;&#41;
      * &#41;;
      *
-     * System.out.printf&#40;&quot;Updated anomaly alert configuration Id: %s%n&quot;, updatAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Updated anomaly alert configuration Id: %s%n&quot;, updatedAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Updated anomaly alert configuration description: %s%n&quot;,
-     *     updatAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
+     *     updatedAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Updated anomaly alert configuration hook ids: %s%n&quot;,
-     *     updatAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
+     *     updatedAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfig#AnomalyAlertConfiguration -->
      *
@@ -1864,7 +1864,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context-->
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context -->
      * <pre>
      *
      * String alertConfigId = &quot;1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5&quot;;
@@ -1881,12 +1881,12 @@ public final class MetricsAdvisorAdministrationClient {
      *         .setDescription&#40;&quot;updated to add more hook ids&quot;&#41;, Context.NONE&#41;;
      *
      * System.out.printf&#40;&quot;Update anomaly alert operation status: %s%n&quot;, alertConfigurationResponse.getStatusCode&#40;&#41;&#41;;
-     * final AnomalyAlertConfiguration updatAnomalyAlertConfiguration = alertConfigurationResponse.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Updated anomaly alert configuration Id: %s%n&quot;, updatAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
+     * final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = alertConfigurationResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Updated anomaly alert configuration Id: %s%n&quot;, updatedAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Updated anomaly alert configuration description: %s%n&quot;,
-     *     updatAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
+     *     updatedAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Updated anomaly alert configuration hook ids: %sf%n&quot;,
-     *     updatAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
+     *     updatedAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context -->
      *
@@ -2038,11 +2038,11 @@ public final class MetricsAdvisorAdministrationClient {
      * final String name = &quot;sample_name&quot; + UUID.randomUUID&#40;&#41;;
      * final String cId = &quot;f45668b2-bffa-11eb-8529-0246ac130003&quot;;
      * final String tId = &quot;67890ded-5e07-4e52-b225-4ae8f905afb5&quot;;
-     * final String mockSecr = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
+     * final String mockSecret = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
      *
      * datasourceCredential = new DataSourceServicePrincipalInKeyVault&#40;&#41;
      *     .setName&#40;name&#41;
-     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecr&#41;
+     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecret&#41;
      *     .setTenantId&#40;tId&#41;
      *     .setSecretNameForDataSourceClientId&#40;&quot;DSClientID_1&quot;&#41;
      *     .setSecretNameForDataSourceClientSecret&#40;&quot;DSClientSer_1&quot;&#41;;
@@ -2084,11 +2084,11 @@ public final class MetricsAdvisorAdministrationClient {
      * final String name = &quot;sample_name&quot; + UUID.randomUUID&#40;&#41;;
      * final String cId = &quot;f45668b2-bffa-11eb-8529-0246ac130003&quot;;
      * final String tId = &quot;67890ded-5e07-4e52-b225-4ae8f905afb5&quot;;
-     * final String mockSecr = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
+     * final String mockSecret = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
      *
      * datasourceCredential = new DataSourceServicePrincipalInKeyVault&#40;&#41;
      *     .setName&#40;name&#41;
-     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecr&#41;
+     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecret&#41;
      *     .setTenantId&#40;tId&#41;
      *     .setSecretNameForDataSourceClientId&#40;&quot;DSClientID_1&quot;&#41;
      *     .setSecretNameForDataSourceClientSecret&#40;&quot;DSClientSer_1&quot;&#41;;

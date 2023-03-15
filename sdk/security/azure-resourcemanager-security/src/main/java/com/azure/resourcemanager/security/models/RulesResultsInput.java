@@ -27,6 +27,10 @@ public final class RulesResultsInput {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<List<String>>> results;
 
+    /** Creates an instance of RulesResultsInput class. */
+    public RulesResultsInput() {
+    }
+
     /**
      * Get the latestScan property: Take results from latest scan.
      *

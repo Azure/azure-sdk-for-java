@@ -53,10 +53,7 @@ function Get-java-PackageLevelReadme($packageMetadata) {
 
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
-    $packageTocHeader = $packageMetadata.Package
-    if ($packageMetadata.DisplayName) {
-        $packageTocHeader = $packageMetadata.DisplayName
-    }
+    $packageTocHeader = GetDocsTocDisplayName -pkg $packageMetadata
 
     $children = @()
     # Children here combine namespaces in both preview and GA.
@@ -332,15 +329,6 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @(
                     "com.microsoft.azure.cognitiveservices.language.luis*", 
                     "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Speech Service"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.cognitiveservices.speech*")
             })
     }
     $sortableServices += [PSCustomObject]@{

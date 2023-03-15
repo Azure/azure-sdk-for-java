@@ -18,6 +18,10 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
     @JsonProperty(value = "activePlacementGroupId")
     private String activePlacementGroupId;
 
+    /** Creates an instance of VMScaleSetConvertToSinglePlacementGroupInput class. */
+    public VMScaleSetConvertToSinglePlacementGroupInput() {
+    }
+
     /**
      * Get the activePlacementGroupId property: Id of the placement group in which you want future virtual machine
      * instances to be placed. To query placement group Id, please use Virtual Machine Scale Set VMs - Get API. If not

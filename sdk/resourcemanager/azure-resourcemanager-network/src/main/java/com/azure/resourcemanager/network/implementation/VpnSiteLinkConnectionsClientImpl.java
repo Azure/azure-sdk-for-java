@@ -51,7 +51,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VpnSiteLinkConnectionsService {
+    public interface VpnSiteLinkConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
@@ -111,7 +111,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -176,7 +176,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

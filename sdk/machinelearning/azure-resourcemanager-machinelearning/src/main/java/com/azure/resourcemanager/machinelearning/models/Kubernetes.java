@@ -20,6 +20,10 @@ public final class Kubernetes extends Compute {
     @JsonProperty(value = "properties")
     private KubernetesProperties properties;
 
+    /** Creates an instance of Kubernetes class. */
+    public Kubernetes() {
+    }
+
     /**
      * Get the properties property: Properties of Kubernetes.
      *
@@ -37,6 +41,13 @@ public final class Kubernetes extends Compute {
      */
     public Kubernetes withProperties(KubernetesProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Kubernetes withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 

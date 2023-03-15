@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import java.util.Arrays;
 
 /** Samples for ResourceProvider CheckSkuAvailability. */
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CheckSkuAvailability.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CheckSkuAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -28,6 +27,6 @@ public final class ResourceProviderCheckSkuAvailabilitySamples {
                     .withSkus(Arrays.asList("S0"))
                     .withKind("Face")
                     .withType("Microsoft.CognitiveServices/accounts"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

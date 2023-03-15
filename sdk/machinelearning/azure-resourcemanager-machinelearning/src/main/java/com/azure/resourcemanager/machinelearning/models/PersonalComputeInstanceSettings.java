@@ -16,6 +16,10 @@ public final class PersonalComputeInstanceSettings {
     @JsonProperty(value = "assignedUser")
     private AssignedUser assignedUser;
 
+    /** Creates an instance of PersonalComputeInstanceSettings class. */
+    public PersonalComputeInstanceSettings() {
+    }
+
     /**
      * Get the assignedUser property: A user explicitly assigned to a personal compute instance.
      *

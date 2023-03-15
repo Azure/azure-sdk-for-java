@@ -20,6 +20,15 @@ public final class VpnClientProtocol extends ExpandableStringEnum<VpnClientProto
     public static final VpnClientProtocol OPEN_VPN = fromString("OpenVPN");
 
     /**
+     * Creates a new instance of VpnClientProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnClientProtocol() {
+    }
+
+    /**
      * Creates or finds a VpnClientProtocol from its string representation.
      *
      * @param name a name to look for.

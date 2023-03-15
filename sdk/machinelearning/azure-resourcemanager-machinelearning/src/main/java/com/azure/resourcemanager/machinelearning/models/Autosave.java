@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Autosave. */
+/** Auto save settings. */
 public final class Autosave extends ExpandableStringEnum<Autosave> {
     /** Static value None for Autosave. */
     public static final Autosave NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class Autosave extends ExpandableStringEnum<Autosave> {
 
     /** Static value Remote for Autosave. */
     public static final Autosave REMOTE = fromString("Remote");
+
+    /**
+     * Creates a new instance of Autosave value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Autosave() {
+    }
 
     /**
      * Creates or finds a Autosave from its string representation.

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccess. */
+/**
+ * Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be
+ * 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default value is
+ * 'Enabled'.
+ */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /** Static value Enabled for PublicNetworkAccess. */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
@@ -27,7 +31,11 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
         return fromString(name, PublicNetworkAccess.class);
     }
 
-    /** @return known PublicNetworkAccess values. */
+    /**
+     * Gets known PublicNetworkAccess values.
+     *
+     * @return known PublicNetworkAccess values.
+     */
     public static Collection<PublicNetworkAccess> values() {
         return values(PublicNetworkAccess.class);
     }

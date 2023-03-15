@@ -7,10 +7,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegexFlags. */
+/**
+ * Defines flags that can be combined to control how regular expressions are used in the pattern analyzer and pattern
+ * tokenizer.
+ */
 public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     /** Static value CANON_EQ for RegexFlags. */
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
@@ -37,12 +39,19 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
 
     /**
+     * Creates a new instance of RegexFlags value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegexFlags() {}
+
+    /**
      * Creates or finds a RegexFlags from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RegexFlags.
      */
-    @JsonCreator
     public static RegexFlags fromString(String name) {
         return fromString(name, RegexFlags.class);
     }

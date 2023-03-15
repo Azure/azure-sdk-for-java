@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServiceTags List. */
 public final class ServiceTagsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ServiceTagsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceTagsList.json
      */
     /**
      * Sample code: Get list of service tags.
@@ -17,6 +15,11 @@ public final class ServiceTagsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceTags().listWithResponse("westcentralus", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getServiceTags()
+            .listWithResponse("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

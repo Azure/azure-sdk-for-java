@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoleType. */
+/** The role type. */
 public final class RoleType extends ExpandableStringEnum<RoleType> {
     /** Static value AKVBuiltInRole for RoleType. */
     public static final RoleType BUILT_IN_ROLE = fromString("AKVBuiltInRole");
@@ -27,7 +27,11 @@ public final class RoleType extends ExpandableStringEnum<RoleType> {
         return fromString(name, RoleType.class);
     }
 
-    /** @return known RoleType values. */
+    /**
+     * Gets known RoleType values.
+     *
+     * @return known RoleType values.
+     */
     public static Collection<RoleType> values() {
         return values(RoleType.class);
     }

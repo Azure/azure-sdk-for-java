@@ -15,8 +15,7 @@ import java.util.Map;
 @Fluent
 public final class AccountProperties {
     /*
-     * Gets the status of the cognitive services account at the time the
-     * operation was called.
+     * Gets the status of the cognitive services account at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -34,9 +33,8 @@ public final class AccountProperties {
     private String internalId;
 
     /*
-     * Gets the capabilities of the cognitive services account. Each item
-     * indicates the capability of a specific feature. The values are read-only
-     * and for reference only.
+     * Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific
+     * feature. The values are read-only and for reference only.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
@@ -66,8 +64,7 @@ public final class AccountProperties {
     private String customSubDomainName;
 
     /*
-     * A collection of rules governing the accessibility from specific network
-     * locations.
+     * A collection of rules governing the accessibility from specific network locations.
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
@@ -85,8 +82,7 @@ public final class AccountProperties {
     private List<UserOwnedStorage> userOwnedStorage;
 
     /*
-     * The private endpoint connection associated with the Cognitive Services
-     * account.
+     * The private endpoint connection associated with the Cognitive Services account.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -169,6 +165,22 @@ public final class AccountProperties {
      */
     @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private String scheduledPurgeDate;
+
+    /*
+     * The multiregion settings of Cognitive Services account.
+     */
+    @JsonProperty(value = "locations")
+    private MultiRegionSettings locations;
+
+    /*
+     * The commitment plan associations of Cognitive Services account.
+     */
+    @JsonProperty(value = "commitmentPlanAssociations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CommitmentPlanAssociation> commitmentPlanAssociations;
+
+    /** Creates an instance of AccountProperties class. */
+    public AccountProperties() {
+    }
 
     /**
      * Get the provisioningState property: Gets the status of the cognitive services account at the time the operation
@@ -531,6 +543,35 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @return the locations value.
+     */
+    public MultiRegionSettings locations() {
+        return this.locations;
+    }
+
+    /**
+     * Set the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @param locations the locations value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withLocations(MultiRegionSettings locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the commitmentPlanAssociations property: The commitment plan associations of Cognitive Services account.
+     *
+     * @return the commitmentPlanAssociations value.
+     */
+    public List<CommitmentPlanAssociation> commitmentPlanAssociations() {
+        return this.commitmentPlanAssociations;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -562,6 +603,12 @@ public final class AccountProperties {
         }
         if (quotaLimit() != null) {
             quotaLimit().validate();
+        }
+        if (locations() != null) {
+            locations().validate();
+        }
+        if (commitmentPlanAssociations() != null) {
+            commitmentPlanAssociations().forEach(e -> e.validate());
         }
     }
 }

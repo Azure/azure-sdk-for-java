@@ -7,8 +7,15 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleMetadata;
+import com.azure.resourcemanager.monitor.models.DataFlow;
+import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleResourceKind;
+import com.azure.resourcemanager.monitor.models.StreamDeclaration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Definition of ARM tracked top level resource. */
@@ -37,6 +44,10 @@ public final class DataCollectionRuleResourceInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DataCollectionRuleResourceInner class. */
+    public DataCollectionRuleResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -97,6 +108,175 @@ public final class DataCollectionRuleResourceInner extends Resource {
     public DataCollectionRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
+    }
+
+    /**
+     * Get the description property: Description of the data collection rule.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the data collection rule.
+     *
+     * @param description the description value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the immutableId property: The immutable ID of this data collection rule. This property is READ-ONLY.
+     *
+     * @return the immutableId value.
+     */
+    public String immutableId() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutableId();
+    }
+
+    /**
+     * Get the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
+     * used with.
+     *
+     * @return the dataCollectionEndpointId value.
+     */
+    public String dataCollectionEndpointId() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataCollectionEndpointId();
+    }
+
+    /**
+     * Set the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
+     * used with.
+     *
+     * @param dataCollectionEndpointId the dataCollectionEndpointId value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withDataCollectionEndpointId(String dataCollectionEndpointId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDataCollectionEndpointId(dataCollectionEndpointId);
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Metadata about the resource.
+     *
+     * @return the metadata value.
+     */
+    public DataCollectionRuleMetadata metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Get the streamDeclarations property: Declaration of custom streams used in this rule.
+     *
+     * @return the streamDeclarations value.
+     */
+    public Map<String, StreamDeclaration> streamDeclarations() {
+        return this.innerProperties() == null ? null : this.innerProperties().streamDeclarations();
+    }
+
+    /**
+     * Set the streamDeclarations property: Declaration of custom streams used in this rule.
+     *
+     * @param streamDeclarations the streamDeclarations value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withStreamDeclarations(Map<String, StreamDeclaration> streamDeclarations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withStreamDeclarations(streamDeclarations);
+        return this;
+    }
+
+    /**
+     * Get the dataSources property: The specification of data sources. This property is optional and can be omitted if
+     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     *
+     * @return the dataSources value.
+     */
+    public DataCollectionRuleDataSources dataSources() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataSources();
+    }
+
+    /**
+     * Set the dataSources property: The specification of data sources. This property is optional and can be omitted if
+     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     *
+     * @param dataSources the dataSources value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withDataSources(DataCollectionRuleDataSources dataSources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDataSources(dataSources);
+        return this;
+    }
+
+    /**
+     * Get the destinations property: The specification of destinations.
+     *
+     * @return the destinations value.
+     */
+    public DataCollectionRuleDestinations destinations() {
+        return this.innerProperties() == null ? null : this.innerProperties().destinations();
+    }
+
+    /**
+     * Set the destinations property: The specification of destinations.
+     *
+     * @param destinations the destinations value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withDestinations(DataCollectionRuleDestinations destinations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDestinations(destinations);
+        return this;
+    }
+
+    /**
+     * Get the dataFlows property: The specification of data flows.
+     *
+     * @return the dataFlows value.
+     */
+    public List<DataFlow> dataFlows() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataFlows();
+    }
+
+    /**
+     * Set the dataFlows property: The specification of data flows.
+     *
+     * @param dataFlows the dataFlows value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withDataFlows(List<DataFlow> dataFlows) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDataFlows(dataFlows);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The resource provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public KnownDataCollectionRuleProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

@@ -20,6 +20,15 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
     public static final TriggerRuntimeState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of TriggerRuntimeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerRuntimeState() {
+    }
+
+    /**
      * Creates or finds a TriggerRuntimeState from its string representation.
      *
      * @param name a name to look for.

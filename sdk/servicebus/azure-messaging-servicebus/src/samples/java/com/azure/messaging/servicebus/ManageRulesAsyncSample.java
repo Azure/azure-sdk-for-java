@@ -61,7 +61,7 @@ public class ManageRulesAsyncSample {
         );
 
         // Fetch all rules.
-        ruleManager.getRules().subscribe(ruleProperties -> System.out.println(ruleProperties.getName()));
+        ruleManager.listRules().subscribe(ruleProperties -> System.out.println(ruleProperties.getName()));
 
         // Delete rule.
         ruleManager.deleteRule("exist-rule").subscribe(

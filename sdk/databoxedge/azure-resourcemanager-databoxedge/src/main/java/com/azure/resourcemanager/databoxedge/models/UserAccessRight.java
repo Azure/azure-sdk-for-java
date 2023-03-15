@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The mapping between a particular user and the access type on the SMB share. */
 @Fluent
 public final class UserAccessRight {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAccessRight.class);
-
     /*
      * User ID (already existing in the device).
      */
@@ -25,6 +22,10 @@ public final class UserAccessRight {
      */
     @JsonProperty(value = "accessType", required = true)
     private ShareAccessType accessType;
+
+    /** Creates an instance of UserAccessRight class. */
+    public UserAccessRight() {
+    }
 
     /**
      * Get the userId property: User ID (already existing in the device).
@@ -73,14 +74,16 @@ public final class UserAccessRight {
      */
     public void validate() {
         if (userId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property userId in model UserAccessRight"));
         }
         if (accessType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property accessType in model UserAccessRight"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserAccessRight.class);
 }

@@ -5,28 +5,22 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.PrivateIpAllocationMethod;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkConfigurationProvisioningState;
 import com.azure.resourcemanager.hdinsight.models.ResourceId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private link ip configuration properties. */
 @Fluent
 public final class IpConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationProperties.class);
-
     /*
-     * The private link configuration provisioning state, which only appears in
-     * the response.
+     * The private link configuration provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkConfigurationProvisioningState provisioningState;
 
     /*
-     * Indicates whether this IP configuration is primary for the corresponding
-     * NIC.
+     * Indicates whether this IP configuration is primary for the corresponding NIC.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -48,6 +42,10 @@ public final class IpConfigurationProperties {
      */
     @JsonProperty(value = "subnet")
     private ResourceId subnet;
+
+    /** Creates an instance of IpConfigurationProperties class. */
+    public IpConfigurationProperties() {
+    }
 
     /**
      * Get the provisioningState property: The private link configuration provisioning state, which only appears in the

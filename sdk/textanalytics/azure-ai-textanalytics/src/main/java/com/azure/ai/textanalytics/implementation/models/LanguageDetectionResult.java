@@ -17,6 +17,9 @@ public final class LanguageDetectionResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<LanguageDetectionDocumentResult> documents;
 
+    /** Creates an instance of LanguageDetectionResult class. */
+    public LanguageDetectionResult() {}
+
     /**
      * Get the documents property: Response by document.
      *
@@ -39,7 +42,7 @@ public final class LanguageDetectionResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public LanguageDetectionResult setErrors(List<DocumentError> errors) {
+    public LanguageDetectionResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

@@ -34,6 +34,10 @@ public final class SubAssessmentStatus {
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
 
+    /** Creates an instance of SubAssessmentStatus class. */
+    public SubAssessmentStatus() {
+    }
+
     /**
      * Get the code property: Programmatic code for the status of the assessment.
      *

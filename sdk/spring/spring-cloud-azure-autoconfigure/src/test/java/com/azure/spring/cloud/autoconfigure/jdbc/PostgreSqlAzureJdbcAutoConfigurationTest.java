@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -12,8 +12,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +32,8 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
 
     private static final String POSTGRESQL_USER_AGENT = POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME + "="
         + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH;
-
+    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
+        + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 
     @Override
     void pluginNotOnClassPath() {
@@ -69,9 +72,11 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
+                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                     PUBLIC_AUTHORITY_HOST_STRING,
                     POSTGRESQL_USER_AGENT,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
@@ -95,7 +100,8 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    POSTGRESQL_USER_AGENT
+                    POSTGRESQL_USER_AGENT,
+                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });

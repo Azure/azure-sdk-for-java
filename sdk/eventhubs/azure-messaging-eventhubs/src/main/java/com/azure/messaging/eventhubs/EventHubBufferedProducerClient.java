@@ -44,6 +44,23 @@ import java.util.function.Consumer;
  * partition keys are assigned to a partition consistent with other publishers, or where maximizing availability is a
  * requirement, using {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient} is recommended.
  * </p>
+ *
+ * <p><strong>Creating an {@link EventHubBufferedProducerClient}</strong></p>
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;event-hub-namespace-connection-string&quot;, &quot;event-hub-name&quot;&#41;
+ *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .onSendBatchFailed&#40;failedContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Failed to published events to %s. Error: %s%n&quot;,
+ *             failedContext.getPartitionId&#40;&#41;, failedContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = false)
 public final class EventHubBufferedProducerClient implements Closeable {

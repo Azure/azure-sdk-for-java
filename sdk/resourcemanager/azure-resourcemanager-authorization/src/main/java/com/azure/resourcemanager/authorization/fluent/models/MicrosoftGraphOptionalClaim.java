@@ -17,17 +17,15 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphOptionalClaim {
     /*
-     * Additional properties of the claim. If a property exists in this
-     * collection, it modifies the behavior of the optional claim specified in
-     * the name property.
+     * Additional properties of the claim. If a property exists in this collection, it modifies the behavior of the
+     * optional claim specified in the name property.
      */
     @JsonProperty(value = "additionalProperties")
     private List<String> additionalPropertiesProperty;
 
     /*
-     * If the value is true, the claim specified by the client is necessary to
-     * ensure a smooth authorization experience for the specific task requested
-     * by the end user. The default value is false.
+     * If the value is true, the claim specified by the client is necessary to ensure a smooth authorization experience
+     * for the specific task requested by the end user. The default value is false.
      */
     @JsonProperty(value = "essential")
     private Boolean essential;
@@ -39,11 +37,9 @@ public final class MicrosoftGraphOptionalClaim {
     private String name;
 
     /*
-     * The source (directory object) of the claim. There are predefined claims
-     * and user-defined claims from extension properties. If the source value
-     * is null, the claim is a predefined optional claim. If the source value
-     * is user, the value in the name property is the extension property from
-     * the user object.
+     * The source (directory object) of the claim. There are predefined claims and user-defined claims from extension
+     * properties. If the source value is null, the claim is a predefined optional claim. If the source value is user,
+     * the value in the name property is the extension property from the user object.
      */
     @JsonProperty(value = "source")
     private String source;
@@ -52,6 +48,10 @@ public final class MicrosoftGraphOptionalClaim {
      * optionalClaim
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOptionalClaim class. */
+    public MicrosoftGraphOptionalClaim() {
+    }
 
     /**
      * Get the additionalPropertiesProperty property: Additional properties of the claim. If a property exists in this

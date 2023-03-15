@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolUpdateProperties;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,11 +16,8 @@ import java.util.Map;
 /** Request payload for Update Disk Pool request. */
 @Fluent
 public final class DiskPoolUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolUpdate.class);
-
     /*
-     * Azure resource id. Indicates if this resource is managed by another
-     * Azure resource.
+     * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
     @JsonProperty(value = "managedBy")
     private String managedBy;
@@ -50,6 +46,10 @@ public final class DiskPoolUpdate {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of DiskPoolUpdate class. */
+    public DiskPoolUpdate() {
+    }
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
@@ -170,7 +170,7 @@ public final class DiskPoolUpdate {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model DiskPoolUpdate"));
         } else {
@@ -180,4 +180,6 @@ public final class DiskPoolUpdate {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolUpdate.class);
 }

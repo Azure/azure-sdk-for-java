@@ -70,6 +70,10 @@ public final class SynapseSparkProperties {
     @JsonProperty(value = "poolName")
     private String poolName;
 
+    /** Creates an instance of SynapseSparkProperties class. */
+    public SynapseSparkProperties() {
+    }
+
     /**
      * Get the autoScaleProperties property: Auto scale properties.
      *

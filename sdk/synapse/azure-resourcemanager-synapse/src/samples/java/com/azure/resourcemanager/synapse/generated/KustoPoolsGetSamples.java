@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Get. */
 public final class KustoPoolsGetSamples {
     /*
@@ -19,6 +17,7 @@ public final class KustoPoolsGetSamples {
     public static void kustoPoolsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPools()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .getWithResponse(
+                "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }

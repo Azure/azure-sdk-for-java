@@ -24,8 +24,8 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
     private String displayName;
 
     /*
-     * Indicates whether the schedulingGroup can be used when creating new
-     * entities or updating existing ones. Required.
+     * Indicates whether the schedulingGroup can be used when creating new entities or updating existing ones.
+     * Required.
      */
     @JsonProperty(value = "isActive")
     private Boolean isActive;
@@ -40,6 +40,10 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
      * schedulingGroup
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSchedulingGroup class. */
+    public MicrosoftGraphSchedulingGroup() {
+    }
 
     /**
      * Get the displayName property: The display name for the schedulingGroup. Required.

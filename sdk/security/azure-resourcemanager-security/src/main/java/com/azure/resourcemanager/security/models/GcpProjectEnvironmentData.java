@@ -26,6 +26,10 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
     @JsonProperty(value = "projectDetails")
     private GcpProjectDetails projectDetails;
 
+    /** Creates an instance of GcpProjectEnvironmentData class. */
+    public GcpProjectEnvironmentData() {
+    }
+
     /**
      * Get the organizationalData property: The Gcp project's organizational data.
      *

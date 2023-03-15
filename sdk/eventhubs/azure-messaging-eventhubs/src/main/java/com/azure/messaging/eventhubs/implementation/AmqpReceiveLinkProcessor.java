@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -60,9 +61,11 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private final int prefetch;
     private final String entityPath;
+    private final String partitionId;
     private final Disposable connectionProcessor;
     private final int maxQueueSize;
     private final Context context;
+    private final EventHubsConsumerInstrumentation instrumentation;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -88,16 +91,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
      *
+     * @param entityPath Entity path.
      * @param prefetch The number if messages to initially fetch.
+     * @param partitionId Partition id to receive from.
      * @param connectionProcessor A {@link Disposable} reference to the connection-processor which produces
      *                           the connection on which receive-links are hosted. It is used to eagerly check
      *                           if the connection-processor is disposed so that this link-processor can self dispose.
+     * @param instrumentation    Tracing and metrics instrumentation helper.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, Disposable connectionProcessor) {
+    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, String partitionId,  Disposable connectionProcessor, EventHubsConsumerInstrumentation instrumentation) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.partitionId = Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
 
@@ -114,6 +121,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         this.prefetch = prefetch;
         this.maxQueueSize = prefetch * 2;
         this.context = super.currentContext().put(SUBSCRIBER_ID_KEY, subscriberId);
+        this.instrumentation = instrumentation;
     }
 
     @Override
@@ -566,9 +574,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     return;
                 }
 
+                Exception exception = null;
+                com.azure.core.util.Context span = instrumentation.asyncConsume("EventHubs.consume", message, partitionId, com.azure.core.util.Context.NONE);
+                AutoCloseable scope = instrumentation.getTracer().makeSpanCurrent(span);
                 try {
                     subscriber.onNext(message);
                 } catch (Exception e) {
+                    exception = e;
                     logger.atError()
                         .addKeyValue(LINK_NAME_KEY, currentLinkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -576,6 +588,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
+                } finally {
+                    instrumentation.getTracer().endSpan(exception, span, scope);
                 }
 
                 numberEmitted++;
@@ -659,7 +673,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // many events to buffer on the client and also control the throughput. If users need higher throughput,
             // they can set a higher prefetch number and allocate larger heap size accordingly.
             if (currentLinkCredits < prefetch) {
-                logger.atInfo()
+                logger.atVerbose()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)

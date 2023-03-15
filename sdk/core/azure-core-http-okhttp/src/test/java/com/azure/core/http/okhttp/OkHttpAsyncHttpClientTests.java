@@ -139,7 +139,7 @@ public class OkHttpAsyncHttpClientTests {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", "123")
+            .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))

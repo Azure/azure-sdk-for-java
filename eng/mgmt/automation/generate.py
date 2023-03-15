@@ -6,18 +6,20 @@ import json
 import glob
 import logging
 import argparse
+from typing import List
 
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import set_or_increase_version
-from generate_data import sdk_automation as sdk_automation_data
+from generate_data import sdk_automation as sdk_automation_data, sdk_automation_cadl
 from generate_utils import (
     compare_with_maven_package,
     compile_package,
     generate,
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
+    update_spec,
 )
 
 os.chdir(pwd)
@@ -89,31 +91,50 @@ def parse_args() -> argparse.Namespace:
 
 
 def sdk_automation(input_file: str, output_file: str):
-    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
     with open(input_file, 'r') as fin:
         config = json.load(fin)
 
+    # cadl
+    packages = sdk_automation_cadl(config)
+    # autorest
+    if not packages:
+        packages = sdk_automation_autorest(config)
+
+    with open(output_file, 'w', encoding='utf-8') as fout:
+        output = {
+            'packages': packages,
+        }
+        json.dump(output, fout)
+
+
+def sdk_automation_autorest(config: dict) -> List[dict]:
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
+
     packages = []
+    if 'relatedReadmeMdFiles' not in config or not config['relatedReadmeMdFiles']:
+        return packages
+
     for readme in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/resource-manager/readme.md',
+            'specification/([^/]+)/resource-manager(/.*)*/readme.md',
             readme,
             re.IGNORECASE,
         )
         if not match:
             logging.info(
-                '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
+                '[Skip] readme path does not format as specification/*/resource-manager/*/readme.md'
             )
         else:
             spec = match.group(1)
+            spec = update_spec(spec, match.group(2))
             service = get_and_update_service_from_api_specs(
                 api_specs_file, spec)
 
             pre_suffix = SUFFIX
             suffix = get_suffix_from_api_specs(api_specs_file, spec)
-            if suffix == None:
+            if suffix is None:
                 suffix = SUFFIX
             update_parameters(suffix)
 
@@ -175,11 +196,7 @@ def sdk_automation(input_file: str, output_file: str):
         # try data-plane codegen
         packages = sdk_automation_data(config)
 
-    with open(output_file, 'w') as fout:
-        output = {
-            'packages': packages,
-        }
-        json.dump(output, fout)
+    return packages
 
 
 def main():
@@ -194,7 +211,7 @@ def main():
 
     readme = args['readme']
     match = re.match(
-        'specification/([^/]+)/resource-manager/readme.md',
+        'specification/([^/]+)/resource-manager(/.*)*/readme.md',
         readme,
         re.IGNORECASE,
     )
@@ -203,6 +220,7 @@ def main():
         readme = 'specification/{0}/resource-manager/readme.md'.format(spec)
     else:
         spec = match.group(1)
+        spec = update_spec(spec, match.group(2))
 
     args['readme'] = readme
     args['spec'] = spec
@@ -216,7 +234,7 @@ def main():
     module = ARTIFACT_FORMAT.format(service)
     stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
-    output_folder = OUTPUT_FOLDER_FORMAT.format(service),
+    output_folder = OUTPUT_FOLDER_FORMAT.format(service)
     namespace = NAMESPACE_FORMAT.format(service)
     succeeded = generate(
         sdk_root,

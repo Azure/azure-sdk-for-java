@@ -60,7 +60,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAutoma")
-    private interface AutomationsService {
+    public interface AutomationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations")
         @ExpectedResponses({200})
@@ -609,22 +609,6 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param automationName The security automation name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationInner getByResourceGroup(String resourceGroupName, String automationName) {
-        return getByResourceGroupAsync(resourceGroupName, automationName).block();
-    }
-
-    /**
-     * Retrieves information about the model of a security automation.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -635,6 +619,22 @@ public final class AutomationsClientImpl implements AutomationsClient {
     public Response<AutomationInner> getByResourceGroupWithResponse(
         String resourceGroupName, String automationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, automationName, context).block();
+    }
+
+    /**
+     * Retrieves information about the model of a security automation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationInner getByResourceGroup(String resourceGroupName, String automationName) {
+        return getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
     }
 
     /**
@@ -779,24 +779,6 @@ public final class AutomationsClientImpl implements AutomationsClient {
      *     insensitive.
      * @param automationName The security automation name.
      * @param automation The security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationInner createOrUpdate(String resourceGroupName, String automationName, AutomationInner automation) {
-        return createOrUpdateAsync(resourceGroupName, automationName, automation).block();
-    }
-
-    /**
-     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
-     * issued for the same automation id, then it will be updated.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -807,6 +789,24 @@ public final class AutomationsClientImpl implements AutomationsClient {
     public Response<AutomationInner> createOrUpdateWithResponse(
         String resourceGroupName, String automationName, AutomationInner automation, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
+    }
+
+    /**
+     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
+     * issued for the same automation id, then it will be updated.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param automation The security automation resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationInner createOrUpdate(String resourceGroupName, String automationName, AutomationInner automation) {
+        return createOrUpdateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
     }
 
     /**
@@ -928,21 +928,6 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param automationName The security automation name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationName) {
-        deleteAsync(resourceGroupName, automationName).block();
-    }
-
-    /**
-     * Deletes a security automation.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -952,6 +937,21 @@ public final class AutomationsClientImpl implements AutomationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationName, context).block();
+    }
+
+    /**
+     * Deletes a security automation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationName) {
+        deleteWithResponse(resourceGroupName, automationName, Context.NONE);
     }
 
     /**
@@ -1098,25 +1098,6 @@ public final class AutomationsClientImpl implements AutomationsClient {
      *     insensitive.
      * @param automationName The security automation name.
      * @param automation The security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutomationValidationStatusInner validate(
-        String resourceGroupName, String automationName, AutomationInner automation) {
-        return validateAsync(resourceGroupName, automationName, automation).block();
-    }
-
-    /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,6 +1108,25 @@ public final class AutomationsClientImpl implements AutomationsClient {
     public Response<AutomationValidationStatusInner> validateWithResponse(
         String resourceGroupName, String automationName, AutomationInner automation, Context context) {
         return validateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
+    }
+
+    /**
+     * Validates the security automation model before create or update. Any validation errors are returned to the
+     * client.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param automation The security automation resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation model state property bag.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutomationValidationStatusInner validate(
+        String resourceGroupName, String automationName, AutomationInner automation) {
+        return validateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
     }
 
     /**

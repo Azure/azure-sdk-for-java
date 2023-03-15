@@ -9,14 +9,11 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A hub setting. */
 @Fluent
 public final class WebPubSubHubInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubHubInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -24,10 +21,14 @@ public final class WebPubSubHubInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Properties of the hub setting.
+     * Properties of a hub.
      */
     @JsonProperty(value = "properties", required = true)
     private WebPubSubHubProperties properties;
+
+    /** Creates an instance of WebPubSubHubInner class. */
+    public WebPubSubHubInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -39,7 +40,7 @@ public final class WebPubSubHubInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Properties of the hub setting.
+     * Get the properties property: Properties of a hub.
      *
      * @return the properties value.
      */
@@ -48,7 +49,7 @@ public final class WebPubSubHubInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Properties of the hub setting.
+     * Set the properties property: Properties of a hub.
      *
      * @param properties the properties value to set.
      * @return the WebPubSubHubInner object itself.
@@ -65,11 +66,13 @@ public final class WebPubSubHubInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model WebPubSubHubInner"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubHubInner.class);
 }

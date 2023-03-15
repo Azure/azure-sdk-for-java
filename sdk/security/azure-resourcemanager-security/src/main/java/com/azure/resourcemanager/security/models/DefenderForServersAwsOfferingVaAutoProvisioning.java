@@ -22,6 +22,10 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioning {
     @JsonProperty(value = "configuration")
     private DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration;
 
+    /** Creates an instance of DefenderForServersAwsOfferingVaAutoProvisioning class. */
+    public DefenderForServersAwsOfferingVaAutoProvisioning() {
+    }
+
     /**
      * Get the enabled property: Is Vulnerability Assessment auto provisioning enabled.
      *

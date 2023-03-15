@@ -33,6 +33,8 @@ public class CallAutomationLiveTestBase extends TestBase {
         "https://REDACTED.communication.azure.com/");
     protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401",
         "https://REDACTED.communication.azure.com/");
+    protected static final String PMA_ENDPOINT = Configuration.getGlobalConfiguration().get("PMA_Endpoint", "https://REDACTED.communication.azure.com/");
+    protected static final Boolean COMMUNICATION_CUSTOM_ENDPOINT_ENABLED = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED", false);
     protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
         .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
     protected static final String VIDEO_URL = Configuration.getGlobalConfiguration()
@@ -56,13 +58,13 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_PHONE_NUMBER", "+16471234567");
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
-        .get("ACS_MEDIA_SOURCE", "https://mwlstoragetest.blob.core.windows.net/blobs1/languagesPrompt.wav");
+        .get("ACS_MEDIA_SOURCE", "https://acstestapp1.azurewebsites.net/audio/bot-hold-music-2.wav");
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
         .add("id");
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
@@ -80,9 +82,18 @@ public class CallAutomationLiveTestBase extends TestBase {
     }
 
     protected CallAutomationClientBuilder getCallAutomationClientUsingConnectionString(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .httpClient(getHttpClientOrUsePlayback(httpClient));
+
+        CallAutomationClientBuilder builder;
+        if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED) {
+            builder = new CallAutomationClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .endpoint(PMA_ENDPOINT)
+                .httpClient(getHttpClientOrUsePlayback(httpClient));
+        } else {
+            builder = new CallAutomationClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .httpClient(getHttpClientOrUsePlayback(httpClient));
+        }
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -150,7 +161,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         }
     }
 
-    private String redact(String content, Matcher matcher) {
+    protected String redact(String content, Matcher matcher) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {

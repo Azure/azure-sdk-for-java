@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UnitType. */
+/** The unit of the metric. */
 public final class UnitType extends ExpandableStringEnum<UnitType> {
     /** Static value Count for UnitType. */
     public static final UnitType COUNT = fromString("Count");
@@ -30,6 +30,15 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
 
     /** Static value Milliseconds for UnitType. */
     public static final UnitType MILLISECONDS = fromString("Milliseconds");
+
+    /**
+     * Creates a new instance of UnitType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnitType() {
+    }
 
     /**
      * Creates or finds a UnitType from its string representation.

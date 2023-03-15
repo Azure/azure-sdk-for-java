@@ -16,7 +16,7 @@ public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity>
     /** Static value Medium for AnomalySeverity. */
     public static final AnomalySeverity MEDIUM = fromString("Medium");
 
-    /** Static value High for AnomalySeveDrity. */
+    /** Static value High for AnomalySeverity. */
     public static final AnomalySeverity HIGH = fromString("High");
 
     /**

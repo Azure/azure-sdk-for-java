@@ -144,7 +144,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -194,7 +194,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty(), Mono.error(error));
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -264,7 +264,7 @@ public class EventHubBufferedPartitionProducerTest {
         });
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -339,7 +339,7 @@ public class EventHubBufferedPartitionProducerTest {
             .thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2),
@@ -407,7 +407,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, mockedEventSink, eventQueue);
+            options, DEFAULT_RETRY_OPTIONS, mockedEventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -456,7 +456,7 @@ public class EventHubBufferedPartitionProducerTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2).setDelay(Duration.ofSeconds(2));
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, retryOptions, mockedEventSink, eventQueue);
+            options, retryOptions, mockedEventSink, eventQueue, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))

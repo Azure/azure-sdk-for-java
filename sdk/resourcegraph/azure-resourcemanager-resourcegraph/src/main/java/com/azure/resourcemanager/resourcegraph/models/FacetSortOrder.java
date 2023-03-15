@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcegraph.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FacetSortOrder. */
+/** The sorting order by the selected column (count by default). */
 public enum FacetSortOrder {
     /** Enum value asc. */
     ASC("asc"),
@@ -30,6 +30,9 @@ public enum FacetSortOrder {
      */
     @JsonCreator
     public static FacetSortOrder fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FacetSortOrder[] items = FacetSortOrder.values();
         for (FacetSortOrder item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FacetSortOrder {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

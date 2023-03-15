@@ -5,49 +5,56 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArtifactArchitecture. */
+/** The artifact platform's architecture. */
 public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArchitecture> {
-    /** Static value 386 for ArtifactArchitecture. */
+    /** i386. */
     public static final ArtifactArchitecture I386 = fromString("386");
 
-    /** Static value amd64 for ArtifactArchitecture. */
+    /** AMD64. */
     public static final ArtifactArchitecture AMD64 = fromString("amd64");
 
-    /** Static value arm for ArtifactArchitecture. */
+    /** ARM. */
     public static final ArtifactArchitecture ARM = fromString("arm");
 
-    /** Static value arm64 for ArtifactArchitecture. */
+    /** ARM64. */
     public static final ArtifactArchitecture ARM64 = fromString("arm64");
 
-    /** Static value mips for ArtifactArchitecture. */
+    /** MIPS. */
     public static final ArtifactArchitecture MIPS = fromString("mips");
 
-    /** Static value mipsle for ArtifactArchitecture. */
+    /** MIPSLE. */
     public static final ArtifactArchitecture MIPS_LE = fromString("mipsle");
 
-    /** Static value mips64 for ArtifactArchitecture. */
+    /** MIPS64. */
     public static final ArtifactArchitecture MIPS64 = fromString("mips64");
 
-    /** Static value mips64le for ArtifactArchitecture. */
+    /** MIPS64LE. */
     public static final ArtifactArchitecture MIPS64LE = fromString("mips64le");
 
-    /** Static value ppc64 for ArtifactArchitecture. */
+    /** PPC64. */
     public static final ArtifactArchitecture PPC64 = fromString("ppc64");
 
-    /** Static value ppc64le for ArtifactArchitecture. */
+    /** PPC64LE. */
     public static final ArtifactArchitecture PPC64LE = fromString("ppc64le");
 
-    /** Static value riscv64 for ArtifactArchitecture. */
+    /** RISCv64. */
     public static final ArtifactArchitecture RISC_V64 = fromString("riscv64");
 
-    /** Static value s390x for ArtifactArchitecture. */
+    /** s390x. */
     public static final ArtifactArchitecture S390X = fromString("s390x");
 
-    /** Static value wasm for ArtifactArchitecture. */
+    /** Wasm. */
     public static final ArtifactArchitecture WASM = fromString("wasm");
+
+    /**
+     * Creates a new instance of ArtifactArchitecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArtifactArchitecture() {}
 
     /**
      * Creates or finds a ArtifactArchitecture from its string representation.
@@ -55,12 +62,15 @@ public final class ArtifactArchitecture extends ExpandableStringEnum<ArtifactArc
      * @param name a name to look for.
      * @return the corresponding ArtifactArchitecture.
      */
-    @JsonCreator
     public static ArtifactArchitecture fromString(String name) {
         return fromString(name, ArtifactArchitecture.class);
     }
 
-    /** @return known ArtifactArchitecture values. */
+    /**
+     * Gets known ArtifactArchitecture values.
+     *
+     * @return known ArtifactArchitecture values.
+     */
     public static Collection<ArtifactArchitecture> values() {
         return values(ArtifactArchitecture.class);
     }

@@ -60,6 +60,16 @@
           "Version": "4.0.1"
         }
       }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "commons-codec",
+          "GroupId": "commons-codec",
+          "Version": "1.14"
+        }
+      }
     }
   ],
   "Version": 1

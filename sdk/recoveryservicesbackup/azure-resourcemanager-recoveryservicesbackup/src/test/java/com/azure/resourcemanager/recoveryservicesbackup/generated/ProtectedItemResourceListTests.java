@@ -14,11 +14,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectedItemResourceListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectedItemResourceList model =
             BinaryData
                 .fromString(
@@ -49,8 +48,8 @@ public final class ProtectedItemResourceListTests {
         Assertions.assertEquals("bm", model.value().get(0).etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectedItemResourceList model =
             new ProtectedItemResourceList()
                 .withNextLink("hhuao")

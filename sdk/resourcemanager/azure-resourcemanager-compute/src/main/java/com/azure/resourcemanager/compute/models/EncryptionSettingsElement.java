@@ -23,6 +23,10 @@ public final class EncryptionSettingsElement {
     @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultAndKeyReference keyEncryptionKey;
 
+    /** Creates an instance of EncryptionSettingsElement class. */
+    public EncryptionSettingsElement() {
+    }
+
     /**
      * Get the diskEncryptionKey property: Key Vault Secret Url and vault id of the disk encryption key.
      *

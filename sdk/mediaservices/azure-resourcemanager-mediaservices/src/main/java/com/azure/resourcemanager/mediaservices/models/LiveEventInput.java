@@ -45,6 +45,16 @@ public final class LiveEventInput {
     @JsonProperty(value = "endpoints")
     private List<LiveEventEndpoint> endpoints;
 
+    /*
+     * The metadata endpoints for the live event.
+     */
+    @JsonProperty(value = "timedMetadataEndpoints")
+    private List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints;
+
+    /** Creates an instance of LiveEventInput class. */
+    public LiveEventInput() {
+    }
+
     /**
      * Get the streamingProtocol property: The input protocol for the live event. This is specified at creation time and
      * cannot be updated.
@@ -154,6 +164,26 @@ public final class LiveEventInput {
     }
 
     /**
+     * Get the timedMetadataEndpoints property: The metadata endpoints for the live event.
+     *
+     * @return the timedMetadataEndpoints value.
+     */
+    public List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints() {
+        return this.timedMetadataEndpoints;
+    }
+
+    /**
+     * Set the timedMetadataEndpoints property: The metadata endpoints for the live event.
+     *
+     * @param timedMetadataEndpoints the timedMetadataEndpoints value to set.
+     * @return the LiveEventInput object itself.
+     */
+    public LiveEventInput withTimedMetadataEndpoints(List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints) {
+        this.timedMetadataEndpoints = timedMetadataEndpoints;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -170,6 +200,9 @@ public final class LiveEventInput {
         }
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
+        }
+        if (timedMetadataEndpoints() != null) {
+            timedMetadataEndpoints().forEach(e -> e.validate());
         }
     }
 

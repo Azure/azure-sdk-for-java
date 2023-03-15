@@ -81,28 +81,6 @@ public interface SoftwareInventoriesClient {
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
      * @param softwareName Name of the installed software.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareInner get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName);
-
-    /**
-     * Gets a single software data of the virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param resourceNamespace The namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param softwareName Name of the installed software.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,4 +95,26 @@ public interface SoftwareInventoriesClient {
         String resourceName,
         String softwareName,
         Context context);
+
+    /**
+     * Gets a single software data of the virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param resourceNamespace The namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @param softwareName Name of the installed software.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single software data of the virtual machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SoftwareInner get(
+        String resourceGroupName,
+        String resourceNamespace,
+        String resourceType,
+        String resourceName,
+        String softwareName);
 }

@@ -22,6 +22,10 @@ public final class VendorReference {
     @JsonProperty(value = "link", access = JsonProperty.Access.WRITE_ONLY)
     private String link;
 
+    /** Creates an instance of VendorReference class. */
+    public VendorReference() {
+    }
+
     /**
      * Get the title property: Link title.
      *

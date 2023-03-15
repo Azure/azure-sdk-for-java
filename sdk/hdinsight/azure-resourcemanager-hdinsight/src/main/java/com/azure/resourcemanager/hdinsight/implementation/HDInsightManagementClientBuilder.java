@@ -7,7 +7,6 @@ package com.azure.resourcemanager.hdinsight.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -19,9 +18,8 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {HDInsightManagementClientImpl.class})
 public final class HDInsightManagementClientBuilder {
     /*
-     * The subscription credentials which uniquely identify Microsoft Azure
-     * subscription. The subscription ID forms part of the URI for every
-     * service call.
+     * The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
      */
     private String subscriptionId;
 
@@ -70,22 +68,6 @@ public final class HDInsightManagementClientBuilder {
     }
 
     /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the HDInsightManagementClientBuilder.
-     */
-    public HDInsightManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -98,6 +80,22 @@ public final class HDInsightManagementClientBuilder {
      */
     public HDInsightManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the HDInsightManagementClientBuilder.
+     */
+    public HDInsightManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -123,27 +121,26 @@ public final class HDInsightManagementClientBuilder {
      * @return an instance of HDInsightManagementClientImpl.
      */
     public HDInsightManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         HDInsightManagementClientImpl client =
             new HDInsightManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                subscriptionId,
+                localEndpoint);
         return client;
     }
 }

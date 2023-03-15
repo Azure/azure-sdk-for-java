@@ -4,6 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsAnalyzeDocumentHeaders;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
@@ -11,9 +19,29 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
+
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
  * This class provides a synchronous client that contains the operations that apply to Azure Form Recognizer.
@@ -35,18 +63,18 @@ import com.azure.core.util.polling.SyncPoller;
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
-    private final DocumentAnalysisAsyncClient client;
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentAnalysisClient.class);
+    private final DocumentModelsImpl documentModelsImpl;
 
     /**
      * Create a {@link DocumentAnalysisClient client} that sends requests to the Document Analysis service's endpoint.
      * Each service call goes through the {@link DocumentAnalysisClientBuilder#pipeline http pipeline}.
      *
-     * @param client The {@link DocumentAnalysisClient} that the client routes its request through.
+     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
      */
-    DocumentAnalysisClient(DocumentAnalysisAsyncClient client) {
-        this.client = client;
+    DocumentAnalysisClient(FormRecognizerClientImpl formRecognizerClientImpl) {
+        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
     }
-
     /**
      * Analyzes data from documents with optical character recognition (OCR) and semantic values from a given document
      * using any of the prebuilt models or a custom-built analysis model.
@@ -128,8 +156,34 @@ public final class DocumentAnalysisClient {
     public SyncPoller<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String modelId, String documentUrl,
                                     AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
-        return client.beginAnalyzeDocumentFromUrl(documentUrl, modelId,
-            analyzeDocumentOptions, context).getSyncPoller();
+        return beginAnalyzeDocumentFromUrlSync(documentUrl, modelId,
+            analyzeDocumentOptions, context);
+    }
+
+    SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
+        AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
+        if (CoreUtils.isNullOrEmpty(documentUrl)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+                + " be null or empty"));
+        }
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
+        final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
+        context = enableSyncRestProxy(getTracingContext(context));
+        Context finalContext = context;
+        return SyncPoller.createPoller(
+            DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
+                finalAnalyzeDocumentOptions.getPages(),
+                finalAnalyzeDocumentOptions.getLocale(),
+                null,
+                documentUrl,
+                finalContext).apply(cxt)),
+            pollingOperation(modelId, finalContext),
+            getCancellationIsNotSupported(),
+            fetchingOperation(modelId, finalContext));
     }
 
     /**
@@ -209,11 +263,142 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
-        return client.beginAnalyzeDocument(modelId, document, analyzeDocumentOptions, context).getSyncPoller();
+        Objects.requireNonNull(document, "'document' is required and cannot be null.");
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
+
+        if (document.getLength() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                + " be null"));
+        }
+
+        final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
+        context = enableSyncRestProxy(getTracingContext(context));
+        Context finalContext = context;
+        return SyncPoller.createPoller(
+            DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
+                finalAnalyzeDocumentOptions.getPages(),
+                finalAnalyzeDocumentOptions.getLocale(),
+                document,
+                null,
+                finalContext).apply(cxt)),
+            pollingOperation(modelId, finalContext),
+            getCancellationIsNotSupported(),
+            fetchingOperation(modelId, finalContext));
+    }
+
+    private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
+        String modelId, List<String> pages, String locale, BinaryData document, String documentUrl, Context context) {
+        return (pollingContext) ->
+            Transforms.toDocumentOperationResult(analyzeDocument(modelId,
+                CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
+                locale,
+                document,
+                documentUrl,
+                context)
+                .getDeserializedHeaders().getOperationLocation());
+    }
+
+    private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
+                                                                                     BinaryData document, String documentUrl, Context context) {
+        try {
+            if (documentUrl == null) {
+                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
+                    null,
+                    pages,
+                    locale,
+                    StringIndexType.UTF16CODE_UNIT,
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    document,
+                    document.getLength(),
+                    context);
+            } else {
+                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
+                    pages,
+                    locale,
+                    StringIndexType.UTF16CODE_UNIT,
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    new AnalyzeDocumentRequest().setUrlSource(documentUrl),
+                    context);
+            }
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+
+        }
+    }
+    private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
+        getCancellationIsNotSupported() {
+        return (pollingContext, activationResponse) -> {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+        };
+    }
+
+    private Function<PollingContext<OperationResult>, PollResponse<OperationResult>>
+        pollingOperation(String modelId, Context finalContext) {
+        return pollingContext -> {
+            final PollResponse<OperationResult> operationResultPollResponse
+                = pollingContext.getLatestResponse();
+            final String resultId = operationResultPollResponse.getValue().getOperationId();
+            Response<AnalyzeResultOperation> modelResponse;
+            try {
+                modelResponse = documentModelsImpl.getAnalyzeResultWithResponse(modelId, resultId, finalContext);
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
+            }
+            return processAnalyzeModelResponse(modelResponse, operationResultPollResponse);
+        };
+    }
+
+    private PollResponse<OperationResult> processAnalyzeModelResponse(
+        Response<AnalyzeResultOperation> analyzeResultOperationResponse,
+        PollResponse<OperationResult> operationResultPollResponse) {
+        LongRunningOperationStatus status;
+        switch (analyzeResultOperationResponse.getValue().getStatus()) {
+            case NOT_STARTED:
+            case RUNNING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case SUCCEEDED:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                throw LOGGER.logExceptionAsError(Transforms
+                    .mapResponseErrorToHttpResponseException(analyzeResultOperationResponse.getValue().getError()));
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    analyzeResultOperationResponse.getValue().getStatus().toString(), true);
+                break;
+        }
+        return new PollResponse<>(status, operationResultPollResponse.getValue());
+    }
+
+    private Function<PollingContext<OperationResult>, AnalyzeResult>
+        fetchingOperation(
+        String modelId, Context finalContext) {
+        return pollingContext -> {
+            final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
+            try {
+                return Transforms.toAnalyzeResultOperation(documentModelsImpl.getAnalyzeResultWithResponse(
+                        modelId,
+                        resultId,
+                        finalContext)
+                    .getValue().getAnalyzeResult());
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
+            }
+        };
     }
 }

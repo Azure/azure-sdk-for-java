@@ -62,7 +62,7 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterInform")
-    private interface InformationProtectionPoliciesService {
+    public interface InformationProtectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}")
         @ExpectedResponses({200})
@@ -218,23 +218,6 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InformationProtectionPolicyInner get(
-        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
-        return getAsync(scope, informationProtectionPolicyName).block();
-    }
-
-    /**
-     * Details of the information protection policy.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param informationProtectionPolicyName Name of the information protection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,6 +228,23 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
     public Response<InformationProtectionPolicyInner> getWithResponse(
         String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
         return getWithResponseAsync(scope, informationProtectionPolicyName, context).block();
+    }
+
+    /**
+     * Details of the information protection policy.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param informationProtectionPolicyName Name of the information protection policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information protection policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InformationProtectionPolicyInner get(
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
+        return getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -388,26 +388,6 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
      * @param informationProtectionPolicy Information protection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InformationProtectionPolicyInner createOrUpdate(
-        String scope,
-        InformationProtectionPolicyName informationProtectionPolicyName,
-        InformationProtectionPolicyInner informationProtectionPolicy) {
-        return createOrUpdateAsync(scope, informationProtectionPolicyName, informationProtectionPolicy).block();
-    }
-
-    /**
-     * Details of the information protection policy.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param informationProtectionPolicy Information protection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -423,6 +403,28 @@ public final class InformationProtectionPoliciesClientImpl implements Informatio
         return createOrUpdateWithResponseAsync(
                 scope, informationProtectionPolicyName, informationProtectionPolicy, context)
             .block();
+    }
+
+    /**
+     * Details of the information protection policy.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param informationProtectionPolicyName Name of the information protection policy.
+     * @param informationProtectionPolicy Information protection policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information protection policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InformationProtectionPolicyInner createOrUpdate(
+        String scope,
+        InformationProtectionPolicyName informationProtectionPolicyName,
+        InformationProtectionPolicyInner informationProtectionPolicy) {
+        return createOrUpdateWithResponse(
+                scope, informationProtectionPolicyName, informationProtectionPolicy, Context.NONE)
+            .getValue();
     }
 
     /**

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
@@ -10,8 +13,10 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -45,6 +50,7 @@ public class ReactiveCourseRepositoryIT {
     private static final String COURSE_NAME_3 = "Course3";
     private static final String COURSE_NAME_4 = "Course4";
     private static final String COURSE_NAME_5 = "Course5";
+    private static final String PATCH_COURSE_NAME_1 = "PathedCourse1";
 
     private static final String DEPARTMENT_NAME_1 = "Department1";
     private static final String DEPARTMENT_NAME_2 = "Department2";
@@ -65,6 +71,20 @@ public class ReactiveCourseRepositoryIT {
     @Autowired
     private ReactiveCourseRepository repository;
     private CosmosEntityInformation<Course, ?> entityInformation;
+
+    CosmosPatchOperations patchSetOperation = CosmosPatchOperations
+        .create()
+        .set("/name", PATCH_COURSE_NAME_1);
+
+    CosmosPatchOperations patchReplaceOperation = CosmosPatchOperations
+        .create()
+        .replace("/name", PATCH_COURSE_NAME_1);
+
+    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations
+        .create()
+        .remove("/name");
+
+    private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
     @Before
     public void setUp() {
@@ -302,6 +322,16 @@ public class ReactiveCourseRepositoryIT {
     }
 
     @Test
+    public void testFindByNameJsonNode() {
+        final Flux<JsonNode> findResult = repository.annotatedFindByName(COURSE_NAME_1);
+        StepVerifier.create(findResult).consumeNextWith(result -> {
+            Assert.assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
+            Assert.assertEquals(result.findValue("name").asText(), COURSE_1.getName());
+            Assert.assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
+        }).verifyComplete();
+    }
+
+    @Test
     public void testAnnotatedQueries() {
         Flux<Course> courseFlux = repository.getCoursesWithNameDepartment(COURSE_NAME_1, DEPARTMENT_NAME_3);
         StepVerifier.create(courseFlux).expectNext(COURSE_1).verifyComplete();
@@ -309,5 +339,43 @@ public class ReactiveCourseRepositoryIT {
         Flux<ObjectNode> courseGroupBy = repository.getCoursesGroupByDepartment();
         StepVerifier.create(courseGroupBy).expectComplete();
         StepVerifier.create(courseGroupBy).expectNextCount(1);
+    }
+
+    @Test
+    public void testPatchEntitySet() {
+        Mono<Course> patch = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation);
+        StepVerifier.create(patch).expectNextCount(1).verifyComplete();
+        Mono<Course> patchedCourse = repository.findById(COURSE_ID_1);
+        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+    }
+
+    @Test
+    public void testPatchEntityReplace() {
+        Mono<Course> patch = repository.save(COURSE_ID_2, new PartitionKey(DEPARTMENT_NAME_2), Course.class, patchReplaceOperation);
+        StepVerifier.create(patch).expectNextCount(1).verifyComplete();
+        Mono<Course> patchedCourse = repository.findById(COURSE_ID_2);
+        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+    }
+
+    @Test
+    public void testPatchEntityRemove() {
+        Mono<Course> patch = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchRemoveOperation);
+        StepVerifier.create(patch).expectNextCount(1).verifyComplete();
+        Mono<Course> patchedCourse = repository.findById(COURSE_ID_1);
+        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName() == null).verifyComplete();
+    }
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM course a WHERE a.department = '"+DEPARTMENT_NAME_3+"'");
+        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
+        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+    }
+
+    @Test
+    public void testPatchPreConditionFail() {
+        options.setFilterPredicate("FROM course a WHERE a.department = 'dummy'");
+        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
+        StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+            ((CosmosAccessException) ex).getCosmosException() instanceof PreconditionFailedException).verify();
     }
 }

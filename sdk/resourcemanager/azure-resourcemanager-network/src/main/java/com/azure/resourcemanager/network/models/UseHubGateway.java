@@ -17,6 +17,15 @@ public final class UseHubGateway extends ExpandableStringEnum<UseHubGateway> {
     public static final UseHubGateway TRUE = fromString("True");
 
     /**
+     * Creates a new instance of UseHubGateway value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UseHubGateway() {
+    }
+
+    /**
      * Creates or finds a UseHubGateway from its string representation.
      *
      * @param name a name to look for.

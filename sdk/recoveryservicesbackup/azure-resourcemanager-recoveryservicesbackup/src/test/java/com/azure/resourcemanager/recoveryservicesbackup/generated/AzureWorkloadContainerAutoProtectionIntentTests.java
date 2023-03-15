@@ -9,37 +9,36 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadCont
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadContainerAutoProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadContainerAutoProtectionIntent model =
             BinaryData
                 .fromString(
-                    "{\"protectionIntentItemType\":\"AzureWorkloadContainerAutoProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"hhvnewgnxkymp\",\"itemId\":\"nxrjkixtwbtaoy\",\"policyId\":\"yghs\",\"protectionState\":\"Invalid\"}")
+                    "{\"protectionIntentItemType\":\"AzureWorkloadContainerAutoProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"ee\",\"itemId\":\"lgvvpaseksgbu\",\"policyId\":\"ntuygdhgaqipir\",\"protectionState\":\"ProtectionFailed\"}")
                 .toObject(AzureWorkloadContainerAutoProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("hhvnewgnxkymp", model.sourceResourceId());
-        Assertions.assertEquals("nxrjkixtwbtaoy", model.itemId());
-        Assertions.assertEquals("yghs", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
+        Assertions.assertEquals("ee", model.sourceResourceId());
+        Assertions.assertEquals("lgvvpaseksgbu", model.itemId());
+        Assertions.assertEquals("ntuygdhgaqipir", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadContainerAutoProtectionIntent model =
             new AzureWorkloadContainerAutoProtectionIntent()
                 .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withSourceResourceId("hhvnewgnxkymp")
-                .withItemId("nxrjkixtwbtaoy")
-                .withPolicyId("yghs")
-                .withProtectionState(ProtectionStatus.INVALID);
+                .withSourceResourceId("ee")
+                .withItemId("lgvvpaseksgbu")
+                .withPolicyId("ntuygdhgaqipir")
+                .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(AzureWorkloadContainerAutoProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("hhvnewgnxkymp", model.sourceResourceId());
-        Assertions.assertEquals("nxrjkixtwbtaoy", model.itemId());
-        Assertions.assertEquals("yghs", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
+        Assertions.assertEquals("ee", model.sourceResourceId());
+        Assertions.assertEquals("lgvvpaseksgbu", model.itemId());
+        Assertions.assertEquals("ntuygdhgaqipir", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 }

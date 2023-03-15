@@ -39,6 +39,9 @@ public final class StagingSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of StagingSettings class. */
+    public StagingSettings() {}
+
     /**
      * Get the linkedServiceName property: Staging linked service reference.
      *

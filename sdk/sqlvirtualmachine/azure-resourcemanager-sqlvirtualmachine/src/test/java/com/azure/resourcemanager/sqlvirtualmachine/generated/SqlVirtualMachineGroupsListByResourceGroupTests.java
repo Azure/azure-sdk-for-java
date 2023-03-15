@@ -35,7 +35,7 @@ public final class SqlVirtualMachineGroupsListByResourceGroupTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"rmclfplphoxu\",\"sqlImageOffer\":\"rpabg\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"gxywpmue\",\"ouPath\":\"jzwf\",\"clusterBootstrapAccount\":\"q\",\"clusterOperatorAccount\":\"ids\",\"sqlServiceAccount\":\"onobglaocqx\",\"fileShareWitnessPath\":\"cmgyud\",\"storageAccountUrl\":\"tlmoyrx\",\"storageAccountPrimaryKey\":\"fudwpznt\",\"clusterSubnetType\":\"SingleSubnet\"}},\"location\":\"hl\",\"tags\":{\"kfrlhrxsbky\":\"bh\",\"afkuwb\":\"pycanuzbpz\",\"ehhseyvjusrts\":\"rnwb\"},\"id\":\"hspkdeemao\",\"name\":\"mx\",\"type\":\"gkvtmelmqkrhah\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"rmclfplphoxu\",\"sqlImageOffer\":\"rpabg\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"gxywpmue\",\"ouPath\":\"jzwf\",\"clusterBootstrapAccount\":\"q\",\"clusterOperatorAccount\":\"ids\",\"sqlServiceAccount\":\"onobglaocqx\",\"fileShareWitnessPath\":\"cmgyud\",\"storageAccountUrl\":\"tlmoyrx\",\"storageAccountPrimaryKey\":\"fakeStorageAccountPrimaryKeyPlaceholder\",\"clusterSubnetType\":\"SingleSubnet\"}},\"location\":\"hl\",\"tags\":{\"kfrlhrxsbky\":\"bh\",\"afkuwb\":\"pycanuzbpz\",\"ehhseyvjusrts\":\"rnwb\"},\"id\":\"hspkdeemao\",\"name\":\"mx\",\"type\":\"gkvtmelmqkrhah\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -77,7 +77,7 @@ public final class SqlVirtualMachineGroupsListByResourceGroupTests {
         Assertions.assertEquals("onobglaocqx", response.iterator().next().wsfcDomainProfile().sqlServiceAccount());
         Assertions.assertEquals("cmgyud", response.iterator().next().wsfcDomainProfile().fileShareWitnessPath());
         Assertions.assertEquals("tlmoyrx", response.iterator().next().wsfcDomainProfile().storageAccountUrl());
-        Assertions.assertEquals("fudwpznt", response.iterator().next().wsfcDomainProfile().storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", response.iterator().next().wsfcDomainProfile().storageAccountPrimaryKey());
         Assertions
             .assertEquals(
                 ClusterSubnetType.SINGLE_SUBNET, response.iterator().next().wsfcDomainProfile().clusterSubnetType());

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetUpdate;
@@ -37,11 +36,9 @@ public final class DiskEncryptionSetsUpdateSamples {
                 new DiskEncryptionSetUpdate()
                     .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferentsub.vault-int.azure-int.net/keys/keyName/keyVersion1"))
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -65,11 +62,9 @@ public final class DiskEncryptionSetsUpdateSamples {
                 new DiskEncryptionSetUpdate()
                     .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                    .withActiveKey(
-                        new KeyForDiskEncryptionSet()
-                            .withKeyUrl("https://myvaultdifferentsub.vault-int.azure-int.net/keys/keyName/keyVersion1"))
+                    .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -98,8 +93,8 @@ public final class DiskEncryptionSetsUpdateSamples {
                                 new SourceVault()
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault"))
-                            .withKeyUrl("https://myvmvault.vault-int.azure-int.net/keys/keyName/keyVersion")),
-                Context.NONE);
+                            .withKeyUrl("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

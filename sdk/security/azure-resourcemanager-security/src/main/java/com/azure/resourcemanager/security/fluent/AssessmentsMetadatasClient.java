@@ -39,18 +39,6 @@ public interface AssessmentsMetadatasClient {
      * Get metadata information on an assessment type.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentMetadataResponseInner get(String assessmentMetadataName);
-
-    /**
-     * Get metadata information on an assessment type.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,6 +47,18 @@ public interface AssessmentsMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityAssessmentMetadataResponseInner> getWithResponse(String assessmentMetadataName, Context context);
+
+    /**
+     * Get metadata information on an assessment type.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on an assessment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityAssessmentMetadataResponseInner get(String assessmentMetadataName);
 
     /**
      * Get metadata information on all assessment types in a specific subscription.
@@ -88,18 +88,6 @@ public interface AssessmentsMetadatasClient {
      * Get metadata information on an assessment type in a specific subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentMetadataResponseInner getInSubscription(String assessmentMetadataName);
-
-    /**
-     * Get metadata information on an assessment type in a specific subscription.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,18 +99,16 @@ public interface AssessmentsMetadatasClient {
         String assessmentMetadataName, Context context);
 
     /**
-     * Create metadata information on an assessment type in a specific subscription.
+     * Get metadata information on an assessment type in a specific subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param assessmentMetadata AssessmentMetadata object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment metadata response.
+     * @return metadata information on an assessment type in a specific subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentMetadataResponseInner createInSubscription(
-        String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata);
+    SecurityAssessmentMetadataResponseInner getInSubscription(String assessmentMetadataName);
 
     /**
      * Create metadata information on an assessment type in a specific subscription.
@@ -140,16 +126,18 @@ public interface AssessmentsMetadatasClient {
         String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata, Context context);
 
     /**
-     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
-     * assessments of that type in that subscription.
+     * Create metadata information on an assessment type in a specific subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @param assessmentMetadata AssessmentMetadata object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security assessment metadata response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteInSubscription(String assessmentMetadataName);
+    SecurityAssessmentMetadataResponseInner createInSubscription(
+        String assessmentMetadataName, SecurityAssessmentMetadataResponseInner assessmentMetadata);
 
     /**
      * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
@@ -164,4 +152,16 @@ public interface AssessmentsMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context);
+
+    /**
+     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
+     * assessments of that type in that subscription.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteInSubscription(String assessmentMetadataName);
 }

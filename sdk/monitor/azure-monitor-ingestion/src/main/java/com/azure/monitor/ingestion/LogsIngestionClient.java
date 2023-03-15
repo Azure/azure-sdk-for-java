@@ -14,10 +14,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
-
-import java.util.List;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -50,22 +47,21 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      *
-     * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
+     * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
-     * @return the result of the logs upload request.
-     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String dataCollectionRuleId, String streamName, List<Object> logs) {
-        return asyncClient.upload(dataCollectionRuleId, streamName, logs).block();
+    public void upload(String ruleId, String streamName, Iterable<Object> logs) {
+        asyncClient.upload(ruleId, streamName, logs).block();
     }
 
     /**
@@ -77,25 +73,24 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
-     *         uploadLogsOptions, Context.NONE&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * LogsUploadOptions logsUploadOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
+     *         logsUploadOptions, Context.NONE&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
-     * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
+     * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
-     * @return the result of the logs upload request.
-     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String dataCollectionRuleId, String streamName,
-                                   List<Object> logs, UploadLogsOptions options) {
-        return asyncClient.upload(dataCollectionRuleId, streamName, logs, options, Context.NONE).block();
+    public void upload(String ruleId, String streamName,
+                                   Iterable<Object> logs, LogsUploadOptions options) {
+        asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
     }
 
     /**
@@ -103,21 +98,20 @@ public final class LogsIngestionClient {
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service.
      *
-     * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
+     * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
      * @param context additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
-     * @return the result of the logs upload request.
-     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String dataCollectionRuleId, String streamName,
-                                                         List<Object> logs, UploadLogsOptions options, Context context) {
-        return asyncClient.upload(dataCollectionRuleId, streamName, logs, options, context).block();
+    public void upload(String ruleId, String streamName,
+                       Iterable<Object> logs, LogsUploadOptions options, Context context) {
+        asyncClient.upload(ruleId, streamName, logs, options, context).block();
     }
 
     /**
@@ -140,7 +134,7 @@ public final class LogsIngestionClient {
      * ]
      * }</pre>
      *
-     * @param dataCollectionRuleId The immutable Id of the Data Collection Rule resource.
+     * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param streamName The streamDeclaration name as defined in the Data Collection Rule.
      * @param logs An array of objects matching the schema defined by the provided stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -152,7 +146,7 @@ public final class LogsIngestionClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
-            String dataCollectionRuleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
-        return asyncClient.uploadWithResponse(dataCollectionRuleId, streamName, logs, requestOptions).block();
+            String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
+        return asyncClient.uploadWithResponse(ruleId, streamName, logs, requestOptions).block();
     }
 }

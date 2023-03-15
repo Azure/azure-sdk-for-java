@@ -36,6 +36,10 @@ public final class VirtualMachineInstallPatchesParameters {
     @JsonProperty(value = "linuxParameters")
     private LinuxParameters linuxParameters;
 
+    /** Creates an instance of VirtualMachineInstallPatchesParameters class. */
+    public VirtualMachineInstallPatchesParameters() {
+    }
+
     /**
      * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an
      * ISO 8601-compliant duration string such as PT4H (4 hours).

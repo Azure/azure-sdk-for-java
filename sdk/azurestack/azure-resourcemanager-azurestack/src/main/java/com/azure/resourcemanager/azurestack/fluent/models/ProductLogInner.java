@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Product action log. */
 @Immutable
 public final class ProductLogInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductLogInner.class);
-
     /*
      * Log ID.
      */
@@ -79,6 +75,10 @@ public final class ProductLogInner {
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
+
+    /** Creates an instance of ProductLogInner class. */
+    public ProductLogInner() {
+    }
 
     /**
      * Get the id property: Log ID.

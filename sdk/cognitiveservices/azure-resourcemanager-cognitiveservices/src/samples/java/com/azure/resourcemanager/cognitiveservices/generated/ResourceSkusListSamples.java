@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceSkus List. */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetSkus.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/GetSkus.json
      */
     /**
      * Sample code: Regenerate Keys.
@@ -17,6 +15,6 @@ public final class ResourceSkusListSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void regenerateKeys(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.resourceSkus().list(Context.NONE);
+        manager.resourceSkus().list(com.azure.core.util.Context.NONE);
     }
 }

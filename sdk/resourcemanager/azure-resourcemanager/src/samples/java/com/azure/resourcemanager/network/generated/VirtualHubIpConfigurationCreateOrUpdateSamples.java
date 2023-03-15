@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.HubIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 
 /** Samples for VirtualHubIpConfiguration CreateOrUpdate. */
 public final class VirtualHubIpConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualHubIpConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubIpConfigurationPut.json
      */
     /**
      * Sample code: VirtualHubIpConfigurationPut.
@@ -33,6 +32,6 @@ public final class VirtualHubIpConfigurationCreateOrUpdateSamples {
                         new SubnetInner()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

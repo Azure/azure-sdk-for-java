@@ -7,34 +7,33 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVmilrRegistrationRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IaasVmilrRegistrationRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IaasVmilrRegistrationRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"IaasVMILRRegistrationRequest\",\"recoveryPointId\":\"ocxnehvsmtodl\",\"virtualMachineId\":\"yapucygvoa\",\"initiatorName\":\"unssxlghieegjl\",\"renewExistingRegistration\":true}")
+                    "{\"objectType\":\"IaasVMILRRegistrationRequest\",\"recoveryPointId\":\"qg\",\"virtualMachineId\":\"fnozoeoqbvjh\",\"initiatorName\":\"f\",\"renewExistingRegistration\":false}")
                 .toObject(IaasVmilrRegistrationRequest.class);
-        Assertions.assertEquals("ocxnehvsmtodl", model.recoveryPointId());
-        Assertions.assertEquals("yapucygvoa", model.virtualMachineId());
-        Assertions.assertEquals("unssxlghieegjl", model.initiatorName());
-        Assertions.assertEquals(true, model.renewExistingRegistration());
+        Assertions.assertEquals("qg", model.recoveryPointId());
+        Assertions.assertEquals("fnozoeoqbvjh", model.virtualMachineId());
+        Assertions.assertEquals("f", model.initiatorName());
+        Assertions.assertEquals(false, model.renewExistingRegistration());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IaasVmilrRegistrationRequest model =
             new IaasVmilrRegistrationRequest()
-                .withRecoveryPointId("ocxnehvsmtodl")
-                .withVirtualMachineId("yapucygvoa")
-                .withInitiatorName("unssxlghieegjl")
-                .withRenewExistingRegistration(true);
+                .withRecoveryPointId("qg")
+                .withVirtualMachineId("fnozoeoqbvjh")
+                .withInitiatorName("f")
+                .withRenewExistingRegistration(false);
         model = BinaryData.fromObject(model).toObject(IaasVmilrRegistrationRequest.class);
-        Assertions.assertEquals("ocxnehvsmtodl", model.recoveryPointId());
-        Assertions.assertEquals("yapucygvoa", model.virtualMachineId());
-        Assertions.assertEquals("unssxlghieegjl", model.initiatorName());
-        Assertions.assertEquals(true, model.renewExistingRegistration());
+        Assertions.assertEquals("qg", model.recoveryPointId());
+        Assertions.assertEquals("fnozoeoqbvjh", model.virtualMachineId());
+        Assertions.assertEquals("f", model.initiatorName());
+        Assertions.assertEquals(false, model.renewExistingRegistration());
     }
 }

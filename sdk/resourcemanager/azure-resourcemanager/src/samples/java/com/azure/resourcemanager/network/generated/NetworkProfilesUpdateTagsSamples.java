@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for NetworkProfiles UpdateTags. */
 public final class NetworkProfilesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkProfileUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkProfileUpdateTags.json
      */
     /**
      * Sample code: Update network profile tags.
@@ -26,7 +25,10 @@ public final class NetworkProfilesUpdateTagsSamples {
             .serviceClient()
             .getNetworkProfiles()
             .updateTagsWithResponse(
-                "rg1", "test-np", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+                "rg1",
+                "test-np",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

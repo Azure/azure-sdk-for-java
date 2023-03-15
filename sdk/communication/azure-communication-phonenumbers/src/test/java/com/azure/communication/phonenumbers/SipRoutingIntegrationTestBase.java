@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,48 +24,56 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
-public abstract class SipRoutingIntegrationTestBase extends TestBase {
+public class SipRoutingIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-
-    protected static final String NOT_EXISTING_FQDN = "not.existing.fqdn";
-
-    protected static final String SET_TRUNK_FQDN = "4.fqdn.com";
-    protected static final int SET_TRUNK_PORT = 4567;
-    protected static final SipTrunk SET_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_PORT);
-
-    protected static final int SET_TRUNK_UPDATED_PORT = 7651;
-    protected static final SipTrunk SET_UPDATED_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_UPDATED_PORT);
-
-    protected static final String DELETE_FQDN = "delete.fqdn.com";
-    protected static final int DELETE_PORT = 5678;
-    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT);
-
-    protected static final String SET_TRUNK_INVALID_FQDN = "_";
-    protected static final int SET_TRUNK_INVALID_PORT = -1;
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    private static final String AZURE_TEST_DOMAIN = Configuration.getGlobalConfiguration()
+        .get("AZURE_TEST_DOMAIN", "testdomain.com");
 
     protected static final String SET_TRUNK_ROUTE_NAME = "route99";
     protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
     protected static final SipTrunkRoute SET_TRUNK_ROUTE =
         new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN);
 
+    protected static final String FIRST_FQDN = getUniqueFqdn("first");
+    protected static final String SECOND_FQDN = getUniqueFqdn("second");
+    protected static final String THIRD_FQDN = getUniqueFqdn("third");
+    protected static final String FOURTH_FQDN = getUniqueFqdn("fourth");
+    protected static final String FIFTH_FQDN = getUniqueFqdn("fifth");
+    protected static final String SIXTH_FQDN = getUniqueFqdn("sixth");
+    protected static final String DELETE_FQDN = getUniqueFqdn("delete");
+    protected static final String SET_TRUNK_FQDN = getUniqueFqdn("set");
+    protected static final String NOT_EXISTING_FQDN = "not.existing.fqdn";
+
+    protected static final int SET_TRUNK_PORT = 4567;
+    protected static final SipTrunk SET_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_PORT);
+
+    protected static final int SET_TRUNK_UPDATED_PORT = 7651;
+    protected static final SipTrunk SET_UPDATED_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_UPDATED_PORT);
+
+    protected static final String SET_TRUNK_INVALID_FQDN = "_";
+    protected static final int SET_TRUNK_INVALID_PORT = -1;
+
+    protected static final int DELETE_PORT = 5678;
+    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT);
 
     protected static final List<SipTrunk> EXPECTED_TRUNKS = asList(
-        new SipTrunk("1.fqdn.com", 1234),
-        new SipTrunk("2.fqdn.com", 2345),
-        new SipTrunk("3.fqdn.com", 3456)
+        new SipTrunk(FIRST_FQDN, 1234),
+        new SipTrunk(SECOND_FQDN, 2345),
+        new SipTrunk(THIRD_FQDN, 3456)
     );
     protected static final List<SipTrunk> UPDATED_TRUNKS = asList(
-        new SipTrunk("1.fqdn.com", 9876),
-        new SipTrunk("20.fqdn.com", 2340),
-        new SipTrunk("30.fqdn.com", 3460),
-        new SipTrunk("40.fqdn.com", 4461)
+        new SipTrunk(FIRST_FQDN, 9876),
+        new SipTrunk(FOURTH_FQDN, 2340),
+        new SipTrunk(FIFTH_FQDN, 3460),
+        new SipTrunk(SIXTH_FQDN, 4461)
     );
     protected static final List<SipTrunkRoute> EXPECTED_ROUTES = asList(
         new SipTrunkRoute("route0", "0.*").setDescription("desc0"),
@@ -91,45 +100,35 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
+    private static final Pattern UUID_FQDN_REDACTION_PATTERN =
+        Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
 
     protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .httpClient(httpClient)
+            .httpClient(getHttpClient(httpClient))
             .endpoint(communicationEndpoint)
             .credential(new AzureKeyCredential(communicationAccessKey));
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (shouldRecord()) {
+            addRedactors(builder);
         }
 
         return builder;
     }
 
     protected SipRoutingClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .httpClient(httpClient)
+            .httpClient(getHttpClient(httpClient))
             .connectionString(CONNECTION_STRING);
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (shouldRecord()) {
+            addRedactors(builder);
         }
 
         return builder;
@@ -138,8 +137,8 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
     protected SipRoutingClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
-            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(getHttpClient(httpClient))
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -147,13 +146,29 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (shouldRecord()) {
+            addRedactors(builder);
         }
 
         return builder;
+    }
+
+    private void addRedactors(SipRoutingClientBuilder builder) {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+        redactors.add(data -> redact(data, UUID_FQDN_REDACTION_PATTERN.matcher(data), ".redacted.com"));
+        builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+    }
+
+    private boolean shouldRecord() {
+        return getTestMode() == TestMode.RECORD;
+    }
+
+    private HttpClient getHttpClient(HttpClient httpClient) {
+        if (httpClient == null || getTestMode() == TestMode.PLAYBACK) {
+            return interceptorManager.getPlaybackClient();
+        }
+        return httpClient;
     }
 
     protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
@@ -181,13 +196,21 @@ public abstract class SipRoutingIntegrationTestBase extends TestBase {
 
     private String redact(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
-            String captureGroup = matcher.group(1);
+            String captureGroup = matcher.group();
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
+                content = content.replace(matcher.group(), replacement);
             }
         }
 
         return content;
+    }
+
+    private static String getUniqueFqdn(String order) {
+        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+            return order + ".redacted.com";
+        }
+        String unique = UUID.randomUUID().toString().replace("-", "");
+        return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
 
 }

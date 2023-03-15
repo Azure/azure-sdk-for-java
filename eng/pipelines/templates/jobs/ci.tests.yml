@@ -28,9 +28,6 @@ parameters:
   - name: UsePlatformContainer
     type: boolean
     default: false
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -75,8 +72,6 @@ jobs:
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
 
-      - template: ../steps/install-latest-jdk.yml
-
       - template: ../steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
@@ -90,7 +85,6 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'true'
-          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}

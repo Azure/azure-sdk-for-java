@@ -21,8 +21,7 @@ public final class EnvironmentsDeployEnvironmentActionTests extends DevCenterCli
                         "{\"actionId\":\"deploy\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"}}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                environmentsClient.beginDeployEnvironmentAction(
-                        "myProject", "me", "{environmentName}", body, requestOptions);
+                environmentsClient.beginDeployEnvironmentAction("myProject", "me", "mydevenv", body, requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }

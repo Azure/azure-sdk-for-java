@@ -7,28 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Represents a synonym map definition. */
 @Fluent
-public final class SynonymMap {
+public final class SynonymMap implements JsonSerializable<SynonymMap> {
     /*
      * The name of the synonym map.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The format of the synonym map. Only the 'solr' format is currently supported.
      */
-    @JsonProperty(value = "format")
-    private String format = "solr";
+    private String format;
 
     /*
      * A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.
      */
-    @JsonProperty(value = "synonyms")
     private String synonyms;
 
     /*
@@ -40,14 +40,17 @@ public final class SynonymMap {
      * is not available for free search services, and is only available for paid services created on or after January
      * 1, 2019.
      */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * The ETag of the synonym map.
      */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
+
+    /** Creates an instance of SynonymMap class. */
+    public SynonymMap() {
+        format = "solr";
+    }
 
     /**
      * Constructor of {@link SynonymMap}.
@@ -65,8 +68,7 @@ public final class SynonymMap {
      * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by
      *     newlines.
      */
-    @JsonCreator
-    public SynonymMap(@JsonProperty(value = "name") String name, @JsonProperty(value = "synonyms") String synonyms) {
+    public SynonymMap(String name, String synonyms) {
         this.format = "solr";
         this.name = name;
         this.synonyms = synonyms;
@@ -153,6 +155,62 @@ public final class SynonymMap {
     public SynonymMap setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("synonyms", this.synonyms);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
+        jsonWriter.writeStringField("@odata.etag", this.eTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynonymMap from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynonymMap if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IOException If an error occurs while reading the SynonymMap.
+     */
+    public static SynonymMap fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String name = null;
+                    String format = null;
+                    String synonyms = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    String eTag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("format".equals(fieldName)) {
+                            format = reader.getString();
+                        } else if ("synonyms".equals(fieldName)) {
+                            synonyms = reader.getString();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SynonymMap deserializedValue = new SynonymMap();
+                    deserializedValue.name = name;
+                    deserializedValue.format = format;
+                    deserializedValue.synonyms = synonyms;
+                    deserializedValue.encryptionKey = encryptionKey;
+                    deserializedValue.eTag = eTag;
+
+                    return deserializedValue;
+                });
     }
 
     /**

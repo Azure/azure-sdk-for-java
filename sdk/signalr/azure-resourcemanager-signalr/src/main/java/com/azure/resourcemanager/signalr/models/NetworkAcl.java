@@ -12,18 +12,20 @@ import java.util.List;
 @Fluent
 public class NetworkAcl {
     /*
-     * Allowed request types. The value can be one or more of:
-     * ClientConnection, ServerConnection, RESTAPI.
+     * Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
      */
     @JsonProperty(value = "allow")
     private List<SignalRRequestType> allow;
 
     /*
-     * Denied request types. The value can be one or more of: ClientConnection,
-     * ServerConnection, RESTAPI.
+     * Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
      */
     @JsonProperty(value = "deny")
     private List<SignalRRequestType> deny;
+
+    /** Creates an instance of NetworkAcl class. */
+    public NetworkAcl() {
+    }
 
     /**
      * Get the allow property: Allowed request types. The value can be one or more of: ClientConnection,

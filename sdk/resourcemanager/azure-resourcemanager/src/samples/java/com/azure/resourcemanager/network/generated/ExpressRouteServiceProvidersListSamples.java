@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteServiceProviders List. */
 public final class ExpressRouteServiceProvidersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteProviderList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteProviderList.json
      */
     /**
      * Sample code: List ExpressRoute providers.
@@ -17,6 +15,11 @@ public final class ExpressRouteServiceProvidersListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listExpressRouteProviders(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteServiceProviders().list(Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteServiceProviders()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

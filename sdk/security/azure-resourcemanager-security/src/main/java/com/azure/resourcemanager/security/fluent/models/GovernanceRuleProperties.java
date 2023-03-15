@@ -85,6 +85,10 @@ public final class GovernanceRuleProperties {
     @JsonProperty(value = "governanceEmailNotification")
     private GovernanceRuleEmailNotification governanceEmailNotification;
 
+    /** Creates an instance of GovernanceRuleProperties class. */
+    public GovernanceRuleProperties() {
+    }
+
     /**
      * Get the displayName property: display name of the governanceRule.
      *

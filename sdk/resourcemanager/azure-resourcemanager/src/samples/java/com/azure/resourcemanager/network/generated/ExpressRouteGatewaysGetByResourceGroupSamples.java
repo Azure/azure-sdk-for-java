@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteGateways GetByResourceGroup. */
 public final class ExpressRouteGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteGatewayGet.json
      */
     /**
      * Sample code: ExpressRouteGatewayGet.
@@ -22,6 +20,7 @@ public final class ExpressRouteGatewaysGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getExpressRouteGateways()
-            .getByResourceGroupWithResponse("resourceGroupName", "expressRouteGatewayName", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "resourceGroupName", "expressRouteGatewayName", com.azure.core.util.Context.NONE);
     }
 }

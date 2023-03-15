@@ -61,7 +61,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface PrivateEndpointConnectionsService {
+    public interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices"
@@ -244,21 +244,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connections associated with the Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName) {
-        return listAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Gets the private endpoint connections associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,6 +255,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connections associated with the Cognitive Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName) {
+        return listWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -413,24 +413,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param accountName The name of Cognitive Services account.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
      *     Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
-     *     Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -442,6 +424,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Gets the specified private endpoint connection associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Cognitive
+     *     Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the Cognitive Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -666,7 +666,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
             .getSyncPoller();
     }
 
@@ -691,7 +692,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, privateEndpointConnectionName, properties, context)
             .getSyncPoller();
     }
@@ -968,7 +970,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).getSyncPoller();
     }
 
     /**
@@ -987,7 +989,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context)
+            .getSyncPoller();
     }
 
     /**

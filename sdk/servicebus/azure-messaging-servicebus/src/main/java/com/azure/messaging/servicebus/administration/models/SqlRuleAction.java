@@ -46,7 +46,7 @@ public class SqlRuleAction extends RuleAction {
     }
 
     /**
-     * Package private constructor for creating a model deserialised from the service.
+     * Package private constructor for creating a model deserialized from the service.
      *
      * @param sqlExpression SQL expression for the action.
      * @param compatibilityLevel The compatibility level.

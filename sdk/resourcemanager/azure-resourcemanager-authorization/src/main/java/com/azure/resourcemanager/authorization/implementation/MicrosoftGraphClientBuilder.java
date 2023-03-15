@@ -103,26 +103,21 @@ public final class MicrosoftGraphClientBuilder {
      * @return an instance of MicrosoftGraphClientImpl.
      */
     public MicrosoftGraphClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (endpoint == null) {
-            this.endpoint = "https://graph.microsoft.com/v1.0";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://graph.microsoft.com/v1.0";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         MicrosoftGraphClientImpl client =
-            new MicrosoftGraphClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
+            new MicrosoftGraphClientImpl(
+                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
         return client;
     }
 }

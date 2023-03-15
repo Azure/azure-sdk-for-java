@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/indices/daily/json?api-version=1.1&query=43.84745%2C-79.37849&indexGroupId=11",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "4008",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 2621AE18999549AD92A970190E82406C Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:51Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:51 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=1784",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:49:35 GMT",
+      "Body" : "{\"results\":[{\"indexName\":\"Running Forecast\",\"indexId\":1,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":7.1,\"category\":\"Very Good\",\"categoryValue\":4,\"ascending\":true,\"description\":\"Conditions are very good for running outdoors.\"},{\"indexName\":\"Jogging Forecast\",\"indexId\":2,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.5,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions are good for jogging outdoors.\"},{\"indexName\":\"Hiking Forecast\",\"indexId\":3,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.4,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions are good for hiking.\"},{\"indexName\":\"Bicycling Forecast\",\"indexId\":4,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.9,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions are good for bicycling outdoors.\"},{\"indexName\":\"Golf Weather Forecast\",\"indexId\":5,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":5.8,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions will be good for golf.\"},{\"indexName\":\"Tennis Forecast\",\"indexId\":6,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.9,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions are good for playing tennis.\"},{\"indexName\":\"Skateboarding Forecast\",\"indexId\":7,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.7,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions are good for skateboarding.\"},{\"indexName\":\"Outdoor Concert Forecast\",\"indexId\":8,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":0.1,\"category\":\"Poor\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Conditions are poor for attending an outdoor concert.\"},{\"indexName\":\"Kite Flying Forecast\",\"indexId\":9,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":4.7,\"category\":\"Fair\",\"categoryValue\":2,\"ascending\":true,\"description\":\"Conditions are fair today for kite-flying.\"},{\"indexName\":\"Beach & Pool Forecast\",\"indexId\":10,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":0.0,\"category\":\"Poor\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Expect poor conditions at the beach or pool.\"},{\"indexName\":\"Sailing Forecast\",\"indexId\":11,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":6.6,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions will be good for sailing.\"},{\"indexName\":\"Stargazing Forecast\",\"indexId\":12,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":0.0,\"category\":\"Poor\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Expect poor conditions for stargazing.\"},{\"indexName\":\"Fishing Forecast\",\"indexId\":13,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":5.1,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions will be good for fishing.\"},{\"indexName\":\"Ski Weather Forecast\",\"indexId\":15,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":0.0,\"category\":\"Poor\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Expect poor conditions for skiing.\"},{\"indexName\":\"Mosquito Activity Forecast\",\"indexId\":17,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":1.0,\"category\":\"Low\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Weather conditions will keep mosquito activity low.\"},{\"indexName\":\"Hunting Forecast\",\"indexId\":20,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":5.7,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions will be good for hunting.\"},{\"indexName\":\"Outdoor Barbecue\",\"indexId\":24,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":4.8,\"category\":\"Fair\",\"categoryValue\":2,\"ascending\":true,\"description\":\"Consider moving your entertaining indoors.\"},{\"indexName\":\"Lawn Mowing Forecast\",\"indexId\":28,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":0.0,\"category\":\"Poor\",\"categoryValue\":1,\"ascending\":true,\"description\":\"Expect poor conditions for lawn mowing.\"},{\"indexName\":\"Outdoor Activity Forecast\",\"indexId\":29,\"dateTime\":\"2022-11-11T07:00:00-05:00\",\"value\":5.5,\"category\":\"Good\",\"categoryValue\":3,\"ascending\":true,\"description\":\"Conditions will be good for outdoor activities.\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

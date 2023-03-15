@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters Stop. */
 public final class ManagedClustersStopSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersStop.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/ManagedClustersStop.json
      */
     /**
      * Sample code: Stop Managed Cluster.
@@ -22,6 +20,6 @@ public final class ManagedClustersStopSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .stop("rg1", "clustername1", Context.NONE);
+            .stop("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

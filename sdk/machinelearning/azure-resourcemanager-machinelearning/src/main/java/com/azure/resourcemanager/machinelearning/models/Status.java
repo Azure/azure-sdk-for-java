@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Status. */
+/**
+ * Update Workspace Quota Status.
+ *
+ * <p>Status of update workspace quota.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
     /** Static value Undefined for Status. */
     public static final Status UNDEFINED = fromString("Undefined");
@@ -34,6 +38,15 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /** Static value OperationNotEnabledForRegion for Status. */
     public static final Status OPERATION_NOT_ENABLED_FOR_REGION = fromString("OperationNotEnabledForRegion");
+
+    /**
+     * Creates a new instance of Status value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Status() {
+    }
 
     /**
      * Creates or finds a Status from its string representation.

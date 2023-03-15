@@ -62,7 +62,7 @@ public final class AlertsClientImpl implements AlertsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAlerts")
-    private interface AlertsService {
+    public interface AlertsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts")
         @ExpectedResponses({200})
@@ -1103,22 +1103,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertInner getSubscriptionLevel(String ascLocation, String alertName) {
-        return getSubscriptionLevelAsync(ascLocation, alertName).block();
-    }
-
-    /**
-     * Get an alert that is associated with a subscription.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1129,6 +1113,22 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<AlertInner> getSubscriptionLevelWithResponse(
         String ascLocation, String alertName, Context context) {
         return getSubscriptionLevelWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Get an alert that is associated with a subscription.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert that is associated with a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertInner getSubscriptionLevel(String ascLocation, String alertName) {
+        return getSubscriptionLevelWithResponse(ascLocation, alertName, Context.NONE).getValue();
     }
 
     /**
@@ -1272,24 +1272,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertInner getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName) {
-        return getResourceGroupLevelAsync(resourceGroupName, ascLocation, alertName).block();
-    }
-
-    /**
-     * Get an alert that is associated a resource group or a resource in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1301,6 +1283,24 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<AlertInner> getResourceGroupLevelWithResponse(
         String resourceGroupName, String ascLocation, String alertName, Context context) {
         return getResourceGroupLevelWithResponseAsync(resourceGroupName, ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Get an alert that is associated a resource group or a resource in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert that is associated a resource group or a resource in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertInner getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName) {
+        return getResourceGroupLevelWithResponse(resourceGroupName, ascLocation, alertName, Context.NONE).getValue();
     }
 
     /**
@@ -1422,21 +1422,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName) {
-        updateSubscriptionLevelStateToDismissAsync(ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1447,6 +1432,21 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<Void> updateSubscriptionLevelStateToDismissWithResponse(
         String ascLocation, String alertName, Context context) {
         return updateSubscriptionLevelStateToDismissWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelStateToDismiss(String ascLocation, String alertName) {
+        updateSubscriptionLevelStateToDismissWithResponse(ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -1568,21 +1568,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName) {
-        updateSubscriptionLevelStateToResolveAsync(ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1593,6 +1578,21 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<Void> updateSubscriptionLevelStateToResolveWithResponse(
         String ascLocation, String alertName, Context context) {
         return updateSubscriptionLevelStateToResolveWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelStateToResolve(String ascLocation, String alertName) {
+        updateSubscriptionLevelStateToResolveWithResponse(ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -1714,21 +1714,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName) {
-        updateSubscriptionLevelStateToActivateAsync(ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1739,6 +1724,21 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<Void> updateSubscriptionLevelStateToActivateWithResponse(
         String ascLocation, String alertName, Context context) {
         return updateSubscriptionLevelStateToActivateWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelStateToActivate(String ascLocation, String alertName) {
+        updateSubscriptionLevelStateToActivateWithResponse(ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -1860,21 +1860,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
-        updateSubscriptionLevelStateToInProgressAsync(ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1885,6 +1870,21 @@ public final class AlertsClientImpl implements AlertsClient {
     public Response<Void> updateSubscriptionLevelStateToInProgressWithResponse(
         String ascLocation, String alertName, Context context) {
         return updateSubscriptionLevelStateToInProgressWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
+        updateSubscriptionLevelStateToInProgressWithResponse(ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -2025,23 +2025,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
-        updateResourceGroupLevelStateToResolveAsync(resourceGroupName, ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2054,6 +2037,23 @@ public final class AlertsClientImpl implements AlertsClient {
         return updateResourceGroupLevelStateToResolveWithResponseAsync(
                 resourceGroupName, ascLocation, alertName, context)
             .block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToResolveWithResponse(resourceGroupName, ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -2194,23 +2194,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
-        updateResourceGroupLevelStateToDismissAsync(resourceGroupName, ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2223,6 +2206,23 @@ public final class AlertsClientImpl implements AlertsClient {
         return updateResourceGroupLevelStateToDismissWithResponseAsync(
                 resourceGroupName, ascLocation, alertName, context)
             .block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToDismissWithResponse(resourceGroupName, ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -2363,24 +2363,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToActivate(
-        String resourceGroupName, String ascLocation, String alertName) {
-        updateResourceGroupLevelStateToActivateAsync(resourceGroupName, ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2393,6 +2375,24 @@ public final class AlertsClientImpl implements AlertsClient {
         return updateResourceGroupLevelStateToActivateWithResponseAsync(
                 resourceGroupName, ascLocation, alertName, context)
             .block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelStateToActivate(
+        String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToActivateWithResponse(resourceGroupName, ascLocation, alertName, Context.NONE);
     }
 
     /**
@@ -2533,24 +2533,6 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToInProgress(
-        String resourceGroupName, String ascLocation, String alertName) {
-        updateResourceGroupLevelStateToInProgressAsync(resourceGroupName, ascLocation, alertName).block();
-    }
-
-    /**
-     * Update the alert's state.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param alertName Name of the alert object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2563,6 +2545,24 @@ public final class AlertsClientImpl implements AlertsClient {
         return updateResourceGroupLevelStateToInProgressWithResponseAsync(
                 resourceGroupName, ascLocation, alertName, context)
             .block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelStateToInProgress(
+        String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToInProgressWithResponse(resourceGroupName, ascLocation, alertName, Context.NONE);
     }
 
     /**

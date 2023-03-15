@@ -11,10 +11,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -41,6 +41,7 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputControlTracki
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
@@ -232,6 +233,18 @@ public class ReflectionUtils {
 
     public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
         set(client, httpClient, "httpClient");
+    }
+
+    public static void setCollectionCache(RxDocumentClientImpl client, RxClientCollectionCache collectionCache) {
+        set(client, collectionCache, "collectionCache");
+    }
+
+    public static void setPartitionKeyRangeCache(RxDocumentClientImpl client, RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        set(client, partitionKeyRangeCache, "partitionKeyRangeCache");
+    }
+
+    public static void setResetSessionTokenRetryPolicy(RxDocumentClientImpl client, IRetryPolicyFactory retryPolicyFactory) {
+        set(client, retryPolicyFactory, "resetSessionTokenRetryPolicy");
     }
 
     public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {

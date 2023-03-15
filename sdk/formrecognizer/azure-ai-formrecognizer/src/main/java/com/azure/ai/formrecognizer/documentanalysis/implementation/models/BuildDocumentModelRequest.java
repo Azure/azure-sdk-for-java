@@ -36,10 +36,19 @@ public final class BuildDocumentModelRequest {
     private AzureBlobContentSource azureBlobSource;
 
     /*
+     * Azure Blob Storage file list specifying the training data.
+     */
+    @JsonProperty(value = "azureBlobFileListSource")
+    private AzureBlobFileListSource azureBlobFileListSource;
+
+    /*
      * List of key-value tag attributes associated with the document model.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /** Creates an instance of BuildDocumentModelRequest class. */
+    public BuildDocumentModelRequest() {}
 
     /**
      * Get the modelId property: Unique document model name.
@@ -118,6 +127,26 @@ public final class BuildDocumentModelRequest {
      */
     public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
+        return this;
+    }
+
+    /**
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     *
+     * @return the azureBlobFileListSource value.
+     */
+    public AzureBlobFileListSource getAzureBlobFileListSource() {
+        return this.azureBlobFileListSource;
+    }
+
+    /**
+     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     *
+     * @param azureBlobFileListSource the azureBlobFileListSource value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    public BuildDocumentModelRequest setAzureBlobFileListSource(AzureBlobFileListSource azureBlobFileListSource) {
+        this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
     }
 

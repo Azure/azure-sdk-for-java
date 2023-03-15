@@ -41,6 +41,10 @@ public final class InformationProtectionPolicyProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InformationType> informationTypes;
 
+    /** Creates an instance of InformationProtectionPolicyProperties class. */
+    public InformationProtectionPolicyProperties() {
+    }
+
     /**
      * Get the lastModifiedUtc property: Describes the last UTC time the policy was modified.
      *

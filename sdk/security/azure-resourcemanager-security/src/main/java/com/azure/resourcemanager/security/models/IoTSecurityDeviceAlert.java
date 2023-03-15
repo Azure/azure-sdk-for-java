@@ -28,6 +28,10 @@ public final class IoTSecurityDeviceAlert {
     @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
 
+    /** Creates an instance of IoTSecurityDeviceAlert class. */
+    public IoTSecurityDeviceAlert() {
+    }
+
     /**
      * Get the alertDisplayName property: Display name of the alert.
      *

@@ -24,6 +24,10 @@ public final class EligibleChildResourcesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EligibleChildResourcesListResult class. */
+    public EligibleChildResourcesListResult() {
+    }
+
     /**
      * Get the value property: Eligible child resource list.
      *

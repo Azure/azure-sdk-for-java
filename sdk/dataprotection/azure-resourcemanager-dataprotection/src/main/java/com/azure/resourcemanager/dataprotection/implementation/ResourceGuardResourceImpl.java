@@ -8,8 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
-import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
-import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
+import com.azure.resourcemanager.dataprotection.models.PatchResourceGuardInput;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import java.util.Collections;
@@ -50,10 +49,6 @@ public final class ResourceGuardResourceImpl
         return this.innerModel().etag();
     }
 
-    public DppIdentityDetails identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -70,6 +65,10 @@ public final class ResourceGuardResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ResourceGuardResourceInner innerModel() {
         return this.innerObject;
     }
@@ -82,7 +81,7 @@ public final class ResourceGuardResourceImpl
 
     private String resourceGuardsName;
 
-    private PatchResourceRequestInput updateParameters;
+    private PatchResourceGuardInput updateParameters;
 
     public ResourceGuardResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -117,7 +116,7 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResourceImpl update() {
-        this.updateParameters = new PatchResourceRequestInput();
+        this.updateParameters = new PatchResourceGuardInput();
         return this;
     }
 
@@ -193,16 +192,6 @@ public final class ResourceGuardResourceImpl
     public ResourceGuardResourceImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
         return this;
-    }
-
-    public ResourceGuardResourceImpl withIdentity(DppIdentityDetails identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
     }
 
     public ResourceGuardResourceImpl withProperties(ResourceGuard properties) {

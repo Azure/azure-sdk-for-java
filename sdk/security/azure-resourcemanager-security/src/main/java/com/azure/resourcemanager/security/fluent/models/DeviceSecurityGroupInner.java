@@ -22,6 +22,10 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DeviceSecurityGroupProperties innerProperties;
 
+    /** Creates an instance of DeviceSecurityGroupInner class. */
+    public DeviceSecurityGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Device Security group data.
      *

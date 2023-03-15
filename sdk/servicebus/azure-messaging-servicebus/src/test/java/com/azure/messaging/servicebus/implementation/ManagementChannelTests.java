@@ -586,7 +586,7 @@ class ManagementChannelTests {
         responseMessage.setBody(message.getBody());
 
         // Assert response message content.
-        StepVerifier.create(managementChannel.getRules())
+        StepVerifier.create(managementChannel.listRules())
             .assertNext(ruleProperties -> {
                 assertEquals("$Default", ruleProperties.getName());
                 assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());

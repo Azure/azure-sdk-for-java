@@ -8,23 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DiagnosticsInfo model. */
+/** Diagnostics information to help inspect the states of model or variable. */
 @Fluent
 public final class DiagnosticsInfo {
     /*
-     * The modelState property.
+     * Model status.
      */
     @JsonProperty(value = "modelState")
     private ModelState modelState;
 
     /*
-     * The variableStates property.
+     * Variable Status.
      */
     @JsonProperty(value = "variableStates")
     private List<VariableState> variableStates;
 
+    /** Creates an instance of DiagnosticsInfo class. */
+    public DiagnosticsInfo() {}
+
     /**
-     * Get the modelState property: The modelState property.
+     * Get the modelState property: Model status.
      *
      * @return the modelState value.
      */
@@ -33,7 +36,7 @@ public final class DiagnosticsInfo {
     }
 
     /**
-     * Set the modelState property: The modelState property.
+     * Set the modelState property: Model status.
      *
      * @param modelState the modelState value to set.
      * @return the DiagnosticsInfo object itself.
@@ -44,7 +47,7 @@ public final class DiagnosticsInfo {
     }
 
     /**
-     * Get the variableStates property: The variableStates property.
+     * Get the variableStates property: Variable Status.
      *
      * @return the variableStates value.
      */
@@ -53,7 +56,7 @@ public final class DiagnosticsInfo {
     }
 
     /**
-     * Set the variableStates property: The variableStates property.
+     * Set the variableStates property: Variable Status.
      *
      * @param variableStates the variableStates value to set.
      * @return the DiagnosticsInfo object itself.

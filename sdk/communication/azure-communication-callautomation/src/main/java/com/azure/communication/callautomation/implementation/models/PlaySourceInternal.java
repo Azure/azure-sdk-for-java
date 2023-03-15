@@ -28,6 +28,19 @@ public final class PlaySourceInternal {
     @JsonProperty(value = "fileSource")
     private FileSourceInternal fileSource;
 
+    /*
+     * Defines the text source info to be used for play
+     */
+    @JsonProperty(value = "textSource")
+    private TextSourceInternal textSource;
+
+    /*
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be
+     * used for play
+     */
+    @JsonProperty(value = "ssmlSource")
+    private SsmlSource ssmlSource;
+
     /**
      * Get the sourceType property: Defines the type of the play source.
      *
@@ -85,6 +98,46 @@ public final class PlaySourceInternal {
      */
     public PlaySourceInternal setFileSource(FileSourceInternal fileSource) {
         this.fileSource = fileSource;
+        return this;
+    }
+
+    /**
+     * Get the textSource property: Defines the text source info to be used for play.
+     *
+     * @return the textSource value.
+     */
+    public TextSourceInternal getTextSource() {
+        return this.textSource;
+    }
+
+    /**
+     * Set the textSource property: Defines the text source info to be used for play.
+     *
+     * @param textSource the textSource value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySourceInternal setTextSource(TextSourceInternal textSource) {
+        this.textSource = textSource;
+        return this;
+    }
+
+    /**
+     * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @return the ssmlSource value.
+     */
+    public SsmlSource getSsmlSource() {
+        return this.ssmlSource;
+    }
+
+    /**
+     * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @param ssmlSource the ssmlSource value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySourceInternal setSsmlSource(SsmlSource ssmlSource) {
+        this.ssmlSource = ssmlSource;
         return this;
     }
 }

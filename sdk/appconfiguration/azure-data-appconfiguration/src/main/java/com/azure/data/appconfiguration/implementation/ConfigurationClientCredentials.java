@@ -27,6 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.data.appconfiguration.implementation.FakeCredentialConstants.SECRET_PLACEHOLDER;
+
 /**
  * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to
  * generate the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content
@@ -156,7 +158,7 @@ public class ConfigurationClientCredentials {
     private static class CredentialInformation {
         private static final String ENDPOINT = "endpoint=";
         private static final String ID = "id=";
-        private static final String SECRET = "secret=";
+        private static final String SECRET = SECRET_PLACEHOLDER;
 
         private final URL baseUri;
         private final String id;

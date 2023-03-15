@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The update gateway settings request parameters. */
 @Fluent
 public final class UpdateGatewaySettingsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateGatewaySettingsParameters.class);
-
     /*
-     * Indicates whether or not the gateway settings based authorization is
-     * enabled.
+     * Indicates whether or not the gateway settings based authorization is enabled.
      */
     @JsonProperty(value = "restAuthCredential.isEnabled")
     private Boolean isCredentialEnabled;
@@ -32,6 +27,10 @@ public final class UpdateGatewaySettingsParameters {
      */
     @JsonProperty(value = "restAuthCredential.password")
     private String password;
+
+    /** Creates an instance of UpdateGatewaySettingsParameters class. */
+    public UpdateGatewaySettingsParameters() {
+    }
 
     /**
      * Get the isCredentialEnabled property: Indicates whether or not the gateway settings based authorization is

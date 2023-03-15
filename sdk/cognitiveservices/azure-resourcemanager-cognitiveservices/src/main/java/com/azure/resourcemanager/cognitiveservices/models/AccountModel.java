@@ -32,6 +32,13 @@ public interface AccountModel {
     String version();
 
     /**
+     * Gets the callRateLimit property: The call rate limit Cognitive Services account.
+     *
+     * @return the callRateLimit value.
+     */
+    CallRateLimit callRateLimit();
+
+    /**
      * Gets the baseModel property: Base Model Identifier.
      *
      * @return the baseModel value.
@@ -53,11 +60,25 @@ public interface AccountModel {
     Map<String, String> capabilities();
 
     /**
+     * Gets the finetuneCapabilities property: The capabilities for finetune models.
+     *
+     * @return the finetuneCapabilities value.
+     */
+    Map<String, String> finetuneCapabilities();
+
+    /**
      * Gets the deprecation property: Cognitive Services account ModelDeprecationInfo.
      *
      * @return the deprecation value.
      */
     ModelDeprecationInfo deprecation();
+
+    /**
+     * Gets the lifecycleStatus property: Model lifecycle status.
+     *
+     * @return the lifecycleStatus value.
+     */
+    ModelLifecycleStatus lifecycleStatus();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.

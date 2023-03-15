@@ -68,6 +68,10 @@ public final class MicrosoftGraphMailboxSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphMailboxSettings class. */
+    public MicrosoftGraphMailboxSettings() {
+    }
+
     /**
      * Get the archiveFolder property: Folder ID of an archive folder for the user.
      *

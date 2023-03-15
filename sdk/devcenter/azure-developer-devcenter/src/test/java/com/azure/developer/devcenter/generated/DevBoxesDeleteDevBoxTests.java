@@ -17,7 +17,7 @@ public final class DevBoxesDeleteDevBoxTests extends DevCenterClientTestBase {
     @Disabled
     public void testDevBoxesDeleteDevBoxTests() {
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
+        SyncPoller<BinaryData, Void> response =
                 devBoxesClient.beginDeleteDevBox("myProject", "me", "MyDevBox", requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());

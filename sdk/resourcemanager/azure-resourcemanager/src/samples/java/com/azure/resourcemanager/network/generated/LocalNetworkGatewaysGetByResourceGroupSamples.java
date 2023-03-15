@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LocalNetworkGateways GetByResourceGroup. */
 public final class LocalNetworkGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LocalNetworkGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LocalNetworkGatewayGet.json
      */
     /**
      * Sample code: GetLocalNetworkGateway.
@@ -22,6 +20,6 @@ public final class LocalNetworkGatewaysGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getLocalNetworkGateways()
-            .getByResourceGroupWithResponse("rg1", "localgw", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "localgw", com.azure.core.util.Context.NONE);
     }
 }

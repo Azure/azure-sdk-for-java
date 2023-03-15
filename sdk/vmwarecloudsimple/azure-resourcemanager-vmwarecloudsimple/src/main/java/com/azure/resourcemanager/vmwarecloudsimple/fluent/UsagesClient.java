@@ -13,19 +13,23 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.UsageInner;
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
 public interface UsagesClient {
     /**
-     * Returns list of usage in region.
+     * Implements Usages List method
+     *
+     * <p>Returns list of usage in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of usages.
+     * @return list of usages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> list(String regionId);
 
     /**
-     * Returns list of usage in region.
+     * Implements Usages List method
+     *
+     * <p>Returns list of usage in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param filter The filter to apply on the list operation. only name.value is allowed here as a filter e.g.
@@ -34,7 +38,7 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of usages.
+     * @return list of usages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> list(String regionId, String filter, Context context);

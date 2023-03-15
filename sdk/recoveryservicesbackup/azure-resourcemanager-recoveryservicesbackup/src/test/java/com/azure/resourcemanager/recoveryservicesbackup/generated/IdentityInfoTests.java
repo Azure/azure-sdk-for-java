@@ -7,25 +7,24 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IdentityInfo model =
             BinaryData
-                .fromString("{\"isSystemAssignedIdentity\":true,\"managedIdentityResourceId\":\"okffqyinljqepqwh\"}")
+                .fromString("{\"isSystemAssignedIdentity\":true,\"managedIdentityResourceId\":\"pdqmjxlyyzglgouw\"}")
                 .toObject(IdentityInfo.class);
         Assertions.assertEquals(true, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("okffqyinljqepqwh", model.managedIdentityResourceId());
+        Assertions.assertEquals("pdqmjxlyyzglgouw", model.managedIdentityResourceId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IdentityInfo model =
-            new IdentityInfo().withIsSystemAssignedIdentity(true).withManagedIdentityResourceId("okffqyinljqepqwh");
+            new IdentityInfo().withIsSystemAssignedIdentity(true).withManagedIdentityResourceId("pdqmjxlyyzglgouw");
         model = BinaryData.fromObject(model).toObject(IdentityInfo.class);
         Assertions.assertEquals(true, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("okffqyinljqepqwh", model.managedIdentityResourceId());
+        Assertions.assertEquals("pdqmjxlyyzglgouw", model.managedIdentityResourceId());
     }
 }

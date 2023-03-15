@@ -7,21 +7,22 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalAssignmentCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterPrincipalAssignmentCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"dejbavo\"}").toObject(ClusterPrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("dejbavo", model.name());
+            BinaryData
+                .fromString("{\"name\":\"fhrtxilnerkujysv\"}")
+                .toObject(ClusterPrincipalAssignmentCheckNameRequest.class);
+        Assertions.assertEquals("fhrtxilnerkujysv", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterPrincipalAssignmentCheckNameRequest model =
-            new ClusterPrincipalAssignmentCheckNameRequest().withName("dejbavo");
+            new ClusterPrincipalAssignmentCheckNameRequest().withName("fhrtxilnerkujysv");
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("dejbavo", model.name());
+        Assertions.assertEquals("fhrtxilnerkujysv", model.name());
     }
 }

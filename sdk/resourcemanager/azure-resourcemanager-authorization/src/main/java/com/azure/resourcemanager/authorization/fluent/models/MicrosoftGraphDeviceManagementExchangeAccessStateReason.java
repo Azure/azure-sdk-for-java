@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+/** deviceManagementExchangeAccessStateReason. */
 public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessStateReason> {
     /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
@@ -82,7 +82,11 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessStateReason.class);
     }
 
-    /** @return known MicrosoftGraphDeviceManagementExchangeAccessStateReason values. */
+    /**
+     * Gets known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
+     *
+     * @return known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
+     */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessStateReason> values() {
         return values(MicrosoftGraphDeviceManagementExchangeAccessStateReason.class);
     }

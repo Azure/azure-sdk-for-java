@@ -53,7 +53,7 @@ public interface SharedPrivateLinkResource {
     String privateLinkResourceId();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the shared private link resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -73,6 +73,13 @@ public interface SharedPrivateLinkResource {
      * @return the status value.
      */
     SharedPrivateLinkResourceStatus status();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner object.

@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookChartAxisTitleFormat extends MicrosoftG
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxisTitleFormat class. */
+    public MicrosoftGraphWorkbookChartAxisTitleFormat() {
+    }
+
     /**
      * Get the font property: workbookChartFont.
      *

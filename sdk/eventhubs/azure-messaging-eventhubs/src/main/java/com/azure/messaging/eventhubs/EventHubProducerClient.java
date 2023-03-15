@@ -333,4 +333,5 @@ public class EventHubProducerClient implements Closeable {
     public String getIdentifier() {
         return producer.getIdentifier();
     }
+
 }

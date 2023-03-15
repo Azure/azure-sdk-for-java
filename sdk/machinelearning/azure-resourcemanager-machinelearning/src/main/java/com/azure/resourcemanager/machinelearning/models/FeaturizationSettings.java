@@ -16,6 +16,10 @@ public class FeaturizationSettings {
     @JsonProperty(value = "datasetLanguage")
     private String datasetLanguage;
 
+    /** Creates an instance of FeaturizationSettings class. */
+    public FeaturizationSettings() {
+    }
+
     /**
      * Get the datasetLanguage property: Dataset language, useful for the text data.
      *

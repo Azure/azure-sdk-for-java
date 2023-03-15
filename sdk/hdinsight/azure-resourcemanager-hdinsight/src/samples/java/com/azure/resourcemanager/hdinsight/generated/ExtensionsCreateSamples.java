@@ -25,7 +25,9 @@ public final class ExtensionsCreateSamples {
                 "rg1",
                 "cluster1",
                 "clustermonitoring",
-                new Extension().withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163").withPrimaryKey("**********"),
+                new Extension()
+                    .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
+                    .withPrimaryKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

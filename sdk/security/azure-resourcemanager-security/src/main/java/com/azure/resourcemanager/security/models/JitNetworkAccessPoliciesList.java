@@ -24,6 +24,10 @@ public final class JitNetworkAccessPoliciesList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of JitNetworkAccessPoliciesList class. */
+    public JitNetworkAccessPoliciesList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

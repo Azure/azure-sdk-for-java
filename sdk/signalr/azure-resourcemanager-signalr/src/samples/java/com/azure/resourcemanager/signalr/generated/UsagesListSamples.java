@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/Usages_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/Usages_List.json
      */
     /**
      * Sample code: Usages_List.

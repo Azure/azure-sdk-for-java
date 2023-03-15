@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.compute.models.CloudServiceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Describes the cloud service. */
@@ -25,6 +26,17 @@ public final class CloudServiceInner extends Resource {
      */
     @JsonProperty(value = "systemData")
     private SystemData systemData;
+
+    /*
+     * List of logical availability zone of the resource. List should contain only 1 zone where cloud service should be
+     * provisioned. This field is optional.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /** Creates an instance of CloudServiceInner class. */
+    public CloudServiceInner() {
+    }
 
     /**
      * Get the properties property: Cloud service properties.
@@ -63,6 +75,28 @@ public final class CloudServiceInner extends Resource {
      */
     public CloudServiceInner withSystemData(SystemData systemData) {
         this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the zones property: List of logical availability zone of the resource. List should contain only 1 zone where
+     * cloud service should be provisioned. This field is optional.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: List of logical availability zone of the resource. List should contain only 1 zone where
+     * cloud service should be provisioned. This field is optional.
+     *
+     * @param zones the zones value to set.
+     * @return the CloudServiceInner object itself.
+     */
+    public CloudServiceInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

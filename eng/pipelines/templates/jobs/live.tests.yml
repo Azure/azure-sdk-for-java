@@ -54,8 +54,6 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
 
-      - template: ../steps/install-latest-jdk.yml
-
       - template: ../steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
@@ -91,7 +89,6 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
-          SkipAggregateReports: 'true'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}

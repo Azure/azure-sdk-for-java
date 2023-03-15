@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetIpConfiguration class. */
+    public VirtualMachineScaleSetIpConfiguration() {
+    }
+
     /**
      * Get the name property: The IP configuration name.
      *

@@ -65,6 +65,10 @@ public final class VaRule {
     @JsonProperty(value = "benchmarkReferences")
     private List<BenchmarkReference> benchmarkReferences;
 
+    /** Creates an instance of VaRule class. */
+    public VaRule() {
+    }
+
     /**
      * Get the ruleId property: The rule Id.
      *

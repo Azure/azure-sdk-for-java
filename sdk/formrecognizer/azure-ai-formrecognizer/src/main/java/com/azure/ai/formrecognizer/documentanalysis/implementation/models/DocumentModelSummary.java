@@ -31,6 +31,12 @@ public final class DocumentModelSummary {
     private OffsetDateTime createdDateTime;
 
     /*
+     * Date and time (UTC) when the document model will expire.
+     */
+    @JsonProperty(value = "expirationDateTime")
+    private OffsetDateTime expirationDateTime;
+
+    /*
      * API version used to create this document model.
      */
     @JsonProperty(value = "apiVersion")
@@ -41,6 +47,9 @@ public final class DocumentModelSummary {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /** Creates an instance of DocumentModelSummary class. */
+    public DocumentModelSummary() {}
 
     /**
      * Get the modelId property: Unique document model name.
@@ -99,6 +108,26 @@ public final class DocumentModelSummary {
      */
     public DocumentModelSummary setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
+        return this;
+    }
+
+    /**
+     * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     *
+     * @return the expirationDateTime value.
+     */
+    public OffsetDateTime getExpirationDateTime() {
+        return this.expirationDateTime;
+    }
+
+    /**
+     * Set the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     *
+     * @param expirationDateTime the expirationDateTime value to set.
+     * @return the DocumentModelSummary object itself.
+     */
+    public DocumentModelSummary setExpirationDateTime(OffsetDateTime expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
         return this;
     }
 

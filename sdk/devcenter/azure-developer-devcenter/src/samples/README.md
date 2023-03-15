@@ -21,14 +21,12 @@ Set the following environment variables for easy consumption in client code:
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
@@ -36,14 +34,12 @@ DevCenterClient devCenterClient =
 The DevBoxes client is created in essentially the same manner:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
@@ -84,7 +80,7 @@ And finally, tear down the Dev Box when we're finished:
 
 ```java com.azure.developer.devcenter.readme.deleteDevBox
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
 devBoxDeleteResponse.waitForCompletion();        
 ```
@@ -103,14 +99,12 @@ Set the following environment variables for easy consumption in client code:
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
@@ -121,8 +115,7 @@ Environments clients are created in essentially the same manner:
 ```java com.azure.developer.devcenter.readme.createEnvironmentsClient
 EnvironmentsClient environmentsClient =
                 new EnvironmentsClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
@@ -156,7 +149,7 @@ environmentCreateResponse.waitForCompletion();
 And finally, tear down the environment when we're finished:
 ```java com.azure.developer.devcenter.readme.deleteEnvironment
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+SyncPoller<BinaryData, Void> environmentDeleteResponse =
                 environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
 environmentDeleteResponse.waitForCompletion();
 ```
@@ -164,21 +157,18 @@ environmentDeleteResponse.waitForCompletion();
 ## Full Examples
 ### Dev Boxes
 ```java com.azure.developer.devcenter.readme.devboxes
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
 DevBoxesClient devBoxClient =
                 new DevBoxesClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
@@ -205,7 +195,7 @@ Response<BinaryData> remoteConnectionResponse =
 System.out.println(remoteConnectionResponse.getValue());
 
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
 devBoxDeleteResponse.waitForCompletion();        
 ```
@@ -214,8 +204,7 @@ devBoxDeleteResponse.waitForCompletion();
 ```java com.azure.developer.devcenter.readme.environments
 EnvironmentsClient environmentsClient =
                 new EnvironmentsClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
@@ -236,16 +225,8 @@ SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
         environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
 environmentCreateResponse.waitForCompletion();
 
-
-// Fetch the deployment artifacts:
-PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment("myProject", "me", "TestEnvironment", null);
-for (BinaryData p: artifactListResponse) {
-    System.out.println(p);
-}
-
-
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+SyncPoller<BinaryData, Void> environmentDeleteResponse =
                 environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
 environmentDeleteResponse.waitForCompletion();
 ```

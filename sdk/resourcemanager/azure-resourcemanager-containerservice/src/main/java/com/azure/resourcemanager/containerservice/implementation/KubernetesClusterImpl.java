@@ -226,7 +226,9 @@ public class KubernetesClusterImpl
 
     @Override
     public Map<String, ManagedClusterAddonProfile> addonProfiles() {
-        return Collections.unmodifiableMap(this.innerModel().addonProfiles());
+        return this.innerModel().addonProfiles() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(this.innerModel().addonProfiles());
     }
 
     @Override
@@ -236,7 +238,7 @@ public class KubernetesClusterImpl
 
     @Override
     public boolean enableRBAC() {
-        return this.innerModel().enableRbac();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableRbac());
     }
 
     @Override

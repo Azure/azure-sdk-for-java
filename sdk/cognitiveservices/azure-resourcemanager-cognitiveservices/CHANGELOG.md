@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,152 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-02-24)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.7 (2023-02-21)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.CommitmentPlan$DefinitionStages` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.CommitmentPlan$Update` was modified
+
+* `withProperties(models.CommitmentPlanProperties)` was removed
+
+#### `models.CommitmentPlans` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `define(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+
+#### `models.CommitmentPlan$Definition` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed
+
+### Features Added
+
+* `models.CommitmentPlanProvisioningState` was added
+
+* `models.CommitmentPlanAccountAssociation$Definition` was added
+
+* `models.CommitmentPlanAccountAssociation$Update` was added
+
+* `models.CommitmentPlanAccountAssociationListResult` was added
+
+* `models.CommitmentPlanAccountAssociation$UpdateStages` was added
+
+* `models.CommitmentPlanAssociation` was added
+
+* `models.PatchResourceTagsAndSku` was added
+
+* `models.CommitmentPlanAccountAssociation$DefinitionStages` was added
+
+* `models.MultiRegionSettings` was added
+
+* `models.PatchResourceTags` was added
+
+* `models.CommitmentPlanAccountAssociation` was added
+
+* `models.RoutingMethods` was added
+
+* `models.RegionSetting` was added
+
+* `models.ModelLifecycleStatus` was added
+
+#### `models.AccountModel` was modified
+
+* `finetuneCapabilities()` was added
+* `lifecycleStatus()` was added
+
+#### `models.AccountProperties` was modified
+
+* `withLocations(models.MultiRegionSettings)` was added
+* `commitmentPlanAssociations()` was added
+* `locations()` was added
+
+#### `models.CommitmentPlan` was modified
+
+* `kind()` was added
+* `location()` was added
+* `sku()` was added
+* `region()` was added
+* `regionName()` was added
+* `tags()` was added
+
+#### `models.CommitmentPlan$Update` was modified
+
+* `withTags(java.util.Map)` was added
+* `withSku(models.Sku)` was added
+
+#### `models.CommitmentPlanProperties` was modified
+
+* `provisioningState()` was added
+* `withCommitmentPlanGuid(java.lang.String)` was added
+* `commitmentPlanGuid()` was added
+
+#### `models.CommitmentPlans` was modified
+
+* `deleteAssociation(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteAssociation(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String)` was added
+* `getAssociation(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deletePlan(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `definePlan(java.lang.String)` was added
+* `defineAssociation(java.lang.String)` was added
+* `deletePlanById(java.lang.String)` was added
+* `getAssociationWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listPlansBySubscription(com.azure.core.util.Context)` was added
+* `deleteAssociationByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was added
+* `listPlansBySubscription()` was added
+* `deleteAssociationById(java.lang.String)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CommitmentPlanInner)` was added
+* `listAssociations(java.lang.String,java.lang.String)` was added
+* `deletePlan(java.lang.String,java.lang.String)` was added
+* `getAssociationById(java.lang.String)` was added
+* `deletePlanByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.CommitmentPlanInner,com.azure.core.util.Context)` was added
+* `getAssociationByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listAssociations(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByResourceGroup(java.lang.String,java.lang.String)` was added
+
+#### `models.CommitmentPlan$Definition` was modified
+
+* `withTags(java.util.Map)` was added
+* `withKind(java.lang.String)` was added
+* `withRegion(java.lang.String)` was added
+* `withSku(models.Sku)` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withExistingResourceGroup(java.lang.String)` was added
+
+## 1.0.0-beta.6 (2022-11-23)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.DeploymentModel` was modified
+
+* `callRateLimit()` was added
+
+#### `models.AccountModel` was modified
+
+* `callRateLimit()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `raiPolicyName()` was added
+* `callRateLimit()` was added
+* `withRaiPolicyName(java.lang.String)` was added
+* `capabilities()` was added
 
 ## 1.0.0-beta.5 (2022-06-20)
 

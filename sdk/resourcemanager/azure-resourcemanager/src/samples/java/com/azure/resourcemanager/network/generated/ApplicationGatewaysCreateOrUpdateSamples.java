@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPathRuleInner;
@@ -52,7 +51,7 @@ import java.util.Map;
 /** Samples for ApplicationGateways CreateOrUpdate. */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -97,7 +96,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewayTrustedRootCertificate().withName("rootcert").withData("****"),
                                 new ApplicationGatewayTrustedRootCertificate()
                                     .withName("rootcert1")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withTrustedClientCertificates(
                         Arrays
                             .asList(
@@ -110,10 +109,10 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert")
                                     .withData("****")
-                                    .withPassword("****"),
+                                    .withPassword("fakeTokenPlaceholder"),
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert2")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withFrontendIpConfigurations(
                         Arrays
                             .asList(
@@ -360,7 +359,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                         new ApplicationGatewayGlobalConfiguration()
                             .withEnableRequestBuffering(true)
                             .withEnableResponseBuffering(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

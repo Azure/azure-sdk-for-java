@@ -70,7 +70,7 @@ public final class DscpConfigurationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface DscpConfigurationsService {
+    public interface DscpConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -203,7 +203,7 @@ public final class DscpConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -262,7 +262,7 @@ public final class DscpConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -348,7 +348,7 @@ public final class DscpConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters).getSyncPoller();
     }
 
     /**
@@ -367,7 +367,9 @@ public final class DscpConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -479,7 +481,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -530,7 +532,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -597,7 +599,7 @@ public final class DscpConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dscpConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, dscpConfigurationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, dscpConfigurationName).getSyncPoller();
     }
 
     /**
@@ -614,7 +616,7 @@ public final class DscpConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String dscpConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dscpConfigurationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, dscpConfigurationName, context).getSyncPoller();
     }
 
     /**
@@ -714,7 +716,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -765,7 +767,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -855,7 +857,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -909,7 +911,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1014,7 +1016,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1057,7 +1059,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

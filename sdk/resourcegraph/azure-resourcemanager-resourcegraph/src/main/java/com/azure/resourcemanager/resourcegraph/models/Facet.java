@@ -30,6 +30,10 @@ public class Facet {
     @JsonProperty(value = "expression", required = true)
     private String expression;
 
+    /** Creates an instance of Facet class. */
+    public Facet() {
+    }
+
     /**
      * Get the expression property: Facet expression, same as in the corresponding facet request.
      *

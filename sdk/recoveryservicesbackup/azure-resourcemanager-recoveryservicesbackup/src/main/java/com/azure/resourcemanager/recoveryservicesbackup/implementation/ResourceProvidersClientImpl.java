@@ -60,7 +60,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -454,7 +454,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -472,7 +472,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -713,7 +713,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -731,7 +731,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1075,7 +1075,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String protectedItemName,
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
             .getSyncPoller();
     }
@@ -1106,7 +1107,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters,
         Context context) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName,
                 resourceGroupName,
                 fabricName,

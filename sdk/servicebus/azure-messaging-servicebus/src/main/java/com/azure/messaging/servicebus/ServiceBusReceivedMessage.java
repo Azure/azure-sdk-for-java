@@ -518,26 +518,21 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Adds a new key value pair to the existing context on Message.
+     * Sets context on the message.
      *
-     * @param key The key for this context object
-     * @param value The value for this context object.
+     * @param context Context to set.
      *
      * @return The updated {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    ServiceBusReceivedMessage addContext(String key, Object value) {
-        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
-        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
-        this.context = context.addData(key, value);
+    ServiceBusReceivedMessage setContext(Context context) {
+        Objects.requireNonNull(context, "The 'context' parameter cannot be null.");
+        this.context = context;
         return this;
     }
 
     /**
-     * Adds a new key value pair to the existing context on Message.
-     *
-     * @param key The key for this context object
-     * @param value The value for this context object.
+     * Gets context associated with the message.
      *
      * @return The updated {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code key} or {@code value} is null.
@@ -545,6 +540,7 @@ public final class ServiceBusReceivedMessage {
     Context getContext() {
         return this.context;
     }
+
     /**
      * Gets whether the message has been settled.
      *

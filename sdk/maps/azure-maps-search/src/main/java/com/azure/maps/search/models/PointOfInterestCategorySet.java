@@ -16,6 +16,9 @@ public final class PointOfInterestCategorySet {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private Integer id;
 
+    /** Creates an instance of PointOfInterestCategorySet class. */
+    public PointOfInterestCategorySet() {}
+
     /**
      * Get the id property: Category ID.
      *

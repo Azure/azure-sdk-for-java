@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.PrivateDnsZoneGroupInner;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneConfig;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for PrivateDnsZoneGroups CreateOrUpdate. */
 public final class PrivateDnsZoneGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PrivateEndpointDnsZoneGroupCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateEndpointDnsZoneGroupCreate.json
      */
     /**
      * Sample code: Create private dns zone group.
@@ -36,6 +35,6 @@ public final class PrivateDnsZoneGroupsCreateOrUpdateSamples {
                                 new PrivateDnsZoneConfig()
                                     .withPrivateDnsZoneId(
                                         "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateDnsZones/zone1.com"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

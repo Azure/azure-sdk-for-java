@@ -27,16 +27,6 @@ public final class AzureTrafficCollectorsImpl implements AzureTrafficCollectors 
         this.serviceManager = serviceManager;
     }
 
-    public AzureTrafficCollector getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName) {
-        AzureTrafficCollectorInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, azureTrafficCollectorName);
-        if (inner != null) {
-            return new AzureTrafficCollectorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AzureTrafficCollector> getByResourceGroupWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, Context context) {
         Response<AzureTrafficCollectorInner> inner =
@@ -47,6 +37,16 @@ public final class AzureTrafficCollectorsImpl implements AzureTrafficCollectors 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AzureTrafficCollectorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureTrafficCollector getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName) {
+        AzureTrafficCollectorInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, azureTrafficCollectorName);
+        if (inner != null) {
+            return new AzureTrafficCollectorImpl(inner, this.manager());
         } else {
             return null;
         }

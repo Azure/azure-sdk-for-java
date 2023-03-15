@@ -41,19 +41,6 @@ public interface CollectorPolicies {
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collector policy in a specified Traffic Collector.
-     */
-    CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName);
-
-    /**
-     * Gets the collector policy in a specified Traffic Collector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,6 +49,19 @@ public interface CollectorPolicies {
      */
     Response<CollectorPolicy> getWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+
+    /**
+     * Gets the collector policy in a specified Traffic Collector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collector policy in a specified Traffic Collector.
+     */
+    CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName);
 
     /**
      * Deletes a specified Collector Policy resource.

@@ -18,6 +18,15 @@ public final class ManagedCassandraResourceIdentityType
     public static final ManagedCassandraResourceIdentityType NONE = fromString("None");
 
     /**
+     * Creates a new instance of ManagedCassandraResourceIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedCassandraResourceIdentityType() {
+    }
+
+    /**
      * Creates or finds a ManagedCassandraResourceIdentityType from its string representation.
      *
      * @param name a name to look for.

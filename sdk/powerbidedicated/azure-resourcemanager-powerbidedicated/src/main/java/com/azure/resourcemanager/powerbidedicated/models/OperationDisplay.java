@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.powerbidedicated.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
-@Immutable
+@Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Service provider: Microsoft.PowerBIDedicated.
      */
@@ -31,6 +27,16 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
+
+    /*
+     * Localized description of the operation.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: Service provider: Microsoft.PowerBIDedicated.
@@ -57,6 +63,26 @@ public final class OperationDisplay {
      */
     public String operation() {
         return this.operation;
+    }
+
+    /**
+     * Get the description property: Localized description of the operation.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Localized description of the operation.
+     *
+     * @param description the description value to set.
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     /**

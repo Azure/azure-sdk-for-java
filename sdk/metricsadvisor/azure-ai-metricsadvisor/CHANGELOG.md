@@ -1,5 +1,38 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.11 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.1.10 (2023-01-09)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 1.1.9 (2022-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
 ## 1.1.8 (2022-10-12)
 
 ### Other Changes
@@ -172,7 +205,7 @@ For more information about this, and preview releases of other Azure SDK librari
 https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 - Two client design:
-    - `MetricsAdvisorAdministrationClient` to perform creation, updation and deletion of Metrics Advisor resources.
+    - `MetricsAdvisorAdministrationClient` to perform creation, update and deletion of Metrics Advisor resources.
     - `MetricsAdvisorClient` helps with querying API's to helps with listing incidents, listing root causes of incidents
     and adding feedback to tune your model.
 - Authentication with API key supported using `MetricsAdvisorKeyCredential("<subscription_key>", "<api_key>")`.

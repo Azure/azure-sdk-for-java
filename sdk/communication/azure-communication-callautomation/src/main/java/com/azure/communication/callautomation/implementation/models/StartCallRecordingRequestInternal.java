@@ -48,11 +48,17 @@ public final class StartCallRecordingRequestInternal {
      * `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned
      * based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be
+     * first audio was detected. Channel to participant mapping details can be
      * found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
+
+    /*
+     * Optional property to specify location where recording will be stored
+     */
+    @JsonProperty(value = "externalStorage")
+    private ExternalStorageInternal externalStorage;
 
     /**
      * Get the callLocator property: The call locator.
@@ -180,6 +186,26 @@ public final class StartCallRecordingRequestInternal {
     public StartCallRecordingRequestInternal setAudioChannelParticipantOrdering(
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
+        return this;
+    }
+
+    /**
+     * Get the externalStorage property: Optional property to specify location where recording will be stored.
+     *
+     * @return the externalStorage value.
+     */
+    public ExternalStorageInternal getExternalStorage() {
+        return this.externalStorage;
+    }
+
+    /**
+     * Set the externalStorage property: Optional property to specify location where recording will be stored.
+     *
+     * @param externalStorage the externalStorage value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
+        this.externalStorage = externalStorage;
         return this;
     }
 }

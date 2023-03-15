@@ -31,10 +31,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AzureFileStorage type. */
@@ -45,7 +47,7 @@ public final class AzureFileStorageImplBuilder
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    @Generated private static final Map<String, String> PROPERTIES = new HashMap<>();
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -124,6 +126,7 @@ public final class AzureFileStorageImplBuilder
     @Generated
     @Override
     public AzureFileStorageImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -159,6 +162,23 @@ public final class AzureFileStorageImplBuilder
     }
 
     /*
+     * Valid value is backup
+     */
+    @Generated private ShareTokenIntent fileRequestIntent;
+
+    /**
+     * Sets Valid value is backup.
+     *
+     * @param fileRequestIntent the fileRequestIntent value.
+     * @return the AzureFileStorageImplBuilder.
+     */
+    @Generated
+    public AzureFileStorageImplBuilder fileRequestIntent(ShareTokenIntent fileRequestIntent) {
+        this.fileRequestIntent = fileRequestIntent;
+        return this;
+    }
+
+    /*
      * The URL of the service account, share, directory or file that is the target of the desired operation.
      */
     @Generated private String url;
@@ -172,6 +192,40 @@ public final class AzureFileStorageImplBuilder
     @Generated
     public AzureFileStorageImplBuilder url(String url) {
         this.url = url;
+        return this;
+    }
+
+    /*
+     * If true, the trailing dot will not be trimmed from the target URI.
+     */
+    @Generated private boolean allowTrailingDot;
+
+    /**
+     * Sets If true, the trailing dot will not be trimmed from the target URI.
+     *
+     * @param allowTrailingDot the allowTrailingDot value.
+     * @return the AzureFileStorageImplBuilder.
+     */
+    @Generated
+    public AzureFileStorageImplBuilder allowTrailingDot(boolean allowTrailingDot) {
+        this.allowTrailingDot = allowTrailingDot;
+        return this;
+    }
+
+    /*
+     * If true, the trailing dot will not be trimmed from the source URI.
+     */
+    @Generated private boolean allowSourceTrailingDot;
+
+    /**
+     * Sets If true, the trailing dot will not be trimmed from the source URI.
+     *
+     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
+     * @return the AzureFileStorageImplBuilder.
+     */
+    @Generated
+    public AzureFileStorageImplBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
+        this.allowSourceTrailingDot = allowSourceTrailingDot;
         return this;
     }
 
@@ -221,7 +275,14 @@ public final class AzureFileStorageImplBuilder
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureFileStorageImpl client =
-                new AzureFileStorageImpl(localPipeline, localSerializerAdapter, localVersion, url);
+                new AzureFileStorageImpl(
+                        localPipeline,
+                        localSerializerAdapter,
+                        localVersion,
+                        fileRequestIntent,
+                        url,
+                        allowTrailingDot,
+                        allowSourceTrailingDot);
         return client;
     }
 
@@ -229,21 +290,17 @@ public final class AzureFileStorageImplBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -265,7 +322,7 @@ public final class AzureFileStorageImplBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }

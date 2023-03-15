@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MemberType. */
+/** Membership type of the role assignment schedule. */
 public final class MemberType extends ExpandableStringEnum<MemberType> {
     /** Static value Inherited for MemberType. */
     public static final MemberType INHERITED = fromString("Inherited");
@@ -30,7 +30,11 @@ public final class MemberType extends ExpandableStringEnum<MemberType> {
         return fromString(name, MemberType.class);
     }
 
-    /** @return known MemberType values. */
+    /**
+     * Gets known MemberType values.
+     *
+     * @return known MemberType values.
+     */
     public static Collection<MemberType> values() {
         return values(MemberType.class);
     }

@@ -13,6 +13,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class AzureAmqpRetryOptionsConverterTests {
 
@@ -60,8 +61,7 @@ class AzureAmqpRetryOptionsConverterTests {
         AmqpRetryOptions target;
 
         target = AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER.convert(source);
-        assertNotNull(target);
-        assertEquals(AmqpRetryMode.EXPONENTIAL, target.getMode());
+        assertNull(target);
 
         source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
         target = AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER.convert(source);

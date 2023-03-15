@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints GetToken. */
 public final class OnlineEndpointsGetTokenSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/getToken.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/getToken.json
      */
     /**
      * Sample code: GetToken Online Endpoint.
@@ -18,6 +16,8 @@ public final class OnlineEndpointsGetTokenSamples {
      */
     public static void getTokenOnlineEndpoint(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().getTokenWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .getTokenWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }

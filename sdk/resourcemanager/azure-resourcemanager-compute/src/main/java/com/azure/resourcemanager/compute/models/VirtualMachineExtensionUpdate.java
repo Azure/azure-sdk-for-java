@@ -18,6 +18,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionUpdateProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineExtensionUpdate class. */
+    public VirtualMachineExtensionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
      *

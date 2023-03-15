@@ -31,9 +31,9 @@ To update generated files for call automation, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2022-04-07-preview
+tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac4677cd31042657c21bf40e0506c7c2752bbe70/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/16e36eb7d466ceb8eb2acb522abe273713f0c38f/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -46,20 +46,20 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
-title: Azure Communication Call Automation Service 
+title: Azure Communication Call Automation Service
 directive:
 - rename-model:
-    from: AcsCallParticipant
-    to: AcsCallParticipantInternal    
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
-    from: AddParticipantsRequest
-    to: AddParticipantsRequestInternal    
+    from: AddParticipantRequest
+    to: AddParticipantRequestInternal
 - rename-model:
-    from: AddParticipantsResponse
-    to: AddParticipantsResponseInternal
+    from: AddParticipantResponse
+    to: AddParticipantResponseInternal
 - rename-model:
     from: CallConnectionProperties
-    to: CallConnectionPropertiesInternal     
+    to: CallConnectionPropertiesInternal
 - rename-model:
     from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
@@ -67,20 +67,17 @@ directive:
     from: CallingOperationStatus
     to: CallingOperationStatusInternal
 - rename-model:
-    from: CallSource
-    to: CallSourceInternal
-- rename-model:
     from: CommunicationCloudEnvironmentModel
     to: CommunicationCloudEnvironmentInternal
 - rename-model:
     from: GetParticipantsResponse
     to: GetParticipantsResponseInternal
 - rename-model:
-    from: RemoveParticipantsRequest
-    to: RemoveParticipantsRequestInternal
+    from: RemoveParticipantRequest
+    to: RemoveParticipantRequestInternal
 - rename-model:
-    from: RemoveParticipantsResponse
-    to: RemoveParticipantsResponseInternal
+    from: RemoveParticipantResponse
+    to: RemoveParticipantResponseInternal
 - rename-model:
     from: TransferCallResponse
     to: TransferCallResponseInternal
@@ -118,6 +115,9 @@ directive:
     from: FileSource
     to: FileSourceInternal
 - rename-model:
+    from: TextSource
+    to: TextSourceInternal
+- rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
 - rename-model:
@@ -125,13 +125,13 @@ directive:
     to: StartCallRecordingRequestInternal
 - rename-model:
     from: ChannelAffinity
-    to: ChannelAffinityInternal        
+    to: ChannelAffinityInternal
 - rename-model:
     from: DtmfConfigurations
-    to: DtmfConfigurationsInternal        
+    to: DtmfConfigurationsInternal
 - rename-model:
     from: RecognizeConfigurations
-    to: RecognizeConfigurationsInternal   
+    to: RecognizeConfigurationsInternal
 - rename-model:
     from: MediaStreamingConfiguration
     to: MediaStreamingConfigurationInternal
@@ -141,10 +141,37 @@ directive:
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
-    
+- rename-model:
+    from: Choice
+    to: RecognizeChoiceInternal
+- rename-model:
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
+- rename-model:
+    from: MuteParticipantsResponse
+    to: MuteParticipantsResponseInternal
+- rename-model:
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
+- rename-model:
+    from: UnmuteParticipantsResponse
+    to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: CollectTonesResult
+    to: CollectTonesResultInternal
+- rename-model:
+    from: ChoiceResult
+    to: ChoiceResultInternal
+- rename-model:
+    from: ExternalStorage
+    to: ExternalStorageInternal
+- rename-model:
+    from: BlobStorage
+    to: BlobStorageInternal
+
 # Remove models
-- remove-model: AddParticipantsFailed
-- remove-model: AddParticipantsSucceeded
+- remove-model: AddParticipantFailed
+- remove-model: AddParticipantSucceeded
 - remove-model: CallConnected
 - remove-model: CallDisconnected
 - remove-model: CallTransferAccepted
@@ -302,7 +329,7 @@ directive:
 - from: swagger-document
   where: $.definitions.Tone["x-ms-enum"]
   transform: >
-    $.name = "DtmfTone";
+    $.name = "DtmfToneInternal";
 ```
 
 ### Rename DtmfOptions to DtmfOptionsInternal
@@ -312,4 +339,22 @@ directive:
   where: $.definitions.DtmfOptions["x-ms-enum"]
   transform: >
     $.name = "DtmfOptionsInternal";
+```
+
+### Rename Choice to GenderType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Gender["x-ms-enum"]
+  transform: >
+    $.name = "GenderTypeInternal";
+```
+
+### Rename RecordingStorageType to RecordingStorageTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStorageType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageTypeInternal";
 ```

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.AddonStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AddonStatusTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AddonStatus model =
             BinaryData
                 .fromString("{\"errorMessage\":\"pusuesn\",\"phase\":\"dejbavo\",\"ready\":true}")
@@ -21,8 +20,8 @@ public final class AddonStatusTests {
         Assertions.assertEquals(true, model.ready());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AddonStatus model = new AddonStatus().withErrorMessage("pusuesn").withPhase("dejbavo").withReady(true);
         model = BinaryData.fromObject(model).toObject(AddonStatus.class);
         Assertions.assertEquals("pusuesn", model.errorMessage());

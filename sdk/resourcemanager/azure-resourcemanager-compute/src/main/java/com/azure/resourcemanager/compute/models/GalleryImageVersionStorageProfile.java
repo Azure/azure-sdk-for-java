@@ -12,10 +12,10 @@ import java.util.List;
 @Fluent
 public final class GalleryImageVersionStorageProfile {
     /*
-     * The gallery artifact version source.
+     * The source of the gallery artifact version.
      */
     @JsonProperty(value = "source")
-    private GalleryArtifactVersionSource source;
+    private GalleryArtifactVersionFullSource source;
 
     /*
      * This is the OS disk image.
@@ -29,22 +29,26 @@ public final class GalleryImageVersionStorageProfile {
     @JsonProperty(value = "dataDiskImages")
     private List<GalleryDataDiskImage> dataDiskImages;
 
+    /** Creates an instance of GalleryImageVersionStorageProfile class. */
+    public GalleryImageVersionStorageProfile() {
+    }
+
     /**
-     * Get the source property: The gallery artifact version source.
+     * Get the source property: The source of the gallery artifact version.
      *
      * @return the source value.
      */
-    public GalleryArtifactVersionSource source() {
+    public GalleryArtifactVersionFullSource source() {
         return this.source;
     }
 
     /**
-     * Set the source property: The gallery artifact version source.
+     * Set the source property: The source of the gallery artifact version.
      *
      * @param source the source value to set.
      * @return the GalleryImageVersionStorageProfile object itself.
      */
-    public GalleryImageVersionStorageProfile withSource(GalleryArtifactVersionSource source) {
+    public GalleryImageVersionStorageProfile withSource(GalleryArtifactVersionFullSource source) {
         this.source = source;
         return this;
     }

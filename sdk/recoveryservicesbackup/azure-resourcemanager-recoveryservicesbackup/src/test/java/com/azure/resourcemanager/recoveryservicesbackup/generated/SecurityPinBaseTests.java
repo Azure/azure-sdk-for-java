@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SecurityPinBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SecurityPinBase model =
             BinaryData
                 .fromString("{\"resourceGuardOperationRequests\":[\"yrqufegxuvwz\",\"bnhlmc\"]}")
@@ -20,8 +19,8 @@ public final class SecurityPinBaseTests {
         Assertions.assertEquals("yrqufegxuvwz", model.resourceGuardOperationRequests().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SecurityPinBase model =
             new SecurityPinBase().withResourceGuardOperationRequests(Arrays.asList("yrqufegxuvwz", "bnhlmc"));
         model = BinaryData.fromObject(model).toObject(SecurityPinBase.class);

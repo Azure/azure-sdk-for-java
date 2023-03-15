@@ -3,38 +3,27 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
-
 /**
- * The options for creating a call.
+ * The options for creating a p2p call.
  */
 @Fluent
 public class CreateCallOptions {
     /**
-     * The source property.
+     * Call invitee information.
      */
-    private final CommunicationIdentifier source;
-
-    /**
-     * The targets of the call.
-     */
-    private final List<CommunicationIdentifier> targets;
+    private final CallInvite callInvite;
 
     /**
      * The call back URI.
      */
     private final String callbackUrl;
 
-    /**
-     * The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String sourceCallerId;
+    private String azureCognitiveServicesEndpointUrl;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -47,49 +36,35 @@ public class CreateCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
-    /**
      * Constructor
-     *
-     * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUrl The call back URI.
+     * @param callInvite Call invitee information.
+     * @param callbackUri The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
-        this.source = source;
-        this.targets = targets;
-        this.callbackUrl = callbackUrl;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
+    public CreateCallOptions(CallInvite callInvite, String callbackUri) {
+        this.callInvite = callInvite;
+        this.callbackUrl = callbackUri;
     }
 
     /**
-     * Get the source.
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
      *
-     * @return the source value.
+     * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public CommunicationIdentifier getSource() {
-        return source;
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return azureCognitiveServicesEndpointUrl;
     }
 
     /**
-     * Get the targets.
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
      *
-     * @return the targets list.
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
      */
-    public List<CommunicationIdentifier> getTargets() {
-        return targets;
-    }
-
-    /**
-     * Get the call back uri.
-     *
-     * @return the call back uri.
-     */
-    public String getCallbackUrl() {
-        return callbackUrl;
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
     }
 
     /**
@@ -102,15 +77,6 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the source caller Id that's shown to the PSTN participant being invited.
-     *
-     * @return the sourceCallerId value.
-     */
-    public String getSourceCallerId() {
-        return sourceCallerId;
-    }
-
-    /**
      * Get the Media Streaming configuration.
      *
      * @return the mediaStreamingConfiguration.
@@ -119,14 +85,6 @@ public class CreateCallOptions {
         return mediaStreamingOptions;
     }
 
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
 
     /**
      * Set the operationContext: A customer set value used to track the answering of a call.
@@ -136,18 +94,6 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the sourceCallerId.
-     *
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setSourceCallerId(String sourceCallerId) {
-        this.sourceCallerId = sourceCallerId;
         return this;
     }
 
@@ -163,13 +109,19 @@ public class CreateCallOptions {
     }
 
     /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the CreateCallOptions object itself.
+     *  Get Call invitee information
+     * @return call invitee information
      */
-    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
+    public CallInvite getCallInvite() {
+        return callInvite;
+    }
+
+    /**
+     * Get the call back uri.
+     *
+     * @return the call back uri.
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 }

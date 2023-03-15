@@ -8,16 +8,13 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorInner;
-import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
 import com.azure.resourcemanager.networkfunction.models.AzureTrafficCollector;
-import com.azure.resourcemanager.networkfunction.models.CollectorPolicy;
 import com.azure.resourcemanager.networkfunction.models.ProvisioningState;
 import com.azure.resourcemanager.networkfunction.models.ResourceReference;
 import com.azure.resourcemanager.networkfunction.models.TagsObject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class AzureTrafficCollectorImpl
     implements AzureTrafficCollector, AzureTrafficCollector.Definition, AzureTrafficCollector.Update {
@@ -58,15 +55,10 @@ public final class AzureTrafficCollectorImpl
         return this.innerModel().systemData();
     }
 
-    public List<CollectorPolicy> collectorPolicies() {
-        List<CollectorPolicyInner> inner = this.innerModel().collectorPolicies();
+    public List<ResourceReference> collectorPolicies() {
+        List<ResourceReference> inner = this.innerModel().collectorPolicies();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new CollectorPolicyImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
         }
@@ -208,11 +200,6 @@ public final class AzureTrafficCollectorImpl
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public AzureTrafficCollectorImpl withCollectorPolicies(List<CollectorPolicyInner> collectorPolicies) {
-        this.innerModel().withCollectorPolicies(collectorPolicies);
-        return this;
     }
 
     public AzureTrafficCollectorImpl withVirtualHub(ResourceReference virtualHub) {

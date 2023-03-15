@@ -22,16 +22,14 @@ public final class MicrosoftGraphListInfo {
     private Boolean contentTypesEnabled;
 
     /*
-     * If true, indicates that the list is not normally visible in the
-     * SharePoint user experience.
+     * If true, indicates that the list is not normally visible in the SharePoint user experience.
      */
     @JsonProperty(value = "hidden")
     private Boolean hidden;
 
     /*
-     * An enumerated value that represents the base list template used in
-     * creating the list. Possible values include documentLibrary, genericList,
-     * task, survey, announcements, contacts, and more.
+     * An enumerated value that represents the base list template used in creating the list. Possible values include
+     * documentLibrary, genericList, task, survey, announcements, contacts, and more.
      */
     @JsonProperty(value = "template")
     private String template;
@@ -40,6 +38,10 @@ public final class MicrosoftGraphListInfo {
      * listInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphListInfo class. */
+    public MicrosoftGraphListInfo() {
+    }
 
     /**
      * Get the contentTypesEnabled property: If true, indicates that content types are enabled for this list.

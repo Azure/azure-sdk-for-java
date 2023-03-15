@@ -36,17 +36,6 @@ public interface Connectors {
      * Details of a specific cloud account connector.
      *
      * @param connectorName Name of the cloud account connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
-     */
-    ConnectorSetting get(String connectorName);
-
-    /**
-     * Details of a specific cloud account connector.
-     *
-     * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,14 +45,15 @@ public interface Connectors {
     Response<ConnectorSetting> getWithResponse(String connectorName, Context context);
 
     /**
-     * Delete a cloud account connector from a subscription.
+     * Details of a specific cloud account connector.
      *
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connector setting.
      */
-    void delete(String connectorName);
+    ConnectorSetting get(String connectorName);
 
     /**
      * Delete a cloud account connector from a subscription.
@@ -76,6 +66,16 @@ public interface Connectors {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String connectorName, Context context);
+
+    /**
+     * Delete a cloud account connector from a subscription.
+     *
+     * @param connectorName Name of the cloud account connector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String connectorName);
 
     /**
      * Details of a specific cloud account connector.

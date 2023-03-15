@@ -19,15 +19,15 @@ public final class AutoBackupSettingsTests {
         AutoBackupSettings model =
             BinaryData
                 .fromString(
-                    "{\"enable\":false,\"enableEncryption\":true,\"retentionPeriod\":1821646506,\"storageAccountUrl\":\"xw\",\"storageContainerName\":\"pwhonowkg\",\"storageAccessKey\":\"wankixzbi\",\"password\":\"eputtmrywnuzoqf\",\"backupSystemDbs\":true,\"backupScheduleType\":\"Automated\",\"fullBackupFrequency\":\"Daily\",\"daysOfWeek\":[\"Saturday\",\"Monday\",\"Sunday\",\"Tuesday\"],\"fullBackupStartTime\":798441434,\"fullBackupWindowHours\":1495315655,\"logBackupFrequency\":1368622267}")
+                    "{\"enable\":false,\"enableEncryption\":true,\"retentionPeriod\":1821646506,\"storageAccountUrl\":\"xw\",\"storageContainerName\":\"pwhonowkg\",\"storageAccessKey\":\"fakeStorageAccessKeyPlaceholder\",\"password\":\"fakePasswordPlaceholder\",\"backupSystemDbs\":true,\"backupScheduleType\":\"Automated\",\"fullBackupFrequency\":\"Daily\",\"daysOfWeek\":[\"Saturday\",\"Monday\",\"Sunday\",\"Tuesday\"],\"fullBackupStartTime\":798441434,\"fullBackupWindowHours\":1495315655,\"logBackupFrequency\":1368622267}")
                 .toObject(AutoBackupSettings.class);
         Assertions.assertEquals(false, model.enable());
         Assertions.assertEquals(true, model.enableEncryption());
         Assertions.assertEquals(1821646506, model.retentionPeriod());
         Assertions.assertEquals("xw", model.storageAccountUrl());
         Assertions.assertEquals("pwhonowkg", model.storageContainerName());
-        Assertions.assertEquals("wankixzbi", model.storageAccessKey());
-        Assertions.assertEquals("eputtmrywnuzoqf", model.password());
+        Assertions.assertEquals("fakeStorageAccessKeyPlaceholder", model.storageAccessKey());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
         Assertions.assertEquals(true, model.backupSystemDbs());
         Assertions.assertEquals(BackupScheduleType.AUTOMATED, model.backupScheduleType());
         Assertions.assertEquals(FullBackupFrequencyType.DAILY, model.fullBackupFrequency());
@@ -46,8 +46,8 @@ public final class AutoBackupSettingsTests {
                 .withRetentionPeriod(1821646506)
                 .withStorageAccountUrl("xw")
                 .withStorageContainerName("pwhonowkg")
-                .withStorageAccessKey("wankixzbi")
-                .withPassword("eputtmrywnuzoqf")
+                .withStorageAccessKey("fakeStorageAccessKeyPlaceholder")
+                .withPassword("fakePasswordPlaceholder")
                 .withBackupSystemDbs(true)
                 .withBackupScheduleType(BackupScheduleType.AUTOMATED)
                 .withFullBackupFrequency(FullBackupFrequencyType.DAILY)
@@ -67,8 +67,8 @@ public final class AutoBackupSettingsTests {
         Assertions.assertEquals(1821646506, model.retentionPeriod());
         Assertions.assertEquals("xw", model.storageAccountUrl());
         Assertions.assertEquals("pwhonowkg", model.storageContainerName());
-        Assertions.assertEquals("wankixzbi", model.storageAccessKey());
-        Assertions.assertEquals("eputtmrywnuzoqf", model.password());
+        Assertions.assertEquals("fakeStorageAccessKeyPlaceholder", model.storageAccessKey());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
         Assertions.assertEquals(true, model.backupSystemDbs());
         Assertions.assertEquals(BackupScheduleType.AUTOMATED, model.backupScheduleType());
         Assertions.assertEquals(FullBackupFrequencyType.DAILY, model.fullBackupFrequency());

@@ -1,14 +1,41 @@
 # Release History
 
-## 2.21.0-beta.1 (Unreleased)
+## 2.25.0-beta.1 (Unreleased)
 
 ### Features Added
+- Supported FIPS-enabled OS for agent pool machines.
 
-### Breaking Changes
-
-### Bugs Fixed
+## 2.24.0 (2023-02-17)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-01-01`.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.20.0 (2022-10-26)
 

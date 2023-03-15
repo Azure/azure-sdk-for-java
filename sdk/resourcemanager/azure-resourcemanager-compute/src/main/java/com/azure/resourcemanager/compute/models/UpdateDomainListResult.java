@@ -26,6 +26,10 @@ public final class UpdateDomainListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of UpdateDomainListResult class. */
+    public UpdateDomainListResult() {
+    }
+
     /**
      * Get the value property: The list of resources.
      *

@@ -61,7 +61,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface DeletedAccountsService {
+    public interface DeletedAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/resourceGroups"
@@ -246,23 +246,6 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccountInner get(String location, String resourceGroupName, String accountName) {
-        return getAsync(location, resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Returns a Cognitive Services account specified by the parameters.
-     *
-     * @param location Resource location.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -274,6 +257,23 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     public Response<AccountInner> getWithResponse(
         String location, String resourceGroupName, String accountName, Context context) {
         return getWithResponseAsync(location, resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Returns a Cognitive Services account specified by the parameters.
+     *
+     * @param location Resource location.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountInner get(String location, String resourceGroupName, String accountName) {
+        return getWithResponse(location, resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -438,7 +438,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName) {
-        return beginPurgeAsync(location, resourceGroupName, accountName).getSyncPoller();
+        return this.beginPurgeAsync(location, resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -456,7 +456,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName, Context context) {
-        return beginPurgeAsync(location, resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginPurgeAsync(location, resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**
@@ -674,7 +674,8 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,7 +711,8 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkInterfaceLoadBalancers List. */
 public final class NetworkInterfaceLoadBalancersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkInterfaceLoadBalancerList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceLoadBalancerList.json
      */
     /**
      * Sample code: NetworkInterfaceLoadBalancerList.
@@ -22,6 +20,6 @@ public final class NetworkInterfaceLoadBalancersListSamples {
             .manager()
             .serviceClient()
             .getNetworkInterfaceLoadBalancers()
-            .list("testrg", "nic1", Context.NONE);
+            .list("testrg", "nic1", com.azure.core.util.Context.NONE);
     }
 }

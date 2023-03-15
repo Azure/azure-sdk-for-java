@@ -8,8 +8,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -17,22 +20,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_TEST_GROUP;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.RESOURCE_LENGTH;
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
+import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_GROUP;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaProperties;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaRegistrySchema;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaProperties;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTestsBase.assertSchemaRegistrySchema;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -63,8 +62,8 @@ public class SchemaRegistryClientTests extends TestBase {
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
-            schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
+            endpoint = System.getenv(Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            schemaGroup = System.getenv(Constants.SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
@@ -75,7 +74,7 @@ public class SchemaRegistryClientTests extends TestBase {
             .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
         } else {
             builder.addPolicy(new RetryPolicy())
                 .addPolicy(interceptorManager.getRecordPolicy());
@@ -85,6 +84,14 @@ public class SchemaRegistryClientTests extends TestBase {
     @Override
     protected void afterTest() {
         Mockito.framework().clearInlineMock(this);
+    }
+
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
     }
 
     /**
@@ -112,7 +119,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistrySchema schema1 = client2.getSchema(schemaIdToGet);
 
         // Assert
-        assertSchemaRegistrySchema(schema1, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT);
+        assertSchemaRegistrySchema(schema1, schemaIdToGet, schemaFormat, SCHEMA_CONTENT);
     }
 
     /**
@@ -129,14 +136,13 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
         assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
-            SchemaFormat.AVRO);
+            schemaFormat);
         assertSchemaProperties(response2, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -196,24 +202,23 @@ public class SchemaRegistryClientTests extends TestBase {
     }
 
     /**
-     * Verifies that a 415 is returned if we use an invalid schema format.
+     * Verifies that a 4xx is returned if we use an invalid schema format.
      */
-    @Test
+
+    @Test()
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
+        final SchemaRegistryClient client = builder.buildClient();
         final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
 
         // Act & Assert
-        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof HttpResponseException);
+        try {
+            client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat, Context.NONE);
 
-                final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(415, responseException.getResponse().getStatusCode());
-            })
-            .verify();
+        } catch (HttpResponseException e) {
+            assertEquals(403, e.getResponse().getStatusCode());
+        }
     }
 
     /**

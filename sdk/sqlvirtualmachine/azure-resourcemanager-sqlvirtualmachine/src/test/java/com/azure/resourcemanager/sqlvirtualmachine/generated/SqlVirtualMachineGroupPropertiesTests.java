@@ -18,7 +18,7 @@ public final class SqlVirtualMachineGroupPropertiesTests {
         SqlVirtualMachineGroupProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"g\",\"sqlImageOffer\":\"tnwu\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"ckyfih\",\"ouPath\":\"idf\",\"clusterBootstrapAccount\":\"wdzuhtymwisd\",\"clusterOperatorAccount\":\"thwxmnteiwaopvkm\",\"sqlServiceAccount\":\"c\",\"fileShareWitnessPath\":\"xdcu\",\"storageAccountUrl\":\"fsrpymzidnse\",\"storageAccountPrimaryKey\":\"xtbzsgfyccsne\",\"clusterSubnetType\":\"MultiSubnet\"}}")
+                    "{\"provisioningState\":\"g\",\"sqlImageOffer\":\"tnwu\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"ckyfih\",\"ouPath\":\"idf\",\"clusterBootstrapAccount\":\"wdzuhtymwisd\",\"clusterOperatorAccount\":\"thwxmnteiwaopvkm\",\"sqlServiceAccount\":\"c\",\"fileShareWitnessPath\":\"xdcu\",\"storageAccountUrl\":\"fsrpymzidnse\",\"storageAccountPrimaryKey\":\"fakeStorageAccountPrimaryKeyPlaceholder\",\"clusterSubnetType\":\"MultiSubnet\"}}")
                 .toObject(SqlVirtualMachineGroupProperties.class);
         Assertions.assertEquals("tnwu", model.sqlImageOffer());
         Assertions.assertEquals(SqlVmGroupImageSku.DEVELOPER, model.sqlImageSku());
@@ -29,7 +29,7 @@ public final class SqlVirtualMachineGroupPropertiesTests {
         Assertions.assertEquals("c", model.wsfcDomainProfile().sqlServiceAccount());
         Assertions.assertEquals("xdcu", model.wsfcDomainProfile().fileShareWitnessPath());
         Assertions.assertEquals("fsrpymzidnse", model.wsfcDomainProfile().storageAccountUrl());
-        Assertions.assertEquals("xtbzsgfyccsne", model.wsfcDomainProfile().storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", model.wsfcDomainProfile().storageAccountPrimaryKey());
         Assertions.assertEquals(ClusterSubnetType.MULTI_SUBNET, model.wsfcDomainProfile().clusterSubnetType());
     }
 
@@ -48,7 +48,7 @@ public final class SqlVirtualMachineGroupPropertiesTests {
                         .withSqlServiceAccount("c")
                         .withFileShareWitnessPath("xdcu")
                         .withStorageAccountUrl("fsrpymzidnse")
-                        .withStorageAccountPrimaryKey("xtbzsgfyccsne")
+                        .withStorageAccountPrimaryKey("fakeStorageAccountPrimaryKeyPlaceholder")
                         .withClusterSubnetType(ClusterSubnetType.MULTI_SUBNET));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineGroupProperties.class);
         Assertions.assertEquals("tnwu", model.sqlImageOffer());
@@ -60,7 +60,7 @@ public final class SqlVirtualMachineGroupPropertiesTests {
         Assertions.assertEquals("c", model.wsfcDomainProfile().sqlServiceAccount());
         Assertions.assertEquals("xdcu", model.wsfcDomainProfile().fileShareWitnessPath());
         Assertions.assertEquals("fsrpymzidnse", model.wsfcDomainProfile().storageAccountUrl());
-        Assertions.assertEquals("xtbzsgfyccsne", model.wsfcDomainProfile().storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", model.wsfcDomainProfile().storageAccountPrimaryKey());
         Assertions.assertEquals(ClusterSubnetType.MULTI_SUBNET, model.wsfcDomainProfile().clusterSubnetType());
     }
 }

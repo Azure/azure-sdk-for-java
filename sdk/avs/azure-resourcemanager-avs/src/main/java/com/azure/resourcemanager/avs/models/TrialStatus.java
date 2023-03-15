@@ -20,6 +20,15 @@ public final class TrialStatus extends ExpandableStringEnum<TrialStatus> {
     public static final TrialStatus TRIAL_DISABLED = fromString("TrialDisabled");
 
     /**
+     * Creates a new instance of TrialStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrialStatus() {
+    }
+
+    /**
      * Creates or finds a TrialStatus from its string representation.
      *
      * @param name a name to look for.

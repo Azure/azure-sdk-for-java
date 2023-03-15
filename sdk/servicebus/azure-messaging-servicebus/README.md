@@ -69,7 +69,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.12.1</version>
+    <version>7.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -423,7 +423,7 @@ The recommended way to solve the specific exception the AMQP exception represent
 
 ### Understanding the APIs behavior
 
-The document [here][sync_receivemessages_implcit_prefetch] provides insights into the expected behavior of synchronous `receiveMessages` API when using it to obtain more than one message (a.k.a. implicit prefetching).
+The document [here][sync_receivemessages_implicit_prefetch] provides insights into the expected behavior of synchronous `receiveMessages` API when using it to obtain more than one message (a.k.a. implicit prefetching).
 
 ## Next steps
 
@@ -475,7 +475,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
-[sync_receivemessages_implcit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
+[sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
 [receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

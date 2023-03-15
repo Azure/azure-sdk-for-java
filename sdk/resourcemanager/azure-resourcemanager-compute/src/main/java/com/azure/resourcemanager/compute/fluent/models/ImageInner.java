@@ -31,6 +31,10 @@ public final class ImageInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of ImageInner class. */
+    public ImageInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of an Image.
      *

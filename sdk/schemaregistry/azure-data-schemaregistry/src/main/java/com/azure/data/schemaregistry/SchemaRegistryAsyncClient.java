@@ -17,16 +17,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -151,7 +150,6 @@ public final class SchemaRegistryAsyncClient {
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat format, Context context) {
-
         if (Objects.isNull(groupName)) {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         } else if (Objects.isNull(name)) {
@@ -166,12 +164,12 @@ public final class SchemaRegistryAsyncClient {
             groupName, name, format, schemaDefinition);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, binaryData, binaryData.getLength(),
-                context)
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
+                binaryData.getLength(), context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
-
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
@@ -261,21 +259,12 @@ public final class SchemaRegistryAsyncClient {
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .handle((response, sink) -> {
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
-                final String schema;
-
-                try {
-                    schema = convertToString(response.getValue());
-                } catch (UncheckedIOException e) {
-                    sink.error(e);
-                    return;
-                }
-
-                sink.next(new SimpleResponse<>(
+            .flatMap(response -> {
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
+                return convertToString(response.getValue())
+                    .map(schema -> new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
-                sink.complete();
             });
     }
 
@@ -289,30 +278,19 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion,
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .handle((response, sink) -> {
-                final InputStream schemaInputStream = response.getValue();
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
-                final String schema;
+            .flatMap(response -> {
+                final Flux<ByteBuffer> schemaFlux = response.getValue();
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
-                if (schemaInputStream == null) {
-                    sink.error(new IllegalArgumentException(String.format(
+                if (schemaFlux == null) {
+                    return Mono.error(new IllegalArgumentException(String.format(
                         "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
                         groupName, schemaName, schemaVersion)));
-
-                    return;
                 }
-
-                try {
-                    schema = convertToString(schemaInputStream);
-                } catch (UncheckedIOException e) {
-                    sink.error(e);
-                    return;
-                }
-
-                sink.next(new SimpleResponse<>(
-                    response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
-                sink.complete();
+                return convertToString(schemaFlux)
+                    .map(schema -> new SimpleResponse<>(
+                        response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
             });
     }
 
@@ -397,12 +375,15 @@ public final class SchemaRegistryAsyncClient {
         }
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, binaryData, binaryData.getLength(), context)
+            .queryIdByContentWithResponseAsync(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()),
+                binaryData, binaryData.getLength(),
+                context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -417,7 +398,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The remapped error.
      */
-    private static Throwable remapError(ErrorException error) {
+    static HttpResponseException remapError(ErrorException error) {
         if (error.getResponse().getStatusCode() == 404) {
             final String message;
             if (error.getValue() != null && error.getValue().getError() != null) {
@@ -425,7 +406,6 @@ public final class SchemaRegistryAsyncClient {
             } else {
                 message = error.getMessage();
             }
-
             return new ResourceNotFoundException(message, error.getResponse(), error);
         }
 
@@ -433,29 +413,19 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Converts an input stream into its string representation.
+     * Converts a Flux of Byte Buffer into its string representation.
      *
-     * @param inputStream Input stream.
+     * @param byteBufferFlux the Byte Buffer Flux input.
      *
      * @return A string representation.
      *
-     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
      */
-    private static String convertToString(InputStream inputStream) {
+    static Mono<String> convertToString(Flux<ByteBuffer> byteBufferFlux) {
         final StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-
-            String str;
-
-            while ((str = reader.readLine()) != null) {
-                builder.append(str);
-            }
-
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
-        }
-
-        return builder.toString();
+        return byteBufferFlux
+            .map(byteBuffer -> {
+                builder.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
+                return Mono.empty();
+            }).then(Mono.defer(() -> Mono.just(builder.toString())));
     }
 }

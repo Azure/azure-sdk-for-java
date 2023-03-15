@@ -29,8 +29,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
     private Integer position;
 
     /*
-     * The Visibility of the worksheet. The possible values are: Visible,
-     * Hidden, VeryHidden.
+     * The Visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.
      */
     @JsonProperty(value = "visibility")
     private String visibility;
@@ -42,8 +41,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
     private List<MicrosoftGraphWorkbookChart> charts;
 
     /*
-     * Returns collection of names that are associated with the worksheet.
-     * Read-only.
+     * Returns collection of names that are associated with the worksheet. Read-only.
      */
     @JsonProperty(value = "names")
     private List<MicrosoftGraphWorkbookNamedItem> names;
@@ -70,6 +68,10 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
      * workbookWorksheet
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookWorksheet class. */
+    public MicrosoftGraphWorkbookWorksheet() {
+    }
 
     /**
      * Get the name property: The display name of the worksheet.

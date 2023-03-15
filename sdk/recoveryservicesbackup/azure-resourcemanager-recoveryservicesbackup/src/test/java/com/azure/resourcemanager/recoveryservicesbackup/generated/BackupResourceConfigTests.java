@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.XcoolState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupResourceConfigTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupResourceConfig model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class BackupResourceConfigTests {
         Assertions.assertEquals(XcoolState.INVALID, model.xcoolState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupResourceConfig model =
             new BackupResourceConfig()
                 .withStorageModelType(StorageType.INVALID)

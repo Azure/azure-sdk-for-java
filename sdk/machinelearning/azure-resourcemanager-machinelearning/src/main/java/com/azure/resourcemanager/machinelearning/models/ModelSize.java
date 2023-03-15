@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ModelSize. */
+/** Image model size. */
 public final class ModelSize extends ExpandableStringEnum<ModelSize> {
     /** Static value None for ModelSize. */
     public static final ModelSize NONE = fromString("None");
@@ -24,6 +24,15 @@ public final class ModelSize extends ExpandableStringEnum<ModelSize> {
 
     /** Static value ExtraLarge for ModelSize. */
     public static final ModelSize EXTRA_LARGE = fromString("ExtraLarge");
+
+    /**
+     * Creates a new instance of ModelSize value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ModelSize() {
+    }
 
     /**
      * Creates or finds a ModelSize from its string representation.

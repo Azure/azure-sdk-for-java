@@ -14,6 +14,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PhoneNumberRawOperation {
     /*
+     * The type of operation, e.g. Search
+     */
+    @JsonProperty(value = "operationType", required = true)
+    private PhoneNumberOperationType operationType;
+
+    /*
      * Status of operation.
      */
     @JsonProperty(value = "status", required = true)
@@ -44,16 +50,30 @@ public final class PhoneNumberRawOperation {
     private String id;
 
     /*
-     * The type of operation, e.g. Search
-     */
-    @JsonProperty(value = "operationType", required = true)
-    private PhoneNumberOperationType operationType;
-
-    /*
      * The most recent date that the operation was changed.
      */
     @JsonProperty(value = "lastActionDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActionDateTime;
+
+    /**
+     * Get the operationType property: The type of operation, e.g. Search.
+     *
+     * @return the operationType value.
+     */
+    public PhoneNumberOperationType getOperationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Set the operationType property: The type of operation, e.g. Search.
+     *
+     * @param operationType the operationType value to set.
+     * @return the PhoneNumberRawOperation object itself.
+     */
+    public PhoneNumberRawOperation setOperationType(PhoneNumberOperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
 
     /**
      * Get the status property: Status of operation.
@@ -152,26 +172,6 @@ public final class PhoneNumberRawOperation {
      */
     public PhoneNumberRawOperation setId(String id) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the operationType property: The type of operation, e.g. Search.
-     *
-     * @return the operationType value.
-     */
-    public PhoneNumberOperationType getOperationType() {
-        return this.operationType;
-    }
-
-    /**
-     * Set the operationType property: The type of operation, e.g. Search.
-     *
-     * @param operationType the operationType value to set.
-     * @return the PhoneNumberRawOperation object itself.
-     */
-    public PhoneNumberRawOperation setOperationType(PhoneNumberOperationType operationType) {
-        this.operationType = operationType;
         return this;
     }
 

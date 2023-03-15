@@ -20,6 +20,10 @@ public final class AzureResourceIdentifier extends ResourceIdentifier {
     @JsonProperty(value = "azureResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureResourceId;
 
+    /** Creates an instance of AzureResourceIdentifier class. */
+    public AzureResourceIdentifier() {
+    }
+
     /**
      * Get the azureResourceId property: ARM resource identifier for the cloud resource being alerted on.
      *

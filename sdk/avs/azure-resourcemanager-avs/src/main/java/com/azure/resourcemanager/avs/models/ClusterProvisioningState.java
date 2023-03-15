@@ -29,6 +29,15 @@ public final class ClusterProvisioningState extends ExpandableStringEnum<Cluster
     public static final ClusterProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ClusterProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ClusterProvisioningState from its string representation.
      *
      * @param name a name to look for.

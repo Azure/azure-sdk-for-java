@@ -36,7 +36,7 @@ public final class SwaggerInterfaceParser {
         return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
     }
 
-    private SwaggerInterfaceParser(Class<?> swaggerInterface) {
+    SwaggerInterfaceParser(Class<?> swaggerInterface) {
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
         if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
             this.host = hostAnnotation.value();

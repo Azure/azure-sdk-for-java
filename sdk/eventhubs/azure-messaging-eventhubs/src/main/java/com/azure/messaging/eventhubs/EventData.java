@@ -57,7 +57,6 @@ public class EventData extends MessageContent {
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
-    static final AmqpAnnotatedMessage EMPTY_MESSAGE = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
 
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
@@ -81,7 +80,7 @@ public class EventData extends MessageContent {
      */
     public EventData() {
         this.context = Context.NONE;
-        this.annotatedMessage = EMPTY_MESSAGE;
+        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
         this.properties = annotatedMessage.getApplicationProperties();
         this.systemProperties = new SystemProperties();
     }
@@ -191,22 +190,15 @@ public class EventData extends MessageContent {
      * <p>
      * The following types are supported:
      * <ul>
-     *     <li>{@link java.math.BigInteger}</li>
-     *     <li>{@link java.math.BigDecimal}</li>
-     *     <li>{@link Boolean}</li>
-     *     <li>{@link Byte}</li>
-     *     <li>{@code byte[]}</li>
      *     <li>{@link Character}</li>
      *     <li>{@link java.util.Date}</li>
      *     <li>{@link Double}</li>
      *     <li>{@link Float}</li>
      *     <li>{@link Integer}</li>
+     *     <li>{@link Long}</li>
      *     <li>{@link Short}</li>
      *     <li>{@link String}</li>
-     *     <li>{@link Instant}</li>
-     *     <li>{@link java.util.UUID}</li>
      * </ul>
-     *
      *
      * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map is
      *     a read-only view.

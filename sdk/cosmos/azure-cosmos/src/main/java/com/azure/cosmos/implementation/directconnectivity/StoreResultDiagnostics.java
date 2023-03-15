@@ -39,6 +39,7 @@ public class StoreResultDiagnostics {
     private final Uri storePhysicalAddress;
     private boolean isThroughputControlRequestRateTooLargeException;
     private final Double backendLatencyInMs;
+    private final Double retryAfterInMs;
 
     //  StoreResponse and CosmosException fields
     private StoreResponseDiagnostics storeResponseDiagnostics;
@@ -67,6 +68,7 @@ public class StoreResultDiagnostics {
         this.numberOfReadRegions = storeResult.numberOfReadRegions;
         this.itemLSN = storeResult.itemLSN;
         this.backendLatencyInMs = storeResult.backendLatencyInMs;
+        this.retryAfterInMs = storeResult.retryAfterInMs;
     }
 
     private StoreResultDiagnostics(StoreResult storeResult, CosmosException e, RxDocumentServiceRequest request) {
@@ -155,6 +157,8 @@ public class StoreResultDiagnostics {
         return backendLatencyInMs;
     }
 
+    public Double getRetryAfterInMs() { return retryAfterInMs; }
+
     public StoreResponseDiagnostics getStoreResponseDiagnostics() {
         return storeResponseDiagnostics;
     }
@@ -189,8 +193,10 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeNumberField("itemLSN", storeResultDiagnostics.itemLSN);
             jsonGenerator.writeStringField("sessionToken", storeResponseDiagnostics.getSessionTokenAsString());
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResultDiagnostics.backendLatencyInMs);
+            jsonGenerator.writeObjectField("retryAfterInMs", storeResultDiagnostics.retryAfterInMs);
             this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
             this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
+            this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", storeResponseDiagnostics.getFaultInjectionRuleId());
             this.writeNonNullObjectField(jsonGenerator, "replicaStatusList", storeResponseDiagnostics.getReplicaStatusList());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
@@ -200,8 +206,7 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResponseDiagnostics.getRntbdResponseLength());
             jsonGenerator.writeObjectField("requestPayloadLengthInBytes", storeResponseDiagnostics.getRequestPayloadLength());
             jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResponseDiagnostics.getResponsePayloadLength());
-            jsonGenerator.writeObjectField("channelTaskQueueSize", storeResponseDiagnostics.getRntbdChannelTaskQueueSize());
-            jsonGenerator.writeObjectField("pendingRequestsCount", storeResponseDiagnostics.getPendingRequestQueueSize());
+            jsonGenerator.writeObjectField("channelStatistics", storeResponseDiagnostics.getRntbdChannelStatistics());
             jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResponseDiagnostics.getRntbdEndpointStatistics());
 
             jsonGenerator.writeEndObject();

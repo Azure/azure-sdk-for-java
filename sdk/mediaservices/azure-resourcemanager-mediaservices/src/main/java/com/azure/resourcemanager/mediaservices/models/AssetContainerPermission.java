@@ -20,6 +20,15 @@ public final class AssetContainerPermission extends ExpandableStringEnum<AssetCo
     public static final AssetContainerPermission READ_WRITE_DELETE = fromString("ReadWriteDelete");
 
     /**
+     * Creates a new instance of AssetContainerPermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssetContainerPermission() {
+    }
+
+    /**
      * Creates or finds a AssetContainerPermission from its string representation.
      *
      * @param name a name to look for.

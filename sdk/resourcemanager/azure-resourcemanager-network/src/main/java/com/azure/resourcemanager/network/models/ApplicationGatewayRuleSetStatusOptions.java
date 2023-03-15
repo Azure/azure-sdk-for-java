@@ -24,6 +24,15 @@ public final class ApplicationGatewayRuleSetStatusOptions
     public static final ApplicationGatewayRuleSetStatusOptions DEPRECATED = fromString("Deprecated");
 
     /**
+     * Creates a new instance of ApplicationGatewayRuleSetStatusOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayRuleSetStatusOptions() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayRuleSetStatusOptions from its string representation.
      *
      * @param name a name to look for.

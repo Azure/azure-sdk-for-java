@@ -29,6 +29,10 @@ public final class ConnectableResource {
     @JsonProperty(value = "outboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> outboundConnectedResources;
 
+    /** Creates an instance of ConnectableResource class. */
+    public ConnectableResource() {
+    }
+
     /**
      * Get the id property: The Azure resource id.
      *

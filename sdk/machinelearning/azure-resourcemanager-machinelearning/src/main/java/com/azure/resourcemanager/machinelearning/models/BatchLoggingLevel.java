@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BatchLoggingLevel. */
+/**
+ * Log verbosity for batch inferencing. Increasing verbosity order for logging is : Warning, Info and Debug. The default
+ * value is Info.
+ */
 public final class BatchLoggingLevel extends ExpandableStringEnum<BatchLoggingLevel> {
     /** Static value Info for BatchLoggingLevel. */
     public static final BatchLoggingLevel INFO = fromString("Info");
@@ -18,6 +21,15 @@ public final class BatchLoggingLevel extends ExpandableStringEnum<BatchLoggingLe
 
     /** Static value Debug for BatchLoggingLevel. */
     public static final BatchLoggingLevel DEBUG = fromString("Debug");
+
+    /**
+     * Creates a new instance of BatchLoggingLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BatchLoggingLevel() {
+    }
 
     /**
      * Creates or finds a BatchLoggingLevel from its string representation.

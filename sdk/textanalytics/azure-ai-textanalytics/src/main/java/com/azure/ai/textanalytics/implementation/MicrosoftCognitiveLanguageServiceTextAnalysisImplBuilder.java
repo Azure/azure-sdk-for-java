@@ -10,7 +10,9 @@ import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -20,6 +22,7 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -39,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the MicrosoftCognitiveLanguageServiceTextAnalysis type. */
@@ -46,13 +50,17 @@ import java.util.stream.Collectors;
 public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
         implements HttpTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 ConfigurationTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
+                TokenCredentialTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 AzureKeyCredentialTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 EndpointTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] {"https://cognitiveservices.azure.com/.default"};
+
+    @Generated private static final Map<String, String> PROPERTIES = new HashMap<>();
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -131,6 +139,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     @Generated
     @Override
     public MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -145,6 +154,19 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     @Override
     public MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated private TokenCredential tokenCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -234,7 +256,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     @Generated
     public MicrosoftCognitiveLanguageServiceTextAnalysisImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-05-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-10-01-preview";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MicrosoftCognitiveLanguageServiceTextAnalysisImpl client =
@@ -247,21 +269,17 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -276,6 +294,9 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
         }
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(
                 this.pipelinePolicies.stream()
                         .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -286,7 +307,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }

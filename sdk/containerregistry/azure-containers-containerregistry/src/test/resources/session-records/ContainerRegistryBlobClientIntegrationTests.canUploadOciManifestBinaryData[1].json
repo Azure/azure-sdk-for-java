@@ -3,21 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "40d71387-94f6-4694-a4d3-3fdb145f397e",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "396bbe2d-fb6d-49b4-bfe9-8d0cc65ac403",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "5985cfd5-62cf-4ca0-a0a5-b17e94c7448e",
+      "X-Ms-Correlation-Request-Id" : "d0381407-0a28-47f6-94f4-1234f21e1f7b",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.15",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.4",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,21 +25,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fc873b3d-b6f4-459a-a594-82a0cb82134c",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0685d174-fcb0-4ebc-9eb5-b13c5d930ee7",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "f21fe3b1-035f-4629-a2da-87c2f8b4b809",
+      "X-Ms-Correlation-Request-Id" : "c4027bec-8da3-4208-9b7b-d88795703985",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "331.7",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.35",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -47,143 +47,95 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b0ea182d-9ad4-421c-bd7c-bf8930a520e0"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "90644933-3eef-43a7-a7e1-e3003c1a9ad3"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "Range" : "0-0",
       "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "9626ec36-b43d-494a-ae35-a170ec3b3110",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "cd7fb43e-616f-43bc-8f10-770ccbff12b7",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "b0ea182d-9ad4-421c-bd7c-bf8930a520e0",
-      "X-Ms-Request-Id" : "f665cc73-7b47-4ffd-a5be-2fc75f570656",
-      "Docker-Upload-Uuid" : "0fa54058-7920-48d0-a9c6-bf0a8f4939f1",
-      "Location" : "/v2/oci-artifact/blobs/uploads/0fa54058-7920-48d0-a9c6-bf0a8f4939f1?_nouploadcache=false&_state=RG-y0RYsb8kjYJ3q6XBLQg1mfXp9RaMqfBVR8XlfHsN7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiMGZhNTQwNTgtNzkyMC00OGQwLWE5YzYtYmYwYThmNDkzOWYxIiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIyLTA0LTA0VDE3OjQyOjEwLjI5NzM0MDgxNFoifQ%3D%3D"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "9b78f307-641d-4415-aff6-ee7dbb72d81b",
+      "X-Ms-Client-Request-Id" : "90644933-3eef-43a7-a7e1-e3003c1a9ad3",
+      "Docker-Upload-Uuid" : "fd29a0b7-0c95-45ef-9509-d2504f8ef448",
+      "Content-Length" : "0",
+      "Location" : "/v2/oci-artifact/blobs/uploads/fd29a0b7-0c95-45ef-9509-d2504f8ef448?_nouploadcache=false&_state=y229jOTS_MwLQykjO_qu4c_U_2laTA0cTn6NQwroBt57Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiZmQyOWEwYjctMGM5NS00NWVmLTk1MDktZDI1MDRmOGVmNDQ4IiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIzLTAzLTExVDAwOjMxOjM3LjM2NDEzMjQyOFoifQ%3D%3D"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7c9058dc-70d1-497c-91c0-128b9a538dfd",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "62240d80-5983-42c1-8376-ed0e9704266e",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "e01dce42-6fb6-463d-b537-3769264d2a84",
+      "X-Ms-Correlation-Request-Id" : "41eb09ab-e262-42c1-8bc3-f171eee996e6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.133333",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.383333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/0fa54058-7920-48d0-a9c6-bf0a8f4939f1?_nouploadcache=false&_state=RG-y0RYsb8kjYJ3q6XBLQg1mfXp9RaMqfBVR8XlfHsN7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiMGZhNTQwNTgtNzkyMC00OGQwLWE5YzYtYmYwYThmNDkzOWYxIiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIyLTA0LTA0VDE3OjQyOjEwLjI5NzM0MDgxNFoifQ%3D%3D",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "323d5e55-0c42-4542-b6c5-504ede44876e",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "Server" : "openresty",
-      "X-Content-Type-Options" : "nosniff",
-      "Connection" : "keep-alive",
-      "retry-after" : "0",
-      "Range" : "0-171",
-      "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
-      "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "828623fe-03f1-45ff-8a0a-c59d14d78245",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "323d5e55-0c42-4542-b6c5-504ede44876e",
-      "X-Ms-Request-Id" : "30d4b57f-84f9-41fe-be1a-39393fbc15f0",
-      "Docker-Upload-Uuid" : "0fa54058-7920-48d0-a9c6-bf0a8f4939f1",
-      "Location" : "/v2/oci-artifact/blobs/uploads/0fa54058-7920-48d0-a9c6-bf0a8f4939f1?_nouploadcache=false&_state=g2Q6qPRvRjuM3haHHSYfbLsqwv_wsZUsWootMaCj98h7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiMGZhNTQwNTgtNzkyMC00OGQwLWE5YzYtYmYwYThmNDkzOWYxIiwiT2Zmc2V0IjoxNzIsIlN0YXJ0ZWRBdCI6IjIwMjItMDQtMDRUMTc6NDI6MTBaIn0%3D"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1a09969a-60e1-436d-8534-43c6a7a3310f",
-      "Content-Type" : "application/x-www-form-urlencoded"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "25044a20-2b79-46a7-9e39-6ae904f8e9fd",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Server" : "openresty",
-      "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.033333",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/0fa54058-7920-48d0-a9c6-bf0a8f4939f1?_nouploadcache=false&_state=g2Q6qPRvRjuM3haHHSYfbLsqwv_wsZUsWootMaCj98h7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiMGZhNTQwNTgtNzkyMC00OGQwLWE5YzYtYmYwYThmNDkzOWYxIiwiT2Zmc2V0IjoxNzIsIlN0YXJ0ZWRBdCI6IjIwMjItMDQtMDRUMTc6NDI6MTBaIn0%3D&digest=sha256%3A685240bce2f03c0041502a97811318bef0500ba15d5268b7148d7dfb902d06fa",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/fd29a0b7-0c95-45ef-9509-d2504f8ef448?_nouploadcache=false&_state=y229jOTS_MwLQykjO_qu4c_U_2laTA0cTn6NQwroBt57Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiZmQyOWEwYjctMGM5NS00NWVmLTk1MDktZDI1MDRmOGVmNDQ4IiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIzLTAzLTExVDAwOjMxOjM3LjM2NDEzMjQyOFoifQ%3D%3D&digest=sha256%3A44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ffec35b6-671a-48ca-8a36-73bd904c1071"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "cd188def-85b4-4b17-8243-887d48c0247a",
+      "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
-      "Docker-Content-Digest" : "sha256:685240bce2f03c0041502a97811318bef0500ba15d5268b7148d7dfb902d06fa",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
+      "Docker-Content-Digest" : "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "de7c56bf-97c5-4ea7-98c8-ac76df078b0b",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "28837f47-d30f-4928-987f-44edd371a1ff",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "ffec35b6-671a-48ca-8a36-73bd904c1071",
-      "X-Ms-Request-Id" : "b9517f18-7800-49eb-b3f9-f1f09bf15b1b",
-      "Location" : "/v2/oci-artifact/blobs/sha256:685240bce2f03c0041502a97811318bef0500ba15d5268b7148d7dfb902d06fa"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "cedb037b-dbe1-4339-8e1b-4f7265f7fabd",
+      "X-Ms-Client-Request-Id" : "cd188def-85b4-4b17-8243-887d48c0247a",
+      "Content-Length" : "0",
+      "Location" : "/v2/oci-artifact/blobs/sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6ddbb032-6dc2-41de-9f7d-d1563d4429ac",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "22567275-6bc5-48e1-bc1c-fe2202c72ef7",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "1a41c82a-57f3-4ec0-a4ce-30b741500562",
+      "X-Ms-Correlation-Request-Id" : "16052977-5277-4d52-95eb-e18baf5889f6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "331.683333",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.35",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:10 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -191,218 +143,170 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ae003157-67fb-4897-952a-33689b5cc8d9"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6bb709fd-94e0-4ddc-b3fd-1ac81d67f548"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "Range" : "0-0",
       "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "08f1f8f5-15e9-42c9-9de0-e5838913ab8f",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "15c22f5c-70e3-4ff7-80b4-192918abc534",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "ae003157-67fb-4897-952a-33689b5cc8d9",
-      "X-Ms-Request-Id" : "4b8e36fa-25a5-43c1-bd61-be4aa7a0de31",
-      "Docker-Upload-Uuid" : "c253a168-0be5-479d-8673-f4995cdc9e6f",
-      "Location" : "/v2/oci-artifact/blobs/uploads/c253a168-0be5-479d-8673-f4995cdc9e6f?_nouploadcache=false&_state=ORyEk-G6Hq96TB-xnVgKxqzyoNw1eGKzUXj2Uacpvxt7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiYzI1M2ExNjgtMGJlNS00NzlkLTg2NzMtZjQ5OTVjZGM5ZTZmIiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIyLTA0LTA0VDE3OjQyOjEwLjk5MjQ0NTY1M1oifQ%3D%3D"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "d2d6e15b-5791-485a-a0ae-f769cf351158",
+      "X-Ms-Client-Request-Id" : "6bb709fd-94e0-4ddc-b3fd-1ac81d67f548",
+      "Docker-Upload-Uuid" : "7d55695b-87a5-4eea-b1b1-c490a9808935",
+      "Content-Length" : "0",
+      "Location" : "/v2/oci-artifact/blobs/uploads/7d55695b-87a5-4eea-b1b1-c490a9808935?_nouploadcache=false&_state=d4IX360CddQzd3QNgctWV4nEb3VCUQwEiLPGGdMhuG17Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiN2Q1NTY5NWItODdhNS00ZWVhLWIxYjEtYzQ5MGE5ODA4OTM1IiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIzLTAzLTExVDAwOjMxOjM3LjY5MDMzMjYwNFoifQ%3D%3D"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "96b2b6e5-c3b6-4e12-b3e6-5bc8833bf300",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9564c8ae-882a-45e4-ab00-dbaef0b64fba",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "d85c5b2b-7b5a-4b2a-b2e2-a72ef9ea5912",
+      "X-Ms-Correlation-Request-Id" : "3021d0e0-1fc7-4afd-9700-c366a8e4714c",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.116667",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.3",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/c253a168-0be5-479d-8673-f4995cdc9e6f?_nouploadcache=false&_state=ORyEk-G6Hq96TB-xnVgKxqzyoNw1eGKzUXj2Uacpvxt7Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiYzI1M2ExNjgtMGJlNS00NzlkLTg2NzMtZjQ5OTVjZGM5ZTZmIiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIyLTA0LTA0VDE3OjQyOjEwLjk5MjQ0NTY1M1oifQ%3D%3D",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7478e26f-fe8d-49b8-a770-25ed676ee20f",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "Server" : "openresty",
-      "X-Content-Type-Options" : "nosniff",
-      "Connection" : "keep-alive",
-      "retry-after" : "0",
-      "Range" : "0-27",
-      "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
-      "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "a27007a5-f43b-4cd2-b8ea-23c719a65823",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "7478e26f-fe8d-49b8-a770-25ed676ee20f",
-      "X-Ms-Request-Id" : "4e7c4b53-94cb-445c-bddd-c22580d45d71",
-      "Docker-Upload-Uuid" : "c253a168-0be5-479d-8673-f4995cdc9e6f",
-      "Location" : "/v2/oci-artifact/blobs/uploads/c253a168-0be5-479d-8673-f4995cdc9e6f?_nouploadcache=false&_state=VvaRwWs-aW8V9WaFgpeWPaUUTT-dwUzdIb_YqHZ5wB57Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiYzI1M2ExNjgtMGJlNS00NzlkLTg2NzMtZjQ5OTVjZGM5ZTZmIiwiT2Zmc2V0IjoyOCwiU3RhcnRlZEF0IjoiMjAyMi0wNC0wNFQxNzo0MjoxMFoifQ%3D%3D"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9f5354d-3a72-48fb-8ea7-7691e04e435c",
-      "Content-Type" : "application/x-www-form-urlencoded"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "f761b92f-97c8-4599-ad62-d3fb0ca788be",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Server" : "openresty",
-      "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.3",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/c253a168-0be5-479d-8673-f4995cdc9e6f?_nouploadcache=false&_state=VvaRwWs-aW8V9WaFgpeWPaUUTT-dwUzdIb_YqHZ5wB57Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiYzI1M2ExNjgtMGJlNS00NzlkLTg2NzMtZjQ5OTVjZGM5ZTZmIiwiT2Zmc2V0IjoyOCwiU3RhcnRlZEF0IjoiMjAyMi0wNC0wNFQxNzo0MjoxMFoifQ%3D%3D&digest=sha256%3A654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/uploads/7d55695b-87a5-4eea-b1b1-c490a9808935?_nouploadcache=false&_state=d4IX360CddQzd3QNgctWV4nEb3VCUQwEiLPGGdMhuG17Ik5hbWUiOiJvY2ktYXJ0aWZhY3QiLCJVVUlEIjoiN2Q1NTY5NWItODdhNS00ZWVhLWIxYjEtYzQ5MGE5ODA4OTM1IiwiT2Zmc2V0IjowLCJTdGFydGVkQXQiOiIyMDIzLTAzLTExVDAwOjMxOjM3LjY5MDMzMjYwNFoifQ%3D%3D&digest=sha256%3Ab94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "449eac64-4052-43d8-acab-cf5576b8a435"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2058d607-5559-4e9d-9c6c-21eb8bd609a3",
+      "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
-      "Docker-Content-Digest" : "sha256:654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
+      "Docker-Content-Digest" : "sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "c58d308f-6865-437d-ac11-21c83d40491f",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "b8e26fb1-94bc-4a10-8933-7f5b3f371cab",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "449eac64-4052-43d8-acab-cf5576b8a435",
-      "X-Ms-Request-Id" : "e1cb52ce-5af5-4f5c-9907-b492ed4b4858",
-      "Location" : "/v2/oci-artifact/blobs/sha256:654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "6dbd884f-a7f5-4b81-b544-0939d9f48803",
+      "X-Ms-Client-Request-Id" : "2058d607-5559-4e9d-9c6c-21eb8bd609a3",
+      "Content-Length" : "0",
+      "Location" : "/v2/oci-artifact/blobs/sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2b720540-b108-44ff-a1f5-3786491d51d5",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b61e1457-d572-457c-b889-552363054132",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "b592d38c-de27-44f3-a1b9-be71d4bf1980",
+      "X-Ms-Correlation-Request-Id" : "1499bf97-e123-40a2-a960-b83d80b81d5f",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "331.666667",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.2",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:37 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "938c8cfa-734e-4575-9e8b-af45ac60fe8f",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "013f2b30-7016-40a1-940d-53b2cb270e22",
       "Content-Type" : "application/vnd.oci.image.manifest.v1+json"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
-      "Docker-Content-Digest" : "sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
+      "Docker-Content-Digest" : "sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "26e99980-7a74-4e13-b312-2745923dcf36",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "fa57de9e-3350-45f5-91db-571fab0044d1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "938c8cfa-734e-4575-9e8b-af45ac60fe8f",
-      "X-Ms-Request-Id" : "dce4bd00-1852-4471-b004-34c57be7d8b2",
-      "Location" : "/v2/oci-artifact/manifests/sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "c27602dd-9d4d-42a3-ba17-2fa998ebae20",
+      "X-Ms-Client-Request-Id" : "013f2b30-7016-40a1-940d-53b2cb270e22",
+      "Content-Length" : "0",
+      "Location" : "/v2/oci-artifact/manifests/sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "699ec7c0-8c4b-47f9-a568-d3b5890dabd3",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "52f547ea-3f3e-4a03-ba8a-495508f5352b",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "037d19f4-5732-4660-83bb-0d172a3ad482",
+      "X-Ms-Correlation-Request-Id" : "2d1fb4f0-806d-4c69-a8fc-3fd26e6a2c63",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.1",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.166667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:11 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "825dea7e-48eb-4959-8bef-925adc98c94f"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dd9827c0-5e66-4094-8658-4fa85c71f6fb"
     },
     "Response" : {
-      "content-length" : "459",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
-      "Docker-Content-Digest" : "sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
+      "Docker-Content-Digest" : "sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "b348f04f-3739-44c4-b6d8-c5b4db4fd055",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "969bbde0-4f77-4e78-894a-577c2f112c21",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "825dea7e-48eb-4959-8bef-925adc98c94f",
-      "X-Ms-Request-Id" : "c9ef7e6e-7d8f-49f4-ab67-7a35c61ce982",
-      "Etag" : "\"sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537\"",
-      "Body" : "{\"config\":{\"mediaType\":\"application/vnd.acme.rocket.config.v1+json\",\"size\":171,\"digest\":\"sha256:685240bce2f03c0041502a97811318bef0500ba15d5268b7148d7dfb902d06fa\"},\"layers\":[{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar\",\"size\":28,\"digest\":\"sha256:654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed\",\"annotations\":{\"org.opencontainers.image.ref.name\":\"654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed\"}}],\"schemaVersion\":2}",
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "833830ea-8b11-4c36-b9d7-72061e92003c",
+      "X-Ms-Client-Request-Id" : "dd9827c0-5e66-4094-8658-4fa85c71f6fb",
+      "Etag" : "\"sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598\"",
+      "Content-Length" : "459",
+      "Body" : "{\"schemaVersion\":2,\"config\":{\"mediaType\":\"application/vnd.acme.rocket.config.v1+json\",\"size\":171,\"digest\":\"sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a\"},\"layers\":[{\"mediaType\":\"application/vnd.oci.image.layer.v1.tar\",\"size\":28,\"digest\":\"sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\",\"annotations\":{\"org.opencontainers.image.ref.name\":\"654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed\"}}]}",
       "Content-Type" : "application/vnd.oci.image.manifest.v1+json"
     },
     "Exception" : null
@@ -410,138 +314,138 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ad650b26-1539-48a9-aa09-9fa6d3c1af33",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "83c66995-ad6b-4c8a-9685-887e994df9de",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "014d97f2-baa1-493f-9212-c838eeabcd40",
+      "X-Ms-Correlation-Request-Id" : "cd1136f4-7548-46e5-9dad-ff9f84d00ed9",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.083333",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.183333",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/sha256:685240bce2f03c0041502a97811318bef0500ba15d5268b7148d7dfb902d06fa",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "da9f02f2-2b92-41c2-93db-951ebbef4388"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e2d6366d-6b2a-4224-9724-d2f8553c4727"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "036d0c39-519c-41f8-8792-c2838ed80cf4",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "aa710a1e-1c32-4d87-ac27-c7e8e74e240a",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "da9f02f2-2b92-41c2-93db-951ebbef4388",
-      "X-Ms-Request-Id" : "d6e3270e-5c42-4fee-a730-e9e3d2c16cc0",
-      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "8.000000"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "503267b2-c633-419d-8861-9605e21892aa",
+      "X-Ms-Client-Request-Id" : "e2d6366d-6b2a-4224-9724-d2f8553c4727",
+      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "32.000000",
+      "Content-Length" : "0"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "465087e4-f976-47aa-ae19-eaae914cf318",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e9d052f4-2afb-4560-a5b7-6209eaf708a1",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "4aab2406-7031-45de-aeaa-0f6033f3ff5c",
+      "X-Ms-Correlation-Request-Id" : "dc24f174-1ce7-40fe-82fc-f89bf567a702",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "330.833333",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.166667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/sha256:654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/blobs/sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "33204184-aac8-41a3-9ae7-da6f0a330bbe"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "427e1cce-80ef-4946-a17f-3eee36a990c4"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "44aa40de-964b-41cf-ba2f-54b36f804c66",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "ad2280d2-e32d-4bc1-8670-aec2922ae12d",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "33204184-aac8-41a3-9ae7-da6f0a330bbe",
-      "X-Ms-Request-Id" : "1863c464-77f2-4c9a-a398-285d442269e0",
-      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "7.000000"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "4aedcc49-eac8-4edb-9f85-ebacb8f2d451",
+      "X-Ms-Client-Request-Id" : "427e1cce-80ef-4946-a17f-3eee36a990c4",
+      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "31.000000",
+      "Content-Length" : "0"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1d649ab4-fdf3-472a-b11a-d63daa32657e",
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bf084343-653f-4655-8284-826e2ec2bc89",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "43c9a608-4432-42bc-a59f-9c9cbbba9f8d",
+      "X-Ms-Correlation-Request-Id" : "fac8bc9e-582a-4912-b9a5-19782957e968",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
+      "x-ms-ratelimit-remaining-calls-per-second" : "332.066667",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.1",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:bd79d215769896716f4e99efbfef58fd157781b311df8ba4ed65b9f16cd59537",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fab6634d-720f-4201-876d-e35d6a316daa"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.4 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5d923a44-69e8-4b27-8402-a5f7bf24b601"
     },
     "Response" : {
-      "content-length" : "0",
       "Server" : "openresty",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Mon, 04 Apr 2022 17:42:12 GMT",
+      "Date" : "Sat, 11 Mar 2023 00:31:38 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "5e0cc725-624f-435f-bf85-2c024c34ffda",
-      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Correlation-Request-Id" : "7a6f65a0-8f7b-41f6-b251-f67627f7481b",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
-      "X-Ms-Client-Request-Id" : "fab6634d-720f-4201-876d-e35d6a316daa",
-      "X-Ms-Request-Id" : "90697554-20f7-4f9d-a2ca-9932e5c32035",
-      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "6.000000"
+      "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
+      "X-Ms-Request-Id" : "50b4c6d7-8c57-4ca7-b93c-d0d0ffc3f3c7",
+      "X-Ms-Client-Request-Id" : "5d923a44-69e8-4b27-8402-a5f7bf24b601",
+      "X-Ms-Ratelimit-Remaining-Calls-Per-Second" : "30.000000",
+      "Content-Length" : "0"
     },
     "Exception" : null
   } ],

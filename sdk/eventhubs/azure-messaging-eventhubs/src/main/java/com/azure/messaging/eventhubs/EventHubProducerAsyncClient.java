@@ -4,26 +4,19 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.implementation.EventHubsMetricsProvider;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -41,22 +34,14 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
@@ -192,15 +177,12 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
     private final AmqpRetryOptions retryOptions;
-    private final AmqpRetryPolicy retryPolicy;
-    private final TracerProvider tracerProvider;
+    private final EventHubsProducerInstrumentation instrumentation;
     private final MessageSerializer messageSerializer;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final String identifier;
-
-    private final EventHubsMetricsProvider metricsProvider;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -208,24 +190,22 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        String identifier, Meter meter) {
+        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
+        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        String identifier, EventHubsProducerInstrumentation instrumentation) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
-        this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.identifier = identifier;
-        this.metricsProvider = new EventHubsMetricsProvider(meter, fullyQualifiedNamespace, eventHubName, null);
+        this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
     }
 
     /**
@@ -254,8 +234,10 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
-            .flatMap(EventHubManagementNode::getEventHubProperties);
+        return instrumentation.getTracer().traceMono(
+            connectionProcessor.flatMap(connection -> connection.getManagementNode())
+                .flatMap(EventHubManagementNode::getEventHubProperties),
+           "EventHubs.getEventHubProperties");
     }
 
     /**
@@ -278,8 +260,10 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
-            .flatMap(node -> node.getPartitionProperties(partitionId));
+        return instrumentation.getTracer().traceMono(
+            connectionProcessor.flatMap(connection -> connection.getManagementNode())
+                .flatMap(node -> node.getPartitionProperties(partitionId)),
+            "EventHubs.getPartitionProperties");
     }
 
     /**
@@ -322,7 +306,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
-        return getSendLink(partitionId)
+        final Mono<EventDataBatch> createBatch = getSendLink(partitionId)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int maximumLinkSize = size > 0
@@ -340,9 +324,14 @@ public class EventHubProducerAsyncClient implements Closeable {
                         ? batchMaxSize
                         : maximumLinkSize;
 
-                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname()));
+                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
                 }));
+
+        // Similar to the companion API 'send', the 'create-batch' can also make network calls, so retry in case
+        // of transient errors.
+        return withRetry(createBatch, retryOptions,
+            String.format("partitionId[%s]: Creating batch timed out.", partitionId))
+            .publishOn(scheduler);
     }
 
     /**
@@ -536,32 +525,10 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         final String partitionKey = batch.getPartitionKey();
-        final boolean isTracingEnabled = tracerProvider.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
-
-        Context sharedContext = null;
         final List<Message> messages = new ArrayList<>();
 
         for (int i = 0; i < batch.getEvents().size(); i++) {
             final EventData event = batch.getEvents().get(i);
-            if (isTracingEnabled) {
-                if (i == 0) {
-                    sharedContext = event.getContext()
-                        .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
-                        .addData(ENTITY_PATH_KEY, eventHubName)
-                        .addData(HOST_NAME_KEY, fullyQualifiedNamespace);
-
-                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME, sharedContext);
-                    tracerProvider.addSpanLinks(sharedContext);
-                } else {
-                    // TODO (lmolkova) we need better addSpanLinks - https://github.com/Azure/azure-sdk-for-java/issues/28953
-                    Object eventSpanContext = event.getContext().getData(SPAN_CONTEXT_KEY).orElse(Context.NONE);
-                    tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, eventSpanContext));
-                }
-            }
-
             final Message message = messageSerializer.serialize(event);
 
             if (!CoreUtils.isNullOrEmpty(partitionKey)) {
@@ -574,26 +541,17 @@ public class EventHubProducerAsyncClient implements Closeable {
             messages.add(message);
         }
 
-        if (isTracingEnabled) {
-            // Start send span and store updated context
-            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, sharedContext, ProcessKind.SEND));
-        }
-
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
             .flatMap(link -> messages.size() == 1
                 ? link.send(messages.get(0))
                 : link.send(messages));
 
-        return withRetry(sendMessage, retryOptions,
+        final Mono<Void> send = withRetry(sendMessage, retryOptions,
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
-            .publishOn(scheduler)
-            .doOnEach(signal -> {
-                Context context = isTracingEnabled ? parentContext.get() : Context.NONE;
-                metricsProvider.reportBatchSend(batch, batch.getPartitionId(), signal.getThrowable(), context);
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(context, signal);
-                }
-            });
+            .publishOn(scheduler);
+
+        // important to end spans after metrics are reported so metrics get relevant context for exemplars.
+        return instrumentation.onSendBatch(send, batch, "EventHubs.send");
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
@@ -617,7 +575,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
                     return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                        tracerProvider, link.getEntityPath(), link.getHostname()));
+                        instrumentation));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
@@ -684,14 +642,11 @@ public class EventHubProducerAsyncClient implements Closeable {
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private final ErrorContextProvider contextProvider;
-        private final TracerProvider tracerProvider;
-        private final String entityPath;
-        private final String hostname;
-
+        private final EventHubsProducerInstrumentation instrumentation;
         private volatile EventDataBatch currentBatch;
 
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
-            TracerProvider tracerProvider, String entityPath, String hostname) {
+            EventHubsProducerInstrumentation instrumentation) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -699,12 +654,10 @@ public class EventHubProducerAsyncClient implements Closeable {
             this.partitionKey = options.getPartitionKey();
             this.partitionId = options.getPartitionId();
             this.contextProvider = contextProvider;
-            this.tracerProvider = tracerProvider;
-            this.entityPath = entityPath;
-            this.hostname = hostname;
+            this.instrumentation = instrumentation;
 
             currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                tracerProvider, entityPath, hostname);
+                instrumentation);
         }
 
         @Override
@@ -728,8 +681,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                    tracerProvider, entityPath, hostname);
+                currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

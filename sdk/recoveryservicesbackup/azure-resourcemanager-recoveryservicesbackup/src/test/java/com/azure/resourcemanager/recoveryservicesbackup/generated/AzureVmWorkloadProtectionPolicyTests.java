@@ -16,35 +16,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVmWorkloadProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"SAPHanaDBInstance\",\"settings\":{\"timeZone\":\"shmkxmaehvbbxur\",\"issqlcompression\":true,\"isCompression\":true},\"subProtectionPolicy\":[{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":338199100,\"resourceGuardOperationRequests\":[\"pyklyhpluodpvru\",\"dlgzibthostgkt\"]}")
+                    "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"AzureFileShare\",\"settings\":{\"timeZone\":\"clzedqbcvh\",\"issqlcompression\":false,\"isCompression\":true},\"subProtectionPolicy\":[{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}}],\"makePolicyConsistent\":true,\"protectedItemsCount\":1282119593,\"resourceGuardOperationRequests\":[\"txhwgfws\"]}")
                 .toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(338199100, model.protectedItemsCount());
-        Assertions.assertEquals("pyklyhpluodpvru", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SAPHANA_DBINSTANCE, model.workLoadType());
-        Assertions.assertEquals("shmkxmaehvbbxur", model.settings().timeZone());
-        Assertions.assertEquals(true, model.settings().issqlcompression());
+        Assertions.assertEquals(1282119593, model.protectedItemsCount());
+        Assertions.assertEquals("txhwgfws", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workLoadType());
+        Assertions.assertEquals("clzedqbcvh", model.settings().timeZone());
+        Assertions.assertEquals(false, model.settings().issqlcompression());
         Assertions.assertEquals(true, model.settings().isCompression());
         Assertions.assertEquals(PolicyType.FULL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals(false, model.makePolicyConsistent());
+        Assertions.assertEquals(true, model.makePolicyConsistent());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model =
             new AzureVmWorkloadProtectionPolicy()
-                .withProtectedItemsCount(338199100)
-                .withResourceGuardOperationRequests(Arrays.asList("pyklyhpluodpvru", "dlgzibthostgkt"))
-                .withWorkLoadType(WorkloadType.SAPHANA_DBINSTANCE)
+                .withProtectedItemsCount(1282119593)
+                .withResourceGuardOperationRequests(Arrays.asList("txhwgfws"))
+                .withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
                 .withSettings(
-                    new Settings().withTimeZone("shmkxmaehvbbxur").withIssqlcompression(true).withIsCompression(true))
+                    new Settings().withTimeZone("clzedqbcvh").withIssqlcompression(false).withIsCompression(true))
                 .withSubProtectionPolicy(
                     Arrays
                         .asList(
@@ -52,17 +51,27 @@ public final class AzureVmWorkloadProtectionPolicyTests {
                                 .withPolicyType(PolicyType.FULL)
                                 .withSchedulePolicy(new SchedulePolicy())
                                 .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf()),
+                            new SubProtectionPolicy()
+                                .withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf()),
+                            new SubProtectionPolicy()
+                                .withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
                                 .withTieringPolicy(mapOf())))
-                .withMakePolicyConsistent(false);
+                .withMakePolicyConsistent(true);
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(338199100, model.protectedItemsCount());
-        Assertions.assertEquals("pyklyhpluodpvru", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SAPHANA_DBINSTANCE, model.workLoadType());
-        Assertions.assertEquals("shmkxmaehvbbxur", model.settings().timeZone());
-        Assertions.assertEquals(true, model.settings().issqlcompression());
+        Assertions.assertEquals(1282119593, model.protectedItemsCount());
+        Assertions.assertEquals("txhwgfws", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workLoadType());
+        Assertions.assertEquals("clzedqbcvh", model.settings().timeZone());
+        Assertions.assertEquals(false, model.settings().issqlcompression());
         Assertions.assertEquals(true, model.settings().isCompression());
         Assertions.assertEquals(PolicyType.FULL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals(false, model.makePolicyConsistent());
+        Assertions.assertEquals(true, model.makePolicyConsistent());
     }
 
     @SuppressWarnings("unchecked")

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.util.Arrays;
 
 /** Samples for VpnSitesConfiguration Download. */
 public final class VpnSitesConfigurationDownloadSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnSitesConfigurationDownload.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnSitesConfigurationDownload.json
      */
     /**
      * Sample code: VpnSitesConfigurationDownload.
@@ -33,6 +32,6 @@ public final class VpnSitesConfigurationDownloadSamples {
                             .asList("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/abc"))
                     .withOutputBlobSasUrl(
                         "https://blobcortextesturl.blob.core.windows.net/folderforconfig/vpnFile?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

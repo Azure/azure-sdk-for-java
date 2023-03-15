@@ -25,6 +25,10 @@ public final class WorkspaceSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WorkspaceSettingList class. */
+    public WorkspaceSettingList() {
+    }
+
     /**
      * Get the value property: List of workspace settings.
      *

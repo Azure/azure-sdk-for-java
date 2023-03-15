@@ -16,10 +16,9 @@ import com.azure.resourcemanager.billing.models.BillingAccount;
 import com.azure.resourcemanager.billing.models.BillingAccountUpdateRequest;
 import com.azure.resourcemanager.billing.models.BillingAccounts;
 import com.azure.resourcemanager.billing.models.InvoiceSectionWithCreateSubPermission;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingAccountsImpl implements BillingAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingAccountsImpl.class);
 
     private final BillingAccountsClient innerClient;
 
@@ -41,15 +40,6 @@ public final class BillingAccountsImpl implements BillingAccounts {
         return Utils.mapPage(inner, inner1 -> new BillingAccountImpl(inner1, this.manager()));
     }
 
-    public BillingAccount get(String billingAccountName) {
-        BillingAccountInner inner = this.serviceClient().get(billingAccountName);
-        if (inner != null) {
-            return new BillingAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BillingAccount> getWithResponse(String billingAccountName, String expand, Context context) {
         Response<BillingAccountInner> inner = this.serviceClient().getWithResponse(billingAccountName, expand, context);
         if (inner != null) {
@@ -58,6 +48,15 @@ public final class BillingAccountsImpl implements BillingAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccount get(String billingAccountName) {
+        BillingAccountInner inner = this.serviceClient().get(billingAccountName);
+        if (inner != null) {
+            return new BillingAccountImpl(inner, this.manager());
         } else {
             return null;
         }

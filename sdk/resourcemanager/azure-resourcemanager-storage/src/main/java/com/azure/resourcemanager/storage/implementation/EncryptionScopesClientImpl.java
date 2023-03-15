@@ -31,6 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
 import com.azure.resourcemanager.storage.models.EncryptionScopeListResult;
+import com.azure.resourcemanager.storage.models.ListEncryptionScopesInclude;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EncryptionScopesClient. */
@@ -121,6 +122,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$maxpagesize") Integer maxpagesize,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$include") ListEncryptionScopesInclude include,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -767,6 +771,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of encryption scopes that will be included in the list
+     *     response.
+     * @param filter Optional. When specified, only encryption scope names starting with the filter will be listed.
+     * @param include Optional, when specified, will list encryption scopes with the specific state. Defaults to All.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,7 +783,11 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName) {
+        String resourceGroupName,
+        String accountName,
+        Integer maxpagesize,
+        String filter,
+        ListEncryptionScopesInclude include) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -806,6 +818,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            maxpagesize,
+                            filter,
+                            include,
                             accept,
                             context))
             .<PagedResponse<EncryptionScopeInner>>map(
@@ -827,6 +842,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of encryption scopes that will be included in the list
+     *     response.
+     * @param filter Optional. When specified, only encryption scope names starting with the filter will be listed.
+     * @param include Optional, when specified, will list encryption scopes with the specific state. Defaults to All.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -836,7 +855,12 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName,
+        String accountName,
+        Integer maxpagesize,
+        String filter,
+        ListEncryptionScopesInclude include,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -865,6 +889,9 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                maxpagesize,
+                filter,
+                include,
                 accept,
                 context)
             .map(
@@ -885,6 +912,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of encryption scopes that will be included in the list
+     *     response.
+     * @param filter Optional. When specified, only encryption scope names starting with the filter will be listed.
+     * @param include Optional, when specified, will list encryption scopes with the specific state. Defaults to All.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,9 +923,15 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     scopes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName) {
+    public PagedFlux<EncryptionScopeInner> listAsync(
+        String resourceGroupName,
+        String accountName,
+        Integer maxpagesize,
+        String filter,
+        ListEncryptionScopesInclude include) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -904,6 +941,33 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
+     *     scopes as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName) {
+        final Integer maxpagesize = null;
+        final String filter = null;
+        final ListEncryptionScopesInclude include = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the encryption scopes available under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of encryption scopes that will be included in the list
+     *     response.
+     * @param filter Optional. When specified, only encryption scope names starting with the filter will be listed.
+     * @param include Optional, when specified, will list encryption scopes with the specific state. Defaults to All.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,9 +976,15 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     scopes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName, Context context) {
+    private PagedFlux<EncryptionScopeInner> listAsync(
+        String resourceGroupName,
+        String accountName,
+        Integer maxpagesize,
+        String filter,
+        ListEncryptionScopesInclude include,
+        Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, context),
+            () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, include, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -933,7 +1003,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName));
+        final Integer maxpagesize = null;
+        final String filter = null;
+        final ListEncryptionScopesInclude include = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include));
     }
 
     /**
@@ -943,6 +1016,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, specifies the maximum number of encryption scopes that will be included in the list
+     *     response.
+     * @param filter Optional. When specified, only encryption scope names starting with the filter will be listed.
+     * @param include Optional, when specified, will list encryption scopes with the specific state. Defaults to All.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -951,8 +1028,14 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     scopes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));
+    public PagedIterable<EncryptionScopeInner> list(
+        String resourceGroupName,
+        String accountName,
+        Integer maxpagesize,
+        String filter,
+        ListEncryptionScopesInclude include,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, include, context));
     }
 
     /**

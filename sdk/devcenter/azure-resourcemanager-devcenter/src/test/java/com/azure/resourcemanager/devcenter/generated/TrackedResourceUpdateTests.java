@@ -17,21 +17,30 @@ public final class TrackedResourceUpdateTests {
         TrackedResourceUpdate model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"gqjbpfzfsin\":\"thqt\",\"wzo\":\"gvfcj\",\"np\":\"xjtfelluwfzit\"},\"location\":\"fpjkjlxofp\"}")
+                    "{\"tags\":{\"suuv\":\"u\",\"odjpslwejd\":\"kjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"},\"location\":\"crzevdphlx\"}")
                 .toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("thqt", model.tags().get("gqjbpfzfsin"));
-        Assertions.assertEquals("fpjkjlxofp", model.location());
+        Assertions.assertEquals("u", model.tags().get("suuv"));
+        Assertions.assertEquals("crzevdphlx", model.location());
     }
 
     @Test
     public void testSerialize() {
         TrackedResourceUpdate model =
             new TrackedResourceUpdate()
-                .withTags(mapOf("gqjbpfzfsin", "thqt", "wzo", "gvfcj", "np", "xjtfelluwfzit"))
-                .withLocation("fpjkjlxofp");
+                .withTags(
+                    mapOf(
+                        "suuv",
+                        "u",
+                        "odjpslwejd",
+                        "kjozkrwfnd",
+                        "cctazakljlahbc",
+                        "vwryoqpso",
+                        "gexpaojakhmsbz",
+                        "yffdfdos"))
+                .withLocation("crzevdphlx");
         model = BinaryData.fromObject(model).toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("thqt", model.tags().get("gqjbpfzfsin"));
-        Assertions.assertEquals("fpjkjlxofp", model.location());
+        Assertions.assertEquals("u", model.tags().get("suuv"));
+        Assertions.assertEquals("crzevdphlx", model.location());
     }
 
     @SuppressWarnings("unchecked")

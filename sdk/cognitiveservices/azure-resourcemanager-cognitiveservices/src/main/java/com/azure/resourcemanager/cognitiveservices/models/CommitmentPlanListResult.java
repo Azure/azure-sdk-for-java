@@ -19,11 +19,14 @@ public final class CommitmentPlanListResult {
     private String nextLink;
 
     /*
-     * Gets the list of Cognitive Services accounts CommitmentPlan and their
-     * properties.
+     * Gets the list of Cognitive Services accounts CommitmentPlan and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentPlanInner> value;
+
+    /** Creates an instance of CommitmentPlanListResult class. */
+    public CommitmentPlanListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of CommitmentPlan.

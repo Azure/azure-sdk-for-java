@@ -99,6 +99,9 @@ public final class SparkJobProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SparkJobProperties class. */
+    public SparkJobProperties() {}
+
     /**
      * Get the name property: The name of the job.
      *

@@ -27,15 +27,6 @@ public final class PricingsImpl implements Pricings {
         this.serviceManager = serviceManager;
     }
 
-    public PricingList list() {
-        PricingListInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new PricingListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PricingList> listWithResponse(Context context) {
         Response<PricingListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
@@ -49,10 +40,10 @@ public final class PricingsImpl implements Pricings {
         }
     }
 
-    public Pricing get(String pricingName) {
-        PricingInner inner = this.serviceClient().get(pricingName);
+    public PricingList list() {
+        PricingListInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new PricingImpl(inner, this.manager());
+            return new PricingListImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -71,8 +62,8 @@ public final class PricingsImpl implements Pricings {
         }
     }
 
-    public Pricing update(String pricingName, PricingInner pricing) {
-        PricingInner inner = this.serviceClient().update(pricingName, pricing);
+    public Pricing get(String pricingName) {
+        PricingInner inner = this.serviceClient().get(pricingName);
         if (inner != null) {
             return new PricingImpl(inner, this.manager());
         } else {
@@ -88,6 +79,15 @@ public final class PricingsImpl implements Pricings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PricingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Pricing update(String pricingName, PricingInner pricing) {
+        PricingInner inner = this.serviceClient().update(pricingName, pricing);
+        if (inner != null) {
+            return new PricingImpl(inner, this.manager());
         } else {
             return null;
         }

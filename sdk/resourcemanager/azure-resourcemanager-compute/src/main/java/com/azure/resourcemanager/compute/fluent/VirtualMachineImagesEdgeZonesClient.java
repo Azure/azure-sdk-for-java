@@ -61,24 +61,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine image in an edge zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineImageInner get(
-        String location, String edgeZone, String publisherName, String offer, String skus, String version);
-
-    /**
-     * Gets a virtual machine image in an edge zone.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @param version A valid image SKU version.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -94,6 +76,24 @@ public interface VirtualMachineImagesEdgeZonesClient {
         String skus,
         String version,
         Context context);
+
+    /**
+     * Gets a virtual machine image in an edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine image in an edge zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineImageInner get(
+        String location, String edgeZone, String publisherName, String offer, String skus, String version);
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
@@ -133,9 +133,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
-     * @param expand The expand expression to apply on the operation.
-     * @param top An integer value specifying the number of images to return that matches supplied values.
-     * @param orderby Specifies the order of the results returned. Formatted as an OData query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,51 +141,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<VirtualMachineImageResourceInner>> listAsync(
-        String location,
-        String edgeZone,
-        String publisherName,
-        String offer,
-        String skus,
-        String expand,
-        Integer top,
-        String orderby);
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VirtualMachineImageResourceInner>> listAsync(
-        String location, String edgeZone, String publisherName, String offer, String skus);
-
-    /**
-     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     * SKU.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
-     * @param skus A valid image SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VirtualMachineImageResourceInner> list(
         String location, String edgeZone, String publisherName, String offer, String skus);
 
     /**
@@ -221,6 +173,25 @@ public interface VirtualMachineImagesEdgeZonesClient {
         Integer top,
         String orderby,
         Context context);
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     * SKU.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
+     *     SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<VirtualMachineImageResourceInner> list(
+        String location, String edgeZone, String publisherName, String offer, String skus);
 
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
@@ -260,20 +231,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VirtualMachineImageResourceInner> listOffers(String location, String edgeZone, String publisherName);
-
-    /**
-     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -284,6 +241,20 @@ public interface VirtualMachineImagesEdgeZonesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(
         String location, String edgeZone, String publisherName, Context context);
+
+    /**
+     * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<VirtualMachineImageResourceInner> listOffers(String location, String edgeZone, String publisherName);
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
@@ -319,19 +290,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VirtualMachineImageResourceInner> listPublishers(String location, String edgeZone);
-
-    /**
-     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -342,6 +300,19 @@ public interface VirtualMachineImagesEdgeZonesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<VirtualMachineImageResourceInner>> listPublishersWithResponse(
         String location, String edgeZone, Context context);
+
+    /**
+     * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<VirtualMachineImageResourceInner> listPublishers(String location, String edgeZone);
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
@@ -384,22 +355,6 @@ public interface VirtualMachineImagesEdgeZonesClient {
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VirtualMachineImageResourceInner> listSkus(
-        String location, String edgeZone, String publisherName, String offer);
-
-    /**
-     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
-     *
-     * @param location The name of a supported Azure region.
-     * @param edgeZone The name of the edge zone.
-     * @param publisherName A valid image publisher.
-     * @param offer A valid image publisher offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -410,4 +365,20 @@ public interface VirtualMachineImagesEdgeZonesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(
         String location, String edgeZone, String publisherName, String offer, Context context);
+
+    /**
+     * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param publisherName A valid image publisher.
+     * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<VirtualMachineImageResourceInner> listSkus(
+        String location, String edgeZone, String publisherName, String offer);
 }

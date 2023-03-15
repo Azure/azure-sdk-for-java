@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentBuildMode. */
+/** Custom document model build mode. */
 public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildMode> {
     /** Static value template for DocumentBuildMode. */
     public static final DocumentBuildMode TEMPLATE = fromString("template");
 
     /** Static value neural for DocumentBuildMode. */
     public static final DocumentBuildMode NEURAL = fromString("neural");
+
+    /**
+     * Creates a new instance of DocumentBuildMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentBuildMode() {}
 
     /**
      * Creates or finds a DocumentBuildMode from its string representation.

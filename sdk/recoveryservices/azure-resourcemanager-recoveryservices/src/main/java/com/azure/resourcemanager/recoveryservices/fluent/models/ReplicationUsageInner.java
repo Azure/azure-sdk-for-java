@@ -48,6 +48,10 @@ public final class ReplicationUsageInner {
     @JsonProperty(value = "recoveryServicesProviderAuthType")
     private Integer recoveryServicesProviderAuthType;
 
+    /** Creates an instance of ReplicationUsageInner class. */
+    public ReplicationUsageInner() {
+    }
+
     /**
      * Get the monitoringSummary property: Summary of the replication monitoring data for this vault.
      *

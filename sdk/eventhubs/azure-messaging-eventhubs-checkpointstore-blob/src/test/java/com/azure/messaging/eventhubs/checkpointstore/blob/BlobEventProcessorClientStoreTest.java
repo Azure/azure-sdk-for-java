@@ -288,7 +288,7 @@ public class BlobEventProcessorClientStoreTest {
             any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po))).verifyError();
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po))).verifyComplete();
 
         PartitionOwnership po2 = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
         po2.setETag("1");
@@ -297,11 +297,11 @@ public class BlobEventProcessorClientStoreTest {
         when(blobAsyncClient
             .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
-        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po2))).verifyError();
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po2))).verifyComplete();
 
         blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
         when(blobContainerAsyncClient.getBlobAsyncClient(anyString())).thenReturn(null);
-        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po))).verifyError();
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po))).verifyComplete();
     }
 
     private PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,

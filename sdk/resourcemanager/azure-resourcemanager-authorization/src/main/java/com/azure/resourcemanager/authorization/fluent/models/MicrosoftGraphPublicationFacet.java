@@ -16,15 +16,13 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPublicationFacet {
     /*
-     * The state of publication for this document. Either published or
-     * checkout. Read-only.
+     * The state of publication for this document. Either published or checkout. Read-only.
      */
     @JsonProperty(value = "level")
     private String level;
 
     /*
-     * The unique identifier for the version that is visible to the current
-     * caller. Read-only.
+     * The unique identifier for the version that is visible to the current caller. Read-only.
      */
     @JsonProperty(value = "versionId")
     private String versionId;
@@ -33,6 +31,10 @@ public final class MicrosoftGraphPublicationFacet {
      * publicationFacet
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPublicationFacet class. */
+    public MicrosoftGraphPublicationFacet() {
+    }
 
     /**
      * Get the level property: The state of publication for this document. Either published or checkout. Read-only.

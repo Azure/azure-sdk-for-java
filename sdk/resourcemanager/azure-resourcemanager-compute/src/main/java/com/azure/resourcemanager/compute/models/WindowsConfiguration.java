@@ -60,6 +60,10 @@ public final class WindowsConfiguration {
     @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
+    /** Creates an instance of WindowsConfiguration class. */
+    public WindowsConfiguration() {
+    }
+
     /**
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
      * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set

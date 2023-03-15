@@ -77,8 +77,7 @@ public final class RoleAssignmentScheduleInstanceProperties {
     private String linkedRoleEligibilityScheduleId;
 
     /*
-     * roleEligibilityScheduleInstanceId linked to this
-     * roleAssignmentScheduleInstance
+     * roleEligibilityScheduleInstanceId linked to this roleAssignmentScheduleInstance
      */
     @JsonProperty(value = "linkedRoleEligibilityScheduleInstanceId")
     private String linkedRoleEligibilityScheduleInstanceId;
@@ -96,10 +95,9 @@ public final class RoleAssignmentScheduleInstanceProperties {
     private MemberType memberType;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can
-     * be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'
+     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
      */
     @JsonProperty(value = "condition")
     private String condition;
@@ -121,6 +119,10 @@ public final class RoleAssignmentScheduleInstanceProperties {
      */
     @JsonProperty(value = "expandedProperties")
     private ExpandedProperties expandedProperties;
+
+    /** Creates an instance of RoleAssignmentScheduleInstanceProperties class. */
+    public RoleAssignmentScheduleInstanceProperties() {
+    }
 
     /**
      * Get the scope property: The role assignment schedule scope.

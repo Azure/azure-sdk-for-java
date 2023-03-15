@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListKeys. */
 public final class WorkspacesListKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/listKeys.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/listKeys.json
      */
     /**
      * Sample code: List Workspace Keys.
@@ -17,6 +15,6 @@ public final class WorkspacesListKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listKeysWithResponse("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().listKeysWithResponse("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,6 +20,15 @@ public final class EffectiveSecurityRuleProtocol extends ExpandableStringEnum<Ef
     public static final EffectiveSecurityRuleProtocol ALL = fromString("All");
 
     /**
+     * Creates a new instance of EffectiveSecurityRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EffectiveSecurityRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a EffectiveSecurityRuleProtocol from its string representation.
      *
      * @param name a name to look for.

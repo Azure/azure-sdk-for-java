@@ -15,18 +15,6 @@ public interface SignalRs {
      *
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
-     */
-    NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters);
-
-    /**
-     * Checks that the resource name is valid and is not already in use.
-     *
-     * @param location the region.
-     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,6 +23,18 @@ public interface SignalRs {
      */
     Response<NameAvailability> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks that the resource name is valid and is not already in use.
+     *
+     * @param location the region.
+     * @param parameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to check name availability.
+     */
+    NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters);
 
     /**
      * Handles requests to list all resources in a subscription.
@@ -91,19 +91,6 @@ public interface SignalRs {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
-     */
-    SignalRResource getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Get the resource and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -112,6 +99,19 @@ public interface SignalRs {
      */
     Response<SignalRResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the resource and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource and its properties.
+     */
+    SignalRResource getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Operation to delete a resource.
@@ -144,19 +144,6 @@ public interface SignalRs {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
-    SignalRKeys listKeys(String resourceGroupName, String resourceName);
-
-    /**
-     * Get the access keys of the resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,6 +151,19 @@ public interface SignalRs {
      * @return the access keys of the resource along with {@link Response}.
      */
     Response<SignalRKeys> listKeysWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the access keys of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the resource.
+     */
+    SignalRKeys listKeys(String resourceGroupName, String resourceName);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
@@ -226,19 +226,6 @@ public interface SignalRs {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
-     */
-    SkuList listSkus(String resourceGroupName, String resourceName);
-
-    /**
-     * List all available skus of the resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,6 +233,19 @@ public interface SignalRs {
      * @return the list skus operation response along with {@link Response}.
      */
     Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    SkuList listSkus(String resourceGroupName, String resourceName);
 
     /**
      * Get the resource and its properties.

@@ -5,8 +5,8 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +20,7 @@ import java.util.Arrays;
 import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
@@ -53,7 +54,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().build();
+            httpClient = HttpClient.createDefault();
         }
     }
 
@@ -74,14 +75,28 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         }
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertSync()
+            .build();
+    }
+
     private RegistryArtifactAsync getRegistryArtifactAsyncClient(String digest) {
-        return getContainerRegistryBuilder(httpClient)
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getArtifact(repositoryName, digest);
     }
 
     private RegistryArtifact getRegistryArtifactClient(String digest) {
-        return getContainerRegistryBuilder(httpClient)
+        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(repositoryName, digest);
     }

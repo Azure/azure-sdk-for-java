@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationMultilabelPrimaryMetrics. */
+/** Primary metrics for classification multilabel tasks. */
 public final class ClassificationMultilabelPrimaryMetrics
     extends ExpandableStringEnum<ClassificationMultilabelPrimaryMetrics> {
     /** Static value AUCWeighted for ClassificationMultilabelPrimaryMetrics. */
@@ -30,6 +30,15 @@ public final class ClassificationMultilabelPrimaryMetrics
 
     /** Static value IOU for ClassificationMultilabelPrimaryMetrics. */
     public static final ClassificationMultilabelPrimaryMetrics IOU = fromString("IOU");
+
+    /**
+     * Creates a new instance of ClassificationMultilabelPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationMultilabelPrimaryMetrics() {
+    }
 
     /**
      * Creates or finds a ClassificationMultilabelPrimaryMetrics from its string representation.

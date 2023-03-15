@@ -32,6 +32,10 @@ public final class MicrosoftGraphTimeRange {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTimeRange class. */
+    public MicrosoftGraphTimeRange() {
+    }
+
     /**
      * Get the endTime property: End time for the time range.
      *

@@ -114,20 +114,6 @@ public interface RoleAssignmentScheduleInstancesClient {
      * @param scope The scope of the role assignments schedules.
      * @param roleAssignmentScheduleInstanceName The name (hash of schedule name + time) of the role assignment schedule
      *     to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentScheduleInstanceInner get(String scope, String roleAssignmentScheduleInstanceName);
-
-    /**
-     * Gets the specified role assignment schedule instance.
-     *
-     * @param scope The scope of the role assignments schedules.
-     * @param roleAssignmentScheduleInstanceName The name (hash of schedule name + time) of the role assignment schedule
-     *     to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,4 +123,18 @@ public interface RoleAssignmentScheduleInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleAssignmentScheduleInstanceInner> getWithResponse(
         String scope, String roleAssignmentScheduleInstanceName, Context context);
+
+    /**
+     * Gets the specified role assignment schedule instance.
+     *
+     * @param scope The scope of the role assignments schedules.
+     * @param roleAssignmentScheduleInstanceName The name (hash of schedule name + time) of the role assignment schedule
+     *     to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment schedule instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentScheduleInstanceInner get(String scope, String roleAssignmentScheduleInstanceName);
 }

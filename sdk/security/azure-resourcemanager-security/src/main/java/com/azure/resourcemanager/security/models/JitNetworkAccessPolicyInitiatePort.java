@@ -31,6 +31,10 @@ public final class JitNetworkAccessPolicyInitiatePort {
     @JsonProperty(value = "endTimeUtc", required = true)
     private OffsetDateTime endTimeUtc;
 
+    /** Creates an instance of JitNetworkAccessPolicyInitiatePort class. */
+    public JitNetworkAccessPolicyInitiatePort() {
+    }
+
     /**
      * Get the number property: The number property.
      *

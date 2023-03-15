@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The cluster create request specification. */
 @Fluent
 public final class ClusterCreateRequestValidationParameters extends ClusterCreateParametersExtended {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateRequestValidationParameters.class);
-
     /*
      * The cluster name.
      */
@@ -39,6 +35,10 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
      */
     @JsonProperty(value = "fetchAaddsResource")
     private Boolean fetchAaddsResource;
+
+    /** Creates an instance of ClusterCreateRequestValidationParameters class. */
+    public ClusterCreateRequestValidationParameters() {
+    }
 
     /**
      * Get the name property: The cluster name.

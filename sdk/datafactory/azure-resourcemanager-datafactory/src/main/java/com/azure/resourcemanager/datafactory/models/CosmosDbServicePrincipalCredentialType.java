@@ -23,6 +23,15 @@ public final class CosmosDbServicePrincipalCredentialType
         fromString("ServicePrincipalCert");
 
     /**
+     * Creates a new instance of CosmosDbServicePrincipalCredentialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CosmosDbServicePrincipalCredentialType() {
+    }
+
+    /**
      * Creates or finds a CosmosDbServicePrincipalCredentialType from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BastionHosts GetByResourceGroup. */
 public final class BastionHostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/BastionHostGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/BastionHostGet.json
      */
     /**
      * Sample code: Get Bastion Host.
@@ -22,6 +20,6 @@ public final class BastionHostsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getBastionHosts()
-            .getByResourceGroupWithResponse("rg1", "bastionhosttenant'", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "bastionhosttenant'", com.azure.core.util.Context.NONE);
     }
 }

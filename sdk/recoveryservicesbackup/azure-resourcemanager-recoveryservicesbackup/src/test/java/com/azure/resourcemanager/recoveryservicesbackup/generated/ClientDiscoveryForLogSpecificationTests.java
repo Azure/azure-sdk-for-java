@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryForLogSpecification;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientDiscoveryForLogSpecificationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClientDiscoveryForLogSpecification model =
             BinaryData
                 .fromString("{\"name\":\"dtqajzyulpkudj\",\"displayName\":\"lkhbz\",\"blobDuration\":\"epgzgqexz\"}")
@@ -21,8 +20,8 @@ public final class ClientDiscoveryForLogSpecificationTests {
         Assertions.assertEquals("epgzgqexz", model.blobDuration());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClientDiscoveryForLogSpecification model =
             new ClientDiscoveryForLogSpecification()
                 .withName("dtqajzyulpkudj")

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.AddressPrefixItem;
 import com.azure.resourcemanager.network.models.AddressPrefixType;
 import com.azure.resourcemanager.network.models.AdminRule;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 /** Samples for AdminRules CreateOrUpdate. */
 public final class AdminRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerAdminRulePut.json
      */
     /**
      * Sample code: Create an admin rule.
@@ -56,11 +55,11 @@ public final class AdminRulesCreateOrUpdateSamples {
                     .withAccess(SecurityConfigurationRuleAccess.DENY)
                     .withPriority(1)
                     .withDirection(SecurityConfigurationRuleDirection.INBOUND),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerDefaultAdminRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerDefaultAdminRulePut.json
      */
     /**
      * Sample code: Create a default admin rule.
@@ -80,6 +79,6 @@ public final class AdminRulesCreateOrUpdateSamples {
                 "testRuleCollection",
                 "SampleDefaultAdminRule",
                 new DefaultAdminRule().withFlag("AllowVnetInbound"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -72,8 +72,18 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
     /*
      * Gets or sets the blob URI to SSL certificate for the SAP system.
      */
-    @JsonProperty(value = "sapSslCertificateUri")
-    private String sapSslCertificateUri;
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
+
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /** Creates an instance of SapNetWeaverProviderInstanceProperties class. */
+    public SapNetWeaverProviderInstanceProperties() {
+    }
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
@@ -256,22 +266,42 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
     }
 
     /**
-     * Get the sapSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
      *
-     * @return the sapSslCertificateUri value.
+     * @return the sslCertificateUri value.
      */
-    public String sapSslCertificateUri() {
-        return this.sapSslCertificateUri;
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
     }
 
     /**
-     * Set the sapSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
      *
-     * @param sapSslCertificateUri the sapSslCertificateUri value to set.
+     * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
-    public SapNetWeaverProviderInstanceProperties withSapSslCertificateUri(String sapSslCertificateUri) {
-        this.sapSslCertificateUri = sapSslCertificateUri;
+    public SapNetWeaverProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the SapNetWeaverProviderInstanceProperties object itself.
+     */
+    public SapNetWeaverProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
         return this;
     }
 

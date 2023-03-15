@@ -10,6 +10,9 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.communication.common.perf.FakeCredentialInTest.MOCK_KEY_PLACEHOLDER;
+
 /**
  * HmacAuthenticationPolicyTest is designed to verify the correctness of the calculation
  * of the request signature header in the HmacAuthenticationPolicy in a race condition.
@@ -21,9 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
     private final static ConcurrentHashMap<String, String> dateToSignature = new ConcurrentHashMap<>();
-    // Do not change this otherwise CredScan will flag this.
-    private final static String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
-    private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(mockedKey));
+    private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(MOCK_KEY_PLACEHOLDER));
 
     private final HttpPipeline pipeline;
     private final HttpRequest request;

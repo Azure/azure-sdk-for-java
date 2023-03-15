@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** storage size in MB capability. */
 @Immutable
 public final class StorageMBCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMBCapability.class);
-
     /*
      * storage MB name
      */
@@ -33,10 +30,20 @@ public final class StorageMBCapability {
     private Long storageSizeMB;
 
     /*
+     * The supportedUpgradableTierList property.
+     */
+    @JsonProperty(value = "supportedUpgradableTierList", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageTierCapability> supportedUpgradableTierList;
+
+    /*
      * The status
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of StorageMBCapability class. */
+    public StorageMBCapability() {
+    }
 
     /**
      * Get the name property: storage MB name.
@@ -66,6 +73,15 @@ public final class StorageMBCapability {
     }
 
     /**
+     * Get the supportedUpgradableTierList property: The supportedUpgradableTierList property.
+     *
+     * @return the supportedUpgradableTierList value.
+     */
+    public List<StorageTierCapability> supportedUpgradableTierList() {
+        return this.supportedUpgradableTierList;
+    }
+
+    /**
      * Get the status property: The status.
      *
      * @return the status value.
@@ -80,5 +96,8 @@ public final class StorageMBCapability {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (supportedUpgradableTierList() != null) {
+            supportedUpgradableTierList().forEach(e -> e.validate());
+        }
     }
 }

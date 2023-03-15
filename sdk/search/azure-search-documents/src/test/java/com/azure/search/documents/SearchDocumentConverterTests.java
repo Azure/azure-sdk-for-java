@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.convertToMap;
+import static com.azure.search.documents.TestHelpers.convertStreamToMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,7 +36,7 @@ public class SearchDocumentConverterTests {
         // the result object is a map of key:value, get deserialized directly into the Document object
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
-        SearchDocument doc = new SearchDocument(convertToMap(json.getBytes(StandardCharsets.UTF_8)));
+        SearchDocument doc = new SearchDocument(convertStreamToMap(json.getBytes(StandardCharsets.UTF_8)));
         cleanupODataAnnotation(doc);
         return doc;
     }

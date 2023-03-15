@@ -66,6 +66,11 @@ public final class SubscriptionDescription {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean deadLetteringOnFilterEvaluationExceptions;
 
+    @JacksonXmlProperty(
+        localName = "DefaultRuleDescription",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private RuleDescription defaultRule;
+
     /*
      * The number of messages in the subscription.
      */
@@ -560,6 +565,26 @@ public final class SubscriptionDescription {
      */
     public SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
+        return this;
+    }
+
+    /***
+     * Get the rule that the subscription was created with, if any.
+     *
+     * @return the Rule description
+     */
+    public RuleDescription getDefaultRule() {
+        return this.defaultRule;
+    }
+
+    /***
+     * Set the rule that the subscriptions hould be created with, if any.
+     *
+     * @param ruleDescription the rule description (name, action, filter)
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setDefaultRule(RuleDescription ruleDescription) {
+        this.defaultRule = ruleDescription;
         return this;
     }
 }

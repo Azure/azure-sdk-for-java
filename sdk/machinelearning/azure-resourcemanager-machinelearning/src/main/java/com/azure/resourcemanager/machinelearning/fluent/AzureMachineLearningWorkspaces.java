@@ -220,6 +220,13 @@ public interface AzureMachineLearningWorkspaces {
     OnlineDeploymentsClient getOnlineDeployments();
 
     /**
+     * Gets the SchedulesClient object to access its operations.
+     *
+     * @return the SchedulesClient object.
+     */
+    SchedulesClient getSchedules();
+
+    /**
      * Gets the WorkspaceFeaturesClient object to access its operations.
      *
      * @return the WorkspaceFeaturesClient object.

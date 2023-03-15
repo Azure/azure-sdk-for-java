@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -39,6 +39,21 @@ Licensed under the MIT License.
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
+      --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.io=ALL-UNNAMED
+      --add-opens java.base/java.net=ALL-UNNAMED
+      --add-opens java.base/java.nio=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+      --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+      --add-opens java.base/sun.nio.cs=ALL-UNNAMED
+      --add-opens java.base/sun.security.action=ALL-UNNAMED
+      --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+
       --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
@@ -70,6 +85,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.pkversion=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.epkversion=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Prevents Checkstyle validating implementation files. -->
@@ -107,19 +123,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.33.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -131,27 +147,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.13.3</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.13.4.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.13.5</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -182,8 +178,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.3.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->
+        <exclusion>
+          <groupId>org.apache.ant</groupId>
+          <artifactId>ant</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -215,13 +222,6 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>25.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>4.1.0</version> <!-- {x-version-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
@@ -230,13 +230,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.9.4</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.9.8</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -259,7 +259,6 @@ Licensed under the MIT License.
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -290,13 +289,9 @@ Licensed under the MIT License.
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.4.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.13.3]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.13.5]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.9.4]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.9.8]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hdrhistogram:HdrHistogram:[2.1.12]</include> <!-- {x-include-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
               </includes>
@@ -326,6 +321,18 @@ Licensed under the MIT License.
       <activation>
         <property>
           <name>spark-e2e_3-2</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-3</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-3</name>
         </property>
       </activation>
       <properties>

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VaultPrivateEndpointState. */
+/** Private endpoint state for backup. */
 public final class VaultPrivateEndpointState extends ExpandableStringEnum<VaultPrivateEndpointState> {
     /** Static value None for VaultPrivateEndpointState. */
     public static final VaultPrivateEndpointState NONE = fromString("None");
 
     /** Static value Enabled for VaultPrivateEndpointState. */
     public static final VaultPrivateEndpointState ENABLED = fromString("Enabled");
+
+    /**
+     * Creates a new instance of VaultPrivateEndpointState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VaultPrivateEndpointState() {
+    }
 
     /**
      * Creates or finds a VaultPrivateEndpointState from its string representation.

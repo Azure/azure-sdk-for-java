@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contact information associated with the support ticket. */
 @Fluent
 public final class UpdateContactProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateContactProfile.class);
-
     /*
      * First name.
      */
@@ -40,8 +36,7 @@ public final class UpdateContactProfile {
     private String primaryEmailAddress;
 
     /*
-     * Email addresses listed will be copied on any correspondence about the
-     * support ticket.
+     * Email addresses listed will be copied on any correspondence about the support ticket.
      */
     @JsonProperty(value = "additionalEmailAddresses")
     private List<String> additionalEmailAddresses;
@@ -53,8 +48,7 @@ public final class UpdateContactProfile {
     private String phoneNumber;
 
     /*
-     * Time zone of the user. This is the name of the time zone from [Microsoft
-     * Time Zone Index
+     * Time zone of the user. This is the name of the time zone from [Microsoft Time Zone Index
      * Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
      */
     @JsonProperty(value = "preferredTimeZone")
@@ -67,18 +61,19 @@ public final class UpdateContactProfile {
     private String country;
 
     /*
-     * Preferred language of support from Azure. Support languages vary based
-     * on the severity you choose for your support ticket. Learn more at [Azure
-     * Severity and
-     * responsiveness](https://azure.microsoft.com/support/plans/response/).
-     * Use the standard language-country code. Valid values are 'en-us' for
-     * English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French,
-     * 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br'
-     * for Portuguese, 'it-it' for Italian, 'zh-tw' for Chinese and 'de-de' for
-     * German.
+     * Preferred language of support from Azure. Support languages vary based on the severity you choose for your
+     * support ticket. Learn more at [Azure Severity and
+     * responsiveness](https://azure.microsoft.com/support/plans/response/). Use the standard language-country code.
+     * Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp'
+     * for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
+     * Chinese and 'de-de' for German.
      */
     @JsonProperty(value = "preferredSupportLanguage")
     private String preferredSupportLanguage;
+
+    /** Creates an instance of UpdateContactProfile class. */
+    public UpdateContactProfile() {
+    }
 
     /**
      * Get the firstName property: First name.

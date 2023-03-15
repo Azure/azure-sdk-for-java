@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.KeyType;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
 
 /** Samples for OnlineEndpoints RegenerateKeys. */
 public final class OnlineEndpointsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/regenerateKeys.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/regenerateKeys.json
      */
     /**
      * Sample code: RegenerateKeys Online Endpoint.
@@ -26,7 +25,7 @@ public final class OnlineEndpointsRegenerateKeysSamples {
                 "test-rg",
                 "my-aml-workspace",
                 "testEndpointName",
-                new RegenerateEndpointKeysRequest().withKeyType(KeyType.PRIMARY).withKeyValue("string"),
-                Context.NONE);
+                new RegenerateEndpointKeysRequest().withKeyType(KeyType.PRIMARY).withKeyValue("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

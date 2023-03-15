@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuRestrictionReasonCode. */
+/** The SKU restriction reason. */
 public final class SkuRestrictionReasonCode extends ExpandableStringEnum<SkuRestrictionReasonCode> {
     /** Static value NotAvailableForSubscription for SkuRestrictionReasonCode. */
     public static final SkuRestrictionReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION =
@@ -16,6 +16,15 @@ public final class SkuRestrictionReasonCode extends ExpandableStringEnum<SkuRest
 
     /** Static value QuotaId for SkuRestrictionReasonCode. */
     public static final SkuRestrictionReasonCode QUOTA_ID = fromString("QuotaId");
+
+    /**
+     * Creates a new instance of SkuRestrictionReasonCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuRestrictionReasonCode() {
+    }
 
     /**
      * Creates or finds a SkuRestrictionReasonCode from its string representation.
@@ -28,7 +37,11 @@ public final class SkuRestrictionReasonCode extends ExpandableStringEnum<SkuRest
         return fromString(name, SkuRestrictionReasonCode.class);
     }
 
-    /** @return known SkuRestrictionReasonCode values. */
+    /**
+     * Gets known SkuRestrictionReasonCode values.
+     *
+     * @return known SkuRestrictionReasonCode values.
+     */
     public static Collection<SkuRestrictionReasonCode> values() {
         return values(SkuRestrictionReasonCode.class);
     }

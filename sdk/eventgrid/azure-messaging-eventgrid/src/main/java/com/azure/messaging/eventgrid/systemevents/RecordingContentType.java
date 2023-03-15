@@ -27,7 +27,11 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
         return fromString(name, RecordingContentType.class);
     }
 
-    /** @return known RecordingContentType values. */
+    /**
+     * Gets known RecordingContentType values.
+     *
+     * @return known RecordingContentType values.
+     */
     public static Collection<RecordingContentType> values() {
         return values(RecordingContentType.class);
     }

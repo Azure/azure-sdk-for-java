@@ -11,32 +11,40 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecoveryPointTierInformationV2Tests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecoveryPointTierInformationV2 model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"lkb\":\"jswtwkozzwc\"}}")
+                    "{\"type\":\"HardenedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"ousnfepgfewe\":\"npjhlfzswpchwahf\",\"hdjhlimmbcx\":\"wlyxgncxyk\",\"cporxvxcjz\":\"h\",\"juhdqazkmtgguwpi\":\"qizxfpxtgqscjavf\"}}")
                 .toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
-        Assertions.assertEquals("jswtwkozzwc", model.extendedInfo().get("lkb"));
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("npjhlfzswpchwahf", model.extendedInfo().get("ousnfepgfewe"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecoveryPointTierInformationV2 model =
             new RecoveryPointTierInformationV2()
-                .withType(RecoveryPointTierType.ARCHIVED_RP)
-                .withStatus(RecoveryPointTierStatus.DELETED)
-                .withExtendedInfo(mapOf("lkb", "jswtwkozzwc"));
+                .withType(RecoveryPointTierType.HARDENED_RP)
+                .withStatus(RecoveryPointTierStatus.DISABLED)
+                .withExtendedInfo(
+                    mapOf(
+                        "ousnfepgfewe",
+                        "npjhlfzswpchwahf",
+                        "hdjhlimmbcx",
+                        "wlyxgncxyk",
+                        "cporxvxcjz",
+                        "h",
+                        "juhdqazkmtgguwpi",
+                        "qizxfpxtgqscjavf"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
-        Assertions.assertEquals("jswtwkozzwc", model.extendedInfo().get("lkb"));
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("npjhlfzswpchwahf", model.extendedInfo().get("ousnfepgfewe"));
     }
 
     @SuppressWarnings("unchecked")

@@ -16,25 +16,26 @@ import java.util.UUID;
 @Fluent
 public class ManagedIdentity extends IdentityConfiguration {
     /*
-     * Specifies a user-assigned identity by client ID. For system-assigned, do
-     * not set this field.
+     * Specifies a user-assigned identity by client ID. For system-assigned, do not set this field.
      */
     @JsonProperty(value = "clientId")
     private UUID clientId;
 
     /*
-     * Specifies a user-assigned identity by object ID. For system-assigned, do
-     * not set this field.
+     * Specifies a user-assigned identity by object ID. For system-assigned, do not set this field.
      */
     @JsonProperty(value = "objectId")
     private UUID objectId;
 
     /*
-     * Specifies a user-assigned identity by ARM resource ID. For
-     * system-assigned, do not set this field.
+     * Specifies a user-assigned identity by ARM resource ID. For system-assigned, do not set this field.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of ManagedIdentity class. */
+    public ManagedIdentity() {
+    }
 
     /**
      * Get the clientId property: Specifies a user-assigned identity by client ID. For system-assigned, do not set this

@@ -58,6 +58,12 @@ connection string value can be obtained by:
 ### Generate Shared Access Signature
 - [Generate SAS and receive message][ReceiveMessageAsyncUsingSasSample]
 
+### Advanced Configuration
+- [Advanced configuration sample set][AdvancedConfigurationSample]
+
+### README samples
+- [Readme_sample][ReadmeSample]
+
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
 
@@ -94,5 +100,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
 [AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
+[AdvancedConfigurationSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdvancedConfigurationSample.java
+[ReadmeSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)

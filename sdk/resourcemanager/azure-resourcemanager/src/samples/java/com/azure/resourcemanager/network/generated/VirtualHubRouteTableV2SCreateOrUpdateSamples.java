@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VirtualHubRouteTableV2S CreateOrUpdate. */
 public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualHubRouteTableV2Put.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubRouteTableV2Put.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
@@ -44,6 +43,6 @@ public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
                                     .withNextHopType("IPAddress")
                                     .withNextHops(Arrays.asList("10.0.0.68"))))
                     .withAttachedConnections(Arrays.asList("All_Vnets")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

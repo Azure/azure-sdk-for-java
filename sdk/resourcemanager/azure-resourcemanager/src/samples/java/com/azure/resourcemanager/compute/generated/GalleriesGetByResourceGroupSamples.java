@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryExpandParams;
 import com.azure.resourcemanager.compute.models.SelectPermissions;
 
 /** Samples for Galleries GetByResourceGroup. */
 public final class GalleriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/CommunityGallery_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/CommunityGallery_Get.json
      */
     /**
      * Sample code: Get a community gallery.
@@ -24,11 +23,12 @@ public final class GalleriesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
      */
     /**
      * Sample code: Get a gallery with select permissions.
@@ -42,11 +42,15 @@ public final class GalleriesGetByResourceGroupSamples {
             .serviceClient()
             .getGalleries()
             .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                SelectPermissions.PERMISSIONS,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/Gallery_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get.json
      */
     /**
      * Sample code: Get a gallery.
@@ -59,11 +63,12 @@ public final class GalleriesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
      */
     /**
      * Sample code: Get a gallery with expand sharingProfile groups.
@@ -77,6 +82,10 @@ public final class GalleriesGetByResourceGroupSamples {
             .serviceClient()
             .getGalleries()
             .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", null, GalleryExpandParams.SHARING_PROFILE_GROUPS, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                null,
+                GalleryExpandParams.SHARING_PROFILE_GROUPS,
+                com.azure.core.util.Context.NONE);
     }
 }

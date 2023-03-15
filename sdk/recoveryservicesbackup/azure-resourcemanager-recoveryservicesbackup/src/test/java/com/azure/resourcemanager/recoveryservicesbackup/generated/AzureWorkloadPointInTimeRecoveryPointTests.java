@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadPointInTimeRecoveryPoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PointInTimeRange;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointMoveReadinessInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierInformationV2;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
@@ -17,15 +18,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadPointInTimeRecoveryPointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadPointInTimeRecoveryPoint model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-04-06T16:13:31Z\",\"endTime\":\"2021-07-04T04:35:49Z\"},{\"startTime\":\"2021-03-05T05:54Z\",\"endTime\":\"2021-08-10T14:37:01Z\"},{\"startTime\":\"2021-07-18T11:29:19Z\",\"endTime\":\"2021-04-12T08:03:04Z\"},{\"startTime\":\"2021-01-22T06:46:52Z\",\"endTime\":\"2021-10-13T14:11:45Z\"}],\"recoveryPointTimeInUTC\":\"2021-11-03T20:02:22Z\",\"type\":\"Full\",\"recoveryPointTierDetails\":[{\"type\":\"InstantRP\",\"status\":\"Valid\",\"extendedInfo\":{\"fzqlqhycavod\":\"ilcbtgnhnzeyqxtj\",\"nlrariaawiuagy\":\"gxdbeesmie\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"}},{\"type\":\"Invalid\",\"status\":\"Deleted\",\"extendedInfo\":{\"grjqctojcmi\":\"kb\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\"}},{\"type\":\"Invalid\",\"status\":\"Invalid\",\"extendedInfo\":{\"wotey\":\"vecactx\"}},{\"type\":\"ArchivedRP\",\"status\":\"Invalid\",\"extendedInfo\":{\"wifzmp\":\"vekqvgqo\",\"cvhrfsp\":\"wyivqikf\",\"kvyklxubyjaffmm\":\"uagrttikteusqc\"}}],\"recoveryPointMoveReadinessInfo\":{\"bgq\":{\"isReadyForMove\":true,\"additionalInfo\":\"u\"},\"metttwgd\":{\"isReadyForMove\":false,\"additionalInfo\":\"a\"},\"i\":{\"isReadyForMove\":true,\"additionalInfo\":\"ihhrmo\"},\"hyrpetogebjoxs\":{\"isReadyForMove\":true,\"additionalInfo\":\"ypxiutcxap\"}}}")
+                    "{\"objectType\":\"AzureWorkloadPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-04-06T16:13:31Z\",\"endTime\":\"2021-07-04T04:35:49Z\"},{\"startTime\":\"2021-03-05T05:54Z\",\"endTime\":\"2021-08-10T14:37:01Z\"},{\"startTime\":\"2021-07-18T11:29:19Z\",\"endTime\":\"2021-04-12T08:03:04Z\"},{\"startTime\":\"2021-01-22T06:46:52Z\",\"endTime\":\"2021-10-13T14:11:45Z\"}],\"recoveryPointTimeInUTC\":\"2021-11-03T20:02:22Z\",\"type\":\"Full\",\"recoveryPointTierDetails\":[{\"type\":\"InstantRP\",\"status\":\"Valid\",\"extendedInfo\":{\"fzqlqhycavod\":\"ilcbtgnhnzeyqxtj\",\"nlrariaawiuagy\":\"gxdbeesmie\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"}},{\"type\":\"Invalid\",\"status\":\"Deleted\",\"extendedInfo\":{\"grjqctojcmi\":\"kb\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\"}},{\"type\":\"Invalid\",\"status\":\"Invalid\",\"extendedInfo\":{\"wotey\":\"vecactx\"}},{\"type\":\"ArchivedRP\",\"status\":\"Invalid\",\"extendedInfo\":{\"wifzmp\":\"vekqvgqo\",\"cvhrfsp\":\"wyivqikf\",\"kvyklxubyjaffmm\":\"uagrttikteusqc\"}}],\"recoveryPointMoveReadinessInfo\":{\"bgq\":{\"isReadyForMove\":true,\"additionalInfo\":\"u\"},\"metttwgd\":{\"isReadyForMove\":false,\"additionalInfo\":\"a\"},\"i\":{\"isReadyForMove\":true,\"additionalInfo\":\"ihhrmo\"},\"hyrpetogebjoxs\":{\"isReadyForMove\":true,\"additionalInfo\":\"ypxiutcxap\"}},\"recoveryPointProperties\":{\"expiryTime\":\"nhl\",\"ruleName\":\"rqnkkzjcjbtr\"}}")
                 .toObject(AzureWorkloadPointInTimeRecoveryPoint.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T20:02:22Z"), model.recoveryPointTimeInUtc());
         Assertions.assertEquals(RestorePointType.FULL, model.type());
@@ -36,12 +36,14 @@ public final class AzureWorkloadPointInTimeRecoveryPointTests {
                 "ilcbtgnhnzeyqxtj", model.recoveryPointTierDetails().get(0).extendedInfo().get("fzqlqhycavod"));
         Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("bgq").isReadyForMove());
         Assertions.assertEquals("u", model.recoveryPointMoveReadinessInfo().get("bgq").additionalInfo());
+        Assertions.assertEquals("nhl", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("rqnkkzjcjbtr", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T16:13:31Z"), model.timeRanges().get(0).startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T04:35:49Z"), model.timeRanges().get(0).endTime());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadPointInTimeRecoveryPoint model =
             new AzureWorkloadPointInTimeRecoveryPoint()
                 .withRecoveryPointTimeInUtc(OffsetDateTime.parse("2021-11-03T20:02:22Z"))
@@ -92,6 +94,8 @@ public final class AzureWorkloadPointInTimeRecoveryPointTests {
                         new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("ihhrmo"),
                         "hyrpetogebjoxs",
                         new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("ypxiutcxap")))
+                .withRecoveryPointProperties(
+                    new RecoveryPointProperties().withExpiryTime("nhl").withRuleName("rqnkkzjcjbtr"))
                 .withTimeRanges(
                     Arrays
                         .asList(
@@ -117,6 +121,8 @@ public final class AzureWorkloadPointInTimeRecoveryPointTests {
                 "ilcbtgnhnzeyqxtj", model.recoveryPointTierDetails().get(0).extendedInfo().get("fzqlqhycavod"));
         Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("bgq").isReadyForMove());
         Assertions.assertEquals("u", model.recoveryPointMoveReadinessInfo().get("bgq").additionalInfo());
+        Assertions.assertEquals("nhl", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("rqnkkzjcjbtr", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T16:13:31Z"), model.timeRanges().get(0).startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T04:35:49Z"), model.timeRanges().get(0).endTime());
     }

@@ -456,4 +456,25 @@ public interface SecurityCenter {
      * @return the SecurityConnectorApplicationOperationsClient object.
      */
     SecurityConnectorApplicationOperationsClient getSecurityConnectorApplicationOperations();
+
+    /**
+     * Gets the ApiCollectionsClient object to access its operations.
+     *
+     * @return the ApiCollectionsClient object.
+     */
+    ApiCollectionsClient getApiCollections();
+
+    /**
+     * Gets the ApiCollectionOnboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOnboardingsClient object.
+     */
+    ApiCollectionOnboardingsClient getApiCollectionOnboardings();
+
+    /**
+     * Gets the ApiCollectionOffboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOffboardingsClient object.
+     */
+    ApiCollectionOffboardingsClient getApiCollectionOffboardings();
 }

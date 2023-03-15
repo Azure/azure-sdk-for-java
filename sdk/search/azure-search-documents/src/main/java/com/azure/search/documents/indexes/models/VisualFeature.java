@@ -7,10 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VisualFeature. */
+/** The strings indicating what visual feature types to return. */
 public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
     /** Static value adult for VisualFeature. */
     public static final VisualFeature ADULT = fromString("adult");
@@ -34,12 +33,19 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
     public static final VisualFeature TAGS = fromString("tags");
 
     /**
+     * Creates a new instance of VisualFeature value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VisualFeature() {}
+
+    /**
      * Creates or finds a VisualFeature from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding VisualFeature.
      */
-    @JsonCreator
     public static VisualFeature fromString(String name) {
         return fromString(name, VisualFeature.class);
     }

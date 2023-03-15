@@ -3,9 +3,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Represents the version of {@link SentimentSkill}.
  */
@@ -20,7 +17,6 @@ public enum SentimentSkillVersion {
      */
     V3("#Microsoft.Skills.Text.V3.SentimentSkill");
 
-    @JsonValue
     private final String odataType;
 
     SentimentSkillVersion(String odataType) {
@@ -45,7 +41,6 @@ public enum SentimentSkillVersion {
      * @return The {@link SentimentSkillVersion} corresponding to the {@code value}, or null if no versions match the
      * {@code value}.
      */
-    @JsonCreator
     public static SentimentSkillVersion fromString(String value) {
         if (V1.odataType.equals(value)) {
             return V1;

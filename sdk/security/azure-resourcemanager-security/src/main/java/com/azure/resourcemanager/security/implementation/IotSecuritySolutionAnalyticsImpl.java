@@ -29,15 +29,6 @@ public final class IotSecuritySolutionAnalyticsImpl implements IotSecuritySoluti
         this.serviceManager = serviceManager;
     }
 
-    public IoTSecuritySolutionAnalyticsModelList list(String resourceGroupName, String solutionName) {
-        IoTSecuritySolutionAnalyticsModelListInner inner = this.serviceClient().list(resourceGroupName, solutionName);
-        if (inner != null) {
-            return new IoTSecuritySolutionAnalyticsModelListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IoTSecuritySolutionAnalyticsModelList> listWithResponse(
         String resourceGroupName, String solutionName, Context context) {
         Response<IoTSecuritySolutionAnalyticsModelListInner> inner =
@@ -53,10 +44,10 @@ public final class IotSecuritySolutionAnalyticsImpl implements IotSecuritySoluti
         }
     }
 
-    public IoTSecuritySolutionAnalyticsModel get(String resourceGroupName, String solutionName) {
-        IoTSecuritySolutionAnalyticsModelInner inner = this.serviceClient().get(resourceGroupName, solutionName);
+    public IoTSecuritySolutionAnalyticsModelList list(String resourceGroupName, String solutionName) {
+        IoTSecuritySolutionAnalyticsModelListInner inner = this.serviceClient().list(resourceGroupName, solutionName);
         if (inner != null) {
-            return new IoTSecuritySolutionAnalyticsModelImpl(inner, this.manager());
+            return new IoTSecuritySolutionAnalyticsModelListImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -72,6 +63,15 @@ public final class IotSecuritySolutionAnalyticsImpl implements IotSecuritySoluti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IoTSecuritySolutionAnalyticsModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IoTSecuritySolutionAnalyticsModel get(String resourceGroupName, String solutionName) {
+        IoTSecuritySolutionAnalyticsModelInner inner = this.serviceClient().get(resourceGroupName, solutionName);
+        if (inner != null) {
+            return new IoTSecuritySolutionAnalyticsModelImpl(inner, this.manager());
         } else {
             return null;
         }

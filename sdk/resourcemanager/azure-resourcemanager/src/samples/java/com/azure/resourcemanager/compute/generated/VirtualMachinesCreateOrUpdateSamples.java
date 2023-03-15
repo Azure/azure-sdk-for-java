@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
@@ -34,6 +33,7 @@ import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceReference;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSDisk;
+import com.azure.resourcemanager.compute.models.OSImageNotificationProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PatchSettings;
@@ -70,7 +70,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachines CreateOrUpdate. */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a shared gallery image.
@@ -107,7 +107,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -117,11 +117,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_CreateWithVMSizeProperties.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_CreateWithVMSizeProperties.json
      */
     /**
      * Sample code: Create a VM with VM Size Properties.
@@ -163,7 +163,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -180,11 +180,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
                     .withUserData("U29tZSBDdXN0b20gRGF0YQ=="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
      */
     /**
      * Sample code: Create a platform-image vm with unmanaged os and data disks.
@@ -244,7 +244,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -254,11 +254,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -298,7 +298,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -315,11 +315,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Cache disk using placement property.
@@ -368,7 +368,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -378,11 +378,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
      */
     /**
      * Sample code: Create a vm with a marketplace image plan.
@@ -426,7 +426,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -436,11 +436,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByOS.
@@ -480,7 +480,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -496,11 +496,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Windows vm with patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -540,7 +540,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -558,11 +558,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting assessmentMode of ImageDefault.
@@ -602,7 +602,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -619,11 +619,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
      */
     /**
      * Sample code: Create a vm with premium storage.
@@ -662,7 +662,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -672,11 +672,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
      */
     /**
      * Sample code: Create or update a VM with capacity reservation.
@@ -720,7 +720,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -736,11 +736,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/{crgName}"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting assessmentMode of ImageDefault.
@@ -780,7 +780,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -796,11 +796,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
@@ -841,7 +841,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -859,11 +859,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
      */
     /**
      * Sample code: Create a vm with an extensions time budget.
@@ -902,7 +902,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -919,11 +919,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
                     .withExtensionsTimeBudget("PT30M"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
      * Sample code: Create a custom-image vm from an unmanaged generalized os image.
@@ -963,7 +963,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -973,11 +973,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
      */
     /**
      * Sample code: Create a vm with Host Encryption using encryptionAtHost property.
@@ -1022,7 +1022,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1033,11 +1033,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true))))
                     .withSecurityProfile(new SecurityProfile().withEncryptionAtHost(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
      */
     /**
      * Sample code: Create a vm in an availability set.
@@ -1076,7 +1076,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1090,11 +1090,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/{existing-availability-set-name}")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
      */
     /**
      * Sample code: Create a vm with empty data disks.
@@ -1144,7 +1144,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1154,11 +1154,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
@@ -1203,7 +1203,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1217,11 +1217,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new SecurityProfile()
                             .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
                             .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
      */
     /**
      * Sample code: Create a VM with network interface configuration.
@@ -1261,7 +1261,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
@@ -1288,11 +1288,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                                                     .withDeleteOption(DeleteOptions.DETACH)
                                                                     .withPublicIpAllocationMethod(
                                                                         PublicIpAllocationMethod.STATIC))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
      */
     /**
      * Sample code: Create a vm from a custom image.
@@ -1329,7 +1329,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1339,11 +1339,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
      */
     /**
      * Sample code: Create a VM with HibernationEnabled.
@@ -1383,7 +1383,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("{vm-name}")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1399,11 +1399,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                 new BootDiagnostics()
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
      */
     /**
      * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
@@ -1443,7 +1443,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1457,11 +1457,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new SecurityProfile()
                             .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
                             .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
      */
     /**
      * Sample code: Create a vm with Application Profile.
@@ -1500,7 +1500,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1527,11 +1527,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                         new VMGalleryApplication()
                                             .withPackageReferenceId(
                                                 "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a specialized shared image.
@@ -1573,11 +1573,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
      */
     /**
      * Sample code: Create a vm with password authentication.
@@ -1616,7 +1616,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1626,11 +1626,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMacine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
      */
     /**
      * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
@@ -1670,7 +1670,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1685,11 +1685,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                             .withId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{existing-flex-vmss-name-with-platformFaultDomainCount-greater-than-1}"))
                     .withPlatformFaultDomain(1),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
      */
     /**
      * Sample code: Create a vm with Scheduled Events Profile.
@@ -1728,7 +1728,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1747,12 +1747,14 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                     .withScheduledEventsProfile(
                         new ScheduledEventsProfile()
                             .withTerminateNotificationProfile(
-                                new TerminateNotificationProfile().withNotBeforeTimeout("PT10M").withEnable(true))),
-                Context.NONE);
+                                new TerminateNotificationProfile().withNotBeforeTimeout("PT10M").withEnable(true))
+                            .withOsImageNotificationProfile(
+                                new OSImageNotificationProfile().withNotBeforeTimeout("PT15M").withEnable(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMacine_Create_WithBootDiagnostics.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with boot diagnostics.
@@ -1791,7 +1793,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1807,11 +1809,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                 new BootDiagnostics()
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
      */
     /**
      * Sample code: Create a vm with ssh authentication.
@@ -1860,9 +1862,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                                     .asList(
                                                         new SshPublicKey()
                                                             .withPath("/home/{your-username}/.ssh/authorized_keys")
-                                                            .withKeyData(
-                                                                "ssh-rsa"
-                                                                    + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))))
+                                                            .withKeyData("fakeTokenPlaceholder"))))))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1872,11 +1872,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a community gallery image.
@@ -1913,7 +1913,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1923,11 +1923,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Resource disk using placement property.
@@ -1976,7 +1976,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -1986,11 +1986,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk.
@@ -2035,7 +2035,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2045,11 +2045,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
      */
     /**
      * Sample code: Create a VM with UserData.
@@ -2088,7 +2088,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("{vm-name}")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2105,11 +2105,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
                     .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a generalized shared image.
@@ -2146,7 +2146,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2156,11 +2156,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
@@ -2201,7 +2201,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2222,11 +2222,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
@@ -2266,7 +2266,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2282,11 +2282,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with Customer Managed Keys.
@@ -2335,7 +2335,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2349,11 +2349,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new SecurityProfile()
                             .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
                             .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
@@ -2393,7 +2393,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withLinuxConfiguration(
                                 new LinuxConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2408,11 +2408,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with managed boot diagnostics.
@@ -2451,7 +2451,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2463,11 +2463,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withPrimary(true))))
                     .withDiagnosticsProfile(
                         new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics().withEnabled(true))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
      */
     /**
      * Sample code: Create a vm with DiskEncryptionSet resource id in the os disk and data disk.
@@ -2538,7 +2538,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2548,11 +2548,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
      */
     /**
      * Sample code: Create a VM with Disk Controller Type.
@@ -2592,7 +2592,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}"))
+                            .withAdminPassword("fakeTokenPlaceholder"))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(
@@ -2609,11 +2609,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                     .withEnabled(true)
                                     .withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
                     .withUserData("U29tZSBDdXN0b20gRGF0YQ=="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and
@@ -2654,7 +2654,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new OSProfile()
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
-                            .withAdminPassword("{your-password}")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
                                     .withProvisionVMAgent(true)
@@ -2676,6 +2676,6 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
                                             .withPrimary(true)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -95,6 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
@@ -190,7 +191,7 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
-    <graalvm.enable>false</graalvm.enable>
+    <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
@@ -217,6 +218,14 @@
 
     <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
     <java.security.manager.configuration></java.security.manager.configuration>
+
+    <!-- JavaDoc properties -->
+
+    <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
+    need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
+    by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
+    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -601,7 +610,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -682,8 +691,9 @@
               for more Java documentation, including quick starts, tutorials, and code samples.
             </bottom>
             <linksource>false</linksource>
-            <excludePackageNames>
+            <excludePackageNames combine.children="append">
               *.impl*:
+              *.implementation:
               *.implementation*:
               *.samples:
               com.azure.tools.checkstyle*:
@@ -691,7 +701,8 @@
               com.azure.endtoend*:
               com.azure.perf*:
               com.azure.storage.internal.avro*:
-              com.azure.cosmos.encryption.implementation.mdesrc*
+              com.azure.cosmos.encryption.implementation.mdesrc*:
+              ${javadoc.excludePackageNames}
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -702,6 +713,9 @@
               <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <sourcepath>
+              ${javadoc.sourcepath}
+            </sourcepath>
             <links combine.children="append">
               <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -863,12 +877,11 @@
               </revapi.reporter.json>
             </analysisConfiguration>
             <pipelineConfiguration>
-              <transformationBlocks>
-                <block>
-                  <item>revapi.differences</item>
-                  <item>transitive-core-changes</item>
-                </block>
-              </transformationBlocks>
+              <filters>
+                <include>
+                  <item>azure-sdk-tree-provider</item>
+                </include>
+              </filters>
             </pipelineConfiguration>
           </configuration>
           <dependencies>
@@ -1516,7 +1529,7 @@
         <dependency>
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>junit-platform-native</artifactId>
-          <version>0.9.10</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -1525,11 +1538,12 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.10</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
-              <skip>${graalvm.enable}</skip>
-              <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
+              <skip>${graalvm.disable}</skip>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
             </configuration>
+            <extensions>true</extensions>
             <executions>
               <execution>
                 <id>test-native</id>
@@ -1544,33 +1558,36 @@
       </build>
     </profile>
 
-    <profile>
-      <id>external-dependency-version-overrides</id>
-      <activation>
-        <property>
-          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
-        </property>
-      </activation>
-      <repositories>
-        <repository>
-          <id>repository.spring.milestone</id>
-          <name>Spring Milestone Repository</name>
-          <url>https://repo.spring.io/milestone</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+    <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
+    <!-- If Reactor milestones are needed again in the future, and they're being released -->
+    <!-- to the Spring Milestone repository uncomment the XML below. -->
+<!--    <profile>-->
+<!--      <id>external-dependency-version-overrides</id>-->
+<!--      <activation>-->
+<!--        <property>-->
+<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
+<!--        </property>-->
+<!--      </activation>-->
+<!--      <repositories>-->
+<!--        <repository>-->
+<!--          <id>repository.spring.milestone</id>-->
+<!--          <name>Spring Milestone Repository</name>-->
+<!--          <url>https://repo.spring.io/milestone</url>-->
+<!--          <releases>-->
+<!--            <enabled>true</enabled>-->
+<!--          </releases>-->
+<!--          <snapshots>-->
+<!--            <enabled>true</enabled>-->
+<!--          </snapshots>-->
+<!--        </repository>-->
+<!--      </repositories>-->
+<!--    </profile>-->
 
     <profile>
       <id>test-module-base-compile</id>
       <activation>
         <file>
-          <exists>${build.testSourceDirectory}/module-info.java</exists>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
         </file>
       </activation>
 

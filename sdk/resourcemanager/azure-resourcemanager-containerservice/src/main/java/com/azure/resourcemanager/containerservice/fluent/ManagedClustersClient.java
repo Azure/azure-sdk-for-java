@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResult
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClustersGetCommandResultResponse;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -963,6 +964,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -977,6 +981,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -993,6 +1000,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1007,6 +1017,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1024,6 +1037,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1038,6 +1054,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1050,6 +1069,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1177,6 +1199,127 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void rotateClusterCertificates(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Rotates the service account signing keys of a managed cluster.
@@ -1647,11 +1790,11 @@ public interface ManagedClustersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RunCommandResultInner>> getCommandResultWithResponseAsync(
+    Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
         String resourceGroupName, String resourceName, String commandId);
 
     /**
@@ -1679,10 +1822,10 @@ public interface ManagedClustersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response}.
+     * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunCommandResultInner> getCommandResultWithResponse(
+    ManagedClustersGetCommandResultResponse getCommandResultWithResponse(
         String resourceGroupName, String resourceName, String commandId, Context context);
 
     /**

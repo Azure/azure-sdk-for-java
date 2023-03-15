@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolMetadataSyncConfigs Get. */
 public final class SqlPoolMetadataSyncConfigsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class SqlPoolMetadataSyncConfigsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolMetadataSyncConfigs()
-            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", Context.NONE);
+            .getWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE);
     }
 }

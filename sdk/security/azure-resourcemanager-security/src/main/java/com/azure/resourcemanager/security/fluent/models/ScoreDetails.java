@@ -28,6 +28,10 @@ public final class ScoreDetails {
     @JsonProperty(value = "percentage", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentage;
 
+    /** Creates an instance of ScoreDetails class. */
+    public ScoreDetails() {
+    }
+
     /**
      * Get the max property: Maximum score available.
      *

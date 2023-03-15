@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -84,6 +84,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
+                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                     PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT

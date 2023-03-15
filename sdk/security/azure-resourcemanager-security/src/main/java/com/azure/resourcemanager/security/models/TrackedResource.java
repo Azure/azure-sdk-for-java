@@ -38,6 +38,10 @@ public final class TrackedResource extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of TrackedResource class. */
+    public TrackedResource() {
+    }
+
     /**
      * Get the location property: Location where the resource is stored.
      *

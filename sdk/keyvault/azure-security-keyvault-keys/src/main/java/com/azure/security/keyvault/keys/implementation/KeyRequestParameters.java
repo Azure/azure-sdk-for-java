@@ -20,7 +20,7 @@ import java.util.Map;
 public final class KeyRequestParameters {
     /**
      * The type of key to create. For valid values, see KeyType. Possible values include: 'EC', 'EC-HSM', 'RSA',
-     * 'RSA-HSM', 'oct', 'oct-HSM'.
+     * 'RSA-HSM', 'oct', and 'oct-HSM'.
      */
     @JsonProperty(value = "kty", required = true)
     private KeyType kty;
@@ -51,7 +51,7 @@ public final class KeyRequestParameters {
 
     /**
      * Elliptic curve name. For valid values, see KeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521',
-     * 'P-256K'.
+     * and 'P-256K'.
      */
     @JsonProperty(value = "crv")
     private KeyCurveName curve;

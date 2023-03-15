@@ -72,7 +72,7 @@ public final class NatGatewaysClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NatGatewaysService {
+    public interface NatGatewaysService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways"
@@ -213,7 +213,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -263,7 +263,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -329,7 +329,7 @@ public final class NatGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName) {
-        return beginDeleteAsync(resourceGroupName, natGatewayName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, natGatewayName).getSyncPoller();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class NatGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String natGatewayName, Context context) {
-        return beginDeleteAsync(resourceGroupName, natGatewayName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, natGatewayName, context).getSyncPoller();
     }
 
     /**
@@ -447,7 +447,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +500,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -604,7 +604,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -661,7 +661,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -740,7 +740,7 @@ public final class NatGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters).getSyncPoller();
     }
 
     /**
@@ -758,7 +758,7 @@ public final class NatGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -872,7 +872,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +929,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1018,7 +1018,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1061,7 +1061,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1158,7 +1158,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1213,7 +1213,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

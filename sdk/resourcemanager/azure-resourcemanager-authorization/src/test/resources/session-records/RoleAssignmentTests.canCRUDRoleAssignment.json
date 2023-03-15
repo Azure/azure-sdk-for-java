@@ -3,48 +3,48 @@
     "Method" : "POST",
     "Uri" : "http://localhost:1234/v1.0/applications",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c7db36b7-673f-4270-bfb4-318a0c8eee93",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a5670497-3a89-45f2-ba2c-d9444abca163",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "8b0a16fd-55ab-4eee-a6e5-08a637ff033f",
+      "request-id" : "b1b97f67-5f84-40a8-84e9-dd433fe762d1",
       "StatusCode" : "201",
-      "Date" : "Thu, 20 Oct 2022 03:38:54 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:51:52 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF00007868\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF000022D5\"}}",
-      "client-request-id" : "8b0a16fd-55ab-4eee-a6e5-08a637ff033f",
+      "client-request-id" : "b1b97f67-5f84-40a8-84e9-dd433fe762d1",
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "1",
-      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications/$entity\",\"id\":\"b9b6db9f-260d-4742-9c36-9c67f5af2631\",\"deletedDateTime\":null,\"appId\":\"337909e1-483b-4d32-80db-2896019341fc\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-10-20T03:38:52.6759343Z\",\"displayName\":\"sp919867a68b8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}",
-      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8",
-      "Location" : "http://localhost:1234/v2/00000000-0000-0000-0000-000000000000/directoryObjects/b9b6db9f-260d-4742-9c36-9c67f5af2631/Microsoft.DirectoryServices.Application"
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications/$entity\",\"id\":\"c73483d9-6ca1-4d08-8617-ccbdd3ba808c\",\"deletedDateTime\":null,\"appId\":\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-11-21T03:51:51.9467885Z\",\"displayName\":\"sp168229382e8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}",
+      "Location" : "http://localhost:1234/v2/00000000-0000-0000-0000-000000000000/directoryObjects/c73483d9-6ca1-4d08-8617-ccbdd3ba808c/Microsoft.DirectoryServices.Application",
+      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/v1.0/applications/b9b6db9f-260d-4742-9c36-9c67f5af2631",
+    "Uri" : "http://localhost:1234/v1.0/applications/c73483d9-6ca1-4d08-8617-ccbdd3ba808c",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fcc58988-39e7-4aac-8959-d5a0d40e8a0e",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f70dee30-c68a-4326-ac03-db0f2b9cc9d5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "4838d052-ae6e-4563-8374-3d9fe2c00cb0",
+      "request-id" : "8e7c053f-c27f-48ae-8405-eb08480e4ba8",
       "StatusCode" : "200",
-      "Date" : "Thu, 20 Oct 2022 03:38:54 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:51:53 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF0000B2D2\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF00001643\"}}",
-      "client-request-id" : "4838d052-ae6e-4563-8374-3d9fe2c00cb0",
+      "client-request-id" : "8e7c053f-c27f-48ae-8405-eb08480e4ba8",
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "1",
-      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications/$entity\",\"id\":\"b9b6db9f-260d-4742-9c36-9c67f5af2631\",\"deletedDateTime\":null,\"appId\":\"337909e1-483b-4d32-80db-2896019341fc\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-10-20T03:38:52Z\",\"displayName\":\"sp919867a68b8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications/$entity\",\"id\":\"c73483d9-6ca1-4d08-8617-ccbdd3ba808c\",\"deletedDateTime\":null,\"appId\":\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-11-21T03:51:51Z\",\"displayName\":\"sp168229382e8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}",
       "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
     },
     "Exception" : null
@@ -52,84 +52,84 @@
     "Method" : "POST",
     "Uri" : "http://localhost:1234/v1.0/servicePrincipals",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b4fbfcc5-850a-403e-8105-d33576702f78",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f1b9ff98-24af-46e7-b42f-9d0664c8d187",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "26ea107e-31c3-47b5-af4b-fcec6785884e",
+      "request-id" : "dfdbcd66-9660-4ce7-8867-86e3534aec96",
       "StatusCode" : "201",
-      "Date" : "Thu, 20 Oct 2022 03:38:56 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:51:53 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF00007868\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF000022D5\"}}",
-      "client-request-id" : "26ea107e-31c3-47b5-af4b-fcec6785884e",
+      "client-request-id" : "dfdbcd66-9660-4ce7-8867-86e3534aec96",
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "1",
-      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals/$entity\",\"id\":\"a585f101-32c1-4972-acb2-3df2b94875bc\",\"deletedDateTime\":null,\"accountEnabled\":true,\"alternativeNames\":[],\"appDisplayName\":\"sp919867a68b8\",\"appDescription\":null,\"appId\":\"337909e1-483b-4d32-80db-2896019341fc\",\"applicationTemplateId\":null,\"appOwnerOrganizationId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"createdDateTime\":\"2022-10-20T03:38:56Z\",\"description\":null,\"disabledByMicrosoftStatus\":null,\"displayName\":\"sp919867a68b8\",\"homepage\":null,\"loginUrl\":null,\"logoutUrl\":null,\"notes\":null,\"notificationEmailAddresses\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyThumbprint\":null,\"replyUrls\":[],\"servicePrincipalNames\":[\"337909e1-483b-4d32-80db-2896019341fc\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlSingleSignOnSettings\":null,\"addIns\":[],\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"oauth2PermissionScopes\":[],\"passwordCredentials\":[],\"resourceSpecificApplicationPermissions\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null}}",
-      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8",
-      "Location" : "http://localhost:1234/v2/00000000-0000-0000-0000-000000000000/directoryObjects/a585f101-32c1-4972-acb2-3df2b94875bc/Microsoft.DirectoryServices.ServicePrincipal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/v1.0/servicePrincipals/a585f101-32c1-4972-acb2-3df2b94875bc",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "85c7894f-1711-4cf1-8027-b4b3c0b83487",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "83cf1fa4-c224-4a13-8b3e-ec0666793831",
-      "StatusCode" : "200",
-      "Date" : "Thu, 20 Oct 2022 03:38:56 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF00001643\"}}",
-      "client-request-id" : "83cf1fa4-c224-4a13-8b3e-ec0666793831",
-      "OData-Version" : "4.0",
-      "x-ms-resource-unit" : "1",
-      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals/$entity\",\"id\":\"a585f101-32c1-4972-acb2-3df2b94875bc\",\"deletedDateTime\":null,\"accountEnabled\":true,\"alternativeNames\":[],\"appDisplayName\":\"sp919867a68b8\",\"appDescription\":null,\"appId\":\"337909e1-483b-4d32-80db-2896019341fc\",\"applicationTemplateId\":null,\"appOwnerOrganizationId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"createdDateTime\":\"2022-10-20T03:38:56Z\",\"description\":null,\"disabledByMicrosoftStatus\":null,\"displayName\":\"sp919867a68b8\",\"homepage\":null,\"loginUrl\":null,\"logoutUrl\":null,\"notes\":null,\"notificationEmailAddresses\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyThumbprint\":null,\"replyUrls\":[],\"servicePrincipalNames\":[\"337909e1-483b-4d32-80db-2896019341fc\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlSingleSignOnSettings\":null,\"addIns\":[],\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"oauth2PermissionScopes\":[],\"passwordCredentials\":[],\"resourceSpecificApplicationPermissions\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null}}",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals/$entity\",\"id\":\"f2579b7b-f60f-4d4b-879e-5988182b3d8f\",\"deletedDateTime\":null,\"accountEnabled\":true,\"alternativeNames\":[],\"appDisplayName\":\"sp168229382e8\",\"appDescription\":null,\"appId\":\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\",\"applicationTemplateId\":null,\"appOwnerOrganizationId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"createdDateTime\":\"2022-11-21T03:51:54Z\",\"description\":null,\"disabledByMicrosoftStatus\":null,\"displayName\":\"sp168229382e8\",\"homepage\":null,\"loginUrl\":null,\"logoutUrl\":null,\"notes\":null,\"notificationEmailAddresses\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyThumbprint\":null,\"replyUrls\":[],\"servicePrincipalNames\":[\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlSingleSignOnSettings\":null,\"addIns\":[],\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"oauth2PermissionScopes\":[],\"passwordCredentials\":[],\"resourceSpecificApplicationPermissions\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null}}",
+      "Location" : "http://localhost:1234/v2/00000000-0000-0000-0000-000000000000/directoryObjects/f2579b7b-f60f-4d4b-879e-5988182b3d8f/Microsoft.DirectoryServices.ServicePrincipal",
       "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2015-07-01",
+    "Uri" : "http://localhost:1234/v1.0/servicePrincipals/f2579b7b-f60f-4d4b-879e-5988182b3d8f",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a12aad58-23e7-4240-8ce1-73eac09fa259",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "09715734-a5ec-42be-a5aa-7325e0b5f379",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "947",
+      "Transfer-Encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "d3f6192c-6510-43c3-a9ef-91839c9691c4",
+      "StatusCode" : "200",
+      "Date" : "Mon, 21 Nov 2022 03:51:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF0000B2D2\"}}",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d3f6192c-6510-43c3-a9ef-91839c9691c4",
+      "OData-Version" : "4.0",
+      "x-ms-resource-unit" : "1",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals/$entity\",\"id\":\"f2579b7b-f60f-4d4b-879e-5988182b3d8f\",\"deletedDateTime\":null,\"accountEnabled\":true,\"alternativeNames\":[],\"appDisplayName\":\"sp168229382e8\",\"appDescription\":null,\"appId\":\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\",\"applicationTemplateId\":null,\"appOwnerOrganizationId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"createdDateTime\":\"2022-11-21T03:51:54Z\",\"description\":null,\"disabledByMicrosoftStatus\":null,\"displayName\":\"sp168229382e8\",\"homepage\":null,\"loginUrl\":null,\"logoutUrl\":null,\"notes\":null,\"notificationEmailAddresses\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyThumbprint\":null,\"replyUrls\":[],\"servicePrincipalNames\":[\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlSingleSignOnSettings\":null,\"addIns\":[],\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"oauth2PermissionScopes\":[],\"passwordCredentials\":[],\"resourceSpecificApplicationPermissions\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null}}",
+      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2022-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb254d5a-55ab-47f7-a3ff-077569db589f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "984",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11999",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "4da0d467-d7ad-4b14-af86-29362c6903a0",
-      "Date" : "Thu, 20 Oct 2022 03:39:12 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:09 GMT",
+      "x-ms-correlation-request-id" : "4cc2e8ae-f466-4cea-82c3-5406b94f6593",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221020T033913Z:4da0d467-d7ad-4b14-af86-29362c6903a0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221121T035210Z:4cc2e8ae-f466-4cea-82c3-5406b94f6593",
       "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
       "Expires" : "-1",
-      "x-ms-request-id" : "50b1a590-a1d0-4e69-9ccd-46dae3992343",
-      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\",\"Microsoft.Compute/galleries/share/action\"]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2021-11-11T20:13:28.6061853Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}",
+      "x-ms-request-id" : "6c86f117-0af5-4210-bfa7-6093009110df",
+      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\",\"Microsoft.Compute/galleries/share/action\"],\"dataActions\":[],\"notDataActions\":[]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2021-11-11T20:13:28.6061853Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/08806ac3-b81f-488b-b554-939e8bf11c7a?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/cf1e4031-fe32-4249-88b9-c29042dcc529?api-version=2022-04-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "33061a43-b3bb-4bb6-ace1-cf9e1f901115",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bd639ff7-538d-48fd-95b0-2c8638d16bd4",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -139,24 +139,24 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "x-ms-correlation-request-id" : "5352f5cf-5946-4dbb-b177-5754d2050b8c",
-      "Date" : "Thu, 20 Oct 2022 03:39:14 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:10 GMT",
+      "x-ms-correlation-request-id" : "ebe60bd6-b817-4cf3-aaa3-fbacb0f1b3fa",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221020T033914Z:5352f5cf-5946-4dbb-b177-5754d2050b8c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221121T035211Z:ebe60bd6-b817-4cf3-aaa3-fbacb0f1b3fa",
       "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
       "Expires" : "-1",
-      "x-ms-request-id" : "a4440980-7797-44ea-908d-5b4ac75fb01c",
-      "Body" : "{\"error\":{\"code\":\"PrincipalNotFound\",\"message\":\"Principal a585f10132c14972acb23df2b94875bc does not exist in the directory 00000000-0000-0000-0000-000000000000. Check that you have the correct principal ID. If you are creating this principal and then immediately assigning a role, this error might be related to a replication delay. In this case, set the role assignment principalType property to a value, such as ServicePrincipal, User, or Group.  See https://aka.ms/docs-principaltype\"}}",
+      "x-ms-request-id" : "fddb68d7-ddf5-4e60-88aa-4469652faf3b",
+      "Body" : "{\"error\":{\"code\":\"PrincipalNotFound\",\"message\":\"Principal f2579b7bf60f4d4b879e5988182b3d8f does not exist in the directory 00000000-0000-0000-0000-000000000000. Check that you have the correct principal ID. If you are creating this principal and then immediately assigning a role, this error might be related to a replication delay. In this case, set the role assignment principalType property to a value, such as ServicePrincipal, User, or Group.  See https://aka.ms/docs-principaltype\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/08806ac3-b81f-488b-b554-939e8bf11c7a?api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/cf1e4031-fe32-4249-88b9-c29042dcc529?api-version=2022-04-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bc3e3070-8a7d-421f-953e-c7cb998425eb",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "461b4eb8-a7b8-4cf2-aa8b-b03446926e8e",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -166,24 +166,24 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "12082406-04a4-4c7c-8a1e-fcb187d29d50",
-      "Date" : "Thu, 20 Oct 2022 03:39:32 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:30 GMT",
+      "x-ms-correlation-request-id" : "46b4df09-f419-4e2b-a7a6-0b25038f41e1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221020T033932Z:12082406-04a4-4c7c-8a1e-fcb187d29d50",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221121T035231Z:46b4df09-f419-4e2b-a7a6-0b25038f41e1",
       "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
       "Expires" : "-1",
-      "x-ms-request-id" : "5de78ef4-dd3a-497c-9934-ca554ce4d94e",
-      "Body" : "{\"properties\":{\"roleDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"principalId\":\"a585f101-32c1-4972-acb2-3df2b94875bc\",\"principalType\":\"ServicePrincipal\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"condition\":null,\"conditionVersion\":null,\"createdOn\":\"2022-10-20T03:39:28.6864595Z\",\"updatedOn\":\"2022-10-20T03:39:29.3583520Z\",\"createdBy\":null,\"updatedBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"delegatedManagedIdentityResourceId\":null,\"description\":\"contributor role\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/08806ac3-b81f-488b-b554-939e8bf11c7a\",\"type\":\"Microsoft.Authorization/roleAssignments\",\"name\":\"08806ac3-b81f-488b-b554-939e8bf11c7a\"}",
+      "x-ms-request-id" : "4c593a50-32f3-4178-9a22-d99d97b4bd98",
+      "Body" : "{\"properties\":{\"roleDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"principalId\":\"f2579b7b-f60f-4d4b-879e-5988182b3d8f\",\"principalType\":\"ServicePrincipal\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"condition\":null,\"conditionVersion\":null,\"createdOn\":\"2022-11-21T03:52:26.0726498Z\",\"updatedOn\":\"2022-11-21T03:52:26.7131900Z\",\"createdBy\":null,\"updatedBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"delegatedManagedIdentityResourceId\":null,\"description\":\"contributor role\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/cf1e4031-fe32-4249-88b9-c29042dcc529\",\"type\":\"Microsoft.Authorization/roleAssignments\",\"name\":\"cf1e4031-fe32-4249-88b9-c29042dcc529\"}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments?$filter=principalId%20eq%20%27a585f101-32c1-4972-acb2-3df2b94875bc%27&api-version=2020-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments?api-version=2022-04-01&$filter=principalId%20eq%20%27f2579b7b-f60f-4d4b-879e-5988182b3d8f%27",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a2d1d182-104d-4cf6-b2e6-98b08fcbe4c5",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0835815f-7154-4f0c-a1ba-fa2f725eee39",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -193,56 +193,56 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11999",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "40d09d5c-45fc-4e37-aaaf-d6be4d12d085",
-      "Date" : "Thu, 20 Oct 2022 03:39:32 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:31 GMT",
+      "x-ms-correlation-request-id" : "31127210-c9f2-4327-8136-d32edd04142f",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221020T033933Z:40d09d5c-45fc-4e37-aaaf-d6be4d12d085",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20221121T035231Z:31127210-c9f2-4327-8136-d32edd04142f",
       "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
       "Expires" : "-1",
-      "x-ms-request-id" : "28ac266b-c31e-419e-abd8-07d906f8be48",
-      "Body" : "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"principalId\":\"a585f101-32c1-4972-acb2-3df2b94875bc\",\"principalType\":\"ServicePrincipal\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"condition\":null,\"conditionVersion\":null,\"createdOn\":\"2022-10-20T03:39:30.4051771Z\",\"updatedOn\":\"2022-10-20T03:39:30.4051771Z\",\"createdBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"updatedBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"delegatedManagedIdentityResourceId\":null,\"description\":\"contributor role\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/08806ac3-b81f-488b-b554-939e8bf11c7a\",\"type\":\"Microsoft.Authorization/roleAssignments\",\"name\":\"08806ac3-b81f-488b-b554-939e8bf11c7a\"}]}",
+      "x-ms-request-id" : "4ab10786-b5f3-41b6-8cc8-352679cc5134",
+      "Body" : "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"principalId\":\"f2579b7b-f60f-4d4b-879e-5988182b3d8f\",\"principalType\":\"ServicePrincipal\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"condition\":null,\"conditionVersion\":null,\"createdOn\":\"2022-11-21T03:52:27.7308298Z\",\"updatedOn\":\"2022-11-21T03:52:27.7308298Z\",\"createdBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"updatedBy\":\"4a44ff99-db3c-4792-a081-d2a7f3dbc551\",\"delegatedManagedIdentityResourceId\":null,\"description\":\"contributor role\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleAssignments/cf1e4031-fe32-4249-88b9-c29042dcc529\",\"type\":\"Microsoft.Authorization/roleAssignments\",\"name\":\"cf1e4031-fe32-4249-88b9-c29042dcc529\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/v1.0/servicePrincipals/a585f101-32c1-4972-acb2-3df2b94875bc",
+    "Uri" : "http://localhost:1234/v1.0/servicePrincipals/f2579b7b-f60f-4d4b-879e-5988182b3d8f",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7569c144-33f9-4e33-b8e2-0312ea467901",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4f0eaa4-d582-4b0d-b113-fec58e126663",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF00007868\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF000022D5\"}}",
-      "client-request-id" : "0e10c0a8-2c0f-4c3d-b810-976e6fd3a9d5",
+      "client-request-id" : "dae43aa6-759a-4e12-845e-42b6badc6813",
       "x-ms-resource-unit" : "1",
       "retry-after" : "0",
-      "request-id" : "0e10c0a8-2c0f-4c3d-b810-976e6fd3a9d5",
+      "request-id" : "dae43aa6-759a-4e12-845e-42b6badc6813",
       "StatusCode" : "204",
-      "Date" : "Thu, 20 Oct 2022 03:39:33 GMT"
+      "Date" : "Mon, 21 Nov 2022 03:52:31 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/v1.0/applications?$filter=displayName%20eq%20%27337909e1-483b-4d32-80db-2896019341fc%27",
+    "Uri" : "http://localhost:1234/v1.0/applications?$filter=displayName%20eq%20%2740c51a5d-b2ad-47ed-935d-e94fafb48f7c%27",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7d9905a8-edf6-4da7-a0bd-a20eabe84e8f",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ecd5a12f-b5fb-4f45-b725-1c348aeb021b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "938b8c03-2e66-41ca-9f2e-ad4270c7d548",
+      "request-id" : "37ac27ad-c692-4820-b4ef-542f77cc91ff",
       "StatusCode" : "200",
-      "Date" : "Thu, 20 Oct 2022 03:39:33 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF0000B2D2\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF00001643\"}}",
-      "client-request-id" : "938b8c03-2e66-41ca-9f2e-ad4270c7d548",
+      "client-request-id" : "37ac27ad-c692-4820-b4ef-542f77cc91ff",
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "2",
       "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications\",\"value\":[]}",
@@ -251,48 +251,48 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/v1.0/applications?$filter=appId%20eq%20%27337909e1-483b-4d32-80db-2896019341fc%27",
+    "Uri" : "http://localhost:1234/v1.0/applications?$filter=appId%20eq%20%2740c51a5d-b2ad-47ed-935d-e94fafb48f7c%27",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3a80ae0e-39ac-4c40-a6cf-5d6b7fc947aa",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3c8d5630-b9c6-4a98-b6a1-aa881d6a3b6b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "7b2a4897-1b1d-45e6-83e2-3745ac1e45c8",
+      "request-id" : "2c1719dd-7c00-4974-9174-88aa93c41cd3",
       "StatusCode" : "200",
-      "Date" : "Thu, 20 Oct 2022 03:39:34 GMT",
+      "Date" : "Mon, 21 Nov 2022 03:52:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF00007868\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF000022D5\"}}",
-      "client-request-id" : "7b2a4897-1b1d-45e6-83e2-3745ac1e45c8",
+      "client-request-id" : "2c1719dd-7c00-4974-9174-88aa93c41cd3",
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "2",
-      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications\",\"value\":[{\"id\":\"b9b6db9f-260d-4742-9c36-9c67f5af2631\",\"deletedDateTime\":null,\"appId\":\"337909e1-483b-4d32-80db-2896019341fc\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-10-20T03:38:52Z\",\"displayName\":\"sp919867a68b8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}]}",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#applications\",\"value\":[{\"id\":\"c73483d9-6ca1-4d08-8617-ccbdd3ba808c\",\"deletedDateTime\":null,\"appId\":\"40c51a5d-b2ad-47ed-935d-e94fafb48f7c\",\"applicationTemplateId\":null,\"disabledByMicrosoftStatus\":null,\"createdDateTime\":\"2022-11-21T03:51:51Z\",\"displayName\":\"sp168229382e8\",\"description\":null,\"groupMembershipClaims\":null,\"identifierUris\":[],\"isDeviceOnlyAuthSupported\":null,\"isFallbackPublicClient\":null,\"notes\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"serviceManagementReference\":null,\"signInAudience\":\"AzureADandPersonalMicrosoftAccount\",\"tags\":[],\"tokenEncryptionKeyId\":null,\"samlMetadataUrl\":null,\"defaultRedirectUri\":null,\"certification\":null,\"optionalClaims\":null,\"addIns\":[],\"api\":{\"acceptMappedClaims\":null,\"knownClientApplications\":[],\"requestedAccessTokenVersion\":2,\"oauth2PermissionScopes\":[],\"preAuthorizedApplications\":[]},\"appRoles\":[],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":{\"redirectUris\":[]},\"requiredResourceAccess\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null},\"web\":{\"homePageUrl\":null,\"logoutUrl\":null,\"redirectUris\":[],\"implicitGrantSettings\":{\"enableAccessTokenIssuance\":false,\"enableIdTokenIssuance\":false},\"redirectUriSettings\":[]},\"spa\":{\"redirectUris\":[]}}]}",
       "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/v1.0/applications/b9b6db9f-260d-4742-9c36-9c67f5af2631",
+    "Uri" : "http://localhost:1234/v1.0/applications/c73483d9-6ca1-4d08-8617-ccbdd3ba808c",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.20.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "764c25a9-1a62-4a23-97b8-127b3d1d04b5",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.21.0-beta.1 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "321e97e5-1691-4144-814f-2ac767418b29",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"000\",\"RoleInstance\":\"SI1PEPF0000B2D2\"}}",
       "Cache-Control" : "no-cache",
-      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"001\",\"RoleInstance\":\"SI2PEPF00001643\"}}",
-      "client-request-id" : "5bc77ce2-a4de-4b93-877c-e6deb54335bc",
+      "client-request-id" : "abb3b113-94b0-4285-be5a-e853ed430cb1",
       "x-ms-resource-unit" : "1",
       "retry-after" : "0",
-      "request-id" : "5bc77ce2-a4de-4b93-877c-e6deb54335bc",
+      "request-id" : "abb3b113-94b0-4285-be5a-e853ed430cb1",
       "StatusCode" : "204",
-      "Date" : "Thu, 20 Oct 2022 03:39:36 GMT"
+      "Date" : "Mon, 21 Nov 2022 03:52:38 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "08806ac3-b81f-488b-b554-939e8bf11c7a", "sp919867a68b8" ]
+  "variables" : [ "cf1e4031-fe32-4249-88b9-c29042dcc529", "sp168229382e8" ]
 }

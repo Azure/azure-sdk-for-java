@@ -12,19 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Sku {
     /*
-     * The type of RedisEnterprise cluster to deploy. Possible values:
-     * (Enterprise_E10, EnterpriseFlash_F300 etc.)
+     * The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10, EnterpriseFlash_F300 etc.)
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
-     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on
-     * SKU. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15,
-     * ...) for Flash SKUs.
+     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, ...)
+     * for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10,

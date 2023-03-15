@@ -13,10 +13,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationR
 import com.azure.resourcemanager.dataprotection.models.DataProtections;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationResponseBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataProtectionsImpl implements DataProtections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataProtectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionsImpl.class);
 
     private final DataProtectionsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class DataProtectionsImpl implements DataProtections {
         this.serviceManager = serviceManager;
     }
 
-    public FeatureValidationResponseBase checkFeatureSupport(String location, FeatureValidationRequestBase parameters) {
-        FeatureValidationResponseBaseInner inner = this.serviceClient().checkFeatureSupport(location, parameters);
-        if (inner != null) {
-            return new FeatureValidationResponseBaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
         String location, FeatureValidationRequestBase parameters, Context context) {
         Response<FeatureValidationResponseBaseInner> inner =
@@ -48,6 +38,15 @@ public final class DataProtectionsImpl implements DataProtections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new FeatureValidationResponseBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public FeatureValidationResponseBase checkFeatureSupport(String location, FeatureValidationRequestBase parameters) {
+        FeatureValidationResponseBaseInner inner = this.serviceClient().checkFeatureSupport(location, parameters);
+        if (inner != null) {
+            return new FeatureValidationResponseBaseImpl(inner, this.manager());
         } else {
             return null;
         }

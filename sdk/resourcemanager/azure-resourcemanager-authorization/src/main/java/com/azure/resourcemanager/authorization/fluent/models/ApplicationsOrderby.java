@@ -63,7 +63,11 @@ public final class ApplicationsOrderby extends ExpandableStringEnum<Applications
         return fromString(name, ApplicationsOrderby.class);
     }
 
-    /** @return known ApplicationsOrderby values. */
+    /**
+     * Gets known ApplicationsOrderby values.
+     *
+     * @return known ApplicationsOrderby values.
+     */
     public static Collection<ApplicationsOrderby> values() {
         return values(ApplicationsOrderby.class);
     }

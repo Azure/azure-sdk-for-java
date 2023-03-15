@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryDataContent} backed by a file.
  */
-public final class FileContent extends BinaryDataContent {
+public class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
     private final Path file;
     private final int chunkSize;
@@ -54,11 +54,15 @@ public final class FileContent extends BinaryDataContent {
      * @throws UncheckedIOException if file doesn't exist.
      */
     public FileContent(Path file, int chunkSize, Long position, Long length) {
-        this.file = validateFile(file);
-        this.chunkSize = validateChunkSize(chunkSize);
-        long fileLength = file.toFile().length();
-        this.position = validatePosition(position);
-        this.length = validateLength(length, fileLength, this.position);
+        this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position),
+            validateLength(length, file.toFile().length(), validatePosition(position)));
+    }
+
+    FileContent(Path file, int chunkSize, long position, long length) {
+        this.file = file;
+        this.chunkSize = chunkSize;
+        this.position = position;
+        this.length = length;
     }
 
     private static Path validateFile(Path file) {
@@ -154,8 +158,7 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.using(
-            () -> AsynchronousFileChannel.open(file, StandardOpenOption.READ),
+        return Flux.using(this::openAsynchronousFileChannel,
             channel -> FluxUtil.readFile(channel, chunkSize, position, length),
             channel -> {
                 try {
@@ -164,6 +167,10 @@ public final class FileContent extends BinaryDataContent {
                     throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
                 }
             });
+    }
+
+    AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
+        return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 
     /**
@@ -197,6 +204,11 @@ public final class FileContent extends BinaryDataContent {
     @Override
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.just(this);
+    }
+
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
     }
 
     private byte[] getBytes() {

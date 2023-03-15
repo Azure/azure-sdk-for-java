@@ -18,6 +18,10 @@ public final class RuleResultsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RuleResultsProperties properties;
 
+    /** Creates an instance of RuleResultsInner class. */
+    public RuleResultsInner() {
+    }
+
     /**
      * Get the properties property: Rule results properties.
      *

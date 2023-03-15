@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class IdentityConfiguration {
+    /** Creates an instance of IdentityConfiguration class. */
+    public IdentityConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

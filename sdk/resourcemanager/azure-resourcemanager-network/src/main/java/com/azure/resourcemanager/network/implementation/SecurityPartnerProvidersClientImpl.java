@@ -73,7 +73,7 @@ public final class SecurityPartnerProvidersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface SecurityPartnerProvidersService {
+    public interface SecurityPartnerProvidersService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -217,7 +217,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +270,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -339,7 +339,7 @@ public final class SecurityPartnerProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String securityPartnerProviderName) {
-        return beginDeleteAsync(resourceGroupName, securityPartnerProviderName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, securityPartnerProviderName).getSyncPoller();
     }
 
     /**
@@ -356,7 +356,7 @@ public final class SecurityPartnerProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String securityPartnerProviderName, Context context) {
-        return beginDeleteAsync(resourceGroupName, securityPartnerProviderName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, securityPartnerProviderName, context).getSyncPoller();
     }
 
     /**
@@ -459,7 +459,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -513,7 +513,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -618,7 +618,7 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -681,7 +681,7 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -767,7 +767,9 @@ public final class SecurityPartnerProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
         String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, securityPartnerProviderName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, securityPartnerProviderName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -788,7 +790,8 @@ public final class SecurityPartnerProvidersClientImpl
         String securityPartnerProviderName,
         SecurityPartnerProviderInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, securityPartnerProviderName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, securityPartnerProviderName, parameters, context)
             .getSyncPoller();
     }
 
@@ -913,7 +916,7 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -973,7 +976,7 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,7 +1074,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1126,7 +1129,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1235,7 +1238,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1278,7 +1281,7 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

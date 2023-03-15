@@ -24,6 +24,10 @@ public final class WorkspaceSettingProperties {
     @JsonProperty(value = "scope", required = true)
     private String scope;
 
+    /** Creates an instance of WorkspaceSettingProperties class. */
+    public WorkspaceSettingProperties() {
+    }
+
     /**
      * Get the workspaceId property: The full Azure ID of the workspace to save the data in.
      *

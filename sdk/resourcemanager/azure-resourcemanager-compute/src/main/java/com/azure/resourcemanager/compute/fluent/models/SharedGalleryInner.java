@@ -10,6 +10,10 @@ import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 /** Specifies information about the Shared Gallery that you want to create or update. */
 @Fluent
 public final class SharedGalleryInner extends PirSharedGalleryResource {
+    /** Creates an instance of SharedGalleryInner class. */
+    public SharedGalleryInner() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SharedGalleryInner withUniqueId(String uniqueId) {

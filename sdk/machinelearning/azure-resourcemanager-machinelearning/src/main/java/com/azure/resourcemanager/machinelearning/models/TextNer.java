@@ -16,17 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class TextNer extends AutoMLVertical {
     /*
      * Primary metric for Text-NER task.
-     * Only 'Accuracy' is supported for Text-NER, so user need not set this
-     * explicitly.
+     * Only 'Accuracy' is supported for Text-NER, so user need not set this explicitly.
      */
     @JsonProperty(value = "primaryMetric", access = JsonProperty.Access.WRITE_ONLY)
     private ClassificationPrimaryMetrics primaryMetric;
-
-    /*
-     * Data inputs for AutoMLJob.
-     */
-    @JsonProperty(value = "dataSettings")
-    private NlpVerticalDataSettings dataSettings;
 
     /*
      * Featurization inputs needed for AutoML job.
@@ -40,6 +33,16 @@ public final class TextNer extends AutoMLVertical {
     @JsonProperty(value = "limitSettings")
     private NlpVerticalLimitSettings limitSettings;
 
+    /*
+     * Validation data inputs.
+     */
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
+
+    /** Creates an instance of TextNer class. */
+    public TextNer() {
+    }
+
     /**
      * Get the primaryMetric property: Primary metric for Text-NER task. Only 'Accuracy' is supported for Text-NER, so
      * user need not set this explicitly.
@@ -48,26 +51,6 @@ public final class TextNer extends AutoMLVertical {
      */
     public ClassificationPrimaryMetrics primaryMetric() {
         return this.primaryMetric;
-    }
-
-    /**
-     * Get the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @return the dataSettings value.
-     */
-    public NlpVerticalDataSettings dataSettings() {
-        return this.dataSettings;
-    }
-
-    /**
-     * Set the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @param dataSettings the dataSettings value to set.
-     * @return the TextNer object itself.
-     */
-    public TextNer withDataSettings(NlpVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
-        return this;
     }
 
     /**
@@ -110,10 +93,44 @@ public final class TextNer extends AutoMLVertical {
         return this;
     }
 
+    /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the TextNer object itself.
+     */
+    public TextNer withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public TextNer withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextNer withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextNer withTrainingData(MLTableJobInput trainingData) {
+        super.withTrainingData(trainingData);
         return this;
     }
 
@@ -125,14 +142,14 @@ public final class TextNer extends AutoMLVertical {
     @Override
     public void validate() {
         super.validate();
-        if (dataSettings() != null) {
-            dataSettings().validate();
-        }
         if (featurizationSettings() != null) {
             featurizationSettings().validate();
         }
         if (limitSettings() != null) {
             limitSettings().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 }

@@ -48,6 +48,10 @@ public final class CustomCertificateImpl
         return this.innerModel().keyVaultSecretVersion();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CustomCertificateInner innerModel() {
         return this.innerObject;
     }

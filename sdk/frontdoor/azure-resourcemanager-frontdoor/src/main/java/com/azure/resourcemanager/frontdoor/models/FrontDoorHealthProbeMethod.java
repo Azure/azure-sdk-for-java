@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FrontDoorHealthProbeMethod. */
+/** Configures which HTTP method to use to probe the backends defined under backendPools. */
 public final class FrontDoorHealthProbeMethod extends ExpandableStringEnum<FrontDoorHealthProbeMethod> {
     /** Static value GET for FrontDoorHealthProbeMethod. */
     public static final FrontDoorHealthProbeMethod GET = fromString("GET");
 
     /** Static value HEAD for FrontDoorHealthProbeMethod. */
     public static final FrontDoorHealthProbeMethod HEAD = fromString("HEAD");
+
+    /**
+     * Creates a new instance of FrontDoorHealthProbeMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FrontDoorHealthProbeMethod() {
+    }
 
     /**
      * Creates or finds a FrontDoorHealthProbeMethod from its string representation.
@@ -27,7 +36,11 @@ public final class FrontDoorHealthProbeMethod extends ExpandableStringEnum<Front
         return fromString(name, FrontDoorHealthProbeMethod.class);
     }
 
-    /** @return known FrontDoorHealthProbeMethod values. */
+    /**
+     * Gets known FrontDoorHealthProbeMethod values.
+     *
+     * @return known FrontDoorHealthProbeMethod values.
+     */
     public static Collection<FrontDoorHealthProbeMethod> values() {
         return values(FrontDoorHealthProbeMethod.class);
     }

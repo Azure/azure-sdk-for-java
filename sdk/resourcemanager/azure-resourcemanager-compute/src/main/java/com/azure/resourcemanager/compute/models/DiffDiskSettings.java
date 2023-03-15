@@ -29,6 +29,10 @@ public final class DiffDiskSettings {
     @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
+    /** Creates an instance of DiffDiskSettings class. */
+    public DiffDiskSettings() {
+    }
+
     /**
      * Get the option property: Specifies the ephemeral disk settings for operating system disk.
      *

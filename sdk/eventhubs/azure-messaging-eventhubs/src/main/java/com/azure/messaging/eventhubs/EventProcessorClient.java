@@ -3,12 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -64,7 +66,6 @@ public class EventProcessorClient {
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
      * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
      * will also include the last enqueued event properties for it's respective partitions.
-     * @param tracerProvider The tracer implementation.
      * @param processError Error handler for any errors that occur outside the context of a partition.
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
@@ -77,10 +78,10 @@ public class EventProcessorClient {
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
+        boolean trackLastEnqueuedEventProperties, Consumer<ErrorContext> processError,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
         boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy) {
+        LoadBalancingStrategy loadBalancingStrategy, Tracer tracer) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -100,9 +101,11 @@ public class EventProcessorClient {
         this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
         this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
 
+        EventHubsTracer ehTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition,
+            eventHubClientBuilder, trackLastEnqueuedEventProperties, ehTracer, initialPartitionEventPosition,
             maxBatchSize, maxWaitTime, batchReceiveMode);
+
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
@@ -192,7 +195,6 @@ public class EventProcessorClient {
 
     private void stopProcessing() {
         partitionPumpManager.stopAllPartitionPumps();
-
         // finally, remove ownerid from checkpointstore as the processor is shutting down
         checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
             .filter(ownership -> identifier.equals(ownership.getOwnerId()))

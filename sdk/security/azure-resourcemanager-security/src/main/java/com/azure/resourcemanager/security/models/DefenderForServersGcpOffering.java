@@ -44,6 +44,10 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
     @JsonProperty(value = "subPlan")
     private DefenderForServersGcpOfferingSubPlan subPlan;
 
+    /** Creates an instance of DefenderForServersGcpOffering class. */
+    public DefenderForServersGcpOffering() {
+    }
+
     /**
      * Get the defenderForServers property: The Defender for servers connection configuration.
      *

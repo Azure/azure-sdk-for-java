@@ -22,6 +22,10 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
     @JsonProperty(value = "denylistValues", required = true)
     private List<String> denylistValues;
 
+    /** Creates an instance of DenylistCustomAlertRule class. */
+    public DenylistCustomAlertRule() {
+    }
+
     /**
      * Get the denylistValues property: The values to deny. The format of the values depends on the rule type.
      *

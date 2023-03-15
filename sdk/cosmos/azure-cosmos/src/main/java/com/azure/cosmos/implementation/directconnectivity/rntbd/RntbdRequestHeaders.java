@@ -119,6 +119,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addIsClientEncrypted(headers);
         this.addIntendedCollectionRid(headers);
         this.addCorrelatedActivityId(headers);
+        this.addSDKSupportedCapabilities(headers);
+        this.addChangeFeedWireFormatVersion(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -161,6 +163,9 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::shouldBatchContinueOnError, HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR);
         this.fillTokenFromHeader(headers, this::isBatchOrdered, HttpHeaders.IS_BATCH_ORDERED);
         this.fillTokenFromHeader(headers, this::getCorrelatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID);
+        this.fillTokenFromHeader(headers, this::getSDKSupportedCapabilities, HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        this.fillTokenFromHeader(headers, this::getChangeFeedWireFormatVersion, HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION);
+
 
         // Will be null in case of direct, which is fine - BE will use the value slice the connection context this.
         // When this is used in Gateway, the header value will be populated with the proxied HTTP request's header,
@@ -601,6 +606,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken isBatchOrdered() {
         return this.get(RntbdRequestHeader.IsBatchOrdered);
+    }
+
+    private RntbdToken getSDKSupportedCapabilities() {
+        return this.get(RntbdRequestHeader.SDKSupportedCapabilities);
+    }
+
+    private RntbdToken getChangeFeedWireFormatVersion() {
+        return this.get(RntbdRequestHeader.ChangeFeedWireFormatVersion);
     }
 
     private void addAimHeader(final Map<String, String> headers) {
@@ -1252,6 +1265,20 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.PREFER);
         if (StringUtils.isNotEmpty(value) && value.contains(HeaderValues.PREFER_RETURN_MINIMAL)) {
             this.getReturnPreference().setValue(true);
+        }
+    }
+
+    private void addSDKSupportedCapabilities(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getSDKSupportedCapabilities().setValue(Long.valueOf(value));
+        }
+    }
+
+    private void addChangeFeedWireFormatVersion(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getChangeFeedWireFormatVersion().setValue(value);
         }
     }
 

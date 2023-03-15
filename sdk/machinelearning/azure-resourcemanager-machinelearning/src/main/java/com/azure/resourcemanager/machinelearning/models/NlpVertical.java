@@ -11,12 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class NlpVertical {
     /*
-     * Data inputs for AutoMLJob.
-     */
-    @JsonProperty(value = "dataSettings")
-    private NlpVerticalDataSettings dataSettings;
-
-    /*
      * Featurization inputs needed for AutoML job.
      */
     @JsonProperty(value = "featurizationSettings")
@@ -28,24 +22,14 @@ public class NlpVertical {
     @JsonProperty(value = "limitSettings")
     private NlpVerticalLimitSettings limitSettings;
 
-    /**
-     * Get the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @return the dataSettings value.
+    /*
+     * Validation data inputs.
      */
-    public NlpVerticalDataSettings dataSettings() {
-        return this.dataSettings;
-    }
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
 
-    /**
-     * Set the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @param dataSettings the dataSettings value to set.
-     * @return the NlpVertical object itself.
-     */
-    public NlpVertical withDataSettings(NlpVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
-        return this;
+    /** Creates an instance of NlpVertical class. */
+    public NlpVertical() {
     }
 
     /**
@@ -89,19 +73,39 @@ public class NlpVertical {
     }
 
     /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the NlpVertical object itself.
+     */
+    public NlpVertical withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dataSettings() != null) {
-            dataSettings().validate();
-        }
         if (featurizationSettings() != null) {
             featurizationSettings().validate();
         }
         if (limitSettings() != null) {
             limitSettings().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 }

@@ -22,6 +22,10 @@ public final class DefenderForServersGcpOfferingMdeAutoProvisioning {
     @JsonProperty(value = "configuration")
     private Object configuration;
 
+    /** Creates an instance of DefenderForServersGcpOfferingMdeAutoProvisioning class. */
+    public DefenderForServersGcpOfferingMdeAutoProvisioning() {
+    }
+
     /**
      * Get the enabled property: Is Microsoft Defender for Endpoint auto provisioning enabled.
      *

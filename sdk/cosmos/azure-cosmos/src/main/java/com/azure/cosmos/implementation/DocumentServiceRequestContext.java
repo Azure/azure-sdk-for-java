@@ -33,6 +33,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URI locationEndpointToRoute;
+    public volatile URI storePhysicalAddress; // DIRECT: rntbd physical address; GATEWAY: service endpoint
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -41,7 +42,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
-    public volatile boolean replicaAddressValidationEnabled;
+    public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
 
     public DocumentServiceRequestContext() {}
@@ -117,6 +118,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
         context.locationEndpointToRoute = this.locationEndpointToRoute;
+        context.storePhysicalAddress = this.storePhysicalAddress;
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;

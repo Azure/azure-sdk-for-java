@@ -26,6 +26,10 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
     @JsonProperty(value = "anyOf")
     private List<AlertRuleLeafCondition> anyOf;
 
+    /** Creates an instance of ActivityLogAlertLeafCondition class. */
+    public ActivityLogAlertLeafCondition() {
+    }
+
     /**
      * Get the anyOf property: An Activity Log Alert rule 'anyOf' condition.
      *

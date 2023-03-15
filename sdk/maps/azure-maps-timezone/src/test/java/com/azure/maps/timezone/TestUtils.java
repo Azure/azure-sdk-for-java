@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     /**
@@ -70,7 +70,7 @@ public class TestUtils {
         return jacksonAdapter.<TimeZoneResult>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
     }
-    
+
     static List<TimeZoneWindows> getExpectedWindowsTimezoneIds() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("getwindowstimezonesids.json");
         String jsonArrayString = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
@@ -123,7 +123,7 @@ public class TestUtils {
         return expectedResult;
     }
 
-    // Code referenced from 
+    // Code referenced from
     // https://www.techiedelight.com/convert-inputstream-byte-array-java/#:~:text=Convert%20InputStream%20to%20byte%20array%20in%20Java%201,Commons%20IO%20...%204%204.%20Using%20sun.misc.IOUtils%20
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();

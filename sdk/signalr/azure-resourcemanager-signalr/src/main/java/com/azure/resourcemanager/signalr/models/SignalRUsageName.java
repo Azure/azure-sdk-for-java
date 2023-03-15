@@ -22,6 +22,10 @@ public final class SignalRUsageName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of SignalRUsageName class. */
+    public SignalRUsageName() {
+    }
+
     /**
      * Get the value property: The identifier of the usage.
      *

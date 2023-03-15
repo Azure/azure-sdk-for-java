@@ -19,7 +19,7 @@ import java.util.UUID;
 /** Samples for Datastores CreateOrUpdate. */
 public final class DatastoresCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen1 w/ ServicePrincipal).
@@ -41,7 +41,8 @@ public final class DatastoresCreateOrUpdateSamples {
                             .withAuthorityUrl("string")
                             .withClientId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
                             .withResourceUrl("string")
-                            .withSecrets(new ServicePrincipalDatastoreSecrets().withClientSecret("string"))
+                            .withSecrets(
+                                new ServicePrincipalDatastoreSecrets().withClientSecret("fakeTokenPlaceholder"))
                             .withTenantId(UUID.fromString("00000000-1111-2222-3333-444444444444")))
                     .withStoreName("string"))
             .withSkipValidation(false)
@@ -49,7 +50,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen2 w/ Service Principal).
@@ -71,7 +72,8 @@ public final class DatastoresCreateOrUpdateSamples {
                             .withAuthorityUrl("string")
                             .withClientId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
                             .withResourceUrl("string")
-                            .withSecrets(new ServicePrincipalDatastoreSecrets().withClientSecret("string"))
+                            .withSecrets(
+                                new ServicePrincipalDatastoreSecrets().withClientSecret("fakeTokenPlaceholder"))
                             .withTenantId(UUID.fromString("00000000-1111-2222-3333-444444444444")))
                     .withAccountName("string")
                     .withEndpoint("string")
@@ -82,7 +84,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/AzureBlobWAccountKey/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureBlobWAccountKey/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (AzureBlob w/ AccountKey).
@@ -101,7 +103,7 @@ public final class DatastoresCreateOrUpdateSamples {
                     .withTags(mapOf("string", "string"))
                     .withCredentials(
                         new AccountKeyDatastoreCredentials()
-                            .withSecrets(new AccountKeyDatastoreSecrets().withKey("string")))
+                            .withSecrets(new AccountKeyDatastoreSecrets().withKey("fakeTokenPlaceholder")))
                     .withAccountName("string")
                     .withContainerName("string")
                     .withEndpoint("core.windows.net")
@@ -111,7 +113,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/AzureFileWAccountKey/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/AzureFileWAccountKey/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure File store w/ AccountKey).
@@ -130,7 +132,7 @@ public final class DatastoresCreateOrUpdateSamples {
                     .withTags(mapOf("string", "string"))
                     .withCredentials(
                         new AccountKeyDatastoreCredentials()
-                            .withSecrets(new AccountKeyDatastoreSecrets().withKey("string")))
+                            .withSecrets(new AccountKeyDatastoreSecrets().withKey("fakeTokenPlaceholder")))
                     .withAccountName("string")
                     .withEndpoint("string")
                     .withFileShareName("string")

@@ -37,15 +37,6 @@ public final class AssessmentsMetadatasImpl implements AssessmentsMetadatas {
         return Utils.mapPage(inner, inner1 -> new SecurityAssessmentMetadataResponseImpl(inner1, this.manager()));
     }
 
-    public SecurityAssessmentMetadataResponse get(String assessmentMetadataName) {
-        SecurityAssessmentMetadataResponseInner inner = this.serviceClient().get(assessmentMetadataName);
-        if (inner != null) {
-            return new SecurityAssessmentMetadataResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecurityAssessmentMetadataResponse> getWithResponse(
         String assessmentMetadataName, Context context) {
         Response<SecurityAssessmentMetadataResponseInner> inner =
@@ -61,6 +52,15 @@ public final class AssessmentsMetadatasImpl implements AssessmentsMetadatas {
         }
     }
 
+    public SecurityAssessmentMetadataResponse get(String assessmentMetadataName) {
+        SecurityAssessmentMetadataResponseInner inner = this.serviceClient().get(assessmentMetadataName);
+        if (inner != null) {
+            return new SecurityAssessmentMetadataResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SecurityAssessmentMetadataResponse> listBySubscription() {
         PagedIterable<SecurityAssessmentMetadataResponseInner> inner = this.serviceClient().listBySubscription();
         return Utils.mapPage(inner, inner1 -> new SecurityAssessmentMetadataResponseImpl(inner1, this.manager()));
@@ -69,15 +69,6 @@ public final class AssessmentsMetadatasImpl implements AssessmentsMetadatas {
     public PagedIterable<SecurityAssessmentMetadataResponse> listBySubscription(Context context) {
         PagedIterable<SecurityAssessmentMetadataResponseInner> inner = this.serviceClient().listBySubscription(context);
         return Utils.mapPage(inner, inner1 -> new SecurityAssessmentMetadataResponseImpl(inner1, this.manager()));
-    }
-
-    public SecurityAssessmentMetadataResponse getInSubscription(String assessmentMetadataName) {
-        SecurityAssessmentMetadataResponseInner inner = this.serviceClient().getInSubscription(assessmentMetadataName);
-        if (inner != null) {
-            return new SecurityAssessmentMetadataResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SecurityAssessmentMetadataResponse> getInSubscriptionWithResponse(
@@ -95,12 +86,21 @@ public final class AssessmentsMetadatasImpl implements AssessmentsMetadatas {
         }
     }
 
-    public void deleteInSubscription(String assessmentMetadataName) {
-        this.serviceClient().deleteInSubscription(assessmentMetadataName);
+    public SecurityAssessmentMetadataResponse getInSubscription(String assessmentMetadataName) {
+        SecurityAssessmentMetadataResponseInner inner = this.serviceClient().getInSubscription(assessmentMetadataName);
+        if (inner != null) {
+            return new SecurityAssessmentMetadataResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context) {
         return this.serviceClient().deleteInSubscriptionWithResponse(assessmentMetadataName, context);
+    }
+
+    public void deleteInSubscription(String assessmentMetadataName) {
+        this.serviceClient().deleteInSubscription(assessmentMetadataName);
     }
 
     public SecurityAssessmentMetadataResponse getInSubscriptionById(String id) {

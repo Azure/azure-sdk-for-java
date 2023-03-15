@@ -62,6 +62,10 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
         return this.innerModel().systemData();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -213,8 +217,13 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     }
 
     public VaultImpl withEtag(String etag) {
-        this.updateVault.withEtag(etag);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withEtag(etag);
+            return this;
+        } else {
+            this.updateVault.withEtag(etag);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

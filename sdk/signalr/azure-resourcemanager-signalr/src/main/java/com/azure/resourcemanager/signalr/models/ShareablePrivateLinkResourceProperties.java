@@ -11,25 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ShareablePrivateLinkResourceProperties {
     /*
-     * The description of the resource type that has been onboarded to private
-     * link service
+     * The description of the resource type that has been onboarded to private link service
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The resource provider group id for the resource that has been onboarded
-     * to private link service
+     * The resource provider group id for the resource that has been onboarded to private link service
      */
     @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
-     * The resource provider type for the resource that has been onboarded to
-     * private link service
+     * The resource provider type for the resource that has been onboarded to private link service
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of ShareablePrivateLinkResourceProperties class. */
+    public ShareablePrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the description property: The description of the resource type that has been onboarded to private link

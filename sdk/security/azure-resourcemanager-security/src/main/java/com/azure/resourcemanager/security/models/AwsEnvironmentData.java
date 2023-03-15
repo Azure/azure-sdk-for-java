@@ -20,6 +20,10 @@ public final class AwsEnvironmentData extends EnvironmentData {
     @JsonProperty(value = "organizationalData")
     private AwsOrganizationalData organizationalData;
 
+    /** Creates an instance of AwsEnvironmentData class. */
+    public AwsEnvironmentData() {
+    }
+
     /**
      * Get the organizationalData property: The AWS account's organizational data.
      *

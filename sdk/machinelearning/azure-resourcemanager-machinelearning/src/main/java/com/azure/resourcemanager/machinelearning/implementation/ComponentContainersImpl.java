@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.ComponentContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerDataInner;
-import com.azure.resourcemanager.machinelearning.models.ComponentContainerData;
+import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerInner;
+import com.azure.resourcemanager.machinelearning.models.ComponentContainer;
 import com.azure.resourcemanager.machinelearning.models.ComponentContainers;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
@@ -29,20 +29,16 @@ public final class ComponentContainersImpl implements ComponentContainers {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ComponentContainerData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<ComponentContainerDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ComponentContainerDataImpl(inner1, this.manager()));
+    public PagedIterable<ComponentContainer> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<ComponentContainerInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new ComponentContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ComponentContainerData> list(
+    public PagedIterable<ComponentContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
-        PagedIterable<ComponentContainerDataInner> inner =
+        PagedIterable<ComponentContainerInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, skip, listViewType, context);
-        return Utils.mapPage(inner, inner1 -> new ComponentContainerDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name);
+        return Utils.mapPage(inner, inner1 -> new ComponentContainerImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -50,31 +46,35 @@ public final class ComponentContainersImpl implements ComponentContainers {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
-    public ComponentContainerData get(String resourceGroupName, String workspaceName, String name) {
-        ComponentContainerDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
-        if (inner != null) {
-            return new ComponentContainerDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name);
     }
 
-    public Response<ComponentContainerData> getWithResponse(
+    public Response<ComponentContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<ComponentContainerDataInner> inner =
+        Response<ComponentContainerInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new ComponentContainerDataImpl(inner.getValue(), this.manager()));
+                new ComponentContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ComponentContainerData getById(String id) {
+    public ComponentContainer get(String resourceGroupName, String workspaceName, String name) {
+        ComponentContainerInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
+        if (inner != null) {
+            return new ComponentContainerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ComponentContainer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -100,7 +100,7 @@ public final class ComponentContainersImpl implements ComponentContainers {
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
-    public Response<ComponentContainerData> getByIdWithResponse(String id, Context context) {
+    public Response<ComponentContainer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -186,7 +186,7 @@ public final class ComponentContainersImpl implements ComponentContainers {
         return this.serviceManager;
     }
 
-    public ComponentContainerDataImpl define(String name) {
-        return new ComponentContainerDataImpl(name, this.manager());
+    public ComponentContainerImpl define(String name) {
+        return new ComponentContainerImpl(name, this.manager());
     }
 }

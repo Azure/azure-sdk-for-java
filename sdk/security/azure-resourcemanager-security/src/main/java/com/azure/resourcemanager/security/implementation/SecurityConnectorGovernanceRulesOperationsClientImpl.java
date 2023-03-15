@@ -61,7 +61,7 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityConnectorGovernanceRulesOperationsService {
+    public interface SecurityConnectorGovernanceRulesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -248,23 +248,6 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceRule for the requested scope by ruleId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceRuleInner get(String resourceGroupName, String securityConnectorName, String ruleId) {
-        return getAsync(resourceGroupName, securityConnectorName, ruleId).block();
-    }
-
-    /**
-     * Get a specific governanceRule for the requested scope by ruleId.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,6 +258,23 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
     public Response<GovernanceRuleInner> getWithResponse(
         String resourceGroupName, String securityConnectorName, String ruleId, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, ruleId, context).block();
+    }
+
+    /**
+     * Get a specific governanceRule for the requested scope by ruleId.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific governanceRule for the requested scope by ruleId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceRuleInner get(String resourceGroupName, String securityConnectorName, String ruleId) {
+        return getWithResponse(resourceGroupName, securityConnectorName, ruleId, Context.NONE).getValue();
     }
 
     /**
@@ -435,25 +435,6 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
      * @param securityConnectorName The security connector name.
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param governanceRule GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security GovernanceRule over a given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceRuleInner createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String ruleId, GovernanceRuleInner governanceRule) {
-        return createOrUpdateAsync(resourceGroupName, securityConnectorName, ruleId, governanceRule).block();
-    }
-
-    /**
-     * Creates or update a security GovernanceRule on the given security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param governanceRule GovernanceRule over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,6 +451,27 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, securityConnectorName, ruleId, governanceRule, context)
             .block();
+    }
+
+    /**
+     * Creates or update a security GovernanceRule on the given security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @param governanceRule GovernanceRule over a subscription scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security GovernanceRule over a given scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceRuleInner createOrUpdate(
+        String resourceGroupName, String securityConnectorName, String ruleId, GovernanceRuleInner governanceRule) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, securityConnectorName, ruleId, governanceRule, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -603,22 +605,6 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String securityConnectorName, String ruleId) {
-        deleteAsync(resourceGroupName, securityConnectorName, ruleId).block();
-    }
-
-    /**
-     * Delete a GovernanceRule over a given scope.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -629,5 +615,21 @@ public final class SecurityConnectorGovernanceRulesOperationsClientImpl
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String securityConnectorName, String ruleId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, ruleId, context).block();
+    }
+
+    /**
+     * Delete a GovernanceRule over a given scope.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String securityConnectorName, String ruleId) {
+        deleteWithResponse(resourceGroupName, securityConnectorName, ruleId, Context.NONE);
     }
 }

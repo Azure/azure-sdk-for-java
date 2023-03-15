@@ -26,6 +26,10 @@ public final class AlertInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
 
+    /** Creates an instance of AlertInner class. */
+    public AlertInner() {
+    }
+
     /**
      * Get the innerProperties property: describes security alert properties.
      *

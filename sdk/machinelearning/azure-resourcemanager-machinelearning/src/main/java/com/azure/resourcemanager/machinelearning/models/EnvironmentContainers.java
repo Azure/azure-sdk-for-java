@@ -20,7 +20,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<EnvironmentContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List environment containers.
@@ -35,20 +35,8 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentContainerData> list(
+    PagedIterable<EnvironmentContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
-
-    /**
-     * Delete container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Delete container.
@@ -65,6 +53,33 @@ public interface EnvironmentContainers {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
+     * Delete container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String name);
+
+    /**
+     * Get container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container along with {@link Response}.
+     */
+    Response<EnvironmentContainer> getWithResponse(
+        String resourceGroupName, String workspaceName, String name, Context context);
+
+    /**
      * Get container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -75,22 +90,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    EnvironmentContainerData get(String resourceGroupName, String workspaceName, String name);
-
-    /**
-     * Get container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container along with {@link Response}.
-     */
-    Response<EnvironmentContainerData> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    EnvironmentContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -101,7 +101,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    EnvironmentContainerData getById(String id);
+    EnvironmentContainer getById(String id);
 
     /**
      * Get container.
@@ -113,7 +113,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<EnvironmentContainerData> getByIdWithResponse(String id, Context context);
+    Response<EnvironmentContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -138,10 +138,10 @@ public interface EnvironmentContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new EnvironmentContainerData resource.
+     * Begins definition for a new EnvironmentContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new EnvironmentContainerData definition.
+     * @return the first stage of the new EnvironmentContainer definition.
      */
-    EnvironmentContainerData.DefinitionStages.Blank define(String name);
+    EnvironmentContainer.DefinitionStages.Blank define(String name);
 }

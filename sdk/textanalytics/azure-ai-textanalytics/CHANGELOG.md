@@ -1,6 +1,6 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
+## 5.3.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,83 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.3.0-beta.2 (2023-03-07)
+
+### Features Added
+- Added the following methods for performing abstractive summarization and extractive summarization actions:
+    - `beginAbstractSummary(...)`
+    - `beginExtractSummary(...)`
+- Added the following types for the newly added methods
+    - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
+    - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
+
+### Breaking Changes
+- Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
+- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Changed `BaseResolution` to an abstract class.
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
+
+### Other Changes
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
+  It simplifies stack traces and improves debugging experience.
+
+## 5.2.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 5.2.3 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
+
+## 5.3.0-beta.1 (2022-11-18)
+
+### Features Added
+- This version of the client library marks a beta release and defaults to the service API version `2022-10-01-preview`.
+- Added properties `fhirVersion` and `documentType` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
+- Added property `confidenceScore` to `HealthcareEntityRelation`.
+- Added enum `HealthcareDocumentType` and `FhirVersion`.
+- Added property `resolutions` to `CategorizedEntity`.
+- Added models and enums related to resolutions: `BaseResolution`, `ResolutionKind`, `AgeResolution`, `AreaResolution`,
+  `BooleanResolution`, `CurrencyResolution`, `DateTimeResolution`, `InformationResolution`, `LengthResolution`,
+  `NumberResolution`, `NumericRangeResolution`, `OrdinalResolution`, `SpeedResolution`, `TemperatureResolution`,
+  `TemporalSpanResolution`, `VolumeResolution`, `WeightResolution`, `AgeUnit`, `AreaUnit`, `TemporalModifier`,
+  `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
+  `VolumeUnit`, and `WeightUnit`.
+- Added the Extractive Summarization feature and related models: `ExtractSummaryAction`, `ExtractSummaryActionResult`,
+  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentence` and `SummarySentencesOrder`. 
+  Access the feature through the `beginAnalyzeActions` API.
+- Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
+ `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
+  Access the feature through the `beginAnalyzeActions` API.
+- Added the dynamic text classification on documents without needing to train a model. The feature can be used by calling:
+    - Synchronous API: `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
+    - Asynchronous API: `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
+    - Added new models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
+- Added automatic language detection to long-running operation APIs. Pass `auto` into the document `language` hint to use this feature.
+- Added property `detectedLanguage` to `RecognizeEntitiesResult`, `RecognizePiiEntitiesResult`, `AnalyzeHealthcareEntitiesResult`,
+  `ExtractKeyPhrasesResult`, `RecognizeLinkedEntitiesResult`, `AnalyzeSentimentResult`, `RecognizeCustomEntitiesResult`,
+  `ClassifyDocumentResult`, `ExtractSummaryResult`, and `AbstractSummaryResult` to indicate the language detected by automatic language detection.
+- Added property `script` to `DetectedLanguage` to indicate the script of the input document, and new enum model `ScriptKind`.
+
+## 5.2.2 (2022-11-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-core-http-netty` to `1.12.7`.
 
 ## 5.2.1 (2022-10-12)
 

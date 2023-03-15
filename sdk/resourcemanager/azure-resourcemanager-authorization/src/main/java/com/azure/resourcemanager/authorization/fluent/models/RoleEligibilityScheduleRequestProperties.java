@@ -43,8 +43,7 @@ public final class RoleEligibilityScheduleRequestProperties {
     private PrincipalType principalType;
 
     /*
-     * The type of the role assignment schedule request. Eg: SelfActivate,
-     * AdminAssign etc
+     * The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
      */
     @JsonProperty(value = "requestType", required = true)
     private RequestType requestType;
@@ -68,8 +67,7 @@ public final class RoleEligibilityScheduleRequestProperties {
     private RoleEligibilityScheduleRequestPropertiesScheduleInfo scheduleInfo;
 
     /*
-     * The resultant role eligibility schedule id or the role eligibility
-     * schedule id being updated
+     * The resultant role eligibility schedule id or the role eligibility schedule id being updated
      */
     @JsonProperty(value = "targetRoleEligibilityScheduleId")
     private String targetRoleEligibilityScheduleId;
@@ -93,10 +91,9 @@ public final class RoleEligibilityScheduleRequestProperties {
     private RoleEligibilityScheduleRequestPropertiesTicketInfo ticketInfo;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can
-     * be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'
+     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
      */
     @JsonProperty(value = "condition")
     private String condition;
@@ -124,6 +121,10 @@ public final class RoleEligibilityScheduleRequestProperties {
      */
     @JsonProperty(value = "expandedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private ExpandedProperties expandedProperties;
+
+    /** Creates an instance of RoleEligibilityScheduleRequestProperties class. */
+    public RoleEligibilityScheduleRequestProperties() {
+    }
 
     /**
      * Get the scope property: The role eligibility schedule request scope.

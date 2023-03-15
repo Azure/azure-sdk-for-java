@@ -47,6 +47,15 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
     public static final WebApplicationFirewallOperator ANY = fromString("Any");
 
     /**
+     * Creates a new instance of WebApplicationFirewallOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallOperator() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallOperator from its string representation.
      *
      * @param name a name to look for.

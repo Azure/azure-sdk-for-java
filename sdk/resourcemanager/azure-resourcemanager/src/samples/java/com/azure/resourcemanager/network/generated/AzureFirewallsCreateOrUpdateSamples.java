@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRule;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
@@ -34,7 +33,7 @@ import java.util.Map;
 /** Samples for AzureFirewalls CreateOrUpdate. */
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPutWithIpGroups.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPutWithIpGroups.json
      */
     /**
      * Sample code: Create Azure Firewall With IpGroups.
@@ -150,11 +149,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPutWithZones.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPutWithZones.json
      */
     /**
      * Sample code: Create Azure Firewall With Zones.
@@ -270,11 +269,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
@@ -390,11 +389,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPutWithAdditionalProperties.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPutWithAdditionalProperties.json
      */
     /**
      * Sample code: Create Azure Firewall With Additional Properties.
@@ -512,11 +511,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD))
                     .withAdditionalProperties(mapOf("key1", "value1", "key2", "value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPutInHub.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
@@ -552,11 +551,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_HUB)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallPutWithMgmtSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallPutWithMgmtSubnet.json
      */
     /**
      * Sample code: Create Azure Firewall With management subnet.
@@ -683,7 +682,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

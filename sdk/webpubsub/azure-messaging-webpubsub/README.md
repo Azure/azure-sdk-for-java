@@ -65,7 +65,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.1.7</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -115,6 +115,7 @@ When the client is connected, it can send messages to the upstream application, 
 ## Examples
 
 * [Broadcast message to entire hub](#broadcast-message-to-entire-hub)
+* [Send message to entire hub with filters](#broadcast-message-to-entire-hub-with-filter)
 * [Broadcast message to a group](#broadcast-message-to-a-group)
 * [Send message to a connection](#send-message-to-a-connection)
 * [Send message to a user](#send-message-to-a-user)
@@ -123,6 +124,25 @@ When the client is connected, it can send messages to the upstream application, 
 
 ```java readme-sample-broadcastToAll
 webPubSubServiceClient.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
+```
+
+### Broadcast message to entire hub with filter
+
+```java readme-sample-broadcastToAll-filter
+// send a text message to the entire hub with a filter on userId
+BinaryData message = BinaryData.fromString("Hello World - Broadcast test!");
+webPubSubServiceClient.sendToAllWithResponse(
+    message,
+    WebPubSubContentType.TEXT_PLAIN,
+    message.getLength(),
+    new RequestOptions().addQueryParam("filter", "userId ne 'user1'"));
+
+// send a text message to the entire hub with another filter on group
+webPubSubServiceClient.sendToAllWithResponse(
+    message,
+    WebPubSubContentType.TEXT_PLAIN,
+    message.getLength(),
+    new RequestOptions().addQueryParam("filter", "'GroupA' in groups and not('GroupB' in groups)"));
 ```
 
 ### Broadcast message to a group

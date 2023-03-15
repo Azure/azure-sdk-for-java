@@ -18,6 +18,10 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RegulatoryComplianceAssessmentProperties innerProperties;
 
+    /** Creates an instance of RegulatoryComplianceAssessmentInner class. */
+    public RegulatoryComplianceAssessmentInner() {
+    }
+
     /**
      * Get the innerProperties property: Regulatory compliance assessment data.
      *

@@ -22,6 +22,10 @@ public final class LogSpecification {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of LogSpecification class. */
+    public LogSpecification() {
+    }
+
     /**
      * Get the name property: Name of the log.
      *

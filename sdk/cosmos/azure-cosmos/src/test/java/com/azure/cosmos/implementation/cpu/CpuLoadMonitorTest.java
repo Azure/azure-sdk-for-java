@@ -72,7 +72,6 @@ public class CpuLoadMonitorTest {
     public void handleLeak() throws Throwable {
         TestMemoryListener listener = new TestMemoryListener();
         CpuMemoryMonitor.register(listener);
-        listener.finalize();
         listener = null;
         System.gc();
         Thread.sleep(10000);
@@ -82,9 +81,5 @@ public class CpuLoadMonitorTest {
     }
 
     class TestMemoryListener implements CpuMemoryListener {
-        @Override
-        public void finalize() throws Throwable {
-            super.finalize();
-        }
     }
 }

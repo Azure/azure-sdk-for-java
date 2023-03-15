@@ -17,6 +17,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = DevBoxesClientBuilder.class)
@@ -51,32 +52,28 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -109,6 +106,7 @@ public final class DevBoxesClient {
      *         vCPUs: Integer (Optional)
      *         memoryGB: Integer (Optional)
      *     }
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     storageProfile (Optional): {
      *         osDisk (Optional): {
      *             diskSizeGB: Integer (Optional)
@@ -159,16 +157,11 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             type: String(StopDevBox) (Optional)
-     *             frequency: String(Daily) (Optional)
-     *             time: String (Optional)
-     *             timeZone: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     type: String(StopDevBox) (Optional)
+     *     frequency: String(Daily) (Optional)
+     *     time: String (Optional)
+     *     timeZone: String (Optional)
      * }
      * }</pre>
      *
@@ -238,44 +231,40 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             projectName: String (Optional)
-     *             poolName: String (Required)
-     *             provisioningState: String (Optional)
-     *             actionState: String (Optional)
-     *             powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *             uniqueId: String (Optional)
-     *             errorDetails (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *             }
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             user: String (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             createdTime: OffsetDateTime (Optional)
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     errorDetails (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -306,6 +295,7 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -367,6 +357,7 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -407,6 +398,7 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
      *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
@@ -462,46 +454,6 @@ public final class DevBoxesClient {
     /**
      * Deletes a Dev Box.
      *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
@@ -511,11 +463,11 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a DevBox Dev Box.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteDevBox(
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.client.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
     }
@@ -523,46 +475,6 @@ public final class DevBoxesClient {
     /**
      * Starts a Dev Box.
      *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
@@ -572,7 +484,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a DevBox Dev Box.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -584,45 +496,15 @@ public final class DevBoxesClient {
     /**
      * Stops a Dev Box.
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p><strong>Query Parameters</strong>
      *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -633,7 +515,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a DevBox Dev Box.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -670,5 +552,152 @@ public final class DevBoxesClient {
     public Response<BinaryData> getRemoteConnectionWithResponse(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.client.getRemoteConnectionWithResponse(projectName, userId, devBoxName, requestOptions).block();
+    }
+
+    /**
+     * Lists upcoming actions on a Dev Box.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     actionType: String(Stop) (Optional)
+     *     reason: String(Schedule) (Optional)
+     *     scheduledTime: OffsetDateTime (Optional)
+     *     originalScheduledTime: OffsetDateTime (Optional)
+     *     sourceId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upcoming Action list result as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listUpcomingActions(
+            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listUpcomingActions(projectName, userId, devBoxName, requestOptions));
+    }
+
+    /**
+     * Gets an Upcoming Action.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     actionType: String(Stop) (Optional)
+     *     reason: String(Schedule) (Optional)
+     *     scheduledTime: OffsetDateTime (Optional)
+     *     originalScheduledTime: OffsetDateTime (Optional)
+     *     sourceId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param upcomingActionId The upcoming action id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an Upcoming Action along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getUpcomingActionWithResponse(
+            String projectName,
+            String userId,
+            String devBoxName,
+            String upcomingActionId,
+            RequestOptions requestOptions) {
+        return this.client
+                .getUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
+                .block();
+    }
+
+    /**
+     * Skips an Upcoming Action.
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param upcomingActionId The upcoming action id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> skipUpcomingActionWithResponse(
+            String projectName,
+            String userId,
+            String devBoxName,
+            String upcomingActionId,
+            RequestOptions requestOptions) {
+        return this.client
+                .skipUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
+                .block();
+    }
+
+    /**
+     * Delays an Upcoming Action.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     actionType: String(Stop) (Optional)
+     *     reason: String(Schedule) (Optional)
+     *     scheduledTime: OffsetDateTime (Optional)
+     *     originalScheduledTime: OffsetDateTime (Optional)
+     *     sourceId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param upcomingActionId The upcoming action id.
+     * @param delayUntil The delayed action time (UTC).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an upcoming Action along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> delayUpcomingActionWithResponse(
+            String projectName,
+            String userId,
+            String devBoxName,
+            String upcomingActionId,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
+        return this.client
+                .delayUpcomingActionWithResponse(
+                        projectName, userId, devBoxName, upcomingActionId, delayUntil, requestOptions)
+                .block();
     }
 }

@@ -14,7 +14,7 @@ public final class GalleryListResultTests {
         GalleryListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"yqrimzin\",\"galleryResourceId\":\"vswjdk\"},\"id\":\"soodqxhcrmnoh\",\"name\":\"t\",\"type\":\"kwh\"},{\"properties\":{\"provisioningState\":\"ifiyipjxsqwpgrj\",\"galleryResourceId\":\"znorcj\"},\"id\":\"snb\",\"name\":\"xqabnmocpcysh\",\"type\":\"rzafbljjgpbtoqcj\"},{\"properties\":{\"provisioningState\":\"javbqidtqajz\",\"galleryResourceId\":\"ulpkudjkrl\"},\"id\":\"bzhfepgzgqexz\",\"name\":\"ocxscpaierhhbcs\",\"type\":\"l\"},{\"properties\":{\"provisioningState\":\"a\",\"galleryResourceId\":\"tjaodxobnb\"},\"id\":\"k\",\"name\":\"pxokajionp\",\"type\":\"mexgstxgcp\"}],\"nextLink\":\"gmaajrm\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"cyshurzafbljjgp\"},\"id\":\"oq\",\"name\":\"jmkljavbqidtqajz\",\"type\":\"ulpkudjkrl\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"galleryResourceId\":\"hfepgzgqex\"},\"id\":\"ocxscpaierhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}],\"nextLink\":\"nbdxk\"}")
                 .toObject(GalleryListResult.class);
     }
 

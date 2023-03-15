@@ -43,7 +43,7 @@ public final class SqlVirtualMachinesListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"None\"},\"properties\":{\"virtualMachineResourceId\":\"evfiwjmygt\",\"provisioningState\":\"slswtm\",\"sqlImageOffer\":\"riofzpyqse\",\"sqlServerLicenseType\":\"PAYG\",\"sqlManagement\":\"Full\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Enterprise\",\"sqlVirtualMachineGroupResourceId\":\"szhedplvw\",\"wsfcDomainCredentials\":{\"clusterBootstrapAccountPassword\":\"bmwmbesldnkw\",\"clusterOperatorAccountPassword\":\"pp\",\"sqlServiceAccountPassword\":\"lcxog\"},\"wsfcStaticIp\":\"konzmnsik\",\"autoPatchingSettings\":{\"enable\":true,\"dayOfWeek\":\"Friday\",\"maintenanceWindowStartingHour\":1625673068,\"maintenanceWindowDuration\":1175665004},\"autoBackupSettings\":{\"enable\":true,\"enableEncryption\":true,\"retentionPeriod\":992785532,\"storageAccountUrl\":\"v\",\"storageContainerName\":\"ur\",\"storageAccessKey\":\"dkwobdagx\",\"password\":\"bqdxbx\",\"backupSystemDbs\":true,\"backupScheduleType\":\"Automated\",\"fullBackupFrequency\":\"Daily\",\"daysOfWeek\":[],\"fullBackupStartTime\":442330150,\"fullBackupWindowHours\":90744470,\"logBackupFrequency\":299284831},\"keyVaultCredentialSettings\":{\"enable\":true,\"credentialName\":\"iplbpodxunkbebxm\",\"azureKeyVaultUrl\":\"yyntwl\",\"servicePrincipalName\":\"qtkoievs\",\"servicePrincipalSecret\":\"tgqr\"},\"serverConfigurationsManagementSettings\":{},\"storageConfigurationSettings\":{\"sqlSystemDbOnDataDisk\":false,\"diskConfigurationType\":\"ADD\",\"storageWorkloadType\":\"GENERAL\"},\"assessmentSettings\":{\"enable\":true,\"runImmediately\":true},\"enableAutomaticUpgrade\":false},\"location\":\"vpbttd\",\"tags\":{\"xe\":\"rp\",\"bhjpglkfgohdne\":\"mnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}]}";
+            "{\"value\":[{\"identity\":{\"type\":\"None\"},\"properties\":{\"virtualMachineResourceId\":\"evfiwjmygt\",\"provisioningState\":\"slswtm\",\"sqlImageOffer\":\"riofzpyqse\",\"sqlServerLicenseType\":\"PAYG\",\"sqlManagement\":\"Full\",\"leastPrivilegeMode\":\"Enabled\",\"sqlImageSku\":\"Enterprise\",\"sqlVirtualMachineGroupResourceId\":\"szhedplvw\",\"wsfcDomainCredentials\":{\"clusterBootstrapAccountPassword\":\"fakeClusterBootstrapAccountPasswordPlaceholder\",\"clusterOperatorAccountPassword\":\"fakeClusterOperatorAccountPasswordPlaceholder\",\"sqlServiceAccountPassword\":\"fakeSqlServiceAccountPasswordPlaceholder\"},\"wsfcStaticIp\":\"konzmnsik\",\"autoPatchingSettings\":{\"enable\":true,\"dayOfWeek\":\"Friday\",\"maintenanceWindowStartingHour\":1625673068,\"maintenanceWindowDuration\":1175665004},\"autoBackupSettings\":{\"enable\":true,\"enableEncryption\":true,\"retentionPeriod\":992785532,\"storageAccountUrl\":\"v\",\"storageContainerName\":\"ur\",\"storageAccessKey\":\"fakeStorageAccessKeyPlaceholder\",\"password\":\"fakePasswordPlaceholder\",\"backupSystemDbs\":true,\"backupScheduleType\":\"Automated\",\"fullBackupFrequency\":\"Daily\",\"daysOfWeek\":[],\"fullBackupStartTime\":442330150,\"fullBackupWindowHours\":90744470,\"logBackupFrequency\":299284831},\"keyVaultCredentialSettings\":{\"enable\":true,\"credentialName\":\"iplbpodxunkbebxm\",\"azureKeyVaultUrl\":\"yyntwl\",\"servicePrincipalName\":\"qtkoievs\",\"servicePrincipalSecret\":\"fakeSecretPlaceholder\"},\"serverConfigurationsManagementSettings\":{},\"storageConfigurationSettings\":{\"sqlSystemDbOnDataDisk\":false,\"diskConfigurationType\":\"ADD\",\"storageWorkloadType\":\"GENERAL\"},\"assessmentSettings\":{\"enable\":true,\"runImmediately\":true},\"enableAutomaticUpgrade\":false},\"location\":\"vpbttd\",\"tags\":{\"xe\":\"rp\",\"bhjpglkfgohdne\":\"mnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -85,11 +85,11 @@ public final class SqlVirtualMachinesListTests {
         Assertions.assertEquals("szhedplvw", response.iterator().next().sqlVirtualMachineGroupResourceId());
         Assertions
             .assertEquals(
-                "bmwmbesldnkw", response.iterator().next().wsfcDomainCredentials().clusterBootstrapAccountPassword());
+                "fakeClusterBootstrapAccountPasswordPlaceholder", response.iterator().next().wsfcDomainCredentials().clusterBootstrapAccountPassword());
         Assertions
-            .assertEquals("pp", response.iterator().next().wsfcDomainCredentials().clusterOperatorAccountPassword());
+            .assertEquals("fakeClusterOperatorAccountPasswordPlaceholder", response.iterator().next().wsfcDomainCredentials().clusterOperatorAccountPassword());
         Assertions
-            .assertEquals("lcxog", response.iterator().next().wsfcDomainCredentials().sqlServiceAccountPassword());
+            .assertEquals("fakeSqlServiceAccountPasswordPlaceholder", response.iterator().next().wsfcDomainCredentials().sqlServiceAccountPassword());
         Assertions.assertEquals("konzmnsik", response.iterator().next().wsfcStaticIp());
         Assertions.assertEquals(true, response.iterator().next().autoPatchingSettings().enable());
         Assertions.assertEquals(DayOfWeek.FRIDAY, response.iterator().next().autoPatchingSettings().dayOfWeek());
@@ -103,8 +103,8 @@ public final class SqlVirtualMachinesListTests {
         Assertions.assertEquals(992785532, response.iterator().next().autoBackupSettings().retentionPeriod());
         Assertions.assertEquals("v", response.iterator().next().autoBackupSettings().storageAccountUrl());
         Assertions.assertEquals("ur", response.iterator().next().autoBackupSettings().storageContainerName());
-        Assertions.assertEquals("dkwobdagx", response.iterator().next().autoBackupSettings().storageAccessKey());
-        Assertions.assertEquals("bqdxbx", response.iterator().next().autoBackupSettings().password());
+        Assertions.assertEquals("fakeStorageAccessKeyPlaceholder", response.iterator().next().autoBackupSettings().storageAccessKey());
+        Assertions.assertEquals("fakePasswordPlaceholder", response.iterator().next().autoBackupSettings().password());
         Assertions.assertEquals(true, response.iterator().next().autoBackupSettings().backupSystemDbs());
         Assertions
             .assertEquals(
@@ -122,7 +122,7 @@ public final class SqlVirtualMachinesListTests {
         Assertions
             .assertEquals("qtkoievs", response.iterator().next().keyVaultCredentialSettings().servicePrincipalName());
         Assertions
-            .assertEquals("tgqr", response.iterator().next().keyVaultCredentialSettings().servicePrincipalSecret());
+            .assertEquals("fakeSecretPlaceholder", response.iterator().next().keyVaultCredentialSettings().servicePrincipalSecret());
         Assertions
             .assertEquals(false, response.iterator().next().storageConfigurationSettings().sqlSystemDbOnDataDisk());
         Assertions

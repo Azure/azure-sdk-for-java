@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SimState. */
+/** The state of the SIM resource. */
 public final class SimState extends ExpandableStringEnum<SimState> {
     /** Static value Disabled for SimState. */
     public static final SimState DISABLED = fromString("Disabled");
@@ -18,6 +18,15 @@ public final class SimState extends ExpandableStringEnum<SimState> {
 
     /** Static value Invalid for SimState. */
     public static final SimState INVALID = fromString("Invalid");
+
+    /**
+     * Creates a new instance of SimState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SimState() {
+    }
 
     /**
      * Creates or finds a SimState from its string representation.

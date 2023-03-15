@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;

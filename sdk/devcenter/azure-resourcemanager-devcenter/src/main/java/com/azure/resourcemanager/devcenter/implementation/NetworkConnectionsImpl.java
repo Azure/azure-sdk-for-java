@@ -123,13 +123,12 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         }
     }
 
-    public Response<Void> runHealthChecksWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
-        return this.serviceClient().runHealthChecksWithResponse(resourceGroupName, networkConnectionName, context);
-    }
-
     public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
         this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName);
+    }
+
+    public void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context) {
+        this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName, context);
     }
 
     public NetworkConnection getById(String id) {

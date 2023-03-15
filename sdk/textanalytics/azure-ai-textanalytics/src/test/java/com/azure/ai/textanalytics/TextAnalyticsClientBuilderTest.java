@@ -50,7 +50,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_ENGLISH_LANGUAGE_RESULTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
@@ -59,6 +58,10 @@ import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.textanalytics.TestUtils.HTTP_RESPONSE_EXCEPTION_CLASS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_FRENCH_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SPANISH_SAME_AS_ENGLISH_INPUTS;
+import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.AZURE_TEXT_ANALYTICS_API_KEY;
+import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY;
+import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT;
+import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.AZURE_TEXT_ANALYTICS_ENDPOINT;
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validateKeyPhrases;
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validatePrimaryLanguage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -142,6 +145,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default country hint in client builder for a single document
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/16415133")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -152,6 +156,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default country hint in client builder for a single document
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/16415133")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -162,6 +167,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default country hint in client builder for a batch of documents
      */
+    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/16415133")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultCountryHintForBatchOperation(HttpClient httpClient,
@@ -269,8 +275,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     public void applicationIdFallsBackToLogOptions() {
         TextAnalyticsClient textAnalyticsClient =
             new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(new AzureKeyCredential(getApiKey()))
+                .endpoint(getEndpoint(false))
+                .credential(new AzureKeyCredential(getApiKey(false)))
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
@@ -286,8 +292,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     public void clientOptionsIsPreferredOverLogOptions() {
         TextAnalyticsClient textAnalyticsClient =
             new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(new AzureKeyCredential(getApiKey()))
+                .endpoint(getEndpoint(false))
+                .credential(new AzureKeyCredential(getApiKey(false)))
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
                 .httpClient(httpRequest -> {
@@ -303,8 +309,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     public void clientOptionHeadersAreAddedLast() {
         TextAnalyticsClient textAnalyticsClient =
             new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(new AzureKeyCredential(getApiKey()))
+                .endpoint(getEndpoint(false))
+                .credential(new AzureKeyCredential(getApiKey(false)))
                 .clientOptions(new ClientOptions()
                     .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
@@ -320,24 +326,24 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     void clientBuilderWithValidApiKeyCredentialRunner(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
-        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
-            new AzureKeyCredential(getApiKey()));
+        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
+            getEndpoint(false), new AzureKeyCredential(getApiKey(false)));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
     }
 
     void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
-        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
-            new AzureKeyCredential(INVALID_KEY));
+        final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
+            getEndpoint(false), new AzureKeyCredential(INVALID_KEY));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), HTTP_RESPONSE_EXCEPTION_CLASS);
     }
 
     void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, HttpResponseException>> testRunner) {
-        final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
+        final AzureKeyCredential credential = new AzureKeyCredential(getApiKey(false));
         final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
-            getEndpoint(), credential);
+            getEndpoint(false), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), HTTP_RESPONSE_EXCEPTION_CLASS);
@@ -347,16 +353,17 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
         final TextAnalyticsClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
-            getEndpoint(), credential);
+            getEndpoint(false), credential);
         // Update to valid key
-        credential.update(getApiKey());
+        credential.update(getApiKey(false));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
         final TextAnalyticsClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false)))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
@@ -365,7 +372,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
         final TextAnalyticsClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false)))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
@@ -374,8 +382,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     void clientBuilderWithDefaultCountryHintRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
         testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(),
-                new AzureKeyCredential(getApiKey())).defaultCountryHint("MX"))
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(false),
+                new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS.get(0), DETECT_SPANISH_LANGUAGE_RESULTS.get(0));
     }
 
@@ -384,7 +392,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         Function<TextAnalyticsClientBuilder, BiConsumer<List<String>, List<DetectedLanguage>>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultCountryHint("MX"))
+                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS, DETECT_SPANISH_LANGUAGE_RESULTS);
     }
 
@@ -393,7 +401,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         Function<TextAnalyticsClientBuilder, BiConsumer<List<String>, List<DetectedLanguage>>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultCountryHint("MX"))
+                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultCountryHint("MX"))
             .accept(SPANISH_SAME_AS_ENGLISH_INPUTS, DETECT_ENGLISH_LANGUAGE_RESULTS);
     }
 
@@ -401,7 +409,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         Function<TextAnalyticsClientBuilder, BiConsumer<String, List<String>>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
+                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), Arrays.asList("Bonjour", "monde"));
     }
 
@@ -411,7 +419,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         BiConsumer<List<String>, List<List<String>>>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
+                getEndpoint(false), new AzureKeyCredential(getApiKey(false))).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS,
                 Arrays.asList(Arrays.asList("Bonjour", "monde"), Collections.singletonList("Mondly")));
     }
@@ -421,7 +429,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
 
         final TextAnalyticsClientBuilder clientBuilder =
             new TextAnalyticsClientBuilder()
-                .endpoint(getEndpoint())
+                .endpoint(getEndpoint(false))
                 .pipeline(getHttpPipeline(httpClient))
                 .serviceVersion(serviceVersion);
 
@@ -478,12 +486,6 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         return pipeline;
     }
 
-    String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
-    }
-
     /**
      * Create a client builder with endpoint and API key credential.
      *
@@ -506,13 +508,13 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         return clientBuilder;
     }
 
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
+    String getEndpoint(boolean isStaticResource) {
+        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+            : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
+    }
+
+    String getApiKey(boolean isStaticSource) {
         return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY);
+            : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 }

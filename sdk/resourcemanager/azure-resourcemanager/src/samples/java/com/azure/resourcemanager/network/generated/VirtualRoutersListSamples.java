@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualRouters List. */
 public final class VirtualRoutersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualRouterListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterListBySubscription.json
      */
     /**
      * Sample code: List all Virtual Routers for a given subscription.
@@ -18,6 +16,6 @@ public final class VirtualRoutersListSamples {
      */
     public static void listAllVirtualRoutersForAGivenSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualRouters().list(Context.NONE);
+        azure.networks().manager().serviceClient().getVirtualRouters().list(com.azure.core.util.Context.NONE);
     }
 }

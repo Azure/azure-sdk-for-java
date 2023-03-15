@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.PublicNetworkAccess;
 import com.azure.resourcemanager.machinelearning.models.Workspace;
 
 /** Samples for Workspaces Update. */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/update.json
      */
     /**
      * Sample code: Update Workspace.
@@ -22,7 +21,7 @@ public final class WorkspacesUpdateSamples {
         Workspace resource =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("workspace-1234", "testworkspace", Context.NONE)
+                .getByResourceGroupWithResponse("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

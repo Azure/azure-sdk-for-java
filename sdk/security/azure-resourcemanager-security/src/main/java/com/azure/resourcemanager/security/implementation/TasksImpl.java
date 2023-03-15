@@ -47,15 +47,6 @@ public final class TasksImpl implements Tasks {
         return Utils.mapPage(inner, inner1 -> new SecurityTaskImpl(inner1, this.manager()));
     }
 
-    public SecurityTask getSubscriptionLevelTask(String ascLocation, String taskName) {
-        SecurityTaskInner inner = this.serviceClient().getSubscriptionLevelTask(ascLocation, taskName);
-        if (inner != null) {
-            return new SecurityTaskImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecurityTask> getSubscriptionLevelTaskWithResponse(
         String ascLocation, String taskName, Context context) {
         Response<SecurityTaskInner> inner =
@@ -71,9 +62,13 @@ public final class TasksImpl implements Tasks {
         }
     }
 
-    public void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        this.serviceClient().updateSubscriptionLevelTaskState(ascLocation, taskName, taskUpdateActionType);
+    public SecurityTask getSubscriptionLevelTask(String ascLocation, String taskName) {
+        SecurityTaskInner inner = this.serviceClient().getSubscriptionLevelTask(ascLocation, taskName);
+        if (inner != null) {
+            return new SecurityTaskImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateSubscriptionLevelTaskStateWithResponse(
@@ -81,6 +76,11 @@ public final class TasksImpl implements Tasks {
         return this
             .serviceClient()
             .updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, context);
+    }
+
+    public void updateSubscriptionLevelTaskState(
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        this.serviceClient().updateSubscriptionLevelTaskState(ascLocation, taskName, taskUpdateActionType);
     }
 
     public PagedIterable<SecurityTask> listByResourceGroup(String resourceGroupName, String ascLocation) {
@@ -94,16 +94,6 @@ public final class TasksImpl implements Tasks {
         PagedIterable<SecurityTaskInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, ascLocation, filter, context);
         return Utils.mapPage(inner, inner1 -> new SecurityTaskImpl(inner1, this.manager()));
-    }
-
-    public SecurityTask getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
-        SecurityTaskInner inner =
-            this.serviceClient().getResourceGroupLevelTask(resourceGroupName, ascLocation, taskName);
-        if (inner != null) {
-            return new SecurityTaskImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SecurityTask> getResourceGroupLevelTaskWithResponse(
@@ -123,11 +113,14 @@ public final class TasksImpl implements Tasks {
         }
     }
 
-    public void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        this
-            .serviceClient()
-            .updateResourceGroupLevelTaskState(resourceGroupName, ascLocation, taskName, taskUpdateActionType);
+    public SecurityTask getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
+        SecurityTaskInner inner =
+            this.serviceClient().getResourceGroupLevelTask(resourceGroupName, ascLocation, taskName);
+        if (inner != null) {
+            return new SecurityTaskImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateResourceGroupLevelTaskStateWithResponse(
@@ -140,6 +133,13 @@ public final class TasksImpl implements Tasks {
             .serviceClient()
             .updateResourceGroupLevelTaskStateWithResponse(
                 resourceGroupName, ascLocation, taskName, taskUpdateActionType, context);
+    }
+
+    public void updateResourceGroupLevelTaskState(
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        this
+            .serviceClient()
+            .updateResourceGroupLevelTaskState(resourceGroupName, ascLocation, taskName, taskUpdateActionType);
     }
 
     private TasksClient serviceClient() {

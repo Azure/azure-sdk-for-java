@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSamlSingleSignOnSettings {
     /*
-     * The relative URI the service provider would redirect to after completion
-     * of the single sign-on flow.
+     * The relative URI the service provider would redirect to after completion of the single sign-on flow.
      */
     @JsonProperty(value = "relayState")
     private String relayState;
@@ -26,6 +25,10 @@ public final class MicrosoftGraphSamlSingleSignOnSettings {
      * samlSingleSignOnSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSamlSingleSignOnSettings class. */
+    public MicrosoftGraphSamlSingleSignOnSettings() {
+    }
 
     /**
      * Get the relayState property: The relative URI the service provider would redirect to after completion of the

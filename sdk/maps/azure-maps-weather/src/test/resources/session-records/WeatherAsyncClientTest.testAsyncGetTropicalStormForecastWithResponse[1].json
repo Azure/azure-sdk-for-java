@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 27D252E2183144BA94EEC420C33FDC8D Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:30Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=427",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:26:37 GMT",
+      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/forecasts/json?api-version=1.0&year=2022&basinId=AL&govId=17&windowGeometry=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "14",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 703B5A6867AB473EBC34F5FB58CA6E74 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:30Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=599",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:29:30 GMT",
+      "Body" : "{\"results\":[]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.CatalogSyncState;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,7 +18,13 @@ public final class CatalogProperties extends CatalogUpdateProperties {
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /*
+     * The synchronization state of the catalog.
+     */
+    @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
+    private CatalogSyncState syncState;
 
     /*
      * When the catalog was last synced.
@@ -33,8 +41,17 @@ public final class CatalogProperties extends CatalogUpdateProperties {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the syncState property: The synchronization state of the catalog.
+     *
+     * @return the syncState value.
+     */
+    public CatalogSyncState syncState() {
+        return this.syncState;
     }
 
     /**

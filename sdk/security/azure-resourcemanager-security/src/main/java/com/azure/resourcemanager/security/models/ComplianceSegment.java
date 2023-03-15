@@ -22,6 +22,10 @@ public final class ComplianceSegment {
     @JsonProperty(value = "percentage", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentage;
 
+    /** Creates an instance of ComplianceSegment class. */
+    public ComplianceSegment() {
+    }
+
     /**
      * Get the segmentType property: The segment type, e.g. compliant, non-compliance, insufficient coverage, N/A, etc.
      *

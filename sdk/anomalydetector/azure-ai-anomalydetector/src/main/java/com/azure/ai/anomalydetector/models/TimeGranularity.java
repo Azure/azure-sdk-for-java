@@ -51,6 +51,9 @@ public enum TimeGranularity {
      */
     @JsonCreator
     public static TimeGranularity fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TimeGranularity[] items = TimeGranularity.values();
         for (TimeGranularity item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +63,7 @@ public enum TimeGranularity {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

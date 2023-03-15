@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceType. */
+/** Data source type. */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /** Static value Dataset for SourceType. */
     public static final SourceType DATASET = fromString("Dataset");
@@ -18,6 +18,15 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /** Static value URI for SourceType. */
     public static final SourceType URI = fromString("URI");
+
+    /**
+     * Creates a new instance of SourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceType() {
+    }
 
     /**
      * Creates or finds a SourceType from its string representation.

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.models.KeyName;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 
 /** Samples for Accounts RegenerateKey. */
 public final class AccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/RegenerateKey.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Keys.
@@ -22,6 +21,9 @@ public final class AccountsRegenerateKeySamples {
         manager
             .accounts()
             .regenerateKeyWithResponse(
-                "myResourceGroup", "myAccount", new RegenerateKeyParameters().withKeyName(KeyName.KEY2), Context.NONE);
+                "myResourceGroup",
+                "myAccount",
+                new RegenerateKeyParameters().withKeyName(KeyName.KEY2),
+                com.azure.core.util.Context.NONE);
     }
 }

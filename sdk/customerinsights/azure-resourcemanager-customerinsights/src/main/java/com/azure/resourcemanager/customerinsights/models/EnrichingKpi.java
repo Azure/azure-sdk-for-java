@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Map;
 
 /** The enriching KPI definition. */
-@Immutable
+@Fluent
 public final class EnrichingKpi extends KpiDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichingKpi.class);
+    /** Creates an instance of EnrichingKpi class. */
+    public EnrichingKpi() {
+    }
 
     /** {@inheritDoc} */
     @Override

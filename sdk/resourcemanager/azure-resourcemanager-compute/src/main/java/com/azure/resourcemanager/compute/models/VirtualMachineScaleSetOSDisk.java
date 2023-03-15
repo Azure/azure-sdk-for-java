@@ -89,6 +89,10 @@ public final class VirtualMachineScaleSetOSDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
+    /** Creates an instance of VirtualMachineScaleSetOSDisk class. */
+    public VirtualMachineScaleSetOSDisk() {
+    }
+
     /**
      * Get the name property: The disk name.
      *

@@ -35,6 +35,10 @@ public final class CloudServiceNetworkProfile {
     @JsonProperty(value = "swappableCloudService")
     private SubResource swappableCloudService;
 
+    /** Creates an instance of CloudServiceNetworkProfile class. */
+    public CloudServiceNetworkProfile() {
+    }
+
     /**
      * Get the loadBalancerConfigurations property: List of Load balancer configurations. Cloud service can have up to
      * two load balancer configurations, corresponding to a Public Load Balancer and an Internal Load Balancer.

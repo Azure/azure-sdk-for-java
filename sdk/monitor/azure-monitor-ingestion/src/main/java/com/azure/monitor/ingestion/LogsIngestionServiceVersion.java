@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum LogsIngestionServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code v1}.
+     * Service version {@code 2023-01-01}.
      */
-    V2021_11_01_PREVIEW("2021-11-01-preview");
+    V2023_01_01("2023-01-01");
 
     String version;
 
@@ -29,7 +29,7 @@ public enum LogsIngestionServiceVersion implements ServiceVersion {
      * @return The latest supported service version by this library.
      */
     public static LogsIngestionServiceVersion getLatest() {
-        return V2021_11_01_PREVIEW;
+        return V2023_01_01;
     }
 
     @Override

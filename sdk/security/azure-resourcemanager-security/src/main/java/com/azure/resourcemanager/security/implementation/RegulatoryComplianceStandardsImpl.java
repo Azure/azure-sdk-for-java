@@ -38,15 +38,6 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
         return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
     }
 
-    public RegulatoryComplianceStandard get(String regulatoryComplianceStandardName) {
-        RegulatoryComplianceStandardInner inner = this.serviceClient().get(regulatoryComplianceStandardName);
-        if (inner != null) {
-            return new RegulatoryComplianceStandardImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegulatoryComplianceStandard> getWithResponse(
         String regulatoryComplianceStandardName, Context context) {
         Response<RegulatoryComplianceStandardInner> inner =
@@ -57,6 +48,15 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegulatoryComplianceStandardImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegulatoryComplianceStandard get(String regulatoryComplianceStandardName) {
+        RegulatoryComplianceStandardInner inner = this.serviceClient().get(regulatoryComplianceStandardName);
+        if (inner != null) {
+            return new RegulatoryComplianceStandardImpl(inner, this.manager());
         } else {
             return null;
         }

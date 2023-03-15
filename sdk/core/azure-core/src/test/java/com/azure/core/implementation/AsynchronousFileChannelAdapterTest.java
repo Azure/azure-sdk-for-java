@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,24 +36,36 @@ public class AsynchronousFileChannelAdapterTest {
 
     @Test
     public void closeDelegates() throws IOException {
-        AsynchronousFileChannel fileChannelMock = Mockito.mock(AsynchronousFileChannel.class);
+        AtomicInteger closeCalls = new AtomicInteger();
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel() {
+            @Override
+            public void close() throws IOException {
+                closeCalls.incrementAndGet();
+                super.close();
+            }
+        };
         AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(fileChannelMock, 0);
 
         channel.close();
 
-        Mockito.verify(fileChannelMock).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @Test
-    public void isOpenDelegates() throws IOException {
-        AsynchronousFileChannel fileChannelMock = Mockito.mock(AsynchronousFileChannel.class);
+    public void isOpenDelegates() {
+        AtomicInteger openCalls = new AtomicInteger();
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel() {
+            @Override
+            public boolean isOpen() {
+                return openCalls.getAndIncrement() == 0;
+            }
+        };
         AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(fileChannelMock, 0);
-        Mockito.when(fileChannelMock.isOpen()).thenReturn(true, false);
 
         assertTrue(channel.isOpen());
         assertFalse(channel.isOpen());
 
-        Mockito.verify(fileChannelMock, Mockito.times(2)).isOpen();
+        assertEquals(2, openCalls.get());
     }
 
     @Test
@@ -265,7 +278,7 @@ public class AsynchronousFileChannelAdapterTest {
     @Test
     public void doesNotAllowConcurrentOperations() {
         // Mock is no-op. It will not complete operations.
-        AsynchronousFileChannel fileChannelMock = Mockito.mock(AsynchronousFileChannel.class);
+        AsynchronousFileChannel fileChannelMock = new MockAsynchronousFileChannel();
         ByteBuffer buffer = ByteBuffer.allocate(0);
 
         {

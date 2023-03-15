@@ -4,9 +4,13 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
+import com.azure.core.implementation.util.MyFileContent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -29,7 +33,6 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -43,12 +46,10 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,13 +74,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link BinaryData}.
@@ -406,6 +400,17 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void createFromListByteBuffer() {
+
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final List<ByteBuffer> list = Arrays.asList(ByteBuffer.wrap(data), ByteBuffer.wrap(data));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+
+        BinaryData binaryData = BinaryData.fromListByteBuffer(list);
+        assertArrayEquals(expected, binaryData.toBytes());
+    }
+
+    @Test
     public void toReadOnlyByteBufferThrowsOnMutation() {
         BinaryData binaryData = BinaryData.fromString("Hello");
 
@@ -491,70 +496,67 @@ public class BinaryDataTest {
         assertThrows(UncheckedIOException.class, () -> BinaryData.fromFile(notARealPath));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void fileChannelCloseErrorReturnsReactively() throws IOException {
-        AsynchronousFileChannel myFileChannel = mock(AsynchronousFileChannel.class);
-        doAnswer(invocationOnMock -> {
-            CompletionHandler<Integer, ByteBuffer> completionHandler =
-                invocationOnMock.getArgument(3, CompletionHandler.class);
-            // -1 means EOF.
-            completionHandler.completed(-1, null);
-            return null;
-        }).when(myFileChannel).read(any(), anyLong(), any(), any());
-        doThrow(new IOException("kaboom")).when(myFileChannel).close();
+    public void fileChannelCloseErrorReturnsReactively() {
+        AtomicInteger closeCalls = new AtomicInteger();
+        AsynchronousFileChannel myFileChannel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void read(ByteBuffer dst, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                // -1 means EOF.
+                handler.completed(-1, attachment);
+            }
 
-        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
-        when(fileSystemProvider.newAsynchronousFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+            @Override
+            public void close() throws IOException {
+                closeCalls.incrementAndGet();
+                throw new IOException("kaboom");
+            }
+        };
 
-        FileSystem fileSystem = mock(FileSystem.class);
-        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+        FileContent fileContent = new MyFileContent(null, 8192, 0, 1024) {
+            @Override
+            public AsynchronousFileChannel openAsynchronousFileChannel() {
+                return myFileChannel;
+            }
+        };
 
-        Path path = mock(Path.class);
-        when(path.getFileSystem()).thenReturn(fileSystem);
-        File file = mock(File.class);
-        when(file.length()).thenReturn(1024L);
-        when(file.exists()).thenReturn(true);
-        when(path.toFile()).thenReturn(file);
-
-        BinaryData binaryData = BinaryData.fromFile(path);
+        BinaryData binaryData = BinaryDataHelper.createBinaryData(fileContent);
         StepVerifier.create(binaryData.toFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));
-        verify(myFileChannel).close();
+        assertEquals(1, closeCalls.get());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void fileChannelIsClosedWhenReadErrors() throws IOException {
-        AsynchronousFileChannel myFileChannel = mock(AsynchronousFileChannel.class);
-        doAnswer(invocationOnMock -> {
-            CompletionHandler<Integer, ByteBuffer> completionHandler =
-                invocationOnMock.getArgument(3, CompletionHandler.class);
-            // -1 means EOF.
-            completionHandler.failed(new IOException("kaboom"), null);
-            return null;
-        }).when(myFileChannel).read(any(), anyLong(), any(), any());
+    public void fileChannelIsClosedWhenReadErrors() {
+        AtomicInteger closeCalls = new AtomicInteger();
+        AsynchronousFileChannel myFileChannel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void read(ByteBuffer dst, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                handler.failed(new IOException("kaboom"), attachment);
+            }
 
-        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
-        when(fileSystemProvider.newAsynchronousFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+            @Override
+            public void close() {
+                closeCalls.incrementAndGet();
+            }
+        };
 
-        FileSystem fileSystem = mock(FileSystem.class);
-        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+        FileContent fileContent = new MyFileContent(null, 8192, 0, 1024) {
+            @Override
+            public AsynchronousFileChannel openAsynchronousFileChannel() {
+                return myFileChannel;
+            }
+        };
 
-        Path path = mock(Path.class);
-        when(path.getFileSystem()).thenReturn(fileSystem);
-        File file = mock(File.class);
-        when(file.length()).thenReturn(1024L);
-        when(file.exists()).thenReturn(true);
-        when(path.toFile()).thenReturn(file);
-
-        BinaryData binaryData = BinaryData.fromFile(path);
+        BinaryData binaryData = BinaryDataHelper.createBinaryData(fileContent);
         StepVerifier.create(binaryData.toFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));
 
-        verify(myFileChannel).close();
+        assertEquals(1, closeCalls.get());
     }
 
     @Test

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IpAllocations GetByResourceGroup. */
 public final class IpAllocationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/IpAllocationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/IpAllocationGet.json
      */
     /**
      * Sample code: Get IpAllocation.
@@ -22,6 +20,6 @@ public final class IpAllocationsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getIpAllocations()
-            .getByResourceGroupWithResponse("rg1", "test-ipallocation", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-ipallocation", null, com.azure.core.util.Context.NONE);
     }
 }

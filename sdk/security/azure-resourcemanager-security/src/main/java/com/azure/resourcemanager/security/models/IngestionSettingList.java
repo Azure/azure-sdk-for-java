@@ -24,6 +24,10 @@ public final class IngestionSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IngestionSettingList class. */
+    public IngestionSettingList() {
+    }
+
     /**
      * Get the value property: List of ingestion settings.
      *

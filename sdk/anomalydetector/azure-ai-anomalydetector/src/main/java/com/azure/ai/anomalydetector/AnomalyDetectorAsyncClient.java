@@ -5,399 +5,1120 @@
 package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl;
-import com.azure.ai.anomalydetector.models.AnomalyDetectorErrorException;
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
-import com.azure.ai.anomalydetector.models.DetectAnomalyResponse;
-import com.azure.ai.anomalydetector.models.DetectRequest;
-import com.azure.ai.anomalydetector.models.DetectionRequest;
-import com.azure.ai.anomalydetector.models.DetectionResult;
-import com.azure.ai.anomalydetector.models.EntireDetectResponse;
-import com.azure.ai.anomalydetector.models.ErrorResponseException;
-import com.azure.ai.anomalydetector.models.LastDetectResponse;
-import com.azure.ai.anomalydetector.models.LastDetectionRequest;
-import com.azure.ai.anomalydetector.models.LastDetectionResult;
-import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
 import com.azure.ai.anomalydetector.models.ModelInfo;
-import com.azure.ai.anomalydetector.models.ModelSnapshot;
-import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
+import com.azure.ai.anomalydetector.models.MultivariateBatchDetectionOptions;
+import com.azure.ai.anomalydetector.models.MultivariateDetectionResult;
+import com.azure.ai.anomalydetector.models.MultivariateLastDetectionOptions;
+import com.azure.ai.anomalydetector.models.MultivariateLastDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.StreamResponse;
-import java.nio.ByteBuffer;
-import java.util.UUID;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AnomalyDetectorClient type. */
 @ServiceClient(builder = AnomalyDetectorClientBuilder.class, isAsync = true)
 public final class AnomalyDetectorAsyncClient {
-    private final AnomalyDetectorClientImpl serviceClient;
+    @Generated private final AnomalyDetectorClientImpl serviceClient;
 
     /**
-     * Initializes an instance of AnomalyDetectorClient client.
+     * Initializes an instance of AnomalyDetectorAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     AnomalyDetectorAsyncClient(AnomalyDetectorClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * This operation generates a model with an entire series, each point is detected with the same model. With this
+     * Detect anomalies for the entire series in batch.
+     *
+     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     series (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Optional)
+     *             value: double (Required)
+     *         }
+     *     ]
+     *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
+     *     customInterval: Integer (Optional)
+     *     period: Integer (Optional)
+     *     maxAnomalyRatio: Double (Optional)
+     *     sensitivity: Integer (Optional)
+     *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
+     *     imputeFixedValue: Double (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     period: int (Required)
+     *     expectedValues (Required): [
+     *         double (Required)
+     *     ]
+     *     upperMargins (Required): [
+     *         double (Required)
+     *     ]
+     *     lowerMargins (Required): [
+     *         double (Required)
+     *     ]
+     *     isAnomaly (Required): [
+     *         boolean (Required)
+     *     ]
+     *     isNegativeAnomaly (Required): [
+     *         boolean (Required)
+     *     ]
+     *     isPositiveAnomaly (Required): [
+     *         boolean (Required)
+     *     ]
+     *     severity (Optional): [
+     *         double (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param options Method of univariate anomaly detection.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response of entire anomaly detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponse(DetectRequest body) {
-        return this.serviceClient.detectEntireSeriesWithResponseAsync(body);
+    public Mono<Response<BinaryData>> detectUnivariateEntireSeriesWithResponse(
+            BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.detectUnivariateEntireSeriesWithResponseAsync(options, requestOptions);
     }
 
     /**
-     * This operation generates a model with an entire series, each point is detected with the same model. With this
+     * Detect anomaly status of the latest point in time series.
+     *
+     * <p>This operation generates a model using the points that you sent into the API, and based on all data to
+     * determine whether the last point is anomalous.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     series (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Optional)
+     *             value: double (Required)
+     *         }
+     *     ]
+     *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Optional)
+     *     customInterval: Integer (Optional)
+     *     period: Integer (Optional)
+     *     maxAnomalyRatio: Double (Optional)
+     *     sensitivity: Integer (Optional)
+     *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
+     *     imputeFixedValue: Double (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     period: int (Required)
+     *     suggestedWindow: int (Required)
+     *     expectedValue: double (Required)
+     *     upperMargin: double (Required)
+     *     lowerMargin: double (Required)
+     *     isAnomaly: boolean (Required)
+     *     isNegativeAnomaly: boolean (Required)
+     *     isPositiveAnomaly: boolean (Required)
+     *     severity: Double (Optional)
+     * }
+     * }</pre>
+     *
+     * @param options Method of univariate anomaly detection.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response of last anomaly detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectUnivariateLastPointWithResponse(
+            BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.detectUnivariateLastPointWithResponseAsync(options, requestOptions);
+    }
+
+    /**
+     * Detect change point for the entire series
+     *
+     * <p>Evaluate change point score of every series point.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     series (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Optional)
+     *             value: double (Required)
+     *         }
+     *     ]
+     *     granularity: String(yearly/monthly/weekly/daily/hourly/minutely/secondly/microsecond/none) (Required)
+     *     customInterval: Integer (Optional)
+     *     period: Integer (Optional)
+     *     stableTrendWindow: Integer (Optional)
+     *     threshold: Double (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     period: Integer (Optional)
+     *     isChangePoint (Optional): [
+     *         boolean (Optional)
+     *     ]
+     *     confidenceScores (Optional): [
+     *         double (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param options Method of univariate anomaly detection.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response of change point detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectUnivariateChangePointWithResponse(
+            BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.detectUnivariateChangePointWithResponseAsync(options, requestOptions);
+    }
+
+    /**
+     * Get Multivariate Anomaly Detection Result
+     *
+     * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
+     * BatchDetectAnomaly api.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resultId: String (Required)
+     *     summary (Required): {
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Required)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         variableStates (Optional): [
+     *              (Optional){
+     *                 variable: String (Optional)
+     *                 filledNARatio: Double (Optional)
+     *                 effectiveCount: Integer (Optional)
+     *                 firstTimestamp: OffsetDateTime (Optional)
+     *                 lastTimestamp: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         setupInfo (Required): {
+     *             dataSource: String (Required)
+     *             topContributorCount: int (Required)
+     *             startTime: OffsetDateTime (Required)
+     *             endTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     results (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Required)
+     *             value (Optional): {
+     *                 isAnomaly: boolean (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
+     *                 interpretation (Optional): [
+     *                      (Optional){
+     *                         variable: String (Optional)
+     *                         contributionScore: Double (Optional)
+     *                         correlationChanges (Optional): {
+     *                             changedVariables (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *             errors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param resultId ID of a batch detection result.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detection results for the given resultId along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMultivariateBatchDetectionResultWithResponse(
+            String resultId, RequestOptions requestOptions) {
+        return this.serviceClient.getMultivariateBatchDetectionResultWithResponseAsync(resultId, requestOptions);
+    }
+
+    /**
+     * Train a Multivariate Anomaly Detection Model
+     *
+     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
+     * indicate an externally accessible Azure blob storage URI.There are two types of data input: An URI pointed to an
+     * Azure blob storage folder which contains multiple CSV files, and each CSV file contains two columns, timestamp
+     * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
+     * variables and a timestamp column.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     dataSource: String (Required)
+     *     dataSchema: String(OneTable/MultiTable) (Optional)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     *     displayName: String (Optional)
+     *     slidingWindow: Integer (Optional)
+     *     alignPolicy (Optional): {
+     *         alignMode: String(Inner/Outer) (Optional)
+     *         fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *         paddingValue: Double (Optional)
+     *     }
+     *     status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *     errors (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *         }
+     *     ]
+     *     diagnosticsInfo (Optional): {
+     *         modelState (Optional): {
+     *             epochIds (Optional): [
+     *                 int (Optional)
+     *             ]
+     *             trainLosses (Optional): [
+     *                 double (Optional)
+     *             ]
+     *             validationLosses (Optional): [
+     *                 double (Optional)
+     *             ]
+     *             latenciesInSeconds (Optional): [
+     *                 double (Optional)
+     *             ]
+     *         }
+     *         variableStates (Optional): [
+     *              (Optional){
+     *                 variable: String (Optional)
+     *                 filledNARatio: Double (Optional)
+     *                 effectiveCount: Integer (Optional)
+     *                 firstTimestamp: OffsetDateTime (Optional)
+     *                 lastTimestamp: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Double (Optional)
+     *         }
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Double (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param modelInfo Model information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response of getting a model along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> trainMultivariateModelWithResponse(
+            BinaryData modelInfo, RequestOptions requestOptions) {
+        return this.serviceClient.trainMultivariateModelWithResponseAsync(modelInfo, requestOptions);
+    }
+
+    /**
+     * List Multivariate Models
+     *
+     * <p>List models of a resource.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>Skip indicates how many models will be skipped.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Top indicates how many models will be fetched.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Double (Optional)
+     *         }
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Double (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response of listing models as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMultivariateModels(RequestOptions requestOptions) {
+        return this.serviceClient.listMultivariateModelsAsync(requestOptions);
+    }
+
+    /**
+     * Delete Multivariate Model
+     *
+     * <p>Delete an existing multivariate model according to the modelId.
+     *
+     * @param modelId Model identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteMultivariateModelWithResponse(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteMultivariateModelWithResponseAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Get Multivariate Model
+     *
+     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Double (Optional)
+     *         }
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     double (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Double (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param modelId Model identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed information of multivariate model, including the training status and variables used in the model
+     *     along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMultivariateModelWithResponse(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.getMultivariateModelWithResponseAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
+     * schema should be the same with the training request. The request will complete asynchronously and return a
+     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
+     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
+     * storage.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     dataSource: String (Required)
+     *     topContributorCount: int (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resultId: String (Required)
+     *     summary (Required): {
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Required)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         variableStates (Optional): [
+     *              (Optional){
+     *                 variable: String (Optional)
+     *                 filledNARatio: Double (Optional)
+     *                 effectiveCount: Integer (Optional)
+     *                 firstTimestamp: OffsetDateTime (Optional)
+     *                 lastTimestamp: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         setupInfo (Required): {
+     *             dataSource: String (Required)
+     *             topContributorCount: int (Required)
+     *             startTime: OffsetDateTime (Required)
+     *             endTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     results (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Required)
+     *             value (Optional): {
+     *                 isAnomaly: boolean (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
+     *                 interpretation (Optional): [
+     *                      (Optional){
+     *                         variable: String (Optional)
+     *                         contributionScore: Double (Optional)
+     *                         correlationChanges (Optional): {
+     *                             changedVariables (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *             errors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param modelId Model identifier.
+     * @param options Request of multivariate anomaly detection.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detection results for the given resultId along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectMultivariateBatchAnomalyWithResponse(
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.detectMultivariateBatchAnomalyWithResponseAsync(modelId, options, requestOptions);
+    }
+
+    /**
+     * Detect anomalies in the last point of the request body
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, and the
+     * inference data should be put into request body in a JSON format. The request will complete synchronously and
+     * return the detection immediately in the response body.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     variables (Required): [
+     *          (Required){
+     *             variable: String (Required)
+     *             timestamps (Required): [
+     *                 String (Required)
+     *             ]
+     *             values (Required): [
+     *                 double (Required)
+     *             ]
+     *         }
+     *     ]
+     *     topContributorCount: int (Required)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     variableStates (Optional): [
+     *          (Optional){
+     *             variable: String (Optional)
+     *             filledNARatio: Double (Optional)
+     *             effectiveCount: Integer (Optional)
+     *             firstTimestamp: OffsetDateTime (Optional)
+     *             lastTimestamp: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     results (Optional): [
+     *          (Optional){
+     *             timestamp: OffsetDateTime (Required)
+     *             value (Optional): {
+     *                 isAnomaly: boolean (Required)
+     *                 severity: double (Required)
+     *                 score: double (Required)
+     *                 interpretation (Optional): [
+     *                      (Optional){
+     *                         variable: String (Optional)
+     *                         contributionScore: Double (Optional)
+     *                         correlationChanges (Optional): {
+     *                             changedVariables (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *             errors (Optional): [
+     *                  (Optional){
+     *                     code: String (Required)
+     *                     message: String (Required)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param modelId Model identifier.
+     * @param options Request of last detection.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of last detection along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectMultivariateLastAnomalyWithResponse(
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.detectMultivariateLastAnomalyWithResponseAsync(modelId, options, requestOptions);
+    }
+
+    /**
+     * Detect anomalies for the entire series in batch.
+     *
+     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
+     * @return the response of entire anomaly detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntireDetectResponse> detectEntireSeries(DetectRequest body) {
-        return this.serviceClient.detectEntireSeriesAsync(body);
+    public Mono<UnivariateEntireDetectionResult> detectUnivariateEntireSeries(UnivariateDetectionOptions options) {
+        // Generated convenience method for detectUnivariateEntireSeriesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateEntireSeriesWithResponse(BinaryData.fromObject(options), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(UnivariateEntireDetectionResult.class));
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
-     * scenario of real-time monitoring of business metrics.
+     * Detect anomaly status of the latest point in time series.
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * <p>This operation generates a model using the points that you sent into the API, and based on all data to
+     * determine whether the last point is anomalous.
+     *
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
+     * @return the response of last anomaly detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LastDetectResponse>> detectLastPointWithResponse(DetectRequest body) {
-        return this.serviceClient.detectLastPointWithResponseAsync(body);
+    public Mono<UnivariateLastDetectionResult> detectUnivariateLastPoint(UnivariateDetectionOptions options) {
+        // Generated convenience method for detectUnivariateLastPointWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateLastPointWithResponse(BinaryData.fromObject(options), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(UnivariateLastDetectionResult.class));
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
-     * scenario of real-time monitoring of business metrics.
+     * Detect change point for the entire series
      *
-     * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
+     * <p>Evaluate change point score of every series point.
+     *
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
+     * @return the response of change point detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LastDetectResponse> detectLastPoint(DetectRequest body) {
-        return this.serviceClient.detectLastPointAsync(body);
+    public Mono<UnivariateChangePointDetectionResult> detectUnivariateChangePoint(
+            UnivariateChangePointDetectionOptions options) {
+        // Generated convenience method for detectUnivariateChangePointWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectUnivariateChangePointWithResponse(BinaryData.fromObject(options), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(UnivariateChangePointDetectionResult.class));
     }
 
     /**
-     * Evaluate change point score of every series point.
+     * Get Multivariate Anomaly Detection Result
      *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
+     * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
+     * BatchDetectAnomaly api.
+     *
+     * @param resultId ID of a batch detection result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
+     * @return detection results for the given resultId on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponse(ChangePointDetectRequest body) {
-        return this.serviceClient.detectChangePointWithResponseAsync(body);
+    public Mono<MultivariateDetectionResult> getMultivariateBatchDetectionResult(String resultId) {
+        // Generated convenience method for getMultivariateBatchDetectionResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMultivariateBatchDetectionResultWithResponse(resultId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(MultivariateDetectionResult.class));
     }
 
     /**
-     * Evaluate change point score of every series point.
+     * Train a Multivariate Anomaly Detection Model
      *
-     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
-     *     request if needed.
+     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
+     * indicate an externally accessible Azure blob storage URI.There are two types of data input: An URI pointed to an
+     * Azure blob storage folder which contains multiple CSV files, and each CSV file contains two columns, timestamp
+     * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
+     * variables and a timestamp column.
+     *
+     * @param modelInfo Model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
+     * @return response of getting a model on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChangePointDetectResponse> detectChangePoint(ChangePointDetectRequest body) {
-        return this.serviceClient.detectChangePointAsync(body);
+    public Mono<AnomalyDetectionModel> trainMultivariateModel(ModelInfo modelInfo) {
+        // Generated convenience method for trainMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return trainMultivariateModelWithResponse(BinaryData.fromObject(modelInfo), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AnomalyDetectionModel.class));
     }
 
     /**
-     * Create and train a multivariate anomaly detection model. The request must include a source parameter to indicate
-     * an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series used in
-     * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
-     * the first column is timestamp and the second column is value.
+     * List Multivariate Models
      *
-     * @param body Training request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainMultivariateModelResponse> trainMultivariateModelWithResponse(ModelInfo body) {
-        return this.serviceClient.trainMultivariateModelWithResponseAsync(body);
-    }
-
-    /**
-     * Create and train a multivariate anomaly detection model. The request must include a source parameter to indicate
-     * an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series used in
-     * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
-     * the first column is timestamp and the second column is value.
+     * <p>List models of a resource.
      *
-     * @param body Training request.
+     * @param skip Skip indicates how many models will be skipped.
+     * @param top Top indicates how many models will be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> trainMultivariateModel(ModelInfo body) {
-        return this.serviceClient.trainMultivariateModelAsync(body);
-    }
-
-    /**
-     * List models of a subscription.
-     *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
+     * @return response of listing models as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelSinglePage(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModelSinglePageAsync(skip, top);
+    PagedFlux<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
+        // Generated convenience method for listMultivariateModels
+        RequestOptions requestOptions = new RequestOptions();
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip));
+        }
+        if (top != null) {
+            requestOptions.addQueryParam("top", String.valueOf(top));
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listMultivariateModels(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, AnomalyDetectionModel>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    AnomalyDetectionModel.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
-     * List models of a subscription.
+     * List Multivariate Models
      *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * <p>List models of a resource.
+     *
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
+     * @return response of listing models as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModelAsync(skip, top);
+    public PagedFlux<AnomalyDetectionModel> listMultivariateModels() {
+        // Generated convenience method for listMultivariateModels
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listMultivariateModels(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, AnomalyDetectionModel>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    AnomalyDetectionModel.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
-     * Get detailed information of multivariate model, including the training status and variables used in the model.
+     * Delete Multivariate Model
+     *
+     * <p>Delete an existing multivariate model according to the modelId.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Model>> getMultivariateModelWithResponse(UUID modelId) {
-        return this.serviceClient.getMultivariateModelWithResponseAsync(modelId);
+    public Mono<Void> deleteMultivariateModel(String modelId) {
+        // Generated convenience method for deleteMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteMultivariateModelWithResponse(modelId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Get detailed information of multivariate model, including the training status and variables used in the model.
+     * Get Multivariate Model
+     *
+     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
+     * @return detailed information of multivariate model, including the training status and variables used in the model
+     *     on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Model> getMultivariateModel(UUID modelId) {
-        return this.serviceClient.getMultivariateModelAsync(modelId);
+    public Mono<AnomalyDetectionModel> getMultivariateModel(String modelId) {
+        // Generated convenience method for getMultivariateModelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMultivariateModelWithResponse(modelId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AnomalyDetectionModel.class));
     }
 
     /**
-     * Delete an existing multivariate model according to the modelId.
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
+     * schema should be the same with the training request. The request will complete asynchronously and return a
+     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
+     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
+     * storage.
      *
      * @param modelId Model identifier.
+     * @param options Request of multivariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return detection results for the given resultId on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteMultivariateModelWithResponse(UUID modelId) {
-        return this.serviceClient.deleteMultivariateModelWithResponseAsync(modelId);
+    public Mono<MultivariateDetectionResult> detectMultivariateBatchAnomaly(
+            String modelId, MultivariateBatchDetectionOptions options) {
+        // Generated convenience method for detectMultivariateBatchAnomalyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectMultivariateBatchAnomalyWithResponse(modelId, BinaryData.fromObject(options), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(MultivariateDetectionResult.class));
     }
 
     /**
-     * Delete an existing multivariate model according to the modelId.
+     * Detect anomalies in the last point of the request body
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, and the
+     * inference data should be put into request body in a JSON format. The request will complete synchronously and
+     * return the detection immediately in the response body.
      *
      * @param modelId Model identifier.
+     * @param options Request of last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return results of last detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteMultivariateModel(UUID modelId) {
-        return this.serviceClient.deleteMultivariateModelAsync(modelId);
-    }
-
-    /**
-     * Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the same
-     * with the training request. Thus request will be complete asynchronously and will return a resultId for querying
-     * the detection result.The request should be a source link to indicate an externally accessible Azure storage Uri
-     * (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped into one
-     * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
-     *
-     * @param modelId Model identifier.
-     * @param body Detect anomaly request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectAnomalyResponse> detectAnomalyWithResponse(UUID modelId, DetectionRequest body) {
-        return this.serviceClient.detectAnomalyWithResponseAsync(modelId, body);
-    }
-
-    /**
-     * Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the same
-     * with the training request. Thus request will be complete asynchronously and will return a resultId for querying
-     * the detection result.The request should be a source link to indicate an externally accessible Azure storage Uri
-     * (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped into one
-     * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
-     *
-     * @param modelId Model identifier.
-     * @param body Detect anomaly request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> detectAnomaly(UUID modelId, DetectionRequest body) {
-        return this.serviceClient.detectAnomalyAsync(modelId, body);
-    }
-
-    /**
-     * Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     *
-     * @param resultId Result identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectionResult>> getDetectionResultWithResponse(UUID resultId) {
-        return this.serviceClient.getDetectionResultWithResponseAsync(resultId);
-    }
-
-    /**
-     * Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     *
-     * @param resultId Result identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectionResult> getDetectionResult(UUID resultId) {
-        return this.serviceClient.getDetectionResultAsync(resultId);
-    }
-
-    /**
-     * Export multivariate anomaly detection model based on modelId.
-     *
-     * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> exportModelWithResponse(UUID modelId) {
-        return this.serviceClient.exportModelWithResponseAsync(modelId);
-    }
-
-    /**
-     * Export multivariate anomaly detection model based on modelId.
-     *
-     * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> exportModel(UUID modelId) {
-        return this.serviceClient.exportModelAsync(modelId);
-    }
-
-    /**
-     * Synchronized API for anomaly detection.
-     *
-     * @param modelId Model identifier.
-     * @param body Request for last detection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LastDetectionResult>> lastDetectAnomalyWithResponse(UUID modelId, LastDetectionRequest body) {
-        return this.serviceClient.lastDetectAnomalyWithResponseAsync(modelId, body);
-    }
-
-    /**
-     * Synchronized API for anomaly detection.
-     *
-     * @param modelId Model identifier.
-     * @param body Request for last detection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LastDetectionResult> lastDetectAnomaly(UUID modelId, LastDetectionRequest body) {
-        return this.serviceClient.lastDetectAnomalyAsync(modelId, body);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelNextSinglePage(String nextLink) {
-        return this.serviceClient.listMultivariateModelNextSinglePageAsync(nextLink);
+    public Mono<MultivariateLastDetectionResult> detectMultivariateLastAnomaly(
+            String modelId, MultivariateLastDetectionOptions options) {
+        // Generated convenience method for detectMultivariateLastAnomalyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectMultivariateLastAnomalyWithResponse(modelId, BinaryData.fromObject(options), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(MultivariateLastDetectionResult.class));
     }
 }

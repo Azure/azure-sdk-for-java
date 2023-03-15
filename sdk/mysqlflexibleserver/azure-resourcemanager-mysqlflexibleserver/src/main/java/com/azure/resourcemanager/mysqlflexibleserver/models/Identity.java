@@ -37,6 +37,10 @@ public class Identity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> userAssignedIdentities;
 
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
+
     /**
      * Get the principalId property: ObjectId from the KeyVault.
      *

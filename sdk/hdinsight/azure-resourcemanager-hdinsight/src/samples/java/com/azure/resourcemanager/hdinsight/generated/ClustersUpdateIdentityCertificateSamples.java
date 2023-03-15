@@ -26,7 +26,7 @@ public final class ClustersUpdateIdentityCertificateSamples {
                 new UpdateClusterIdentityCertificateParameters()
                     .withApplicationId("applicationId")
                     .withCertificate("base64encodedcertificate")
-                    .withCertificatePassword("**********"),
+                    .withCertificatePassword("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

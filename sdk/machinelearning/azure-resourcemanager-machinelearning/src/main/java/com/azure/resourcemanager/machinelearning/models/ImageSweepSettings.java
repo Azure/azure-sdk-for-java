@@ -18,17 +18,14 @@ public final class ImageSweepSettings {
     private EarlyTerminationPolicy earlyTermination;
 
     /*
-     * [Required] Limit settings for model sweeping and hyperparameter
-     * sweeping.
-     */
-    @JsonProperty(value = "limits", required = true)
-    private ImageSweepLimitSettings limits;
-
-    /*
      * [Required] Type of the hyperparameter sampling algorithms.
      */
     @JsonProperty(value = "samplingAlgorithm", required = true)
     private SamplingAlgorithmType samplingAlgorithm;
+
+    /** Creates an instance of ImageSweepSettings class. */
+    public ImageSweepSettings() {
+    }
 
     /**
      * Get the earlyTermination property: Type of early termination policy.
@@ -47,26 +44,6 @@ public final class ImageSweepSettings {
      */
     public ImageSweepSettings withEarlyTermination(EarlyTerminationPolicy earlyTermination) {
         this.earlyTermination = earlyTermination;
-        return this;
-    }
-
-    /**
-     * Get the limits property: [Required] Limit settings for model sweeping and hyperparameter sweeping.
-     *
-     * @return the limits value.
-     */
-    public ImageSweepLimitSettings limits() {
-        return this.limits;
-    }
-
-    /**
-     * Set the limits property: [Required] Limit settings for model sweeping and hyperparameter sweeping.
-     *
-     * @param limits the limits value to set.
-     * @return the ImageSweepSettings object itself.
-     */
-    public ImageSweepSettings withLimits(ImageSweepLimitSettings limits) {
-        this.limits = limits;
         return this;
     }
 
@@ -98,13 +75,6 @@ public final class ImageSweepSettings {
     public void validate() {
         if (earlyTermination() != null) {
             earlyTermination().validate();
-        }
-        if (limits() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property limits in model ImageSweepSettings"));
-        } else {
-            limits().validate();
         }
         if (samplingAlgorithm() == null) {
             throw LOGGER

@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkConfiguration class. */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration() {
+    }
+
     /**
      * Get the name property: The network configuration name.
      *

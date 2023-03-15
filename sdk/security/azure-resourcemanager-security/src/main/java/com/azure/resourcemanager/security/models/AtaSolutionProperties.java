@@ -16,6 +16,10 @@ public final class AtaSolutionProperties extends ExternalSecuritySolutionPropert
     @JsonProperty(value = "lastEventReceived")
     private String lastEventReceived;
 
+    /** Creates an instance of AtaSolutionProperties class. */
+    public AtaSolutionProperties() {
+    }
+
     /**
      * Get the lastEventReceived property: The lastEventReceived property.
      *

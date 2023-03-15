@@ -25,6 +25,10 @@ public final class AllowedConnectionsResourceProperties {
     @JsonProperty(value = "connectableResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectableResource> connectableResources;
 
+    /** Creates an instance of AllowedConnectionsResourceProperties class. */
+    public AllowedConnectionsResourceProperties() {
+    }
+
     /**
      * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
      *

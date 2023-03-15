@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PublicIpPrefixes GetByResourceGroup. */
 public final class PublicIpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PublicIpPrefixGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PublicIpPrefixGet.json
      */
     /**
      * Sample code: Get public IP prefix.
@@ -22,6 +20,6 @@ public final class PublicIpPrefixesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPublicIpPrefixes()
-            .getByResourceGroupWithResponse("rg1", "test-ipprefix", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-ipprefix", null, com.azure.core.util.Context.NONE);
     }
 }

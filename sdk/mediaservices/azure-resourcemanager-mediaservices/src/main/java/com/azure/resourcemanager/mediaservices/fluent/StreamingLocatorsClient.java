@@ -59,22 +59,6 @@ public interface StreamingLocatorsClient {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Locator in the Media Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingLocatorInner get(String resourceGroupName, String accountName, String streamingLocatorName);
-
-    /**
-     * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingLocatorName The Streaming Locator name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,22 +70,20 @@ public interface StreamingLocatorsClient {
         String resourceGroupName, String accountName, String streamingLocatorName, Context context);
 
     /**
-     * Create a Streaming Locator
+     * Get a Streaming Locator
      *
-     * <p>Create a Streaming Locator in the Media Services account.
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Locator resource.
+     * @return the details of a Streaming Locator in the Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingLocatorInner create(
-        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters);
+    StreamingLocatorInner get(String resourceGroupName, String accountName, String streamingLocatorName);
 
     /**
      * Create a Streaming Locator
@@ -127,19 +109,22 @@ public interface StreamingLocatorsClient {
         Context context);
 
     /**
-     * Delete a Streaming Locator
+     * Create a Streaming Locator
      *
-     * <p>Deletes a Streaming Locator in the Media Services account.
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Streaming Locator resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String streamingLocatorName);
+    StreamingLocatorInner create(
+        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters);
 
     /**
      * Delete a Streaming Locator
@@ -160,9 +145,9 @@ public interface StreamingLocatorsClient {
         String resourceGroupName, String accountName, String streamingLocatorName, Context context);
 
     /**
-     * List Content Keys
+     * Delete a Streaming Locator
      *
-     * <p>List Content Keys used by this Streaming Locator.
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -170,11 +155,9 @@ public interface StreamingLocatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listContentKeys action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListContentKeysResponseInner listContentKeys(
-        String resourceGroupName, String accountName, String streamingLocatorName);
+    void delete(String resourceGroupName, String accountName, String streamingLocatorName);
 
     /**
      * List Content Keys
@@ -195,9 +178,9 @@ public interface StreamingLocatorsClient {
         String resourceGroupName, String accountName, String streamingLocatorName, Context context);
 
     /**
-     * List Paths
+     * List Content Keys
      *
-     * <p>List Paths supported by this Streaming Locator.
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -205,10 +188,11 @@ public interface StreamingLocatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listPaths action.
+     * @return class of response for listContentKeys action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListPathsResponseInner listPaths(String resourceGroupName, String accountName, String streamingLocatorName);
+    ListContentKeysResponseInner listContentKeys(
+        String resourceGroupName, String accountName, String streamingLocatorName);
 
     /**
      * List Paths
@@ -227,4 +211,20 @@ public interface StreamingLocatorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ListPathsResponseInner> listPathsWithResponse(
         String resourceGroupName, String accountName, String streamingLocatorName, Context context);
+
+    /**
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingLocatorName The Streaming Locator name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class of response for listPaths action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListPathsResponseInner listPaths(String resourceGroupName, String accountName, String streamingLocatorName);
 }

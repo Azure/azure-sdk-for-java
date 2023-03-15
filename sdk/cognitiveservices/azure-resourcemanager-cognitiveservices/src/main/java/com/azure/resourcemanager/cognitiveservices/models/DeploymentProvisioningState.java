@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentProvisioningState. */
+/** Gets the status of the resource at the time the operation was called. */
 public final class DeploymentProvisioningState extends ExpandableStringEnum<DeploymentProvisioningState> {
     /** Static value Accepted for DeploymentProvisioningState. */
     public static final DeploymentProvisioningState ACCEPTED = fromString("Accepted");
@@ -27,6 +27,15 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
 
     /** Static value Succeeded for DeploymentProvisioningState. */
     public static final DeploymentProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Creates a new instance of DeploymentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentProvisioningState() {
+    }
 
     /**
      * Creates or finds a DeploymentProvisioningState from its string representation.

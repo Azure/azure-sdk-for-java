@@ -58,6 +58,10 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     @JsonProperty(value = "timeWindowSize", required = true)
     private Duration timeWindowSize;
 
+    /** Creates an instance of TimeWindowCustomAlertRule class. */
+    public TimeWindowCustomAlertRule() {
+    }
+
     /**
      * Get the timeWindowSize property: The time window size in iso8601 format.
      *

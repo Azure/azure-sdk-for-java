@@ -10,25 +10,24 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecove
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusProvisionIlrExtendedInfo;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationStatusProvisionIlrExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationStatusProvisionIlrExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"OperationStatusProvisionILRExtendedInfo\",\"recoveryTarget\":{\"clientScripts\":[{\"scriptContent\":\"ldoychi\",\"scriptExtension\":\"cecfehuwaoaguh\",\"osType\":\"qllizstac\",\"url\":\"vhrweftkwqejpmv\",\"scriptNameSuffix\":\"ehaepwamcxtc\"},{\"scriptContent\":\"upeuknijduyye\",\"scriptExtension\":\"ydjfb\",\"osType\":\"yv\",\"url\":\"ulrtywikdmh\",\"scriptNameSuffix\":\"kuflgbh\"}]}}")
+                    "{\"objectType\":\"OperationStatusProvisionILRExtendedInfo\",\"recoveryTarget\":{\"clientScripts\":[{\"scriptContent\":\"hhhqosm\",\"scriptExtension\":\"jkutycyarnr\",\"osType\":\"hguabzoghktdp\",\"url\":\"z\",\"scriptNameSuffix\":\"oeocnhzqrott\"},{\"scriptContent\":\"cfyjzp\",\"scriptExtension\":\"rl\",\"osType\":\"apqinf\",\"url\":\"pyglqdhmrjzral\",\"scriptNameSuffix\":\"pjby\"}]}}")
                 .toObject(OperationStatusProvisionIlrExtendedInfo.class);
-        Assertions.assertEquals("ldoychi", model.recoveryTarget().clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("cecfehuwaoaguh", model.recoveryTarget().clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("qllizstac", model.recoveryTarget().clientScripts().get(0).osType());
-        Assertions.assertEquals("vhrweftkwqejpmv", model.recoveryTarget().clientScripts().get(0).url());
-        Assertions.assertEquals("ehaepwamcxtc", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("hhhqosm", model.recoveryTarget().clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("jkutycyarnr", model.recoveryTarget().clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("hguabzoghktdp", model.recoveryTarget().clientScripts().get(0).osType());
+        Assertions.assertEquals("z", model.recoveryTarget().clientScripts().get(0).url());
+        Assertions.assertEquals("oeocnhzqrott", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationStatusProvisionIlrExtendedInfo model =
             new OperationStatusProvisionIlrExtendedInfo()
                 .withRecoveryTarget(
@@ -37,22 +36,22 @@ public final class OperationStatusProvisionIlrExtendedInfoTests {
                             Arrays
                                 .asList(
                                     new ClientScriptForConnect()
-                                        .withScriptContent("ldoychi")
-                                        .withScriptExtension("cecfehuwaoaguh")
-                                        .withOsType("qllizstac")
-                                        .withUrl("vhrweftkwqejpmv")
-                                        .withScriptNameSuffix("ehaepwamcxtc"),
+                                        .withScriptContent("hhhqosm")
+                                        .withScriptExtension("jkutycyarnr")
+                                        .withOsType("hguabzoghktdp")
+                                        .withUrl("z")
+                                        .withScriptNameSuffix("oeocnhzqrott"),
                                     new ClientScriptForConnect()
-                                        .withScriptContent("upeuknijduyye")
-                                        .withScriptExtension("ydjfb")
-                                        .withOsType("yv")
-                                        .withUrl("ulrtywikdmh")
-                                        .withScriptNameSuffix("kuflgbh"))));
+                                        .withScriptContent("cfyjzp")
+                                        .withScriptExtension("rl")
+                                        .withOsType("apqinf")
+                                        .withUrl("pyglqdhmrjzral")
+                                        .withScriptNameSuffix("pjby"))));
         model = BinaryData.fromObject(model).toObject(OperationStatusProvisionIlrExtendedInfo.class);
-        Assertions.assertEquals("ldoychi", model.recoveryTarget().clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("cecfehuwaoaguh", model.recoveryTarget().clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("qllizstac", model.recoveryTarget().clientScripts().get(0).osType());
-        Assertions.assertEquals("vhrweftkwqejpmv", model.recoveryTarget().clientScripts().get(0).url());
-        Assertions.assertEquals("ehaepwamcxtc", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("hhhqosm", model.recoveryTarget().clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("jkutycyarnr", model.recoveryTarget().clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("hguabzoghktdp", model.recoveryTarget().clientScripts().get(0).osType());
+        Assertions.assertEquals("z", model.recoveryTarget().clientScripts().get(0).url());
+        Assertions.assertEquals("oeocnhzqrott", model.recoveryTarget().clientScripts().get(0).scriptNameSuffix());
     }
 }

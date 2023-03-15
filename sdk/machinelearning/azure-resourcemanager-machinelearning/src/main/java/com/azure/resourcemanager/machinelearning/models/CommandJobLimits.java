@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("Command")
 @Fluent
 public final class CommandJobLimits extends JobLimits {
+    /** Creates an instance of CommandJobLimits class. */
+    public CommandJobLimits() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CommandJobLimits withTimeout(Duration timeout) {

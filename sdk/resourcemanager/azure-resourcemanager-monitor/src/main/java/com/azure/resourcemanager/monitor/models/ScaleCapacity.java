@@ -31,6 +31,10 @@ public final class ScaleCapacity {
     @JsonProperty(value = "default", required = true)
     private String defaultProperty;
 
+    /** Creates an instance of ScaleCapacity class. */
+    public ScaleCapacity() {
+    }
+
     /**
      * Get the minimum property: the minimum number of instances for the resource.
      *

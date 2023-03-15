@@ -19,6 +19,7 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -65,5 +66,11 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
             buffer.write(data, 0, readValue);
         }
         return buffer.toByteArray();
+    }
+
+    protected byte[] replaceCRLF(byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8)
+            .replace("\r\n", "\n")
+            .getBytes(StandardCharsets.UTF_8);
     }
 }

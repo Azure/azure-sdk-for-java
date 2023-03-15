@@ -16,18 +16,6 @@ import java.util.List;
 @Fluent
 public final class Forecasting extends AutoMLVertical {
     /*
-     * Allowed models for forecasting task.
-     */
-    @JsonProperty(value = "allowedModels")
-    private List<ForecastingModels> allowedModels;
-
-    /*
-     * Blocked models for forecasting task.
-     */
-    @JsonProperty(value = "blockedModels")
-    private List<ForecastingModels> blockedModels;
-
-    /*
      * Forecasting task specific inputs.
      */
     @JsonProperty(value = "forecastingSettings")
@@ -40,10 +28,16 @@ public final class Forecasting extends AutoMLVertical {
     private ForecastingPrimaryMetrics primaryMetric;
 
     /*
-     * Data inputs for AutoMLJob.
+     * Inputs for training phase for an AutoML Job.
      */
-    @JsonProperty(value = "dataSettings")
-    private TableVerticalDataSettings dataSettings;
+    @JsonProperty(value = "trainingSettings")
+    private ForecastingTrainingSettings trainingSettings;
+
+    /*
+     * Columns to use for CVSplit data.
+     */
+    @JsonProperty(value = "cvSplitColumnNames")
+    private List<String> cvSplitColumnNames;
 
     /*
      * Featurization inputs needed for AutoML job.
@@ -58,49 +52,49 @@ public final class Forecasting extends AutoMLVertical {
     private TableVerticalLimitSettings limitSettings;
 
     /*
-     * Inputs for training phase for an AutoML Job.
+     * Number of cross validation folds to be applied on training dataset
+     * when validation dataset is not provided.
      */
-    @JsonProperty(value = "trainingSettings")
-    private TrainingSettings trainingSettings;
+    @JsonProperty(value = "nCrossValidations")
+    private NCrossValidations nCrossValidations;
 
-    /**
-     * Get the allowedModels property: Allowed models for forecasting task.
-     *
-     * @return the allowedModels value.
+    /*
+     * Test data input.
      */
-    public List<ForecastingModels> allowedModels() {
-        return this.allowedModels;
-    }
+    @JsonProperty(value = "testData")
+    private MLTableJobInput testData;
 
-    /**
-     * Set the allowedModels property: Allowed models for forecasting task.
-     *
-     * @param allowedModels the allowedModels value to set.
-     * @return the Forecasting object itself.
+    /*
+     * The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
      */
-    public Forecasting withAllowedModels(List<ForecastingModels> allowedModels) {
-        this.allowedModels = allowedModels;
-        return this;
-    }
+    @JsonProperty(value = "testDataSize")
+    private Double testDataSize;
 
-    /**
-     * Get the blockedModels property: Blocked models for forecasting task.
-     *
-     * @return the blockedModels value.
+    /*
+     * Validation data inputs.
      */
-    public List<ForecastingModels> blockedModels() {
-        return this.blockedModels;
-    }
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
 
-    /**
-     * Set the blockedModels property: Blocked models for forecasting task.
-     *
-     * @param blockedModels the blockedModels value to set.
-     * @return the Forecasting object itself.
+    /*
+     * The fraction of training dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
      */
-    public Forecasting withBlockedModels(List<ForecastingModels> blockedModels) {
-        this.blockedModels = blockedModels;
-        return this;
+    @JsonProperty(value = "validationDataSize")
+    private Double validationDataSize;
+
+    /*
+     * The name of the sample weight column. Automated ML supports a weighted column as an input, causing rows in the
+     * data to be weighted up or down.
+     */
+    @JsonProperty(value = "weightColumnName")
+    private String weightColumnName;
+
+    /** Creates an instance of Forecasting class. */
+    public Forecasting() {
     }
 
     /**
@@ -144,22 +138,42 @@ public final class Forecasting extends AutoMLVertical {
     }
 
     /**
-     * Get the dataSettings property: Data inputs for AutoMLJob.
+     * Get the trainingSettings property: Inputs for training phase for an AutoML Job.
      *
-     * @return the dataSettings value.
+     * @return the trainingSettings value.
      */
-    public TableVerticalDataSettings dataSettings() {
-        return this.dataSettings;
+    public ForecastingTrainingSettings trainingSettings() {
+        return this.trainingSettings;
     }
 
     /**
-     * Set the dataSettings property: Data inputs for AutoMLJob.
+     * Set the trainingSettings property: Inputs for training phase for an AutoML Job.
      *
-     * @param dataSettings the dataSettings value to set.
+     * @param trainingSettings the trainingSettings value to set.
      * @return the Forecasting object itself.
      */
-    public Forecasting withDataSettings(TableVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
+    public Forecasting withTrainingSettings(ForecastingTrainingSettings trainingSettings) {
+        this.trainingSettings = trainingSettings;
+        return this;
+    }
+
+    /**
+     * Get the cvSplitColumnNames property: Columns to use for CVSplit data.
+     *
+     * @return the cvSplitColumnNames value.
+     */
+    public List<String> cvSplitColumnNames() {
+        return this.cvSplitColumnNames;
+    }
+
+    /**
+     * Set the cvSplitColumnNames property: Columns to use for CVSplit data.
+     *
+     * @param cvSplitColumnNames the cvSplitColumnNames value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withCvSplitColumnNames(List<String> cvSplitColumnNames) {
+        this.cvSplitColumnNames = cvSplitColumnNames;
         return this;
     }
 
@@ -204,22 +218,130 @@ public final class Forecasting extends AutoMLVertical {
     }
 
     /**
-     * Get the trainingSettings property: Inputs for training phase for an AutoML Job.
+     * Get the nCrossValidations property: Number of cross validation folds to be applied on training dataset when
+     * validation dataset is not provided.
      *
-     * @return the trainingSettings value.
+     * @return the nCrossValidations value.
      */
-    public TrainingSettings trainingSettings() {
-        return this.trainingSettings;
+    public NCrossValidations nCrossValidations() {
+        return this.nCrossValidations;
     }
 
     /**
-     * Set the trainingSettings property: Inputs for training phase for an AutoML Job.
+     * Set the nCrossValidations property: Number of cross validation folds to be applied on training dataset when
+     * validation dataset is not provided.
      *
-     * @param trainingSettings the trainingSettings value to set.
+     * @param nCrossValidations the nCrossValidations value to set.
      * @return the Forecasting object itself.
      */
-    public Forecasting withTrainingSettings(TrainingSettings trainingSettings) {
-        this.trainingSettings = trainingSettings;
+    public Forecasting withNCrossValidations(NCrossValidations nCrossValidations) {
+        this.nCrossValidations = nCrossValidations;
+        return this;
+    }
+
+    /**
+     * Get the testData property: Test data input.
+     *
+     * @return the testData value.
+     */
+    public MLTableJobInput testData() {
+        return this.testData;
+    }
+
+    /**
+     * Set the testData property: Test data input.
+     *
+     * @param testData the testData value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withTestData(MLTableJobInput testData) {
+        this.testData = testData;
+        return this;
+    }
+
+    /**
+     * Get the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @return the testDataSize value.
+     */
+    public Double testDataSize() {
+        return this.testDataSize;
+    }
+
+    /**
+     * Set the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @param testDataSize the testDataSize value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withTestDataSize(Double testDataSize) {
+        this.testDataSize = testDataSize;
+        return this;
+    }
+
+    /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
+    /**
+     * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @return the validationDataSize value.
+     */
+    public Double validationDataSize() {
+        return this.validationDataSize;
+    }
+
+    /**
+     * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
+     *
+     * @param validationDataSize the validationDataSize value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withValidationDataSize(Double validationDataSize) {
+        this.validationDataSize = validationDataSize;
+        return this;
+    }
+
+    /**
+     * Get the weightColumnName property: The name of the sample weight column. Automated ML supports a weighted column
+     * as an input, causing rows in the data to be weighted up or down.
+     *
+     * @return the weightColumnName value.
+     */
+    public String weightColumnName() {
+        return this.weightColumnName;
+    }
+
+    /**
+     * Set the weightColumnName property: The name of the sample weight column. Automated ML supports a weighted column
+     * as an input, causing rows in the data to be weighted up or down.
+     *
+     * @param weightColumnName the weightColumnName value to set.
+     * @return the Forecasting object itself.
+     */
+    public Forecasting withWeightColumnName(String weightColumnName) {
+        this.weightColumnName = weightColumnName;
         return this;
     }
 
@@ -227,6 +349,20 @@ public final class Forecasting extends AutoMLVertical {
     @Override
     public Forecasting withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Forecasting withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Forecasting withTrainingData(MLTableJobInput trainingData) {
+        super.withTrainingData(trainingData);
         return this;
     }
 
@@ -241,8 +377,8 @@ public final class Forecasting extends AutoMLVertical {
         if (forecastingSettings() != null) {
             forecastingSettings().validate();
         }
-        if (dataSettings() != null) {
-            dataSettings().validate();
+        if (trainingSettings() != null) {
+            trainingSettings().validate();
         }
         if (featurizationSettings() != null) {
             featurizationSettings().validate();
@@ -250,8 +386,14 @@ public final class Forecasting extends AutoMLVertical {
         if (limitSettings() != null) {
             limitSettings().validate();
         }
-        if (trainingSettings() != null) {
-            trainingSettings().validate();
+        if (nCrossValidations() != null) {
+            nCrossValidations().validate();
+        }
+        if (testData() != null) {
+            testData().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 }

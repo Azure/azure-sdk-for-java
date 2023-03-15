@@ -90,6 +90,10 @@ public final class VirtualMachineScaleSetExtensionProperties {
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
+    /** Creates an instance of VirtualMachineScaleSetExtensionProperties class. */
+    public VirtualMachineScaleSetExtensionProperties() {
+    }
+
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.

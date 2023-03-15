@@ -21,6 +21,9 @@ public final class CosmosDbSqlApiSink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
+    /** Creates an instance of CosmosDbSqlApiSink class. */
+    public CosmosDbSqlApiSink() {}
+
     /**
      * Get the writeBehavior property: Describes how to write data to Azure Cosmos DB. Type: string (or Expression with
      * resultType string). Allowed values: insert and upsert.

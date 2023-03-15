@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentProvisioningState. */
+/** Possible values for DeploymentProvisioningState. */
 public final class DeploymentProvisioningState extends ExpandableStringEnum<DeploymentProvisioningState> {
     /** Static value Creating for DeploymentProvisioningState. */
     public static final DeploymentProvisioningState CREATING = fromString("Creating");
@@ -30,6 +30,15 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
 
     /** Static value Canceled for DeploymentProvisioningState. */
     public static final DeploymentProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of DeploymentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentProvisioningState() {
+    }
 
     /**
      * Creates or finds a DeploymentProvisioningState from its string representation.

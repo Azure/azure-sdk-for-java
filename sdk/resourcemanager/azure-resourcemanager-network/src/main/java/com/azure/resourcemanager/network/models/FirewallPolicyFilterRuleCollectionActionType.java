@@ -18,6 +18,15 @@ public final class FirewallPolicyFilterRuleCollectionActionType
     public static final FirewallPolicyFilterRuleCollectionActionType DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of FirewallPolicyFilterRuleCollectionActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyFilterRuleCollectionActionType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyFilterRuleCollectionActionType from its string representation.
      *
      * @param name a name to look for.

@@ -20,6 +20,10 @@ public final class DataLakeAnalytics extends Compute {
     @JsonProperty(value = "properties")
     private DataLakeAnalyticsSchemaProperties properties;
 
+    /** Creates an instance of DataLakeAnalytics class. */
+    public DataLakeAnalytics() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *
@@ -37,6 +41,13 @@ public final class DataLakeAnalytics extends Compute {
      */
     public DataLakeAnalytics withProperties(DataLakeAnalyticsSchemaProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalytics withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 

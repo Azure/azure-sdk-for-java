@@ -25,7 +25,7 @@ public final class ExtensionsEnableMonitoringSamples {
                 "cluster1",
                 new ClusterMonitoringRequest()
                     .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
-                    .withPrimaryKey("**********"),
+                    .withPrimaryKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

@@ -5,22 +5,27 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
+import com.azure.resourcemanager.compute.models.HyperVGeneration;
+import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
+import com.azure.resourcemanager.compute.models.ImageDataDisk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.TargetRegion;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
+import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -209,18 +214,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Test
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
-        //
-        // Create {
-        //  "startTime": "2018-09-18T19:19:33.6467692+00:00",
-        //  "endTime": "2018-09-18T19:27:34.3244427+00:00",
-        //  "status": "Failed",
-        //  "error": {
-        //    "code": "CrpPirReplicationJobsNotCompleted",
-        //    "message": "Replication job not completed at region: westcentralus"
-        //  },
-        //  "name": "971500cb-f79e-4303-9f6a-df90010a7cc1"
-        // }a gallery
-        //
         final String galleryName = generateRandomResourceName("jsim", 15); // "jsim94f154754";
 
         Gallery gallery =
@@ -311,6 +304,140 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .computeManager
             .galleryImageVersions()
             .deleteByGalleryImage(rgName, galleryName, galleryImageName, versionName);
+    }
+
+    @Test
+    public void canCreateTrustedLaunchVMsFromGalleryImage() {
+        final String galleryName = generateRandomResourceName("jsim", 15);
+
+        Gallery gallery =
+            this
+                .computeManager
+                .galleries()
+                .define(galleryName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDescription("java's image gallery")
+                .create();
+
+        final String galleryImageName = "SampleImages";
+        GalleryImage galleryImage =
+            this
+                .computeManager
+                .galleryImages()
+                .define(galleryImageName)
+                .withExistingGallery(gallery)
+                .withLocation(region)
+                .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
+                .withGeneralizedLinux()
+                .withHyperVGeneration(HyperVGeneration.V2)
+                .withTrustedLaunch()
+                .create();
+
+        Assertions.assertEquals(HyperVGeneration.V2, galleryImage.hyperVGeneration());
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, galleryImage.securityType());
+
+        VirtualMachineCustomImage customImage = prepareCustomImageWithTrustedLaunch(rgName, region, computeManager);
+
+        final String versionName = "0.0.1";
+
+        GalleryImageVersion imageVersion =
+            this
+                .computeManager
+                .galleryImageVersions()
+                .define(versionName)
+                .withExistingImage(rgName, gallery.name(), galleryImage.name())
+                .withLocation(region.toString())
+                .withSourceCustomImage(customImage)
+                .withRegionAvailability(Region.US_WEST2, 1)
+                .create();
+
+        final String trustedLaunchVmName = generateRandomResourceName("tlvm", 15);
+
+        VirtualMachine.DefinitionStages.WithManagedCreate withManagedCreate = computeManager
+            .virtualMachines()
+            .define(trustedLaunchVmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.1.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withGeneralizedLinuxCustomImage(imageVersion.id())
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey());
+
+        for (ImageDataDisk ddi : customImage.dataDiskImages().values()) {
+            withManagedCreate.withNewDataDiskFromImage(ddi.lun(), ddi.diskSizeGB() + 1, ddi.caching());
+        }
+
+        VirtualMachine trustedLaunchVm =
+            withManagedCreate
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                // gallery images with 'TrustedLaunch` feature can only create VMs with 'TrustedLaunch' feature
+                .withTrustedLaunch()
+                .withSecureBoot()
+                .withVTpm()
+                .create();
+
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, trustedLaunchVm.securityType());
+        Assertions.assertTrue(trustedLaunchVm.isSecureBootEnabled());
+        Assertions.assertTrue(trustedLaunchVm.isVTpmEnabled());
+
+        Assertions.assertEquals(2, trustedLaunchVm.dataDisks().size());
+    }
+
+    private VirtualMachineCustomImage prepareCustomImageWithTrustedLaunch(String rgName, Region region, ComputeManager computeManager) {
+        final String uname = "javauser";
+        final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2;
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
+
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+                .withPopularLinuxImage(linuxImage)
+                .withRootUsername(uname)
+                .withSsh(sshPublicKey())
+                .withNewDataDisk(1)
+                .withNewDataDisk(1, 2, CachingTypes.READ_WRITE)
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                .withNewStorageAccount(generateRandomResourceName("stg", 17))
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
+                .withTrustedLaunch()
+                .withSecureBoot()
+                .withVTpm()
+                .create();
+
+        virtualMachine.deallocate();
+        virtualMachine.generalize();
+
+        final String imageName = generateRandomResourceName("img", 20);
+        //
+        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk =
+            computeManager
+                .virtualMachineCustomImages()
+                .define(imageName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withHyperVGeneration(HyperVGenerationTypes.V2)
+                .withLinuxFromDisk(virtualMachine.osDiskId(), OperatingSystemStateTypes.GENERALIZED)
+                .withOSDiskCaching(virtualMachine.osDiskCachingType());
+
+        for (VirtualMachineDataDisk dataDisk : virtualMachine.dataDisks().values()) {
+            creatableDisk.defineDataDiskImage()
+                .withLun(dataDisk.lun())
+                .fromManagedDisk(dataDisk.id())
+                .withDiskCaching(dataDisk.cachingType())
+                .withDiskSizeInGB(dataDisk.size() + 1)
+                .attach();
+        }
+
+        return creatableDisk.create();
     }
 
     private VirtualMachineCustomImage prepareCustomImage(String rgName, Region region, ComputeManager computeManager) {

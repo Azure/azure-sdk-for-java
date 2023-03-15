@@ -23,10 +23,14 @@ public class GalleryDiskImage {
     private HostCaching hostCaching;
 
     /*
-     * The gallery artifact version source.
+     * The source for the disk image.
      */
     @JsonProperty(value = "source")
-    private GalleryArtifactVersionSource source;
+    private GalleryDiskImageSource source;
+
+    /** Creates an instance of GalleryDiskImage class. */
+    public GalleryDiskImage() {
+    }
 
     /**
      * Get the sizeInGB property: This property indicates the size of the VHD to be created.
@@ -58,21 +62,21 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Get the source property: The gallery artifact version source.
+     * Get the source property: The source for the disk image.
      *
      * @return the source value.
      */
-    public GalleryArtifactVersionSource source() {
+    public GalleryDiskImageSource source() {
         return this.source;
     }
 
     /**
-     * Set the source property: The gallery artifact version source.
+     * Set the source property: The source for the disk image.
      *
      * @param source the source value to set.
      * @return the GalleryDiskImage object itself.
      */
-    public GalleryDiskImage withSource(GalleryArtifactVersionSource source) {
+    public GalleryDiskImage withSource(GalleryDiskImageSource source) {
         this.source = source;
         return this;
     }

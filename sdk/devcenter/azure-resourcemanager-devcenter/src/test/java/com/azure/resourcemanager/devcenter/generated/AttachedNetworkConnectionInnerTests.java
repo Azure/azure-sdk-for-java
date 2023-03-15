@@ -15,15 +15,15 @@ public final class AttachedNetworkConnectionInnerTests {
         AttachedNetworkConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"uckyf\",\"networkConnectionId\":\"hr\",\"networkConnectionLocation\":\"dfvzwdzuhty\",\"healthCheckStatus\":\"Pending\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"fthwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}")
+                    "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkConnectionId\":\"od\",\"networkConnectionLocation\":\"hc\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"t\",\"name\":\"kwh\",\"type\":\"soifiyipjxsqw\"}")
                 .toObject(AttachedNetworkConnectionInner.class);
-        Assertions.assertEquals("hr", model.networkConnectionId());
+        Assertions.assertEquals("od", model.networkConnectionId());
     }
 
     @Test
     public void testSerialize() {
-        AttachedNetworkConnectionInner model = new AttachedNetworkConnectionInner().withNetworkConnectionId("hr");
+        AttachedNetworkConnectionInner model = new AttachedNetworkConnectionInner().withNetworkConnectionId("od");
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConnectionInner.class);
-        Assertions.assertEquals("hr", model.networkConnectionId());
+        Assertions.assertEquals("od", model.networkConnectionId());
     }
 }

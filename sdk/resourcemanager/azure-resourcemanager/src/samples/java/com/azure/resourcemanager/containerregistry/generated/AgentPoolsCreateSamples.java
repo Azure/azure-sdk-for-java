@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public final class AgentPoolsCreateSamples {
                     .withCount(1)
                     .withTier("S1")
                     .withOs(OS.LINUX),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

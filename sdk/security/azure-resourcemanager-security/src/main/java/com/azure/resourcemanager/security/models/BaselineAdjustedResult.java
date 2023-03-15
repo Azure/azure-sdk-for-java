@@ -35,6 +35,10 @@ public final class BaselineAdjustedResult {
     @JsonProperty(value = "resultsOnlyInBaseline")
     private List<List<String>> resultsOnlyInBaseline;
 
+    /** Creates an instance of BaselineAdjustedResult class. */
+    public BaselineAdjustedResult() {
+    }
+
     /**
      * Get the baseline property: Baseline details.
      *

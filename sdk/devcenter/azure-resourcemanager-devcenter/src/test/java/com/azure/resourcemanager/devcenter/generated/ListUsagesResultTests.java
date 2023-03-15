@@ -14,7 +14,7 @@ public final class ListUsagesResultTests {
         ListUsagesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"currentValue\":5551509476153562500,\"limit\":2433341846338964721,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"atmelwui\",\"value\":\"ccjzkzivgvv\"}}],\"nextLink\":\"ayrhyrnx\"}")
+                    "{\"value\":[{\"currentValue\":8612812378237184133,\"limit\":8060447161666090820,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"otgqrlltmu\",\"value\":\"auwzizxbmpgc\"}},{\"currentValue\":2032891691540283618,\"limit\":3898811101398882532,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tdum\",\"value\":\"p\"}}],\"nextLink\":\"ebmnzbtbhjpglk\"}")
                 .toObject(ListUsagesResult.class);
     }
 

@@ -108,7 +108,7 @@ public class SipRoutingClientBuilderTest {
     public void buildClientWithServiceVersion() {
         // Build client with required settings and mock configuration
         SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .serviceVersion(SipRoutingServiceVersion.V2021_05_01_PREVIEW)
+            .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
             .buildClient();
 
         // Validate client created with expected settings
@@ -227,7 +227,7 @@ public class SipRoutingClientBuilderTest {
         // Build client with required settings and mock configuration
         SipRoutingAsyncClient sipRoutingAsyncClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(SipRoutingServiceVersion.V2021_05_01_PREVIEW)
+                .serviceVersion(SipRoutingServiceVersion.V2023_03_01)
                 .buildAsyncClient();
 
         // Validate client created with expected settings
@@ -330,12 +330,13 @@ public class SipRoutingClientBuilderTest {
         assertEquals(this.httpClient, sipRoutingManagementClient.getHttpPipeline().getHttpClient());
 
         // Validate HttpPipelinePolicy settings
-        assertEquals(6, sipRoutingManagementClient.getHttpPipeline().getPolicyCount());
+        int policyCount = sipRoutingManagementClient.getHttpPipeline().getPolicyCount();
+        assertTrue(policyCount >= 6);
         assertEquals(spyHelper.userAgentPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.requestIdPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(1));
         assertEquals(spyHelper.authenticationPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.cookiePolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(4));
-        assertEquals(spyHelper.httpLoggingPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(5));
+        assertEquals(spyHelper.httpLoggingPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(policyCount - 1));
 
         // Validate HttpLogOptions
         assertEquals(spyHelper.defaultHttpLogOptionsRef.get(), spyHelper.httpLogOptionsArg.getValue());
@@ -380,11 +381,12 @@ public class SipRoutingClientBuilderTest {
         SipRoutingAdminClientImpl sipRoutingManagementClient = spyHelper.sipRoutingAdminClientArg.getValue();
 
         // Validate HttpPipelinePolicy settings
-        int expectedPolicyCount = 6 + policies.size();
-        int lastPolicyIndex = expectedPolicyCount - 1;
+        int expectedMinPolicyCount = 6 + policies.size();
+        int actualPolicyCount = sipRoutingManagementClient.getHttpPipeline().getPolicyCount();
+        int lastPolicyIndex = actualPolicyCount - 1;
         int customPolicyIndex = 5;
 
-        assertEquals(expectedPolicyCount, sipRoutingManagementClient.getHttpPipeline().getPolicyCount());
+        assertTrue(actualPolicyCount >= expectedMinPolicyCount);
         assertEquals(spyHelper.userAgentPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(0));
         assertEquals(spyHelper.requestIdPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(1));
         assertEquals(spyHelper.authenticationPolicyRef.get(), sipRoutingManagementClient.getHttpPipeline().getPolicy(3));

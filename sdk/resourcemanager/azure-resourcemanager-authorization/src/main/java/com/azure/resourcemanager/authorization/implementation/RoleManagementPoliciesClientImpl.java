@@ -60,7 +60,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface RoleManagementPoliciesService {
+    public interface RoleManagementPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}")
         @ExpectedResponses({200})
@@ -205,30 +205,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleManagementPolicyInner> getAsync(String scope, String roleManagementPolicyName) {
-        return getWithResponseAsync(scope, roleManagementPolicyName)
-            .flatMap(
-                (Response<RoleManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified role management policy for a resource scope.
-     *
-     * @param scope The scope of the role management policy.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role management policy for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleManagementPolicyInner get(String scope, String roleManagementPolicyName) {
-        return getAsync(scope, roleManagementPolicyName).block();
+        return getWithResponseAsync(scope, roleManagementPolicyName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -246,6 +223,21 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     public Response<RoleManagementPolicyInner> getWithResponse(
         String scope, String roleManagementPolicyName, Context context) {
         return getWithResponseAsync(scope, roleManagementPolicyName, context).block();
+    }
+
+    /**
+     * Get the specified role management policy for a resource scope.
+     *
+     * @param scope The scope of the role management policy.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role management policy for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleManagementPolicyInner get(String scope, String roleManagementPolicyName) {
+        return getWithResponse(scope, roleManagementPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -355,31 +347,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     public Mono<RoleManagementPolicyInner> updateAsync(
         String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters) {
         return updateWithResponseAsync(scope, roleManagementPolicyName, parameters)
-            .flatMap(
-                (Response<RoleManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a role management policy.
-     *
-     * @param scope The scope of the role management policy to upsert.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
-     * @param parameters Parameters for the role management policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleManagementPolicyInner update(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters) {
-        return updateAsync(scope, roleManagementPolicyName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -398,6 +366,23 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     public Response<RoleManagementPolicyInner> updateWithResponse(
         String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters, Context context) {
         return updateWithResponseAsync(scope, roleManagementPolicyName, parameters, context).block();
+    }
+
+    /**
+     * Update a role management policy.
+     *
+     * @param scope The scope of the role management policy to upsert.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
+     * @param parameters Parameters for the role management policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role management policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleManagementPolicyInner update(
+        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters) {
+        return updateWithResponse(scope, roleManagementPolicyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -483,21 +468,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String scope, String roleManagementPolicyName) {
-        return deleteWithResponseAsync(scope, roleManagementPolicyName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a role management policy.
-     *
-     * @param scope The scope of the role management policy to upsert.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String scope, String roleManagementPolicyName) {
-        deleteAsync(scope, roleManagementPolicyName).block();
+        return deleteWithResponseAsync(scope, roleManagementPolicyName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -514,6 +485,20 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String scope, String roleManagementPolicyName, Context context) {
         return deleteWithResponseAsync(scope, roleManagementPolicyName, context).block();
+    }
+
+    /**
+     * Delete a role management policy.
+     *
+     * @param scope The scope of the role management policy to upsert.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String scope, String roleManagementPolicyName) {
+        deleteWithResponse(scope, roleManagementPolicyName, Context.NONE);
     }
 
     /**
@@ -655,7 +640,8 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -691,7 +677,8 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

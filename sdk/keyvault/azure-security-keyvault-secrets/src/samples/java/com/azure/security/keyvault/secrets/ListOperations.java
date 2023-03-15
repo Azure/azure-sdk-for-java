@@ -36,11 +36,11 @@ public class ListOperations {
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. If the secret
         // already exists in the key vault, then a new version of the secret is created.
-        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "fakePasswordPlaceholder")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        client.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        client.setSecret(new KeyVaultSecret("BankAccountPassword", "fakePasswordPlaceholder")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
@@ -56,7 +56,7 @@ public class ListOperations {
 
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
         // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-        client.setSecret("BankAccountPassword", "sskdjfsdasdjsd");
+        client.setSecret("BankAccountPassword", "fakePasswordPlaceholder");
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
         for (SecretProperties secret : client.listPropertiesOfSecretVersions("BankAccountPassword")) {

@@ -16,6 +16,10 @@ public final class IngestionSettingTokenInner {
     @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
+    /** Creates an instance of IngestionSettingTokenInner class. */
+    public IngestionSettingTokenInner() {
+    }
+
     /**
      * Get the token property: The token is used for correlating security data and logs with the resources in the
      * subscription.

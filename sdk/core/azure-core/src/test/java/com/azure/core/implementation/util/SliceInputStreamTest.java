@@ -4,12 +4,12 @@
 package com.azure.core.implementation.util;
 
 
+import com.azure.core.util.mocking.MockInputStream;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -118,8 +119,13 @@ public class SliceInputStreamTest {
 
     @Test
     public void delegatesMarkSupported() {
-        InputStream innerStream = Mockito.mock(InputStream.class);
-        Mockito.when(innerStream.markSupported()).thenReturn(true, false);
+        AtomicBoolean markSupported = new AtomicBoolean(true);
+        InputStream innerStream = new MockInputStream() {
+            @Override
+            public boolean markSupported() {
+                return markSupported.compareAndSet(true, false);
+            }
+        };
 
         SliceInputStream sliceInputStream = new SliceInputStream(innerStream, 0, 10);
 
@@ -129,13 +135,20 @@ public class SliceInputStreamTest {
 
     @Test
     public void delegatesClose() throws Exception {
-        InputStream innerStream = Mockito.mock(InputStream.class);
+        AtomicBoolean closed = new AtomicBoolean();
+        InputStream innerStream = new MockInputStream() {
+            @Override
+            public void close() throws IOException {
+                closed.set(true);
+                super.close();
+            }
+        };
 
         SliceInputStream sliceInputStream = new SliceInputStream(innerStream, 0, 10);
 
         sliceInputStream.close();
 
-        Mockito.verify(innerStream).close();
+        assertTrue(closed.get());
     }
 
     @ParameterizedTest

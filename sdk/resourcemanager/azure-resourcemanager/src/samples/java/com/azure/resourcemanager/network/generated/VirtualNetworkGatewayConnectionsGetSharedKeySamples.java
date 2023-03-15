@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkGatewayConnections GetSharedKey. */
 public final class VirtualNetworkGatewayConnectionsGetSharedKeySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayConnectionGetSharedKey.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionGetSharedKey.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayConnectionSharedKey.
@@ -23,6 +21,6 @@ public final class VirtualNetworkGatewayConnectionsGetSharedKeySamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .getSharedKeyWithResponse("rg1", "connS2S", Context.NONE);
+            .getSharedKeyWithResponse("rg1", "connS2S", com.azure.core.util.Context.NONE);
     }
 }

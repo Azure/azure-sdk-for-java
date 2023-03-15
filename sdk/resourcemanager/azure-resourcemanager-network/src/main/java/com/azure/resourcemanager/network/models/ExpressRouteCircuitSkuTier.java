@@ -23,6 +23,15 @@ public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<Expre
     public static final ExpressRouteCircuitSkuTier LOCAL = fromString("Local");
 
     /**
+     * Creates a new instance of ExpressRouteCircuitSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteCircuitSkuTier() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteCircuitSkuTier from its string representation.
      *
      * @param name a name to look for.

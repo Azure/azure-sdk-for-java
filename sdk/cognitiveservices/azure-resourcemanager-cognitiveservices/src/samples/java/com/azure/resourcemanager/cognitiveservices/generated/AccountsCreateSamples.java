@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for Accounts Create. */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CreateAccountMin.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -38,7 +38,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/CreateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -60,9 +60,9 @@ public final class AccountsCreateSamples {
                         new Encryption()
                             .withKeyVaultProperties(
                                 new KeyVaultProperties()
-                                    .withKeyName("KeyName")
-                                    .withKeyVersion("891CF236-D241-4738-9462-D506AF493DFA")
-                                    .withKeyVaultUri("https://pltfrmscrts-use-pc-dev.vault.azure.net/"))
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder")
+                                    .withKeyVaultUri("fakeTokenPlaceholder"))
                             .withKeySource(KeySource.MICROSOFT_KEY_VAULT))
                     .withUserOwnedStorage(
                         Arrays

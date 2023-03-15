@@ -22,6 +22,10 @@ public final class UserRecommendation {
     @JsonProperty(value = "recommendationAction")
     private RecommendationAction recommendationAction;
 
+    /** Creates an instance of UserRecommendation class. */
+    public UserRecommendation() {
+    }
+
     /**
      * Get the username property: Represents a user that is recommended to be allowed for a certain rule.
      *

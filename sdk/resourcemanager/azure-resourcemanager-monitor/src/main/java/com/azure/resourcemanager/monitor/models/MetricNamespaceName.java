@@ -16,6 +16,10 @@ public final class MetricNamespaceName {
     @JsonProperty(value = "metricNamespaceName")
     private String metricNamespaceName;
 
+    /** Creates an instance of MetricNamespaceName class. */
+    public MetricNamespaceName() {
+    }
+
     /**
      * Get the metricNamespaceName property: The metric namespace name.
      *

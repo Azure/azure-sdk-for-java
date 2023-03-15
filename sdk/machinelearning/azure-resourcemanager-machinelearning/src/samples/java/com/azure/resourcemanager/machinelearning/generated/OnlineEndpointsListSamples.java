@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.EndpointComputeType;
 import com.azure.resourcemanager.machinelearning.models.OrderString;
 
 /** Samples for OnlineEndpoints List. */
 public final class OnlineEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineEndpoint/list.json
      */
     /**
      * Sample code: List Online Endpoint.
@@ -31,6 +30,6 @@ public final class OnlineEndpointsListSamples {
                 "string",
                 "string",
                 OrderString.CREATED_AT_DESC,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

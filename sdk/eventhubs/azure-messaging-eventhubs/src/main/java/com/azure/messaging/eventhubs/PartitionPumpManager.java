@@ -3,14 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.implementation.ReactorShim;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
@@ -25,29 +24,17 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 
@@ -73,13 +60,13 @@ class PartitionPumpManager {
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
-    private final TracerProvider tracerProvider;
     private final boolean trackLastEnqueuedEventProperties;
     private final Map<String, EventPosition> initialPartitionEventPosition;
     private final Duration maxWaitTime;
     private final int maxBatchSize;
     private final boolean batchReceiveMode;
     private final int prefetch;
+    private final EventHubsTracer tracer;
 
     /**
      * Creates an instance of partition pump manager.
@@ -90,8 +77,8 @@ class PartitionPumpManager {
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
      * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
-     * will also include the last enqueued event properties for it's respective partitions.
-     * @param tracerProvider The tracer implementation.
+     * will also include the last enqueued event properties for its respective partitions.
+     * @param tracer Tracing helper.
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
      * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
@@ -100,14 +87,13 @@ class PartitionPumpManager {
      */
     PartitionPumpManager(CheckpointStore checkpointStore,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
-        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider,
+        boolean trackLastEnqueuedEventProperties, EventHubsTracer tracer,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
         boolean batchReceiveMode) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
-        this.tracerProvider = tracerProvider;
         this.initialPartitionEventPosition = initialPartitionEventPosition;
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
@@ -116,6 +102,7 @@ class PartitionPumpManager {
         this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
             ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
             : eventHubClientBuilder.getPrefetchCount();
+        this.tracer = tracer;
     }
 
     /**
@@ -225,7 +212,7 @@ class PartitionPumpManager {
             Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
                 MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-                .createConsumer(claimedOwnership.getConsumerGroup(), prefetch);
+                .createConsumer(claimedOwnership.getConsumerGroup(), prefetch, true);
             PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
                 scheduler);
 
@@ -254,7 +241,7 @@ class PartitionPumpManager {
                 .concatMap(Flux::collectList)
                 .publishOn(scheduler, false, prefetch)
                 .subscribe(partitionEventBatch -> {
-                    processEvents(partitionContext, partitionProcessor, partitionPump, eventHubConsumer,
+                    processEvents(partitionContext, partitionProcessor, partitionPump,
                         partitionEventBatch);
                 },
                     /* EventHubConsumer receive() returned an error */
@@ -269,7 +256,6 @@ class PartitionPumpManager {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
             }
-
             throw LOGGER.atError()
                 .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log(new PartitionProcessorException(
@@ -278,18 +264,9 @@ class PartitionPumpManager {
         }
     }
 
-    private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
-        EventHubConsumerAsyncClient eventHubConsumer, EventContext eventContext) {
+    private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor, EventContext eventContext) {
 
-        Context processSpanContext = null;
         EventData eventData = eventContext.getEventData();
-        if (eventData != null) {
-            processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
-                eventHubConsumer.getFullyQualifiedNamespace());
-            if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-                eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
-            }
-        }
         try {
             if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
 
@@ -306,18 +283,19 @@ class PartitionPumpManager {
                     .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                     .log("Completed processing event.");
             }
-            endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
-            endProcessTracingSpan(processSpanContext, Signal.error(throwable));
             throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
         }
     }
 
     private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
-        PartitionPump partitionPump, EventHubConsumerAsyncClient eventHubConsumer,
-        List<PartitionEvent> partitionEventBatch) {
+        PartitionPump partitionPump, List<PartitionEvent> partitionEventBatch) {
+        Throwable exception = null;
+        Context span = null;
+        AutoCloseable scope = null;
+
         try {
             if (batchReceiveMode) {
                 LastEnqueuedEventProperties[] lastEnqueuedEventProperties = new LastEnqueuedEventProperties[1];
@@ -335,6 +313,8 @@ class PartitionPumpManager {
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, enqueuedEventProperties);
 
+                span = tracer.startProcessSpan("EventHubs.process", eventDataList, Context.NONE);
+                scope = tracer.makeSpanCurrent(span);
                 if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                     LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
@@ -362,13 +342,18 @@ class PartitionPumpManager {
 
                 EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
                     enqueuedEventProperties);
+                span = tracer.startProcessSpan("EventHubs.process", eventData, Context.NONE);
+                scope = tracer.makeSpanCurrent(span);
 
-                processEvent(partitionContext, partitionProcessor, eventHubConsumer, eventContext);
+                processEvent(partitionContext, partitionProcessor, eventContext);
             }
         } catch (Throwable throwable) {
+            exception = throwable;
             /* user code for event processing threw an exception - log and bubble up */
             throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
+        } finally {
+            tracer.endSpan(exception, span, scope);
         }
     }
 
@@ -413,56 +398,6 @@ class PartitionPumpManager {
                 .log("Removing partition from list of processing partitions.");
             partitionPumps.remove(claimedOwnership.getPartitionId());
         }
-    }
-
-    /*
-     * Starts a new process tracing span and attaches the returned context to the EventData object for users.
-     */
-    private Context startProcessTracingSpan(EventData eventData, String eventHubName, String fullyQualifiedNamespace) {
-        Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
-        if (tracerProvider == null || !tracerProvider.isEnabled()) {
-            return Context.NONE;
-        }
-
-        Context spanContext = Objects.isNull(diagnosticId) ? Context.NONE : tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-        spanContext = spanContext
-            .addData(ENTITY_PATH_KEY, eventHubName)
-            .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
-            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
-        spanContext = eventData.getEnqueuedTime() == null
-            ? spanContext
-            : spanContext.addData(MESSAGE_ENQUEUED_TIME, eventData.getEnqueuedTime().getEpochSecond());
-        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, ProcessKind.PROCESS);
-    }
-
-    /*
-     * Ends the process tracing span and the scope of that span.
-     */
-    private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
-        if (processSpanContext == null) {
-            return;
-        }
-
-        Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
-        // Disposes of the scope when the trace span closes.
-        if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
-            return;
-        }
-
-        Object spanObject = spanScope.get();
-        if (spanObject instanceof AutoCloseable) {
-            AutoCloseable close = (AutoCloseable) spanObject;
-            try {
-                close.close();
-            } catch (Exception exception) {
-                LOGGER.error(Messages.EVENT_PROCESSOR_RUN_END, exception);
-            }
-
-        } else {
-            LOGGER.verbose(String.format(Locale.US, Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
-                spanObject != null ? spanObject.getClass() : "null"));
-        }
-        tracerProvider.endSpan(processSpanContext, signal);
     }
 
     /**

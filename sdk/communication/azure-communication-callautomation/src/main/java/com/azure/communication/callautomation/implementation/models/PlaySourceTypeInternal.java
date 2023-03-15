@@ -13,6 +13,12 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
     /** Static value file for PlaySourceTypeInternal. */
     public static final PlaySourceTypeInternal FILE = fromString("file");
 
+    /** Static value text for PlaySourceTypeInternal. */
+    public static final PlaySourceTypeInternal TEXT = fromString("text");
+
+    /** Static value ssml for PlaySourceTypeInternal. */
+    public static final PlaySourceTypeInternal SSML = fromString("ssml");
+
     /**
      * Creates or finds a PlaySourceTypeInternal from its string representation.
      *
@@ -24,7 +30,11 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
         return fromString(name, PlaySourceTypeInternal.class);
     }
 
-    /** @return known PlaySourceTypeInternal values. */
+    /**
+     * Gets known PlaySourceTypeInternal values.
+     *
+     * @return known PlaySourceTypeInternal values.
+     */
     public static Collection<PlaySourceTypeInternal> values() {
         return values(PlaySourceTypeInternal.class);
     }

@@ -68,6 +68,10 @@ public final class DiskInner extends Resource {
     @JsonProperty(value = "properties")
     private DiskProperties innerProperties;
 
+    /** Creates an instance of DiskInner class. */
+    public DiskInner() {
+    }
+
     /**
      * Get the managedBy property: A relative URI containing the ID of the VM that has the disk attached.
      *

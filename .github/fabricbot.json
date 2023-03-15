@@ -910,6 +910,15 @@
               ""
             ]
           },
+           {
+            "label": "DevCenter",
+            "pathFilter": [
+              "sdk/devcenter/"
+            ],
+            "exclude": [
+              ""
+            ]
+          },
           {
             "label": "Digital Twins",
             "pathFilter": [
@@ -1809,9 +1818,13 @@
             ],
             "mentionees": [
               "Drewm3",
-              "avirishuv",
-              "vaibhav-agar",
-              "amjads1"
+              "TravisCragg-MSFT",
+              "nikhilpatel909",
+              "sandeepraichura",
+              "hilaryw29",
+              "GabstaMSFT",
+              "ramankumarlive",
+              "ushnaarshadkhan"
             ]
           },
           {
@@ -1820,8 +1833,8 @@
               "Compute - Extensions"
             ],
             "mentionees": [
-              "Drewm3",
-              "amjads1"
+              "TravisCragg-MSFT",
+              "GabstaMSFT"
             ]
           },
           {
@@ -1830,8 +1843,8 @@
               "Compute - Images"
             ],
             "mentionees": [
-              "Drewm3",
-              "vaibhav-agar"
+              "TravisCragg-MSFT",
+              "sandeepraichura"
             ]
           },
           {
@@ -1840,8 +1853,9 @@
               "Compute - Managed Disks"
             ],
             "mentionees": [
-              "Drewm3",
-              "vaibhav-agar"
+              "TravisCragg-MSFT",
+              "ramankumarlive",
+              "ushnaarshadkhan"
             ]
           },
           {
@@ -1851,7 +1865,7 @@
             ],
             "mentionees": [
               "Drewm3",
-              "avirishuv"
+              "TravisCragg-MSFT"
             ]
           },
           {
@@ -1861,7 +1875,11 @@
             ],
             "mentionees": [
               "Drewm3",
-              "avirishuv"
+              "TravisCragg-MSFT",
+              "nikhilpatel909",
+              "sandeepraichura",
+              "hilaryw29",
+              "GabstaMSFT"
             ]
           },
           {
@@ -1870,8 +1888,8 @@
               "Compute - VMSS"
             ],
             "mentionees": [
-              "Drewm3",
-              "avirishuv"
+              "TravisCragg-MSFT",
+              "hilaryw29"
             ]
           },
           {
@@ -2079,6 +2097,16 @@
               "narula0781",
               "ashishonce",
               "romil07"
+            ]
+          },
+           {
+            "labels": [
+              "Service Attention",
+              "DevCenter"
+            ],
+            "mentionees": [
+              "sebrenna",
+              "mharlan"
             ]
           },
           {
@@ -2702,7 +2730,6 @@
               "Search"
             ],
             "mentionees": [
-              "brjohnstmsft",
               "bleroy",
               "tjacobhi",
               "markheff",
@@ -3020,7 +3047,8 @@
             "mentionees": [
               "@trask",
               "@ramthi",
-              "@heyams"
+              "@heyams",
+              "@jeanbisutti"
             ]
           },
           {
@@ -3792,6 +3820,39 @@
           }
         ]
       }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "IssuesOnlyResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "labelAdded",
+              "parameters": {
+                "label": "Mgmt"
+              }
+            }
+          ]
+        },
+        "eventType": "issue",
+        "eventNames": [
+          "issues",
+          "project_card"
+        ],
+        "taskName": "[Tag Mgmt Owners] Mention Mgmt manually when Mgmt label is added.",
+        "actions": [
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Thanks for the feedback! We are routing this to the appropriate team for follow-up. cc  @weidongxu-microsoft, @XiaofeiCao"
+            }
+          }
+        ]
+      }          
     },
     {
       "taskType": "trigger",

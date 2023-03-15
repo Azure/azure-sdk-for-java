@@ -14,19 +14,19 @@ import org.junit.jupiter.api.Assertions;
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-default-project");
-        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-default-pool");
+        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-hdhjgzht7tgyq");
+        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-bxwfu4kgo6dz6");
 
         // Provision a Dev Box
         BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"" + poolName + "\"}");
         SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-                devBoxesClient.beginCreateDevBox(projectName, "me", "TestDevBox", devBoxBody, null);
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, "me", "TestDevBox", devBoxBody, null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
 
         // Tear down the Dev Box when we're finished:
-        SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
-                        devBoxesClient.beginDeleteDevBox(projectName, "me", "TestDevBox", null);
+        SyncPoller<BinaryData, Void> devBoxDeleteResponse =
+                        setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, "me", "TestDevBox", null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
     }

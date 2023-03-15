@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.DiskUpdate;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
@@ -32,7 +31,7 @@ public final class DisksUpdateSamples {
                 "myDisk",
                 new DiskUpdate()
                     .withSupportedCapabilities(new SupportedCapabilities().withArchitecture(Architecture.ARM64)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -49,7 +48,11 @@ public final class DisksUpdateSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .update("myResourceGroup", "myDisk", new DiskUpdate().withBurstingEnabled(false), Context.NONE);
+            .update(
+                "myResourceGroup",
+                "myDisk",
+                new DiskUpdate().withBurstingEnabled(false),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -75,8 +78,8 @@ public final class DisksUpdateSamples {
                             .withName("myPurchasePlanName")
                             .withPublisher("myPurchasePlanPublisher")
                             .withProduct("myPurchasePlanProduct")
-                            .withPromotionCode("myPurchasePlanPromotionCode")),
-                Context.NONE);
+                            .withPromotionCode("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -93,7 +96,7 @@ public final class DisksUpdateSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .update("myResourceGroup", "myDisk", new DiskUpdate().withTier("P30"), Context.NONE);
+            .update("myResourceGroup", "myDisk", new DiskUpdate().withTier("P30"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -114,7 +117,7 @@ public final class DisksUpdateSamples {
                 "myResourceGroup",
                 "myDisk",
                 new DiskUpdate().withDiskSizeGB(1024).withBurstingEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -132,7 +135,11 @@ public final class DisksUpdateSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .update("myResourceGroup", "myDisk", new DiskUpdate().withSupportsHibernation(true), Context.NONE);
+            .update(
+                "myResourceGroup",
+                "myDisk",
+                new DiskUpdate().withSupportsHibernation(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -154,7 +161,7 @@ public final class DisksUpdateSamples {
                 "myResourceGroup",
                 "myDisk",
                 new DiskUpdate().withNetworkAccessPolicy(NetworkAccessPolicy.ALLOW_ALL),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -175,7 +182,7 @@ public final class DisksUpdateSamples {
                 "myResourceGroup",
                 "myDisk",
                 new DiskUpdate().withSupportedCapabilities(new SupportedCapabilities().withDiskControllerTypes("SCSI")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -197,7 +204,7 @@ public final class DisksUpdateSamples {
                 "myResourceGroup",
                 "myDisk",
                 new DiskUpdate().withSupportedCapabilities(new SupportedCapabilities().withAcceleratedNetwork(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -215,6 +222,10 @@ public final class DisksUpdateSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .update("myResourceGroup", "myDisk", new DiskUpdate().withOptimizedForFrequentAttach(false), Context.NONE);
+            .update(
+                "myResourceGroup",
+                "myDisk",
+                new DiskUpdate().withOptimizedForFrequentAttach(false),
+                com.azure.core.util.Context.NONE);
     }
 }

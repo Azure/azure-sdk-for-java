@@ -14,6 +14,15 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
     public static final DataFlowReferenceType DATA_FLOW_REFERENCE = fromString("DataFlowReference");
 
     /**
+     * Creates a new instance of DataFlowReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFlowReferenceType() {
+    }
+
+    /**
      * Creates or finds a DataFlowReferenceType from its string representation.
      *
      * @param name a name to look for.

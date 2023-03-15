@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -27,6 +28,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,8 +136,12 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(containerLink);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    }
+
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.replicatedResourceClient.configureFaultInjectorProvider(injectorProvider);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {

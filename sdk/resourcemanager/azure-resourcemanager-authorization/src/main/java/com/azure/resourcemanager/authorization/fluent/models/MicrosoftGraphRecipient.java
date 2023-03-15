@@ -26,6 +26,10 @@ public class MicrosoftGraphRecipient {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphRecipient class. */
+    public MicrosoftGraphRecipient() {
+    }
+
     /**
      * Get the emailAddress property: emailAddress.
      *

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The CreateCluster request parameters. */
 @Fluent
 public class ClusterCreateParametersExtended {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateParametersExtended.class);
-
     /*
      * The location of the cluster.
      */
@@ -47,6 +43,10 @@ public class ClusterCreateParametersExtended {
      */
     @JsonProperty(value = "identity")
     private ClusterIdentity identity;
+
+    /** Creates an instance of ClusterCreateParametersExtended class. */
+    public ClusterCreateParametersExtended() {
+    }
 
     /**
      * Get the location property: The location of the cluster.

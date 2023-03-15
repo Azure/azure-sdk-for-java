@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupStatusRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupStatusRequest model =
             BinaryData
                 .fromString("{\"resourceType\":\"VM\",\"resourceId\":\"dkfo\",\"poLogicalName\":\"nygj\"}")
@@ -22,8 +21,8 @@ public final class BackupStatusRequestTests {
         Assertions.assertEquals("nygj", model.poLogicalName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupStatusRequest model =
             new BackupStatusRequest()
                 .withResourceType(DataSourceType.VM)

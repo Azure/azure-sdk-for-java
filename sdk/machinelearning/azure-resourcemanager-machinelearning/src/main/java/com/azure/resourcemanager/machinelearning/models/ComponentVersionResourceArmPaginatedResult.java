@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class ComponentVersionResourceArmPaginatedResult {
     /*
-     * The link to the next page of ComponentVersion objects. If null, there
-     * are no additional pages.
+     * The link to the next page of ComponentVersion objects. If null, there are no additional pages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -23,7 +22,11 @@ public final class ComponentVersionResourceArmPaginatedResult {
      * An array of objects of type ComponentVersion.
      */
     @JsonProperty(value = "value")
-    private List<ComponentVersionDataInner> value;
+    private List<ComponentVersionInner> value;
+
+    /** Creates an instance of ComponentVersionResourceArmPaginatedResult class. */
+    public ComponentVersionResourceArmPaginatedResult() {
+    }
 
     /**
      * Get the nextLink property: The link to the next page of ComponentVersion objects. If null, there are no
@@ -52,7 +55,7 @@ public final class ComponentVersionResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<ComponentVersionDataInner> value() {
+    public List<ComponentVersionInner> value() {
         return this.value;
     }
 
@@ -62,7 +65,7 @@ public final class ComponentVersionResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the ComponentVersionResourceArmPaginatedResult object itself.
      */
-    public ComponentVersionResourceArmPaginatedResult withValue(List<ComponentVersionDataInner> value) {
+    public ComponentVersionResourceArmPaginatedResult withValue(List<ComponentVersionInner> value) {
         this.value = value;
         return this;
     }

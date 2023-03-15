@@ -17,6 +17,10 @@ public final class AscLocationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private Object properties;
 
+    /** Creates an instance of AscLocationInner class. */
+    public AscLocationInner() {
+    }
+
     /**
      * Get the properties property: An empty set of properties.
      *

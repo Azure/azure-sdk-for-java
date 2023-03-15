@@ -65,7 +65,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ConnectivityConfigurationsService {
+    public interface ConnectivityConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -184,7 +184,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -243,7 +243,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -369,7 +369,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -442,7 +442,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -573,7 +573,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -634,7 +634,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -741,7 +741,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkManagerName, String configurationName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).getSyncPoller();
     }
 
     /**
@@ -762,7 +762,8 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context)
             .getSyncPoller();
     }
 
@@ -907,7 +908,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -975,7 +976,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

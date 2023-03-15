@@ -150,7 +150,9 @@ public final class EntityHelper {
             .setMaxDeliveryCount(options.getMaxDeliveryCount())
             .setRequiresSession(options.isSessionRequired())
             .setStatus(options.getStatus())
-            .setUserMetadata(options.getUserMetadata());
+            .setUserMetadata(options.getUserMetadata())
+            .setDefaultRule(options.getDefaultRule() != null
+                ? EntityHelper.toImplementation(options.getDefaultRule()) : null);
     }
 
     public static TopicDescription getTopicDescription(CreateTopicOptions options) {

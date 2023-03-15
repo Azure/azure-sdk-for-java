@@ -36,15 +36,6 @@ public final class ServersImpl implements Servers {
         this.serviceClient().delete(resourceGroupName, serverName, context);
     }
 
-    public Server getByResourceGroup(String resourceGroupName, String serverName) {
-        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
-        if (inner != null) {
-            return new ServerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Server> getByResourceGroupWithResponse(
         String resourceGroupName, String serverName, Context context) {
         Response<ServerInner> inner =
@@ -55,6 +46,15 @@ public final class ServersImpl implements Servers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Server getByResourceGroup(String resourceGroupName, String serverName) {
+        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
+        if (inner != null) {
+            return new ServerImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -53,11 +53,49 @@ public final class AddressValue {
     private String countryRegion;
 
     /*
-     * Street-level address, excluding city, state, countryRegion, and
-     * postalCode.
+     * Street-level address, excluding city, state, countryRegion, and postalCode.
      */
     @JsonProperty(value = "streetAddress")
     private String streetAddress;
+
+    /*
+     * Apartment or office number
+     */
+    @JsonProperty(value = "unit")
+    private String unit;
+
+    /*
+     * Districts or boroughs within a city, such as Brooklyn in New York City or City of Westminster in London.
+     */
+    @JsonProperty(value = "cityDistrict")
+    private String cityDistrict;
+
+    /*
+     * Second-level administrative division used in certain locales.
+     */
+    @JsonProperty(value = "stateDistrict")
+    private String stateDistrict;
+
+    /*
+     * Unofficial neighborhood name, like Chinatown.
+     */
+    @JsonProperty(value = "suburb")
+    private String suburb;
+
+    /*
+     * Build name, such as World Trade Center.
+     */
+    @JsonProperty(value = "house")
+    private String house;
+
+    /*
+     * Floor number, such as 3F.
+     */
+    @JsonProperty(value = "level")
+    private String level;
+
+    /** Creates an instance of AddressValue class. */
+    public AddressValue() {}
 
     /**
      * Get the houseNumber property: House or building number.
@@ -216,6 +254,128 @@ public final class AddressValue {
      */
     public AddressValue setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+        return this;
+    }
+
+    /**
+     * Get the unit property: Apartment or office number.
+     *
+     * @return the unit value.
+     */
+    public String getUnit() {
+        return this.unit;
+    }
+
+    /**
+     * Set the unit property: Apartment or office number.
+     *
+     * @param unit the unit value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setUnit(String unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
+     * Westminster in London.
+     *
+     * @return the cityDistrict value.
+     */
+    public String getCityDistrict() {
+        return this.cityDistrict;
+    }
+
+    /**
+     * Set the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
+     * Westminster in London.
+     *
+     * @param cityDistrict the cityDistrict value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setCityDistrict(String cityDistrict) {
+        this.cityDistrict = cityDistrict;
+        return this;
+    }
+
+    /**
+     * Get the stateDistrict property: Second-level administrative division used in certain locales.
+     *
+     * @return the stateDistrict value.
+     */
+    public String getStateDistrict() {
+        return this.stateDistrict;
+    }
+
+    /**
+     * Set the stateDistrict property: Second-level administrative division used in certain locales.
+     *
+     * @param stateDistrict the stateDistrict value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setStateDistrict(String stateDistrict) {
+        this.stateDistrict = stateDistrict;
+        return this;
+    }
+
+    /**
+     * Get the suburb property: Unofficial neighborhood name, like Chinatown.
+     *
+     * @return the suburb value.
+     */
+    public String getSuburb() {
+        return this.suburb;
+    }
+
+    /**
+     * Set the suburb property: Unofficial neighborhood name, like Chinatown.
+     *
+     * @param suburb the suburb value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setSuburb(String suburb) {
+        this.suburb = suburb;
+        return this;
+    }
+
+    /**
+     * Get the house property: Build name, such as World Trade Center.
+     *
+     * @return the house value.
+     */
+    public String getHouse() {
+        return this.house;
+    }
+
+    /**
+     * Set the house property: Build name, such as World Trade Center.
+     *
+     * @param house the house value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setHouse(String house) {
+        this.house = house;
+        return this;
+    }
+
+    /**
+     * Get the level property: Floor number, such as 3F.
+     *
+     * @return the level value.
+     */
+    public String getLevel() {
+        return this.level;
+    }
+
+    /**
+     * Set the level property: Floor number, such as 3F.
+     *
+     * @param level the level value to set.
+     * @return the AddressValue object itself.
+     */
+    public AddressValue setLevel(String level) {
+        this.level = level;
         return this;
     }
 }

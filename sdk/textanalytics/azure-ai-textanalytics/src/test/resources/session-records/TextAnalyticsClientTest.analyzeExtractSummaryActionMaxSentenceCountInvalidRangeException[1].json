@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e216c39b-ab8c-4eee-a53b-3dd47a53f3e9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e54d15cd-9c96-4642-b6dc-94dcb0b98566",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation error: Job task parameter value '0' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
+      "Date" : "Thu, 16 Feb 2023 23:17:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fa2ad4a6-3f65-47bc-98eb-715572f77d20",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0d0e74b5-f313-400b-9249-670c70745226",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation error: Job task parameter value '21' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
+      "Date" : "Thu, 16 Feb 2023 23:17:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

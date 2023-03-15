@@ -43,7 +43,7 @@ public interface Gallery {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the galleryResourceId property: The resource ID of the backing Azure Compute Gallery.
@@ -80,7 +80,7 @@ public interface Gallery {
             /**
              * Specifies resourceGroupName, devCenterName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param devCenterName The name of the devcenter.
              * @return the next definition stage.
              */

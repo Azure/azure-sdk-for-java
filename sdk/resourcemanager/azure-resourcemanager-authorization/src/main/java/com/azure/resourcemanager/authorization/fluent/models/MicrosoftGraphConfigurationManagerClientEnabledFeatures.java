@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** configurationManagerClientEnabledFeatures configuration Manager client enabled features. */
+/**
+ * configurationManagerClientEnabledFeatures
+ *
+ * <p>configuration Manager client enabled features.
+ */
 @Fluent
 public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
     /*
@@ -55,6 +59,10 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
      * configuration Manager client enabled features
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphConfigurationManagerClientEnabledFeatures class. */
+    public MicrosoftGraphConfigurationManagerClientEnabledFeatures() {
+    }
 
     /**
      * Get the compliancePolicy property: Whether compliance policy is managed by Intune.

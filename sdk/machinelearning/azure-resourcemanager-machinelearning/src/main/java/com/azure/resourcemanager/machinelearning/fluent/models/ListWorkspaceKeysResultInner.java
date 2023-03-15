@@ -41,6 +41,10 @@ public final class ListWorkspaceKeysResultInner {
     @JsonProperty(value = "notebookAccessKeys", access = JsonProperty.Access.WRITE_ONLY)
     private ListNotebookKeysResultInner notebookAccessKeys;
 
+    /** Creates an instance of ListWorkspaceKeysResultInner class. */
+    public ListWorkspaceKeysResultInner() {
+    }
+
     /**
      * Get the userStorageKey property: The userStorageKey property.
      *

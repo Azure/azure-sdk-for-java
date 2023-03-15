@@ -9,37 +9,36 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.MabJobTaskDetails
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MabJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MabJobTaskDetails model =
             BinaryData
                 .fromString(
-                    "{\"taskId\":\"wkojpllndnpd\",\"startTime\":\"2021-01-15T15:33:07Z\",\"endTime\":\"2021-04-21T23:03:02Z\",\"duration\":\"PT204H2M23S\",\"status\":\"ug\"}")
+                    "{\"taskId\":\"gdirazf\",\"startTime\":\"2021-02-11T05:39:41Z\",\"endTime\":\"2021-01-14T06:51:31Z\",\"duration\":\"PT208H42M12S\",\"status\":\"dujtmvcope\"}")
                 .toObject(MabJobTaskDetails.class);
-        Assertions.assertEquals("wkojpllndnpd", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T15:33:07Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T23:03:02Z"), model.endTime());
-        Assertions.assertEquals(Duration.parse("PT204H2M23S"), model.duration());
-        Assertions.assertEquals("ug", model.status());
+        Assertions.assertEquals("gdirazf", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T05:39:41Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T06:51:31Z"), model.endTime());
+        Assertions.assertEquals(Duration.parse("PT208H42M12S"), model.duration());
+        Assertions.assertEquals("dujtmvcope", model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MabJobTaskDetails model =
             new MabJobTaskDetails()
-                .withTaskId("wkojpllndnpd")
-                .withStartTime(OffsetDateTime.parse("2021-01-15T15:33:07Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-21T23:03:02Z"))
-                .withDuration(Duration.parse("PT204H2M23S"))
-                .withStatus("ug");
+                .withTaskId("gdirazf")
+                .withStartTime(OffsetDateTime.parse("2021-02-11T05:39:41Z"))
+                .withEndTime(OffsetDateTime.parse("2021-01-14T06:51:31Z"))
+                .withDuration(Duration.parse("PT208H42M12S"))
+                .withStatus("dujtmvcope");
         model = BinaryData.fromObject(model).toObject(MabJobTaskDetails.class);
-        Assertions.assertEquals("wkojpllndnpd", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T15:33:07Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T23:03:02Z"), model.endTime());
-        Assertions.assertEquals(Duration.parse("PT204H2M23S"), model.duration());
-        Assertions.assertEquals("ug", model.status());
+        Assertions.assertEquals("gdirazf", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T05:39:41Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T06:51:31Z"), model.endTime());
+        Assertions.assertEquals(Duration.parse("PT208H42M12S"), model.duration());
+        Assertions.assertEquals("dujtmvcope", model.status());
     }
 }

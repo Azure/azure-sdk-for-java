@@ -16,23 +16,21 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEntity {
     /*
-     * List of email address to send notifications for groups without owners.
-     * Multiple email address can be defined by separating email address with a
-     * semicolon.
+     * List of email address to send notifications for groups without owners. Multiple email address can be defined by
+     * separating email address with a semicolon.
      */
     @JsonProperty(value = "alternateNotificationEmails")
     private String alternateNotificationEmails;
 
     /*
-     * Number of days before a group expires and needs to be renewed. Once
-     * renewed, the group expiration is extended by the number of days defined.
+     * Number of days before a group expires and needs to be renewed. Once renewed, the group expiration is extended by
+     * the number of days defined.
      */
     @JsonProperty(value = "groupLifetimeInDays")
     private Integer groupLifetimeInDays;
 
     /*
-     * The group type for which the expiration policy applies. Possible values
-     * are All, Selected or None.
+     * The group type for which the expiration policy applies. Possible values are All, Selected or None.
      */
     @JsonProperty(value = "managedGroupTypes")
     private String managedGroupTypes;
@@ -41,6 +39,10 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
      * groupLifecyclePolicy
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGroupLifecyclePolicy class. */
+    public MicrosoftGraphGroupLifecyclePolicy() {
+    }
 
     /**
      * Get the alternateNotificationEmails property: List of email address to send notifications for groups without

@@ -13,11 +13,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.implementation.EventHubsMetricsProvider;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -157,7 +156,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     private final String identifier;
-    private final EventHubsMetricsProvider metricsProvider;
+    private final EventHubsConsumerInstrumentation instrumentation;
+
     /**
      * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -167,7 +167,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier, Meter meter) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier,
+        EventHubsConsumerInstrumentation instrumentation) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -177,7 +178,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
         this.identifier = identifier;
-        this.metricsProvider = new EventHubsMetricsProvider(meter, fullyQualifiedNamespace, eventHubName, consumerGroup);
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -215,8 +216,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
-            .flatMap(EventHubManagementNode::getEventHubProperties);
+        return instrumentation.getTracer().traceMono(connectionProcessor.flatMap(connection -> connection.getManagementNode())
+                .flatMap(EventHubManagementNode::getEventHubProperties),
+            "EventHubs.getEventHubProperties");
     }
 
     /**
@@ -247,8 +249,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
-            .flatMap(node -> node.getPartitionProperties(partitionId));
+        return instrumentation.getTracer().traceMono(connectionProcessor.flatMap(connection -> connection.getManagementNode())
+                .flatMap(node -> node.getPartitionProperties(partitionId)),
+            "EventHubs.getPartitionProperties");
     }
 
     /**
@@ -390,7 +393,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final String prefix = StringUtil.getRandomString("all");
         final Flux<PartitionEvent> allPartitionEvents = getPartitionIds().flatMap(partitionId -> {
             final String linkName = prefix + "-" + partitionId;
-
             return createConsumer(linkName, partitionId, startingPosition, receiveOptions);
         });
 
@@ -421,7 +423,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
             .computeIfAbsent(linkName,
                 name -> createPartitionConsumer(name, partitionId, startingPosition, receiveOptions))
             .receive()
-            .doOnNext(event -> metricsProvider.reportReceive(event))
             .doFinally(signal -> removeLink(linkName, partitionId, signal));
     }
 
@@ -484,10 +485,18 @@ public class EventHubConsumerAsyncClient implements Closeable {
         // It also requests a new link (i.e. retry) when the current link it holds gets terminated
         // (e.g., when the service decides to close that link).
         //
-        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
+        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono
+            .repeat()
+            // The re-subscribe nature of 'MonoRepeat' following the emission of a link will cause the 'MonoFlatmap' (the
+            // upstream of repeat operator) to cache the same link. When AmqpReceiveLinkProcessor later requests a new link,
+            // the corresponding request from the 'MonoRepeat' will be answered with the cached (and closed) link by the
+            // 'MonoFlatmap'. We'll filter out these cached (closed) links to avoid AmqpReceiveLinkProcessor from doing
+            // unusable work (creating subscriptions and attempting to place the credit) on those links and associated logging.
+            // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
+            .filter(link -> !link.isDisposed());
 
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
-            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
+            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId, connectionProcessor, instrumentation));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
@@ -496,6 +505,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     boolean isConnectionClosed() {
         return this.connectionProcessor.isChannelClosed();
+    }
+
+    EventHubsConsumerInstrumentation getInstrumentation() {
+        return instrumentation;
     }
 
     /**

@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * device Represents an Azure Active Directory object. The directoryObject type is the base type for many other
- * directory entity types.
+ * device
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * entity types.
  */
 @Fluent
 public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInner {
@@ -33,25 +35,22 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds;
 
     /*
-     * The timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
+     * The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
      */
     @JsonProperty(value = "approximateLastSignInDateTime")
     private OffsetDateTime approximateLastSignInDateTime;
 
     /*
-     * The timestamp when the device is no longer deemed compliant. The
-     * timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
+     * The timestamp when the device is no longer deemed compliant. The timestamp type represents date and time
+     * information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
+     * like this: '2014-01-01T00:00:00Z'. Read-only.
      */
     @JsonProperty(value = "complianceExpirationDateTime")
     private OffsetDateTime complianceExpirationDateTime;
 
     /*
-     * Unique identifier set by Azure Device Registration Service at the time
-     * of registration.
+     * Unique identifier set by Azure Device Registration Service at the time of registration.
      */
     @JsonProperty(value = "deviceId")
     private String deviceId;
@@ -75,43 +74,37 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private String displayName;
 
     /*
-     * true if the device complies with Mobile Device Management (MDM)
-     * policies; otherwise, false. Read-only. This can only be updated by
-     * Intune for any device OS type or by an approved MDM app for Windows OS
-     * devices.
+     * true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only. This can
+     * only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
      */
     @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
 
     /*
-     * true if the device is managed by a Mobile Device Management (MDM) app;
-     * otherwise, false. This can only be updated by Intune for any device OS
-     * type or by an approved MDM app for Windows OS devices.
+     * true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be
+     * updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
      */
     @JsonProperty(value = "isManaged")
     private Boolean isManaged;
 
     /*
-     * Application identifier used to register device into MDM. Read-only.
-     * Supports $filter.
+     * Application identifier used to register device into MDM. Read-only. Supports $filter.
      */
     @JsonProperty(value = "mdmAppId")
     private String mdmAppId;
 
     /*
-     * The last time at which the object was synced with the on-premises
-     * directory. The Timestamp type represents date and time information using
-     * ISO 8601 format and is always in UTC time. For example, midnight UTC on
-     * Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z' Read-only.
+     * The last time at which the object was synced with the on-premises directory. The Timestamp type represents date
+     * and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014
+     * would look like this: '2014-01-01T00:00:00Z' Read-only.
      */
     @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
 
     /*
-     * true if this object is synced from an on-premises directory; false if
-     * this object was originally synced from an on-premises directory but is
-     * no longer synced; null if this object has never been synced from an
-     * on-premises directory (default). Read-only.
+     * true if this object is synced from an on-premises directory; false if this object was originally synced from an
+     * on-premises directory but is no longer synced; null if this object has never been synced from an on-premises
+     * directory (default). Read-only.
      */
     @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
@@ -135,8 +128,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private List<String> physicalIds;
 
     /*
-     * The profile type of the device. Possible values:RegisteredDevice
-     * (default)SecureVMPrinterSharedIoT
+     * The profile type of the device. Possible values:RegisteredDevice (default)SecureVMPrinterSharedIoT
      */
     @JsonProperty(value = "profileType")
     private String profileType;
@@ -148,34 +140,29 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private List<String> systemLabels;
 
     /*
-     * Type of trust for the joined device. Read-only. Possible values:
-     * Workplace - indicates bring your own personal devicesAzureAd - Cloud
-     * only joined devicesServerAd - on-premises domain joined devices joined
-     * to Azure AD. For more details, see Introduction to device management in
-     * Azure Active Directory
+     * Type of trust for the joined device. Read-only. Possible values: Workplace - indicates bring your own personal
+     * devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined devices joined to Azure AD. For
+     * more details, see Introduction to device management in Azure Active Directory
      */
     @JsonProperty(value = "trustType")
     private String trustType;
 
     /*
-     * Groups that this group is a member of. HTTP Methods: GET (supported for
-     * all groups). Read-only. Nullable.
+     * Groups that this group is a member of. HTTP Methods: GET (supported for all groups). Read-only. Nullable.
      */
     @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
-     * The user that cloud joined the device or registered their personal
-     * device. The registered owner is set at the time of registration.
-     * Currently, there can be only one owner. Read-only. Nullable.
+     * The user that cloud joined the device or registered their personal device. The registered owner is set at the
+     * time of registration. Currently, there can be only one owner. Read-only. Nullable.
      */
     @JsonProperty(value = "registeredOwners")
     private List<MicrosoftGraphDirectoryObjectInner> registeredOwners;
 
     /*
-     * Collection of registered users of the device. For cloud joined devices
-     * and registered personal devices, registered users are set to the same
-     * value as registered owners at the time of registration. Read-only.
+     * Collection of registered users of the device. For cloud joined devices and registered personal devices,
+     * registered users are set to the same value as registered owners at the time of registration. Read-only.
      * Nullable.
      */
     @JsonProperty(value = "registeredUsers")
@@ -188,17 +175,20 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
-     * The collection of open extensions defined for the device. Read-only.
-     * Nullable.
+     * The collection of open extensions defined for the device. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDevice class. */
+    public MicrosoftGraphDevice() {
+    }
 
     /**
      * Get the accountEnabled property: true if the account is enabled; otherwise, false. Required.

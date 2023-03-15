@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
 import com.azure.resourcemanager.devcenter.models.ImageValidationStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +20,7 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Validation status of the configured image.
@@ -47,7 +49,7 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -98,6 +100,13 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
     @Override
     public DevBoxDefinitionProperties withOsStorageType(String osStorageType) {
         super.withOsStorageType(osStorageType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DevBoxDefinitionProperties withHibernateSupport(HibernateSupport hibernateSupport) {
+        super.withHibernateSupport(hibernateSupport);
         return this;
     }
 

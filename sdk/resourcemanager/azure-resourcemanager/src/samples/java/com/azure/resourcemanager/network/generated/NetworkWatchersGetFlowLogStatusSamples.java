@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.FlowLogStatusParameters;
 
 /** Samples for NetworkWatchers GetFlowLogStatus. */
 public final class NetworkWatchersGetFlowLogStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherFlowLogStatusQuery.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherFlowLogStatusQuery.json
      */
     /**
      * Sample code: Get flow log status.
@@ -29,6 +28,6 @@ public final class NetworkWatchersGetFlowLogStatusSamples {
                 new FlowLogStatusParameters()
                     .withTargetResourceId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -34,16 +34,8 @@ public final class QueryResultImpl implements QueryResult {
         return this.innerModel().type();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
     public String location() {
         return this.innerModel().location();
-    }
-
-    public String sku() {
-        return this.innerModel().sku();
     }
 
     public Map<String, String> tags() {
@@ -53,6 +45,14 @@ public final class QueryResultImpl implements QueryResult {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String sku() {
+        return this.innerModel().sku();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String nextLink() {

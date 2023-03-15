@@ -6,28 +6,30 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The result of testing an analyzer on text. */
-@Fluent
-public final class AnalyzeResult {
+@Immutable
+public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * The list of tokens returned by the analyzer specified in the request.
      */
-    @JsonProperty(value = "tokens", required = true)
-    private List<AnalyzedTokenInfo> tokens;
+    private final List<AnalyzedTokenInfo> tokens;
 
     /**
      * Creates an instance of AnalyzeResult class.
      *
      * @param tokens the tokens value to set.
      */
-    @JsonCreator
-    public AnalyzeResult(@JsonProperty(value = "tokens", required = true) List<AnalyzedTokenInfo> tokens) {
+    public AnalyzeResult(List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;
     }
 
@@ -38,5 +40,52 @@ public final class AnalyzeResult {
      */
     public List<AnalyzedTokenInfo> getTokens() {
         return this.tokens;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tokens", this.tokens, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeResult.
+     */
+    public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean tokensFound = false;
+                    List<AnalyzedTokenInfo> tokens = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tokens".equals(fieldName)) {
+                            tokens = reader.readArray(reader1 -> AnalyzedTokenInfo.fromJson(reader1));
+                            tokensFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (tokensFound) {
+                        AnalyzeResult deserializedValue = new AnalyzeResult(tokens);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tokensFound) {
+                        missingProperties.add("tokens");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

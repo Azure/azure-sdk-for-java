@@ -12,11 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.OnlineEndpointsClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthTokenInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineEndpointInner;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthKeys;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthToken;
 import com.azure.resourcemanager.machinelearning.models.EndpointComputeType;
-import com.azure.resourcemanager.machinelearning.models.OnlineEndpointData;
+import com.azure.resourcemanager.machinelearning.models.OnlineEndpoint;
 import com.azure.resourcemanager.machinelearning.models.OnlineEndpoints;
 import com.azure.resourcemanager.machinelearning.models.OrderString;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
@@ -35,12 +35,12 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<OnlineEndpointData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<OnlineEndpointDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new OnlineEndpointDataImpl(inner1, this.manager()));
+    public PagedIterable<OnlineEndpoint> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<OnlineEndpointInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineEndpointData> list(
+    public PagedIterable<OnlineEndpoint> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -51,7 +51,7 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         String properties,
         OrderString orderBy,
         Context context) {
-        PagedIterable<OnlineEndpointDataInner> inner =
+        PagedIterable<OnlineEndpointInner> inner =
             this
                 .serviceClient()
                 .list(
@@ -65,7 +65,7 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
                     properties,
                     orderBy,
                     context);
-        return Utils.mapPage(inner, inner1 -> new OnlineEndpointDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OnlineEndpointImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName) {
@@ -76,34 +76,25 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, context);
     }
 
-    public OnlineEndpointData get(String resourceGroupName, String workspaceName, String endpointName) {
-        OnlineEndpointDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, endpointName);
-        if (inner != null) {
-            return new OnlineEndpointDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OnlineEndpointData> getWithResponse(
+    public Response<OnlineEndpoint> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        Response<OnlineEndpointDataInner> inner =
+        Response<OnlineEndpointInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, endpointName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new OnlineEndpointDataImpl(inner.getValue(), this.manager()));
+                new OnlineEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName) {
-        EndpointAuthKeysInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName, endpointName);
+    public OnlineEndpoint get(String resourceGroupName, String workspaceName, String endpointName) {
+        OnlineEndpointInner inner = this.serviceClient().get(resourceGroupName, workspaceName, endpointName);
         if (inner != null) {
-            return new EndpointAuthKeysImpl(inner, this.manager());
+            return new OnlineEndpointImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -124,6 +115,15 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         }
     }
 
+    public EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName) {
+        EndpointAuthKeysInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName, endpointName);
+        if (inner != null) {
+            return new EndpointAuthKeysImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void regenerateKeys(
         String resourceGroupName, String workspaceName, String endpointName, RegenerateEndpointKeysRequest body) {
         this.serviceClient().regenerateKeys(resourceGroupName, workspaceName, endpointName, body);
@@ -136,15 +136,6 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         RegenerateEndpointKeysRequest body,
         Context context) {
         this.serviceClient().regenerateKeys(resourceGroupName, workspaceName, endpointName, body, context);
-    }
-
-    public EndpointAuthToken getToken(String resourceGroupName, String workspaceName, String endpointName) {
-        EndpointAuthTokenInner inner = this.serviceClient().getToken(resourceGroupName, workspaceName, endpointName);
-        if (inner != null) {
-            return new EndpointAuthTokenImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<EndpointAuthToken> getTokenWithResponse(
@@ -162,7 +153,16 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         }
     }
 
-    public OnlineEndpointData getById(String id) {
+    public EndpointAuthToken getToken(String resourceGroupName, String workspaceName, String endpointName) {
+        EndpointAuthTokenInner inner = this.serviceClient().getToken(resourceGroupName, workspaceName, endpointName);
+        if (inner != null) {
+            return new EndpointAuthTokenImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OnlineEndpoint getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -189,7 +189,7 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         return this.getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
     }
 
-    public Response<OnlineEndpointData> getByIdWithResponse(String id, Context context) {
+    public Response<OnlineEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -278,7 +278,7 @@ public final class OnlineEndpointsImpl implements OnlineEndpoints {
         return this.serviceManager;
     }
 
-    public OnlineEndpointDataImpl define(String name) {
-        return new OnlineEndpointDataImpl(name, this.manager());
+    public OnlineEndpointImpl define(String name) {
+        return new OnlineEndpointImpl(name, this.manager());
     }
 }

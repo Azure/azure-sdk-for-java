@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AzureFirewalls ListLearnedPrefixes. */
 public final class AzureFirewallsListLearnedPrefixesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallListLearnedIPPrefixes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallListLearnedIPPrefixes.json
      */
     /**
      * Sample code: AzureFirewallListLearnedPrefixes.
@@ -22,6 +20,6 @@ public final class AzureFirewallsListLearnedPrefixesSamples {
             .manager()
             .serviceClient()
             .getAzureFirewalls()
-            .listLearnedPrefixes("rg1", "azureFirewall1", Context.NONE);
+            .listLearnedPrefixes("rg1", "azureFirewall1", com.azure.core.util.Context.NONE);
     }
 }

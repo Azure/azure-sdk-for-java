@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.ComplianceSegment;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,13 +12,17 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Compliance of a scope. */
-@Fluent
+@Immutable
 public final class ComplianceInner extends ProxyResource {
     /*
      * Compliance data
      */
     @JsonProperty(value = "properties")
     private ComplianceProperties innerProperties;
+
+    /** Creates an instance of ComplianceInner class. */
+    public ComplianceInner() {
+    }
 
     /**
      * Get the innerProperties property: Compliance data.

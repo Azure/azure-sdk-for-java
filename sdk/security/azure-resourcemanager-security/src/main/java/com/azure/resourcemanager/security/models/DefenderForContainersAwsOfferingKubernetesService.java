@@ -16,6 +16,10 @@ public final class DefenderForContainersAwsOfferingKubernetesService {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderForContainersAwsOfferingKubernetesService class. */
+    public DefenderForContainersAwsOfferingKubernetesService() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature used for provisioning resources.
      *

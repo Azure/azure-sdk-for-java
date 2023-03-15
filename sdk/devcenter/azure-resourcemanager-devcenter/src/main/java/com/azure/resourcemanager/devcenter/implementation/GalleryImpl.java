@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.GalleryInner;
 import com.azure.resourcemanager.devcenter.models.Gallery;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 
 public final class GalleryImpl implements Gallery, Gallery.Definition, Gallery.Update {
     private GalleryInner innerObject;
@@ -30,7 +31,7 @@ public final class GalleryImpl implements Gallery, Gallery.Definition, Gallery.U
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

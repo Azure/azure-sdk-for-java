@@ -17,6 +17,9 @@ public class BatchResult {
     @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private BatchResultSummary batchSummary;
 
+    /** Creates an instance of BatchResult class. */
+    public BatchResult() {}
+
     /**
      * Get the batchSummary property: Summary of the results for the batch request.
      *

@@ -58,7 +58,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface StaticMembersService {
+    public interface StaticMembersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -186,7 +186,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -253,7 +253,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -384,7 +384,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -459,7 +459,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -596,7 +596,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -663,7 +663,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -784,7 +784,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -863,7 +863,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -23,6 +23,10 @@ public final class QuotaUpdateParameters {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of QuotaUpdateParameters class. */
+    public QuotaUpdateParameters() {
+    }
+
     /**
      * Get the value property: The list for update quota.
      *

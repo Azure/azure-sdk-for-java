@@ -22,6 +22,10 @@ public final class ListNotebookKeysResultInner {
     @JsonProperty(value = "secondaryAccessKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAccessKey;
 
+    /** Creates an instance of ListNotebookKeysResultInner class. */
+    public ListNotebookKeysResultInner() {
+    }
+
     /**
      * Get the primaryAccessKey property: The primaryAccessKey property.
      *

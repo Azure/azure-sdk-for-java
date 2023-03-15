@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Network. */
+/** network of this container. */
 public final class Network extends ExpandableStringEnum<Network> {
     /** Static value Bridge for Network. */
     public static final Network BRIDGE = fromString("Bridge");
 
     /** Static value Host for Network. */
     public static final Network HOST = fromString("Host");
+
+    /**
+     * Creates a new instance of Network value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Network() {
+    }
 
     /**
      * Creates or finds a Network from its string representation.

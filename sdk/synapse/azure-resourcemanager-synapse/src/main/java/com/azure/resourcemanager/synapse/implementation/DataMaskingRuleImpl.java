@@ -92,6 +92,10 @@ public final class DataMaskingRuleImpl implements DataMaskingRule, DataMaskingRu
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataMaskingRuleInner innerModel() {
         return this.innerObject;
     }

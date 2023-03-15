@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.fluent.DimensionsClient;
 import com.azure.resourcemanager.costmanagement.fluent.models.DimensionInner;
 import com.azure.resourcemanager.costmanagement.models.DimensionsListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DimensionsClient. */
 public final class DimensionsClientImpl implements DimensionsClient {
-    private final ClientLogger logger = new ClientLogger(DimensionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DimensionsService service;
 
@@ -59,7 +56,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
-    private interface DimensionsService {
+    public interface DimensionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.CostManagement/dimensions")
         @ExpectedResponses({200, 204})
@@ -120,7 +117,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(
@@ -185,7 +182,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> listSinglePageAsync(
@@ -246,7 +243,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> listAsync(
@@ -274,7 +271,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> listAsync(String scope) {
@@ -314,7 +311,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> listAsync(
@@ -342,7 +339,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> list(String scope) {
@@ -382,7 +379,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> list(
@@ -409,7 +406,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> byExternalCloudProviderTypeSinglePageAsync(
@@ -479,7 +476,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DimensionInner>> byExternalCloudProviderTypeSinglePageAsync(
@@ -546,7 +543,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> byExternalCloudProviderTypeAsync(
@@ -573,7 +570,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> byExternalCloudProviderTypeAsync(
@@ -608,7 +605,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DimensionInner> byExternalCloudProviderTypeAsync(
@@ -636,7 +633,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> byExternalCloudProviderType(
@@ -670,7 +667,7 @@ public final class DimensionsClientImpl implements DimensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DimensionInner> byExternalCloudProviderType(

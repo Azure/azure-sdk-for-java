@@ -65,7 +65,7 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAdapti")
-    private interface AdaptiveNetworkHardeningsService {
+    public interface AdaptiveNetworkHardeningsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
@@ -547,32 +547,6 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
      * @param adaptiveNetworkHardeningResourceName The name of the Adaptive Network Hardening resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Adaptive Network Hardening resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdaptiveNetworkHardeningInner get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName) {
-        return getAsync(
-                resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName)
-            .block();
-    }
-
-    /**
-     * Gets a single Adaptive Network Hardening resource.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param adaptiveNetworkHardeningResourceName The name of the Adaptive Network Hardening resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -595,6 +569,37 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
                 adaptiveNetworkHardeningResourceName,
                 context)
             .block();
+    }
+
+    /**
+     * Gets a single Adaptive Network Hardening resource.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @param adaptiveNetworkHardeningResourceName The name of the Adaptive Network Hardening resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Adaptive Network Hardening resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AdaptiveNetworkHardeningInner get(
+        String resourceGroupName,
+        String resourceNamespace,
+        String resourceType,
+        String resourceName,
+        String adaptiveNetworkHardeningResourceName) {
+        return getWithResponse(
+                resourceGroupName,
+                resourceNamespace,
+                resourceType,
+                resourceName,
+                adaptiveNetworkHardeningResourceName,
+                Context.NONE)
+            .getValue();
     }
 
     /**

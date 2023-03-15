@@ -3,13 +3,13 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,25 +20,6 @@ import java.util.stream.Stream;
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
-
-    static {
-        HttpHeadersHelper.setAccessor(new HttpHeadersHelper.HttpHeadersAccessor() {
-            @Override
-            public HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
-                return headers.setInternal(formattedName, name, value);
-            }
-
-            @Override
-            public HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName) {
-                return headers.getInternal(formattedName);
-            }
-
-            @Override
-            public String getValueNoKeyFormatting(HttpHeaders headers, String formattedName) {
-                return headers.getValueInternal(formattedName);
-            }
-        });
-    }
 
     /**
      * Create an empty HttpHeaders instance.
@@ -104,7 +85,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object.
      */
     public HttpHeaders add(String name, String value) {
-        return addInternal(HttpHeadersHelper.formatKey(name), name, value);
+        return addInternal(formatKey(name), name, value);
     }
 
     /**
@@ -161,7 +142,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object
      */
     public HttpHeaders set(String name, String value) {
-        return setInternal(HttpHeadersHelper.formatKey(name), name, value);
+        return setInternal(formatKey(name), name, value);
     }
 
     /**
@@ -200,7 +181,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object
      */
     public HttpHeaders set(String name, List<String> values) {
-        return setInternal(HttpHeadersHelper.formatKey(name), name, values);
+        return setInternal(formatKey(name), name, values);
     }
 
     /**
@@ -252,7 +233,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if found, null otherwise.
      */
     public HttpHeader get(String name) {
-        return getInternal(HttpHeadersHelper.formatKey(name));
+        return getInternal(formatKey(name));
     }
 
     /**
@@ -278,7 +259,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if removed, null otherwise.
      */
     public HttpHeader remove(String name) {
-        return removeInternal(HttpHeadersHelper.formatKey(name));
+        return removeInternal(formatKey(name));
     }
 
     /**
@@ -303,7 +284,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the value of the header, or null if the header isn't found
      */
     public String getValue(String name) {
-        return getValueInternal(HttpHeadersHelper.formatKey(name));
+        return getValueInternal(formatKey(name));
     }
 
     /**
@@ -330,7 +311,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the values of the header, or null if the header isn't found
      */
     public String[] getValues(String name) {
-        return getValuesInternal(HttpHeadersHelper.formatKey(name));
+        return getValuesInternal(formatKey(name));
     }
 
     /**
@@ -412,5 +393,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return this.stream()
             .map(header -> header.getName() + "=" + header.getValue())
             .collect(Collectors.joining(", "));
+    }
+
+    private static String formatKey(String name) {
+        return (name == null) ? null : name.toLowerCase(Locale.ROOT);
     }
 }

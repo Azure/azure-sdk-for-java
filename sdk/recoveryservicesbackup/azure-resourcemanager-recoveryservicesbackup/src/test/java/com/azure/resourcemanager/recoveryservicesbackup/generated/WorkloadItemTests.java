@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadItem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkloadItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkloadItem model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class WorkloadItemTests {
         Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkloadItem model =
             new WorkloadItem()
                 .withBackupManagementType("zfoqouicybxar")

@@ -20,6 +20,10 @@ public final class AzureResourceDetails extends ResourceDetails {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of AzureResourceDetails class. */
+    public AzureResourceDetails() {
+    }
+
     /**
      * Get the id property: Azure resource Id of the assessed resource.
      *

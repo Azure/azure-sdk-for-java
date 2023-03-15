@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuardProxies Get. */
 public final class ResourceGuardProxiesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get VaultGuardProxies.
@@ -18,6 +16,6 @@ public final class ResourceGuardProxiesGetSamples {
      */
     public static void getVaultGuardProxies(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", Context.NONE);
+        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

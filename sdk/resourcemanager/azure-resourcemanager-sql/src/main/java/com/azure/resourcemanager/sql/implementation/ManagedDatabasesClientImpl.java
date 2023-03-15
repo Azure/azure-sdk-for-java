@@ -37,6 +37,8 @@ import com.azure.resourcemanager.sql.fluent.ManagedDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseInner;
 import com.azure.resourcemanager.sql.models.CompleteDatabaseRestoreDefinition;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseListResult;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseMoveDefinition;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseStartMoveDefinition;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -67,7 +69,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabasesService {
+    public interface ManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
@@ -148,19 +150,36 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
-        @ExpectedResponses({200})
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/cancelMove")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedDatabaseListResult>> listInaccessibleByInstance(
+        Mono<Response<Flux<ByteBuffer>>> cancelMove(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagedDatabaseMoveDefinition parameters,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/completeMove")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> completeMove(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseMoveDefinition parameters,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -177,6 +196,37 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CompleteDatabaseRestoreDefinition parameters,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/startMove")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startMove(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedDatabaseStartMoveDefinition parameters,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedDatabaseListResult>> listInaccessibleByInstance(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -234,7 +284,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +294,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedDatabaseInner>>map(
@@ -295,7 +344,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -304,7 +352,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -428,7 +476,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -440,7 +487,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -485,7 +532,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -495,7 +541,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -526,23 +572,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner get(String resourceGroupName, String managedInstanceName, String databaseName) {
-        return getAsync(resourceGroupName, managedInstanceName, databaseName).block();
-    }
-
-    /**
-     * Gets a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,6 +582,23 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     public Response<ManagedDatabaseInner> getWithResponse(
         String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, context).block();
+    }
+
+    /**
+     * Gets a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedDatabaseInner get(String resourceGroupName, String managedInstanceName, String databaseName) {
+        return getWithResponse(resourceGroupName, managedInstanceName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -599,7 +645,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -611,7 +656,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -667,7 +712,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -677,7 +721,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -914,7 +958,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -925,7 +968,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -969,7 +1012,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -978,7 +1020,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1183,7 +1225,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1195,7 +1236,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1251,7 +1292,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1261,7 +1301,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1460,20 +1500,24 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
+    public Mono<Response<Flux<ByteBuffer>>> cancelMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1488,54 +1532,57 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listInaccessibleByInstance(
+                        .cancelMove(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             managedInstanceName,
+                            databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
+                            this.client.getApiVersion(),
+                            parameters,
                             context))
-            .<PagedResponse<ManagedDatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1550,111 +1597,550 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         context = this.client.mergeContext(context);
         return service
-            .listInaccessibleByInstance(
+            .cancelMove(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 managedInstanceName,
+                databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+                this.client.getApiVersion(),
+                parameters,
+                context);
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listInaccessibleByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
-            nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            cancelMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listInaccessibleByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            cancelMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCancelMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
     }
 
     /**
-     * Gets a list of inaccessible managed databases in a managed instance.
+     * Cancels a managed database move operation.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCancelMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Cancels a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Cancels a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> cancelMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Cancels a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+    }
+
+    /**
+     * Cancels a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the cancel managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> completeMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .completeMove(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> completeMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .completeMove(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            completeMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            completeMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCompleteMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCompleteMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> completeMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> completeMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void completeMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
+        completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+    }
+
+    /**
+     * Completes a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the complete managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void completeMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseMoveDefinition parameters,
+        Context context) {
+        completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
     /**
@@ -1704,7 +2190,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1715,7 +2200,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1770,7 +2255,6 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .completeRestore(
@@ -1779,7 +2263,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 context);
     }
@@ -1983,9 +2467,528 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     }
 
     /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .startMove(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startMoveWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .startMove(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            startMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            startMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStartMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
+        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStartMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters,
+        Context context) {
+        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
+        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> startMoveAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters,
+        Context context) {
+        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
+        startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+    }
+
+    /**
+     * Starts a managed database move operation.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters Parameters of the start managed database move operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startMove(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters,
+        Context context) {
+        startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listInaccessibleByInstance(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ManagedDatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedDatabaseInner>> listInaccessibleByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listInaccessibleByInstance(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
+        String resourceGroupName, String managedInstanceName) {
+        return new PagedFlux<>(
+            () -> listInaccessibleByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+            nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return new PagedFlux<>(
+            () -> listInaccessibleByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+            nextLink -> listInaccessibleByInstanceNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
+        String resourceGroupName, String managedInstanceName) {
+        return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName));
+    }
+
+    /**
+     * Gets a list of inaccessible managed databases in a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
+        String resourceGroupName, String managedInstanceName, Context context) {
+        return new PagedIterable<>(listInaccessibleByInstanceAsync(resourceGroupName, managedInstanceName, context));
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2020,7 +3023,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2057,7 +3061,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2093,7 +3098,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -17,28 +17,28 @@ public final class UsageInnerTests {
         UsageInner model =
             BinaryData
                 .fromString(
-                    "{\"currentValue\":1657419207735448548,\"limit\":9137242569252833170,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"stkwqqtch\",\"value\":\"lmfmtdaay\"}}")
+                    "{\"currentValue\":9193479715444111968,\"limit\":7606552657334268394,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"phsdyhto\",\"value\":\"ikdowwquuvx\"}}")
                 .toObject(UsageInner.class);
-        Assertions.assertEquals(1657419207735448548L, model.currentValue());
-        Assertions.assertEquals(9137242569252833170L, model.limit());
+        Assertions.assertEquals(9193479715444111968L, model.currentValue());
+        Assertions.assertEquals(7606552657334268394L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("stkwqqtch", model.name().localizedValue());
-        Assertions.assertEquals("lmfmtdaay", model.name().value());
+        Assertions.assertEquals("phsdyhto", model.name().localizedValue());
+        Assertions.assertEquals("ikdowwquuvx", model.name().value());
     }
 
     @Test
     public void testSerialize() {
         UsageInner model =
             new UsageInner()
-                .withCurrentValue(1657419207735448548L)
-                .withLimit(9137242569252833170L)
+                .withCurrentValue(9193479715444111968L)
+                .withLimit(7606552657334268394L)
                 .withUnit(UsageUnit.COUNT)
-                .withName(new UsageName().withLocalizedValue("stkwqqtch").withValue("lmfmtdaay"));
+                .withName(new UsageName().withLocalizedValue("phsdyhto").withValue("ikdowwquuvx"));
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(1657419207735448548L, model.currentValue());
-        Assertions.assertEquals(9137242569252833170L, model.limit());
+        Assertions.assertEquals(9193479715444111968L, model.currentValue());
+        Assertions.assertEquals(7606552657334268394L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("stkwqqtch", model.name().localizedValue());
-        Assertions.assertEquals("lmfmtdaay", model.name().value());
+        Assertions.assertEquals("phsdyhto", model.name().localizedValue());
+        Assertions.assertEquals("ikdowwquuvx", model.name().value());
     }
 }

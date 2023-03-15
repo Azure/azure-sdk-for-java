@@ -32,17 +32,16 @@ public final class MicrosoftGraphKeyCredentialInner {
     private String displayName;
 
     /*
-     * The date and time at which the credential expires.The Timestamp type
-     * represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like
-     * this: '2014-01-01T00:00:00Z'
+     * The date and time at which the credential expires.The Timestamp type represents date and time information using
+     * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
-     * The certificate's raw data in byte array converted to Base64 string; for
-     * example, [System.Convert]::ToBase64String($Cert.GetRawCertData()).
+     * The certificate's raw data in byte array converted to Base64 string; for example,
+     * [System.Convert]::ToBase64String($Cert.GetRawCertData()).
      */
     @JsonProperty(value = "key")
     private Base64Url key;
@@ -54,10 +53,9 @@ public final class MicrosoftGraphKeyCredentialInner {
     private UUID keyId;
 
     /*
-     * The date and time at which the credential becomes valid.The Timestamp
-     * type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'
+     * The date and time at which the credential becomes valid.The Timestamp type represents date and time information
+     * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
@@ -69,8 +67,7 @@ public final class MicrosoftGraphKeyCredentialInner {
     private String type;
 
     /*
-     * A string that describes the purpose for which the key can be used; for
-     * example, 'Verify'.
+     * A string that describes the purpose for which the key can be used; for example, 'Verify'.
      */
     @JsonProperty(value = "usage")
     private String usage;
@@ -79,6 +76,10 @@ public final class MicrosoftGraphKeyCredentialInner {
      * keyCredential
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphKeyCredentialInner class. */
+    public MicrosoftGraphKeyCredentialInner() {
+    }
 
     /**
      * Get the customKeyIdentifier property: Custom key identifier.

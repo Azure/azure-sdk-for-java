@@ -42,6 +42,10 @@ public class CloudOffering {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of CloudOffering class. */
+    public CloudOffering() {
+    }
+
     /**
      * Get the description property: The offering description.
      *

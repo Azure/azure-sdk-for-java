@@ -16,6 +16,10 @@ public class AzureTrackedResourceLocation {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of AzureTrackedResourceLocation class. */
+    public AzureTrackedResourceLocation() {
+    }
+
     /**
      * Get the location property: Location where the resource is stored.
      *

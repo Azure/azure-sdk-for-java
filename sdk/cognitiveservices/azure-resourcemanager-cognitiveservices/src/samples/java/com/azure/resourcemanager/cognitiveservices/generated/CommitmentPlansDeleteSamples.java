@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommitmentPlans Delete. */
 public final class CommitmentPlansDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/DeleteCommitmentPlan.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.
@@ -18,6 +16,8 @@ public final class CommitmentPlansDeleteSamples {
      */
     public static void deleteCommitmentPlan(
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.commitmentPlans().delete("resourceGroupName", "accountName", "commitmentPlanName", Context.NONE);
+        manager
+            .commitmentPlans()
+            .delete("resourceGroupName", "accountName", "commitmentPlanName", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DedicatedHosts Delete. */
 public final class DedicatedHostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_Delete_MaximumSet_Gen.
@@ -22,11 +20,11 @@ public final class DedicatedHostsDeleteSamples {
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .delete("rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_Delete_MinimumSet_Gen.
@@ -39,6 +37,6 @@ public final class DedicatedHostsDeleteSamples {
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .delete("rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", com.azure.core.util.Context.NONE);
     }
 }

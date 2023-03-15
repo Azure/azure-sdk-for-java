@@ -130,14 +130,14 @@ Current binder implementations include:
 
 If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` section. This will allow you to not specify versions for any of the Maven dependencies and instead delegate versioning to the BOM.
 
-[//]: # ({x-version-update-start;com.azure.spring:spring-cloud-azure-dependencies;dependency})
+[//]: # ({x-version-update-start;com.azure.spring:spring-cloud-azure-dependencies;current})
 ```xml
 <dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.5.0-beta.1</version>
+            <version>4.7.0-beta.1</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

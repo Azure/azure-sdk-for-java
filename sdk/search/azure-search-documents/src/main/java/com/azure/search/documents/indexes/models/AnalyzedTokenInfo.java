@@ -7,37 +7,38 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Information about a token returned by an analyzer. */
 @Immutable
-public final class AnalyzedTokenInfo {
+public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenInfo> {
     /*
      * The token returned by the analyzer.
      */
-    @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String token;
+    private final String token;
 
     /*
      * The index of the first character of the token in the input text.
      */
-    @JsonProperty(value = "startOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int startOffset;
+    private final int startOffset;
 
     /*
      * The index of the last character of the token in the input text.
      */
-    @JsonProperty(value = "endOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int endOffset;
+    private final int endOffset;
 
     /*
      * The position of the token in the input text relative to other tokens. The first token in the input text has
      * position 0, the next has position 1, and so on. Depending on the analyzer used, some tokens might have the same
      * position, for example if they are synonyms of each other.
      */
-    @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int position;
+    private final int position;
 
     /**
      * Creates an instance of AnalyzedTokenInfo class.
@@ -47,13 +48,7 @@ public final class AnalyzedTokenInfo {
      * @param endOffset the endOffset value to set.
      * @param position the position value to set.
      */
-    @JsonCreator
-    public AnalyzedTokenInfo(
-            @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY) String token,
-            @JsonProperty(value = "startOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int startOffset,
-            @JsonProperty(value = "endOffset", required = true, access = JsonProperty.Access.WRITE_ONLY) int endOffset,
-            @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY) int position) {
+    public AnalyzedTokenInfo(String token, int startOffset, int endOffset, int position) {
         this.token = token;
         this.startOffset = startOffset;
         this.endOffset = endOffset;
@@ -96,5 +91,80 @@ public final class AnalyzedTokenInfo {
      */
     public int getPosition() {
         return this.position;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("token", this.token);
+        jsonWriter.writeIntField("startOffset", this.startOffset);
+        jsonWriter.writeIntField("endOffset", this.endOffset);
+        jsonWriter.writeIntField("position", this.position);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzedTokenInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzedTokenInfo if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzedTokenInfo.
+     */
+    public static AnalyzedTokenInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean tokenFound = false;
+                    String token = null;
+                    boolean startOffsetFound = false;
+                    int startOffset = 0;
+                    boolean endOffsetFound = false;
+                    int endOffset = 0;
+                    boolean positionFound = false;
+                    int position = 0;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("token".equals(fieldName)) {
+                            token = reader.getString();
+                            tokenFound = true;
+                        } else if ("startOffset".equals(fieldName)) {
+                            startOffset = reader.getInt();
+                            startOffsetFound = true;
+                        } else if ("endOffset".equals(fieldName)) {
+                            endOffset = reader.getInt();
+                            endOffsetFound = true;
+                        } else if ("position".equals(fieldName)) {
+                            position = reader.getInt();
+                            positionFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (tokenFound && startOffsetFound && endOffsetFound && positionFound) {
+                        AnalyzedTokenInfo deserializedValue =
+                                new AnalyzedTokenInfo(token, startOffset, endOffset, position);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tokenFound) {
+                        missingProperties.add("token");
+                    }
+                    if (!startOffsetFound) {
+                        missingProperties.add("startOffset");
+                    }
+                    if (!endOffsetFound) {
+                        missingProperties.add("endOffset");
+                    }
+                    if (!positionFound) {
+                        missingProperties.add("position");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

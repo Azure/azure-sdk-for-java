@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCircuits GetStats. */
 public final class ExpressRouteCircuitsGetStatsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCircuitStats.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitStats.json
      */
     /**
      * Sample code: Get ExpressRoute Circuit Traffic Stats.
@@ -22,6 +20,6 @@ public final class ExpressRouteCircuitsGetStatsSamples {
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .getStatsWithResponse("rg1", "circuitName", Context.NONE);
+            .getStatsWithResponse("rg1", "circuitName", com.azure.core.util.Context.NONE);
     }
 }

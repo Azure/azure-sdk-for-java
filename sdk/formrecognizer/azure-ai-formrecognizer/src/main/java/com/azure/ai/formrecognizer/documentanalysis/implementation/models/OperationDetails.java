@@ -22,7 +22,8 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "documentModelBuild", value = DocumentModelBuildOperationDetails.class),
     @JsonSubTypes.Type(name = "documentModelCompose", value = DocumentModelComposeOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class)
+    @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class),
+    @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class)
 })
 @Fluent
 public class OperationDetails {
@@ -79,6 +80,9 @@ public class OperationDetails {
      */
     @JsonProperty(value = "error")
     private Error error;
+
+    /** Creates an instance of OperationDetails class. */
+    public OperationDetails() {}
 
     /**
      * Get the operationId property: Operation ID.

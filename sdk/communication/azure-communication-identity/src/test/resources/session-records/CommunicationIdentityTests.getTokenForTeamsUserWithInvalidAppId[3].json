@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "72cfd682-ad1b-4e12-afd8-1f07bfd7816a",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dec50512-8c96-4de2-b03e-844bc14e88e4",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
+      "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 05 Sep 2022 18:47:43 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:01 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "50ms",
-      "MS-CV" : "MBsDQeT8GUqt4QSyfYtY2g.0",
-      "X-Azure-Ref" : "0T0QWYwAAAAA9LOe3xQo7RKqm8a4gA5m3UFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Processing-Time" : "102ms",
+      "MS-CV" : "lXWxStUp7UCNaH6KGtMw/Q.0",
+      "X-Azure-Ref" : "0bZ4JZAAAAAC/k4d8WCfETa+Xgd6fDVNuSEVMMDFFREdFMjAxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"AAD application is not the expected one.\",\"target\":\"appId\"}}",
-      "x-ms-client-request-id" : "72cfd682-ad1b-4e12-afd8-1f07bfd7816a",
-      "Content-Type" : "application/json",
-      "Request-Context" : "appId="
+      "x-ms-client-request-id" : "dec50512-8c96-4de2-b03e-844bc14e88e4",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],

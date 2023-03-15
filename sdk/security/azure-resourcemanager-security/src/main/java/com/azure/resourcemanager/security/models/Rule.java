@@ -45,6 +45,10 @@ public final class Rule {
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
+    /** Creates an instance of Rule class. */
+    public Rule() {
+    }
+
     /**
      * Get the name property: The name of the rule.
      *

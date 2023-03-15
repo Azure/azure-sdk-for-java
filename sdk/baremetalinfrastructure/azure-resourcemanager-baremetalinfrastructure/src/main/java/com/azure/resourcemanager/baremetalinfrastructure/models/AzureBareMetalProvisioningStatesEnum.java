@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureBareMetalProvisioningStatesEnum. */
+/** State of provisioning of the AzureBareMetalInstance. */
 public final class AzureBareMetalProvisioningStatesEnum
     extends ExpandableStringEnum<AzureBareMetalProvisioningStatesEnum> {
     /** Static value Accepted for AzureBareMetalProvisioningStatesEnum. */
@@ -33,6 +33,15 @@ public final class AzureBareMetalProvisioningStatesEnum
     public static final AzureBareMetalProvisioningStatesEnum MIGRATING = fromString("Migrating");
 
     /**
+     * Creates a new instance of AzureBareMetalProvisioningStatesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureBareMetalProvisioningStatesEnum() {
+    }
+
+    /**
      * Creates or finds a AzureBareMetalProvisioningStatesEnum from its string representation.
      *
      * @param name a name to look for.
@@ -43,7 +52,11 @@ public final class AzureBareMetalProvisioningStatesEnum
         return fromString(name, AzureBareMetalProvisioningStatesEnum.class);
     }
 
-    /** @return known AzureBareMetalProvisioningStatesEnum values. */
+    /**
+     * Gets known AzureBareMetalProvisioningStatesEnum values.
+     *
+     * @return known AzureBareMetalProvisioningStatesEnum values.
+     */
     public static Collection<AzureBareMetalProvisioningStatesEnum> values() {
         return values(AzureBareMetalProvisioningStatesEnum.class);
     }

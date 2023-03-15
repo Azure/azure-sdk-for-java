@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The hardware profile. */
 @Fluent
 public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
     /*
      * The size of the VM
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
+
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the vmSize property: The size of the VM.

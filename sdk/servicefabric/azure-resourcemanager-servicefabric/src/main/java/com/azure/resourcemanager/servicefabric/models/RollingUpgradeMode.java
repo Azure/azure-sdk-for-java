@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RollingUpgradeMode. */
+/**
+ * The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and
+ * Monitored.
+ */
 public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgradeMode> {
     /** Static value Invalid for RollingUpgradeMode. */
     public static final RollingUpgradeMode INVALID = fromString("Invalid");
@@ -23,6 +26,15 @@ public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgrad
     public static final RollingUpgradeMode MONITORED = fromString("Monitored");
 
     /**
+     * Creates a new instance of RollingUpgradeMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RollingUpgradeMode() {
+    }
+
+    /**
      * Creates or finds a RollingUpgradeMode from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgrad
         return fromString(name, RollingUpgradeMode.class);
     }
 
-    /** @return known RollingUpgradeMode values. */
+    /**
+     * Gets known RollingUpgradeMode values.
+     *
+     * @return known RollingUpgradeMode values.
+     */
     public static Collection<RollingUpgradeMode> values() {
         return values(RollingUpgradeMode.class);
     }

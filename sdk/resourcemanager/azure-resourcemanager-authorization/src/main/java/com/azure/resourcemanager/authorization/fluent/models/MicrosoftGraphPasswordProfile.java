@@ -16,29 +16,24 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPasswordProfile {
     /*
-     * true if the user must change her password on the next login; otherwise
-     * false.
+     * true if the user must change her password on the next login; otherwise false.
      */
     @JsonProperty(value = "forceChangePasswordNextSignIn")
     private Boolean forceChangePasswordNextSignIn;
 
     /*
-     * If true, at next sign-in, the user must perform a multi-factor
-     * authentication (MFA) before being forced to change their password. The
-     * behavior is identical to forceChangePasswordNextSignIn except that the
-     * user is required to first perform a multi-factor authentication before
-     * password change. After a password change, this property will be
-     * automatically reset to false. If not set, default is false.
+     * If true, at next sign-in, the user must perform a multi-factor authentication (MFA) before being forced to
+     * change their password. The behavior is identical to forceChangePasswordNextSignIn except that the user is
+     * required to first perform a multi-factor authentication before password change. After a password change, this
+     * property will be automatically reset to false. If not set, default is false.
      */
     @JsonProperty(value = "forceChangePasswordNextSignInWithMfa")
     private Boolean forceChangePasswordNextSignInWithMfa;
 
     /*
-     * The password for the user. This property is required when a user is
-     * created. It can be updated, but the user will be required to change the
-     * password on the next login. The password must satisfy minimum
-     * requirements as specified by the user’s passwordPolicies property. By
-     * default, a strong password is required.
+     * The password for the user. This property is required when a user is created. It can be updated, but the user
+     * will be required to change the password on the next login. The password must satisfy minimum requirements as
+     * specified by the user’s passwordPolicies property. By default, a strong password is required.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -47,6 +42,10 @@ public final class MicrosoftGraphPasswordProfile {
      * passwordProfile
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPasswordProfile class. */
+    public MicrosoftGraphPasswordProfile() {
+    }
 
     /**
      * Get the forceChangePasswordNextSignIn property: true if the user must change her password on the next login;

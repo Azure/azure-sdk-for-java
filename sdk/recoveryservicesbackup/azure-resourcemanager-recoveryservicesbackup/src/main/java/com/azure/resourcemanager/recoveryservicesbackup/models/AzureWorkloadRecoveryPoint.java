@@ -55,6 +55,12 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
 
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
     /** Creates an instance of AzureWorkloadRecoveryPoint class. */
     public AzureWorkloadRecoveryPoint() {
     }
@@ -142,6 +148,26 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the AzureWorkloadRecoveryPoint object itself.
+     */
+    public AzureWorkloadRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -161,6 +187,9 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
                             e.validate();
                         }
                     });
+        }
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
         }
     }
 }

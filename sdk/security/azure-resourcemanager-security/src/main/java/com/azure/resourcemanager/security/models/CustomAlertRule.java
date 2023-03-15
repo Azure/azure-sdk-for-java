@@ -41,6 +41,10 @@ public class CustomAlertRule {
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
+    /** Creates an instance of CustomAlertRule class. */
+    public CustomAlertRule() {
+    }
+
     /**
      * Get the displayName property: The display name of the custom alert.
      *

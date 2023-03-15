@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AttachedNetworks ListByDevCenter. */
 public final class AttachedNetworksListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/AttachedNetworks_ListByDevCenter.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_ListByDevCenter.json
      */
     /**
      * Sample code: AttachedNetworks_ListByDevCenter.

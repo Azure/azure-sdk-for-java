@@ -29,6 +29,10 @@ public class AssetContainer extends ResourceBase {
     @JsonProperty(value = "nextVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nextVersion;
 
+    /** Creates an instance of AssetContainer class. */
+    public AssetContainer() {
+    }
+
     /**
      * Get the isArchived property: Is the asset archived?.
      *

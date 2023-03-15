@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.DeploymentInfoesClient;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentInfoesClient. */
 public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient {
-    private final ClientLogger logger = new ClientLogger(DeploymentInfoesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeploymentInfoesService service;
 
@@ -53,7 +50,7 @@ public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticDepl")
-    private interface DeploymentInfoesService {
+    public interface DeploymentInfoesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
@@ -78,7 +75,8 @@ public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
+     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentInfoResponseInner>> listWithResponseAsync(
@@ -127,7 +125,8 @@ public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
+     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentInfoResponseInner>> listWithResponseAsync(
@@ -172,19 +171,30 @@ public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
+     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentInfoResponseInner> listAsync(String resourceGroupName, String monitorName) {
-        return listWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(
-                (Response<DeploymentInfoResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, monitorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeploymentInfoResponseInner> listWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return listWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -199,23 +209,6 @@ public final class DeploymentInfoesClientImpl implements DeploymentInfoesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentInfoResponseInner list(String resourceGroupName, String monitorName) {
-        return listAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentInfoResponseInner> listWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return listWithResponseAsync(resourceGroupName, monitorName, context).block();
+        return listWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 }

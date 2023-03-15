@@ -13,17 +13,6 @@ public interface ApplicationOperations {
      * Get a specific application for the requested scope by applicationId.
      *
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
-    Application get(String applicationId);
-
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     *
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,14 +22,15 @@ public interface ApplicationOperations {
     Response<Application> getWithResponse(String applicationId, Context context);
 
     /**
-     * Delete an Application over a given scope.
+     * Get a specific application for the requested scope by applicationId.
      *
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific application for the requested scope by applicationId.
      */
-    void delete(String applicationId);
+    Application get(String applicationId);
 
     /**
      * Delete an Application over a given scope.
@@ -53,6 +43,16 @@ public interface ApplicationOperations {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String applicationId, Context context);
+
+    /**
+     * Delete an Application over a given scope.
+     *
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String applicationId);
 
     /**
      * Get a specific application for the requested scope by applicationId.

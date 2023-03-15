@@ -12,7 +12,6 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
@@ -23,6 +22,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
@@ -1359,13 +1359,14 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             }).subscribe(alertConfigurationResponse -> {
                 System.out.printf("Update anomaly alert operation status: %s%n",
                     alertConfigurationResponse.getStatusCode());
-                final AnomalyAlertConfiguration updatAnomalyAlertConfiguration = alertConfigurationResponse.getValue();
+                final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration
+                    = alertConfigurationResponse.getValue();
                 System.out.printf("Updated anomaly alert configuration Id: %s%n",
-                    updatAnomalyAlertConfiguration.getId());
+                    updatedAnomalyAlertConfiguration.getId());
                 System.out.printf("Updated anomaly alert configuration description: %s%n",
-                    updatAnomalyAlertConfiguration.getDescription());
+                    updatedAnomalyAlertConfiguration.getDescription());
                 System.out.printf("Updated anomaly alert configuration hook ids: %s%n",
-                    updatAnomalyAlertConfiguration.getHookIdsToAlert());
+                    updatedAnomalyAlertConfiguration.getHookIdsToAlert());
             });
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration
     }
@@ -1423,11 +1424,11 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");
@@ -1460,11 +1461,11 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");

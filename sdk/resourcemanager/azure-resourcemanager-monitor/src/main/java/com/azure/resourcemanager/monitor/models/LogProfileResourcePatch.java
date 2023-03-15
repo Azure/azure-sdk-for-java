@@ -27,6 +27,10 @@ public final class LogProfileResourcePatch {
     @JsonProperty(value = "properties")
     private LogProfileProperties innerProperties;
 
+    /** Creates an instance of LogProfileResourcePatch class. */
+    public LogProfileResourcePatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

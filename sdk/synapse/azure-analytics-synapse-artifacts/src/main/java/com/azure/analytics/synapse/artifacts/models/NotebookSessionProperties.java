@@ -40,6 +40,9 @@ public final class NotebookSessionProperties {
     @JsonProperty(value = "numExecutors", required = true)
     private int numExecutors;
 
+    /** Creates an instance of NotebookSessionProperties class. */
+    public NotebookSessionProperties() {}
+
     /**
      * Get the driverMemory property: Amount of memory to use for the driver process.
      *

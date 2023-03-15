@@ -20,6 +20,10 @@ public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
     @JsonProperty(value = "parentHierarchyId")
     private String parentHierarchyId;
 
+    /** Creates an instance of AwsOrganizationalDataMember class. */
+    public AwsOrganizationalDataMember() {
+    }
+
     /**
      * Get the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the account's parent.

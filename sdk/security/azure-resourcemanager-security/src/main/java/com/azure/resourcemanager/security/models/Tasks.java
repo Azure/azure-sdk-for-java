@@ -63,19 +63,6 @@ public interface Tasks {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    SecurityTask getSubscriptionLevelTask(String ascLocation, String taskName);
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,13 +77,12 @@ public interface Tasks {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security.
      */
-    void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
+    SecurityTask getSubscriptionLevelTask(String ascLocation, String taskName);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -113,6 +99,20 @@ public interface Tasks {
      */
     Response<Void> updateSubscriptionLevelTaskStateWithResponse(
         String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context);
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateSubscriptionLevelTaskState(
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -153,21 +153,6 @@ public interface Tasks {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    SecurityTask getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName);
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,13 +170,12 @@ public interface Tasks {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security.
      */
-    void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
+    SecurityTask getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -214,4 +198,20 @@ public interface Tasks {
         String taskName,
         TaskUpdateActionType taskUpdateActionType,
         Context context);
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateResourceGroupLevelTaskState(
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
 }

@@ -42,15 +42,6 @@ public final class WorkspacesImpl implements Workspaces {
         this.serviceManager = serviceManager;
     }
 
-    public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {
-        WorkspaceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new WorkspaceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Workspace> getByResourceGroupWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<WorkspaceInner> inner =
@@ -61,6 +52,15 @@ public final class WorkspacesImpl implements Workspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {
+        WorkspaceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -85,16 +85,6 @@ public final class WorkspacesImpl implements Workspaces {
         return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
-    public DiagnoseResponseResult diagnose(
-        String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters parameters) {
-        DiagnoseResponseResultInner inner = this.serviceClient().diagnose(resourceGroupName, workspaceName, parameters);
-        if (inner != null) {
-            return new DiagnoseResponseResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public DiagnoseResponseResult diagnose(String resourceGroupName, String workspaceName) {
         DiagnoseResponseResultInner inner = this.serviceClient().diagnose(resourceGroupName, workspaceName);
         if (inner != null) {
@@ -115,15 +105,6 @@ public final class WorkspacesImpl implements Workspaces {
         }
     }
 
-    public ListWorkspaceKeysResult listKeys(String resourceGroupName, String workspaceName) {
-        ListWorkspaceKeysResultInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new ListWorkspaceKeysResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ListWorkspaceKeysResult> listKeysWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<ListWorkspaceKeysResultInner> inner =
@@ -134,6 +115,15 @@ public final class WorkspacesImpl implements Workspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ListWorkspaceKeysResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ListWorkspaceKeysResult listKeys(String resourceGroupName, String workspaceName) {
+        ListWorkspaceKeysResultInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new ListWorkspaceKeysResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -157,16 +147,6 @@ public final class WorkspacesImpl implements Workspaces {
         return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
-    public NotebookAccessTokenResult listNotebookAccessToken(String resourceGroupName, String workspaceName) {
-        NotebookAccessTokenResultInner inner =
-            this.serviceClient().listNotebookAccessToken(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new NotebookAccessTokenResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<NotebookAccessTokenResultInner> inner =
@@ -177,6 +157,16 @@ public final class WorkspacesImpl implements Workspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NotebookAccessTokenResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NotebookAccessTokenResult listNotebookAccessToken(String resourceGroupName, String workspaceName) {
+        NotebookAccessTokenResultInner inner =
+            this.serviceClient().listNotebookAccessToken(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new NotebookAccessTokenResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -201,16 +191,6 @@ public final class WorkspacesImpl implements Workspaces {
         }
     }
 
-    public ListStorageAccountKeysResult listStorageAccountKeys(String resourceGroupName, String workspaceName) {
-        ListStorageAccountKeysResultInner inner =
-            this.serviceClient().listStorageAccountKeys(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new ListStorageAccountKeysResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ListStorageAccountKeysResult> listStorageAccountKeysWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<ListStorageAccountKeysResultInner> inner =
@@ -226,10 +206,11 @@ public final class WorkspacesImpl implements Workspaces {
         }
     }
 
-    public ListNotebookKeysResult listNotebookKeys(String resourceGroupName, String workspaceName) {
-        ListNotebookKeysResultInner inner = this.serviceClient().listNotebookKeys(resourceGroupName, workspaceName);
+    public ListStorageAccountKeysResult listStorageAccountKeys(String resourceGroupName, String workspaceName) {
+        ListStorageAccountKeysResultInner inner =
+            this.serviceClient().listStorageAccountKeys(resourceGroupName, workspaceName);
         if (inner != null) {
-            return new ListNotebookKeysResultImpl(inner, this.manager());
+            return new ListStorageAccountKeysResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -250,12 +231,10 @@ public final class WorkspacesImpl implements Workspaces {
         }
     }
 
-    public ExternalFqdnResponse listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String workspaceName) {
-        ExternalFqdnResponseInner inner =
-            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName);
+    public ListNotebookKeysResult listNotebookKeys(String resourceGroupName, String workspaceName) {
+        ListNotebookKeysResultInner inner = this.serviceClient().listNotebookKeys(resourceGroupName, workspaceName);
         if (inner != null) {
-            return new ExternalFqdnResponseImpl(inner, this.manager());
+            return new ListNotebookKeysResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -273,6 +252,17 @@ public final class WorkspacesImpl implements Workspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExternalFqdnResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExternalFqdnResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName) {
+        ExternalFqdnResponseInner inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new ExternalFqdnResponseImpl(inner, this.manager());
         } else {
             return null;
         }

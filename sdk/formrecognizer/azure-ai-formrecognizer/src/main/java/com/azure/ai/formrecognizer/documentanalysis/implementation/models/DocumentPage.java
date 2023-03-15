@@ -12,14 +12,19 @@ import java.util.List;
 @Fluent
 public final class DocumentPage {
     /*
+     * Kind of document page.
+     */
+    @JsonProperty(value = "kind", required = true)
+    private DocumentPageKind kind;
+
+    /*
      * 1-based page number in the input document.
      */
     @JsonProperty(value = "pageNumber", required = true)
     private int pageNumber;
 
     /*
-     * The general orientation of the content in clockwise direction, measured
-     * in degrees between (-180, 180].
+     * The general orientation of the content in clockwise direction, measured in degrees between (-180, 180].
      */
     @JsonProperty(value = "angle")
     private Float angle;
@@ -37,8 +42,8 @@ public final class DocumentPage {
     private Float height;
 
     /*
-     * The unit used by the width, height, and polygon properties. For images,
-     * the unit is "pixel". For PDF, the unit is "inch".
+     * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit
+     * is "inch".
      */
     @JsonProperty(value = "unit")
     private LengthUnit unit;
@@ -62,11 +67,57 @@ public final class DocumentPage {
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
-     * Extracted lines from the page, potentially containing both textual and
-     * visual elements.
+     * Extracted lines from the page, potentially containing both textual and visual elements.
      */
     @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
+
+    /*
+     * Extracted annotations from the page.
+     */
+    @JsonProperty(value = "annotations")
+    private List<DocumentAnnotation> annotations;
+
+    /*
+     * Extracted barcodes from the page.
+     */
+    @JsonProperty(value = "barcodes")
+    private List<DocumentBarcode> barcodes;
+
+    /*
+     * Extracted formulas from the page.
+     */
+    @JsonProperty(value = "formulas")
+    private List<DocumentFormula> formulas;
+
+    /*
+     * Extracted images from the page.
+     */
+    @JsonProperty(value = "images")
+    private List<DocumentImage> images;
+
+    /** Creates an instance of DocumentPage class. */
+    public DocumentPage() {}
+
+    /**
+     * Get the kind property: Kind of document page.
+     *
+     * @return the kind value.
+     */
+    public DocumentPageKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of document page.
+     *
+     * @param kind the kind value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setKind(DocumentPageKind kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.
@@ -249,6 +300,86 @@ public final class DocumentPage {
      */
     public DocumentPage setLines(List<DocumentLine> lines) {
         this.lines = lines;
+        return this;
+    }
+
+    /**
+     * Get the annotations property: Extracted annotations from the page.
+     *
+     * @return the annotations value.
+     */
+    public List<DocumentAnnotation> getAnnotations() {
+        return this.annotations;
+    }
+
+    /**
+     * Set the annotations property: Extracted annotations from the page.
+     *
+     * @param annotations the annotations value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setAnnotations(List<DocumentAnnotation> annotations) {
+        this.annotations = annotations;
+        return this;
+    }
+
+    /**
+     * Get the barcodes property: Extracted barcodes from the page.
+     *
+     * @return the barcodes value.
+     */
+    public List<DocumentBarcode> getBarcodes() {
+        return this.barcodes;
+    }
+
+    /**
+     * Set the barcodes property: Extracted barcodes from the page.
+     *
+     * @param barcodes the barcodes value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setBarcodes(List<DocumentBarcode> barcodes) {
+        this.barcodes = barcodes;
+        return this;
+    }
+
+    /**
+     * Get the formulas property: Extracted formulas from the page.
+     *
+     * @return the formulas value.
+     */
+    public List<DocumentFormula> getFormulas() {
+        return this.formulas;
+    }
+
+    /**
+     * Set the formulas property: Extracted formulas from the page.
+     *
+     * @param formulas the formulas value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setFormulas(List<DocumentFormula> formulas) {
+        this.formulas = formulas;
+        return this;
+    }
+
+    /**
+     * Get the images property: Extracted images from the page.
+     *
+     * @return the images value.
+     */
+    public List<DocumentImage> getImages() {
+        return this.images;
+    }
+
+    /**
+     * Set the images property: Extracted images from the page.
+     *
+     * @param images the images value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setImages(List<DocumentImage> images) {
+        this.images = images;
         return this;
     }
 }

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 
 /** Samples for ExpressRouteCrossConnectionPeerings CreateOrUpdate. */
 public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCrossConnectionBgpPeeringCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCrossConnectionBgpPeeringCreate.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringCreate.
@@ -38,6 +37,6 @@ public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
                         new Ipv6ExpressRouteCircuitPeeringConfig()
                             .withPrimaryPeerAddressPrefix("3FFE:FFFF:0:CD30::/126")
                             .withSecondaryPeerAddressPrefix("3FFE:FFFF:0:CD30::4/126")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

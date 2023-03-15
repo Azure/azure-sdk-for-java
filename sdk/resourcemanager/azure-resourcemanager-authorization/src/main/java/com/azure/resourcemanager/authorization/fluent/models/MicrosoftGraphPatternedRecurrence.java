@@ -32,6 +32,10 @@ public final class MicrosoftGraphPatternedRecurrence {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPatternedRecurrence class. */
+    public MicrosoftGraphPatternedRecurrence() {
+    }
+
     /**
      * Get the pattern property: recurrencePattern.
      *

@@ -5,8 +5,6 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -34,6 +32,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +45,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     private final String key = "newKey";
     private final String value = "newValue";
     private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
-    static String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
+
 
     @Test
     @DoNotRecord
@@ -124,7 +123,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     @DoNotRecord
     public void timeoutPolicy() {
         final ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(FAKE_CONNECTION_STRING)
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
 
         assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
@@ -134,7 +133,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     @DoNotRecord
     public void throwIfBothRetryOptionsAndRetryPolicyIsConfigured() {
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(FAKE_CONNECTION_STRING)
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)));
@@ -145,8 +144,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
-        connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+        String connectionString = interceptorManager.isPlaybackMode()
+            ? FAKE_CONNECTION_STRING
             : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
 
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
@@ -169,8 +168,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @Test
     public void defaultPipeline() {
-        connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
+        String connectionString = interceptorManager.isPlaybackMode()
+            ? FAKE_CONNECTION_STRING
             : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
 
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
@@ -179,21 +178,19 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .pipeline(new HttpPipelineBuilder().build());
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (!interceptorManager.isPlaybackMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-
-            assertThrows(HttpResponseException.class,
-                () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
+
         HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
-            : new NettyAsyncHttpClientBuilder().wiretap(true).build();
+            : HttpClient.createDefault();
 
-        clientBuilder.pipeline(null).httpClient(defaultHttpClient);
-
-        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
+        ConfigurationSetting addedSetting = clientBuilder
+                                                .httpClient(defaultHttpClient)
+                                                .buildClient()
+                                                .setConfigurationSetting(key, null, value);
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
     }
@@ -203,7 +200,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void clientOptionsIsPreferredOverLogOptions() {
         ConfigurationClient configurationClient =
             new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .connectionString(FAKE_CONNECTION_STRING)
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
                 .httpClient(httpRequest -> {
@@ -219,7 +216,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void clientOptionHeadersAreAddedLast() {
         ConfigurationClient configurationClient =
             new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .connectionString(FAKE_CONNECTION_STRING)
                 .clientOptions(new ClientOptions()
                                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
@@ -229,6 +226,17 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 })
                 .buildClient();
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
+    }
+
+    @Test
+    @DoNotRecord
+    public void getEndpointAtClientInstance() {
+        ConfigurationClientBuilder configurationClientBuilder = new ConfigurationClientBuilder()
+                                                                          .connectionString(FAKE_CONNECTION_STRING);
+        ConfigurationClient client = configurationClientBuilder.buildClient();
+        final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
+        assertEquals("http://localhost:8080", client.getEndpoint());
+        assertEquals("http://localhost:8080", asyncClient.getEndpoint());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

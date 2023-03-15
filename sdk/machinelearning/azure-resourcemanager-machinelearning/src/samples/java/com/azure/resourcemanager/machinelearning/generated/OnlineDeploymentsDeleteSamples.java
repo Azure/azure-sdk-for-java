@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments Delete. */
 public final class OnlineDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineDeployment/delete.json
      */
     /**
      * Sample code: Delete Online Deployment.
@@ -18,6 +16,8 @@ public final class OnlineDeploymentsDeleteSamples {
      */
     public static void deleteOnlineDeployment(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineDeployments().delete("testrg123", "workspace123", "testEndpoint", "testDeployment", Context.NONE);
+        manager
+            .onlineDeployments()
+            .delete("testrg123", "workspace123", "testEndpoint", "testDeployment", com.azure.core.util.Context.NONE);
     }
 }

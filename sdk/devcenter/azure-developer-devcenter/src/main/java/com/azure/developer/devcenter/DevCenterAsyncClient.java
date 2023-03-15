@@ -52,13 +52,8 @@ public final class DevCenterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
      * }
      * }</pre>
      *
@@ -119,44 +114,40 @@ public final class DevCenterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             projectName: String (Optional)
-     *             poolName: String (Required)
-     *             provisioningState: String (Optional)
-     *             actionState: String (Optional)
-     *             powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *             uniqueId: String (Optional)
-     *             errorDetails (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *             }
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             user: String (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             createdTime: OffsetDateTime (Optional)
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     errorDetails (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *
@@ -191,44 +182,40 @@ public final class DevCenterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             projectName: String (Optional)
-     *             poolName: String (Required)
-     *             provisioningState: String (Optional)
-     *             actionState: String (Optional)
-     *             powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *             uniqueId: String (Optional)
-     *             errorDetails (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *             }
-     *             location: String (Optional)
-     *             osType: String(Windows) (Optional)
-     *             user: String (Optional)
-     *             hardwareProfile (Optional): {
-     *                 skuName: String (Optional)
-     *                 vCPUs: Integer (Optional)
-     *                 memoryGB: Integer (Optional)
-     *             }
-     *             storageProfile (Optional): {
-     *                 osDisk (Optional): {
-     *                     diskSizeGB: Integer (Optional)
-     *                 }
-     *             }
-     *             imageReference (Optional): {
-     *                 name: String (Optional)
-     *                 version: String (Optional)
-     *                 operatingSystem: String (Optional)
-     *                 osBuildNumber: String (Optional)
-     *                 publishedDate: OffsetDateTime (Optional)
-     *             }
-     *             createdTime: OffsetDateTime (Optional)
-     *             localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     errorDetails (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
      *

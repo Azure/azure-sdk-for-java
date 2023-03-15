@@ -28,6 +28,10 @@ public final class ComputeInstanceCreatedBy {
     @JsonProperty(value = "userId", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
+    /** Creates an instance of ComputeInstanceCreatedBy class. */
+    public ComputeInstanceCreatedBy() {
+    }
+
     /**
      * Get the username property: Name of the user.
      *

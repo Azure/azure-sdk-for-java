@@ -23,6 +23,10 @@ public final class ServicePrincipalProperties {
     @JsonProperty(value = "secret")
     private String secret;
 
+    /** Creates an instance of ServicePrincipalProperties class. */
+    public ServicePrincipalProperties() {
+    }
+
     /**
      * Get the applicationId property: Application ID of service principal.
      *

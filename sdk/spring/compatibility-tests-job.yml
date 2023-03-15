@@ -48,5 +48,5 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
-          goals: 'clean test -Pdev '
+          goals: 'clean install -Pdev '
 

@@ -85,37 +85,37 @@ public class UrlTokenizerTests {
 
     @Test
     public void nextWithSchemeAndHostAndPortAndForwardSlash() {
-        nextTest("ftp://www.bing.com:123/",
+        nextTest("ftp://www.bing.com:132/",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
-            UrlToken.port("123"),
+            UrlToken.port("132"),
             UrlToken.path("/"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndPath() {
-        nextTest("ftp://www.bing.com:123/a/b/c.txt",
+        nextTest("ftp://www.bing.com:132/a/b/c.txt",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
-            UrlToken.port("123"),
+            UrlToken.port("132"),
             UrlToken.path("/a/b/c.txt"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuestionMark() {
-        nextTest("ftp://www.bing.com:123?",
+        nextTest("ftp://www.bing.com:132?",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
-            UrlToken.port("123"),
+            UrlToken.port("132"),
             UrlToken.query(""));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuery() {
-        nextTest("ftp://www.bing.com:123?a=b&c=d",
+        nextTest("ftp://www.bing.com:132?a=b&c=d",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
-            UrlToken.port("123"),
+            UrlToken.port("132"),
             UrlToken.query("a=b&c=d"));
     }
 

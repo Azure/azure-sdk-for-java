@@ -7,25 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Statistics for a given index. Statistics are collected periodically and are not guaranteed to always be up-to-date.
  */
 @Immutable
-public final class SearchIndexStatistics {
+public final class SearchIndexStatistics implements JsonSerializable<SearchIndexStatistics> {
     /*
      * The number of documents in the index.
      */
-    @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long documentCount;
+    private final long documentCount;
 
     /*
      * The amount of storage in bytes consumed by the index.
      */
-    @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long storageSize;
+    private final long storageSize;
 
     /**
      * Creates an instance of SearchIndexStatistics class.
@@ -33,12 +36,7 @@ public final class SearchIndexStatistics {
      * @param documentCount the documentCount value to set.
      * @param storageSize the storageSize value to set.
      */
-    @JsonCreator
-    public SearchIndexStatistics(
-            @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    long documentCount,
-            @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    long storageSize) {
+    public SearchIndexStatistics(long documentCount, long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
     }
@@ -59,5 +57,61 @@ public final class SearchIndexStatistics {
      */
     public long getStorageSize() {
         return this.storageSize;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("documentCount", this.documentCount);
+        jsonWriter.writeLongField("storageSize", this.storageSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexStatistics if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchIndexStatistics.
+     */
+    public static SearchIndexStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean documentCountFound = false;
+                    long documentCount = 0L;
+                    boolean storageSizeFound = false;
+                    long storageSize = 0L;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("documentCount".equals(fieldName)) {
+                            documentCount = reader.getLong();
+                            documentCountFound = true;
+                        } else if ("storageSize".equals(fieldName)) {
+                            storageSize = reader.getLong();
+                            storageSizeFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (documentCountFound && storageSizeFound) {
+                        SearchIndexStatistics deserializedValue = new SearchIndexStatistics(documentCount, storageSize);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!documentCountFound) {
+                        missingProperties.add("documentCount");
+                    }
+                    if (!storageSizeFound) {
+                        missingProperties.add("storageSize");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

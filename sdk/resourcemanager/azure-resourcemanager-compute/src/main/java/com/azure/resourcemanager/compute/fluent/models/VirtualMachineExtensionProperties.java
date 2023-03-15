@@ -89,6 +89,10 @@ public final class VirtualMachineExtensionProperties {
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
+    /** Creates an instance of VirtualMachineExtensionProperties class. */
+    public VirtualMachineExtensionProperties() {
+    }
+
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.

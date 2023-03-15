@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.DedicatedHostUpdate;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for DedicatedHosts Update. */
 public final class DedicatedHostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_Update_MaximumSet_Gen.
@@ -35,11 +34,11 @@ public final class DedicatedHostsUpdateSamples {
                     .withPlatformFaultDomain(1)
                     .withAutoReplaceOnFailure(true)
                     .withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_Update_MinimumSet_Gen.
@@ -52,7 +51,12 @@ public final class DedicatedHostsUpdateSamples {
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .update("rgcompute", "aa", "aaaaaaaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate(), Context.NONE);
+            .update(
+                "rgcompute",
+                "aa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

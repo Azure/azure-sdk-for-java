@@ -6,19 +6,20 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The delivery information associated with a export. */
 @Fluent
 public final class ExportDeliveryInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportDeliveryInfo.class);
-
     /*
      * Has destination for the export being delivered.
      */
     @JsonProperty(value = "destination", required = true)
     private ExportDeliveryDestination destination;
+
+    /** Creates an instance of ExportDeliveryInfo class. */
+    public ExportDeliveryInfo() {
+    }
 
     /**
      * Get the destination property: Has destination for the export being delivered.
@@ -47,11 +48,13 @@ public final class ExportDeliveryInfo {
      */
     public void validate() {
         if (destination() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property destination in model ExportDeliveryInfo"));
         } else {
             destination().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportDeliveryInfo.class);
 }

@@ -54,7 +54,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureTrafficCollecto")
-    private interface NetworkFunctionsService {
+    public interface NetworkFunctionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.NetworkFunction/operations")
         @ExpectedResponses({200})

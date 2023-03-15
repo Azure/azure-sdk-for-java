@@ -5,11 +5,16 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.Map;
 
 /** if showStats=true was specified in the request this field will contain information about the request payload. */
 @Fluent
-public final class RequestStatistics {
+public class RequestStatistics {
     /*
      * Number of documents submitted in the request.
      */
@@ -33,6 +38,14 @@ public final class RequestStatistics {
      */
     @JsonProperty(value = "transactionsCount", required = true)
     private long transactionsCount;
+
+    /*
+     * if showStats=true was specified in the request this field will contain information about the request payload.
+     */
+    @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of RequestStatistics class. */
+    public RequestStatistics() {}
 
     /**
      * Get the documentsCount property: Number of documents submitted in the request.
@@ -116,5 +129,36 @@ public final class RequestStatistics {
     public RequestStatistics setTransactionsCount(long transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
+    }
+
+    /**
+     * Get the additionalProperties property: if showStats=true was specified in the request this field will contain
+     * information about the request payload.
+     *
+     * @return the additionalProperties value.
+     */
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: if showStats=true was specified in the request this field will contain
+     * information about the request payload.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the RequestStatistics object itself.
+     */
+    public RequestStatistics setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
     }
 }

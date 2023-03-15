@@ -34,6 +34,67 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
 /**
  * Builder used to instantiate {@link EventHubBufferedProducerClient} and {@link EventHubBufferedProducerAsyncClient}.
  *
+ * <p>
+ * To create an instance of {@link EventHubBufferedProducerClient} or {@link EventHubBufferedProducerAsyncClient}, the
+ * <b>following fields are required</b>:
+ *
+ * <ul>
+ *     <li>{@link #onSendBatchSucceeded(Consumer)} - A callback when events are successfully published to Event Hubs.
+ *     </li>
+ *     <li>{@link #onSendBatchFailed(Consumer)} - A callback when a failure publishing to Event Hubs occurs.</li>
+ *     <li>Credentials to perform operations against Azure Event Hubs. They can be set by using one of the following
+ *      methods:
+ *      <ul>
+ *          <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event
+ *          Hub.</li>
+ *          <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub
+ *           <i>namespace</i> connection string and the Event Hub name.</li>
+ *           <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with
+ *           the fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *           </li>
+ *           <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, or
+ *           {@link #credential(AzureNamedKeyCredential)} along with {@link #fullyQualifiedNamespace(String)} and
+ *           {@link #eventHubName(String)}. The fully qualified namespace, Event Hub name, and authorized credentials
+ *           to use the Event Hub.</li>
+ *      </ul>
+ * </ul>
+ *
+ * <p><strong>Creating an {@link EventHubBufferedProducerAsyncClient}</strong></p>
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;fully-qualifed-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
+ *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .onSendBatchFailed&#40;failedContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Failed to published events to %s. Error: %s%n&quot;,
+ *             failedContext.getPartitionId&#40;&#41;, failedContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .maxWaitTime&#40;Duration.ofSeconds&#40;60&#41;&#41;
+ *     .maxEventBufferLengthPerPartition&#40;1500&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
+ *
+ * <p><strong>Creating an {@link EventHubBufferedProducerClient}</strong></p>
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;event-hub-namespace-connection-string&quot;, &quot;event-hub-name&quot;&#41;
+ *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .onSendBatchFailed&#40;failedContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Failed to published events to %s. Error: %s%n&quot;,
+ *             failedContext.getPartitionId&#40;&#41;, failedContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
+ *
  * @see EventHubBufferedProducerClient
  * @see EventHubBufferedProducerAsyncClient
  */
@@ -303,6 +364,35 @@ public final class EventHubBufferedProducerClientBuilder implements
     }
 
     /**
+     * Sets the fully qualified name for the Event Hubs namespace.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     *
+     * @return The updated object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
+     */
+    public EventHubBufferedProducerClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        builder.fullyQualifiedNamespace(fullyQualifiedNamespace);
+        return this;
+    }
+
+    /**
+     * Sets the name of the Event Hub to connect the client to.
+     *
+     * @param eventHubName The name of the Event Hub to connect the client to.
+
+     * @return The updated object.
+     * @throws IllegalArgumentException if {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code eventHubName} is null.
+     */
+    public EventHubBufferedProducerClientBuilder eventHubName(String eventHubName) {
+        builder.eventHubName(eventHubName);
+        return this;
+    }
+
+    /**
      * The total number of batches that may be sent concurrently, across all partitions.  This limit takes precedence
      * over the value specified in {@link #maxConcurrentSendsPerPartition(int) maxConcurrentSendsPerPartition}, ensuring
      * this maximum is respected.  When batches for the same partition are published concurrently, the ordering of
@@ -477,7 +567,7 @@ public final class EventHubBufferedProducerClientBuilder implements
             ? EventHubClientBuilder.DEFAULT_RETRY
             : retryOptions;
 
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options);
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options, builder.createTracer());
     }
 
     /**

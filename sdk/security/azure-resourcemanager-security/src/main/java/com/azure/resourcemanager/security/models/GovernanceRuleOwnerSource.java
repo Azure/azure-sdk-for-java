@@ -22,6 +22,10 @@ public final class GovernanceRuleOwnerSource {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of GovernanceRuleOwnerSource class. */
+    public GovernanceRuleOwnerSource() {
+    }
+
     /**
      * Get the type property: The owner type for the governance rule owner source.
      *

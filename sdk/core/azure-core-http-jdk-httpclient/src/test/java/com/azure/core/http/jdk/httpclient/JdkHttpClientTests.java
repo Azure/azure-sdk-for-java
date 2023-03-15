@@ -213,7 +213,7 @@ public class JdkHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", "123")
+            .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
@@ -318,7 +318,7 @@ public class JdkHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponseSync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", "123")
+            .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));

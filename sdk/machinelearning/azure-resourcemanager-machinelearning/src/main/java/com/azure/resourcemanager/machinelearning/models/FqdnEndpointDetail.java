@@ -16,6 +16,10 @@ public final class FqdnEndpointDetail {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of FqdnEndpointDetail class. */
+    public FqdnEndpointDetail() {
+    }
+
     /**
      * Get the port property: The port property.
      *

@@ -7,6 +7,7 @@ package com.azure.developer.devcenter;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -37,6 +38,7 @@ import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the EnvironmentsClient type. */
@@ -44,7 +46,8 @@ import java.util.stream.Collectors;
 public final class EnvironmentsClientBuilder
         implements HttpTrait<EnvironmentsClientBuilder>,
                 ConfigurationTrait<EnvironmentsClientBuilder>,
-                TokenCredentialTrait<EnvironmentsClientBuilder> {
+                TokenCredentialTrait<EnvironmentsClientBuilder>,
+                EndpointTrait<EnvironmentsClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -52,7 +55,8 @@ public final class EnvironmentsClientBuilder
     @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://devcenter.azure.com/.default"};
 
     @Generated
-    private final Map<String, String> properties = CoreUtils.getProperties("azure-developer-devcenter.properties");
+    private static final Map<String, String> PROPERTIES =
+            CoreUtils.getProperties("azure-developer-devcenter.properties");
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -131,6 +135,7 @@ public final class EnvironmentsClientBuilder
     @Generated
     @Override
     public EnvironmentsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -162,53 +167,15 @@ public final class EnvironmentsClientBuilder
     }
 
     /*
-     * The tenant to operate on.
+     * The service endpoint
      */
-    @Generated private String tenantId;
+    @Generated private String endpoint;
 
-    /**
-     * Sets The tenant to operate on.
-     *
-     * @param tenantId the tenantId value.
-     * @return the EnvironmentsClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
-    public EnvironmentsClientBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /*
-     * The DevCenter to operate on.
-     */
-    @Generated private String devCenter;
-
-    /**
-     * Sets The DevCenter to operate on.
-     *
-     * @param devCenter the devCenter value.
-     * @return the EnvironmentsClientBuilder.
-     */
-    @Generated
-    public EnvironmentsClientBuilder devCenter(String devCenter) {
-        this.devCenter = devCenter;
-        return this;
-    }
-
-    /*
-     * The DNS suffix used as the base for all devcenter requests.
-     */
-    @Generated private String devCenterDnsSuffix;
-
-    /**
-     * Sets The DNS suffix used as the base for all devcenter requests.
-     *
-     * @param devCenterDnsSuffix the devCenterDnsSuffix value.
-     * @return the EnvironmentsClientBuilder.
-     */
-    @Generated
-    public EnvironmentsClientBuilder devCenterDnsSuffix(String devCenterDnsSuffix) {
-        this.devCenterDnsSuffix = devCenterDnsSuffix;
+    @Override
+    public EnvironmentsClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -254,17 +221,11 @@ public final class EnvironmentsClientBuilder
     @Generated
     private DevCenterClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localDevCenterDnsSuffix = (devCenterDnsSuffix != null) ? devCenterDnsSuffix : "devcenter.azure.com";
         DevCenterServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
         DevCenterClientImpl client =
                 new DevCenterClientImpl(
-                        localPipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        tenantId,
-                        devCenter,
-                        localDevCenterDnsSuffix,
-                        localServiceVersion);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 
@@ -272,21 +233,17 @@ public final class EnvironmentsClientBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -311,7 +268,7 @@ public final class EnvironmentsClientBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionPolicyOperationStatuses Get. */
 public final class ProtectionPolicyOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Status.
@@ -25,6 +23,6 @@ public final class ProtectionPolicyOperationStatusesGetSamples {
                 "SwaggerTestRg",
                 "testPolicy1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

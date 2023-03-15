@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards GetUpdateProtectionPolicyRequestsObjects. */
 public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
@@ -20,6 +18,7 @@ public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsSamples
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager
             .resourceGuards()
-            .getUpdateProtectionPolicyRequestsObjects("SampleResourceGroup", "swaggerExample", Context.NONE);
+            .getUpdateProtectionPolicyRequestsObjects(
+                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

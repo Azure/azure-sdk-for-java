@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The MLTableJobOutput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("MLTable")
+@JsonTypeName("mltable")
 @Fluent
 public final class MLTableJobOutput extends JobOutput {
     /*
@@ -25,6 +25,10 @@ public final class MLTableJobOutput extends JobOutput {
      */
     @JsonProperty(value = "uri")
     private String uri;
+
+    /** Creates an instance of MLTableJobOutput class. */
+    public MLTableJobOutput() {
+    }
 
     /**
      * Get the mode property: Output Asset Delivery Mode.

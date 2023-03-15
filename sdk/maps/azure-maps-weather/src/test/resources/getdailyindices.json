@@ -1,0 +1,194 @@
+{
+    "results": [
+        {
+            "indexName": "Running Forecast",
+            "indexId": 1,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for running outdoors."
+        },
+        {
+            "indexName": "Jogging Forecast",
+            "indexId": 2,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for jogging outdoors."
+        },
+        {
+            "indexName": "Hiking Forecast",
+            "indexId": 3,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for hiking."
+        },
+        {
+            "indexName": "Bicycling Forecast",
+            "indexId": 4,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for bicycling outdoors."
+        },
+        {
+            "indexName": "Golf Weather Forecast",
+            "indexId": 5,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for golf."
+        },
+        {
+            "indexName": "Tennis Forecast",
+            "indexId": 6,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for playing tennis."
+        },
+        {
+            "indexName": "Skateboarding Forecast",
+            "indexId": 7,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for skateboarding."
+        },
+        {
+            "indexName": "Outdoor Concert Forecast",
+            "indexId": 8,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Conditions are poor for attending an outdoor concert."
+        },
+        {
+            "indexName": "Kite Flying Forecast",
+            "indexId": 9,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.3,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "This is a poor day for kite-flying."
+        },
+        {
+            "indexName": "Beach & Pool Forecast",
+            "indexId": 10,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions at the beach or pool."
+        },
+        {
+            "indexName": "Sailing Forecast",
+            "indexId": 11,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for sailing."
+        },
+        {
+            "indexName": "Stargazing Forecast",
+            "indexId": 12,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for stargazing."
+        },
+        {
+            "indexName": "Fishing Forecast",
+            "indexId": 13,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for fishing."
+        },
+        {
+            "indexName": "Ski Weather Forecast",
+            "indexId": 15,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 1.6,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for skiing."
+        },
+        {
+            "indexName": "Mosquito Activity Forecast",
+            "indexId": 17,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Low",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Weather conditions will keep mosquito activity low."
+        },
+        {
+            "indexName": "Hunting Forecast",
+            "indexId": 20,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for hunting."
+        },
+        {
+            "indexName": "Outdoor Barbecue",
+            "indexId": 24,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "This is not the day for an outdoor barbecue!"
+        },
+        {
+            "indexName": "Lawn Mowing Forecast",
+            "indexId": 28,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.0,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for lawn mowing."
+        },
+        {
+            "indexName": "Outdoor Activity Forecast",
+            "indexId": 29,
+            "dateTime": "2022-03-23T07:00:00-04:00",
+            "value": 0.1,
+            "category": "Poor",
+            "categoryValue": 1,
+            "ascending": true,
+            "description": "Expect poor conditions for outdoor activities."
+        }
+    ]
+}

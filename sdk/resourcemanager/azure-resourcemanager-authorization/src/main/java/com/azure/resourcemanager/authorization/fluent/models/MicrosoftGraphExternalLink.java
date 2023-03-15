@@ -26,6 +26,10 @@ public final class MicrosoftGraphExternalLink {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphExternalLink class. */
+    public MicrosoftGraphExternalLink() {
+    }
+
     /**
      * Get the href property: The url of the link.
      *

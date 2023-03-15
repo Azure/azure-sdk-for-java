@@ -13,22 +13,24 @@ import java.util.Map;
 @Fluent
 public class PartialManagedServiceIdentity {
     /*
-     * Managed service identity (system assigned and/or user assigned
-     * identities)
+     * Managed service identity (system assigned and/or user assigned identities)
      */
     @JsonProperty(value = "type")
     private ManagedServiceIdentityType type;
 
     /*
-     * The set of user assigned identities associated with the resource. The
-     * userAssignedIdentities dictionary keys will be ARM resource ids in the
-     * form:
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
+     * will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> userAssignedIdentities;
+
+    /** Creates an instance of PartialManagedServiceIdentity class. */
+    public PartialManagedServiceIdentity() {
+    }
 
     /**
      * Get the type property: Managed service identity (system assigned and/or user assigned identities).

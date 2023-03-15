@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationServiceEnvironmentsClient. */
 public final class IntegrationServiceEnvironmentsClientImpl implements IntegrationServiceEnvironmentsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationServiceEnvironmentsService service;
 
@@ -72,7 +69,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface IntegrationServiceEnvironmentsService {
+    public interface IntegrationServiceEnvironmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Logic/integrationServiceEnvironments")
         @ExpectedResponses({200})
@@ -205,7 +202,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listSinglePageAsync(Integer top) {
@@ -253,7 +251,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listSinglePageAsync(Integer top, Context context) {
@@ -297,7 +296,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listAsync(Integer top) {
@@ -310,7 +309,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listAsync() {
@@ -327,7 +326,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listAsync(Integer top, Context context) {
@@ -341,7 +340,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentInner> list() {
@@ -357,7 +357,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentInner> list(Integer top, Context context) {
@@ -372,7 +373,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listByResourceGroupSinglePageAsync(
@@ -426,7 +428,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listByResourceGroupSinglePageAsync(
@@ -476,7 +479,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listByResourceGroupAsync(String resourceGroup, Integer top) {
@@ -492,7 +496,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listByResourceGroupAsync(String resourceGroup) {
@@ -511,7 +516,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentInner> listByResourceGroupAsync(
@@ -528,7 +534,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentInner> listByResourceGroup(String resourceGroup) {
@@ -545,7 +552,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentInner> listByResourceGroup(
@@ -561,7 +569,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationServiceEnvironmentInner>> getByResourceGroupWithResponseAsync(
@@ -612,7 +620,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationServiceEnvironmentInner>> getByResourceGroupWithResponseAsync(
@@ -659,20 +667,30 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationServiceEnvironmentInner> getByResourceGroupAsync(
         String resourceGroup, String integrationServiceEnvironmentName) {
         return getByResourceGroupWithResponseAsync(resourceGroup, integrationServiceEnvironmentName)
-            .flatMap(
-                (Response<IntegrationServiceEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an integration service environment.
+     *
+     * @param resourceGroup The resource group.
+     * @param integrationServiceEnvironmentName The integration service environment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration service environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IntegrationServiceEnvironmentInner> getByResourceGroupWithResponse(
+        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
     }
 
     /**
@@ -688,24 +706,8 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationServiceEnvironmentInner getByResourceGroup(
         String resourceGroup, String integrationServiceEnvironmentName) {
-        return getByResourceGroupAsync(resourceGroup, integrationServiceEnvironmentName).block();
-    }
-
-    /**
-     * Gets an integration service environment.
-     *
-     * @param resourceGroup The resource group.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationServiceEnvironmentInner> getByResourceGroupWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
+        return getByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -717,7 +719,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -780,7 +782,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -840,9 +842,9 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link PollerFlux} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginCreateOrUpdateAsync(
             String resourceGroup,
@@ -858,7 +860,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
                 this.client.getHttpPipeline(),
                 IntegrationServiceEnvironmentInner.class,
                 IntegrationServiceEnvironmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -871,9 +873,9 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link PollerFlux} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginCreateOrUpdateAsync(
             String resourceGroup,
@@ -903,15 +905,16 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link SyncPoller} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginCreateOrUpdate(
             String resourceGroup,
             String integrationServiceEnvironmentName,
             IntegrationServiceEnvironmentInner integrationServiceEnvironment) {
-        return beginCreateOrUpdateAsync(resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment)
             .getSyncPoller();
     }
 
@@ -925,16 +928,17 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link SyncPoller} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginCreateOrUpdate(
             String resourceGroup,
             String integrationServiceEnvironmentName,
             IntegrationServiceEnvironmentInner integrationServiceEnvironment,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, context)
             .getSyncPoller();
     }
@@ -948,7 +952,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationServiceEnvironmentInner> createOrUpdateAsync(
@@ -970,7 +974,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationServiceEnvironmentInner> createOrUpdateAsync(
@@ -1036,7 +1040,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1099,7 +1103,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1159,9 +1163,9 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link PollerFlux} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginUpdateAsync(
             String resourceGroup,
@@ -1176,7 +1180,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
                 this.client.getHttpPipeline(),
                 IntegrationServiceEnvironmentInner.class,
                 IntegrationServiceEnvironmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1189,9 +1193,9 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link PollerFlux} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner>
         beginUpdateAsync(
             String resourceGroup,
@@ -1221,14 +1225,15 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link SyncPoller} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner> beginUpdate(
         String resourceGroup,
         String integrationServiceEnvironmentName,
         IntegrationServiceEnvironmentInner integrationServiceEnvironment) {
-        return beginUpdateAsync(resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment)
+        return this
+            .beginUpdateAsync(resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment)
             .getSyncPoller();
     }
 
@@ -1242,16 +1247,16 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the {@link SyncPoller} for polling of the integration service environment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationServiceEnvironmentInner>, IntegrationServiceEnvironmentInner> beginUpdate(
         String resourceGroup,
         String integrationServiceEnvironmentName,
         IntegrationServiceEnvironmentInner integrationServiceEnvironment,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, context)
+        return this
+            .beginUpdateAsync(resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, context)
             .getSyncPoller();
     }
 
@@ -1264,7 +1269,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationServiceEnvironmentInner> updateAsync(
@@ -1286,7 +1291,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment.
+     * @return the integration service environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationServiceEnvironmentInner> updateAsync(
@@ -1349,7 +1354,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1400,7 +1405,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1447,12 +1452,29 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroup, String integrationServiceEnvironmentName) {
         return deleteWithResponseAsync(resourceGroup, integrationServiceEnvironmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an integration service environment.
+     *
+     * @param resourceGroup The resource group.
+     * @param integrationServiceEnvironmentName The integration service environment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+        return deleteWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
     }
 
     /**
@@ -1466,24 +1488,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroup, String integrationServiceEnvironmentName) {
-        deleteAsync(resourceGroup, integrationServiceEnvironmentName).block();
-    }
-
-    /**
-     * Deletes an integration service environment.
-     *
-     * @param resourceGroup The resource group.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        return deleteWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
+        deleteWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE);
     }
 
     /**
@@ -1494,7 +1499,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> restartWithResponseAsync(
@@ -1545,7 +1550,7 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> restartWithResponseAsync(
@@ -1592,12 +1597,29 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroup, String integrationServiceEnvironmentName) {
         return restartWithResponseAsync(resourceGroup, integrationServiceEnvironmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Restarts an integration service environment.
+     *
+     * @param resourceGroup The resource group.
+     * @param integrationServiceEnvironmentName The integration service environment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> restartWithResponse(
+        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+        return restartWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
     }
 
     /**
@@ -1611,34 +1633,19 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroup, String integrationServiceEnvironmentName) {
-        restartAsync(resourceGroup, integrationServiceEnvironmentName).block();
-    }
-
-    /**
-     * Restarts an integration service environment.
-     *
-     * @param resourceGroup The resource group.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> restartWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        return restartWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, context).block();
+        restartWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environments.
+     * @return the list of integration service environments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listBySubscriptionNextSinglePageAsync(
@@ -1671,12 +1678,14 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environments.
+     * @return the list of integration service environments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listBySubscriptionNextSinglePageAsync(
@@ -1708,11 +1717,13 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environments.
+     * @return the list of integration service environments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listByResourceGroupNextSinglePageAsync(
@@ -1745,12 +1756,14 @@ public final class IntegrationServiceEnvironmentsClientImpl implements Integrati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environments.
+     * @return the list of integration service environments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentInner>> listByResourceGroupNextSinglePageAsync(

@@ -35,6 +35,21 @@ public final class PollingUtils {
     }
 
     /**
+     * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
+     *
+     * @param response the response from an activation or polling call
+     * @param serializer the object serializer to use
+     * @return a {@link BinaryData} response
+     */
+    public static BinaryData serializeResponseSync(Object response, ObjectSerializer serializer) {
+        if (response instanceof BinaryData) {
+            return (BinaryData) response;
+        } else {
+            return BinaryData.fromObject(response, serializer);
+        }
+    }
+
+    /**
      * Deserialize a {@link BinaryData} into a poll response type. If the poll response type is also a
      * {@link BinaryData}, return as is.
      *
@@ -55,12 +70,32 @@ public final class PollingUtils {
     }
 
     /**
+     * Deserialize a {@link BinaryData} into a poll response type. If the poll response type is also a
+     * {@link BinaryData}, return as is.
+     *
+     * @param binaryData the binary data to deserialize
+     * @param serializer the object serializer to use
+     * @param typeReference the {@link TypeReference} of the poll response type
+     * @param <T> the generic parameter of the poll response type
+     * @return the deserialized object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer,
+        TypeReference<T> typeReference) {
+        if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
+            return (T) binaryData;
+        } else {
+            return binaryData.toObject(typeReference, serializer);
+        }
+    }
+
+    /**
      * Converts an object received from an activation or a polling call to another type requested by the user. If the
      * object type is identical to the type requested by the user, it's returned as is. If the response is null, an
      * empty publisher is returned.
-     *
+     * <p>
      * This is useful when an activation response needs to be converted to a polling response type, or a final result
-     * type, if the long running operation completes upon activation.
+     * type, if the long-running operation completes upon activation.
      *
      * @param response the response from an activation or polling call
      * @param serializer the object serializer to use
@@ -82,10 +117,36 @@ public final class PollingUtils {
     }
 
     /**
+     * Converts an object received from an activation or a polling call to another type requested by the user. If the
+     * object type is identical to the type requested by the user, it's returned as is. If the response is null, null
+     * is returned.
+     * <p>
+     * This is useful when an activation response needs to be converted to a polling response type, or a final result
+     * type, if the long-running operation completes upon activation.
+     *
+     * @param response the response from an activation or polling call
+     * @param serializer the object serializer to use
+     * @param typeReference the {@link TypeReference} of the user requested type
+     * @param <T> the generic parameter of the user requested type
+     * @return the converted object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T convertResponseSync(Object response, ObjectSerializer serializer,
+        TypeReference<T> typeReference) {
+        if (response == null) {
+            return null;
+        } else if (TypeUtil.isTypeOrSubTypeOf(response.getClass(), typeReference.getJavaType())) {
+            return (T) response;
+        } else {
+            return deserializeResponseSync(serializeResponseSync(response, serializer), serializer, typeReference);
+        }
+    }
+
+    /**
      * Create an absolute path from the endpoint if the 'path' is relative. Otherwise, return the 'path' as absolute
      * path.
      *
-     * @param path an relative path or absolute path.
+     * @param path a relative path or absolute path.
      * @param endpoint an endpoint to create the absolute path if the path is relative.
      * @return an absolute path.
      */

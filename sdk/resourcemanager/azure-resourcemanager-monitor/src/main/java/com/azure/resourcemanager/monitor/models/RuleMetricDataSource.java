@@ -20,6 +20,10 @@ public final class RuleMetricDataSource extends RuleDataSource {
     @JsonProperty(value = "metricName")
     private String metricName;
 
+    /** Creates an instance of RuleMetricDataSource class. */
+    public RuleMetricDataSource() {
+    }
+
     /**
      * Get the metricName property: the name of the metric that defines what the rule monitors.
      *

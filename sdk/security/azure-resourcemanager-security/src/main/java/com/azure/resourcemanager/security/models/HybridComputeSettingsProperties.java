@@ -48,6 +48,10 @@ public final class HybridComputeSettingsProperties {
     @JsonProperty(value = "servicePrincipal")
     private ServicePrincipalProperties servicePrincipal;
 
+    /** Creates an instance of HybridComputeSettingsProperties class. */
+    public HybridComputeSettingsProperties() {
+    }
+
     /**
      * Get the hybridComputeProvisioningState property: State of the service principal and its secret.
      *

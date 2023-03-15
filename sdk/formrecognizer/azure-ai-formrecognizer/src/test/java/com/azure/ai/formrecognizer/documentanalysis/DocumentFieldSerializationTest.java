@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -46,6 +47,7 @@ public class DocumentFieldSerializationTest extends DocumentAnalysisClientTestBa
     /**
      * Verifies that the analyzed result of an insurance card data deserializes accurately.
      */
+    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void deserializeAnalyzeResult(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion)

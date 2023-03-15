@@ -38,6 +38,15 @@ public final class PfsGroup extends ExpandableStringEnum<PfsGroup> {
     public static final PfsGroup PFSMM = fromString("PFSMM");
 
     /**
+     * Creates a new instance of PfsGroup value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PfsGroup() {
+    }
+
+    /**
      * Creates or finds a PfsGroup from its string representation.
      *
      * @param name a name to look for.

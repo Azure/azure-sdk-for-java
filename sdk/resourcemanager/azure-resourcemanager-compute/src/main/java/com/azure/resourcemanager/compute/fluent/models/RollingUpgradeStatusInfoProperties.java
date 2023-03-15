@@ -38,6 +38,10 @@ public final class RollingUpgradeStatusInfoProperties {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
+    /** Creates an instance of RollingUpgradeStatusInfoProperties class. */
+    public RollingUpgradeStatusInfoProperties() {
+    }
+
     /**
      * Get the policy property: The rolling upgrade policies applied for this upgrade.
      *

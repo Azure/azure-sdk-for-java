@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.Direction;
 import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticParameters;
 import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticProfile;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkWatchers GetNetworkConfigurationDiagnostic. */
 public final class NetworkWatchersGetNetworkConfigurationDiagnosticSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherNetworkConfigurationDiagnostic.json
      */
     /**
      * Sample code: Network configuration diagnostic.
@@ -41,6 +40,6 @@ public final class NetworkWatchersGetNetworkConfigurationDiagnosticSamples {
                                     .withSource("10.1.0.4")
                                     .withDestination("12.11.12.14")
                                     .withDestinationPort("12100"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

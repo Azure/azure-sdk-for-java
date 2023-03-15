@@ -82,7 +82,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualNetworkGatewayConnectionsService {
+    public interface VirtualNetworkGatewayConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
@@ -323,7 +323,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -387,7 +387,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -481,7 +481,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             String resourceGroupName,
             String virtualNetworkGatewayConnectionName,
             VirtualNetworkGatewayConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -504,7 +505,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             String virtualNetworkGatewayConnectionName,
             VirtualNetworkGatewayConnectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -628,7 +630,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -682,7 +684,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -784,7 +786,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -837,7 +839,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -907,7 +909,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
     }
 
     /**
@@ -924,7 +926,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context).getSyncPoller();
     }
 
     /**
@@ -1034,7 +1036,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1097,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1183,7 +1185,9 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginUpdateTags(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1205,7 +1209,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             String virtualNetworkGatewayConnectionName,
             TagsObject parameters,
             Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginUpdateTagsAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1327,7 +1332,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1393,7 +1398,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1485,7 +1490,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters) {
-        return beginSetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+        return this
+            .beginSetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -1509,7 +1515,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String virtualNetworkGatewayConnectionName,
         ConnectionSharedKeyInner parameters,
         Context context) {
-        return beginSetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginSetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1638,7 +1645,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1693,7 +1700,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1790,7 +1797,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1846,7 +1853,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1986,7 +1993,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2053,7 +2060,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2155,7 +2162,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
         ConnectionResetSharedKeyInner parameters) {
-        return beginResetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+        return this
+            .beginResetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -2180,7 +2188,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String virtualNetworkGatewayConnectionName,
         ConnectionResetSharedKeyInner parameters,
         Context context) {
-        return beginResetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginResetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2322,7 +2331,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2384,7 +2393,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2488,7 +2497,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     public SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         final VpnPacketCaptureStartParameters parameters = null;
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+        return this
+            .beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -2511,7 +2521,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String virtualNetworkGatewayConnectionName,
         VpnPacketCaptureStartParameters parameters,
         Context context) {
-        return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2662,7 +2673,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2726,7 +2737,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2811,7 +2822,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
         VpnPacketCaptureStopParameters parameters) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+        return this
+            .beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -2834,7 +2846,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         String virtualNetworkGatewayConnectionName,
         VpnPacketCaptureStopParameters parameters,
         Context context) {
-        return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
+        return this
+            .beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2962,7 +2975,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3015,7 +3028,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3085,7 +3098,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        return beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
+        return this.beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
     }
 
     /**
@@ -3102,7 +3115,9 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
-        return beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context).getSyncPoller();
+        return this
+            .beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3207,7 +3222,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3260,7 +3275,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3330,7 +3345,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName) {
-        return beginResetConnectionAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
+        return this.beginResetConnectionAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
     }
 
     /**
@@ -3347,7 +3362,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
-        return beginResetConnectionAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context)
+        return this
+            .beginResetConnectionAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context)
             .getSyncPoller();
     }
 

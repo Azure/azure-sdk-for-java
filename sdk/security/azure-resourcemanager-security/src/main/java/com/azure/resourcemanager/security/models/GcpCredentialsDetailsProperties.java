@@ -84,6 +84,10 @@ public final class GcpCredentialsDetailsProperties extends AuthenticationDetails
     @JsonProperty(value = "clientX509CertUrl", required = true)
     private String clientX509CertUrl;
 
+    /** Creates an instance of GcpCredentialsDetailsProperties class. */
+    public GcpCredentialsDetailsProperties() {
+    }
+
     /**
      * Get the organizationId property: The organization ID of the GCP cloud account.
      *

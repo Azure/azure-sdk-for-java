@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobResource;
@@ -34,7 +33,7 @@ public final class BackupJobsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"kuejk\",\"backupManagementType\":\"AzureSql\",\"operation\":\"ztjofqcvovjufyc\",\"status\":\"mlbemy\",\"startTime\":\"2021-08-26T00:52:57Z\",\"endTime\":\"2021-03-10T12:58:51Z\",\"activityId\":\"xeg\"},\"eTag\":\"ortudawlpjfel\",\"location\":\"erppt\",\"tags\":{\"alwcjgckbb\":\"qnzmnhiil\",\"fa\":\"ccgzpraoxnyu\"},\"id\":\"sgftipwc\",\"name\":\"byubhiqdxyurnpn\",\"type\":\"hza\"}]}";
+            "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"mc\",\"backupManagementType\":\"MAB\",\"operation\":\"doabhj\",\"status\":\"xqweu\",\"startTime\":\"2021-04-29T11:49:13Z\",\"endTime\":\"2021-07-14T06:30:37Z\",\"activityId\":\"smitnsqxtlt\"},\"eTag\":\"krdpqgfhyrfr\",\"location\":\"kkld\",\"tags\":{\"ajqmat\":\"wfcmfcnr\"},\"id\":\"jti\",\"name\":\"ln\",\"type\":\"qgxxgfbb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,23 +61,23 @@ public final class BackupJobsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<JobResource> response = manager.backupJobs().list("z", "caqt", "ltcoqc", "jpds", Context.NONE);
+        PagedIterable<JobResource> response =
+            manager.backupJobs().list("awn", "zm", "n", "oywsxvjabjqqaxu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("erppt", response.iterator().next().location());
-        Assertions.assertEquals("qnzmnhiil", response.iterator().next().tags().get("alwcjgckbb"));
-        Assertions.assertEquals("kuejk", response.iterator().next().properties().entityFriendlyName());
+        Assertions.assertEquals("kkld", response.iterator().next().location());
+        Assertions.assertEquals("wfcmfcnr", response.iterator().next().tags().get("ajqmat"));
+        Assertions.assertEquals("mc", response.iterator().next().properties().entityFriendlyName());
+        Assertions
+            .assertEquals(BackupManagementType.MAB, response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("doabhj", response.iterator().next().properties().operation());
+        Assertions.assertEquals("xqweu", response.iterator().next().properties().status());
         Assertions
             .assertEquals(
-                BackupManagementType.AZURE_SQL, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("ztjofqcvovjufyc", response.iterator().next().properties().operation());
-        Assertions.assertEquals("mlbemy", response.iterator().next().properties().status());
+                OffsetDateTime.parse("2021-04-29T11:49:13Z"), response.iterator().next().properties().startTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-26T00:52:57Z"), response.iterator().next().properties().startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-03-10T12:58:51Z"), response.iterator().next().properties().endTime());
-        Assertions.assertEquals("xeg", response.iterator().next().properties().activityId());
-        Assertions.assertEquals("ortudawlpjfel", response.iterator().next().etag());
+                OffsetDateTime.parse("2021-07-14T06:30:37Z"), response.iterator().next().properties().endTime());
+        Assertions.assertEquals("smitnsqxtlt", response.iterator().next().properties().activityId());
+        Assertions.assertEquals("krdpqgfhyrfr", response.iterator().next().etag());
     }
 }

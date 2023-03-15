@@ -70,7 +70,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface AttachedDatabaseConfigurationsService {
+    public interface AttachedDatabaseConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
@@ -289,23 +289,6 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, resourceName).block();
-    }
-
-    /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,6 +302,23 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         AttachedDatabaseConfigurationsCheckNameRequest resourceName,
         Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
+    }
+
+    /**
+     * Checks that the attached database configuration resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -631,23 +631,6 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return getAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).block();
-    }
-
-    /**
-     * Returns an attached database configuration.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -658,6 +641,24 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     public Response<AttachedDatabaseConfigurationInner> getWithResponse(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).block();
+    }
+
+    /**
+     * Returns an attached database configuration.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an attached database configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedDatabaseConfigurationInner get(
+        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+        return getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -879,7 +880,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             String clusterName,
             String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
             .getSyncPoller();
     }
 
@@ -904,7 +906,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
             .getSyncPoller();
     }
@@ -1174,7 +1177,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
     }
 
     /**
@@ -1192,7 +1195,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
             .getSyncPoller();
     }
 

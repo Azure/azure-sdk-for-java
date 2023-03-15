@@ -28,15 +28,6 @@ public final class GovernanceRulesOperationsImpl implements GovernanceRulesOpera
         this.serviceManager = serviceManager;
     }
 
-    public GovernanceRule get(String ruleId) {
-        GovernanceRuleInner inner = this.serviceClient().get(ruleId);
-        if (inner != null) {
-            return new GovernanceRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GovernanceRule> getWithResponse(String ruleId, Context context) {
         Response<GovernanceRuleInner> inner = this.serviceClient().getWithResponse(ruleId, context);
         if (inner != null) {
@@ -50,17 +41,21 @@ public final class GovernanceRulesOperationsImpl implements GovernanceRulesOpera
         }
     }
 
-    public void delete(String ruleId) {
-        this.serviceClient().delete(ruleId);
+    public GovernanceRule get(String ruleId) {
+        GovernanceRuleInner inner = this.serviceClient().get(ruleId);
+        if (inner != null) {
+            return new GovernanceRuleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String ruleId, Context context) {
         return this.serviceClient().deleteWithResponse(ruleId, context);
     }
 
-    public void ruleIdExecuteSingleSubscription(
-        String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        this.serviceClient().ruleIdExecuteSingleSubscription(ruleId, executeGovernanceRuleParams);
+    public void delete(String ruleId) {
+        this.serviceClient().delete(ruleId);
     }
 
     public void ruleIdExecuteSingleSubscription(String ruleId) {
@@ -70,17 +65,6 @@ public final class GovernanceRulesOperationsImpl implements GovernanceRulesOpera
     public void ruleIdExecuteSingleSubscription(
         String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
         this.serviceClient().ruleIdExecuteSingleSubscription(ruleId, executeGovernanceRuleParams, context);
-    }
-
-    public void ruleIdExecuteSingleSecurityConnector(
-        String resourceGroupName,
-        String securityConnectorName,
-        String ruleId,
-        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        this
-            .serviceClient()
-            .ruleIdExecuteSingleSecurityConnector(
-                resourceGroupName, securityConnectorName, ruleId, executeGovernanceRuleParams);
     }
 
     public void ruleIdExecuteSingleSecurityConnector(

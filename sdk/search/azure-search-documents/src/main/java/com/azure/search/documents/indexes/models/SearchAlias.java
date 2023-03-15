@@ -7,8 +7,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,23 +20,20 @@ import java.util.List;
  * place of the index name for supported operations.
  */
 @Fluent
-public final class SearchAlias {
+public final class SearchAlias implements JsonSerializable<SearchAlias> {
     /*
      * The name of the alias.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The name of the index this alias maps to. Only one index name may be specified.
      */
-    @JsonProperty(value = "indexes", required = true)
-    private List<String> indexes;
+    private final List<String> indexes;
 
     /*
      * The ETag of the alias.
      */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /**
@@ -41,10 +42,7 @@ public final class SearchAlias {
      * @param name the name value to set.
      * @param indexes the indexes value to set.
      */
-    @JsonCreator
-    public SearchAlias(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "indexes", required = true) List<String> indexes) {
+    public SearchAlias(String name, List<String> indexes) {
         this.name = name;
         this.indexes = indexes;
     }
@@ -85,5 +83,66 @@ public final class SearchAlias {
     public SearchAlias setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("indexes", this.indexes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("@odata.etag", this.eTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchAlias from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchAlias if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchAlias.
+     */
+    public static SearchAlias fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean indexesFound = false;
+                    List<String> indexes = null;
+                    String eTag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("indexes".equals(fieldName)) {
+                            indexes = reader.readArray(reader1 -> reader1.getString());
+                            indexesFound = true;
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound && indexesFound) {
+                        SearchAlias deserializedValue = new SearchAlias(name, indexes);
+                        deserializedValue.eTag = eTag;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!indexesFound) {
+                        missingProperties.add("indexes");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

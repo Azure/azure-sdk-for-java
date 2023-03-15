@@ -16,16 +16,16 @@ public final class WsfcDomainProfileTests {
         WsfcDomainProfile model =
             BinaryData
                 .fromString(
-                    "{\"domainFqdn\":\"z\",\"ouPath\":\"iachbo\",\"clusterBootstrapAccount\":\"flnrosfqpteehzz\",\"clusterOperatorAccount\":\"pyqr\",\"sqlServiceAccount\":\"z\",\"fileShareWitnessPath\":\"pvswjdkirso\",\"storageAccountUrl\":\"qxhcrmn\",\"storageAccountPrimaryKey\":\"jtckwhdso\",\"clusterSubnetType\":\"SingleSubnet\"}")
+                    "{\"domainFqdn\":\"z\",\"ouPath\":\"iachbo\",\"clusterBootstrapAccount\":\"fakeClusterBootstrapAccountPlaceholder\",\"clusterOperatorAccount\":\"pyqr\",\"sqlServiceAccount\":\"z\",\"fileShareWitnessPath\":\"pvswjdkirso\",\"storageAccountUrl\":\"qxhcrmn\",\"storageAccountPrimaryKey\":\"fakeStorageAccountPrimaryKeyPlaceholder\",\"clusterSubnetType\":\"SingleSubnet\"}")
                 .toObject(WsfcDomainProfile.class);
         Assertions.assertEquals("z", model.domainFqdn());
         Assertions.assertEquals("iachbo", model.ouPath());
-        Assertions.assertEquals("flnrosfqpteehzz", model.clusterBootstrapAccount());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPlaceholder", model.clusterBootstrapAccount());
         Assertions.assertEquals("pyqr", model.clusterOperatorAccount());
         Assertions.assertEquals("z", model.sqlServiceAccount());
         Assertions.assertEquals("pvswjdkirso", model.fileShareWitnessPath());
         Assertions.assertEquals("qxhcrmn", model.storageAccountUrl());
-        Assertions.assertEquals("jtckwhdso", model.storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", model.storageAccountPrimaryKey());
         Assertions.assertEquals(ClusterSubnetType.SINGLE_SUBNET, model.clusterSubnetType());
     }
 
@@ -35,22 +35,22 @@ public final class WsfcDomainProfileTests {
             new WsfcDomainProfile()
                 .withDomainFqdn("z")
                 .withOuPath("iachbo")
-                .withClusterBootstrapAccount("flnrosfqpteehzz")
+                .withClusterBootstrapAccount("fakeClusterBootstrapAccountPlaceholder")
                 .withClusterOperatorAccount("pyqr")
                 .withSqlServiceAccount("z")
                 .withFileShareWitnessPath("pvswjdkirso")
                 .withStorageAccountUrl("qxhcrmn")
-                .withStorageAccountPrimaryKey("jtckwhdso")
+                .withStorageAccountPrimaryKey("fakeStorageAccountPrimaryKeyPlaceholder")
                 .withClusterSubnetType(ClusterSubnetType.SINGLE_SUBNET);
         model = BinaryData.fromObject(model).toObject(WsfcDomainProfile.class);
         Assertions.assertEquals("z", model.domainFqdn());
         Assertions.assertEquals("iachbo", model.ouPath());
-        Assertions.assertEquals("flnrosfqpteehzz", model.clusterBootstrapAccount());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPlaceholder", model.clusterBootstrapAccount());
         Assertions.assertEquals("pyqr", model.clusterOperatorAccount());
         Assertions.assertEquals("z", model.sqlServiceAccount());
         Assertions.assertEquals("pvswjdkirso", model.fileShareWitnessPath());
         Assertions.assertEquals("qxhcrmn", model.storageAccountUrl());
-        Assertions.assertEquals("jtckwhdso", model.storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", model.storageAccountPrimaryKey());
         Assertions.assertEquals(ClusterSubnetType.SINGLE_SUBNET, model.clusterSubnetType());
     }
 }

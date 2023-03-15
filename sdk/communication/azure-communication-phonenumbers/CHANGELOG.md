@@ -1,22 +1,74 @@
 # Release History
 
-## 1.1.0-beta.12 (Unreleased)
+## 1.1.0-beta.15 (2023-03-15)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.0.16 (2022-10-18)
+- Added support for SIP routing API version `2023-03-01`, releasing SIP routing functionality from public preview to GA.
+- Added environment variable `AZURE_TEST_DOMAIN` for SIP routing tests to support domain verification.
 
 ### Other Changes
 
 #### Dependency Updates
-- Upgraded `azure-core` from `1.32.0` to version `1.33.0`
-- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-communication-common` from `1.2.5` to version `1.2.6`.
+
+## 1.1.0-beta.14 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
+
+
+## 1.0.19 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
+
+
+## 1.0.18 (2023-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-communication-common` from `1.2.3` to version `1.2.4`.
+
+## 1.1.0-beta.13 (2023-01-10)
+- Adds support for Azure Communication Services Phone Numbers Browse API Methods.
+
+### Features Added
+- Added support for API version `2022-12-01`, giving users the ability to: 
+  - Get all supported countries
+  - Get all supported localities given a country code.
+  - Get all Toll-Free area codes from a given country code.
+  - Get all Geographic area codes from a given country code / locality.
+  - Get all offerings from a given country code.
+
+## 1.1.0-beta.12 (2022-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`
+- Upgraded `azure-communication-common` from `1.2.2` to version `1.2.3`
+
+## 1.0.17 (2022-11-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-communication-common` from `1.2.2` to version `1.2.3`.
 
 ## 1.1.0-beta.11 (2022-10-18)
 
@@ -32,6 +84,14 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`
 - Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
 
+
+## 1.0.16 (2022-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`
 
 ## 1.1.0-beta.10 (2022-09-13)
 

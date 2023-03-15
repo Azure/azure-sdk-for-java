@@ -14,7 +14,7 @@ public final class EnvironmentTypeListResultTests {
         EnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"bfqkkr\"},\"tags\":{\"flz\":\"ukgri\",\"qzahmgkbrp\":\"fbxzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"id\":\"fsiarbutr\",\"name\":\"vpnazzm\",\"type\":\"jrunmpxtt\"},{\"properties\":{\"provisioningState\":\"rbnlankxmyskp\"},\"tags\":{\"yn\":\"nbtkcxywnytnr\",\"zfcl\":\"qidybyx\",\"fkts\":\"aaxdbabphlwrq\"},\"id\":\"sucocmnyyazttbtw\",\"name\":\"rq\",\"type\":\"uedck\"},{\"properties\":{\"provisioningState\":\"biexzfeyu\"},\"tags\":{\"jwbhqwalmuz\":\"ibx\",\"zjancuxr\":\"oxaepd\",\"bavxbniwdjswzt\":\"d\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"cuh\",\"name\":\"wtctyqi\",\"type\":\"lbbovplw\"},{\"properties\":{\"provisioningState\":\"vgyuguos\"},\"tags\":{\"gsxnkjzkdeslpv\":\"fssxqukkfplg\",\"ighxpk\":\"opwi\",\"baumnyqupedeoj\":\"wzbaiue\"},\"id\":\"bckhsmtxpsi\",\"name\":\"btfhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}],\"nextLink\":\"utknc\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\"},\"tags\":{\"onpc\":\"xc\"},\"id\":\"ocohslkevleg\",\"name\":\"zfbuhf\",\"type\":\"vfaxkffeiith\"}],\"nextLink\":\"m\"}")
                 .toObject(EnvironmentTypeListResult.class);
     }
 

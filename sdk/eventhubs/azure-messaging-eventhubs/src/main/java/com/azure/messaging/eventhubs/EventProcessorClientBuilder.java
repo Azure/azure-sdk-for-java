@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
@@ -21,7 +20,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -35,7 +33,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -66,6 +63,10 @@ import java.util.function.Supplier;
  * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the fully
  * qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  * </li>
+ * <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, or
+ * {@link #credential(AzureNamedKeyCredential)} along with {@link #fullyQualifiedNamespace(String)} and
+ * {@link #eventHubName(String)}. The fully qualified namespace, Event Hub name, and authorized credentials
+ * to use the Event Hub.</li>
  * </ul>
  * </li>
  * </ul>
@@ -109,6 +110,7 @@ public class EventProcessorClientBuilder implements
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpTrait<EventProcessorClientBuilder>,
     ConfigurationTrait<EventProcessorClientBuilder> {
+
     /**
      * Default load balancing update interval. Balancing interval should account for latency between the client
      * and the storage account.
@@ -733,7 +735,6 @@ public class EventProcessorClientBuilder implements
                 + "cannot be set"));
         }
 
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         if (loadBalancingUpdateInterval == null) {
             loadBalancingUpdateInterval = DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL;
         }
@@ -743,9 +744,9 @@ public class EventProcessorClientBuilder implements
         }
 
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
-            getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
+            getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
-            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
+            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy, eventHubClientBuilder.createTracer());
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

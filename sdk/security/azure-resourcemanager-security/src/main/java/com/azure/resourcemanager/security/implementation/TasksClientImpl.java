@@ -56,7 +56,7 @@ public final class TasksClientImpl implements TasksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterTasks")
-    private interface TasksService {
+    public interface TasksService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks")
         @ExpectedResponses({200})
@@ -671,22 +671,6 @@ public final class TasksClientImpl implements TasksClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityTaskInner getSubscriptionLevelTask(String ascLocation, String taskName) {
-        return getSubscriptionLevelTaskAsync(ascLocation, taskName).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -697,6 +681,22 @@ public final class TasksClientImpl implements TasksClient {
     public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(
         String ascLocation, String taskName, Context context) {
         return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName, context).block();
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityTaskInner getSubscriptionLevelTask(String ascLocation, String taskName) {
+        return getSubscriptionLevelTaskWithResponse(ascLocation, taskName, Context.NONE).getValue();
     }
 
     /**
@@ -833,23 +833,6 @@ public final class TasksClientImpl implements TasksClient {
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        updateSubscriptionLevelTaskStateAsync(ascLocation, taskName, taskUpdateActionType).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -861,6 +844,23 @@ public final class TasksClientImpl implements TasksClient {
         String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
         return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType, context)
             .block();
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelTaskState(
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, Context.NONE);
     }
 
     /**
@@ -1229,24 +1229,6 @@ public final class TasksClientImpl implements TasksClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityTaskInner getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
-        return getResourceGroupLevelTaskAsync(resourceGroupName, ascLocation, taskName).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1257,6 +1239,24 @@ public final class TasksClientImpl implements TasksClient {
     public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(
         String resourceGroupName, String ascLocation, String taskName, Context context) {
         return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName, context).block();
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityTaskInner getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
+        return getResourceGroupLevelTaskWithResponse(resourceGroupName, ascLocation, taskName, Context.NONE).getValue();
     }
 
     /**
@@ -1416,25 +1416,6 @@ public final class TasksClientImpl implements TasksClient {
      *     locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        updateResourceGroupLevelTaskStateAsync(resourceGroupName, ascLocation, taskName, taskUpdateActionType).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1451,6 +1432,26 @@ public final class TasksClientImpl implements TasksClient {
         return updateResourceGroupLevelTaskStateWithResponseAsync(
                 resourceGroupName, ascLocation, taskName, taskUpdateActionType, context)
             .block();
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelTaskState(
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        updateResourceGroupLevelTaskStateWithResponse(
+            resourceGroupName, ascLocation, taskName, taskUpdateActionType, Context.NONE);
     }
 
     /**

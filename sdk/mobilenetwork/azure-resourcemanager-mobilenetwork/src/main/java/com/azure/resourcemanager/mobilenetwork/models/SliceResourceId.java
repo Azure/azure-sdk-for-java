@@ -17,6 +17,10 @@ public final class SliceResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of SliceResourceId class. */
+    public SliceResourceId() {
+    }
+
     /**
      * Get the id property: Slice resource ID.
      *

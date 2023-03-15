@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -89,6 +90,20 @@ public final class BlobsCopyFromURLHeaders {
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
+    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
+
+    private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
+
+    private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsCopyFromURLHeaders class.
@@ -96,30 +111,30 @@ public final class BlobsCopyFromURLHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsCopyFromURLHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
-        this.eTag = rawHeaders.getValue("ETag");
-        String xMsContentCrc64 = rawHeaders.getValue("x-ms-content-crc64");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         }
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
-        this.xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
+        this.xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String contentMD5 = rawHeaders.getValue("Content-MD5");
+        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
-        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
 
     /**

@@ -81,7 +81,7 @@ class UserPrincipalMicrosoftGraphTests {
         properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint(MOCK_MICROSOFT_GRAPH_ENDPOINT);
         endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
-        clientSecret = "pass";
+        clientSecret = "fakeCredentialPlaceholder";
     }
 
     @Test

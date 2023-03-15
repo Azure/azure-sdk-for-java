@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.ErrorContextProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -12,14 +11,15 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -30,13 +30,13 @@ import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
-
     @Mock
     private ErrorContextProvider contextProvider;
 
@@ -52,12 +52,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             .shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
-        producer = builder.buildAsyncProducerClient();
-    }
-
-    @Override
-    protected void afterTest() {
-        dispose(producer);
+        producer = toClose(builder.buildAsyncProducerClient());
     }
 
     /**
@@ -67,7 +62,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatch() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider,
-            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
+            DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -90,7 +85,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
-            PARTITION_KEY, contextProvider, tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
+            PARTITION_KEY, contextProvider, DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -116,7 +111,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
-            PARTITION_KEY, contextProvider, tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
+            PARTITION_KEY, contextProvider, DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -129,48 +124,41 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getCount());
-        final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         final Instant now = Instant.now();
-        try {
-            // Creating consumers on all the partitions and subscribing to the receive event.
-            final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
-            Assertions.assertNotNull(partitionIds);
+        // Creating consumers on all the partitions and subscribing to the receive event.
+        final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
+        Assertions.assertNotNull(partitionIds);
 
-            for (String id : partitionIds) {
-                final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
+        for (String id : partitionIds) {
+            final EventHubConsumerAsyncClient consumer = toClose(builder.buildAsyncConsumerClient());
 
-                consumers.add(consumer);
-                consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
-                    EventData event = partitionEvent.getData();
-                    if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
-                        return;
-                    }
+            Disposable subscription = toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
+                EventData event = partitionEvent.getData();
+                if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
+                    return;
+                }
 
-                    if (isMatchingEvent(event, messageValue)) {
-                        logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
-                        countDownLatch.countDown();
-                    } else {
-                        logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
-                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
-                    }
-                }, error -> {
-                        Assertions.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        dispose(consumer);
-                    });
-            }
-
-            // Act
-            producer.send(batch.getEvents(), sendOptions).block();
-
-            // Assert
-            // Wait for all the events we sent to be received.
-            countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-        } finally {
-            logger.info("Disposing of subscriptions.");
-            dispose(consumers.toArray(new EventHubConsumerAsyncClient[0]));
+                if (isMatchingEvent(event, messageValue)) {
+                    logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
+                    countDownLatch.countDown();
+                } else {
+                    logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
+                        event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
+                }
+            }, error -> {
+                    Assertions.fail("An error should not have occurred:" + error.toString());
+                }, () -> {
+                    logger.info("Disposing of consumer now that the receive is complete.");
+                    dispose(consumer);
+                }));
         }
+
+        // Act
+        producer.send(batch.getEvents(), sendOptions).block();
+
+        // Assert
+        // Wait for all the events we sent to be received.
+        countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
 
         Assertions.assertEquals(0, countDownLatch.getCount());
     }
@@ -183,7 +171,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
-            tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
+            DEFAULT_INSTRUMENTATION);
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;

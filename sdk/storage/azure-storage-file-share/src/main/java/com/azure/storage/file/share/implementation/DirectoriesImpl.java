@@ -17,6 +17,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -37,6 +38,7 @@ import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,6 +79,7 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -86,6 +89,29 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> createNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -97,9 +123,27 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> getPropertiesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -111,8 +155,25 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{shareName}/{directory}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> deleteNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -133,6 +194,30 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> setPropertiesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -148,6 +233,25 @@ public final class DirectoriesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> setMetadataNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -169,8 +273,32 @@ public final class DirectoriesImpl {
                         @HeaderParam("x-ms-version") String version,
                         @QueryParam("include") String include,
                         @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
+                        @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                        @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                         @HeaderParam("Accept") String accept,
                         Context context);
+
+        @Get("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<ListFilesAndDirectoriesSegmentResponse>> listFilesAndDirectoriesSegmentNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @QueryParam("include") String include,
+                @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
@@ -186,6 +314,27 @@ public final class DirectoriesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<ListHandlesResponse>> listHandlesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("comp") String comp,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("timeout") Integer timeout,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @HeaderParam("x-ms-recursive") Boolean recursive,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -203,6 +352,27 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> forceCloseHandlesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @QueryParam("marker") String marker,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @HeaderParam("x-ms-handle-id") String handleId,
+                @HeaderParam("x-ms-recursive") Boolean recursive,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -229,6 +399,38 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-permission") String filePermission,
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{directory}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<Response<Void>> renameNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-rename-source") String renameSource,
+                @HeaderParam("x-ms-file-rename-replace-if-exists") Boolean replaceIfExists,
+                @HeaderParam("x-ms-file-rename-ignore-readonly") Boolean ignoreReadOnly,
+                @HeaderParam("x-ms-source-lease-id") String sourceLeaseId,
+                @HeaderParam("x-ms-destination-lease-id") String destinationLeaseId,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -279,6 +481,7 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
@@ -288,6 +491,7 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -338,6 +542,7 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -347,6 +552,7 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -457,6 +663,128 @@ public final class DirectoriesImpl {
     }
 
     /**
+     * Creates a new directory under the specified share or parent directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            Integer timeout,
+            Map<String, String> metadata,
+            String filePermission,
+            String filePermissionKey,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            String fileChangeTime) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.createNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                this.client.isAllowTrailingDot(),
+                                timeout,
+                                metadata,
+                                this.client.getVersion(),
+                                filePermission,
+                                filePermissionKey,
+                                fileAttributes,
+                                fileCreationTime,
+                                fileLastWriteTime,
+                                fileChangeTime,
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Creates a new directory under the specified share or parent directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            Integer timeout,
+            Map<String, String> metadata,
+            String filePermission,
+            String filePermissionKey,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            String fileChangeTime,
+            Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.createNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                this.client.isAllowTrailingDot(),
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                filePermission,
+                filePermissionKey,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                fileChangeTime,
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
+    }
+
+    /**
      * Returns all system properties for the specified directory, and can also be used to check the existence of a
      * directory. The data returned does not include the files in the directory or any subdirectories.
      *
@@ -484,9 +812,11 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 sharesnapshot,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -518,9 +848,11 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -572,6 +904,79 @@ public final class DirectoriesImpl {
     }
 
     /**
+     * Returns all system properties for the specified directory, and can also be used to check the existence of a
+     * directory. The data returned does not include the files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, String sharesnapshot, Integer timeout) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.getPropertiesNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                this.client.isAllowTrailingDot(),
+                                sharesnapshot,
+                                timeout,
+                                this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Returns all system properties for the specified directory, and can also be used to check the existence of a
+     * directory. The data returned does not include the files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, String sharesnapshot, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.getPropertiesNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                this.client.isAllowTrailingDot(),
+                sharesnapshot,
+                timeout,
+                this.client.getVersion(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
+    }
+
+    /**
      * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
      *
      * @param shareName The name of the target share.
@@ -596,8 +1001,10 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -626,8 +1033,10 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -667,6 +1076,71 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String shareName, String directory, Integer timeout, Context context) {
         return deleteWithResponseAsync(shareName, directory, timeout, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, Integer timeout) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                this.client.isAllowTrailingDot(),
+                                timeout,
+                                this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, Integer timeout, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service.deleteNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                this.client.isAllowTrailingDot(),
+                timeout,
+                this.client.getVersion(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
     }
 
     /**
@@ -723,6 +1197,8 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -781,6 +1257,8 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -885,6 +1363,126 @@ public final class DirectoriesImpl {
     }
 
     /**
+     * Sets properties on the directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            Integer timeout,
+            String filePermission,
+            String filePermissionKey,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            String fileChangeTime) {
+        final String restype = "directory";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.setPropertiesNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                filePermission,
+                                filePermissionKey,
+                                fileAttributes,
+                                fileCreationTime,
+                                fileLastWriteTime,
+                                fileChangeTime,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Sets properties on the directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     *     and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String fileAttributes,
+            Integer timeout,
+            String filePermission,
+            String filePermissionKey,
+            String fileCreationTime,
+            String fileLastWriteTime,
+            String fileChangeTime,
+            Context context) {
+        final String restype = "directory";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.setPropertiesNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                filePermission,
+                filePermissionKey,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                fileChangeTime,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
+    }
+
+    /**
      * Updates user defined metadata for the specified directory.
      *
      * @param shareName The name of the target share.
@@ -915,6 +1513,8 @@ public final class DirectoriesImpl {
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -949,6 +1549,8 @@ public final class DirectoriesImpl {
                 timeout,
                 metadata,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -993,6 +1595,79 @@ public final class DirectoriesImpl {
             String shareName, String directory, Integer timeout, Map<String, String> metadata, Context context) {
         return setMetadataWithResponseAsync(shareName, directory, timeout, metadata, context)
                 .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Updates user defined metadata for the specified directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, Integer timeout, Map<String, String> metadata) {
+        final String restype = "directory";
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.setMetadataNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                comp,
+                                timeout,
+                                metadata,
+                                this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Updates user defined metadata for the specified directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(
+            String shareName, String directory, Integer timeout, Map<String, String> metadata, Context context) {
+        final String restype = "directory";
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.setMetadataNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                comp,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
     }
 
     /**
@@ -1056,6 +1731,8 @@ public final class DirectoriesImpl {
                                 this.client.getVersion(),
                                 includeConverted,
                                 includeExtendedInfo,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1121,6 +1798,8 @@ public final class DirectoriesImpl {
                 this.client.getVersion(),
                 includeConverted,
                 includeExtendedInfo,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1227,6 +1906,140 @@ public final class DirectoriesImpl {
     }
 
     /**
+     * Returns a list of files or directories under the specified share or directory. It lists the contents only for a
+     * single level of the directory hierarchy.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param prefix Filters the results to return only entries whose name begins with the specified prefix.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param includeExtendedInfo Include extended information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of directories and files along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListFilesAndDirectoriesSegmentResponse>>
+            listFilesAndDirectoriesSegmentNoCustomHeadersWithResponseAsync(
+                    String shareName,
+                    String directory,
+                    String prefix,
+                    String sharesnapshot,
+                    String marker,
+                    Integer maxresults,
+                    Integer timeout,
+                    List<ListFilesIncludeType> include,
+                    Boolean includeExtendedInfo) {
+        final String restype = "directory";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.listFilesAndDirectoriesSegmentNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                comp,
+                                prefix,
+                                sharesnapshot,
+                                marker,
+                                maxresults,
+                                timeout,
+                                this.client.getVersion(),
+                                includeConverted,
+                                includeExtendedInfo,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Returns a list of files or directories under the specified share or directory. It lists the contents only for a
+     * single level of the directory hierarchy.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param prefix Filters the results to return only entries whose name begins with the specified prefix.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param includeExtendedInfo Include extended information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of directories and files along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListFilesAndDirectoriesSegmentResponse>>
+            listFilesAndDirectoriesSegmentNoCustomHeadersWithResponseAsync(
+                    String shareName,
+                    String directory,
+                    String prefix,
+                    String sharesnapshot,
+                    String marker,
+                    Integer maxresults,
+                    Integer timeout,
+                    List<ListFilesIncludeType> include,
+                    Boolean includeExtendedInfo,
+                    Context context) {
+        final String restype = "directory";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.listFilesAndDirectoriesSegmentNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                comp,
+                prefix,
+                sharesnapshot,
+                marker,
+                maxresults,
+                timeout,
+                this.client.getVersion(),
+                includeConverted,
+                includeExtendedInfo,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
+    }
+
+    /**
      * Lists handles for directory.
      *
      * @param shareName The name of the target share.
@@ -1273,6 +2086,8 @@ public final class DirectoriesImpl {
                                 sharesnapshot,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1324,6 +2139,8 @@ public final class DirectoriesImpl {
                 sharesnapshot,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1404,6 +2221,112 @@ public final class DirectoriesImpl {
     }
 
     /**
+     * Lists handles for directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
+     *     subdirectories and their files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListHandlesResponse>> listHandlesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String marker,
+            Integer maxresults,
+            Integer timeout,
+            String sharesnapshot,
+            Boolean recursive) {
+        final String comp = "listhandles";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.listHandlesNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                comp,
+                                marker,
+                                maxresults,
+                                timeout,
+                                sharesnapshot,
+                                recursive,
+                                this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Lists handles for directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
+     *     subdirectories and their files.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListHandlesResponse>> listHandlesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String marker,
+            Integer maxresults,
+            Integer timeout,
+            String sharesnapshot,
+            Boolean recursive,
+            Context context) {
+        final String comp = "listhandles";
+        final String accept = "application/xml";
+        return service.listHandlesNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                comp,
+                marker,
+                maxresults,
+                timeout,
+                sharesnapshot,
+                recursive,
+                this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
+    }
+
+    /**
      * Closes all handles open for given directory.
      *
      * @param shareName The name of the target share.
@@ -1450,6 +2373,8 @@ public final class DirectoriesImpl {
                                 handleId,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1501,6 +2426,8 @@ public final class DirectoriesImpl {
                 handleId,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1579,6 +2506,112 @@ public final class DirectoriesImpl {
         return forceCloseHandlesWithResponseAsync(
                         shareName, directory, handleId, timeout, marker, sharesnapshot, recursive, context)
                 .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Closes all handles open for given directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     *     that specifies all handles.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
+     *     subdirectories and their files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> forceCloseHandlesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String handleId,
+            Integer timeout,
+            String marker,
+            String sharesnapshot,
+            Boolean recursive) {
+        final String comp = "forceclosehandles";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.forceCloseHandlesNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                comp,
+                                timeout,
+                                marker,
+                                sharesnapshot,
+                                handleId,
+                                recursive,
+                                this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Closes all handles open for given directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     *     that specifies all handles.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     *     snapshot to query.
+     * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
+     *     subdirectories and their files.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> forceCloseHandlesNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String handleId,
+            Integer timeout,
+            String marker,
+            String sharesnapshot,
+            Boolean recursive,
+            Context context) {
+        final String comp = "forceclosehandles";
+        final String accept = "application/xml";
+        return service.forceCloseHandlesNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                comp,
+                timeout,
+                marker,
+                sharesnapshot,
+                handleId,
+                recursive,
+                this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
     }
 
     /**
@@ -1682,6 +2715,9 @@ public final class DirectoriesImpl {
                                 filePermission,
                                 filePermissionKey,
                                 metadata,
+                                this.client.isAllowTrailingDot(),
+                                this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1787,6 +2823,9 @@ public final class DirectoriesImpl {
                 filePermission,
                 filePermissionKey,
                 metadata,
+                this.client.isAllowTrailingDot(),
+                this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1916,5 +2955,221 @@ public final class DirectoriesImpl {
                         copyFileSmbInfo,
                         context)
                 .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Renames a directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
+     *     will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If
+     *     not provided or if false and the destination file does exist, the request will not overwrite the destination
+     *     file. If provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not
+     *     override the x-ms-file-copy-ignore-read-only header value.
+     * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
+     *     destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
+     *     destination with the ReadOnly attribute set will cause the rename to fail.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param sourceLeaseAccessConditions Parameter group.
+     * @param destinationLeaseAccessConditions Parameter group.
+     * @param copyFileSmbInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String renameSource,
+            Integer timeout,
+            Boolean replaceIfExists,
+            Boolean ignoreReadOnly,
+            String filePermission,
+            String filePermissionKey,
+            Map<String, String> metadata,
+            SourceLeaseAccessConditions sourceLeaseAccessConditions,
+            DestinationLeaseAccessConditions destinationLeaseAccessConditions,
+            CopyFileSmbInfo copyFileSmbInfo) {
+        final String restype = "directory";
+        final String comp = "rename";
+        final String accept = "application/xml";
+        String sourceLeaseIdInternal = null;
+        if (sourceLeaseAccessConditions != null) {
+            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+        }
+        String sourceLeaseId = sourceLeaseIdInternal;
+        String destinationLeaseIdInternal = null;
+        if (destinationLeaseAccessConditions != null) {
+            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+        }
+        String destinationLeaseId = destinationLeaseIdInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
+        return FluxUtil.withContext(
+                context ->
+                        service.renameNoCustomHeaders(
+                                this.client.getUrl(),
+                                shareName,
+                                directory,
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                renameSource,
+                                replaceIfExists,
+                                ignoreReadOnly,
+                                sourceLeaseId,
+                                destinationLeaseId,
+                                fileAttributes,
+                                fileCreationTime,
+                                fileLastWriteTime,
+                                fileChangeTime,
+                                filePermission,
+                                filePermissionKey,
+                                metadata,
+                                this.client.isAllowTrailingDot(),
+                                this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Renames a directory.
+     *
+     * @param shareName The name of the target share.
+     * @param directory The path of the target directory.
+     * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
+     *     will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If
+     *     not provided or if false and the destination file does exist, the request will not overwrite the destination
+     *     file. If provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not
+     *     override the x-ms-file-copy-ignore-read-only header value.
+     * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
+     *     destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
+     *     destination with the ReadOnly attribute set will cause the rename to fail.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param sourceLeaseAccessConditions Parameter group.
+     * @param destinationLeaseAccessConditions Parameter group.
+     * @param copyFileSmbInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(
+            String shareName,
+            String directory,
+            String renameSource,
+            Integer timeout,
+            Boolean replaceIfExists,
+            Boolean ignoreReadOnly,
+            String filePermission,
+            String filePermissionKey,
+            Map<String, String> metadata,
+            SourceLeaseAccessConditions sourceLeaseAccessConditions,
+            DestinationLeaseAccessConditions destinationLeaseAccessConditions,
+            CopyFileSmbInfo copyFileSmbInfo,
+            Context context) {
+        final String restype = "directory";
+        final String comp = "rename";
+        final String accept = "application/xml";
+        String sourceLeaseIdInternal = null;
+        if (sourceLeaseAccessConditions != null) {
+            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+        }
+        String sourceLeaseId = sourceLeaseIdInternal;
+        String destinationLeaseIdInternal = null;
+        if (destinationLeaseAccessConditions != null) {
+            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+        }
+        String destinationLeaseId = destinationLeaseIdInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
+        return service.renameNoCustomHeaders(
+                this.client.getUrl(),
+                shareName,
+                directory,
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                renameSource,
+                replaceIfExists,
+                ignoreReadOnly,
+                sourceLeaseId,
+                destinationLeaseId,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                fileChangeTime,
+                filePermission,
+                filePermissionKey,
+                metadata,
+                this.client.isAllowTrailingDot(),
+                this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
+                accept,
+                context);
     }
 }

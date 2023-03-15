@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventHubDataFormat. */
+/** The data format of the message. Optionally the data format can be added to each message. */
 public final class EventHubDataFormat extends ExpandableStringEnum<EventHubDataFormat> {
     /** Static value MULTIJSON for EventHubDataFormat. */
     public static final EventHubDataFormat MULTIJSON = fromString("MULTIJSON");
@@ -59,6 +59,15 @@ public final class EventHubDataFormat extends ExpandableStringEnum<EventHubDataF
     public static final EventHubDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of EventHubDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventHubDataFormat() {
+    }
+
+    /**
      * Creates or finds a EventHubDataFormat from its string representation.
      *
      * @param name a name to look for.
@@ -69,7 +78,11 @@ public final class EventHubDataFormat extends ExpandableStringEnum<EventHubDataF
         return fromString(name, EventHubDataFormat.class);
     }
 
-    /** @return known EventHubDataFormat values. */
+    /**
+     * Gets known EventHubDataFormat values.
+     *
+     * @return known EventHubDataFormat values.
+     */
     public static Collection<EventHubDataFormat> values() {
         return values(EventHubDataFormat.class);
     }

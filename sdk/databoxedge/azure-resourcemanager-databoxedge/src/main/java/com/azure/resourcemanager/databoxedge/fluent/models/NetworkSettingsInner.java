@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.NetworkAdapter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network settings of a device. */
-@JsonFlatten
 @Immutable
-public class NetworkSettingsInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSettingsInner.class);
-
+public final class NetworkSettingsInner extends ArmBaseModel {
     /*
-     * The network adapter list on the device.
+     * The properties of network settings of a device.
      */
-    @JsonProperty(value = "properties.networkAdapters", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkAdapter> networkAdapters;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private NetworkSettingsProperties innerProperties;
+
+    /** Creates an instance of NetworkSettingsInner class. */
+    public NetworkSettingsInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of network settings of a device.
+     *
+     * @return the innerProperties value.
+     */
+    private NetworkSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the networkAdapters property: The network adapter list on the device.
@@ -31,7 +38,7 @@ public class NetworkSettingsInner extends ArmBaseModel {
      * @return the networkAdapters value.
      */
     public List<NetworkAdapter> networkAdapters() {
-        return this.networkAdapters;
+        return this.innerProperties() == null ? null : this.innerProperties().networkAdapters();
     }
 
     /**
@@ -42,8 +49,8 @@ public class NetworkSettingsInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (networkAdapters() != null) {
-            networkAdapters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

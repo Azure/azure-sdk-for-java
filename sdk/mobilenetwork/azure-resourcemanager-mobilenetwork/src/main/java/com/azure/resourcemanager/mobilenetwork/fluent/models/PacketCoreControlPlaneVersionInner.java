@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mobilenetwork.models.Platform;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.azure.resourcemanager.mobilenetwork.models.RecommendedVersion;
-import com.azure.resourcemanager.mobilenetwork.models.VersionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Packet core control plane version resource. */
 @Fluent
@@ -24,11 +24,14 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
         new PacketCoreControlPlaneVersionPropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PacketCoreControlPlaneVersionInner class. */
+    public PacketCoreControlPlaneVersionInner() {
+    }
 
     /**
      * Get the innerProperties property: Packet core control plane version properties.
@@ -58,50 +61,25 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
     }
 
     /**
-     * Get the versionState property: The state of this packet core control plane version.
+     * Get the platforms property: Platform specific packet core control plane version properties.
      *
-     * @return the versionState value.
+     * @return the platforms value.
      */
-    public VersionState versionState() {
-        return this.innerProperties() == null ? null : this.innerProperties().versionState();
+    public List<Platform> platforms() {
+        return this.innerProperties() == null ? null : this.innerProperties().platforms();
     }
 
     /**
-     * Set the versionState property: The state of this packet core control plane version.
+     * Set the platforms property: Platform specific packet core control plane version properties.
      *
-     * @param versionState the versionState value to set.
+     * @param platforms the platforms value to set.
      * @return the PacketCoreControlPlaneVersionInner object itself.
      */
-    public PacketCoreControlPlaneVersionInner withVersionState(VersionState versionState) {
+    public PacketCoreControlPlaneVersionInner withPlatforms(List<Platform> platforms) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCoreControlPlaneVersionPropertiesFormat();
         }
-        this.innerProperties().withVersionState(versionState);
-        return this;
-    }
-
-    /**
-     * Get the recommendedVersion property: Indicates whether this is the recommended version to use for new packet core
-     * control plane deployments.
-     *
-     * @return the recommendedVersion value.
-     */
-    public RecommendedVersion recommendedVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().recommendedVersion();
-    }
-
-    /**
-     * Set the recommendedVersion property: Indicates whether this is the recommended version to use for new packet core
-     * control plane deployments.
-     *
-     * @param recommendedVersion the recommendedVersion value to set.
-     * @return the PacketCoreControlPlaneVersionInner object itself.
-     */
-    public PacketCoreControlPlaneVersionInner withRecommendedVersion(RecommendedVersion recommendedVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PacketCoreControlPlaneVersionPropertiesFormat();
-        }
-        this.innerProperties().withRecommendedVersion(recommendedVersion);
+        this.innerProperties().withPlatforms(platforms);
         return this;
     }
 

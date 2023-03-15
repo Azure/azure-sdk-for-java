@@ -13,61 +13,47 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MabJobExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MabJobExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"tasksList\":[{\"taskId\":\"auo\",\"startTime\":\"2021-02-09T23:33:17Z\",\"endTime\":\"2021-02-08T15:29:38Z\",\"duration\":\"PT99H32M43S\",\"status\":\"tiuky\"},{\"taskId\":\"chnmna\",\"startTime\":\"2021-10-24T02:34:44Z\",\"endTime\":\"2020-12-22T08:21:25Z\",\"duration\":\"PT88H49M38S\",\"status\":\"qirwrweoox\"},{\"taskId\":\"i\",\"startTime\":\"2021-05-19T03:14:53Z\",\"endTime\":\"2021-06-11T14:56:28Z\",\"duration\":\"PT70H39M46S\",\"status\":\"wmozqvbub\"}],\"propertyBag\":{\"sycxhxzgaz\":\"m\",\"hppubowsepdfgkmt\":\"taboidvmf\",\"c\":\"herngb\",\"obkauxofsh\":\"uahokq\"},\"dynamicErrorMessage\":\"hwpnulaiywzejywh\"}")
+                    "{\"tasksList\":[{\"taskId\":\"cjjvpilguooqja\",\"startTime\":\"2021-08-17T16:01:08Z\",\"endTime\":\"2021-09-13T20:58:52Z\",\"duration\":\"PT113H51M28S\",\"status\":\"iookjbsah\"}],\"propertyBag\":{\"slmot\":\"tpdelqa\"},\"dynamicErrorMessage\":\"bnfxofvc\"}")
                 .toObject(MabJobExtendedInfo.class);
-        Assertions.assertEquals("auo", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T23:33:17Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T15:29:38Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT99H32M43S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("tiuky", model.tasksList().get(0).status());
-        Assertions.assertEquals("m", model.propertyBag().get("sycxhxzgaz"));
-        Assertions.assertEquals("hwpnulaiywzejywh", model.dynamicErrorMessage());
+        Assertions.assertEquals("cjjvpilguooqja", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T16:01:08Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T20:58:52Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT113H51M28S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("iookjbsah", model.tasksList().get(0).status());
+        Assertions.assertEquals("tpdelqa", model.propertyBag().get("slmot"));
+        Assertions.assertEquals("bnfxofvc", model.dynamicErrorMessage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MabJobExtendedInfo model =
             new MabJobExtendedInfo()
                 .withTasksList(
                     Arrays
                         .asList(
                             new MabJobTaskDetails()
-                                .withTaskId("auo")
-                                .withStartTime(OffsetDateTime.parse("2021-02-09T23:33:17Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-02-08T15:29:38Z"))
-                                .withDuration(Duration.parse("PT99H32M43S"))
-                                .withStatus("tiuky"),
-                            new MabJobTaskDetails()
-                                .withTaskId("chnmna")
-                                .withStartTime(OffsetDateTime.parse("2021-10-24T02:34:44Z"))
-                                .withEndTime(OffsetDateTime.parse("2020-12-22T08:21:25Z"))
-                                .withDuration(Duration.parse("PT88H49M38S"))
-                                .withStatus("qirwrweoox"),
-                            new MabJobTaskDetails()
-                                .withTaskId("i")
-                                .withStartTime(OffsetDateTime.parse("2021-05-19T03:14:53Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-06-11T14:56:28Z"))
-                                .withDuration(Duration.parse("PT70H39M46S"))
-                                .withStatus("wmozqvbub")))
-                .withPropertyBag(
-                    mapOf("sycxhxzgaz", "m", "hppubowsepdfgkmt", "taboidvmf", "c", "herngb", "obkauxofsh", "uahokq"))
-                .withDynamicErrorMessage("hwpnulaiywzejywh");
+                                .withTaskId("cjjvpilguooqja")
+                                .withStartTime(OffsetDateTime.parse("2021-08-17T16:01:08Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-09-13T20:58:52Z"))
+                                .withDuration(Duration.parse("PT113H51M28S"))
+                                .withStatus("iookjbsah")))
+                .withPropertyBag(mapOf("slmot", "tpdelqa"))
+                .withDynamicErrorMessage("bnfxofvc");
         model = BinaryData.fromObject(model).toObject(MabJobExtendedInfo.class);
-        Assertions.assertEquals("auo", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T23:33:17Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T15:29:38Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT99H32M43S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("tiuky", model.tasksList().get(0).status());
-        Assertions.assertEquals("m", model.propertyBag().get("sycxhxzgaz"));
-        Assertions.assertEquals("hwpnulaiywzejywh", model.dynamicErrorMessage());
+        Assertions.assertEquals("cjjvpilguooqja", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T16:01:08Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T20:58:52Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT113H51M28S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("iookjbsah", model.tasksList().get(0).status());
+        Assertions.assertEquals("tpdelqa", model.propertyBag().get("slmot"));
+        Assertions.assertEquals("bnfxofvc", model.dynamicErrorMessage());
     }
 
     @SuppressWarnings("unchecked")

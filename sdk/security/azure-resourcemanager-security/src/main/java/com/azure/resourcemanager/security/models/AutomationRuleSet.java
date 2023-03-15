@@ -20,6 +20,10 @@ public final class AutomationRuleSet {
     @JsonProperty(value = "rules")
     private List<AutomationTriggeringRule> rules;
 
+    /** Creates an instance of AutomationRuleSet class. */
+    public AutomationRuleSet() {
+    }
+
     /**
      * Get the rules property: The rules property.
      *

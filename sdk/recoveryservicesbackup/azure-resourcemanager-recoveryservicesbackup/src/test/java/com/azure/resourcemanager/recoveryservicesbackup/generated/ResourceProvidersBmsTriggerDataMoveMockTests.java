@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
@@ -63,15 +62,15 @@ public final class ResourceProvidersBmsTriggerDataMoveMockTests {
         manager
             .resourceProviders()
             .bmsTriggerDataMove(
-                "sofpltd",
-                "mairrh",
+                "keciqchxrtuicd",
+                "iw",
                 new TriggerDataMoveRequest()
-                    .withSourceResourceId("hfnrac")
-                    .withSourceRegion("npq")
-                    .withDataMoveLevel(DataMoveLevel.VAULT)
-                    .withCorrelationId("tuujwouh")
-                    .withSourceContainerArmIds(Arrays.asList("s", "grbjbxsjybvitvqk", "y"))
+                    .withSourceResourceId("fmmp")
+                    .withSourceRegion("hzzwvywrgyngy")
+                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                    .withCorrelationId("rpxncaki")
+                    .withSourceContainerArmIds(Arrays.asList("ndjrkclamggl", "lmf", "jdoq"))
                     .withPauseGC(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
