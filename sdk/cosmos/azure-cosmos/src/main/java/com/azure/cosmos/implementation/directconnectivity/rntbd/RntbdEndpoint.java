@@ -103,8 +103,6 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     OpenConnectionRntbdRequestRecord openConnection(Uri addressUri);
 
-
-
     // endregion
 
     // region Types

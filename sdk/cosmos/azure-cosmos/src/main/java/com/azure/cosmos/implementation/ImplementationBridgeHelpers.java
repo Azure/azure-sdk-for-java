@@ -1203,10 +1203,4 @@ public class ImplementationBridgeHelpers {
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
         }
     }
-
-    public static final class CosmosContainerProactiveInitConfigHelper {
-
-
-
-    }
 }

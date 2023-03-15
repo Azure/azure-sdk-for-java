@@ -20,7 +20,6 @@ public final class CosmosContainerProactiveInitConfig {
             .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final int numProactiveConnectionRegions;
-    private String connectionAggressivenessSettings;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
@@ -71,8 +70,6 @@ public final class CosmosContainerProactiveInitConfig {
     public int getProactiveConnectionRegionsCount() {
         return numProactiveConnectionRegions;
     }
-
-
 
     @Override
     public String toString() {
