@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure AzureHealthInsights client library for Java. This package contains Microsoft Azure AzureHealthInsights client library.
+- Initial preview of the Azure Health Insights ClinicalMatching client library.
 
 ### Features Added
 
