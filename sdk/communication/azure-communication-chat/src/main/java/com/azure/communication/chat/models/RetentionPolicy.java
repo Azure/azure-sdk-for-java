@@ -22,30 +22,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = BasedOnThreadCreationDateRetentionPolicy.class)
 })
 @Immutable
-public class RetentionPolicy {
-    /*
-     * Policy type.
-     */
-    @JsonProperty(value = "policyType", required = true)
-    public String policyTypeName;
-
-    /**
-     * Get the id property: Chat thread id.
-     *
-     * @return the id value.
-     */
-    public String getPolicyType() {
-        return this.policyTypeName;
-    }
-
-    /**
-     * Set the policyType property.
-     *
-     * @param policyTypeName the PolicyType value to set.
-     * @return the RetentionPolicy object itself.
-     */
-    public RetentionPolicy setPolicyType(String policyTypeName) {
-        this.policyTypeName = policyTypeName;
-        return this;
-    }
-}
+public class RetentionPolicy {}
