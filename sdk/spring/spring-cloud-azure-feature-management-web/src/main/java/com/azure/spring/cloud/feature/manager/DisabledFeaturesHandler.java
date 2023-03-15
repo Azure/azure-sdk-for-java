@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface DisabledFeaturesHandler {
 
     /**
-     * Called when an endpoint intercepter returns and no redirect is set.
+     * Called when an endpoint interceptor returns and no redirect is set.
      *
      * @param request current HTTP
      * @param response current HTTP

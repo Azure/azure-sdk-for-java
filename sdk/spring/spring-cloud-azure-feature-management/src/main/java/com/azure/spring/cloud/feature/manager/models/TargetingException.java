@@ -11,7 +11,7 @@ public final class TargetingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TargetingExcetion for the Targeting Filter.
+     * TargetingException for the Targeting Filter.
      * @param message Exception error message
      */
     public TargetingException(String message) {
