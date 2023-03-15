@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             int endpointChannelsCount = endpoint.channelsMetrics();
 
                             if (minChannelsCountPerEndpoint > endpointChannelsCount) {
-                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(addressUri)))
+                                return Mono.defer(() -> Mono.fromFuture(openConnectionRequestRecord))
                                         .repeat(minChannelsCountPerEndpoint - endpointChannelsCount - 1)
                                         .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                         .doOnNext(response -> {
