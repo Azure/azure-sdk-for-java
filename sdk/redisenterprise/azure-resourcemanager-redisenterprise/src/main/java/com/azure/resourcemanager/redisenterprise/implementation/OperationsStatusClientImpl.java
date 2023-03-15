@@ -50,7 +50,7 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisEnterpriseManag")
-    private interface OperationsStatusService {
+    public interface OperationsStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/operationsStatus"
@@ -70,8 +70,8 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     /**
      * Gets the status of operation.
      *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,8 +116,8 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     /**
      * Gets the status of operation.
      *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -161,8 +161,8 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     /**
      * Gets the status of operation.
      *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,37 +170,14 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the status of operation.
      *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String location, String operationId) {
-        return getAsync(location, operationId).block();
-    }
-
-    /**
-     * Gets the status of operation.
-     *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -210,5 +187,20 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Gets the status of operation.
+     *
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(String location, String operationId) {
+        return getWithResponse(location, operationId, Context.NONE).getValue();
     }
 }

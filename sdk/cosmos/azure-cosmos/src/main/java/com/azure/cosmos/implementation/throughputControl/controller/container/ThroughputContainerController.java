@@ -374,7 +374,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(group -> this.resolveThroughputGroupController(group))
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
-                logger.warn("Refresh throughput failed with reason %s", throwable);
+                logger.warn("Refresh throughput failed with reason {}", throwable.getMessage());
                 return Mono.empty();
             })
             .then()

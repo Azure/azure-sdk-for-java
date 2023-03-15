@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworks;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class VirtualNetworksOperationsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"infraVnetProfile\":{},\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[\"ystuluqyp\"],\"dnsServers\":[\"lerchpq\",\"mfpjbabw\",\"dfc\",\"sspuunnoxyhkx\"],\"gateway\":\"ddrihpf\",\"ipAddressPrefix\":\"qcaaewdaomdjvl\",\"vlanID\":\"x\",\"provisioningState\":\"Succeeded\",\"status\":{}},\"extendedLocation\":{\"type\":\"eivsiykzkdnc\",\"name\":\"xonbzoggculapz\"},\"location\":\"y\",\"tags\":{\"ajlyjtlvofqzhv\":\"ogtqxepnylbf\",\"fmo\":\"cib\",\"dwxf\":\"uxrkjp\",\"rkambt\":\"wiivwzjbhyzsx\"},\"id\":\"negvmnvuqe\",\"name\":\"vldspa\",\"type\":\"tjb\"}]}";
+            "{\"value\":[{\"properties\":{\"infraVnetProfile\":{},\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[\"xgomfajuwa\",\"qvdaeyyguxakjsq\"],\"dnsServers\":[\"bezkgimsidxasic\",\"dyvvjskgfmocwahp\",\"gat\",\"eaahhvjhhn\"],\"gateway\":\"zybbj\",\"ipAddressPrefix\":\"dj\",\"vlanID\":\"yxkyxvx\",\"provisioningState\":\"InProgress\",\"status\":{}},\"extendedLocation\":{\"type\":\"nljlageuaulx\",\"name\":\"smjbnkppxyn\"},\"location\":\"nlsvxeiz\",\"tags\":{\"xcktpiymerteeamm\":\"klnsrmffey\",\"g\":\"qiekkkzddrt\",\"vrefdeesv\":\"ojbmxv\"},\"id\":\"cuijpxt\",\"name\":\"s\",\"type\":\"wprtu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +61,14 @@ public final class VirtualNetworksOperationsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VirtualNetworks> response =
-            manager.virtualNetworksOperations().listByResourceGroup("podbzevwrdnh", Context.NONE);
+            manager.virtualNetworksOperations().listByResourceGroup("moy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("y", response.iterator().next().location());
-        Assertions.assertEquals("ogtqxepnylbf", response.iterator().next().tags().get("ajlyjtlvofqzhv"));
-        Assertions.assertEquals("eivsiykzkdnc", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("xonbzoggculapz", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("nlsvxeiz", response.iterator().next().location());
+        Assertions.assertEquals("klnsrmffey", response.iterator().next().tags().get("xcktpiymerteeamm"));
+        Assertions.assertEquals("bezkgimsidxasic", response.iterator().next().properties().dnsServers().get(0));
+        Assertions.assertEquals("zybbj", response.iterator().next().properties().gateway());
+        Assertions.assertEquals("dj", response.iterator().next().properties().ipAddressPrefix());
+        Assertions.assertEquals("nljlageuaulx", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("smjbnkppxyn", response.iterator().next().extendedLocation().name());
     }
 }

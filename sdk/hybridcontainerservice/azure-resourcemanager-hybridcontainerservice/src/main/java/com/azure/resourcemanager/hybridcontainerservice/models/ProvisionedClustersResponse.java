@@ -260,4 +260,26 @@ public interface ProvisionedClustersResponse {
      * @return the refreshed resource.
      */
     ProvisionedClustersResponse refresh(Context context);
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgradeNodeImageVersionForEntireCluster();
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgradeNodeImageVersionForEntireCluster(Context context);
 }

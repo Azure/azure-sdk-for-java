@@ -14,13 +14,15 @@ public final class UploadBlobResult {
     }
 
     private final String digest;
+    private final long length;
 
     /**
      * Instantiate the upload blob result.
      * @param digest The digest of the blob that was uploaded.
      */
-    private UploadBlobResult(String digest) {
+    private UploadBlobResult(String digest, long length) {
         this.digest = digest;
+        this.length = length;
     }
 
     /**
@@ -29,5 +31,13 @@ public final class UploadBlobResult {
      */
     public String getDigest() {
         return digest;
+    }
+
+    /**
+     * The size of uploaded blob.
+     * @return Size of the uploaded blob in bytes.
+     */
+    public long getSizeInBytes() {
+        return length;
     }
 }

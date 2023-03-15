@@ -30,9 +30,11 @@
 - [CreateOrUpdate](#provisionedclustersoperation_createorupdate)
 - [Delete](#provisionedclustersoperation_delete)
 - [GetByResourceGroup](#provisionedclustersoperation_getbyresourcegroup)
+- [GetUpgradeProfile](#provisionedclustersoperation_getupgradeprofile)
 - [List](#provisionedclustersoperation_list)
 - [ListByResourceGroup](#provisionedclustersoperation_listbyresourcegroup)
 - [Update](#provisionedclustersoperation_update)
+- [UpgradeNodeImageVersionForEntireCluster](#provisionedclustersoperation_upgradenodeimageversionforentirecluster)
 
 ## StorageSpacesOperation
 
@@ -59,7 +61,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
 /** Samples for AgentPool CreateOrUpdate. */
 public final class AgentPoolCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutAgentPool.json
      */
     /**
      * Sample code: PutAgentPool.
@@ -84,12 +86,10 @@ public final class AgentPoolCreateOrUpdateSamples {
 ### AgentPool_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AgentPool Delete. */
 public final class AgentPoolDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteAgentPool.json
      */
     /**
      * Sample code: DeleteAgentPool.
@@ -101,7 +101,10 @@ public final class AgentPoolDeleteSamples {
         manager
             .agentPools()
             .deleteWithResponse(
-                "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", Context.NONE);
+                "test-arcappliance-resgrp",
+                "test-hybridakscluster",
+                "test-hybridaksnodepool",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -109,12 +112,10 @@ public final class AgentPoolDeleteSamples {
 ### AgentPool_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AgentPool Get. */
 public final class AgentPoolGetSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetAgentPool.json
      */
     /**
      * Sample code: GetAgentPool.
@@ -126,7 +127,10 @@ public final class AgentPoolGetSamples {
         manager
             .agentPools()
             .getWithResponse(
-                "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", Context.NONE);
+                "test-arcappliance-resgrp",
+                "test-hybridakscluster",
+                "test-hybridaksnodepool",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -134,12 +138,10 @@ public final class AgentPoolGetSamples {
 ### AgentPool_ListByProvisionedCluster
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AgentPool ListByProvisionedCluster. */
 public final class AgentPoolListByProvisionedClusterSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListAgentPoolByProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListAgentPoolByProvisionedCluster.json
      */
     /**
      * Sample code: ListAgentPoolByProvisionedCluster.
@@ -150,7 +152,8 @@ public final class AgentPoolListByProvisionedClusterSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .agentPools()
-            .listByProvisionedClusterWithResponse("test-arcappliance-resgrp", "test-hybridakscluster", Context.NONE);
+            .listByProvisionedClusterWithResponse(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -158,13 +161,12 @@ public final class AgentPoolListByProvisionedClusterSamples {
 ### AgentPool_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPool;
 
 /** Samples for AgentPool Update. */
 public final class AgentPoolUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateAgentPool.json
      */
     /**
      * Sample code: UpdateAgentPool.
@@ -177,7 +179,10 @@ public final class AgentPoolUpdateSamples {
             manager
                 .agentPools()
                 .getWithResponse(
-                    "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", Context.NONE)
+                    "test-arcappliance-resgrp",
+                    "test-hybridakscluster",
+                    "test-hybridaksnodepool",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withCount(3).apply();
     }
@@ -187,12 +192,10 @@ public final class AgentPoolUpdateSamples {
 ### HybridContainerService_ListOrchestrators
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HybridContainerService ListOrchestrators. */
 public final class HybridContainerServiceListOrchestratorsSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListOrchestrators.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListOrchestrators.json
      */
     /**
      * Sample code: ListOrchestrators.
@@ -205,7 +208,7 @@ public final class HybridContainerServiceListOrchestratorsSamples {
             .hybridContainerServices()
             .listOrchestratorsWithResponse(
                 "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -213,12 +216,10 @@ public final class HybridContainerServiceListOrchestratorsSamples {
 ### HybridContainerService_ListVMSkus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HybridContainerService ListVMSkus. */
 public final class HybridContainerServiceListVMSkusSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListVMSkus.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVMSkus.json
      */
     /**
      * Sample code: ListVMSkus.
@@ -231,7 +232,7 @@ public final class HybridContainerServiceListVMSkusSamples {
             .hybridContainerServices()
             .listVMSkusWithResponse(
                 "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -239,12 +240,10 @@ public final class HybridContainerServiceListVMSkusSamples {
 ### HybridIdentityMetadata_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HybridIdentityMetadata Delete. */
 public final class HybridIdentityMetadataDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteHybridIdentityMetadata.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteHybridIdentityMetadata.json
      */
     /**
      * Sample code: DeleteHybridIdentityMetadata.
@@ -253,7 +252,9 @@ public final class HybridIdentityMetadataDeleteSamples {
      */
     public static void deleteHybridIdentityMetadata(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().deleteWithResponse("testrg", "ContosoTargetCluster", "default", Context.NONE);
+        manager
+            .hybridIdentityMetadatas()
+            .deleteWithResponse("testrg", "ContosoTargetCluster", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -261,12 +262,10 @@ public final class HybridIdentityMetadataDeleteSamples {
 ### HybridIdentityMetadata_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HybridIdentityMetadata Get. */
 public final class HybridIdentityMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetHybridIdentityMetadata.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetHybridIdentityMetadata.json
      */
     /**
      * Sample code: GetHybridIdentityMetadata.
@@ -275,7 +274,9 @@ public final class HybridIdentityMetadataGetSamples {
      */
     public static void getHybridIdentityMetadata(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().getWithResponse("testrg", "ContosoTargetCluster", "default", Context.NONE);
+        manager
+            .hybridIdentityMetadatas()
+            .getWithResponse("testrg", "ContosoTargetCluster", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -283,12 +284,10 @@ public final class HybridIdentityMetadataGetSamples {
 ### HybridIdentityMetadata_ListByCluster
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HybridIdentityMetadata ListByCluster. */
 public final class HybridIdentityMetadataListByClusterSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/HybridIdentityMetadataListByCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/HybridIdentityMetadataListByCluster.json
      */
     /**
      * Sample code: HybridIdentityMetadataListByCluster.
@@ -297,7 +296,9 @@ public final class HybridIdentityMetadataListByClusterSamples {
      */
     public static void hybridIdentityMetadataListByCluster(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().listByCluster("testrg", "ContosoTargetCluster", Context.NONE);
+        manager
+            .hybridIdentityMetadatas()
+            .listByCluster("testrg", "ContosoTargetCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -308,7 +309,7 @@ public final class HybridIdentityMetadataListByClusterSamples {
 /** Samples for HybridIdentityMetadata Put. */
 public final class HybridIdentityMetadataPutSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/CreateHybridIdentityMetadata.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/CreateHybridIdentityMetadata.json
      */
     /**
      * Sample code: CreateHybridIdentityMetadata.
@@ -331,12 +332,10 @@ public final class HybridIdentityMetadataPutSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListOperations.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListOperations.json
      */
     /**
      * Sample code: ListOperations.
@@ -345,7 +344,7 @@ public final class OperationsListSamples {
      */
     public static void listOperations(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -373,7 +372,7 @@ import java.util.Arrays;
 /** Samples for ProvisionedClustersOperation CreateOrUpdate. */
 public final class ProvisionedClustersOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutProvisionedCluster.json
      */
     /**
      * Sample code: PutProvisionedCluster.
@@ -397,7 +396,7 @@ public final class ProvisionedClustersOperationCreateOrUpdateSamples {
                                         Arrays
                                             .asList(
                                                 new LinuxProfilePropertiesSshPublicKeysItem()
-                                                    .withKeyData("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCY.......")))))
+                                                    .withKeyData("fakeTokenPlaceholder")))))
                     .withControlPlane(
                         new ControlPlaneProfile()
                             .withCount(1)
@@ -411,8 +410,7 @@ public final class ProvisionedClustersOperationCreateOrUpdateSamples {
                                                 Arrays
                                                     .asList(
                                                         new LinuxProfilePropertiesSshPublicKeysItem()
-                                                            .withKeyData(
-                                                                "ssh-rsa AAAAB1NzaC1yc2EAAAADAQABAAACAQCY......"))))))
+                                                            .withKeyData("fakeTokenPlaceholder"))))))
                     .withKubernetesVersion("v1.20.5")
                     .withNetworkProfile(
                         new NetworkProfile()
@@ -429,9 +427,7 @@ public final class ProvisionedClustersOperationCreateOrUpdateSamples {
                                                         Arrays
                                                             .asList(
                                                                 new LinuxProfilePropertiesSshPublicKeysItem()
-                                                                    .withKeyData(
-                                                                        "ssh-rsa"
-                                                                            + " AAAAB2NzaC1yc2EAAAADAQABAAACAQCY......"))))))
+                                                                    .withKeyData("fakeTokenPlaceholder"))))))
                             .withLoadBalancerSku(LoadBalancerSku.UNSTACKED_HAPROXY)
                             .withNetworkPolicy(NetworkPolicy.CALICO)
                             .withPodCidr("10.244.0.0/16"))
@@ -470,12 +466,10 @@ public final class ProvisionedClustersOperationCreateOrUpdateSamples {
 ### ProvisionedClustersOperation_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation Delete. */
 public final class ProvisionedClustersOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteProvisionedCluster.json
      */
     /**
      * Sample code: DeleteProvisionedCluster.
@@ -486,7 +480,8 @@ public final class ProvisionedClustersOperationDeleteSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .provisionedClustersOperations()
-            .deleteByResourceGroupWithResponse("test-arcappliance-resgrp", "test-hybridakscluster", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -494,12 +489,10 @@ public final class ProvisionedClustersOperationDeleteSamples {
 ### ProvisionedClustersOperation_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation GetByResourceGroup. */
 public final class ProvisionedClustersOperationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetProvisionedCluster.json
      */
     /**
      * Sample code: GetProvisionedCluster.
@@ -510,7 +503,31 @@ public final class ProvisionedClustersOperationGetByResourceGroupSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .provisionedClustersOperations()
-            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-hybridakscluster", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProvisionedClustersOperation_GetUpgradeProfile
+
+```java
+/** Samples for ProvisionedClustersOperation GetUpgradeProfile. */
+public final class ProvisionedClustersOperationGetUpgradeProfileSamples {
+    /*
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ProvisionedClustersGetUpgradeProfile.json
+     */
+    /**
+     * Sample code: GetUpgradeProfileForProvisionedCluster.
+     *
+     * @param manager Entry point to HybridContainerServiceManager.
+     */
+    public static void getUpgradeProfileForProvisionedCluster(
+        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
+        manager
+            .provisionedClustersOperations()
+            .getUpgradeProfileWithResponse(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -518,12 +535,10 @@ public final class ProvisionedClustersOperationGetByResourceGroupSamples {
 ### ProvisionedClustersOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation List. */
 public final class ProvisionedClustersOperationListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListProvisionedClusterBySubscription.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListProvisionedClusterBySubscription.json
      */
     /**
      * Sample code: ListProvisionedClusterBySubscription.
@@ -532,7 +547,7 @@ public final class ProvisionedClustersOperationListSamples {
      */
     public static void listProvisionedClusterBySubscription(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.provisionedClustersOperations().list(Context.NONE);
+        manager.provisionedClustersOperations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -540,12 +555,10 @@ public final class ProvisionedClustersOperationListSamples {
 ### ProvisionedClustersOperation_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation ListByResourceGroup. */
 public final class ProvisionedClustersOperationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListProvisionedClusterByResourceGroup.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListProvisionedClusterByResourceGroup.json
      */
     /**
      * Sample code: ListProvisionedClusterByResourceGroup.
@@ -554,7 +567,9 @@ public final class ProvisionedClustersOperationListByResourceGroupSamples {
      */
     public static void listProvisionedClusterByResourceGroup(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.provisionedClustersOperations().listByResourceGroup("test-arcappliance-resgrp", Context.NONE);
+        manager
+            .provisionedClustersOperations()
+            .listByResourceGroup("test-arcappliance-resgrp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -562,7 +577,6 @@ public final class ProvisionedClustersOperationListByResourceGroupSamples {
 ### ProvisionedClustersOperation_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -570,7 +584,7 @@ import java.util.Map;
 /** Samples for ProvisionedClustersOperation Update. */
 public final class ProvisionedClustersOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateProvisionedCluster.json
      */
     /**
      * Sample code: UpdateProvisionedCluster.
@@ -582,7 +596,8 @@ public final class ProvisionedClustersOperationUpdateSamples {
         ProvisionedClustersResponse resource =
             manager
                 .provisionedClustersOperations()
-                .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-hybridakscluster", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }
@@ -600,6 +615,29 @@ public final class ProvisionedClustersOperationUpdateSamples {
 }
 ```
 
+### ProvisionedClustersOperation_UpgradeNodeImageVersionForEntireCluster
+
+```java
+/** Samples for ProvisionedClustersOperation UpgradeNodeImageVersionForEntireCluster. */
+public final class ProvisionedClustersOperationUpgradeNodeImageVersionForEntireClust {
+    /*
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ProvisionedClustersUpgradeNodeImageVersionForEntireCluster.json
+     */
+    /**
+     * Sample code: UpgradeClusterNodeImageVersion.
+     *
+     * @param manager Entry point to HybridContainerServiceManager.
+     */
+    public static void upgradeClusterNodeImageVersion(
+        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
+        manager
+            .provisionedClustersOperations()
+            .upgradeNodeImageVersionForEntireCluster(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### StorageSpacesOperation_CreateOrUpdate
 
 ```java
@@ -610,7 +648,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesProp
 /** Samples for StorageSpacesOperation CreateOrUpdate. */
 public final class StorageSpacesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutStorageSpace.json
      */
     /**
      * Sample code: PutStorageSpace.
@@ -644,12 +682,10 @@ public final class StorageSpacesOperationCreateOrUpdateSamples {
 ### StorageSpacesOperation_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation Delete. */
 public final class StorageSpacesOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteStorageSpace.json
      */
     /**
      * Sample code: DeleteStorageSpace.
@@ -660,7 +696,8 @@ public final class StorageSpacesOperationDeleteSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .storageSpacesOperations()
-            .deleteByResourceGroupWithResponse("test-arcappliance-resgrp", "test-storage", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-storage", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -668,12 +705,10 @@ public final class StorageSpacesOperationDeleteSamples {
 ### StorageSpacesOperation_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation GetByResourceGroup. */
 public final class StorageSpacesOperationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetStorageSpace.json
      */
     /**
      * Sample code: GetStorageSpace.
@@ -684,7 +719,8 @@ public final class StorageSpacesOperationGetByResourceGroupSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .storageSpacesOperations()
-            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-storage", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-storage", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -692,12 +728,10 @@ public final class StorageSpacesOperationGetByResourceGroupSamples {
 ### StorageSpacesOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation List. */
 public final class StorageSpacesOperationListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListStorageSpaceBySubscription.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListStorageSpaceBySubscription.json
      */
     /**
      * Sample code: ListStorageSpaceBySubscription.
@@ -706,7 +740,7 @@ public final class StorageSpacesOperationListSamples {
      */
     public static void listStorageSpaceBySubscription(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.storageSpacesOperations().list(Context.NONE);
+        manager.storageSpacesOperations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -714,12 +748,10 @@ public final class StorageSpacesOperationListSamples {
 ### StorageSpacesOperation_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation ListByResourceGroup. */
 public final class StorageSpacesOperationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListStorageSpaceByResourceGroup.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListStorageSpaceByResourceGroup.json
      */
     /**
      * Sample code: ListStorageSpaceByResourceGroup.
@@ -728,7 +760,9 @@ public final class StorageSpacesOperationListByResourceGroupSamples {
      */
     public static void listStorageSpaceByResourceGroup(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.storageSpacesOperations().listByResourceGroup("test-arcappliance-resgrp", Context.NONE);
+        manager
+            .storageSpacesOperations()
+            .listByResourceGroup("test-arcappliance-resgrp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -736,7 +770,6 @@ public final class StorageSpacesOperationListByResourceGroupSamples {
 ### StorageSpacesOperation_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpaces;
 import java.util.HashMap;
 import java.util.Map;
@@ -744,7 +777,7 @@ import java.util.Map;
 /** Samples for StorageSpacesOperation Update. */
 public final class StorageSpacesOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateStorageSpace.json
      */
     /**
      * Sample code: UpdateStorageSpace.
@@ -756,7 +789,8 @@ public final class StorageSpacesOperationUpdateSamples {
         StorageSpaces resource =
             manager
                 .storageSpacesOperations()
-                .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-storage", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "test-arcappliance-resgrp", "test-storage", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }
@@ -788,7 +822,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworksOperation CreateOrUpdate. */
 public final class VirtualNetworksOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutVirtualNetwork.json
      */
     /**
      * Sample code: PutVirtualNetwork.
@@ -836,12 +870,10 @@ public final class VirtualNetworksOperationCreateOrUpdateSamples {
 ### VirtualNetworksOperation_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation Delete. */
 public final class VirtualNetworksOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteVirtualNetwork.json
      */
     /**
      * Sample code: DeleteVirtualNetwork.
@@ -852,7 +884,8 @@ public final class VirtualNetworksOperationDeleteSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .virtualNetworksOperations()
-            .deleteByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -860,12 +893,10 @@ public final class VirtualNetworksOperationDeleteSamples {
 ### VirtualNetworksOperation_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation GetByResourceGroup. */
 public final class VirtualNetworksOperationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetVirtualNetwork.json
      */
     /**
      * Sample code: GetVirtualNetwork.
@@ -876,7 +907,8 @@ public final class VirtualNetworksOperationGetByResourceGroupSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .virtualNetworksOperations()
-            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -884,12 +916,10 @@ public final class VirtualNetworksOperationGetByResourceGroupSamples {
 ### VirtualNetworksOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation List. */
 public final class VirtualNetworksOperationListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListVirtualNetworkBySubscription.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVirtualNetworkBySubscription.json
      */
     /**
      * Sample code: ListVirtualNetworkBySubscription.
@@ -898,7 +928,7 @@ public final class VirtualNetworksOperationListSamples {
      */
     public static void listVirtualNetworkBySubscription(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworksOperations().list(Context.NONE);
+        manager.virtualNetworksOperations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -906,12 +936,10 @@ public final class VirtualNetworksOperationListSamples {
 ### VirtualNetworksOperation_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation ListByResourceGroup. */
 public final class VirtualNetworksOperationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListVirtualNetworkByResourceGroup.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVirtualNetworkByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualNetworkByResourceGroup.
@@ -920,7 +948,9 @@ public final class VirtualNetworksOperationListByResourceGroupSamples {
      */
     public static void listVirtualNetworkByResourceGroup(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworksOperations().listByResourceGroup("test-arcappliance-resgrp", Context.NONE);
+        manager
+            .virtualNetworksOperations()
+            .listByResourceGroup("test-arcappliance-resgrp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -928,7 +958,6 @@ public final class VirtualNetworksOperationListByResourceGroupSamples {
 ### VirtualNetworksOperation_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworks;
 import java.util.HashMap;
 import java.util.Map;
@@ -936,7 +965,7 @@ import java.util.Map;
 /** Samples for VirtualNetworksOperation Update. */
 public final class VirtualNetworksOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateVirtualNetwork.json
      */
     /**
      * Sample code: UpdateVirtualNetwork.
@@ -948,7 +977,8 @@ public final class VirtualNetworksOperationUpdateSamples {
         VirtualNetworks resource =
             manager
                 .virtualNetworksOperations()
-                .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }

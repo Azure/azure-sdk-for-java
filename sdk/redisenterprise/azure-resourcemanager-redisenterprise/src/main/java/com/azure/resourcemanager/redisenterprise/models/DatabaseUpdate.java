@@ -13,13 +13,21 @@ import java.util.List;
 @Fluent
 public final class DatabaseUpdate {
     /*
-     * RedisEnterprise database properties Properties of the database.
+     * RedisEnterprise database properties
+     *
+     * Properties of the database.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
 
+    /** Creates an instance of DatabaseUpdate class. */
+    public DatabaseUpdate() {
+    }
+
     /**
-     * Get the innerProperties property: RedisEnterprise database properties Properties of the database.
+     * Get the innerProperties property: RedisEnterprise database properties
+     *
+     * <p>Properties of the database.
      *
      * @return the innerProperties value.
      */

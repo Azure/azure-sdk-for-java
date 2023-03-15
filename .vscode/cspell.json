@@ -251,6 +251,8 @@
     "doclinting",
     "doctitle",
     "dlocal",
+    "dtlk",
+    "dtlksd",
     "dummyrg",
     "eastus",
     "embedme",
@@ -296,6 +298,7 @@
     "KUBERNETES",
     "kubernetesconfiguration",
     "kusto",
+    "kvlt",
     "linecoverage",
     "linksource",
     "listbyconfigurationprofileassignments",
@@ -317,11 +320,13 @@
     "onboarded",
     "Onco",
     "onenote",
+    "premf",
     "pwsh",
     "protonj",
     "PSQL",
     "qpid",
     "racdw",
+    "RAGRS",
     "reimage",
     "reimaging",
     "Remediations",
@@ -336,6 +341,7 @@
     "scalastyle",
     "schemaregistryapacheavroserializer",
     "servicebus",
+    "sftdl",
     "skus",
     "sonatype",
     "Sonatype",
@@ -633,6 +639,14 @@
       "words": [
         "Bourrillion",
         "kevinb"
+      ]
+    },
+    {
+      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "words": [
+        "Pfast",
+        "Pdirect",
+	"Pmulti"
       ]
     },
     {
