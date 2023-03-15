@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -13,8 +14,11 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +34,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -85,6 +91,12 @@ public class StorageImplUtils {
     private static final DateTimeFormatter NO_SECONDS_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
             .withLocale(Locale.ROOT);
+
+
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    public static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 30;
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -418,4 +430,67 @@ public class StorageImplUtils {
             return new AbstractMap.SimpleImmutableEntry<>(key, value);
         }
     }
+
+    public static Context enableSyncRestProxy(Context context) {
+        if (context == null || context == Context.NONE) {
+            return STATIC_ENABLE_REST_PROXY_CONTEXT;
+        } else {
+            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        }
+    }
+
+    public static  <T> Response<T> executeOperation(Supplier<Response<T>> operation, Duration timeout) {
+        try {
+            return timeout != null
+                ? THREAD_POOL.submit(() -> operation.get()).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : operation.get();
+        } catch (ExecutionException | TimeoutException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    public static void registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+    }
+
+    public static String tagsToString(Map<String, String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            try {
+                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
+                sb.append("=");
+                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
+                sb.append("&");
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            }
+        }
+
+        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
+        return sb.toString();
+    }
+
+
 }
