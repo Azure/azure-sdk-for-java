@@ -11,6 +11,7 @@ import com.azure.core.credential.TokenRequestContext;
  * needs to be initiated via {@link InteractiveBrowserCredential#authenticate()} or
  * {@link DeviceCodeCredential#authenticate()} APIs respectively before fetching an access token.</p>
  *
+ * @see com.azure.identity
  * @see InteractiveBrowserCredential
  * @see DeviceCodeCredential
  */
