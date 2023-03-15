@@ -167,7 +167,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 if (!credentialConfigured) {
                     // System Assigned Identity. Needs to be checked last as all of the above should
                     // have an Endpoint.
-                    LOGGER.debug("Connecting to " + endpoint + " using Azure System Assigned Identity or Azure User Assigned Identity.");
+                    LOGGER.debug("Connecting to {} using Azure System Assigned Identity or Azure User Assigned Identity.", endpoint);
                     ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
                     builder.credential(micBuilder.build());
                 }

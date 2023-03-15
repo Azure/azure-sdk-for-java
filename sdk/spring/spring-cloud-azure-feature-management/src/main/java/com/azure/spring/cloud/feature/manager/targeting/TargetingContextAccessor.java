@@ -8,7 +8,7 @@ package com.azure.spring.cloud.feature.manager.targeting;
 public interface TargetingContextAccessor {
 
     /**
-     * Returns the Targeting Context for Feature Targeting evaluation.
+     * Configures the Targeting Context for Feature Targeting evaluation.
      * @param context Targeting Context for selecting feature
      */
     void getContextAsync(TargetingContext context);

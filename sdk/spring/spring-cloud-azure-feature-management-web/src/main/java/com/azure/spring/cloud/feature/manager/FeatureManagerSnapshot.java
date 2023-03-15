@@ -27,7 +27,7 @@ public class FeatureManagerSnapshot {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * Checks to see if the feature is enabled. If enabled it checks each filter, once a single filter returns true it
      * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
      * isn't found it returns false.
      * <p>
@@ -38,15 +38,16 @@ public class FeatureManagerSnapshot {
      * @return state of the feature
      */
     public Mono<Boolean> isEnabledAsync(String feature) {
-        if (requestMap.get(feature) != null) {
-            return Mono.just(requestMap.get(feature));
+        Boolean featureValue = requestMap.get(feature);
+        if (featureValue != null) {
+            return Mono.just(featureValue);
         }
 
         return featureManager.isEnabledAsync(feature).doOnSuccess((enabled) -> requestMap.put(feature, enabled));
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * Checks to see if the feature is enabled. If enabled it checks each filter, once a single filter returns true it
      * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
      * isn't found it returns false.
      * <p>
@@ -57,8 +58,9 @@ public class FeatureManagerSnapshot {
      * @return state of the feature
      */
     public Boolean isEnabled(String feature) {
-        if (requestMap.get(feature) != null) {
-            return requestMap.get(feature);
+        Boolean featureValue = requestMap.get(feature);
+        if (featureValue != null) {
+            return featureValue;
         }
 
         return featureManager.isEnabledAsync(feature).doOnSuccess((enabled) -> requestMap.put(feature, enabled))

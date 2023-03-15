@@ -103,8 +103,7 @@ public class TargetingFilter implements IFeatureFilter {
 
         contextAccessor.getContextAsync(targetingContext);
 
-        if (!StringUtils.hasText(targetingContext.getUserId()) && !(targetingContext.getGroups() != null
-            && targetingContext.getGroups().stream().anyMatch(group -> StringUtils.hasText(group)))) {
+        if (validateTargetingContext(targetingContext)) {
             LOGGER.warn("No targeting context available for targeting evaluation.");
             return false;
         }
@@ -154,6 +153,18 @@ public class TargetingFilter implements IFeatureFilter {
         String defaultContextId = targetingContext.getUserId() + "\n" + context.getFeatureName();
 
         return isTargeted(defaultContextId, settings.getAudience().getDefaultRolloutPercentage());
+    }
+
+    private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
+        boolean hasUserDefined = StringUtils.hasText(targetingContext.getUserId());
+        boolean hasGroupsDefined = targetingContext.getGroups() != null;
+        boolean hasAtLeastOneGroup = false;
+
+        if (hasGroupsDefined) {
+            hasAtLeastOneGroup = targetingContext.getGroups().stream().anyMatch(group -> StringUtils.hasText(group));
+        }
+
+        return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
     }
 
     /**

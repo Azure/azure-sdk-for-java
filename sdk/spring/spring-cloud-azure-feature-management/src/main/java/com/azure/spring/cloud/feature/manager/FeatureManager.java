@@ -59,9 +59,9 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Mono<Boolean> isEnabledAsync(String feature) {
-        return Mono.just(checkFeatures(feature));
+        return Mono.just(checkFeature(feature));
     }
-    
+
     /**
      * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
      * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
@@ -72,10 +72,10 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
-        return checkFeatures(feature);
+        return checkFeature(feature);
     }
 
-    private boolean checkFeatures(String feature) throws FilterNotFoundException {
+    private boolean checkFeature(String feature) throws FilterNotFoundException {
         if (featureManagementConfigurations.getFeatureManagement() == null
             || featureManagementConfigurations.getOnOff() == null) {
             return false;
@@ -95,7 +95,7 @@ public class FeatureManager {
 
         return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
             .filter(featureFilter -> featureFilter.getName() != null)
-            .map(featureFilter -> isFeatureOn(featureFilter, feature)).anyMatch(value -> value);
+            .anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
