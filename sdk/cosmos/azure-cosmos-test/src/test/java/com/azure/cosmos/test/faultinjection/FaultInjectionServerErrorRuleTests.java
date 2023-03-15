@@ -322,7 +322,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.GONE)
-                        .times(2)
+                        .times(1)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
