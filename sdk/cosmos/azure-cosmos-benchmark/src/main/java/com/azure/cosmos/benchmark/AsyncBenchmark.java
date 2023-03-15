@@ -105,7 +105,7 @@ abstract class AsyncBenchmark<T> {
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
                 cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
             } else {
-                logger.info("USING DEFAULT?GLOBAL METRIC REGISTRY");
+                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY");
                 CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(null));
                 cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
