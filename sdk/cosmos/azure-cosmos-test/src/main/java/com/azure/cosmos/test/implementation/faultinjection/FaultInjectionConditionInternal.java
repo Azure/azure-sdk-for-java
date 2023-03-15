@@ -74,7 +74,7 @@ public class FaultInjectionConditionInternal {
         }
         @Override
         public boolean isApplicable(RxDocumentServiceRequest request) {
-            return this.regionEndpoints.contains(request.requestContext.locationEndpointToRoute);
+            return this.regionEndpoints.contains(request.faultInjectionRequestContext.getLocationEndpointToRoute());
         }
     }
 

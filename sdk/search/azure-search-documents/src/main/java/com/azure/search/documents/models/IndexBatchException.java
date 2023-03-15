@@ -63,6 +63,8 @@ public final class IndexBatchException extends AzureException {
     }
 
     /**
+     * Gets the indexing results returned by the service.
+     *
      * @return The indexing results returned by the service.
      */
     public List<IndexingResult> getIndexingResults() {

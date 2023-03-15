@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation ListByResourceGroup. */
 public final class StorageSpacesOperationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListStorageSpaceByResourceGroup.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListStorageSpaceByResourceGroup.json
      */
     /**
      * Sample code: ListStorageSpaceByResourceGroup.
@@ -18,6 +16,8 @@ public final class StorageSpacesOperationListByResourceGroupSamples {
      */
     public static void listStorageSpaceByResourceGroup(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.storageSpacesOperations().listByResourceGroup("test-arcappliance-resgrp", Context.NONE);
+        manager
+            .storageSpacesOperations()
+            .listByResourceGroup("test-arcappliance-resgrp", com.azure.core.util.Context.NONE);
     }
 }

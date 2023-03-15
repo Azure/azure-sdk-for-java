@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * Represents an index action that operates on a document.
+ *
+ * @param <T> The type of the document used in the indexing action.
  */
 @Fluent
 public final class IndexAction<T> {
@@ -37,6 +39,12 @@ public final class IndexAction<T> {
                 return indexAction.getProperties();
             }
         });
+    }
+
+    /**
+     * Creates an instance of {@link IndexAction}.
+     */
+    public IndexAction() {
     }
 
     /**

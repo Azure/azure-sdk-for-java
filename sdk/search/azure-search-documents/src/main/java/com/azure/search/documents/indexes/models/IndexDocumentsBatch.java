@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 /**
  * Contains a batch of document write actions to send to the index.
+ *
+ * @param <T> The type of documents contained by the indexing batch.
  */
 @Fluent
 public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {

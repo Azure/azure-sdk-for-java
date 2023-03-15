@@ -56,6 +56,6 @@ public final class StorageTargetsRestoreDefaultsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageTargets().restoreDefaults("g", "xrtfudxep", "gyqagvrvmnpkuk", com.azure.core.util.Context.NONE);
+        manager.storageTargets().restoreDefaults("l", "zqhof", "rmaequ", com.azure.core.util.Context.NONE);
     }
 }

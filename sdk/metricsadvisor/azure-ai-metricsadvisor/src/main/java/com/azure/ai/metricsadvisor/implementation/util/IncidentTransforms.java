@@ -3,8 +3,10 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.models.IncidentResult;
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -14,6 +16,8 @@ import com.azure.core.util.IterableStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
 
 public class IncidentTransforms {
     public static PagedResponse<AnomalyIncident> fromInnerPagedResponse(PagedResponse<IncidentResult> innerResponse) {
@@ -57,8 +61,8 @@ public class IncidentTransforms {
                 new DimensionKey(innerIncident.getRootNode().getDimension()));
         }
         if (innerIncident.getProperty() != null) {
-            IncidentHelper.setSeverity(incident, innerIncident.getProperty().getMaxSeverity());
-            IncidentHelper.setStatus(incident, innerIncident.getProperty().getIncidentStatus());
+            IncidentHelper.setSeverity(incident, AnomalySeverity.fromString(toStringOrNull(innerIncident.getProperty().getMaxSeverity())));
+            IncidentHelper.setStatus(incident, AnomalyIncidentStatus.fromString(toStringOrNull(innerIncident.getProperty().getIncidentStatus())));
             IncidentHelper.setValue(incident, innerIncident.getProperty().getValueOfRootNode());
             IncidentHelper.setExpectedValue(incident, innerIncident.getProperty().getExpectedValueOfRootNode());
         }
