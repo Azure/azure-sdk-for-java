@@ -22,11 +22,9 @@ import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
 import com.azure.monitor.ingestion.models.LogsUploadError;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

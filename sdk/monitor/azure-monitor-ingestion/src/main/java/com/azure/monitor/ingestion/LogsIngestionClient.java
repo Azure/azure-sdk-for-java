@@ -16,7 +16,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.implementation.Batcher;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
@@ -25,23 +24,17 @@ import com.azure.monitor.ingestion.models.LogsUploadError;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
-import static com.azure.monitor.ingestion.implementation.Utils.getSerializer;
 import static com.azure.monitor.ingestion.implementation.Utils.getThreadPoolWithShutDownHook;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
@@ -162,7 +155,7 @@ public final class LogsIngestionClient {
             .toStream()
             .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
 
-        responses = sumbit(responses, getConcurrency(options))
+        responses = submit(responses, getConcurrency(options))
             .filter(response -> response.getException() != null);
 
         if (uploadLogsErrorConsumer != null) {
@@ -183,7 +176,7 @@ public final class LogsIngestionClient {
         }
     }
 
-    private Stream<UploadLogsResponseHolder> sumbit(Stream<UploadLogsResponseHolder> responseStream, int concurrency) {
+    private Stream<UploadLogsResponseHolder> submit(Stream<UploadLogsResponseHolder> responseStream, int concurrency) {
         if (concurrency == 1) {
             return responseStream;
         }

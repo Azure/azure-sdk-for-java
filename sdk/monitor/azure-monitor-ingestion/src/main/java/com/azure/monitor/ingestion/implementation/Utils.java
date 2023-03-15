@@ -6,31 +6,19 @@ package com.azure.monitor.ingestion.implementation;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
 public final class Utils {
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
-    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
     public static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
     public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String GZIP = "gzip";
@@ -79,14 +67,6 @@ public final class Utils {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
         return byteArrayOutputStream.toByteArray();
-    }
-
-    public static ObjectSerializer getSerializer(LogsUploadOptions options) {
-        if (options != null && options.getObjectSerializer() != null) {
-            return options.getObjectSerializer();
-        }
-
-        return  DEFAULT_SERIALIZER;
     }
 
     public static int getConcurrency(LogsUploadOptions options) {

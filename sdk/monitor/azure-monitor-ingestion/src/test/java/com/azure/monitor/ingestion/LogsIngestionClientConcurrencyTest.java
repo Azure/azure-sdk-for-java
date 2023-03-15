@@ -51,8 +51,8 @@ public class LogsIngestionClientConcurrencyTest {
 
     @SyncAsyncTest
     public void testUploadLogsInBatchesConcurrent() {
-        int concurrency = 5;
-        int batchCount = 12;
+        int concurrency = 10;
+        int batchCount = 20;
         List<Object> logs = getObjects(LOGS_IN_BATCH * batchCount);
 
         TestHttpClient http = new TestHttpClient(false);

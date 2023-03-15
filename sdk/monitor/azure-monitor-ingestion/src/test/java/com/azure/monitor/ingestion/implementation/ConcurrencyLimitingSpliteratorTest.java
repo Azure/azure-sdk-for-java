@@ -33,7 +33,7 @@ public class ConcurrencyLimitingSpliteratorTest {
     @Test
     public void invalidParams() {
         assertThrows(NullPointerException.class, () -> new ConcurrencyLimitingSpliterator<Integer>(null, 1));
-        assertThrows(IllegalArgumentException.class, () -> new ConcurrencyLimitingSpliterator<>(Arrays.asList(1, 2, 3), 0));
+        assertThrows(IllegalArgumentException.class, () -> new ConcurrencyLimitingSpliterator<>(Arrays.asList(1, 2, 3).iterator(), 0));
     }
 
     @ParameterizedTest
@@ -42,7 +42,7 @@ public class ConcurrencyLimitingSpliteratorTest {
         assumeTrue(Runtime.getRuntime().availableProcessors() > concurrency);
 
         List<Integer> list = IntStream.range(0, 11).boxed().collect(Collectors.toList());
-        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list, concurrency);
+        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
 
         Stream<Integer> stream = StreamSupport.stream(spliterator, true);
 
@@ -70,7 +70,7 @@ public class ConcurrencyLimitingSpliteratorTest {
     public void concurrencyHigherThanItemsCount() throws ExecutionException, InterruptedException {
         int concurrency = 100;
         List<Integer> list = IntStream.range(0, 7).boxed().collect(Collectors.toList());
-        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list, concurrency);
+        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
 
         Stream<Integer> stream = StreamSupport.stream(spliterator, true);
 

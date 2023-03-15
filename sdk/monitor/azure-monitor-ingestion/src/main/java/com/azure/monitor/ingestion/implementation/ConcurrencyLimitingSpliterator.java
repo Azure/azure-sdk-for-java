@@ -4,7 +4,7 @@
 
 package com.azure.monitor.ingestion.implementation;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,84 +13,61 @@ import java.util.function.Consumer;
 /**
  * Splits list of items into a given number of sub-lists allowing to process
  * sub-lists concurrently.
- *
+ * <p>
  * Follows example here: https://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html
- *
- * @param <T> the type of items in the list.
  */
-public class ConcurrencyLimitingSpliterator<T> implements Spliterator<T> {
-    private List<T> items;
-    private final AtomicInteger position;
-    private final int end;
-    private final int count;
-    private volatile int concurrency;
+class ConcurrencyLimitingSpliterator<T> implements Spliterator<T> {
+    private final AtomicInteger concurrency;
+    private final Iterator<T> iterator;
 
     /**
      * Creates spliterator.
      *
-     * @param items list of items to split.
      * @param concurrency Number of sub-lists to split items to. When processing items concurrently,
-     *                    should match the number of threads to process items with.
+     *                    indicates number of threads to process items with.
      */
-    public ConcurrencyLimitingSpliterator(List<T> items, int concurrency) {
-        Objects.requireNonNull(items, "'items' cannot be null.");
+    ConcurrencyLimitingSpliterator(Iterator<T> iterator, int concurrency) {
+        Objects.requireNonNull(iterator, "'iterator' cannot be null");
         if (concurrency == 0) {
             throw new IllegalArgumentException("'concurrency' must be a positive number.");
         }
-        this.items = items;
-        this.concurrency = Math.min(items.size(), concurrency);
-        this.end = items.size() - 1;
-        this.position = new AtomicInteger(0);
-        this.count = items.size() / this.concurrency;
-    }
 
-    private ConcurrencyLimitingSpliterator(List<T> items, int begin, int length) {
-        this.items = items;
-        this.position = new AtomicInteger(begin);
-        this.end = begin + length - 1;
-        this.concurrency = 0;
-        this.count = length;
+        this.concurrency = new AtomicInteger(concurrency);
+        this.iterator = iterator;
     }
 
     @Override
     public boolean tryAdvance(Consumer<? super T> action) {
-        int pos = position.getAndIncrement();
-        if (pos <= end) {
-            action.accept(items.get(pos));
+        // this method is called on individual spliterators concurrently
+        // it synchronizes access to logs iterator while requesting the next batch.
+        T request = null;
+        synchronized (iterator) {
+            if (iterator.hasNext()) {
+                request = iterator.next();
+            }
+        }
+
+        if (request != null) {
+            action.accept(request);
             return true;
         }
+
         return false;
     }
 
     @Override
     public Spliterator<T> trySplit() {
-        // each spliterator owns a part of the list with approx size of list.size() / concurrency.
-        // only the original spliterator is splittable, others are not.
-
-        // when this method is called, on the original spliterator
-        // we check if it can be split (concurrency > 1)
-        ConcurrencyLimitingSpliterator<T> result = null;
-        if (concurrency > 1) {
-            // create new unsplittable spliterator owning items from [pos, pos + count]
-            // position now points to pos + count
-            result = new ConcurrencyLimitingSpliterator<>(items, position.getAndAdd(count), count);
-        } else if (concurrency == 1) {
-            // if it's the last split, return original spliterator.
-            result = this;
-        }
-        // otherwise we'll return null - it indicates we're done splitting
-
-        concurrency--;
-        return result;
+        // here we split the stream, creating multiple spliterators that will be executed concurrently
+        return concurrency.getAndDecrement() > 1 ? new ConcurrencyLimitingSpliterator<>(iterator, 1) : null;
     }
 
     @Override
     public long estimateSize() {
-        return end - position.get() + 1;
+        return Integer.MAX_VALUE;
     }
 
     @Override
     public int characteristics() {
-        return NONNULL | ORDERED | SIZED | SUBSIZED;
+        return NONNULL | ORDERED & ~(Spliterator.SIZED | Spliterator.SUBSIZED);
     }
 }

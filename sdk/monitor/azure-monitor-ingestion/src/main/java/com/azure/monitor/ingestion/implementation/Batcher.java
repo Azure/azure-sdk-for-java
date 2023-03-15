@@ -5,6 +5,8 @@
 package com.azure.monitor.ingestion.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -20,16 +22,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
-import static com.azure.monitor.ingestion.implementation.Utils.getSerializer;
 
+/**
+ *  Provides iterator and streams for batches over log objects.
+ */
 public class Batcher implements Iterator<LogsIngestionRequest> {
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
+    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
     private final ObjectSerializer serializer;
     private final int concurrency;
     private final Iterator<Object> iterator;
@@ -45,7 +49,58 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
         this.iterator = iterable.iterator();
     }
 
-    LogsIngestionRequest nextInternal() throws IOException {
+    @Override
+    public boolean hasNext() {
+        return iterator.hasNext() || currentBatchSize > 0;
+    }
+
+    /**
+     * Collects next batch and serializes it into {@link LogsIngestionRequest}. This method is not thread-safe!
+     *
+     * Returns null when complete.
+     */
+    @Override
+    public LogsIngestionRequest next() {
+        try {
+            return nextInternal();
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Creates stream of requests split for configured concurrency and parallel if concurrency is bigger than 1.
+     */
+    public Stream<LogsIngestionRequest> toStream() {
+        if (concurrency == 1) {
+            return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
+        }
+
+        return StreamSupport.stream(new ConcurrencyLimitingSpliterator<>(this, concurrency), true);
+    }
+
+    /**
+     * Creates flux with requests.
+     */
+    public Flux<LogsIngestionRequest> toFlux() {
+        return Flux.create(emitter -> {
+            try {
+                while (hasNext()) {
+                    LogsIngestionRequest next = nextInternal();
+                    if (next != null) {
+                        emitter.next(next);
+                    }
+                }
+            } catch (IOException ex) {
+                emitter.error(ex);
+            }
+
+            emitter.complete();
+        });
+    }
+
+    private LogsIngestionRequest nextInternal() throws IOException {
         LogsIngestionRequest result = null;
         while (iterator.hasNext() && result == null) {
             Object currentLog = iterator.next();
@@ -89,88 +144,12 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
         return request;
     }
 
-    public Stream<LogsIngestionRequest> toStream() {
-        if (concurrency == 1) {
-            return StreamSupport.stream(
-                Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
+    private static ObjectSerializer getSerializer(LogsUploadOptions options) {
+        if (options != null && options.getObjectSerializer() != null) {
+            return options.getObjectSerializer();
         }
 
-        return StreamSupport.stream(new ConcurrencyLimitingSpliterator(concurrency), true);
+        return  DEFAULT_SERIALIZER;
     }
 
-    public Flux<LogsIngestionRequest> toFlux() {
-        return Flux.create(emitter -> {
-            try {
-                while (hasNext()) {
-                    LogsIngestionRequest next = nextInternal();
-                    if (next != null)
-                        emitter.next(next);
-                }
-            } catch (IOException ex) {
-                emitter.error(ex);
-            }
-
-            emitter.complete();
-        });
-    }
-
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext() || currentBatchSize > 0;
-    }
-
-    @Override
-    public LogsIngestionRequest next() {
-        if (!hasNext()) {
-            return null;
-        }
-
-        try {
-            return nextInternal();
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    private class ConcurrencyLimitingSpliterator implements Spliterator<LogsIngestionRequest> {
-        private volatile int concurrency;
-
-        public ConcurrencyLimitingSpliterator(int concurrency) {
-            this.concurrency = concurrency;
-        }
-
-        private ConcurrencyLimitingSpliterator() {
-            this(1);
-        }
-
-        @Override
-        public boolean tryAdvance(Consumer action) {
-            LogsIngestionRequest request;
-            synchronized (iterator) {
-                request = next();
-            }
-            if (request != null) {
-                action.accept(request);
-                return true;
-            }
-
-            return false;
-        }
-
-        @Override
-        public Spliterator trySplit() {
-            concurrency--;
-            return concurrency > 0 ? new ConcurrencyLimitingSpliterator() : null;
-        }
-
-        @Override
-        public long estimateSize() {
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public int characteristics() {
-            return NONNULL | ORDERED & ~(Spliterator.SIZED | Spliterator.SUBSIZED);
-        }
-    }
 }
