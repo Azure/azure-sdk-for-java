@@ -73,13 +73,22 @@ public class TracerProvider {
         boolean isSendClientTelemetryToServiceEnabled,
         boolean isClientMetricsEnabled) {
 
+        LOGGER.error("!!! TraceProvider.ctor !!!");
+
         if (tracer == null &&
             (isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled)) {
 
+            LOGGER.error("Tracer==NoOp-Tracer");
             this.tracer = NoOpTracer.INSTANCE;
 
         } else {
-            this.tracer = tracer;
+            if (tracer == null) {
+                this.tracer = null;
+                LOGGER.error("Tracer==NULL");
+            } else {
+                LOGGER.error("Tracer=={}", tracer.getClass().getCanonicalName());
+                this.tracer = tracer;
+            }
         }
 
         this.propagatingMono = new PropagatingMono();
