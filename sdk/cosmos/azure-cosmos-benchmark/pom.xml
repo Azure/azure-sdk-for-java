@@ -76,6 +76,7 @@ Licensed under the MIT License.
       </exclusions>
     </dependency>
 
+    <!-- Can be removed after diagnostic improvements PR -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
