@@ -20,6 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -237,6 +238,19 @@ public class ConfigurationClientBuilderTest extends TestBase {
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
         assertEquals("http://localhost:8080", client.getEndpoint());
         assertEquals("http://localhost:8080", asyncClient.getEndpoint());
+    }
+
+    @Test
+    public void singleAuthenticationPerBuilder() {
+        ConfigurationClientBuilder builderWithConnectionString = new ConfigurationClientBuilder()
+            .connectionString(FAKE_CONNECTION_STRING);
+        assertThrows(IllegalArgumentException.class,
+            () -> builderWithConnectionString.credential(new DefaultAzureCredentialBuilder().build()));
+
+        ConfigurationClientBuilder builderWithTokenCredential =
+            new ConfigurationClientBuilder().credential(new DefaultAzureCredentialBuilder().build());
+        assertThrows(IllegalArgumentException.class,
+            () -> builderWithTokenCredential.connectionString(FAKE_CONNECTION_STRING));
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

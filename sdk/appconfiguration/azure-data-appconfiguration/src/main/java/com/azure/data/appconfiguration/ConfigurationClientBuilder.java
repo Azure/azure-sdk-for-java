@@ -132,11 +132,12 @@ public final class ConfigurationClientBuilder implements
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
     }
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private ClientOptions clientOptions;
+    private String connectionString;
     private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
@@ -255,7 +256,7 @@ public final class ConfigurationClientBuilder implements
             policies.add(new ConfigurationCredentialsPolicy(credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
         policies.add(syncTokenPolicy);
@@ -297,7 +298,7 @@ public final class ConfigurationClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -337,27 +338,33 @@ public final class ConfigurationClientBuilder implements
      * @throws NullPointerException If {@code connectionString} is null.
      * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
      * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
+     * authentication per builder instance.
      */
     @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        if (this.tokenCredential != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Multiple forms of authentication found. TokenCredential should be null if using connection string."));
+        }
 
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' cannot be an empty string."));
         }
 
         try {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
                     + " algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
         }
-
+        this.connectionString = connectionString;
         this.endpoint = credential.getBaseUri();
         return this;
     }
@@ -370,11 +377,17 @@ public final class ConfigurationClientBuilder implements
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is null.
+     * @throws IllegalArgumentException if {@code connectionString} is not null. App Configuration builder support
+     * single authentication per builder instance.
      */
     @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
         // token credential can not be null value
         Objects.requireNonNull(tokenCredential);
+        if (this.connectionString != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Multiple forms of authentication found. Connection String should be null if using TokenCredential."));
+        }
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -443,7 +456,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -468,7 +481,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;

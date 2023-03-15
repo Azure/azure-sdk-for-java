@@ -7,7 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only 
+  support single authentication per builder instance. 
+  
 ### Other Changes
 
 ## 1.4.2 (2023-02-16)
