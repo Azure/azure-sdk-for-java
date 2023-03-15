@@ -287,7 +287,6 @@ $PackageExclusions = @{
   "azure-sdk-template-two" = "Depends on unreleased core.";
   "azure-sdk-template-three" = "Depends on unreleased core.";
   "azure-ai-personalizer" = "No java docs in this package.";
-  "azure-applicationinsights-query" = "Cannot find namespaces in the package.";
   "azure-sdk-build-tool" = "Do not release docs for this package.";
 }
 
