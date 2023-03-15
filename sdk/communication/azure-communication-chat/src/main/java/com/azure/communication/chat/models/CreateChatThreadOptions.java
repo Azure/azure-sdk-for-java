@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.models.RetentionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
