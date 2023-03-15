@@ -16,6 +16,10 @@ public final class Certificate {
     @JsonProperty(value = "pem")
     private String pem;
 
+    /** Creates an instance of Certificate class. */
+    public Certificate() {
+    }
+
     /**
      * Get the pem property: PEM formatted public key.
      *

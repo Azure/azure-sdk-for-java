@@ -34,7 +34,7 @@ public final class AssetFiltersCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":4701652628680745733,\"endTimestamp\":8813063868718248905,\"presentationWindowDuration\":349526303477712226,\"liveBackoffDuration\":7156119288556744534,\"timescale\":3380493363726104663,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":756426109},\"tracks\":[]},\"id\":\"t\",\"name\":\"c\",\"type\":\"xgccknfnw\"}";
+            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":5605265911389940437,\"endTimestamp\":8828570443204442415,\"presentationWindowDuration\":6948814692957888145,\"liveBackoffDuration\":1732138551751569521,\"timescale\":3640297226126313490,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":1233756756},\"tracks\":[]},\"id\":\"lxqzvn\",\"name\":\"rsbycucrwn\",\"type\":\"mikzeb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,26 +65,26 @@ public final class AssetFiltersCreateOrUpdateWithResponseMockTests {
         AssetFilter response =
             manager
                 .assetFilters()
-                .define("nac")
-                .withExistingAsset("kdlpa", "zrcxfailcfxwmdbo", "dfgsftufqobrj")
+                .define("zzjgehkfki")
+                .withExistingAsset("gjxsnptfu", "gicgaaoepttaq", "tdewemxswvruu")
                 .withPresentationTimeRange(
                     new PresentationTimeRange()
-                        .withStartTimestamp(2929730010981080157L)
-                        .withEndTimestamp(5989208742098135571L)
-                        .withPresentationWindowDuration(9128547594412210827L)
-                        .withLiveBackoffDuration(1883092830157221903L)
-                        .withTimescale(4659584360901220943L)
-                        .withForceEndTimestamp(false))
-                .withFirstQuality(new FirstQuality().withBitrate(34895139))
+                        .withStartTimestamp(546537594847028022L)
+                        .withEndTimestamp(8667135923506770358L)
+                        .withPresentationWindowDuration(6932449090517620100L)
+                        .withLiveBackoffDuration(6126117628175450487L)
+                        .withTimescale(4213065429281369117L)
+                        .withForceEndTimestamp(true))
+                .withFirstQuality(new FirstQuality().withBitrate(1195081046))
                 .withTracks(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals(4701652628680745733L, response.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(8813063868718248905L, response.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(349526303477712226L, response.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(7156119288556744534L, response.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(3380493363726104663L, response.presentationTimeRange().timescale());
-        Assertions.assertEquals(false, response.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(756426109, response.firstQuality().bitrate());
+        Assertions.assertEquals(5605265911389940437L, response.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(8828570443204442415L, response.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(6948814692957888145L, response.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(1732138551751569521L, response.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(3640297226126313490L, response.presentationTimeRange().timescale());
+        Assertions.assertEquals(true, response.presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(1233756756, response.firstQuality().bitrate());
     }
 }

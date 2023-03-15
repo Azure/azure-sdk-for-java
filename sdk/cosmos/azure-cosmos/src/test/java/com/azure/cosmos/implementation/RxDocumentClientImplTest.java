@@ -209,8 +209,7 @@ public class RxDocumentClientImplTest {
             this.metadataCachesSnapshotMock,
             this.apiTypeMock,
             this.cosmosClientTelemetryConfigMock,
-            this.clientCorrelationIdMock,
-            null
+            this.clientCorrelationIdMock
         );
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);

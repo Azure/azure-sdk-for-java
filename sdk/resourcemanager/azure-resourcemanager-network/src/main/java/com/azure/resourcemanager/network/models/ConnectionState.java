@@ -20,6 +20,15 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
     public static final ConnectionState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of ConnectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionState() {
+    }
+
+    /**
      * Creates or finds a ConnectionState from its string representation.
      *
      * @param name a name to look for.

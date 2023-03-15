@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+  <version>1.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
 
   <name>Microsoft Azure client library for Schema Registry</name>
   <description>This package contains the Microsoft Azure Schema Registry client library</description>
@@ -52,19 +52,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -100,13 +100,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <!-- SLF4j -->
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
             <scope>test</scope>
         </dependency>
         <!-- JUnit -->
@@ -205,7 +205,7 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.4.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                                 <include>org.slf4j:slf4j-nop:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->

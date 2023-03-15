@@ -19,6 +19,10 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlTriggerGetProperties innerProperties;
 
+    /** Creates an instance of SqlTriggerGetResultsInner class. */
+    public SqlTriggerGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB trigger.
      *

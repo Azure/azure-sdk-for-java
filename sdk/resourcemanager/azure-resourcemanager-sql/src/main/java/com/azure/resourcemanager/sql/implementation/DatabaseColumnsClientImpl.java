@@ -59,7 +59,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseColumnsService {
+    public interface DatabaseColumnsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

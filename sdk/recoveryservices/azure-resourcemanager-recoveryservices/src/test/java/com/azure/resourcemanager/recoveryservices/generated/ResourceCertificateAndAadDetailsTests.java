@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCertificateAndAadDetails;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceCertificateAndAadDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceCertificateAndAadDetails model =
             BinaryData
                 .fromString(
@@ -34,8 +33,8 @@ public final class ResourceCertificateAndAadDetailsTests {
         Assertions.assertEquals("hckfrlhrx", model.aadAudience());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceCertificateAndAadDetails model =
             new ResourceCertificateAndAadDetails()
                 .withFriendlyName("yvpycanuzbpzk")

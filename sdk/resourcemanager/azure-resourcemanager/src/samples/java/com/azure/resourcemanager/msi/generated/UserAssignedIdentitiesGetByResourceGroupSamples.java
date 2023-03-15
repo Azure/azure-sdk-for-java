@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserAssignedIdentities GetByResourceGroup. */
 public final class UserAssignedIdentitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityGet.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityGet.json
      */
     /**
      * Sample code: IdentityGet.
@@ -22,6 +20,6 @@ public final class UserAssignedIdentitiesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getUserAssignedIdentities()
-            .getByResourceGroupWithResponse("rgName", "resourceName", Context.NONE);
+            .getByResourceGroupWithResponse("rgName", "resourceName", com.azure.core.util.Context.NONE);
     }
 }

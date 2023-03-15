@@ -26,6 +26,15 @@ public final class AuthType extends ExpandableStringEnum<AuthType> {
     public static final AuthType AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
 
     /**
+     * Creates a new instance of AuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthType() {
+    }
+
+    /**
      * Creates or finds a AuthType from its string representation.
      *
      * @param name a name to look for.

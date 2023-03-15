@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -32,7 +32,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants
             .stream()
-            .map(item -> mapper.convertValue(item, AcsCallParticipantInternal.class))
+            .map(item -> mapper.convertValue(item, CallParticipantInternal.class))
             .collect(Collectors.toList())
             .stream()
             .map(CallParticipantConverter::convert)

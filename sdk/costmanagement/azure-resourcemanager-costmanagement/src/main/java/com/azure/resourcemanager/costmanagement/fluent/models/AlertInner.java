@@ -5,37 +5,28 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** An individual alert. */
 @Fluent
-public final class AlertInner extends ProxyResource {
+public final class AlertInner extends CostManagementProxyResource {
     /*
-     * The properties property.
+     * Alert properties.
      */
     @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
-
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of AlertInner class. */
     public AlertInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the innerProperties property: Alert properties.
      *
      * @return the innerProperties value.
      */
@@ -43,13 +34,11 @@ public final class AlertInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
+    /** {@inheritDoc} */
+    @Override
+    public AlertInner withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
     }
 
     /**
@@ -260,7 +249,7 @@ public final class AlertInner extends ProxyResource {
     }
 
     /**
-     * Get the statusModificationUsername property: The statusModificationUserName property.
+     * Get the statusModificationUsername property: User who last modified the alert.
      *
      * @return the statusModificationUsername value.
      */
@@ -269,7 +258,7 @@ public final class AlertInner extends ProxyResource {
     }
 
     /**
-     * Set the statusModificationUsername property: The statusModificationUserName property.
+     * Set the statusModificationUsername property: User who last modified the alert.
      *
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the AlertInner object itself.
@@ -310,7 +299,9 @@ public final class AlertInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

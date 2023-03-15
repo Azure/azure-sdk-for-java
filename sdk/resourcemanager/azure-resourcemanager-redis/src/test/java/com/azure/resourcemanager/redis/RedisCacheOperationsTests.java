@@ -285,24 +285,31 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         String llName = premiumRgg.addLinkedServer(rggLinked.id(), rggLinked.regionName(), ReplicationRole.PRIMARY);
 
-        Assertions.assertEquals(ResourceUtils.nameFromResourceId(rggLinked.id()), llName);
+        try {
+            Assertions.assertEquals(ResourceUtils.nameFromResourceId(rggLinked.id()), llName);
 
-        Map<String, ReplicationRole> linkedServers = premiumRgg.listLinkedServers();
-        Assertions.assertEquals(1, linkedServers.size());
-        Assertions.assertTrue(linkedServers.keySet().contains(llName));
-        Assertions.assertEquals(ReplicationRole.PRIMARY, linkedServers.get(llName));
+            Map<String, ReplicationRole> linkedServers = premiumRgg.listLinkedServers();
+            Assertions.assertEquals(1, linkedServers.size());
+            Assertions.assertTrue(linkedServers.keySet().contains(llName));
+            Assertions.assertEquals(ReplicationRole.PRIMARY, linkedServers.get(llName));
 
-        ReplicationRole repRole = premiumRgg.getLinkedServerRole(llName);
-        Assertions.assertEquals(ReplicationRole.PRIMARY, repRole);
+            ReplicationRole repRole = premiumRgg.getLinkedServerRole(llName);
+            Assertions.assertEquals(ReplicationRole.PRIMARY, repRole);
 
-        premiumRgg.removeLinkedServer(llName);
+            premiumRgg.removeLinkedServer(llName);
 
-        rgg.update().withoutPatchSchedule().apply();
+            rgg.update().withoutPatchSchedule().apply();
 
-        rggLinked.update().withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20").apply();
+            rggLinked.update().withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20").apply();
 
-        linkedServers = premiumRgg.listLinkedServers();
-        Assertions.assertEquals(0, linkedServers.size());
+            linkedServers = premiumRgg.listLinkedServers();
+            Assertions.assertEquals(0, linkedServers.size());
+        } finally {
+            // linked servers need to be removed before redis cache can be deleted
+            if (premiumRgg.listLinkedServers().size() > 0) {
+                premiumRgg.removeLinkedServer(llName);
+            }
+        }
     }
 
     @Test
@@ -353,7 +360,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRedisConfiguration("aof-storage-connection-string-0", connectionString)
                 .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
                 .create();
-        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().additionalProperties().get("aof-backup-enabled"));
+        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().aofBackupEnabled());
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
 

@@ -29,6 +29,15 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
     public static final ApiType GREMLIN_V2 = fromString("GremlinV2");
 
     /**
+     * Creates a new instance of ApiType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApiType() {
+    }
+
+    /**
      * Creates or finds a ApiType from its string representation.
      *
      * @param name a name to look for.

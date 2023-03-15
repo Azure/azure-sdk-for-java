@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/8d61b84f8d61b84fee784412c63fab78a52a46758a/8d61b84f08d61b84fee781160507b7b6de92a4a5984a?comp=rename&sv=2021-12-02&se=2022-08-05T00%3A01%3A43Z&sr=s&sp=rcwd&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/8d61b84f8d61b84fee784412c63fab78a52a46758a/8d61b84f08d61b84fee781160507b7b6de92a4a5984a?comp=rename&sv=2022-11-02&se=2022-08-05T00%3A01%3A43Z&sr=s&sp=rcwd&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2021-08-06",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.14.0 (11.0.14; Windows 10; 10.0)",
@@ -80,7 +80,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.file.core.windows.net/8d61b84f8d61b84fee784412c63fab78a52a46758a/8d61b84f08d61b84fee781160507b7b6de92a4a5984a?sv=2021-12-02&se=2022-08-05T00%3A01%3A43Z&sr=s&sp=rcwd&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/8d61b84f8d61b84fee784412c63fab78a52a46758a/8d61b84f08d61b84fee781160507b7b6de92a4a5984a?sv=2022-11-02&se=2022-08-05T00%3A01%3A43Z&sr=s&sp=rcwd&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2021-08-06",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.14.0 (11.0.14; Windows 10; 10.0)",

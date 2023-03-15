@@ -1,6 +1,21 @@
 # Release History
 
-## 2.23.0-beta.1 (Unreleased)
+## 2.25.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed potential `NullPointerException`, when query tag on `WebApp` and `FunctionApp`. 
+
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
 
 ### Other Changes
 

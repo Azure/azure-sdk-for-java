@@ -7,60 +7,54 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.CaptionResult;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /** Contains a document found by a search query, plus associated metadata. */
 @Fluent
-public final class SearchResult {
+public final class SearchResult implements JsonSerializable<SearchResult> {
     /*
      * The relevance score of the document compared to other documents returned by the query.
      */
-    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private double score;
+    private final double score;
 
     /*
      * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
      * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type 'semantic'.
      */
-    @JsonProperty(value = "@search.rerankerScore", access = JsonProperty.Access.WRITE_ONLY)
     private Double rerankerScore;
 
     /*
      * Text fragments from the document that indicate the matching search terms, organized by each applicable field;
      * null if hit highlighting was not enabled for the query.
      */
-    @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
      * used as document summary. Captions are only returned for queries of type 'semantic'.
      */
-    @JsonProperty(value = "@search.captions", access = JsonProperty.Access.WRITE_ONLY)
     private List<CaptionResult> captions;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SearchResult class.
      *
      * @param score the score value to set.
      */
-    @JsonCreator
-    public SearchResult(
-            @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    double score) {
+    public SearchResult(double score) {
         this.score = score;
     }
 
@@ -109,7 +103,6 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -125,11 +118,79 @@ public final class SearchResult {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("@search.score", this.score);
+        jsonWriter.writeNumberField("@search.rerankerScore", this.rerankerScore);
+        jsonWriter.writeMapField(
+                "@search.highlights",
+                this.highlights,
+                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeArrayField("@search.captions", this.captions, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchResult.
+     */
+    public static SearchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean scoreFound = false;
+                    double score = 0.0;
+                    Double rerankerScore = null;
+                    Map<String, List<String>> highlights = null;
+                    List<CaptionResult> captions = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@search.score".equals(fieldName)) {
+                            score = reader.getDouble();
+                            scoreFound = true;
+                        } else if ("@search.rerankerScore".equals(fieldName)) {
+                            rerankerScore = reader.getNullable(JsonReader::getDouble);
+                        } else if ("@search.highlights".equals(fieldName)) {
+                            highlights = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                        } else if ("@search.captions".equals(fieldName)) {
+                            captions = reader.readArray(reader1 -> CaptionResult.fromJson(reader1));
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
+                    }
+                    if (scoreFound) {
+                        SearchResult deserializedValue = new SearchResult(score);
+                        deserializedValue.rerankerScore = rerankerScore;
+                        deserializedValue.highlights = highlights;
+                        deserializedValue.captions = captions;
+                        deserializedValue.additionalProperties = additionalProperties;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!scoreFound) {
+                        missingProperties.add("@search.score");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

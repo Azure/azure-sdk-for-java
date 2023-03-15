@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailabilityResultInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameAvailabilityResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckNameAvailabilityResultInner model =
             BinaryData
                 .fromString("{\"nameAvailable\":false,\"reason\":\"zakljlahbc\",\"message\":\"ffdfdosygexpa\"}")
@@ -21,8 +20,8 @@ public final class CheckNameAvailabilityResultInnerTests {
         Assertions.assertEquals("ffdfdosygexpa", model.message());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckNameAvailabilityResultInner model =
             new CheckNameAvailabilityResultInner()
                 .withNameAvailable(false)

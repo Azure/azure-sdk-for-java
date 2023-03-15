@@ -1,14 +1,22 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.11 (2023-03-15)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-communication-common` from `1.2.5` to version `1.2.6`.
+
+## 1.1.10 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
 
 ## 1.1.9 (2023-01-13)
 

@@ -23,12 +23,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -57,7 +60,8 @@ public final class ContainerRegistryBlobClientBuilder implements
     EndpointTrait<ContainerRegistryBlobClientBuilder>,
     HttpTrait<ContainerRegistryBlobClientBuilder>,
     TokenCredentialTrait<ContainerRegistryBlobClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryBlobClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClientBuilder.class);
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
@@ -85,7 +89,7 @@ public final class ContainerRegistryBlobClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -153,7 +157,7 @@ public final class ContainerRegistryBlobClientBuilder implements
     @Override
     public ContainerRegistryBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -189,7 +193,7 @@ public final class ContainerRegistryBlobClientBuilder implements
     @Override
     public ContainerRegistryBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;
@@ -340,9 +344,10 @@ public final class ContainerRegistryBlobClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        HttpPipeline pipeline = getHttpPipeline();
+        Tracer tracer = createTracer(clientOptions);
+        HttpPipeline pipeline = getHttpPipeline(tracer);
 
-        ContainerRegistryBlobAsyncClient client = new ContainerRegistryBlobAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion());
+        ContainerRegistryBlobAsyncClient client = new ContainerRegistryBlobAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(), tracer);
         return client;
     }
 
@@ -365,10 +370,11 @@ public final class ContainerRegistryBlobClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(), endpoint, serviceVersion.getVersion());
+        Tracer tracer = createTracer(clientOptions);
+        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(tracer), endpoint, serviceVersion.getVersion(), tracer);
     }
 
-    private HttpPipeline getHttpPipeline() {
+    private HttpPipeline getHttpPipeline(Tracer tracer) {
         if (httpPipeline != null) {
             return httpPipeline;
         }
@@ -386,6 +392,6 @@ public final class ContainerRegistryBlobClientBuilder implements
             this.httpClient,
             this.endpoint,
             this.version,
-            this.logger);
+            tracer);
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.13.1 (2023-03-02)
+
+### Bugs Fixed
+
+- Fixed a bug where IP-style URLs wouldn't have a host part when used as a `URI`. ([#33673](https://github.com/Azure/azure-sdk-for-java/pull/33673))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded Netty from `4.1.87.Final` to `4.1.89.Final`.
+- Upgraded Reactor Netty from `1.0.27` to `1.0.28`.
+
+## 1.13.0 (2023-02-01)
+
+### Features Added
+
+- Added override for `HttpClient.sendSync` in `NettyAsyncHttpClient`. This is done to propagate any exceptions through
+  a synchronous stack rather than through Reactor's error stream, allowing for better handling of exceptions that
+  wouldn't be thrown until the reactive stream was blocked further up the callstack. ([#32840](https://github.com/Azure/azure-sdk-for-java/pull/32840))
+
+### Other Changes
+
+- Added a log message when `ConnectionProvider` is set to a non-default `ConnectionProvider` to allow for easier debugging
+  if `PollAcquirePendingLimitException` is seen. ([#32826](https://github.com/Azure/azure-sdk-for-java/pull/32826))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+- Upgraded Netty from `4.1.86.Final` to `4.1.87.Final`.
+- Upgraded Reactor Netty from `1.0.26` to `1.0.27`.
 
 ## 1.12.8 (2023-01-05)
 
@@ -22,7 +53,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.34.0` to `1.35.0`.
-- - Upgraded Netty from `4.1.82.Final` to `4.1.86.Final`.
+- Upgraded Netty from `4.1.82.Final` to `4.1.86.Final`.
 - Upgraded Reactor Netty from `1.0.23` to `1.0.26`.
 
 ## 1.12.7 (2022-11-04)

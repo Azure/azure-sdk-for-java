@@ -53,7 +53,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DataMaskingPoliciesService {
+    public interface DataMaskingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

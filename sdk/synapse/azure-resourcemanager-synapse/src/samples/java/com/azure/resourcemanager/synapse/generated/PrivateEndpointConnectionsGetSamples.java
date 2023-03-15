@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
@@ -20,6 +18,9 @@ public final class PrivateEndpointConnectionsGetSamples {
         manager
             .privateEndpointConnections()
             .getWithResponse(
-                "ExampleResourceGroup", "ExampleWorkspace", "ExamplePrivateEndpointConnection", Context.NONE);
+                "ExampleResourceGroup",
+                "ExampleWorkspace",
+                "ExamplePrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }

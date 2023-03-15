@@ -70,11 +70,17 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
     /** Static value Standard_L16s_v3 for AzureSkuName. */
     public static final AzureSkuName STANDARD_L16S_V3 = fromString("Standard_L16s_v3");
 
+    /** Static value Standard_L32s_v3 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L32S_V3 = fromString("Standard_L32s_v3");
+
     /** Static value Standard_L8as_v3 for AzureSkuName. */
     public static final AzureSkuName STANDARD_L8AS_V3 = fromString("Standard_L8as_v3");
 
     /** Static value Standard_L16as_v3 for AzureSkuName. */
     public static final AzureSkuName STANDARD_L16AS_V3 = fromString("Standard_L16as_v3");
+
+    /** Static value Standard_L32as_v3 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L32AS_V3 = fromString("Standard_L32as_v3");
 
     /** Static value Standard_E64i_v3 for AzureSkuName. */
     public static final AzureSkuName STANDARD_E64I_V3 = fromString("Standard_E64i_v3");
@@ -195,6 +201,15 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
 
     /** Static value Standard_E16d_v5 for AzureSkuName. */
     public static final AzureSkuName STANDARD_E16D_V5 = fromString("Standard_E16d_v5");
+
+    /**
+     * Creates a new instance of AzureSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureSkuName() {
+    }
 
     /**
      * Creates or finds a AzureSkuName from its string representation.

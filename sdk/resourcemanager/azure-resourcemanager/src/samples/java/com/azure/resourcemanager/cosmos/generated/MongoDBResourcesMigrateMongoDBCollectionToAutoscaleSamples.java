@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources MigrateMongoDBCollectionToAutoscale. */
 public final class MongoDBResourcesMigrateMongoDBCollectionToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionMigrateToAutoscale.
@@ -23,6 +21,7 @@ public final class MongoDBResourcesMigrateMongoDBCollectionToAutoscaleSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .migrateMongoDBCollectionToAutoscale("rg1", "ddb1", "databaseName", "collectionName", Context.NONE);
+            .migrateMongoDBCollectionToAutoscale(
+                "rg1", "ddb1", "databaseName", "collectionName", com.azure.core.util.Context.NONE);
     }
 }

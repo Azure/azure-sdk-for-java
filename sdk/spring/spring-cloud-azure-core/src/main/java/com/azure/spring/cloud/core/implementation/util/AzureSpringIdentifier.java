@@ -55,6 +55,7 @@ public final class AzureSpringIdentifier {
      * Azure Spring ServiceBus
      */
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+    public static final String AZURE_SPRING_PASSWORDLESS_SERVICE_BUS = "az-sp-pl-sb/" + VERSION;
 
     /**
      * Azure Spring Storage Blob
@@ -81,6 +82,7 @@ public final class AzureSpringIdentifier {
      * Azure Spring B2C
      */
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
+    public static final String AZURE_SPRING_IDENTITY = "az-sp-id/" + VERSION;
 
     private static String getVersion() {
         String version = "unknown";

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,15 +14,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Gen2StorageConfigurationMutableProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Gen2StorageConfigurationMutableProperties.class);
-
     /*
-     * The value of the management key that grants the Time Series Insights
-     * service write access to the storage account. This property is not shown
-     * in environment responses.
+     * The value of the management key that grants the Time Series Insights service write access to the storage
+     * account. This property is not shown in environment responses.
      */
     @JsonProperty(value = "managementKey", required = true)
     private String managementKey;
+
+    /** Creates an instance of Gen2StorageConfigurationMutableProperties class. */
+    public Gen2StorageConfigurationMutableProperties() {
+    }
 
     /**
      * Get the managementKey property: The value of the management key that grants the Time Series Insights service
@@ -54,10 +54,12 @@ public final class Gen2StorageConfigurationMutableProperties {
      */
     public void validate() {
         if (managementKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property managementKey in model Gen2StorageConfigurationMutableProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Gen2StorageConfigurationMutableProperties.class);
 }

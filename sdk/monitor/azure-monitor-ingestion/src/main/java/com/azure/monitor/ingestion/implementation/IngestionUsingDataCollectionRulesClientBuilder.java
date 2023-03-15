@@ -55,6 +55,8 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
 
     @Generated private static final String SDK_VERSION = "version";
 
+    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://monitor.azure.com//.default"};
+
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-monitor-ingestion.properties");
 
@@ -257,7 +259,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://monitor.azure.com//.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()

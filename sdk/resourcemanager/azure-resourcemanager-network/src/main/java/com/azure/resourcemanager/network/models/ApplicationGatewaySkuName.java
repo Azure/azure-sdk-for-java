@@ -32,6 +32,15 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
     public static final ApplicationGatewaySkuName WAF_V2 = fromString("WAF_v2");
 
     /**
+     * Creates a new instance of ApplicationGatewaySkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewaySkuName() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewaySkuName from its string representation.
      *
      * @param name a name to look for.

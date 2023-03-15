@@ -62,7 +62,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface SensitivityLabelsService {
+    public interface SensitivityLabelsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

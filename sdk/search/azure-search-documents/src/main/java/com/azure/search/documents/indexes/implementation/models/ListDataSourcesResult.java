@@ -7,28 +7,29 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
 @Immutable
-public final class ListDataSourcesResult {
+public final class ListDataSourcesResult implements JsonSerializable<ListDataSourcesResult> {
     /*
      * The datasources in the Search service.
      */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<SearchIndexerDataSource> dataSources;
+    private final List<SearchIndexerDataSourceConnection> dataSources;
 
     /**
      * Creates an instance of ListDataSourcesResult class.
      *
      * @param dataSources the dataSources value to set.
      */
-    @JsonCreator
-    public ListDataSourcesResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerDataSource> dataSources) {
+    public ListDataSourcesResult(List<SearchIndexerDataSourceConnection> dataSources) {
         this.dataSources = dataSources;
     }
 
@@ -37,7 +38,55 @@ public final class ListDataSourcesResult {
      *
      * @return the dataSources value.
      */
-    public List<SearchIndexerDataSource> getDataSources() {
+    public List<SearchIndexerDataSourceConnection> getDataSources() {
         return this.dataSources;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.dataSources, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListDataSourcesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListDataSourcesResult if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListDataSourcesResult.
+     */
+    public static ListDataSourcesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean dataSourcesFound = false;
+                    List<SearchIndexerDataSourceConnection> dataSources = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            dataSources =
+                                    reader.readArray(reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
+                            dataSourcesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (dataSourcesFound) {
+                        ListDataSourcesResult deserializedValue = new ListDataSourcesResult(dataSources);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!dataSourcesFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

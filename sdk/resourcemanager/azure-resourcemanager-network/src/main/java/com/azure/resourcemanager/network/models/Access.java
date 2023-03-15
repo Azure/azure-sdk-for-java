@@ -17,6 +17,15 @@ public final class Access extends ExpandableStringEnum<Access> {
     public static final Access DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of Access value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Access() {
+    }
+
+    /**
      * Creates or finds a Access from its string representation.
      *
      * @param name a name to look for.

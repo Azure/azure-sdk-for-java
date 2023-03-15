@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCircuitAuthorizations Get. */
 public final class ExpressRouteCircuitAuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCircuitAuthorizationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitAuthorizationGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit Authorization.
@@ -22,6 +20,6 @@ public final class ExpressRouteCircuitAuthorizationsGetSamples {
             .manager()
             .serviceClient()
             .getExpressRouteCircuitAuthorizations()
-            .getWithResponse("rg1", "circuitName", "authorizationName", Context.NONE);
+            .getWithResponse("rg1", "circuitName", "authorizationName", com.azure.core.util.Context.NONE);
     }
 }

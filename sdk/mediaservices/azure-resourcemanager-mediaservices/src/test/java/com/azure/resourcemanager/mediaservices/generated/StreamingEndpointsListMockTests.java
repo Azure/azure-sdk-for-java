@@ -32,7 +32,7 @@ public final class StreamingEndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"qirwrweoox\",\"scaleUnits\":641060199,\"availabilitySetName\":\"fhxwrsne\",\"accessControl\":{},\"maxCacheAge\":630933293330161814,\"customHostNames\":[\"qmamhsycxhxzga\",\"ttaboidvmfqh\",\"pubowsepdfg\",\"mtdherngb\"],\"hostName\":\"juahokqto\",\"cdnEnabled\":true,\"cdnProvider\":\"xof\",\"cdnProfile\":\"fphwpnu\",\"provisioningState\":\"iywzejy\",\"resourceState\":\"Scaling\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"koj\",\"crossDomainPolicy\":\"l\"},\"freeTrialEndTime\":\"2021-06-06T09:19:13Z\",\"created\":\"2021-01-16T09:54:43Z\",\"lastModified\":\"2021-01-09T14:38:38Z\"},\"sku\":{\"name\":\"fgf\",\"capacity\":975113921},\"location\":\"nnfhyetefypo\",\"tags\":{\"xrjvzuyturmlm\":\"tfjgt\",\"opionszon\":\"owolbaui\",\"ixjawrtm\":\"pngajin\"},\"id\":\"fjmyccxlzhco\",\"name\":\"ovne\",\"type\":\"henlusfnr\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"lwywae\",\"scaleUnits\":665085676,\"availabilitySetName\":\"gfbukklelss\",\"accessControl\":{},\"maxCacheAge\":2996960351334140021,\"customHostNames\":[\"jks\",\"lsmdesqplpvmjc\",\"oewbid\",\"vteo\"],\"hostName\":\"vgp\",\"cdnEnabled\":false,\"cdnProvider\":\"ugfsxzecpaxwk\",\"cdnProfile\":\"ykhv\",\"provisioningState\":\"xepmrut\",\"resourceState\":\"Scaling\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"obns\",\"crossDomainPolicy\":\"jdjltymkmvgui\"},\"freeTrialEndTime\":\"2021-11-13T17:45:06Z\",\"created\":\"2021-04-21T11:58:54Z\",\"lastModified\":\"2021-05-15T17:05:47Z\"},\"sku\":{\"name\":\"kixkykxdssjpemm\",\"capacity\":1510283924},\"location\":\"xhikkflrmymyin\",\"tags\":{\"s\":\"hr\",\"iiiovgqcgxuugq\":\"sl\"},\"id\":\"ctotiowlx\",\"name\":\"e\",\"type\":\"dptjgwdtgukranb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,20 +61,21 @@ public final class StreamingEndpointsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<StreamingEndpoint> response =
-            manager.streamingEndpoints().list("tvt", "ukyefchnmnahmnxh", com.azure.core.util.Context.NONE);
+            manager.streamingEndpoints().list("roznnhdrlktgj", "sggux", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nnfhyetefypo", response.iterator().next().location());
-        Assertions.assertEquals("tfjgt", response.iterator().next().tags().get("xrjvzuyturmlm"));
-        Assertions.assertEquals(975113921, response.iterator().next().sku().capacity());
-        Assertions.assertEquals("qirwrweoox", response.iterator().next().description());
-        Assertions.assertEquals(641060199, response.iterator().next().scaleUnits());
-        Assertions.assertEquals("fhxwrsne", response.iterator().next().availabilitySetName());
-        Assertions.assertEquals(630933293330161814L, response.iterator().next().maxCacheAge());
-        Assertions.assertEquals("qmamhsycxhxzga", response.iterator().next().customHostNames().get(0));
-        Assertions.assertEquals(true, response.iterator().next().cdnEnabled());
-        Assertions.assertEquals("xof", response.iterator().next().cdnProvider());
-        Assertions.assertEquals("fphwpnu", response.iterator().next().cdnProfile());
-        Assertions.assertEquals("koj", response.iterator().next().crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("l", response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("xhikkflrmymyin", response.iterator().next().location());
+        Assertions.assertEquals("hr", response.iterator().next().tags().get("s"));
+        Assertions.assertEquals(1510283924, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("lwywae", response.iterator().next().description());
+        Assertions.assertEquals(665085676, response.iterator().next().scaleUnits());
+        Assertions.assertEquals("gfbukklelss", response.iterator().next().availabilitySetName());
+        Assertions.assertEquals(2996960351334140021L, response.iterator().next().maxCacheAge());
+        Assertions.assertEquals("jks", response.iterator().next().customHostNames().get(0));
+        Assertions.assertEquals(false, response.iterator().next().cdnEnabled());
+        Assertions.assertEquals("ugfsxzecpaxwk", response.iterator().next().cdnProvider());
+        Assertions.assertEquals("ykhv", response.iterator().next().cdnProfile());
+        Assertions.assertEquals("obns", response.iterator().next().crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions
+            .assertEquals("jdjltymkmvgui", response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
     }
 }

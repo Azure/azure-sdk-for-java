@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.costmanagement.fluent.models.QueryResultInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.ForecastResultInner;
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 
@@ -39,10 +39,10 @@ public interface ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryResultInner> usageWithResponse(
+    Response<ForecastResultInner> usageWithResponse(
         String scope, ForecastDefinition parameters, String filter, Context context);
 
     /**
@@ -66,10 +66,10 @@ public interface ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultInner usage(String scope, ForecastDefinition parameters);
+    ForecastResultInner usage(String scope, ForecastDefinition parameters);
 
     /**
      * Lists the forecast charges for external cloud provider type defined.
@@ -87,10 +87,10 @@ public interface ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryResultInner> externalCloudProviderUsageWithResponse(
+    Response<ForecastResultInner> externalCloudProviderUsageWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -109,10 +109,10 @@ public interface ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultInner externalCloudProviderUsage(
+    ForecastResultInner externalCloudProviderUsage(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters);

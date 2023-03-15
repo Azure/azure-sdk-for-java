@@ -65,7 +65,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientI")
-    private interface InstanceFailoverGroupsService {
+    public interface InstanceFailoverGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"

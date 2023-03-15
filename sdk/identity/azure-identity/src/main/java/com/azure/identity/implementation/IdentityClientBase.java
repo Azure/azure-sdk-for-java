@@ -85,8 +85,8 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
-    static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
-    static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
+    static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
+    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -206,7 +206,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -223,6 +223,13 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
+
+        if (!options.isCp1Disabled()) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
+        }
+
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -260,7 +267,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl);
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -337,6 +344,10 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                if (accessToken.getClass().isInstance(MSIToken.class)) {
+                    MSIToken msiToken = (MSIToken) accessToken;
+                    result.setRefreshInSeconds(msiToken.getRefreshInSeconds());
+                }
                 return result;
             }).toFuture();
         });
@@ -373,10 +384,15 @@ public abstract class IdentityClientBase {
     }
 
     OnBehalfOfParameters buildOBOFlowParameters(TokenRequestContext request) {
-        return OnBehalfOfParameters
+        OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
-            .build();
+            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
+        return builder.build();
     }
 
     InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
@@ -449,8 +465,8 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                        || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                        || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "AzureCliCredential authentication unavailable. Azure CLI not installed."
@@ -500,6 +516,106 @@ public abstract class IdentityClientBase {
         return token;
     }
 
+    AccessToken getTokenFromAzureDeveloperCLIAuthentication(StringBuilder azdCommand) {
+        AccessToken token;
+        try {
+            String starter;
+            String switcher;
+            if (isWindowsPlatform()) {
+                starter = WINDOWS_STARTER;
+                switcher = WINDOWS_SWITCHER;
+            } else {
+                starter = LINUX_MAC_STARTER;
+                switcher = LINUX_MAC_SWITCHER;
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+
+            String workingDirectory = getSafeWorkingDirectory();
+            if (workingDirectory != null) {
+                builder.directory(new File(workingDirectory));
+            } else {
+                throw LOGGER.logExceptionAsError(
+                        new IllegalStateException(
+                                "A Safe Working directory could not be"
+                                        + " found to execute Azure Developer CLI command from."));
+            }
+            builder.redirectErrorStream(true);
+            Process process = builder.start();
+
+            StringBuilder output = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                    StandardCharsets.UTF_8.name()))) {
+                String line;
+                while (true) {
+                    line = reader.readLine();
+                    if (line == null) {
+                        break;
+                    }
+
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                            || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
+                        throw LoggingUtil.logCredentialUnavailableException(
+                                LOGGER,
+                                options,
+                                new CredentialUnavailableException(
+                                        "AzureDeveloperCliCredential authentication unavailable. Azure Developer CLI not installed."
+                                                +
+                                                "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                                +
+                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                    }
+                    output.append(line);
+                }
+            }
+            String processOutput = output.toString();
+
+            // wait until the process completes or the timeout (10 sec) is reached.
+            process.waitFor(10, TimeUnit.SECONDS);
+
+            if (process.exitValue() != 0) {
+                if (processOutput.length() > 0) {
+                    String redactedOutput = redactInfo(processOutput);
+                    if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
+                        throw LoggingUtil.logCredentialUnavailableException(
+                                LOGGER,
+                                options,
+                                new CredentialUnavailableException(
+                                        "AzureDeveloperCliCredential authentication unavailable."
+                                        + " Please run 'azd login' to set up account."));
+                    }
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
+                } else {
+                    throw LOGGER.logExceptionAsError(
+                            new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
+                }
+            }
+
+            LOGGER.verbose(
+                    "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
+                            +
+                            " response into an Access Token.");
+            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
+                    processOutput,
+                    Map.class,
+                    SerializerEncoding.JSON);
+            String accessToken = objectMap.get("token");
+            String time = objectMap.get("expiresOn");
+            // az expiresOn format = "2022-11-30 02:38:42.000000" vs
+            // azd expiresOn format = "2022-11-30T02:05:08Z"
+            String standardTime = time.substring(0, time.indexOf("Z"));
+            OffsetDateTime expiresOn = LocalDateTime
+                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .atZone(ZoneId.of("Z"))
+                    .toOffsetDateTime()
+                    .withOffsetSameInstant(ZoneOffset.UTC);
+            token = new AccessToken(accessToken, expiresOn);
+        } catch (IOException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+        }
+
+        return token;
+    }
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
@@ -610,5 +726,23 @@ public abstract class IdentityClientBase {
             default:
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
+    }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

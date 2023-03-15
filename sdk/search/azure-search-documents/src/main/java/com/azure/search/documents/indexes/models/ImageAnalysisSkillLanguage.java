@@ -7,10 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageAnalysisSkillLanguage. */
+/** The language codes supported for input by ImageAnalysisSkill. */
 public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<ImageAnalysisSkillLanguage> {
     /** Static value ar for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage AR = fromString("ar");
@@ -169,12 +168,19 @@ public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<Image
     public static final ImageAnalysisSkillLanguage ZH_HANT = fromString("zh-Hant");
 
     /**
+     * Creates a new instance of ImageAnalysisSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImageAnalysisSkillLanguage() {}
+
+    /**
      * Creates or finds a ImageAnalysisSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ImageAnalysisSkillLanguage.
      */
-    @JsonCreator
     public static ImageAnalysisSkillLanguage fromString(String name) {
         return fromString(name, ImageAnalysisSkillLanguage.class);
     }

@@ -49,6 +49,20 @@ public interface ReferenceDataSetResource {
     Map<String, String> tags();
 
     /**
+     * Gets the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the creationTime property: The time the resource was created.
+     *
+     * @return the creationTime value.
+     */
+    OffsetDateTime creationTime();
+
+    /**
      * Gets the keyProperties property: The list of key properties for the reference data set.
      *
      * @return the keyProperties value.
@@ -66,20 +80,6 @@ public interface ReferenceDataSetResource {
     DataStringComparisonBehavior dataStringComparisonBehavior();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the creationTime property: The time the resource was created.
-     *
-     * @return the creationTime value.
-     */
-    OffsetDateTime creationTime();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -92,6 +92,13 @@ public interface ReferenceDataSetResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetResourceInner object.

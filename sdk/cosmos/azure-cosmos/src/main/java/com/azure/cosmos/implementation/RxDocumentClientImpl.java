@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -20,14 +21,15 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -52,10 +54,10 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -65,6 +67,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -85,7 +88,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,7 +189,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private final EnumSet<TagName> metricTagNames;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -203,8 +204,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId,
-                                EnumSet<TagName> tagNames) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -220,8 +220,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId,
-                tagNames);
+                clientCorrelationId);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -240,8 +239,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId,
-                                EnumSet<TagName> tagNames) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -257,8 +255,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId,
-                tagNames);
+                clientCorrelationId);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -276,8 +273,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId,
-                                EnumSet<TagName> tagNames) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -292,8 +288,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId,
-                tagNames);
+                clientCorrelationId);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -350,8 +345,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                          ApiType apiType,
                          CosmosClientTelemetryConfig clientTelemetryConfig,
-                         String clientCorrelationId,
-                         EnumSet<TagName> tagNames) {
+                         String clientCorrelationId) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -363,7 +357,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.clientId = clientIdGenerator.incrementAndGet();
         this.clientCorrelationId = Strings.isNullOrWhiteSpace(clientCorrelationId) ?
             String.format("%05d",this.clientId): clientCorrelationId;
-        this.metricTagNames = tagNames;
         clientMap.put(serviceEndpoint.toString(), clientMap.getOrDefault(serviceEndpoint.toString(), 0) + 1);
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
@@ -568,7 +561,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializeDirectConnectivity() {
-
         this.addressResolver = new GlobalAddressResolver(this,
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -1682,17 +1674,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
-        String capabilitiesHeaderValue = HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES;
-        if (request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
-            capabilitiesHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
-        }
-
-        // this header will be suppressed in pkversion change feed processor
-        // remove it if non capabilities is being set
-        if (capabilitiesHeaderValue.equalsIgnoreCase(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE)) {
-            request.getHeaders().remove(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
-        } else {
-            request.getHeaders().put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, capabilitiesHeaderValue);
+        if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
+            request
+                .getHeaders()
+                .put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
         }
     }
 
@@ -2241,7 +2226,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
                         itemIdentityList
                             .forEach(itemIdentity -> {
-
+                                //Check no partial partition keys are being used
+                                if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
+                                    ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey())
+                                    .getComponents().size() != pkDefinition.getPaths().size()) {
+                                    throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+                                }
                                 String effectivePartitionKeyString =  PartitionKeyInternalHelper
                                     .getEffectivePartitionKeyString(
                                         BridgeInternal.getPartitionKeyInternal(
@@ -2348,6 +2338,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (cosmosItemIdentityList.size() > 1) {
                 if (partitionKeySelector.equals("[\"id\"]")) {
                     sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList, partitionKeySelector);
+                } else if (partitionKeyDefinition.getKind().equals(PartitionKind.MULTI_HASH)) {
+                    sqlQuerySpec = createReadManyQuerySpecMultiHash(entry.getValue(), partitionKeyDefinition);
                 } else {
                     sqlQuerySpec = createReadManyQuerySpec(cosmosItemIdentityList, partitionKeySelector);
                 }
@@ -2419,6 +2411,59 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             queryStringBuilder.append(partitionKeySelector);
             queryStringBuilder.append((" = "));
             queryStringBuilder.append(pkParamName);
+            queryStringBuilder.append(" )");
+
+            if (i < itemIdentities.size() - 1) {
+                queryStringBuilder.append(" OR ");
+            }
+        }
+        queryStringBuilder.append(" )");
+
+        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+    }
+
+    private SqlQuerySpec createReadManyQuerySpecMultiHash(
+        List<CosmosItemIdentity> itemIdentities,
+        PartitionKeyDefinition partitionKeyDefinition) {
+        StringBuilder queryStringBuilder = new StringBuilder();
+        List<SqlParameter> parameters = new ArrayList<>();
+
+        queryStringBuilder.append("SELECT * FROM c WHERE ( ");
+        int paramCount = 0;
+        for (int i = 0; i < itemIdentities.size(); i++) {
+            CosmosItemIdentity itemIdentity = itemIdentities.get(i);
+
+            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            String pkValueString = (String) pkValue;
+            List<List<String>> partitionKeyParams = new ArrayList<>();
+            List<String> paths = partitionKeyDefinition.getPaths();
+            int pathCount = 0;
+            for (String subPartitionKey: pkValueString.split("=")) {
+                String pkParamName = "@param" + paramCount;
+                partitionKeyParams.add(Arrays.asList(paths.get(pathCount), pkParamName));
+                parameters.add(new SqlParameter(pkParamName, subPartitionKey));
+                paramCount++;
+                pathCount++;
+            }
+
+            String idValue = itemIdentity.getId();
+            String idParamName = "@param" + paramCount;
+            paramCount++;
+            parameters.add(new SqlParameter(idParamName, idValue));
+
+            queryStringBuilder.append("(");
+            queryStringBuilder.append("c.id = ");
+            queryStringBuilder.append(idParamName);
+
+            // partition key def
+            for (List<String> pkParam: partitionKeyParams) {
+                queryStringBuilder.append(" AND ");
+                queryStringBuilder.append(" c.");
+                queryStringBuilder.append(pkParam.get(0).substring(1));
+                queryStringBuilder.append((" = "));
+                queryStringBuilder.append(pkParam.get(1));
+            }
             queryStringBuilder.append(" )");
 
             if (i < itemIdentities.size() - 1) {
@@ -4164,6 +4209,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return partitionKeyRangeCache;
     }
 
+    @Override
+    public GlobalEndpointManager getGlobalEndpointManager() {
+        return this.globalEndpointManager;
+    }
+
+    @Override
+    public AddressSelector getAddressSelector() {
+        return new AddressSelector(this.addressResolver, this.configs.getProtocol());
+    }
+
     public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
@@ -4288,7 +4343,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
 
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
@@ -4301,14 +4356,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.storeModel.enableThroughputControl(throughputControlStore);
         }
 
-        this.throughputControlStore.enableThroughputControlGroup(group);
+        this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    }
 
-        return this.storeModel.openConnectionsAndInitCaches(containerLink);
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
+        if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
+            this.storeModel.configureFaultInjectorProvider(injectorProvider);
+        } else {
+            throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
+        }
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

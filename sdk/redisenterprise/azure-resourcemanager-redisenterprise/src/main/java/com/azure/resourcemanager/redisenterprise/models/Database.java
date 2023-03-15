@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import java.util.List;
@@ -31,6 +32,13 @@ public interface Database {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
@@ -97,6 +105,13 @@ public interface Database {
      * @return the geoReplication value.
      */
     DatabasePropertiesGeoReplication geoReplication();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner object.
@@ -308,15 +323,6 @@ public interface Database {
     /**
      * Retrieves the access keys for the RedisEnterprise database.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access keys.
-     */
-    AccessKeys listKeys();
-
-    /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -324,6 +330,15 @@ public interface Database {
      * @return access keys along with {@link Response}.
      */
     Response<AccessKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Retrieves the access keys for the RedisEnterprise database.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return access keys.
+     */
+    AccessKeys listKeys();
 
     /**
      * Regenerates the RedisEnterprise database's access keys.
@@ -410,4 +425,25 @@ public interface Database {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void forceUnlink(ForceUnlinkParameters parameters, Context context);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void flush(FlushParameters parameters);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void flush(FlushParameters parameters, Context context);
 }

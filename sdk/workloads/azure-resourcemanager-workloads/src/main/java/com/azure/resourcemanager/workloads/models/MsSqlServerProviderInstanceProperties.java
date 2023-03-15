@@ -50,6 +50,22 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
     @JsonProperty(value = "sapSid")
     private String sapSid;
 
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the blob URI to SSL certificate for the SQL Database.
+     */
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
+
+    /** Creates an instance of MsSqlServerProviderInstanceProperties class. */
+    public MsSqlServerProviderInstanceProperties() {
+    }
+
     /**
      * Get the hostname property: Gets or sets the SQL server host name.
      *
@@ -167,6 +183,46 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
      */
     public MsSqlServerProviderInstanceProperties withSapSid(String sapSid) {
         this.sapSid = sapSid;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the MsSqlServerProviderInstanceProperties object itself.
+     */
+    public MsSqlServerProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
+     *
+     * @return the sslCertificateUri value.
+     */
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
+    }
+
+    /**
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
+     *
+     * @param sslCertificateUri the sslCertificateUri value to set.
+     * @return the MsSqlServerProviderInstanceProperties object itself.
+     */
+    public MsSqlServerProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
         return this;
     }
 

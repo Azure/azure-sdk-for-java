@@ -1,14 +1,37 @@
 # Release History
 
-## 1.1.0-beta.14 (Unreleased)
+## 1.1.0-beta.15 (2023-03-15)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for SIP routing API version `2023-03-01`, releasing SIP routing functionality from public preview to GA.
+- Added environment variable `AZURE_TEST_DOMAIN` for SIP routing tests to support domain verification.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-communication-common` from `1.2.5` to version `1.2.6`.
+
+## 1.1.0-beta.14 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
+
+
+## 1.0.19 (2023-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-communication-common` from `1.2.4` to version `1.2.5`.
+
 
 ## 1.0.18 (2023-01-13)
 

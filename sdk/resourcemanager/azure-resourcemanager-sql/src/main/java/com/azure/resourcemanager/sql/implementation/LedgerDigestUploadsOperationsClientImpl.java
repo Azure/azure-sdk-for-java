@@ -68,7 +68,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
-    private interface LedgerDigestUploadsOperationsService {
+    public interface LedgerDigestUploadsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
