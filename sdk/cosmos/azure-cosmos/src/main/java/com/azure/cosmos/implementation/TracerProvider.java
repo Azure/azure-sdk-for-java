@@ -82,7 +82,7 @@ public class TracerProvider {
         } else {
             if (tracer == null) {
                 this.tracer = null;
-                LOGGER.info("Neither OpenTelemetry tracer provided not client telemetry or metrics enabled.");
+                LOGGER.info("Neither OpenTelemetry tracer provided nor client telemetry or metrics enabled.");
             } else {
                 LOGGER.info("Using OpenTelemetry tracer {}", tracer.getClass().getCanonicalName());
                 this.tracer = tracer;
