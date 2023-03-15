@@ -170,6 +170,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
             cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             if (operationType == OperationType.Read) {
+                assertThat(serverTooManyRequestsErrorRule.getHitCount()).isEqualTo(1);
                 this.validateFaultInjectionRuleApplied(
                     cosmosDiagnostics,
                     operationType,
@@ -261,6 +262,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
             if (operationType.isWriteOperation()) {
+                assertThat(writeRegionServerGoneErrorRule.getHitCount()).isEqualTo(1);
                 this.validateFaultInjectionRuleApplied(
                     cosmosDiagnostics,
                     operationType,
@@ -320,7 +322,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.GONE)
-                        .times(1)
+                        .times(2)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
@@ -358,6 +360,9 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
             // Validate fault injection applied in the local region
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
+            assertThat(serverErrorRuleLocalRegion.getHitCount()).isEqualTo(1);
+            assertThat(serverErrorRuleRemoteRegion.getHitCount()).isEqualTo(0);
+
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Read,
@@ -418,6 +423,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
         CosmosDiagnostics cosmosDiagnostics =
             cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
+
+        assertThat(serverErrorRuleByFeedRange.getHitCount()).isEqualTo(1);
         this.validateFaultInjectionRuleApplied(
             cosmosDiagnostics,
             OperationType.Query,
@@ -484,6 +491,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             CosmosItemResponse<TestItem> itemResponse =
                 container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
 
+            assertThat(timeoutRule.getHitCount()).isEqualTo(1);
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
@@ -541,6 +549,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
             CosmosItemResponse<TestItem> itemResponse = container.createItem(TestItem.createNewItem()).block();
 
+            assertThat(serverConnectionDelayRule.getHitCount()).isEqualTo(1);
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Create,
@@ -612,6 +621,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 }
             }
 
+            assertThat(serverErrorRule.getHitCount()).isEqualTo(1);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Read,
