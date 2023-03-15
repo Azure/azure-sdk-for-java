@@ -237,7 +237,7 @@ $otherPackages = $otherPackages | Sort-Object -Property DisplayName
 
 if ($otherPackages) {
   foreach ($otherPackage in $otherPackages) {
-    $segments = $otherPackage.DisplayName.Split('-').ForEach({ $_.Trim() })
+    $segments = $otherPackage.DisplayName.Split(' - ').ForEach({ $_.Trim() })
 
 
     if ($segments.Count -gt 1) {
