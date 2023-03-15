@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.models.RetentionPolicy;
+import com.azure.communication.chat.models.RetentionPolicy;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 

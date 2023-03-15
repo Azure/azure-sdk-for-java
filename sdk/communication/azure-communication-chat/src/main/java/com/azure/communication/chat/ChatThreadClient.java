@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.implementation.models.RetentionPolicy;
+import com.azure.communication.chat.models.RetentionPolicy;
 import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatMessage;

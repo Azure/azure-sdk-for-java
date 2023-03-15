@@ -17,11 +17,11 @@ public final class ChatThreadPropertiesConverter {
         if (obj == null) {
             return null;
         }
-
         ChatThreadProperties chatThreadProperties = new ChatThreadProperties()
             .setId(obj.getId())
             .setTopic(obj.getTopic())
-            .setCreatedOn(obj.getCreatedOn());
+            .setCreatedOn(obj.getCreatedOn())
+            .setRetentionPolicy(RetentionPolicyConverter.convertFromImpl(obj));
 
         if (obj.getCreatedByCommunicationIdentifier() != null) {
             chatThreadProperties.setCreatedBy(

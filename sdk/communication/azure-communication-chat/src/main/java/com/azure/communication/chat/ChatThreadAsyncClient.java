@@ -8,7 +8,7 @@ import com.azure.communication.chat.implementation.converters.AddChatParticipant
 import com.azure.communication.chat.implementation.converters.ChatErrorConverter;
 import com.azure.communication.chat.implementation.converters.ChatThreadPropertiesConverter;
 import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.chat.implementation.models.RetentionPolicy;
+import com.azure.communication.chat.models.RetentionPolicy;
 import com.azure.communication.chat.models.ChatError;
 import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatThreadProperties;
