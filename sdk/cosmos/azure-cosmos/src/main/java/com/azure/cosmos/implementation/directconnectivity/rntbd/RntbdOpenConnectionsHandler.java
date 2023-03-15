@@ -83,13 +83,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                                 logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
                                             }
                                         })
-                                        .doFinally(signalType -> {
-                                            if (signalType.equals(SignalType.CANCEL)) {
-                                                openConnectionRequestRecord.cancel(true);
-                                            }
-
-                                            openConnectionsSemaphore.release();
-                                        })
+                                        .doOnTerminate(() -> openConnectionsSemaphore.release())
                                         .collectList();
                             } else {
                                 openConnectionsSemaphore.release();
