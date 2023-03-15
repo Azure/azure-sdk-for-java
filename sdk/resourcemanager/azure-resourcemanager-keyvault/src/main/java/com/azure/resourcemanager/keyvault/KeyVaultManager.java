@@ -9,6 +9,7 @@ import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.implementation.KeyVaultManagementClientBuilder;
 import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
+import com.azure.resourcemanager.keyvault.models.ManagedHsms;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
@@ -24,6 +25,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     private final AuthorizationManager authorizationManager;
     // Collections
     private Vaults vaults;
+    private ManagedHsms managedHsms;
     // Variables
     private final String tenantId;
 
@@ -104,6 +106,13 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
             vaults = new VaultsImpl(this, authorizationManager, tenantId);
         }
         return vaults;
+    }
+
+    /** @return the Managed HSM management API entry point */
+    public ManagedHsms managedHsms() {
+        if (managedHsms == null) {
+        }
+        return managedHsms;
     }
 
 //    /**
