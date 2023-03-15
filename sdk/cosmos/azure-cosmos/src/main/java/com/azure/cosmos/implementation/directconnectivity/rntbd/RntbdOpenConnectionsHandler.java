@@ -30,7 +30,6 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     public static final String DEFENSIVE_CONNECTIONS_MODE = "DEFENSIVE_SEMAPHORE_SETTINGS";
     public static final String AGGRESSIVE_CONNECTIONS_MODE = "AGGRESSIVE_SEMAPHORE_SETTINGS";
 
-
     static {
         semaphoreRegistry.put("AGGRESSIVE", new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
         semaphoreRegistry.put("DEFENSIVE", new SemaphoreSettings(Configs.getCPUCnt(), 10));

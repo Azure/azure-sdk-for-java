@@ -14,8 +14,8 @@ import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -28,10 +28,9 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
-    private final AtomicBoolean openConnectionsInProgress = new AtomicBoolean(false);
-    private static final Integer maxOpenConnectionRetryAttempts = 5;
-    private final AtomicInteger openConnectionRetryAttempts = new AtomicInteger(0);
-    private final Integer proactiveConnectionsCount = 4;
+    private final Integer minChannelPoolPerEndpoint = 4;
+    private final Semaphore openProactiveConnectionsSemaphore;
+
     // endregion
 
     // region Constructors
@@ -41,6 +40,11 @@ public class RntbdConnectionStateListener {
         this.rntbdOpenConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
+        // only allow 1 permit since we do not need a high no. of permits
+        // to open connections on a single endpoint
+        // also a semaphore can help in the case of concurrent channel-related
+        // exceptions
+        this.openProactiveConnectionsSemaphore = new Semaphore(1);
     }
 
     // endregion
@@ -88,23 +92,27 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (this.endpoint.channelsMetrics() == proactiveConnectionsCount) {
+        if (this.endpoint.channelsMetrics() >= minChannelPoolPerEndpoint) {
             return;
         }
 
-        while (this.openConnectionsInProgress.compareAndSet(false, true)) {
+        try {
+            if (openProactiveConnectionsSemaphore.tryAcquire(5, TimeUnit.SECONDS)) {
+                int numOpenConnections = this.endpoint.channelsMetrics();
 
-            int numOpenConnections = this.endpoint.channelsMetrics();
-
-            Mono.defer(() -> this.rntbdOpenConnectionsHandler
-                            .openConnection(this.endpoint.serviceEndpoint(), this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
-                            .map(openConnectionResponse -> openConnectionResponse.getException())
-                    )
-                    // TODO: Should be wired to CosmosContainerProactiveInitConfig
-                    .repeat(proactiveConnectionsCount - numOpenConnections - 1)
-                    .doOnTerminate(() -> this.openConnectionsInProgress.set(false))
-                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .subscribe();
+                // TODO: Should be wired to CosmosContainerProactiveInitConfig / ConnectionPolicy / DirectConfigurationConfig
+                if (numOpenConnections < minChannelPoolPerEndpoint) {
+                    Mono.defer(() -> this.rntbdOpenConnectionsHandler
+                                    .openConnection(this.endpoint.serviceEndpoint(), this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
+                            )
+                            .repeat(minChannelPoolPerEndpoint - numOpenConnections - 1)
+                            .doOnTerminate(() -> openProactiveConnectionsSemaphore.release())
+                            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                            .subscribe();
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
     // endregion
