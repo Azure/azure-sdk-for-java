@@ -63,6 +63,11 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return this.storeClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
+    }
+
+    @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.storeClient.configureFaultInjectorProvider(injectorProvider);
     }

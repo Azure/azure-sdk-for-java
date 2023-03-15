@@ -195,6 +195,10 @@ public class ReplicatedResourceClient {
         return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
+    }
+
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }

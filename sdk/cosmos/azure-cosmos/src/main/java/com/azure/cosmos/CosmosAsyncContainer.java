@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -68,7 +69,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -485,7 +485,7 @@ public class CosmosAsyncContainer {
                     .setProactiveConnectionRegionsCount(1)
                     .build();
 
-            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE")
                                             .flatMap(openResult -> {
                                                 logger.info("OpenConnectionsAndInitCaches: {}", openResult);
                                                 return Mono.empty();
@@ -545,10 +545,13 @@ public class CosmosAsyncContainer {
                     .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
-            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE")
                     .flatMap(
                         openResult -> {
-                            logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                            logger.info("OpenConnectionsAndInitCaches: {}", String.format(
+                                    "EndpointsConnected: %s, Failed: %s",
+                                    openResult.left /*endpoints connected*/,
+                                    openResult.right /*endpoints failed to connect*/));
                             return Mono.empty();
                         }));
         } else {
@@ -559,15 +562,16 @@ public class CosmosAsyncContainer {
         }
     }
 
-    /***
+    /**
      * Internal implementation to try to initialize the container by warming up the caches and
      * connections for the current read region.
      *
-     * @return a string represents the open result.
+     * @return an {@link ImmutablePair} which represents the no. of endpoints connected to and
+     * no. of endpoints to which connections failed
      */
-    private Mono<String> openConnectionsAndInitCachesInternal(
-        CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig)
+    private Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode)
                 .collectList()
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
@@ -587,14 +591,51 @@ public class CosmosAsyncContainer {
                         });
                     }
 
-                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
-                    return Mono.just(
-                        String.format(
-                            "EndpointsConnected: %s, Failed: %s",
-                            endpointConnected,
-                            endPointOpenConnectionsStatistics.size() - endpointConnected));
+                    long endpointsConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
+                    return Mono.just(new ImmutablePair<>(endpointsConnected, endPointOpenConnectionsStatistics.size() - endpointsConnected));
                 });
     }
+
+    Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(int numProactiveConnectionRegions, String openConnectionsConcurrencyMode) {
+
+        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
+        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
+
+        checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
+
+        if (numProactiveConnectionRegions > 1) {
+            checkArgument(
+                    endpointDiscoveryEnabled,
+                    "endpoint discovery should be enabled when no. " +
+                            "of proactive regions is greater than 1");
+            checkArgument(
+                    preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions,
+                    "no. of proactive connection " +
+                            "regions should be lesser than the no. of preferred regions.");
+        }
+
+        if (isInitialized.compareAndSet(false, true)) {
+
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+                    new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+                            .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
+                            .build();
+
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, openConnectionsConcurrencyMode)
+                    .flatMap(
+                            openResult -> {
+                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                                return Mono.empty();
+                            }));
+        } else {
+            logger.warn(
+                    "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
+                    this.getId());
+            return Mono.empty();
+        }
+    }
+
 
     /**
      * Query for items in the current container using a string.

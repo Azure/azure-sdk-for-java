@@ -90,4 +90,7 @@ public class AddressSelector {
         return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
+    }
 }

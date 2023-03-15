@@ -97,56 +97,61 @@ public class GlobalAddressResolver implements IAddressResolver {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return openConnectionsAndInitCaches(proactiveContainerInitConfig, "AGGRESSIVE");
+    }
 
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/",
         //  some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
         return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
                 .flatMap(containerIdentity ->
-                    this
-                        .collectionCache
-                        .resolveByNameAsync(
-                            null,
-                            ImplementationBridgeHelpers
-                                .CosmosContainerIdentityHelper
-                                .getCosmosContainerIdentityAccessor()
-                                .getContainerLink(containerIdentity),
-                            null)
-                        .flatMapMany(collection -> {
-                            if (collection == null) {
-                                logger.warn("Can not find the collection, no connections will be opened");
-                                return Mono.empty();
-                            }
+                        this
+                                .collectionCache
+                                .resolveByNameAsync(
+                                        null,
+                                        ImplementationBridgeHelpers
+                                                .CosmosContainerIdentityHelper
+                                                .getCosmosContainerIdentityAccessor()
+                                                .getContainerLink(containerIdentity),
+                                        null)
+                                .flatMapMany(collection -> {
+                                    if (collection == null) {
+                                        logger.warn("Can not find the collection, no connections will be opened");
+                                        return Mono.empty();
+                                    }
 
-                            return this.routingMapProvider.tryGetOverlappingRangesAsync(
-                                            null,
-                                            collection.getResourceId(),
-                                            PartitionKeyInternalHelper.FullRange,
-                                            true,
-                                            null)
-                                    .map(valueHolder -> {
+                                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
+                                                    null,
+                                                    collection.getResourceId(),
+                                                    PartitionKeyInternalHelper.FullRange,
+                                                    true,
+                                                    null)
+                                            .map(valueHolder -> {
 
-                                        if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
-                                            logger.warn(
-                                                    "There is no pkRanges found for collection {}, no connections will be opened",
-                                                    collection.getResourceId());
-                                            return new ArrayList<PartitionKeyRangeIdentity>();
-                                        }
+                                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                                    logger.warn(
+                                                            "There is no pkRanges found for collection {}, no connections will be opened",
+                                                            collection.getResourceId());
+                                                    return new ArrayList<PartitionKeyRangeIdentity>();
+                                                }
 
-                                        return valueHolder.v
-                                                .stream()
-                                                .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
-                                                .collect(Collectors.toList());
-                                    })
-                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig));
-                        }));
+                                                return valueHolder.v
+                                                        .stream()
+                                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
+                                                        .collect(Collectors.toList());
+                                            })
+                                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig, openConnectionsConcurrencyMode));
+                                }));
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            String openConnectionsConcurrencyMode
     ) {
 
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
@@ -156,7 +161,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                             return this.addressCacheByEndpoint.get(readEndpoint)
                                     .addressCache
-                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities, openConnectionsConcurrencyMode);
                         }
                         return Flux.empty();
                     });

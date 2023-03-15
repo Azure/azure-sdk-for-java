@@ -517,10 +517,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
             return Mono.empty();
         }
-        @Override
-        public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-            throw new NotImplementedException("tryOpenConnection is not supported in RntbdTransportClientTest");
-        }
 
         @Override
         public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

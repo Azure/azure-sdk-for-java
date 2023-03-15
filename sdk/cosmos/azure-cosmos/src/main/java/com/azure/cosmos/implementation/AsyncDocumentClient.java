@@ -1661,6 +1661,8 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
+
     /**
      * Warm up caches and open connections for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in

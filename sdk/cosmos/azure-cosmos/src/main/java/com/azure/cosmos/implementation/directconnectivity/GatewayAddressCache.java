@@ -102,6 +102,13 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
+    private static final Map<String, OpenConnectionsConcurrencySetting> openConnectionsConcurrencySettings = new HashMap<>();
+
+
+    static {
+        openConnectionsConcurrencySettings.put("AGGRESSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3));
+        openConnectionsConcurrencySettings.put("DEFENSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt(), Configs.getCPUCnt()));
+    }
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -912,10 +919,15 @@ public class GatewayAddressCache implements IAddressCache {
 
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
+            String openConnectionsConcurrencyMode
+            ) {
 
         checkNotNull(collection, "Argument 'collection' should not be null");
         checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
+
+        OpenConnectionsConcurrencySetting connectionsConcurrencySetting = openConnectionsConcurrencySettings
+                .getOrDefault(openConnectionsConcurrencyMode, openConnectionsConcurrencySettings.get("AGGRESSIVE"));
 
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -976,14 +988,16 @@ public class GatewayAddressCache implements IAddressCache {
                                             Arrays
                                                 .stream(addressInfo.getRight())
                                                 .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                .collect(Collectors.toList()));
+                                                .collect(Collectors.toList()),
+                                            openConnectionsConcurrencyMode
+                                        );
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");
                                     return Flux.empty();
                                 },
-                                Configs.getCPUCnt() * 10,
-                                Configs.getCPUCnt() * 3);
+                                    connectionsConcurrencySetting.concurrency,
+                                connectionsConcurrencySetting.prefetch);
                 });
     }
 
@@ -1071,6 +1085,16 @@ public class GatewayAddressCache implements IAddressCache {
                 .compareTo(minDurationBeforeEnforcingCollectionRoutingMapRefresh) >= 0;
 
             return returnValue;
+        }
+    }
+
+    private static final class OpenConnectionsConcurrencySetting {
+        private int concurrency;
+        private int prefetch;
+
+        public OpenConnectionsConcurrencySetting(int concurrency, int prefetch) {
+            this.concurrency = concurrency;
+            this.prefetch = prefetch;
         }
     }
 }

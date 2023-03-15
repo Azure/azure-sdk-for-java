@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -18,6 +19,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -637,7 +639,7 @@ public final class CosmosAsyncClient implements Closeable {
         openConnectionsInBackground(warmedUpContainerLinks);
     }
 
-    private Mono<List<Tuple2<CosmosAsyncContainer, Void>>> openConnectionsAndInitCachesInternal(Set<String> warmedUpContainerLinks) {
+    private Mono<List<Tuple2<CosmosAsyncContainer, ImmutablePair<Long, Long>>>> openConnectionsAndInitCachesInternal(Set<String> warmedUpContainerLinks) {
         int concurrency = 1;
         int prefetch = 1;
 
@@ -653,14 +655,23 @@ public final class CosmosAsyncClient implements Closeable {
                     .flatMap(cosmosAsyncContainer -> Mono.zip(
                                     Mono.just(cosmosAsyncContainer),
                                     cosmosAsyncContainer
-                                            .openConnectionsAndInitCaches(
-                                                    this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()
+                                            .openConnectionsAndInitCachesInternal(
+                                                    this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
+                                                    "AGGRESSIVE"
                                             )
                             ),
                             concurrency,
                             prefetch
                     )
-                    .doOnNext(objects -> warmedUpContainerLinks.add(objects.getT1().getLink()))
+                    .doOnNext(objects -> {
+                                long endpointsConnectedCount = objects.getT2().left;
+                                long endpointsConnectionFailedCount = objects.getT2().right;
+
+                                if (endpointsConnectedCount > 0 && endpointsConnectionFailedCount == 0) {
+                                    warmedUpContainerLinks.add(objects.getT1().getLink());
+                                }
+                            }
+                    )
                     .collectList();
         }
 
@@ -684,8 +695,9 @@ public final class CosmosAsyncClient implements Closeable {
                         prefetch
                 )
                 .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer
-                                .openConnectionsAndInitCaches(
-                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()
+                                .openConnectionsAndInitCachesInternal(
+                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
+                                        "DEFENSIVE"
                                 ),
                         concurrency,
                         prefetch

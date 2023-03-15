@@ -88,21 +88,21 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (this.endpoint.channelsMetrics() < proactiveConnectionsCount) {
+        if (this.endpoint.channelsMetrics() == proactiveConnectionsCount) {
             return;
         }
 
-        if (this.openConnectionsInProgress.compareAndSet(false, true) &&
-                this.openConnectionRetryAttempts.get() < maxOpenConnectionRetryAttempts
-        ) {
+        while (this.openConnectionsInProgress.compareAndSet(false, true)) {
+
+            int numOpenConnections = this.endpoint.channelsMetrics();
+
             Mono.defer(() -> this.rntbdOpenConnectionsHandler
-                            .openConnection(this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE))
+                            .openConnection(this.endpoint.serviceEndpoint(), this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
+                            .map(openConnectionResponse -> openConnectionResponse.getException())
+                    )
                     // TODO: Should be wired to CosmosContainerProactiveInitConfig
-                    .repeat(proactiveConnectionsCount - this.endpoint.channelsMetrics() - 1)
-                    .doOnTerminate(() -> {
-                        this.openConnectionsInProgress.set(false);
-                        this.openConnectionRetryAttempts.incrementAndGet();
-                    })
+                    .repeat(proactiveConnectionsCount - numOpenConnections - 1)
+                    .doOnTerminate(() -> this.openConnectionsInProgress.set(false))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }

@@ -136,6 +136,11 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
+    }
+
+    @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }

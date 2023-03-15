@@ -93,6 +93,11 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+        return Flux.empty();
+    }
+
+    @Override
     public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
         throw new NotImplementedException("setOpenConnectionsHandler is not supported on AddressResolver");
     }

@@ -26,6 +26,8 @@ public interface IAddressResolver {
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
+
     /***
      * Set the open connection handler so SDK can proactively create connections based on need.
      *

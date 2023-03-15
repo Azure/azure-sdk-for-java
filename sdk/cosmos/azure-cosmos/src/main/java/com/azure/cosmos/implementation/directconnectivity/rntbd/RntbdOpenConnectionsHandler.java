@@ -32,8 +32,8 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
 
     static {
-        semaphoreRegistry.put("AGGRESSIVE_SEMAPHORE_SETTINGS", new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
-        semaphoreRegistry.put("DEFENSIVE_SEMAPHORE_SETTINGS", new SemaphoreSettings(Configs.getCPUCnt(), 10));
+        semaphoreRegistry.put("AGGRESSIVE", new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
+        semaphoreRegistry.put("DEFENSIVE", new SemaphoreSettings(Configs.getCPUCnt(), 10));
     }
 
     public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
@@ -44,15 +44,15 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
 
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
 
-        return openConnection(addressUri, AGGRESSIVE_CONNECTIONS_MODE);
+        return openConnection(serviceEndpoint, addressUri, AGGRESSIVE_CONNECTIONS_MODE);
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, String semaphoreSettingsMode) {
+    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri, String semaphoreSettingsMode) {
 
         SemaphoreSettings semaphoreSettings = semaphoreRegistry.getOrDefault(semaphoreSettingsMode, semaphoreRegistry.get(AGGRESSIVE_CONNECTIONS_MODE));
         Semaphore openConnectionsSemaphore = semaphoreSettings.semaphore;
@@ -65,7 +65,8 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                 return Mono.just(addressUri.getURI())
                         .flatMap(address -> {
 
-                            RntbdEndpoint endpoint = endpointProvider.get(address);
+                            RntbdEndpoint endpoint = endpointProvider.createIfAbsent(serviceEndpoint, address);
+
                             OpenConnectionRntbdRequestRecord openConnectionRequestRecord =
                                     endpoint.openConnection(addressUri);
 
@@ -118,7 +119,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         }
 
         return Flux.fromIterable(addresses)
-                .flatMap(addressUri -> this.openConnection(addressUri, semaphoreSettingsMode));
+                .flatMap(addressUri -> this.openConnection(serviceEndpoint, addressUri, semaphoreSettingsMode));
     }
 
     private static final class SemaphoreSettings {
