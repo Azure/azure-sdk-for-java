@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,12 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
     private final RntbdEndpoint.Provider endpointProvider;
     private static final Map<String, SemaphoreSettings> semaphoreRegistry = new HashMap<>();
-    public static final String DEFENSIVE_CONNECTIONS_MODE = "DEFENSIVE_SEMAPHORE_SETTINGS";
-    public static final String AGGRESSIVE_CONNECTIONS_MODE = "AGGRESSIVE_SEMAPHORE_SETTINGS";
+    public static final String DEFENSIVE_CONNECTIONS_MODE = "DEFENSIVE";
+    public static final String AGGRESSIVE_CONNECTIONS_MODE = "AGGRESSIVE";
 
     static {
-        semaphoreRegistry.put("AGGRESSIVE", new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
-        semaphoreRegistry.put("DEFENSIVE", new SemaphoreSettings(Configs.getCPUCnt(), 10));
+        semaphoreRegistry.put(DEFENSIVE_CONNECTIONS_MODE, new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
+        semaphoreRegistry.put(AGGRESSIVE_CONNECTIONS_MODE, new SemaphoreSettings(Configs.getCPUCnt(), 10));
     }
 
     public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
@@ -43,7 +44,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+    public Mono<List<OpenConnectionResponse>> openConnection(URI serviceEndpoint, Uri addressUri) {
 
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
 
@@ -51,9 +52,9 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri, String semaphoreSettingsMode) {
+    public Mono<List<OpenConnectionResponse>> openConnection(URI serviceEndpoint, Uri addressUri, String openConnectionsConcurrencyMode) {
 
-        SemaphoreSettings semaphoreSettings = semaphoreRegistry.getOrDefault(semaphoreSettingsMode, semaphoreRegistry.get(AGGRESSIVE_CONNECTIONS_MODE));
+        SemaphoreSettings semaphoreSettings = semaphoreRegistry.getOrDefault(openConnectionsConcurrencyMode, semaphoreRegistry.get(AGGRESSIVE_CONNECTIONS_MODE));
         Semaphore openConnectionsSemaphore = semaphoreSettings.semaphore;
         int timeout = semaphoreSettings.timeout;
 
@@ -69,7 +70,11 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             OpenConnectionRntbdRequestRecord openConnectionRequestRecord =
                                     endpoint.openConnection(addressUri);
 
-                            return Mono.fromFuture(endpoint.openConnection(addressUri))
+                            int minChannelsPerEndpoint = RntbdEndpoint.MIN_CHANNELS_PER_ENDPOINT;
+                            int endpointChannels = endpoint.channelsMetrics();
+
+                            return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(addressUri)))
+                                    .repeat(minChannelsPerEndpoint - endpointChannels - 1)
                                     .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                     .doOnNext(response -> {
                                         if (logger.isDebugEnabled()) {
@@ -82,18 +87,19 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                         }
 
                                         openConnectionsSemaphore.release();
-                                    });
+                                    })
+                                    .collectList();
                         });
             }
         } catch (InterruptedException e) {
             logger.warn("Acquire connection semaphore failed", e);
         }
 
-        return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));
+        return Mono.just(Arrays.asList(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore"))));
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses) {
+    public Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses) {
 
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
@@ -107,7 +113,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode) {
+    public Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode) {
 
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 

@@ -1661,7 +1661,7 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
+    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
 
     /**
      * Warm up caches and open connections for containers specified by
@@ -1671,7 +1671,7 @@ public interface AsyncDocumentClient {
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
      * Configure fault injector provider.

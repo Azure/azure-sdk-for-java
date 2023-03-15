@@ -95,13 +95,13 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return openConnectionsAndInitCaches(proactiveContainerInitConfig, "AGGRESSIVE");
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/",
         //  some use path with stripped leading "/",
@@ -147,7 +147,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 }));
     }
 
-    private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
+    private Flux<List<OpenConnectionResponse>> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,

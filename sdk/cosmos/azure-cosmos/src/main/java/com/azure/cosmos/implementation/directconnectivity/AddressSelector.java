@@ -86,11 +86,11 @@ public class AddressSelector {
         );
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
         return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
     }
 }

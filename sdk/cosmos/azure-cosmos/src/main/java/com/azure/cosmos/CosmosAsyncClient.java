@@ -28,17 +28,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -106,6 +96,10 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
 
+    private static final String AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
+    private static final String DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
+
+
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
         Iterator<?> iterator = serviceLoader.iterator();
@@ -114,6 +108,8 @@ public final class CosmosAsyncClient implements Closeable {
         } else {
             TRACER = null;
         }
+        AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "AGGRESSIVE";
+        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "DEFENSIVE";
     }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -657,7 +653,7 @@ public final class CosmosAsyncClient implements Closeable {
                                     cosmosAsyncContainer
                                             .openConnectionsAndInitCachesInternal(
                                                     this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                                    "AGGRESSIVE"
+                                                    AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE
                                             )
                             ),
                             concurrency,
@@ -683,10 +679,21 @@ public final class CosmosAsyncClient implements Closeable {
         int concurrency = 1;
         int prefetch = 1;
 
-        Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
-                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks
-                        .contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))
-                )
+        // warmed up containers can be prioritized last
+
+        List<CosmosContainerIdentity> nonWarmedUpContainerIdentities = this.proactiveContainerInitConfig
+                .getCosmosContainerIdentities()
+                .stream()
+                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks.contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity)))
+                .collect(Collectors.toList());
+
+        List<CosmosContainerIdentity> warmedUpContainerIdenties = this.proactiveContainerInitConfig
+                .getCosmosContainerIdentities()
+                .stream()
+                .filter(cosmosContainerIdentity -> warmedUpContainerLinks.contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity)))
+                .collect(Collectors.toList());
+
+        Flux.mergeSequential(Flux.fromIterable(nonWarmedUpContainerIdentities), Flux.fromIterable(warmedUpContainerIdenties))
                 .flatMap(
                         cosmosContainerIdentity -> Mono.just(this
                                 .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
@@ -697,7 +704,7 @@ public final class CosmosAsyncClient implements Closeable {
                 .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer
                                 .openConnectionsAndInitCachesInternal(
                                         this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                        "DEFENSIVE"
+                                        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE
                                 ),
                         concurrency,
                         prefetch

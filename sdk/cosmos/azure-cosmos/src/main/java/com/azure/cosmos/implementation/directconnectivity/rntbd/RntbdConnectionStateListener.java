@@ -28,7 +28,7 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
-    private final Integer minChannelPoolPerEndpoint = 4;
+    private final Integer minChannelPoolPerEndpoint = 1;
     private final Semaphore openProactiveConnectionsSemaphore;
 
     // endregion
@@ -92,28 +92,14 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (this.endpoint.channelsMetrics() >= minChannelPoolPerEndpoint) {
-            return;
-        }
-
-        try {
-            if (openProactiveConnectionsSemaphore.tryAcquire(5, TimeUnit.SECONDS)) {
-                int numOpenConnections = this.endpoint.channelsMetrics();
-
-                // TODO: Should be wired to CosmosContainerProactiveInitConfig / ConnectionPolicy / DirectConfigurationConfig
-                if (numOpenConnections < minChannelPoolPerEndpoint) {
-                    Mono.defer(() -> this.rntbdOpenConnectionsHandler
-                                    .openConnection(this.endpoint.serviceEndpoint(), this.addressUris.stream().findFirst().get(), RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE)
-                            )
-                            .repeat(minChannelPoolPerEndpoint - numOpenConnections - 1)
-                            .doOnTerminate(() -> openProactiveConnectionsSemaphore.release())
-                            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                            .subscribe();
-                }
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        this.rntbdOpenConnectionsHandler
+                .openConnection(
+                        this.endpoint.serviceEndpoint(),
+                        this.addressUris.stream().findFirst().get(),
+                        RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
+                )
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
     }
     // endregion
 

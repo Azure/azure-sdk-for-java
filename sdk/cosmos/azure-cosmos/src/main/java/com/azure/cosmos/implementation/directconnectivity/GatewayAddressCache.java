@@ -104,7 +104,6 @@ public class GatewayAddressCache implements IAddressCache {
     private final Set<Uri.HealthStatus> replicaValidationScopes;
     private static final Map<String, OpenConnectionsConcurrencySetting> openConnectionsConcurrencySettings = new HashMap<>();
 
-
     static {
         openConnectionsConcurrencySettings.put("AGGRESSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3));
         openConnectionsConcurrencySettings.put("DEFENSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt(), Configs.getCPUCnt()));
@@ -917,7 +916,7 @@ public class GatewayAddressCache implements IAddressCache {
         return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             String openConnectionsConcurrencyMode
@@ -996,7 +995,7 @@ public class GatewayAddressCache implements IAddressCache {
                                     logger.info("OpenConnectionHandler is null, can not open connections");
                                     return Flux.empty();
                                 },
-                                    connectionsConcurrencySetting.concurrency,
+                                connectionsConcurrencySetting.concurrency,
                                 connectionsConcurrencySetting.prefetch);
                 });
     }

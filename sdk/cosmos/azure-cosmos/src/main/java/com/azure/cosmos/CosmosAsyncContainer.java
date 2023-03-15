@@ -573,22 +573,24 @@ public class CosmosAsyncContainer {
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
         return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode)
                 .collectList()
-                .flatMap(openConnectionResponses -> {
+                .flatMap(openConnectionResponsesList -> {
                     // Generate a simple statistics string for open connections
-                    int total = openConnectionResponses.size();
+                    int total = openConnectionResponsesList.size();
 
                     ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
-                    for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
-                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURI().getAuthority(), (key, value) -> {
-                            if (value == null) {
-                                return openConnectionResponse.isConnected();
-                            }
+                    for (List<OpenConnectionResponse> openConnectionResponses : openConnectionResponsesList) {
+                        for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
+                            endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURI().getAuthority(), (key, value) -> {
+                                if (value == null) {
+                                    return openConnectionResponse.isConnected();
+                                }
 
-                            // Sometimes different replicas can landed on the same server, that is why we could reach here
-                            // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
-                            // if one failed, one succeeded, then it is still good
-                            return openConnectionResponse.isConnected() || value;
-                        });
+                                // Sometimes different replicas can landed on the same server, that is why we could reach here
+                                // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
+                                // if one failed, one succeeded, then it is still good
+                                return openConnectionResponse.isConnected() || value;
+                            });
+                        }
                     }
 
                     long endpointsConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();

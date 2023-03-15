@@ -11,8 +11,8 @@ import java.net.URI;
 import java.util.List;
 
 public interface IOpenConnectionsHandler {
-    Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri);
-    Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri, String semaphoreSettingsMode);
-    Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses);
-    Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode);
+    Mono<List<OpenConnectionResponse>> openConnection(URI serviceEndpoint, Uri addressUri);
+    Mono<List<OpenConnectionResponse>> openConnection(URI serviceEndpoint, Uri addressUri, String semaphoreSettingsMode);
+    Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses);
+    Flux<List<OpenConnectionResponse>> openConnections(URI serviceEndpoint, List<Uri> addresses, String semaphoreSettingsMode);
 }
