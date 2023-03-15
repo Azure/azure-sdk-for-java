@@ -7,14 +7,13 @@ jobs:
   - job: UpdateDocsMsBuildConfig
     pool:
       vmImage: ubuntu-20.04
-    timeoutInMinutes: 300
+    timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DailyDocRepoLocation: $(Pipeline.Workspace)/daily
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
-      # TODO: Removed for validation, re-add when validation completes
-      # DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
+      DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -28,22 +27,18 @@ jobs:
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
-
-      # TODO: Remove for validation, re-add once validation completes
       # Pull and build the docker image.
-      # - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-      #   parameters:
-      #     ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-      #     ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-      #     ImageId: "$(DocValidationImageId)"
+      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
+        parameters:
+          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
+          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
+          ImageId: "$(DocValidationImageId)"
       # Call update docs ci script to onboard packages
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          # TODO: keep ImageId
-          # arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
-          arguments: -DocRepoLocation $(DocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
         displayName: Update Docs Onboarding for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
