@@ -55,8 +55,8 @@ class ManagedHsmImpl
 
     @Override
     public Mono<ManagedHsm> createResourceAsync() {
-        // TODO (caoxiaofei, 2023-03-16 13:09)
-        throw new UnsupportedOperationException("method [createResourceAsync] not implemented in class [com.azure.resourcemanager.keyvault.implementation.ManagedHsmImpl]");
+        return manager().serviceClient().getManagedHsms().createOrUpdateAsync(resourceGroupName(), name(), innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override

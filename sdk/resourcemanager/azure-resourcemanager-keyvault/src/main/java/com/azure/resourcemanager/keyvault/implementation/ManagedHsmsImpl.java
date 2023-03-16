@@ -20,12 +20,12 @@ import java.util.UUID;
 /**
  * Implementation for ManagedHsms and its parent interfaces.
  */
-class ManagedHsmsImpl
+public class ManagedHsmsImpl
     extends GroupableResourcesImpl<ManagedHsm, ManagedHsmImpl, ManagedHsmInner, ManagedHsmsClient, KeyVaultManager>
     implements ManagedHsms {
     private final String tenantId;
 
-    ManagedHsmsImpl(KeyVaultManager manager, String tenantId) {
+    public ManagedHsmsImpl(KeyVaultManager manager, String tenantId) {
         super(manager.serviceClient().getManagedHsms(), manager);
         this.tenantId = tenantId;
     }

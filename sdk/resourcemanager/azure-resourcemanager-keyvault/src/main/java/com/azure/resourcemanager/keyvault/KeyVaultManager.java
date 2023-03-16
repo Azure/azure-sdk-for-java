@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.implementation.KeyVaultManagementClientBuilder;
+import com.azure.resourcemanager.keyvault.implementation.ManagedHsmsImpl;
 import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
 import com.azure.resourcemanager.keyvault.models.ManagedHsms;
 import com.azure.resourcemanager.keyvault.models.Vaults;
@@ -111,6 +112,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     /** @return the Managed HSM management API entry point */
     public ManagedHsms managedHsms() {
         if (managedHsms == null) {
+            managedHsms = new ManagedHsmsImpl(this, tenantId);
         }
         return managedHsms;
     }
