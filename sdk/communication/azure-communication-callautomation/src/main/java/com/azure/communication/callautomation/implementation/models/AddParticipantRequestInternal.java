@@ -21,7 +21,7 @@ public final class AddParticipantRequestInternal {
     /*
      * (Optional) The display name of the source that is associated with this
      * invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the
+     * adding a PSTN participant or teams user. Note: Will not update the
      * display name in the roster.
      */
     @JsonProperty(value = "sourceDisplayName")

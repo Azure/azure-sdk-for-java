@@ -17,6 +17,15 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
     public static final RelationshipStatus TRANSFERRING = fromString("Transferring");
 
     /**
+     * Creates a new instance of RelationshipStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RelationshipStatus() {
+    }
+
+    /**
      * Creates or finds a RelationshipStatus from its string representation.
      *
      * @param name a name to look for.

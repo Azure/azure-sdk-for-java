@@ -36,6 +36,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -576,6 +577,11 @@ public class ThroughputControlTests extends TestSuiteBase {
         client = getClientBuilder().buildAsyncClient();
         database = getSharedCosmosDatabase(client);
         container = getSharedMultiPartitionCosmosContainer(client);
+    }
+
+    @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
+    public void after_ThroughputBudgetControllerTest() {
+        safeCloseAsync(this.client);
     }
 
     private static TestItem getDocumentDefinition() {

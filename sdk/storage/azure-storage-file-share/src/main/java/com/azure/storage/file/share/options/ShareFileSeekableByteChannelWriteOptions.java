@@ -45,7 +45,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * This parameter is required when this instance is configured to {@link WriteMode#OVERWRITE}.
      * @return Usage mode to be used by the resulting channel.
      */
     public WriteMode getChannelMode() {

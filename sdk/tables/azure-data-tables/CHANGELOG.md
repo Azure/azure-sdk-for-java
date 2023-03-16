@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+- Fixed bug that disallowed empty strings as partition and row keys
 ### Other Changes
 
 ## 12.3.9 (2023-03-08)

@@ -31,7 +31,7 @@ public final class AscUsagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"limit\":241843348,\"unit\":\"scdntnevf\",\"currentValue\":2060062752,\"name\":{\"value\":\"gtdsslswt\",\"localizedValue\":\"eriofzpyqs\"}}]}";
+            "{\"value\":[{\"limit\":1344310513,\"unit\":\"allatmelwuipic\",\"currentValue\":834190026,\"name\":{\"value\":\"ivgvvcna\",\"localizedValue\":\"hyrnxxmu\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class AscUsagesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceUsage> response =
-            manager.ascUsages().list("ylpstdbhhxsrzdz", com.azure.core.util.Context.NONE);
+            manager.ascUsages().list("qgxqquezikyw", com.azure.core.util.Context.NONE);
     }
 }

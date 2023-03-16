@@ -236,36 +236,28 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
     public static ContainerRepositoryProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String registryLoginServer = null;
-                    String name = null;
-                    OffsetDateTime createdOn = null;
-                    OffsetDateTime lastUpdatedOn = null;
-                    int manifestCount = 0;
-                    int tagCount = 0;
-                    Boolean deleteEnabled = null;
-                    Boolean writeEnabled = null;
-                    Boolean listEnabled = null;
-                    Boolean readEnabled = null;
+                    ContainerRepositoryProperties deserializedContainerRepositoryProperties =
+                            new ContainerRepositoryProperties();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("registry".equals(fieldName)) {
-                            registryLoginServer = reader.getString();
+                            deserializedContainerRepositoryProperties.registryLoginServer = reader.getString();
                         } else if ("imageName".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedContainerRepositoryProperties.name = reader.getString();
                         } else if ("createdTime".equals(fieldName)) {
-                            createdOn =
+                            deserializedContainerRepositoryProperties.createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            lastUpdatedOn =
+                            deserializedContainerRepositoryProperties.lastUpdatedOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("manifestCount".equals(fieldName)) {
-                            manifestCount = reader.getInt();
+                            deserializedContainerRepositoryProperties.manifestCount = reader.getInt();
                         } else if ("tagCount".equals(fieldName)) {
-                            tagCount = reader.getInt();
+                            deserializedContainerRepositoryProperties.tagCount = reader.getInt();
                         } else if ("changeableAttributes".equals(fieldName)
                                 && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -273,13 +265,17 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
                                 reader.nextToken();
 
                                 if ("deleteEnabled".equals(fieldName)) {
-                                    deleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedContainerRepositoryProperties.deleteEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("writeEnabled".equals(fieldName)) {
-                                    writeEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedContainerRepositoryProperties.writeEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("listEnabled".equals(fieldName)) {
-                                    listEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedContainerRepositoryProperties.listEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("readEnabled".equals(fieldName)) {
-                                    readEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedContainerRepositoryProperties.readEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else {
                                     reader.skipChildren();
                                 }
@@ -288,19 +284,8 @@ public class ContainerRepositoryProperties implements JsonSerializable<Container
                             reader.skipChildren();
                         }
                     }
-                    ContainerRepositoryProperties deserializedValue = new ContainerRepositoryProperties();
-                    deserializedValue.registryLoginServer = registryLoginServer;
-                    deserializedValue.name = name;
-                    deserializedValue.createdOn = createdOn;
-                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
-                    deserializedValue.manifestCount = manifestCount;
-                    deserializedValue.tagCount = tagCount;
-                    deserializedValue.deleteEnabled = deleteEnabled;
-                    deserializedValue.writeEnabled = writeEnabled;
-                    deserializedValue.listEnabled = listEnabled;
-                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedValue;
+                    return deserializedContainerRepositoryProperties;
                 });
     }
 }

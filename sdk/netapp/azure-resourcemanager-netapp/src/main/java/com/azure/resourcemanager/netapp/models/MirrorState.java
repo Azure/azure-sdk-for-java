@@ -20,6 +20,15 @@ public final class MirrorState extends ExpandableStringEnum<MirrorState> {
     public static final MirrorState BROKEN = fromString("Broken");
 
     /**
+     * Creates a new instance of MirrorState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MirrorState() {
+    }
+
+    /**
      * Creates or finds a MirrorState from its string representation.
      *
      * @param name a name to look for.

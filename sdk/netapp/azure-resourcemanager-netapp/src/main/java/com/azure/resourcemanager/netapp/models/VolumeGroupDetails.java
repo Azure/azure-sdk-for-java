@@ -95,7 +95,7 @@ public interface VolumeGroupDetails {
             /**
              * Specifies resourceGroupName, accountName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @return the next definition stage.
              */

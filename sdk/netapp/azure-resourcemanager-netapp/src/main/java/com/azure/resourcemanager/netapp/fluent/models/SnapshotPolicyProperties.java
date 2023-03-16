@@ -50,6 +50,10 @@ public final class SnapshotPolicyProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of SnapshotPolicyProperties class. */
+    public SnapshotPolicyProperties() {
+    }
+
     /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.
      *

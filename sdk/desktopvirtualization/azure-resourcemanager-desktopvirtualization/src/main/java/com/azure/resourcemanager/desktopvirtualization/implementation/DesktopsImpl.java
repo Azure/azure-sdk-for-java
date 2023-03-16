@@ -29,15 +29,6 @@ public final class DesktopsImpl implements Desktops {
         this.serviceManager = serviceManager;
     }
 
-    public Desktop get(String resourceGroupName, String applicationGroupName, String desktopName) {
-        DesktopInner inner = this.serviceClient().get(resourceGroupName, applicationGroupName, desktopName);
-        if (inner != null) {
-            return new DesktopImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Desktop> getWithResponse(
         String resourceGroupName, String applicationGroupName, String desktopName, Context context) {
         Response<DesktopInner> inner =
@@ -53,8 +44,8 @@ public final class DesktopsImpl implements Desktops {
         }
     }
 
-    public Desktop update(String resourceGroupName, String applicationGroupName, String desktopName) {
-        DesktopInner inner = this.serviceClient().update(resourceGroupName, applicationGroupName, desktopName);
+    public Desktop get(String resourceGroupName, String applicationGroupName, String desktopName) {
+        DesktopInner inner = this.serviceClient().get(resourceGroupName, applicationGroupName, desktopName);
         if (inner != null) {
             return new DesktopImpl(inner, this.manager());
         } else {
@@ -83,13 +74,31 @@ public final class DesktopsImpl implements Desktops {
         }
     }
 
+    public Desktop update(String resourceGroupName, String applicationGroupName, String desktopName) {
+        DesktopInner inner = this.serviceClient().update(resourceGroupName, applicationGroupName, desktopName);
+        if (inner != null) {
+            return new DesktopImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName) {
         PagedIterable<DesktopInner> inner = this.serviceClient().list(resourceGroupName, applicationGroupName);
         return Utils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName, Context context) {
-        PagedIterable<DesktopInner> inner = this.serviceClient().list(resourceGroupName, applicationGroupName, context);
+    public PagedIterable<Desktop> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
+        PagedIterable<DesktopInner> inner =
+            this
+                .serviceClient()
+                .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
     }
 

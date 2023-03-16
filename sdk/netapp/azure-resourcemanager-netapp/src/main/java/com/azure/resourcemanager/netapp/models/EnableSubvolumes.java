@@ -17,6 +17,15 @@ public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolume
     public static final EnableSubvolumes DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EnableSubvolumes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnableSubvolumes() {
+    }
+
+    /**
      * Creates or finds a EnableSubvolumes from its string representation.
      *
      * @param name a name to look for.

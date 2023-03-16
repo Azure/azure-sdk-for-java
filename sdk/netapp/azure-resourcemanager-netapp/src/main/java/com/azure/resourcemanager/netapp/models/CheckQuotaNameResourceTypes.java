@@ -28,6 +28,15 @@ public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<Chec
             fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
+     * Creates a new instance of CheckQuotaNameResourceTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CheckQuotaNameResourceTypes() {
+    }
+
+    /**
      * Creates or finds a CheckQuotaNameResourceTypes from its string representation.
      *
      * @param name a name to look for.

@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommunicationTokenScope. */
+/** List of scopes for an access token. */
 public final class CommunicationTokenScope extends ExpandableStringEnum<CommunicationTokenScope> {
     /** Static value chat for CommunicationTokenScope. */
     public static final CommunicationTokenScope CHAT = fromString("chat");
 
     /** Static value voip for CommunicationTokenScope. */
     public static final CommunicationTokenScope VOIP = fromString("voip");
+
+    /**
+     * Creates a new instance of CommunicationTokenScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommunicationTokenScope() {}
 
     /**
      * Creates or finds a CommunicationTokenScope from its string representation.

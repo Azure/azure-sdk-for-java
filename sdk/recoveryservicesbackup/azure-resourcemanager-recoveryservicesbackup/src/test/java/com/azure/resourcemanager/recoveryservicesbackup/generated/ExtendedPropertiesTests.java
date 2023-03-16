@@ -16,11 +16,11 @@ public final class ExtendedPropertiesTests {
         ExtendedProperties model =
             BinaryData
                 .fromString(
-                    "{\"diskExclusionProperties\":{\"diskLunList\":[1541895988,1540093204],\"isInclusionList\":true},\"linuxVmApplicationName\":\"ajjziuxxpshne\"}")
+                    "{\"diskExclusionProperties\":{\"diskLunList\":[1699726584],\"isInclusionList\":true},\"linuxVmApplicationName\":\"kulfg\"}")
                 .toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1541895988, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertEquals(1699726584, model.diskExclusionProperties().diskLunList().get(0));
         Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("ajjziuxxpshne", model.linuxVmApplicationName());
+        Assertions.assertEquals("kulfg", model.linuxVmApplicationName());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,13 +28,11 @@ public final class ExtendedPropertiesTests {
         ExtendedProperties model =
             new ExtendedProperties()
                 .withDiskExclusionProperties(
-                    new DiskExclusionProperties()
-                        .withDiskLunList(Arrays.asList(1541895988, 1540093204))
-                        .withIsInclusionList(true))
-                .withLinuxVmApplicationName("ajjziuxxpshne");
+                    new DiskExclusionProperties().withDiskLunList(Arrays.asList(1699726584)).withIsInclusionList(true))
+                .withLinuxVmApplicationName("kulfg");
         model = BinaryData.fromObject(model).toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1541895988, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertEquals(1699726584, model.diskExclusionProperties().diskLunList().get(0));
         Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("ajjziuxxpshne", model.linuxVmApplicationName());
+        Assertions.assertEquals("kulfg", model.linuxVmApplicationName());
     }
 }

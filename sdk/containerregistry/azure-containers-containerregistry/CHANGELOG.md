@@ -1,5 +1,18 @@
 # Release History
 
+## 1.1.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+- Replaced `uploadManifest(OciImageManifest)` method on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes
+  with `uploadManifest(OciImageManifest manifest, String tag)` method.
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0-beta.3 (2023-03-08)
 
 ### Features Added

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation List. */
 public final class ProvisionedClustersOperationListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListProvisionedClusterBySubscription.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListProvisionedClusterBySubscription.json
      */
     /**
      * Sample code: ListProvisionedClusterBySubscription.
@@ -18,6 +16,6 @@ public final class ProvisionedClustersOperationListSamples {
      */
     public static void listProvisionedClusterBySubscription(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.provisionedClustersOperations().list(Context.NONE);
+        manager.provisionedClustersOperations().list(com.azure.core.util.Context.NONE);
     }
 }

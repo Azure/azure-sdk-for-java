@@ -18,28 +18,28 @@ public final class AzureFileShareProtectionPolicyTests {
         AzureFileShareProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"VM\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"timeZone\":\"qtqzfavyv\",\"protectedItemsCount\":141630952,\"resourceGuardOperationRequests\":[\"aryeu\"]}")
+                    "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"GenericDataSource\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"timeZone\":\"sjc\",\"protectedItemsCount\":2098917747,\"resourceGuardOperationRequests\":[\"ntiew\"]}")
                 .toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(141630952, model.protectedItemsCount());
-        Assertions.assertEquals("aryeu", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.VM, model.workLoadType());
-        Assertions.assertEquals("qtqzfavyv", model.timeZone());
+        Assertions.assertEquals(2098917747, model.protectedItemsCount());
+        Assertions.assertEquals("ntiew", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
+        Assertions.assertEquals("sjc", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileShareProtectionPolicy model =
             new AzureFileShareProtectionPolicy()
-                .withProtectedItemsCount(141630952)
-                .withResourceGuardOperationRequests(Arrays.asList("aryeu"))
-                .withWorkLoadType(WorkloadType.VM)
+                .withProtectedItemsCount(2098917747)
+                .withResourceGuardOperationRequests(Arrays.asList("ntiew"))
+                .withWorkLoadType(WorkloadType.GENERIC_DATA_SOURCE)
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy())
-                .withTimeZone("qtqzfavyv");
+                .withTimeZone("sjc");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(141630952, model.protectedItemsCount());
-        Assertions.assertEquals("aryeu", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.VM, model.workLoadType());
-        Assertions.assertEquals("qtqzfavyv", model.timeZone());
+        Assertions.assertEquals(2098917747, model.protectedItemsCount());
+        Assertions.assertEquals("ntiew", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
+        Assertions.assertEquals("sjc", model.timeZone());
     }
 }

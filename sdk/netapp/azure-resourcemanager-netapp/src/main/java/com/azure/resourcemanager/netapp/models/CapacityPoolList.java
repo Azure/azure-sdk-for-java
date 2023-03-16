@@ -24,6 +24,10 @@ public final class CapacityPoolList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CapacityPoolList class. */
+    public CapacityPoolList() {
+    }
+
     /**
      * Get the value property: List of Capacity pools.
      *

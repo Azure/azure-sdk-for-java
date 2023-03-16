@@ -27,6 +27,15 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
     public static final ServiceLevel STANDARD_ZRS = fromString("StandardZRS");
 
     /**
+     * Creates a new instance of ServiceLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceLevel() {
+    }
+
+    /**
      * Creates or finds a ServiceLevel from its string representation.
      *
      * @param name a name to look for.

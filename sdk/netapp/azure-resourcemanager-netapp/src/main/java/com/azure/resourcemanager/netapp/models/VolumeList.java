@@ -24,6 +24,10 @@ public final class VolumeList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VolumeList class. */
+    public VolumeList() {
+    }
+
     /**
      * Get the value property: List of volumes.
      *
