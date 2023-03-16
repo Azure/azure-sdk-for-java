@@ -260,7 +260,7 @@ DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
     .endpoint(endpoint)
     .credential(credential)
-    .repository(repository)
+    .repositoryName(repository)
     .buildClient();
 ```
 

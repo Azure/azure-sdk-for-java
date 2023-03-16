@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.specialized;
+package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
@@ -45,18 +45,17 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentTypeString;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
@@ -157,7 +156,7 @@ public final class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getMediaType(), context);
+        return uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getManifestMediaType(), context);
     }
 
     /**
@@ -233,11 +232,11 @@ public final class ContainerRegistryBlobClient {
      * <!-- src_embed com.azure.containers.containerregistry.downloadManifestTag -->
      * <pre>
      * DownloadManifestResult latestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
-     * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getMediaType&#40;&#41;&#41;
-     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getMediaType&#40;&#41;&#41;&#41; &#123;
+     * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
+     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.asOciManifest&#40;&#41;;
      * &#125; else &#123;
-     *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getMediaType&#40;&#41;&#41;;
+     *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.downloadManifestTag -->
@@ -246,7 +245,7 @@ public final class ContainerRegistryBlobClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadManifestDigest -->
      * <pre>
-     * DownloadManifestResult digestResult = blobClient.downloadManifest&#40;
+     * DownloadManifestResult downloadManifestResult = blobClient.downloadManifest&#40;
      *     &quot;sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311&quot;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.downloadManifestDigest -->
@@ -258,7 +257,7 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadManifestResult downloadManifest(String tagOrDigest) {
-        return downloadManifestWithResponse(tagOrDigest, null, Context.NONE).getValue();
+        return downloadManifestWithResponse(tagOrDigest, Context.NONE).getValue();
     }
 
     /**
@@ -266,46 +265,28 @@ public final class ContainerRegistryBlobClient {
      *
      * <p><strong>Code Samples:</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.downloadCustomManifest -->
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestWithResponse -->
      * <pre>
-     * ManifestMediaType dockerListType = ManifestMediaType
-     *     .fromString&#40;&quot;application&#47;vnd.docker.distribution.manifest.list.v2+json&quot;&#41;;
-     * ManifestMediaType ociIndexType = ManifestMediaType
-     *     .fromString&#40;&quot;application&#47;vnd.oci.image.index.v1+json&quot;&#41;;
-     *
-     * Response&lt;DownloadManifestResult&gt; response = blobClient.downloadManifestWithResponse&#40;
-     *     &quot;latest&quot;,
-     *     Arrays.asList&#40;dockerListType, ociIndexType&#41;,
+     * Response&lt;DownloadManifestResult&gt; downloadResponse = blobClient.downloadManifestWithResponse&#40;&quot;latest&quot;,
      *     Context.NONE&#41;;
-     * if &#40;dockerListType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
-     *     &#47;&#47; DockerManifestList manifestList = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;DockerManifestList.class&#41;;
-     *     System.out.println&#40;&quot;Got docker manifest list&quot;&#41;;
-     * &#125; else if &#40;ociIndexType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
-     *     &#47;&#47; OciIndex ociIndex = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;OciIndex.class&#41;;
-     *     System.out.println&#40;&quot;Got OCI index&quot;&#41;;
-     * &#125; else &#123;
-     *     throw new IllegalArgumentException&#40;&quot;Got unexpected manifest type: &quot; + response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;;
-     * &#125;
+     * System.out.printf&#40;&quot;Received manifest: digest - %s, response code: %s&#92;n&quot;, downloadResponse.getValue&#40;&#41;.getDigest&#40;&#41;,
+     *     downloadResponse.getStatusCode&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.downloadCustomManifest -->
+     * <!-- end com.azure.containers.containerregistry.downloadManifestWithResponse -->
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
-     * @param mediaTypes List of {@link  ManifestMediaType} to request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response for the manifest identified by the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, Collection<ManifestMediaType> mediaTypes, Context context) {
+    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, Context context) {
         Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
-
-        String requestMediaTypes = getContentTypeString(mediaTypes);
 
         try {
             Response<BinaryData> response =
-                registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    requestMediaTypes, context);
+                registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest, SUPPORTED_MANIFEST_TYPES, context);
             return toDownloadManifestResponse(tagOrDigest, response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -333,7 +314,7 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel) {
-        downloadStream(digest, channel, Context.NONE);
+        downloadStreamWithResponse(digest, channel, Context.NONE);
     }
 
     /**
@@ -342,16 +323,17 @@ public final class ContainerRegistryBlobClient {
      * @param digest The digest for the given image layer.
      * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return Response to last request received while downloading the context. Note that downloading content could be done
+     *         over several requests due to downloading in chunks or resuming failed downloads. Use distributed tracing or
+     *         logging to get insights into all requests done within this operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadStream(String digest, WritableByteChannel channel, Context context) {
-        runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> {
-            downloadBlobInternal(digest, channel, span);
-            return null;
-        }, context);
+    public Response<Void> downloadStreamWithResponse(String digest, WritableByteChannel channel, Context context) {
+        return runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> downloadBlobInternal(digest, channel, span), context);
     }
 
     /**
@@ -527,23 +509,26 @@ public final class ContainerRegistryBlobClient {
         }
     }
 
-    private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
+    private Response<Void> downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         MessageDigest sha256 = createSha256();
+        Response<BinaryData> lastChunk;
         try {
-            Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
-            validateResponseHeaderDigest(digest, firstChunk.getHeaders());
+            lastChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
+            validateResponseHeaderDigest(digest, lastChunk.getHeaders());
 
-            long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-            for (long p = firstChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
-                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+            for (long p = lastChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+                lastChunk = readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
             }
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
 
         validateDigest(sha256, digest);
+
+        return new SimpleResponse<>(lastChunk.getRequest(), lastChunk.getStatusCode(), lastChunk.getHeaders(), null);
     }
 
     private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {

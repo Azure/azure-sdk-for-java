@@ -12,9 +12,7 @@ import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -23,6 +21,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,10 +41,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DATA;
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DIGEST;
@@ -143,27 +142,6 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         DownloadManifestResult downloadManifestResult = client.downloadManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
-        validateManifest(MANIFEST, downloadManifestResult.getContent());
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
-    public void canDownloadManifestWithListOfTypes(HttpClient httpClient) {
-        client = getBlobClient("oci-artifact", httpClient);
-        uploadManifestPrerequisites();
-
-        UploadManifestResult result = client.uploadManifest(MANIFEST, null);
-        assertNotNull(result);
-        assertNotNull(result.getDigest());
-
-        List<ManifestMediaType> manifestTypes = Arrays.asList(ManifestMediaType.DOCKER_MANIFEST,
-            ManifestMediaType.OCI_MANIFEST,
-            ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json"),
-            ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json"));
-
-        DownloadManifestResult downloadManifestResult = client.downloadManifestWithResponse(MANIFEST_DIGEST, manifestTypes, Context.NONE).getValue();
-        assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
-        assertEquals(ManifestMediaType.OCI_MANIFEST, downloadManifestResult.getMediaType());
         validateManifest(MANIFEST, downloadManifestResult.getContent());
     }
 
@@ -268,7 +246,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         client = getBlobClient("oci-artifact", httpClient);
 
-        long size = CHUNK_SIZE * 50;
+        long size = CHUNK_SIZE * 20;
         TestInputStream input = new TestInputStream(size);
         UploadBlobResult result = client.uploadBlob(Channels.newChannel(input), Context.NONE);
 
@@ -287,18 +265,16 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 50;
-        final TestOutputStream output = new TestOutputStream();
+        AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(BinaryData.fromFlux(generateAsyncStream(size))
-                .flatMap(data -> asyncClient.uploadBlob(data))
-                .flatMap(uploadBlobResult -> {
-                    assertEquals(size, uploadBlobResult.getSizeInBytes());
-                    return asyncClient.downloadStream(uploadBlobResult.getDigest());
-                })
-                .flatMap(downloadResult -> downloadResult.writeValueTo(Channels.newChannel(output))))
+        StepVerifier.create(asyncClient.uploadBlob(generateAsyncStream(size))
+                .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
+                .flatMapMany(bd -> bd.toFluxByteBuffer())
+                .doOnNext(bb -> download.addAndGet(bb.remaining()))
+                .then())
             .verifyComplete();
 
-        assertEquals(size, output.getPosition());
+        assertEquals(size, download.get());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -341,7 +317,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                     assertEquals(digest, uploadResult.getDigest());
                     return asyncClient.downloadStream(uploadResult.getDigest());
                 })
-                .flatMap(r -> r.writeValueTo(Channels.newChannel(stream))))
+                .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
             .verifyComplete();
 
         stream.flush();
@@ -362,7 +338,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                     assertEquals(digest, uploadResult.getDigest());
                     return asyncClient.downloadStream(uploadResult.getDigest());
                 })
-                .flatMap(r -> r.writeValueTo(Channels.newChannel(stream))))
+                .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
             .verifyComplete();
 
         stream.flush();
@@ -403,34 +379,12 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void downloadManifestWithListOfTypesAsync(HttpClient httpClient) {
-        List<ManifestMediaType> manifestTypes = Arrays.asList(ManifestMediaType.DOCKER_MANIFEST,
-            ManifestMediaType.OCI_MANIFEST,
-            ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json"),
-            ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json"));
-
-        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
-        StepVerifier.create(
-                uploadManifestPrerequisitesAsync()
-                    .then(asyncClient.uploadManifest(MANIFEST, null))
-                    .flatMap(result -> asyncClient.downloadManifestWithResponse(result.getDigest(), manifestTypes))
-                    .map(response -> response.getValue()))
-            .assertNext(downloadResult -> {
-                OciImageManifest returnedManifest = downloadResult.asOciManifest();
-                assertNotNull(returnedManifest);
-                validateManifest(MANIFEST, returnedManifest);
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
     public void downloadManifestListManifest(HttpClient httpClient) {
         client = getBlobClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        Response<DownloadManifestResult> manifestResult = client.downloadManifestWithResponse("latest", Collections.singletonList(dockerListType), Context.NONE);
+        Response<DownloadManifestResult> manifestResult = client.downloadManifestWithResponse("latest", Context.NONE);
         assertNotNull(manifestResult.getValue());
-        assertEquals(dockerListType, manifestResult.getValue().getMediaType());
+        assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
 
         assertThrows(IllegalStateException.class, () -> manifestResult.getValue().asOciManifest());
 
@@ -445,10 +399,12 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @MethodSource("getHttpClients")
     public void downloadManifestIncompatibleType(HttpClient httpClient) {
         client = getBlobClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerV1 = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.v1+json");
+        ManifestMediaType ociArtifactType = ManifestMediaType.fromString("application/vnd.oci.artifact.manifest.v1+json");
 
-        assertThrows(ServiceResponseException.class, () -> client.downloadManifestWithResponse("latest",
-            Collections.singletonList(dockerV1), Context.NONE));
+        BinaryData ociArtifact = BinaryData.fromString("{\"mediaType\": \"application/vnd.oci.artifact.manifest.v1+json\",\"artifactType\": \"application/vnd.example.sbom.v1\"}");
+        UploadManifestResult result = client.uploadManifestWithResponse(new UploadManifestOptions(ociArtifact, ociArtifactType), Context.NONE)
+            .getValue();
+        assertThrows(ResourceNotFoundException.class, () -> client.downloadManifestWithResponse(result.getDigest(), Context.NONE));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -457,13 +413,11 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         client = getBlobClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
 
         // the original content there is docker v2 manifest list
-        Response<DownloadManifestResult> manifestResult = client.downloadManifestWithResponse("latest",
-            Collections.singletonList(ManifestMediaType.DOCKER_MANIFEST), Context.NONE);
+        DownloadManifestResult manifestResult = client.downloadManifest("latest");
 
         // but service does the best effort to return what it supports
-        OciImageManifest manifest = manifestResult.getValue().asOciManifest();
-        assertEquals(1, manifest.getLayers().size());
-        assertEquals("application/vnd.docker.image.rootfs.diff.tar.gzip", manifest.getLayers().get(0).getMediaType());
+        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
+        assertThrows(IllegalStateException.class, () -> manifestResult.asOciManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -472,10 +426,10 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
-        StepVerifier.create(asyncClient.downloadManifestWithResponse("latest", Collections.singletonList(dockerListType)))
+        StepVerifier.create(asyncClient.downloadManifestWithResponse("latest"))
             .assertNext(manifestResult -> {
                 assertNotNull(manifestResult.getValue());
-                assertEquals(dockerListType, manifestResult.getValue().getMediaType());
+                assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
                 // does not throw
                 ManifestList list = manifestResult.getValue().getContent().toObject(ManifestList.class);
                 assertEquals(2, list.getSchemaVersion());
@@ -588,7 +542,6 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                 buffer.limit((int) remaining);
             }
             sink.next(buffer);
-
             return pos + CHUNK.length;
         });
     }

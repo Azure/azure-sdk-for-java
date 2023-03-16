@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /** Properties of this repository. */
 @Fluent
-public class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
+public final class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */

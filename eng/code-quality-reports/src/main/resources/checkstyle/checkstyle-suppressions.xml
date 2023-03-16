@@ -193,7 +193,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- suppress eceptions caught to for tracing-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient.java"/>
+            files="com.azure.containers.containerregistry.ContainerRegistryBlobClient.java"/>
 
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->

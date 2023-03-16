@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.containers.containerregistry.specialized;
+package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -102,7 +101,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * @param repositoryName The URL of the Container Registry instance.
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
-    public ContainerRegistryBlobClientBuilder repository(String repositoryName) {
+    public ContainerRegistryBlobClientBuilder repositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
     }
