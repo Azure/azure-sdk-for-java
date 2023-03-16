@@ -9,9 +9,9 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.azure</groupId>
-  <artifactId>azure-graalvm-storage-samples-spring</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.azure.samples</groupId>
+  <artifactId>azure-samples-graalvm-spring-storageexplorer</artifactId>
+  <version>1.0.0-beta.1</version>
   <name>Azure Storage GraalVM Samples using Spring</name>
   <description>Azure Storage Explorer sample</description>
 
@@ -142,8 +142,8 @@
             <artifactId>native-maven-plugin</artifactId>
             <version>${native-maven-plugin.version}</version>
             <configuration>
-              <mainClass>com.azure.graalvm.samples.spring.SpringNativeApplication</mainClass>
-              <imageName>spring-native-sample</imageName>
+              <mainClass>com.azure.samples.graalvm.spring.storageexplorer.SpringNativeApplication</mainClass>
+              <imageName>storageexplorer</imageName>
             </configuration>
             <executions>
               <execution>

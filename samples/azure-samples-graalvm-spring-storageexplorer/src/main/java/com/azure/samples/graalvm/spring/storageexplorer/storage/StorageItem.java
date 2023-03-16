@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.graalvm.samples.spring.storage;
+package com.azure.samples.graalvm.spring.storageexplorer.storage;
 
 import java.io.InputStream;
 

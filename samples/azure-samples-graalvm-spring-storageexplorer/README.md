@@ -27,10 +27,10 @@ To compile as a GraalVM native image, use the following command:
 ./mvnw -Pnative clean package
 ```
 
-Once this completes, you will find an executable binary file in the `./target` directory called `spring-native-sample`, which you may execute as per usual, e.g:
+Once this completes, you will find an executable binary file in the `./target` directory called `storageexplorer`, which you may execute as per usual, e.g:
 
 ```shell
-./target/spring-native-sample
+./target/storageexplorer
 ```
 
 ## Docker support

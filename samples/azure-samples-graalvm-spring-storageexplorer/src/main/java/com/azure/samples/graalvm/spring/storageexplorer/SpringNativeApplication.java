@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.graalvm.samples.spring;
+package com.azure.samples.graalvm.spring.storageexplorer;
 
-import com.azure.graalvm.samples.spring.storage.StorageService;
+import com.azure.samples.graalvm.spring.storageexplorer.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

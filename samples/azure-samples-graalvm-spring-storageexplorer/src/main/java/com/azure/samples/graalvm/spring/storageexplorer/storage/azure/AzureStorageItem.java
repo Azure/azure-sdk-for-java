@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.graalvm.samples.spring.storage.azure;
+package com.azure.samples.graalvm.spring.storageexplorer.storage.azure;
 
-import com.azure.graalvm.samples.spring.storage.StorageItem;
+import com.azure.samples.graalvm.spring.storageexplorer.storage.StorageItem;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobItem;
 
