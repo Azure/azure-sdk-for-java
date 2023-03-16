@@ -20,8 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.SpanKind;
-import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -67,12 +66,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -851,7 +851,6 @@ class EventHubConsumerAsyncClientTest {
     void startSpanForGetProperties() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer1, null,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
         EventHubConsumerAsyncClient consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
@@ -866,18 +865,22 @@ class EventHubConsumerAsyncClientTest {
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
         when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(partitionProperties));
 
-        when(tracer1.start(eq("EventHubs.getPartitionProperties"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.getPartitionProperties"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class));
-                return invocation.getArgument(2, Context.class)
-                        .addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(Tracer.ENTITY_PATH_KEY).get(), EVENT_HUB_NAME);
+                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
             }
         );
-        when(tracer1.start(eq("EventHubs.getEventHubProperties"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.getEventHubProperties"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class));
-                return invocation.getArgument(2, Context.class)
-                    .addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubsProperties");
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(Tracer.ENTITY_PATH_KEY).get(), EVENT_HUB_NAME);
+                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubsProperties");
             }
         );
 
@@ -892,18 +895,12 @@ class EventHubConsumerAsyncClientTest {
 
         //Assert
         verify(tracer1, times(1))
-            .start(eq("EventHubs.getPartitionProperties"), any(StartSpanOptions.class), any(Context.class));
+            .start(eq("EventHubs.getPartitionProperties"), any(), eq(ProcessKind.SEND));
         verify(tracer1, times(1))
-            .start(eq("EventHubs.getEventHubProperties"), any(StartSpanOptions.class), any(Context.class));
-        verify(tracer1, times(2)).end(isNull(), isNull(), any());
+            .start(eq("EventHubs.getEventHubProperties"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
-    }
-
-    private void assertStartOptions(StartSpanOptions startOpts) {
-        assertEquals(SpanKind.CLIENT, startOpts.getSpanKind());
-        assertEquals(EVENT_HUB_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
-        assertEquals(HOSTNAME, startOpts.getAttributes().get(HOST_NAME_KEY));
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {

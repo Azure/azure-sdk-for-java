@@ -8,8 +8,6 @@ import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Isolated
 @Tag(TestUtils.INTEGRATION)
-@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubBufferedProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         .withLocale(Locale.US)
@@ -59,8 +56,8 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = toClose(new EventHubClientBuilder().connectionString(getConnectionString())
-            .buildClient());
+        this.hubClient = new EventHubClientBuilder().connectionString(getConnectionString())
+            .buildClient();
 
         List<String> allIds = new ArrayList<>();
         final EventHubProperties properties = hubClient.getProperties();
@@ -77,6 +74,17 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         assertFalse(partitionPropertiesMap.isEmpty(), "'partitionPropertiesMap' should have values.");
     }
 
+    @Override
+    protected void afterTest() {
+        if (hubClient != null) {
+            hubClient.close();
+        }
+
+        if (producer != null) {
+            producer.close();
+        }
+    }
+
     /**
      * Checks that we can publish round-robin.
      *
@@ -91,7 +99,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final int queueSize = 10;
 
-        producer = toClose(new EventHubBufferedProducerClientBuilder()
+        producer = new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .onSendBatchFailed(failed -> {
@@ -103,7 +111,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             })
             .maxEventBufferLengthPerPartition(queueSize)
             .maxWaitTime(maxWaitTime)
-            .buildAsyncClient());
+            .buildAsyncClient();
 
         // Creating 2x number of events, we expect that each partition will get at least one of these events.
         final int numberOfEvents = partitionPropertiesMap.size() * 2;

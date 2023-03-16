@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -37,7 +36,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public final class TestUtils {
     private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
-    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
@@ -163,13 +161,6 @@ public final class TestUtils {
      * Checks the {@link #MESSAGE_ID} to see if it matches the {@code expectedValue}.
      */
     public static boolean isMatchingEvent(EventData event, String expectedValue) {
-        LOGGER.atInfo()
-            .addKeyValue("expectedMessageId", expectedValue)
-            .addKeyValue("sequenceNo", event.getSequenceNumber())
-            .addKeyValue("enqueuedTime", event.getEnqueuedTime())
-            .addKeyValue("MESSAGE_ID", event.getProperties() == null ? null : event.getProperties().get(MESSAGE_ID))
-            .log("isMatchingEvent");
-
         return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_ID)
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }

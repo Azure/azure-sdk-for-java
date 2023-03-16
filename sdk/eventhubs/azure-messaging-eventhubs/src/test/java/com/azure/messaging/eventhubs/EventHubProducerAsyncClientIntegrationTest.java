@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -27,9 +25,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests for asynchronous {@link EventHubProducerAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
-@Execution(ExecutionMode.SAME_THREAD)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
+
     private EventHubProducerAsyncClient producer;
 
     EventHubProducerAsyncClientIntegrationTest() {
@@ -38,10 +36,17 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        producer = toClose(new EventHubClientBuilder()
+        producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
+            .buildAsyncProducerClient();
+    }
+
+    @Override
+    protected void afterTest() {
+        if (producer != null) {
+            producer.close();
+        }
     }
 
     /**
@@ -203,23 +208,28 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     void sendWithSasConnectionString() {
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        EventHubProducerAsyncClient eventHubAsyncClient = toClose(new EventHubClientBuilder()
+        EventHubProducerAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
             .connectionString(getConnectionString(true))
-            .buildAsyncProducerClient());
+            .buildAsyncProducerClient();
 
-        StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        try {
+            StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
 
-        StepVerifier.create(eventHubAsyncClient.send(event, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+            StepVerifier.create(eventHubAsyncClient.send(event, options))
+                .expectComplete()
+                .verify(TIMEOUT);
+        } finally {
+            dispose(eventHubAsyncClient);
+        }
+
     }
 }

@@ -4,10 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.SpanKind;
-import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
@@ -39,20 +37,17 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -122,7 +117,6 @@ public class EventProcessorClientTest {
         Tracer tracer = mock(Tracer.class);
         // Arrange
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -141,11 +135,19 @@ public class EventProcessorClientTest {
 
         final long beforeTest = System.currentTimeMillis();
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
-        when(tracer.extractContext(any())).thenAnswer(invocation -> new Context(SPAN_CONTEXT_KEY, "value"));
-        when(tracer.start(eq("EventHubs.process"), any(), any(Context.class))).thenAnswer(
+        when(tracer.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
+            }
+        );
+        when(tracer.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value1")
+                    .addData("scope", (AutoCloseable) () -> {
+                    })
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -198,14 +200,12 @@ public class EventProcessorClientTest {
      * @throws Exception if an error occurs while running the test.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testProcessSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
+
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.createTracer()).thenReturn(tracer1);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -225,16 +225,18 @@ public class EventProcessorClientTest {
         when(eventData1.getProperties()).thenReturn(properties);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
-        when(tracer1.extractContext(any())).thenAnswer(invocation -> {
-            Function<String, String> consumer = invocation.getArgument(0, Function.class);
-            assertEquals(diagnosticId, consumer.apply("traceparent"));
-            assertNull(consumer.apply("tracestate"));
-            return new Context(SPAN_CONTEXT_KEY, "value");
-        });
-        when(tracer1.start(eq("EventHubs.process"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+        when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
+            }
+        );
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> { })
+                    .addData(PARENT_SPAN_KEY, "value2");
             }
         );
 
@@ -244,7 +246,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer1).end(isNull(), isNull(), any());
+        }).when(tracer1).end(eq("success"), isNull(), any());
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -258,9 +260,9 @@ public class EventProcessorClientTest {
         eventProcessorClient.stop();
 
         //Assert
-        verify(tracer1, times(1)).extractContext(any());
-        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).extractContext(eq(diagnosticId), any());
+        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
 
@@ -270,14 +272,12 @@ public class EventProcessorClientTest {
      * @throws Exception if an error occurs while running the test.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testProcessBatchSpans() throws Exception {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
+
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.createTracer()).thenReturn(tracer1);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -303,31 +303,40 @@ public class EventProcessorClientTest {
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
 
-        AtomicInteger counter = new AtomicInteger(0);
-        when(tracer1.extractContext(any())).thenAnswer(invocation -> {
-            Function<String, String> consumer = invocation.getArgument(0, Function.class);
-            String traceparent = consumer.apply("traceparent");
-            if (counter.getAndIncrement() == 0) {
-                assertEquals(diagnosticId1, traceparent);
-            } else {
-                assertEquals(diagnosticId2, traceparent);
-            }
-            return new Context(SPAN_CONTEXT_KEY, traceparent);
-        });
-        when(tracer1.start(eq("EventHubs.process"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+        when(tracer1.extractContext(any(), any())).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 2);
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                String diagnosticId = invocation.getArgument(0, String.class);
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, diagnosticId);
+            }
+        );
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.process"), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "builder");
+            }
+        );
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> { }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
+        doAnswer(invocation -> {
+            Context passed = invocation.getArgument(0, Context.class);
+            assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+            return null;
+        }).when(tracer1).addLink(any());
+
+        //
         CountDownLatch latch = new CountDownLatch(1);
         when(tracer1.makeSpanCurrent(any())).thenReturn(() -> { });
 
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer1).end(isNull(), isNull(), any());
+        }).when(tracer1).end(eq("success"), isNull(), any());
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -341,9 +350,12 @@ public class EventProcessorClientTest {
         eventProcessorClient.stop();
 
         //Assert
-        verify(tracer1, times(2)).extractContext(any());
-        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).extractContext(eq(diagnosticId1), any());
+        verify(tracer1, times(1)).extractContext(eq(diagnosticId2), any());
+        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.process"), any());
+        verify(tracer1, times(2)).addLink(any());
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
     /**
@@ -355,10 +367,8 @@ public class EventProcessorClientTest {
     public void testProcessSpansWithoutDiagnosticId() throws Exception {
         //Arrange
         final Tracer tracer = mock(Tracer.class);
-        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -383,10 +393,11 @@ public class EventProcessorClientTest {
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
 
-        when(tracer.start(eq("EventHubs.process"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+        when(tracer.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                Context passed = invocation.getArgument(1, Context.class);
+                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> { }).addData(PARENT_SPAN_KEY, "value2");
             }
         );
 
@@ -412,8 +423,8 @@ public class EventProcessorClientTest {
 
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
-        verify(tracer, times(numberOfEvents)).start(eq("EventHubs.process"), any(), any(Context.class));
-        verify(tracer, atLeast(numberOfEvents - 1)).end(isNull(), isNull(), any());
+        verify(tracer, times(numberOfEvents)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer, atLeast(numberOfEvents - 1)).end(eq("success"), isNull(), any());
     }
 
     /**
@@ -663,13 +674,11 @@ public class EventProcessorClientTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testSingleEventReceiveHeartBeat() throws InterruptedException {
         // Arrange
         Tracer tracer = mock(Tracer.class);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.createTracer()).thenReturn(null);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -692,16 +701,20 @@ public class EventProcessorClientTest {
 
         when(eventData1.getProperties()).thenReturn(properties);
         when(eventData2.getProperties()).thenReturn(properties);
-        when(tracer.extractContext(any())).thenAnswer(
+        when(tracer.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
-                Function<String, String> getter = invocation.getArgument(0, Function.class);
-                assertEquals(diagnosticId, getter.apply(DIAGNOSTIC_ID_KEY));
-                return invocation.getArgument(1, Context.class).addData(SPAN_CONTEXT_KEY, "value");
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
-        when(tracer.start(eq("EventHubs.process"), any(), any(Context.class))).thenAnswer(
-            invocation -> invocation.getArgument(1, Context.class)
-                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2"));
+        when(tracer.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
+                    return;
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+            }
+        );
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
@@ -722,22 +735,6 @@ public class EventProcessorClientTest {
     private PartitionEvent getEvent(EventData event) {
         PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
         return new PartitionEvent(context, event, null);
-    }
-
-    private void assertStartOptions(StartSpanOptions startOpts, int linkCount) {
-        assertEquals(SpanKind.CONSUMER, startOpts.getSpanKind());
-        assertEquals("test-eh", startOpts.getAttributes().get(ENTITY_PATH_KEY));
-        assertEquals("test-ns", startOpts.getAttributes().get(HOST_NAME_KEY));
-
-        if (linkCount == 0) {
-            assertTrue(startOpts.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
-            assertNull(startOpts.getLinks());
-        } else {
-            assertEquals(linkCount, startOpts.getLinks().size());
-            for (TracingLink link : startOpts.getLinks()) {
-                assertTrue(link.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
-            }
-        }
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
