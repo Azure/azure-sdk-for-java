@@ -418,9 +418,26 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
             final Map<String, String> metadataFinal = options.getMetadata() == null
                 ? new HashMap<>() : options.getMetadata();
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
-                : options.getDataFlux();
+
+            final ParallelTransferOptions parallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+
+            Flux<ByteBuffer> data = options.getDataFlux();
+            // no specified length: use azure.core's converter
+            if (data == null && options.getOptionalLength() == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    parallelTransferOptions.getBlockSizeLong());
+                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
+                // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+            } else if (data == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    parallelTransferOptions.getBlockSizeLong());
+                data = Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
+            }
+
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())

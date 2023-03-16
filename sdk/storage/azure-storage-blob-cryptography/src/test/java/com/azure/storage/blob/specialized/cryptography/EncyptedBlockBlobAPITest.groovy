@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
+import com.azure.core.util.Context
 import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobClientBuilder
@@ -1917,6 +1918,37 @@ class EncyptedBlockBlobAPITest extends APISpec {
         Constants.KB     | null          || 0 // default is MAX_UPLOAD_BYTES
         Constants.MB     | null          || 0 // default is MAX_UPLOAD_BYTES
         3 * Constants.MB | Constants.MB  || 4 // Encryption padding will add an extra block
+    }
+
+    def "Encryption upload IS no length"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        ebc.upload(input)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        ebc.downloadStream(stream)
+        stream.toByteArray() == randomData
+    }
+
+    def "Encryption upload IS no length with options"() {
+        setup:
+        def randomData = getRandomByteArray(20)
+        def payloadAsInputStream = new ByteArrayInputStream(randomData)
+        def os = new ByteArrayOutputStream()
+        def blobParallelUploadOptions = new BlobParallelUploadOptions(payloadAsInputStream)
+        blobParallelUploadOptions.setHeaders(new BlobHttpHeaders().setContentType("text"))
+
+        when:
+        ebc.uploadWithResponse(blobParallelUploadOptions, null, Context.NONE)
+        ebc.downloadStream(os)
+
+        then:
+        notThrown(BlobStorageException)
+        os.toByteArray() == randomData
     }
 
     def getPerCallVersionPolicy() {
