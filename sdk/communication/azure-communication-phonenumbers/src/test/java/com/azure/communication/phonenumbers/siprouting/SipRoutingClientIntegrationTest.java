@@ -162,6 +162,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
+
+        assertEquals(1, getAsList(client.listTrunks()).size());
     }
 
     @ParameterizedTest
@@ -253,7 +255,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksEmptyBeforeWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithAADSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks()).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() ==0);
 
         client.setTrunks(EXPECTED_TRUNKS);
 
