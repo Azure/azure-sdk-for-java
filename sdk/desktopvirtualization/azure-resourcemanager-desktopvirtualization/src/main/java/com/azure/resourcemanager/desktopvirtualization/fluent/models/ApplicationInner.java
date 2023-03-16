@@ -27,6 +27,10 @@ public final class ApplicationInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private ApplicationProperties innerProperties = new ApplicationProperties();
 
+    /** Creates an instance of ApplicationInner class. */
+    public ApplicationInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

@@ -60,6 +60,10 @@ public final class BackupPolicyProperties {
     @JsonProperty(value = "volumeBackups", access = JsonProperty.Access.WRITE_ONLY)
     private List<VolumeBackups> volumeBackups;
 
+    /** Creates an instance of BackupPolicyProperties class. */
+    public BackupPolicyProperties() {
+    }
+
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
      *

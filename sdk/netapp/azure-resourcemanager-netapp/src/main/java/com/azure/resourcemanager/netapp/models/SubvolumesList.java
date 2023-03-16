@@ -24,6 +24,10 @@ public final class SubvolumesList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SubvolumesList class. */
+    public SubvolumesList() {
+    }
+
     /**
      * Get the value property: A list of Subvolumes.
      *

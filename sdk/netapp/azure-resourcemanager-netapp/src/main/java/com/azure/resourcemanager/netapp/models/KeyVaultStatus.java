@@ -26,6 +26,15 @@ public final class KeyVaultStatus extends ExpandableStringEnum<KeyVaultStatus> {
     public static final KeyVaultStatus UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of KeyVaultStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyVaultStatus() {
+    }
+
+    /**
      * Creates or finds a KeyVaultStatus from its string representation.
      *
      * @param name a name to look for.

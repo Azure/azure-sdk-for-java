@@ -49,6 +49,10 @@ public final class VolumeGroupMetadata {
     @JsonProperty(value = "volumesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long volumesCount;
 
+    /** Creates an instance of VolumeGroupMetadata class. */
+    public VolumeGroupMetadata() {
+    }
+
     /**
      * Get the groupDescription property: Group Description.
      *

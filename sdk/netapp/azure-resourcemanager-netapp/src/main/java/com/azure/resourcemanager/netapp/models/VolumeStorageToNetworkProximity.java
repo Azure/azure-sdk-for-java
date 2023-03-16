@@ -24,6 +24,15 @@ public final class VolumeStorageToNetworkProximity extends ExpandableStringEnum<
     public static final VolumeStorageToNetworkProximity T2 = fromString("T2");
 
     /**
+     * Creates a new instance of VolumeStorageToNetworkProximity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VolumeStorageToNetworkProximity() {
+    }
+
+    /**
      * Creates or finds a VolumeStorageToNetworkProximity from its string representation.
      *
      * @param name a name to look for.
