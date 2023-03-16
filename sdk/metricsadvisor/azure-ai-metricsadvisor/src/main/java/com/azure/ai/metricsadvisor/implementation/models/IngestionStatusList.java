@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -22,9 +23,6 @@ public final class IngestionStatusList {
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataFeedIngestionStatus> value;
-
-    /** Creates an instance of IngestionStatusList class. */
-    public IngestionStatusList() {}
 
     /**
      * Get the nextLink property: The @nextLink property.

@@ -23,7 +23,8 @@ public final class AnomalyFeedback extends MetricFeedback {
     private OffsetDateTime startTime;
 
     /*
-     * the end timestamp of feedback time range, when equals to startTime means only one timestamp
+     * the end timestamp of feedback time range, when equals to startTime means
+     * only one timestamp
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
@@ -45,9 +46,6 @@ public final class AnomalyFeedback extends MetricFeedback {
      */
     @JsonProperty(value = "anomalyDetectionConfigurationSnapshot")
     private AnomalyDetectionConfiguration anomalyDetectionConfigurationSnapshot;
-
-    /** Creates an instance of AnomalyFeedback class. */
-    public AnomalyFeedback() {}
 
     /**
      * Get the startTime property: the start timestamp of feedback time range.
@@ -151,20 +149,6 @@ public final class AnomalyFeedback extends MetricFeedback {
     public AnomalyFeedback setAnomalyDetectionConfigurationSnapshot(
             AnomalyDetectionConfiguration anomalyDetectionConfigurationSnapshot) {
         this.anomalyDetectionConfigurationSnapshot = anomalyDetectionConfigurationSnapshot;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AnomalyFeedback setMetricId(UUID metricId) {
-        super.setMetricId(metricId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AnomalyFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
-        super.setDimensionFilter(dimensionFilter);
         return this;
     }
 }

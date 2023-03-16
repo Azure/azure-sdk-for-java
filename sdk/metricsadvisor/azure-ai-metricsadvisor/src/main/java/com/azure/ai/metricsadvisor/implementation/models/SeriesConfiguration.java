@@ -42,9 +42,6 @@ public final class SeriesConfiguration {
     @JsonProperty(value = "changeThresholdCondition")
     private ChangeThresholdCondition changeThresholdCondition;
 
-    /** Creates an instance of SeriesConfiguration class. */
-    public SeriesConfiguration() {}
-
     /**
      * Get the series property: The series property.
      *

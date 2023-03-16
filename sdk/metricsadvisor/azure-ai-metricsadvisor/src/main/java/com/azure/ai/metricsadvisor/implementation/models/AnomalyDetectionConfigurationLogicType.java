@@ -8,11 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * condition operator
- *
- * <p>should be specified when combining multiple detection conditions.
- */
+/** Defines values for AnomalyDetectionConfigurationLogicType. */
 public final class AnomalyDetectionConfigurationLogicType
         extends ExpandableStringEnum<AnomalyDetectionConfigurationLogicType> {
     /** Static value AND for AnomalyDetectionConfigurationLogicType. */
@@ -20,14 +16,6 @@ public final class AnomalyDetectionConfigurationLogicType
 
     /** Static value OR for AnomalyDetectionConfigurationLogicType. */
     public static final AnomalyDetectionConfigurationLogicType OR = fromString("OR");
-
-    /**
-     * Creates a new instance of AnomalyDetectionConfigurationLogicType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public AnomalyDetectionConfigurationLogicType() {}
 
     /**
      * Creates or finds a AnomalyDetectionConfigurationLogicType from its string representation.
@@ -40,11 +28,7 @@ public final class AnomalyDetectionConfigurationLogicType
         return fromString(name, AnomalyDetectionConfigurationLogicType.class);
     }
 
-    /**
-     * Gets known AnomalyDetectionConfigurationLogicType values.
-     *
-     * @return known AnomalyDetectionConfigurationLogicType values.
-     */
+    /** @return known AnomalyDetectionConfigurationLogicType values. */
     public static Collection<AnomalyDetectionConfigurationLogicType> values() {
         return values(AnomalyDetectionConfigurationLogicType.class);
     }

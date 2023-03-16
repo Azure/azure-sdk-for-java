@@ -14,7 +14,8 @@ import java.util.Map;
 @Fluent
 public final class MetricSeriesQueryOptions {
     /*
-     * query series ingested after this time, the format should be yyyy-MM-ddTHH:mm:ssZ
+     * query series ingested after this time, the format should be
+     * yyyy-MM-ddTHH:mm:ssZ
      */
     @JsonProperty(value = "activeSince", required = true)
     private OffsetDateTime activeSince;
@@ -24,9 +25,6 @@ public final class MetricSeriesQueryOptions {
      */
     @JsonProperty(value = "dimensionFilter")
     private Map<String, List<String>> dimensionFilter;
-
-    /** Creates an instance of MetricSeriesQueryOptions class. */
-    public MetricSeriesQueryOptions() {}
 
     /**
      * Get the activeSince property: query series ingested after this time, the format should be yyyy-MM-ddTHH:mm:ssZ.

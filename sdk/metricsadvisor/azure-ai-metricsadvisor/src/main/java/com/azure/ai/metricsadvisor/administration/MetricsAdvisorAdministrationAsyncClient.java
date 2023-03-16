@@ -17,7 +17,6 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.IngestionStatusType;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
@@ -26,7 +25,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
@@ -42,8 +41,6 @@ import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
 import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
 import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionProgressHelper;
-import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionStatusHelper;
 import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DataSourceCredentialEntityTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
@@ -66,16 +63,15 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
@@ -94,8 +90,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = MetricsAdvisorAdministrationClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAdministrationAsyncClient {
+    private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationAsyncClient.class);
-    private final MetricsAdvisorImpl service;
+    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
 
     /**
      * Create a {@link MetricsAdvisorAdministrationAsyncClient} that sends requests to the Metrics Advisor
@@ -105,7 +102,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service,
+    MetricsAdvisorAdministrationAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
@@ -189,6 +186,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed -->
+     *
+     *
      * @param dataFeed The data feed to be created.
      * @return A {@link Response} of a {@link Mono} containing the created {@link DataFeed data feed}.
      * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
@@ -248,6 +247,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings =
             finalDataFeedOptions.getMissingDataPointFillSettings() == null
                 ? new DataFeedMissingDataPointFillSettings() : finalDataFeedOptions.getMissingDataPointFillSettings();
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
                 .setDataFeedName(dataFeed.getName())
@@ -281,7 +281,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                     ? null : finalDataFeedOptions.getAccessMode().toString()))
                 .setViewers(finalDataFeedOptions.getViewers())
                 .setAdmins(finalDataFeedOptions.getAdmins())
-                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), context)
+                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
                 .flatMap(createDataFeedResponse -> {
                     final String dataFeedId =
                         parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
@@ -436,6 +436,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings =
             dataFeedOptions.getMissingDataPointFillSettings() == null
                 ? new DataFeedMissingDataPointFillSettings() : dataFeedOptions.getMissingDataPointFillSettings();
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.updateDataFeedWithResponseAsync(UUID.fromString(dataFeed.getId()),
             DataFeedTransforms.toInnerForUpdate(dataFeed.getSource())
@@ -482,7 +483,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                     dataFeed.getStatus() != null
                         ? EntityStatus.fromString(dataFeed.getStatus().toString())
                         : null)
-                .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), context)
+                .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }
 
@@ -618,6 +619,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         options = options != null ? options : new ListDataFeedOptions();
         final ListDataFeedFilter dataFeedFilter =
             options.getListDataFeedFilter() != null ? options.getListDataFeedFilter() : new ListDataFeedFilter();
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.listDataFeedsSinglePageAsync(dataFeedFilter.getName(),
             dataFeedFilter.getSourceType() != null
@@ -627,7 +629,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             dataFeedFilter.getStatus() != null
                 ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
             dataFeedFilter.getCreator(),
-            options.getSkip(), options.getMaxPageSize(), context)
+            options.getSkip(), options.getMaxPageSize(), withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
@@ -731,30 +733,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             queryOptions,
             options.getSkip(),
             options.getMaxPageSize(),
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
-            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toDataFeedIngestionStatus(res.getValue()),
-                res.getContinuationToken(),
-                null));
-    }
-
-    private List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
-        return ingestionStatusList
-            .stream()
-            .map(ingestionStatus -> {
-                DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
-                DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
-                DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
-                DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
-                return dataFeedIngestionStatus;
-            })
-            .collect(Collectors.toList());
+            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error));
     }
 
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(
@@ -769,19 +751,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .setStartTime(options.getStartTime())
             .setEndTime(options.getEndTime());
 
-        return service.getDataFeedIngestionStatusNextSinglePageAsync(nextPageLink, queryOptions, context)
+        return service.getDataFeedIngestionStatusNextSinglePageAsync(nextPageLink,
+            queryOptions,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink, response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toDataFeedIngestionStatus(res.getValue()),
-                res.getContinuationToken(),
-                null));
+                error));
     }
 
     /**
@@ -877,7 +854,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             new IngestionProgressResetOptions()
                 .setStartTime(startTime)
                 .setEndTime(endTime),
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Resetting ingestion status for the data feed"))
             .doOnSuccess(response -> logger.info("Ingestion status got reset {}", response))
             .doOnError(error -> logger.warning("Failed to reset ingestion status for the data feed", error));
@@ -945,19 +922,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<DataFeedIngestionProgress>> getDataFeedIngestionProgressWithResponse(String dataFeedId,
                                                                                        Context context) {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
-        return service.getIngestionProgressWithResponseAsync(UUID.fromString(dataFeedId), context)
+        return service.getIngestionProgressWithResponseAsync(UUID.fromString(dataFeedId),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Retrieving ingestion progress for metric"))
             .doOnSuccess(response -> logger.info("Retrieved ingestion progress {}", response))
-            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error))
-            .map(response -> new SimpleResponse<>(response, toDataFeedIngestionProgress(response.getValue())));
-    }
-
-    private DataFeedIngestionProgress toDataFeedIngestionProgress(
-        com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress dataFeedIngestionProgressResponse) {
-        DataFeedIngestionProgress dataFeedIngestionProgress = new DataFeedIngestionProgress();
-        DataFeedIngestionProgressHelper.setLatestActiveTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestActiveTimestamp());
-        DataFeedIngestionProgressHelper.setLatestSuccessTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestSuccessTimestamp());
-        return dataFeedIngestionProgress;
+            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error));
     }
 
     /**
@@ -1106,7 +1075,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             innerDetectionConfiguration = DetectionConfigurationTransforms.toInnerForCreate(logger,
             metricId,
             detectionConfiguration);
-        return service.createAnomalyDetectionConfigurationWithResponseAsync(innerDetectionConfiguration, context)
+        return service.createAnomalyDetectionConfigurationWithResponseAsync(innerDetectionConfiguration,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Creating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Created AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to create AnomalyDetectionConfiguration", error))
@@ -1517,7 +1487,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         String detectionConfigurationId, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
 
-        return service.getAnomalyDetectionConfigurationWithResponseAsync(UUID.fromString(detectionConfigurationId), context)
+        return service.getAnomalyDetectionConfigurationWithResponseAsync(UUID.fromString(detectionConfigurationId),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}",
                 detectionConfigurationId))
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
@@ -1640,7 +1611,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         return service.updateAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(detectionConfiguration.getId()),
             innerDetectionConfigurationPatch,
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Updating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Updated AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to update AnomalyDetectionConfiguration", error))
@@ -1716,7 +1687,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<Void>> deleteDetectionConfigWithResponse(String detectionConfigurationId,
                                                            Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
-        return service.deleteHookWithResponseAsync(UUID.fromString(detectionConfigurationId), context)
+        return service.deleteHookWithResponseAsync(UUID.fromString(detectionConfigurationId),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Deleting MetricAnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Deleted MetricAnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to delete MetricAnomalyDetectionConfiguration", error));
@@ -1809,11 +1781,12 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             options = new ListDetectionConfigsOptions();
         }
         return service.getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
-            UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(), context)
+            UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
             .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
-            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsNextPageAsync(
@@ -1821,14 +1794,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextPageLink, context)
+        return service.getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     /**
@@ -1915,7 +1889,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     Mono<Response<NotificationHook>> createHookWithResponse(NotificationHook notificationHook, Context context) {
         Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
-        return service.createHookWithResponseAsync(HookTransforms.toInnerForCreate(logger, notificationHook), context)
+        return service.createHookWithResponseAsync(HookTransforms.toInnerForCreate(logger, notificationHook),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Creating NotificationHook"))
             .doOnSuccess(response -> logger.info("Created NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to create notificationHook", error))
@@ -2020,7 +1995,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     Mono<Response<NotificationHook>> getHookWithResponse(String hookId, Context context) {
         Objects.requireNonNull(hookId, "hookId is required.");
-        return service.getHookWithResponseAsync(UUID.fromString(hookId), context)
+        return service.getHookWithResponseAsync(UUID.fromString(hookId),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Retrieving NotificationHook"))
             .doOnSuccess(response -> logger.info("Retrieved NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve hook", error))
@@ -2118,7 +2094,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
         Objects.requireNonNull(notificationHook.getId(), "'notificationHook.id' cannot be null.");
         return service.updateHookWithResponseAsync(UUID.fromString(notificationHook.getId()),
-            HookTransforms.toInnerForUpdate(logger, notificationHook), context)
+            HookTransforms.toInnerForUpdate(logger, notificationHook),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Updating NotificationHook"))
             .doOnSuccess(response -> logger.info("Updated NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to update notificationHook", error))
@@ -2291,7 +2268,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             options != null ? options.getHookNameFilter() : null,
             options != null ? options.getSkip() : null,
             options != null ? options.getMaxPageSize() : null,
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))
             .doOnError(error -> logger.warning("Failed to list the hooks", error))
@@ -2302,7 +2279,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.listHooksNextSinglePageAsync(nextPageLink, context)
+        return service.listHooksNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
@@ -2425,10 +2403,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 + " when there are more than one metric level alert configuration."));
         }
 
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         final AnomalyAlertingConfiguration innerAlertConfiguration
             = AlertConfigurationTransforms.toInnerForCreate(alertConfiguration);
 
-        return service.createAnomalyAlertingConfigurationWithResponseAsync(innerAlertConfiguration, context)
+        return service.createAnomalyAlertingConfigurationWithResponseAsync(innerAlertConfiguration, withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Creating AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration))
             .doOnSuccess(response -> logger.info("Created AnomalyAlertConfiguration - {}", response))
@@ -2524,9 +2503,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
         String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.getAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId),
-            context)
+            withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}",
                 alertConfigurationId))
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
@@ -2636,11 +2616,12 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
         final AnomalyAlertingConfigurationPatch innerAlertConfiguration
             = AlertConfigurationTransforms.toInnerForUpdate(alertConfiguration);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.updateAnomalyAlertingConfigurationWithResponseAsync(
             UUID.fromString(alertConfiguration.getId()),
             innerAlertConfiguration,
-            context)
+            withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Updating AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration))
             .doOnSuccess(response -> logger.info("Updated AnomalyAlertConfiguration - {}", response))
@@ -2711,9 +2692,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.deleteAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId),
-            context)
+            withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Deleting AnomalyAlertConfiguration - {}", alertConfigurationId))
             .doOnSuccess(response -> logger.info("Deleted AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to delete AnomalyAlertConfiguration - {}",
@@ -2783,11 +2765,12 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             options = new ListAnomalyAlertConfigsOptions();
         }
         return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
-            UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(), context)
+            UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
             .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
-            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
@@ -2795,14 +2778,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, context)
+        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     /**
@@ -2916,7 +2900,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
         final DataSourceCredential
             innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
-        return service.createCredentialWithResponseAsync(innerDataSourceCredential, context)
+        return service.createCredentialWithResponseAsync(innerDataSourceCredential,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Creating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Created DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to create DataSourceCredentialEntity", error))
@@ -3028,7 +3013,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(dataSourceCredential);
         return service.updateCredentialWithResponseAsync(UUID.fromString(dataSourceCredential.getId()),
             innerDataSourceCredential,
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Updating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Updated DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to update DataSourceCredentialEntity", error))
@@ -3189,9 +3174,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
         Objects.requireNonNull(credentialId, "'credentialId' is required.");
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.deleteCredentialWithResponseAsync(UUID.fromString(credentialId),
-            context)
+            withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Deleting deleteDataSourceCredentialEntity - {}",
                 credentialId))
             .doOnSuccess(response -> logger.info("Deleted deleteDataSourceCredentialEntity - {}", response))
@@ -3289,7 +3275,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
         ListCredentialEntityOptions options, Context context) {
         options = options != null ? options : new ListCredentialEntityOptions();
-        return service.listCredentialsSinglePageAsync(options.getSkip(), options.getMaxPageSize(), context)
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+        return service.listCredentialsSinglePageAsync(options.getSkip(), options.getMaxPageSize(), withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data source credentials"))
             .doOnSuccess(response -> logger.info("Listed data source credentials {}", response))
             .doOnError(error -> logger.warning("Failed to list all data source credential information - {}", error))

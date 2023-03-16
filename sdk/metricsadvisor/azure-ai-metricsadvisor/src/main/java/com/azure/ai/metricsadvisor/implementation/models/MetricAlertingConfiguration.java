@@ -59,9 +59,6 @@ public final class MetricAlertingConfiguration {
     @JsonProperty(value = "valueFilter")
     private ValueCondition valueFilter;
 
-    /** Creates an instance of MetricAlertingConfiguration class. */
-    public MetricAlertingConfiguration() {}
-
     /**
      * Get the anomalyDetectionConfigurationId property: Anomaly detection configuration unique id.
      *

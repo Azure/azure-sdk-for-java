@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
-import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImplBuilder;
+import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
+import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
@@ -34,11 +34,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -124,7 +121,6 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
     private static final String METRICSADVISOR_PROPERTIES = "azure-ai-metricsadvisor.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
-    private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms",
         ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
@@ -224,9 +220,8 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         if (pipeline == null) {
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-
-        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
-            new MetricsAdvisorImplBuilder()
+        final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl advisorRestAPIOpenAPIV2 =
+            new AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder()
                 .endpoint(endpoint)
                 .pipeline(pipeline)
                 .buildClient();
@@ -268,18 +263,9 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        TracingOptions tracingOptions = null;
-        if (clientOptions != null) {
-            tracingOptions = clientOptions.getTracingOptions();
-        }
-
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE, tracingOptions);
-
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .tracer(tracer)
             .build();
     }
 

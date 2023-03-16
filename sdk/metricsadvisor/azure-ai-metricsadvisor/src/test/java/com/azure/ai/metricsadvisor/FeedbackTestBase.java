@@ -15,7 +15,6 @@ import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.PeriodType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -45,23 +44,18 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createAnomalyFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createChangePointMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createPeriodMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createCommentMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void testListMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
@@ -73,14 +67,8 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    abstract void getMetricFeedbackValidId(HttpClient httpClient,
-                                                                MetricsAdvisorServiceVersion serviceVersion);
 
     void listMetricFeedbackRunner(Consumer<List<MetricFeedback>> testRunner) {
         // create data feeds

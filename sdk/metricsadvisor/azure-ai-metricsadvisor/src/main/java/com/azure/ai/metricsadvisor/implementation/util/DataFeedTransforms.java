@@ -143,8 +143,8 @@ public final class DataFeedTransforms {
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
             dataFeedDetail.getMetrics().stream()
-                .collect(Collectors.toMap(com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getMetricId,
-                    com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getMetricName)));
+                .collect(Collectors.toMap(com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getId,
+                    com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric::getName)));
         return dataFeed;
     }
 
@@ -656,7 +656,7 @@ public final class DataFeedTransforms {
             innerDimensions = new ArrayList<>();
             for (DataFeedDimension dimension : dimensions) {
                 innerDimensions.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension()
-                    .setDimensionName(dimension.getName()).setDimensionDisplayName(dimension.getDisplayName()));
+                    .setName(dimension.getName()).setDisplayName(dimension.getDisplayName()));
             }
         }
         return innerDimensions;
@@ -669,9 +669,9 @@ public final class DataFeedTransforms {
             innerMetrics = new ArrayList<>();
             for (DataFeedMetric metric : metrics) {
                 innerMetrics.add(new com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric()
-                    .setMetricName(metric.getName())
-                    .setMetricDisplayName(metric.getDisplayName())
-                    .setMetricDescription(metric.getDescription()));
+                    .setName(metric.getName())
+                    .setDisplayName(metric.getDisplayName())
+                    .setDescription(metric.getDescription()));
             }
         }
         return innerMetrics;
@@ -684,7 +684,7 @@ public final class DataFeedTransforms {
         } else {
             List<DataFeedDimension> dimensions = new ArrayList<>();
             for (com.azure.ai.metricsadvisor.implementation.models.DataFeedDimension inner : innerList) {
-                dimensions.add(new DataFeedDimension(inner.getDimensionName()).setDisplayName(inner.getDimensionDisplayName()));
+                dimensions.add(new DataFeedDimension(inner.getName()).setDisplayName(inner.getDisplayName()));
             }
             return dimensions;
         }
@@ -697,10 +697,10 @@ public final class DataFeedTransforms {
         } else {
             List<DataFeedMetric> metrics = new ArrayList<>();
             for (com.azure.ai.metricsadvisor.implementation.models.DataFeedMetric inner : innerList) {
-                DataFeedMetric metric = new DataFeedMetric(inner.getMetricName())
-                    .setDisplayName(inner.getMetricDisplayName())
-                    .setDescription(inner.getMetricDescription());
-                DataFeedMetricAccessor.setId(metric, inner.getMetricId());
+                DataFeedMetric metric = new DataFeedMetric(inner.getName())
+                    .setDisplayName(inner.getDisplayName())
+                    .setDescription(inner.getDescription());
+                DataFeedMetricAccessor.setId(metric, inner.getId());
                 metrics.add(metric);
             }
             return metrics;

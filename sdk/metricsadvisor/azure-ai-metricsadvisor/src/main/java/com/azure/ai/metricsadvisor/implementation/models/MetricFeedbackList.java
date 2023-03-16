@@ -23,9 +23,6 @@ public final class MetricFeedbackList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricFeedback> value;
 
-    /** Creates an instance of MetricFeedbackList class. */
-    public MetricFeedbackList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *

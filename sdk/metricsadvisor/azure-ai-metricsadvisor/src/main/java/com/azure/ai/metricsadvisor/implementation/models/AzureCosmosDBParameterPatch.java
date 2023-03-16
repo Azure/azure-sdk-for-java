@@ -34,9 +34,6 @@ public final class AzureCosmosDBParameterPatch {
     @JsonProperty(value = "collectionId")
     private String collectionId;
 
-    /** Creates an instance of AzureCosmosDBParameterPatch class. */
-    public AzureCosmosDBParameterPatch() {}
-
     /**
      * Get the connectionString property: The connection string of this Azure CosmosDB.
      *

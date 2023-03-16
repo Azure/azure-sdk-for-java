@@ -8,21 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** data feed access mode, default is Private. */
+/** Defines values for ViewMode. */
 public final class ViewMode extends ExpandableStringEnum<ViewMode> {
     /** Static value Private for ViewMode. */
     public static final ViewMode PRIVATE = fromString("Private");
 
     /** Static value Public for ViewMode. */
     public static final ViewMode PUBLIC = fromString("Public");
-
-    /**
-     * Creates a new instance of ViewMode value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public ViewMode() {}
 
     /**
      * Creates or finds a ViewMode from its string representation.
@@ -35,11 +27,7 @@ public final class ViewMode extends ExpandableStringEnum<ViewMode> {
         return fromString(name, ViewMode.class);
     }
 
-    /**
-     * Gets known ViewMode values.
-     *
-     * @return known ViewMode values.
-     */
+    /** @return known ViewMode values. */
     public static Collection<ViewMode> values() {
         return values(ViewMode.class);
     }

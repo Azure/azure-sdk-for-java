@@ -8,25 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * anomaly status
- *
- * <p>only return for alerting anomaly result.
- */
+/** Defines values for AnomalyStatus. */
 public final class AnomalyStatus extends ExpandableStringEnum<AnomalyStatus> {
     /** Static value Active for AnomalyStatus. */
     public static final AnomalyStatus ACTIVE = fromString("Active");
 
     /** Static value Resolved for AnomalyStatus. */
     public static final AnomalyStatus RESOLVED = fromString("Resolved");
-
-    /**
-     * Creates a new instance of AnomalyStatus value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public AnomalyStatus() {}
 
     /**
      * Creates or finds a AnomalyStatus from its string representation.
@@ -39,11 +27,7 @@ public final class AnomalyStatus extends ExpandableStringEnum<AnomalyStatus> {
         return fromString(name, AnomalyStatus.class);
     }
 
-    /**
-     * Gets known AnomalyStatus values.
-     *
-     * @return known AnomalyStatus values.
-     */
+    /** @return known AnomalyStatus values. */
     public static Collection<AnomalyStatus> values() {
         return values(AnomalyStatus.class);
     }

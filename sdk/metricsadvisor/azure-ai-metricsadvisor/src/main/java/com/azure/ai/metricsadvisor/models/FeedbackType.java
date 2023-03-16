@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** feedback type. */
+/** Defines values for FeedbackType. */
 public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
     /** Static value Anomaly for FeedbackType. */
     public static final FeedbackType ANOMALY = fromString("Anomaly");
@@ -23,14 +23,6 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
     public static final FeedbackType COMMENT = fromString("Comment");
 
     /**
-     * Creates a new instance of FeedbackType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public FeedbackType() {}
-
-    /**
      * Creates or finds a FeedbackType from its string representation.
      *
      * @param name a name to look for.
@@ -41,11 +33,7 @@ public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
         return fromString(name, FeedbackType.class);
     }
 
-    /**
-     * Gets known FeedbackType values.
-     *
-     * @return known FeedbackType values.
-     */
+    /** @return known FeedbackType values. */
     public static Collection<FeedbackType> values() {
         return values(FeedbackType.class);
     }

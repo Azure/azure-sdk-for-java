@@ -35,7 +35,8 @@ public final class ServicePrincipalInKVParamPatch {
     private String servicePrincipalIdNameInKV;
 
     /*
-     * The secret name of the service principal's client secret in the Key Vault.
+     * The secret name of the service principal's client secret in the Key
+     * Vault.
      */
     @JsonProperty(value = "servicePrincipalSecretNameInKV")
     private String servicePrincipalSecretNameInKV;
@@ -45,9 +46,6 @@ public final class ServicePrincipalInKVParamPatch {
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
-
-    /** Creates an instance of ServicePrincipalInKVParamPatch class. */
-    public ServicePrincipalInKVParamPatch() {}
 
     /**
      * Get the keyVaultEndpoint property: The Key Vault endpoint that storing the service principal.

@@ -40,9 +40,6 @@ public final class InfluxDBParameterPatch {
     @JsonProperty(value = "query")
     private String query;
 
-    /** Creates an instance of InfluxDBParameterPatch class. */
-    public InfluxDBParameterPatch() {}
-
     /**
      * Get the connectionString property: The connection string of this InfluxDB.
      *

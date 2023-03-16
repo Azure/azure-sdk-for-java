@@ -28,9 +28,6 @@ public final class MongoDBParameterPatch {
     @JsonProperty(value = "command")
     private String command;
 
-    /** Creates an instance of MongoDBParameterPatch class. */
-    public MongoDBParameterPatch() {}
-
     /**
      * Get the connectionString property: The connection string of this MongoDB.
      *

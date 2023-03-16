@@ -20,14 +20,6 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
     public static final AnomalyValue NOT_ANOMALY = fromString("NotAnomaly");
 
     /**
-     * Creates a new instance of AnomalyValue value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public AnomalyValue() {}
-
-    /**
      * Creates or finds a AnomalyValue from its string representation.
      *
      * @param name a name to look for.
@@ -38,11 +30,7 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
         return fromString(name, AnomalyValue.class);
     }
 
-    /**
-     * Gets known AnomalyValue values.
-     *
-     * @return known AnomalyValue values.
-     */
+    /** @return known AnomalyValue values. */
     public static Collection<AnomalyValue> values() {
         return values(AnomalyValue.class);
     }

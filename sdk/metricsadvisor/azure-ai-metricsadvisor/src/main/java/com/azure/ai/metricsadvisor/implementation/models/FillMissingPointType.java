@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the type of fill missing point for anomaly detection. */
+/** Defines values for FillMissingPointType. */
 public final class FillMissingPointType extends ExpandableStringEnum<FillMissingPointType> {
     /** Static value SmartFilling for FillMissingPointType. */
     public static final FillMissingPointType SMART_FILLING = fromString("SmartFilling");
@@ -23,14 +23,6 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
     public static final FillMissingPointType NO_FILLING = fromString("NoFilling");
 
     /**
-     * Creates a new instance of FillMissingPointType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public FillMissingPointType() {}
-
-    /**
      * Creates or finds a FillMissingPointType from its string representation.
      *
      * @param name a name to look for.
@@ -41,11 +33,7 @@ public final class FillMissingPointType extends ExpandableStringEnum<FillMissing
         return fromString(name, FillMissingPointType.class);
     }
 
-    /**
-     * Gets known FillMissingPointType values.
-     *
-     * @return known FillMissingPointType values.
-     */
+    /** @return known FillMissingPointType values. */
     public static Collection<FillMissingPointType> values() {
         return values(FillMissingPointType.class);
     }

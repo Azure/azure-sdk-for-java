@@ -24,9 +24,6 @@ public final class AlertResultList {
     @JsonProperty(value = "value", required = true)
     private List<AnomalyAlert> value;
 
-    /** Creates an instance of AlertResultList class. */
-    public AlertResultList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *

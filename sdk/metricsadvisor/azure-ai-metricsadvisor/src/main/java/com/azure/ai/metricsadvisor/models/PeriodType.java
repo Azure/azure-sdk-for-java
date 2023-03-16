@@ -8,21 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the type of setting period. */
+/** Defines values for PeriodType. */
 public final class PeriodType extends ExpandableStringEnum<PeriodType> {
     /** Static value AutoDetect for PeriodType. */
     public static final PeriodType AUTO_DETECT = fromString("AutoDetect");
 
     /** Static value AssignValue for PeriodType. */
     public static final PeriodType ASSIGN_VALUE = fromString("AssignValue");
-
-    /**
-     * Creates a new instance of PeriodType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public PeriodType() {}
 
     /**
      * Creates or finds a PeriodType from its string representation.
@@ -35,11 +27,7 @@ public final class PeriodType extends ExpandableStringEnum<PeriodType> {
         return fromString(name, PeriodType.class);
     }
 
-    /**
-     * Gets known PeriodType values.
-     *
-     * @return known PeriodType values.
-     */
+    /** @return known PeriodType values. */
     public static Collection<PeriodType> values() {
         return values(PeriodType.class);
     }

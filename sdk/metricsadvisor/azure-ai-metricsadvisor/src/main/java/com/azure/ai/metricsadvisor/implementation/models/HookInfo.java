@@ -55,9 +55,6 @@ public class HookInfo {
     @JsonProperty(value = "admins")
     private List<String> admins;
 
-    /** Creates an instance of HookInfo class. */
-    public HookInfo() {}
-
     /**
      * Get the hookId property: Hook unique id.
      *

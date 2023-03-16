@@ -23,8 +23,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
@@ -39,15 +39,18 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
     /**
      * Test client builder with invalid API key
      */
-    @Test
-    @DoNotRecord
-    public void clientBuilderWithInvalidKeyCredential() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint(PLAYBACK_ENDPOINT)
-            .credential(new MetricsAdvisorKeyCredential("", ""))
-            .buildClient());
-        assertEquals("Missing credential information while building a client.", exception.getMessage());
-
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void clientBuilderWithInvalidKeyCredential(HttpClient httpClient,
+                                                      MetricsAdvisorServiceVersion serviceVersion) {
+        clientBuilderWithInvalidKeyCredentialRunner(httpClient, serviceVersion, clientBuilder -> (output) -> {
+            Exception exception = assertThrows(output.getClass(),
+                () -> clientBuilder
+                    .buildClient()
+                    .listDataFeeds()
+                    .forEach(dataFeed -> assertNotNull(dataFeed)));
+            assertEquals(output.getMessage(), exception.getMessage());
+        });
     }
 
     /**
@@ -81,13 +84,17 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
     /**
      * Test for invalid endpoint, which throws connection refused exception message.
      */
-    @Test
-    @DoNotRecord
-    public void clientBuilderWithInvalidEndpoint() {
-        assertThrows(RuntimeException.class, () -> new MetricsAdvisorAdministrationClientBuilder()
-            .endpoint(INVALID_ENDPOINT)
-            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
-            .buildClient());
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, (clientBuilder) ->
+            assertThrows(RuntimeException.class,
+                () -> clientBuilder
+                    .endpoint(INVALID_ENDPOINT)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
+                    .buildClient()
+                    .listDataFeeds()
+                    .forEach(dataFeed -> assertNotNull(dataFeed))));
     }
 
     /**
@@ -95,7 +102,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    @Disabled
     public void clientBuilderWithTokenCredential(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion, (clientBuilder) ->
             clientBuilder
@@ -116,7 +123,18 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
     }
 
     // Client builder runner
-    private void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
+    void clientBuilderWithInvalidKeyCredentialRunner(HttpClient httpClient,
+                                                     MetricsAdvisorServiceVersion serviceVersion,
+                                                     Function<MetricsAdvisorAdministrationClientBuilder,
+                                                         Consumer<IllegalArgumentException>> testRunner) {
+        final MetricsAdvisorAdministrationClientBuilder clientBuilder =
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(),
+                new MetricsAdvisorKeyCredential("", ""));
+        testRunner.apply(clientBuilder)
+            .accept(new IllegalArgumentException("Missing credential information while building a client."));
+    }
+
+    void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
                                                    Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
         final MetricsAdvisorAdministrationClientBuilder clientBuilder =
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
@@ -125,7 +143,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
+    void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
                                                 Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
         final MetricsAdvisorAdministrationClientBuilder clientBuilder =
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
@@ -134,7 +152,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithTokenCredentialRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
+    void clientBuilderWithTokenCredentialRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
                                                 Consumer<MetricsAdvisorAdministrationClientBuilder> testRunner) {
         final MetricsAdvisorAdministrationClientBuilder clientBuilder = new MetricsAdvisorAdministrationClientBuilder()
             .endpoint(getEndpoint())
@@ -163,7 +181,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
      * @param credential the given {@link MetricsAdvisorKeyCredential} credential
      * @return {@link MetricsAdvisorAdministrationClientBuilder}
      */
-    private MetricsAdvisorAdministrationClientBuilder createClientBuilder(HttpClient httpClient,
+    MetricsAdvisorAdministrationClientBuilder createClientBuilder(HttpClient httpClient,
                                                                   MetricsAdvisorServiceVersion serviceVersion,
                                                                   String endpoint,
                                                                   MetricsAdvisorKeyCredential credential) {
@@ -185,7 +203,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
      *
      * @return the endpoint
      */
-    private String getEndpoint() {
+    String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get(AZURE_METRICS_ADVISOR_ENDPOINT);
@@ -196,7 +214,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
      *
      * @return the MetricsAdvisorKeyCredential
      */
-    private MetricsAdvisorKeyCredential getMetricsAdvisorKeyCredential() {
+    MetricsAdvisorKeyCredential getMetricsAdvisorKeyCredential() {
         return interceptorManager.isPlaybackMode()
             ? new MetricsAdvisorKeyCredential("subscription_key", "api_key")
             : new MetricsAdvisorKeyCredential(
