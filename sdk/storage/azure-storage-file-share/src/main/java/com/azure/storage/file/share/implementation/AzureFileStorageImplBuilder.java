@@ -31,7 +31,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -162,23 +161,6 @@ public final class AzureFileStorageImplBuilder
     }
 
     /*
-     * Valid value is backup
-     */
-    @Generated private ShareTokenIntent fileRequestIntent;
-
-    /**
-     * Sets Valid value is backup.
-     *
-     * @param fileRequestIntent the fileRequestIntent value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    @Generated
-    public AzureFileStorageImplBuilder fileRequestIntent(ShareTokenIntent fileRequestIntent) {
-        this.fileRequestIntent = fileRequestIntent;
-        return this;
-    }
-
-    /*
      * The URL of the service account, share, directory or file that is the target of the desired operation.
      */
     @Generated private String url;
@@ -192,40 +174,6 @@ public final class AzureFileStorageImplBuilder
     @Generated
     public AzureFileStorageImplBuilder url(String url) {
         this.url = url;
-        return this;
-    }
-
-    /*
-     * If true, the trailing dot will not be trimmed from the target URI.
-     */
-    @Generated private boolean allowTrailingDot;
-
-    /**
-     * Sets If true, the trailing dot will not be trimmed from the target URI.
-     *
-     * @param allowTrailingDot the allowTrailingDot value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    @Generated
-    public AzureFileStorageImplBuilder allowTrailingDot(boolean allowTrailingDot) {
-        this.allowTrailingDot = allowTrailingDot;
-        return this;
-    }
-
-    /*
-     * If true, the trailing dot will not be trimmed from the source URI.
-     */
-    @Generated private boolean allowSourceTrailingDot;
-
-    /**
-     * Sets If true, the trailing dot will not be trimmed from the source URI.
-     *
-     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    @Generated
-    public AzureFileStorageImplBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
-        this.allowSourceTrailingDot = allowSourceTrailingDot;
         return this;
     }
 
@@ -275,14 +223,7 @@ public final class AzureFileStorageImplBuilder
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureFileStorageImpl client =
-                new AzureFileStorageImpl(
-                        localPipeline,
-                        localSerializerAdapter,
-                        localVersion,
-                        fileRequestIntent,
-                        url,
-                        allowTrailingDot,
-                        allowSourceTrailingDot);
+                new AzureFileStorageImpl(localPipeline, localSerializerAdapter, localVersion, url);
         return client;
     }
 

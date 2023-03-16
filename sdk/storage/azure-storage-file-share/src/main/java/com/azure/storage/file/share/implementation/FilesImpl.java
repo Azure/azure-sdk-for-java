@@ -55,7 +55,6 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -94,7 +93,6 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-content-length") long fileContentLength,
@@ -113,7 +111,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -124,7 +121,6 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-content-length") long fileContentLength,
@@ -143,7 +139,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -154,13 +149,11 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -171,13 +164,11 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -188,12 +179,10 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -204,12 +193,10 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -220,11 +207,9 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -235,11 +220,9 @@ public final class FilesImpl {
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -267,8 +250,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -296,8 +277,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -317,8 +296,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -339,8 +316,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -361,8 +336,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") BinaryData optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -383,8 +356,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/octet-stream") BinaryData optionalbody,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -401,8 +372,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -418,8 +387,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -437,8 +404,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -456,8 +421,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -474,8 +437,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -492,8 +453,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -511,8 +470,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -530,8 +487,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -548,8 +503,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -566,8 +519,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -592,8 +543,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -618,8 +567,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -637,8 +584,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -656,8 +601,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -682,9 +625,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -709,9 +649,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -728,8 +665,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -746,8 +681,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -764,8 +697,6 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -782,8 +713,6 @@ public final class FilesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -800,8 +729,6 @@ public final class FilesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -818,8 +745,6 @@ public final class FilesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -846,9 +771,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-content-type") String contentType,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -875,9 +797,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-content-type") String contentType,
-                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
-                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -964,7 +883,6 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 fileContentLength,
@@ -983,7 +901,6 @@ public final class FilesImpl {
                                 fileLastWriteTime,
                                 fileChangeTime,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1070,7 +987,6 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
                 fileContentLength,
@@ -1089,7 +1005,6 @@ public final class FilesImpl {
                 fileLastWriteTime,
                 fileChangeTime,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1299,7 +1214,6 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 fileContentLength,
@@ -1318,7 +1232,6 @@ public final class FilesImpl {
                                 fileLastWriteTime,
                                 fileChangeTime,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1405,7 +1318,6 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
                 fileContentLength,
@@ -1424,7 +1336,6 @@ public final class FilesImpl {
                 fileLastWriteTime,
                 fileChangeTime,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1461,13 +1372,11 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 range,
                                 rangeGetContentMD5,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1504,13 +1413,11 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
                 range,
                 rangeGetContentMD5,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1607,13 +1514,11 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 range,
                                 rangeGetContentMD5,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1650,13 +1555,11 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
                 range,
                 rangeGetContentMD5,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1688,12 +1591,10 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 sharesnapshot,
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1724,12 +1625,10 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1810,12 +1709,10 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 sharesnapshot,
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1846,12 +1743,10 @@ public final class FilesImpl {
                 this.client.getUrl(),
                 shareName,
                 fileName,
-                this.client.isAllowTrailingDot(),
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1880,11 +1775,9 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1909,16 +1802,7 @@ public final class FilesImpl {
             String shareName, String fileName, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.delete(
-                this.client.getUrl(),
-                shareName,
-                fileName,
-                this.client.isAllowTrailingDot(),
-                timeout,
-                this.client.getVersion(),
-                leaseId,
-                this.client.getFileRequestIntent(),
-                accept,
-                context);
+                this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(), leaseId, accept, context);
     }
 
     /**
@@ -1984,11 +1868,9 @@ public final class FilesImpl {
                                 this.client.getUrl(),
                                 shareName,
                                 fileName,
-                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2013,16 +1895,7 @@ public final class FilesImpl {
             String shareName, String fileName, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.deleteNoCustomHeaders(
-                this.client.getUrl(),
-                shareName,
-                fileName,
-                this.client.isAllowTrailingDot(),
-                timeout,
-                this.client.getVersion(),
-                leaseId,
-                this.client.getFileRequestIntent(),
-                accept,
-                context);
+                this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(), leaseId, accept, context);
     }
 
     /**
@@ -2123,8 +1996,6 @@ public final class FilesImpl {
                                 fileLastWriteTime,
                                 fileChangeTime,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2227,8 +2098,6 @@ public final class FilesImpl {
                 fileLastWriteTime,
                 fileChangeTime,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2450,8 +2319,6 @@ public final class FilesImpl {
                                 fileLastWriteTime,
                                 fileChangeTime,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2554,8 +2421,6 @@ public final class FilesImpl {
                 fileLastWriteTime,
                 fileChangeTime,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2621,8 +2486,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 leaseId,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 optionalbody,
                                 accept,
                                 context));
@@ -2689,8 +2552,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 leaseId,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 optionalbody,
                 accept,
                 context);
@@ -2874,8 +2735,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 leaseId,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 optionalbody,
                                 accept,
                                 context));
@@ -2942,8 +2801,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 leaseId,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 optionalbody,
                 accept,
                 context);
@@ -3010,8 +2867,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 leaseId,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 optionalbody,
                                 accept,
                                 context));
@@ -3078,8 +2933,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 leaseId,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 optionalbody,
                 accept,
                 context);
@@ -3263,8 +3116,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 leaseId,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 optionalbody,
                                 accept,
                                 context));
@@ -3331,8 +3182,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 leaseId,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 optionalbody,
                 accept,
                 context);
@@ -3369,8 +3218,6 @@ public final class FilesImpl {
                                 metadata,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3410,8 +3257,6 @@ public final class FilesImpl {
                 metadata,
                 this.client.getVersion(),
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3497,8 +3342,6 @@ public final class FilesImpl {
                                 metadata,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3538,8 +3381,6 @@ public final class FilesImpl {
                 metadata,
                 this.client.getVersion(),
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3589,8 +3430,6 @@ public final class FilesImpl {
                                 proposedLeaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3640,8 +3479,6 @@ public final class FilesImpl {
                 proposedLeaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3760,8 +3597,6 @@ public final class FilesImpl {
                                 proposedLeaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3811,8 +3646,6 @@ public final class FilesImpl {
                 proposedLeaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3851,8 +3684,6 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3890,8 +3721,6 @@ public final class FilesImpl {
                 leaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3977,8 +3806,6 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4016,8 +3843,6 @@ public final class FilesImpl {
                 leaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4065,8 +3890,6 @@ public final class FilesImpl {
                                 proposedLeaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4114,8 +3937,6 @@ public final class FilesImpl {
                 proposedLeaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4227,8 +4048,6 @@ public final class FilesImpl {
                                 proposedLeaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4276,8 +4095,6 @@ public final class FilesImpl {
                 proposedLeaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4316,8 +4133,6 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4355,8 +4170,6 @@ public final class FilesImpl {
                 leaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4442,8 +4255,6 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.getVersion(),
                                 requestId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4481,8 +4292,6 @@ public final class FilesImpl {
                 leaseId,
                 this.client.getVersion(),
                 requestId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4567,8 +4376,6 @@ public final class FilesImpl {
                                 leaseId,
                                 copySourceAuthorization,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
                                 accept,
                                 context));
     }
@@ -4653,8 +4460,6 @@ public final class FilesImpl {
                 leaseId,
                 copySourceAuthorization,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
                 accept,
                 context);
     }
@@ -4862,8 +4667,6 @@ public final class FilesImpl {
                                 leaseId,
                                 copySourceAuthorization,
                                 fileLastWrittenMode,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
                                 accept,
                                 context));
     }
@@ -4948,8 +4751,6 @@ public final class FilesImpl {
                 leaseId,
                 copySourceAuthorization,
                 fileLastWrittenMode,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
                 accept,
                 context);
     }
@@ -4997,8 +4798,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 range,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5046,8 +4845,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 range,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5163,8 +4960,6 @@ public final class FilesImpl {
                                 this.client.getVersion(),
                                 range,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5212,8 +5007,6 @@ public final class FilesImpl {
                 this.client.getVersion(),
                 range,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5313,9 +5106,6 @@ public final class FilesImpl {
                                 fileChangeTime,
                                 setArchiveAttribute,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5415,9 +5205,6 @@ public final class FilesImpl {
                 fileChangeTime,
                 setArchiveAttribute,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5624,9 +5411,6 @@ public final class FilesImpl {
                                 fileChangeTime,
                                 setArchiveAttribute,
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5726,9 +5510,6 @@ public final class FilesImpl {
                 fileChangeTime,
                 setArchiveAttribute,
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5766,8 +5547,6 @@ public final class FilesImpl {
                                 copyActionAbortConstant,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5804,8 +5583,6 @@ public final class FilesImpl {
                 copyActionAbortConstant,
                 this.client.getVersion(),
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5888,8 +5665,6 @@ public final class FilesImpl {
                                 copyActionAbortConstant,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -5926,8 +5701,6 @@ public final class FilesImpl {
                 copyActionAbortConstant,
                 this.client.getVersion(),
                 leaseId,
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -5975,8 +5748,6 @@ public final class FilesImpl {
                                 timeout,
                                 sharesnapshot,
                                 this.client.getVersion(),
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6024,8 +5795,6 @@ public final class FilesImpl {
                 timeout,
                 sharesnapshot,
                 this.client.getVersion(),
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6141,8 +5910,6 @@ public final class FilesImpl {
                                 timeout,
                                 sharesnapshot,
                                 this.client.getVersion(),
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6190,8 +5957,6 @@ public final class FilesImpl {
                 timeout,
                 sharesnapshot,
                 this.client.getVersion(),
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6234,8 +5999,6 @@ public final class FilesImpl {
                                 sharesnapshot,
                                 handleId,
                                 this.client.getVersion(),
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6283,8 +6046,6 @@ public final class FilesImpl {
                 sharesnapshot,
                 handleId,
                 this.client.getVersion(),
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6391,8 +6152,6 @@ public final class FilesImpl {
                                 sharesnapshot,
                                 handleId,
                                 this.client.getVersion(),
-                                this.client.isAllowTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6440,8 +6199,6 @@ public final class FilesImpl {
                 sharesnapshot,
                 handleId,
                 this.client.getVersion(),
-                this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6553,9 +6310,6 @@ public final class FilesImpl {
                                 filePermissionKey,
                                 metadata,
                                 contentType,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6667,9 +6421,6 @@ public final class FilesImpl {
                 filePermissionKey,
                 metadata,
                 contentType,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6914,9 +6665,6 @@ public final class FilesImpl {
                                 filePermissionKey,
                                 metadata,
                                 contentType,
-                                this.client.isAllowTrailingDot(),
-                                this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -7028,9 +6776,6 @@ public final class FilesImpl {
                 filePermissionKey,
                 metadata,
                 contentType,
-                this.client.isAllowTrailingDot(),
-                this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }

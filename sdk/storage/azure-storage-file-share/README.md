@@ -220,23 +220,6 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
     .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
 ```
 
-#### Share with `TokenCredential`
-Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}` and `ShareTokenIntent`. 
-`ShareTokenIntent.BACKUP` specifies requests that are intended for backup/admin type operations, meaning that all
-file/directory ACLs are bypassed and full permissions are granted. User must have required RBAC permission in order to 
-use `ShareTokenIntent.BACKUP`.
-
-```java readme-sample-createShareClientWithTokenCredential
-String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
-
-ShareClient serviceClient = new ShareClientBuilder()
-    .endpoint(shareURL)
-    .credential(tokenCredential)
-    .shareTokenIntent(ShareTokenIntent.BACKUP)
-    .shareName(shareName)
-    .buildClient();
-```
-
 ### Directory
  The directory resource includes the properties for that directory. It allows the operations of creating, listing, deleting directories or subdirectories or files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${sasToken}`

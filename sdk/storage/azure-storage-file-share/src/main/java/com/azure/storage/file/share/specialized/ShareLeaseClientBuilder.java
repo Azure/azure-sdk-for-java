@@ -4,14 +4,12 @@
 package com.azure.storage.file.share.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceVersion;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.URL;
 import java.util.Objects;
@@ -81,9 +79,6 @@ public final class ShareLeaseClientBuilder {
     private boolean isShareFile;
     private String accountName;
     private ShareServiceVersion serviceVersion;
-    private ShareTokenIntent shareTokenIntent;
-    private boolean allowSourceTrailingDot;
-    private boolean allowTrailingDot;
 
     /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
@@ -102,7 +97,7 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
         return new ShareLeaseAsyncClient(pipeline, url, shareName, shareSnapshot, resourcePath, getLeaseId(),
-            isShareFile, accountName, version.getVersion(), allowTrailingDot, allowSourceTrailingDot, shareTokenIntent);
+            isShareFile, accountName, version.getVersion());
     }
 
     /**
@@ -200,46 +195,5 @@ public final class ShareLeaseClientBuilder {
 
     private String getLeaseId() {
         return (leaseId == null) ? UUID.randomUUID().toString() : leaseId;
-    }
-
-
-    /**
-     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
-     *
-     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
-     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
-     *
-     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
-     * @return the updated ShareLeaseClientBuilder object
-     */
-    public ShareLeaseClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
-        this.allowSourceTrailingDot = allowSourceTrailingDot;
-        return this;
-    }
-
-    /**
-     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
-     *
-     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
-     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
-     *
-     * @param allowTrailingDot the allowTrailingDot value.
-     * @return the updated ShareLeaseClientBuilder object
-     */
-    public ShareLeaseClientBuilder allowTrailingDot(boolean allowTrailingDot) {
-        this.allowTrailingDot = allowTrailingDot;
-        return this;
-    }
-
-    /**
-     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
-     * This is currently required when using {@link TokenCredential}, and ignored for other forms of authentication.
-     *
-     * @param shareTokenIntent the {@link ShareTokenIntent} value.
-     * @return the updated ShareLeaseClientBuilder object
-     */
-    public ShareLeaseClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
-        this.shareTokenIntent = shareTokenIntent;
-        return this;
     }
 }

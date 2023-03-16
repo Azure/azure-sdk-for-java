@@ -10,13 +10,12 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -33,11 +32,11 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -128,7 +127,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ShareServiceClient.class, ShareServiceAsyncClient.class})
 public final class ShareServiceClientBuilder implements
-    TokenCredentialTrait<ShareServiceClientBuilder>,
     HttpTrait<ShareServiceClientBuilder>,
     ConnectionStringTrait<ShareServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>,
@@ -142,7 +140,6 @@ public final class ShareServiceClientBuilder implements
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
-    private TokenCredential tokenCredential;
     private String sasToken;
 
     private HttpClient httpClient;
@@ -156,9 +153,6 @@ public final class ShareServiceClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private ShareServiceVersion version;
-    private ShareTokenIntent shareTokenIntent;
-    private boolean allowSourceTrailingDot;
-    private boolean allowTrailingDot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareServiceClient FileServiceClients}
@@ -192,18 +186,24 @@ public final class ShareServiceClientBuilder implements
 
         AzureSasCredential azureSasCredentialFromSasToken = sasToken != null ? new AzureSasCredential(sasToken) : null;
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+            } else if (azureSasCredential != null) {
+                return new AzureSasCredentialPolicy(azureSasCredential, false);
+            } else if (sasToken != null) {
+                return new AzureSasCredentialPolicy(azureSasCredentialFromSasToken, false);
+            } else {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Credentials are required for authorization"));
+            }
+        }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, LOGGER);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .fileRequestIntent(shareTokenIntent)
-            .allowSourceTrailingDot(allowSourceTrailingDot)
-            .allowTrailingDot(allowTrailingDot)
             .buildClient();
 
         return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion,
@@ -274,7 +274,6 @@ public final class ShareServiceClientBuilder implements
      */
     public ShareServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.tokenCredential = null;
         this.sasToken = null;
         return this;
     }
@@ -290,26 +289,6 @@ public final class ShareServiceClientBuilder implements
     public ShareServiceClientBuilder credential(AzureNamedKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
-     *
-     * Note: only Share-level operations that {@link TokenCredential} is compatible with are
-     * {@link ShareClient#createPermission(String)} and {@link ShareClient#getPermission(String)}
-     *
-     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return the updated ShareServiceClientBuilder
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    @Override
-    public ShareServiceClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'credential' cannot be null.");
-        this.storageSharedKeyCredential = null;
-        this.sasToken = null;
-        return this;
     }
 
     /**
@@ -562,46 +541,6 @@ public final class ShareServiceClientBuilder implements
      */
     public ShareServiceClientBuilder serviceVersion(ShareServiceVersion version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
-     *
-     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
-     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
-     *
-     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
-     * @return the updated ShareServiceClientBuilder object
-     */
-    public ShareServiceClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
-        this.allowSourceTrailingDot = allowSourceTrailingDot;
-        return this;
-    }
-
-    /**
-     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
-     *
-     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
-     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
-     *
-     * @param allowTrailingDot the allowTrailingDot value.
-     * @return the updated ShareServiceClientBuilder object
-     */
-    public ShareServiceClientBuilder allowTrailingDot(boolean allowTrailingDot) {
-        this.allowTrailingDot = allowTrailingDot;
-        return this;
-    }
-
-    /**
-     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
-     * This is currently required when using {@link TokenCredential}, and ignored for other forms of authentication.
-     *
-     * @param shareTokenIntent the {@link ShareTokenIntent} value.
-     * @return the updated ShareServiceClientBuilder object
-     */
-    public ShareServiceClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
-        this.shareTokenIntent = shareTokenIntent;
         return this;
     }
 }
