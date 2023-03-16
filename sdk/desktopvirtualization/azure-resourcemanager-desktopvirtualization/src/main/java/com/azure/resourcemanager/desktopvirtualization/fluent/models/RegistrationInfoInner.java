@@ -30,6 +30,10 @@ public final class RegistrationInfoInner {
     @JsonProperty(value = "registrationTokenOperation")
     private RegistrationTokenOperation registrationTokenOperation;
 
+    /** Creates an instance of RegistrationInfoInner class. */
+    public RegistrationInfoInner() {
+    }
+
     /**
      * Get the expirationTime property: Expiration time of registration token.
      *
