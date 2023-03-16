@@ -1,6 +1,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_TIMEOUT;
 
-public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy{
+public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
 
     public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneHotPath(false);
     public static HttpTimeoutPolicy instanceShouldThrow503OnTimeout = new HttpTimeoutPolicyControlPlaneHotPath(true);
@@ -41,15 +42,17 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy{
         return true;
     }
 
+    // The hot path should always be safe to retires since it should be retrieving meta data
+    // information that is not idempotent.
     @Override
-    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<HttpResponse> responseMessage) {
+    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<RxDocumentServiceResponse> responseMessage) {
         if (responseMessage == null) {
             return false;
         }
 
         final AtomicInteger statusCode = new AtomicInteger();
         responseMessage.flatMap(rm -> {
-            statusCode.set(rm.statusCode());
+            statusCode.set(rm.getStatusCode());
             return Mono.empty();
         });
         if (statusCode.get() != REQUEST_TIMEOUT) {
@@ -64,9 +67,9 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy{
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
         List<ResponseTimeoutAndDelays> timeoutAndDelays = new ArrayList<ResponseTimeoutAndDelays>();
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds((long).5), Duration.ZERO));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), Duration.ofSeconds(1)));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ZERO));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds((long).5), 0));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0));
         return timeoutAndDelays;
     }
 }

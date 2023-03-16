@@ -1,6 +1,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
@@ -36,20 +37,22 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
         return getTimeoutAndDelays().listIterator();
     }
 
+    // Assume that it is not safe to retry unless it is a get method.
+    // Create and other operations could have succeeded even though a timeout occurred.
     @Override
     public Boolean isSafeToRetry(HttpMethod httpMethod) {
-        return true;
+        return httpMethod == HttpMethod.GET;
     }
 
     @Override
-    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<HttpResponse> responseMessage) {
+    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<RxDocumentServiceResponse> responseMessage) {
         if (responseMessage == null) {
             return false;
         }
 
         final AtomicInteger statusCode = new AtomicInteger();
         responseMessage.flatMap(rm -> {
-            statusCode.set(rm.statusCode());
+            statusCode.set(rm.getStatusCode());
             return Mono.empty();
         });
         if (statusCode.get() != REQUEST_TIMEOUT) {
@@ -64,9 +67,9 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
         List<ResponseTimeoutAndDelays> timeoutAndDelays = new ArrayList<ResponseTimeoutAndDelays>();
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), Duration.ZERO));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), Duration.ofSeconds(1)));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), Duration.ZERO));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
         return timeoutAndDelays;
     }
 }

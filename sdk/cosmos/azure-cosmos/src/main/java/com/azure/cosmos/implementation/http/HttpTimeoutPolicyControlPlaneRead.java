@@ -1,6 +1,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
@@ -41,15 +42,16 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
         return true;
     }
 
+    // This is for control plane reads which should always be safe to retry on.
     @Override
-    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<HttpResponse> responseMessage) {
+    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<RxDocumentServiceResponse> responseMessage) {
         if (responseMessage == null) {
             return false;
         }
 
         final AtomicInteger statusCode = new AtomicInteger();
         responseMessage.flatMap(rm -> {
-            statusCode.set(rm.statusCode());
+            statusCode.set(rm.getStatusCode());
             return Mono.empty();
         });
         if (statusCode.get() != REQUEST_TIMEOUT) {
@@ -64,9 +66,9 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
         List<ResponseTimeoutAndDelays> timeoutAndDelays = new ArrayList<ResponseTimeoutAndDelays>();
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), Duration.ZERO));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ofSeconds(1)));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(20), Duration.ZERO));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 0));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 1));
+        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(20), 0));
         return timeoutAndDelays;
     }
 }

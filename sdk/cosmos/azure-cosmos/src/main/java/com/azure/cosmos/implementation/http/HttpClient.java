@@ -26,10 +26,10 @@ public interface HttpClient {
      * Send the provided request asynchronously.
      *
      * @param request The HTTP request to send
-     * @param timeoutPolicy response timeout policy for this http request
+     * @param responseTimeout response timeout value for this http request
      * @return A {@link Mono} that emits response asynchronously
      */
-    Mono<HttpResponse> send(HttpRequest request, HttpTimeoutPolicy timeoutPolicy);
+    Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout);
 
     /**
      * Create HttpClient with FixedChannelPool {@link HttpClientConfig}

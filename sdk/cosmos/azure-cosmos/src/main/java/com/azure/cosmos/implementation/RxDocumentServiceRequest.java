@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -78,6 +79,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    private Duration responseTimeout;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -1134,5 +1136,13 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setNumberOfItemsInBatchRequest(int numberOfItemsInBatchRequest) {
         this.numberOfItemsInBatchRequest = numberOfItemsInBatchRequest;
+    }
+
+    public Duration getResponseTimeout() {
+        return responseTimeout;
+    }
+
+    public void setResponseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
     }
 }

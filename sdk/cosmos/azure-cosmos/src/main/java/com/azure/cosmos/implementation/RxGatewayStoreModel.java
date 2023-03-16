@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.http.ResponseTimeoutAndDelays;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
@@ -40,6 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -240,12 +242,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     contentAsByteArray);
 
-            HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
-            if (OperationType.QueryPlan.equals(request.getOperationType()) || request.isAddressRefresh()) {
-                timeoutPolicy = HttpTimeoutPolicyControlPlaneHotPath.instance;
-            }
-
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, timeoutPolicy);
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
@@ -482,8 +479,31 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
+        HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
+        if (OperationType.QueryPlan.equals(request.getOperationType()) || request.isAddressRefresh()) {
+            timeoutPolicy = HttpTimeoutPolicyControlPlaneHotPath.instance;
+        }
+
+        HttpMethod httpMethod = null;
+        if (request.isReadOnlyRequest()) {
+            httpMethod = HttpMethod.GET;
+        }
+
+        Mono<RxDocumentServiceResponse> responseMono = null;
+        Iterator<ResponseTimeoutAndDelays> timeoutAndDelaysIterator = timeoutPolicy.getTimeoutIterator();
+        while (timeoutAndDelaysIterator.hasNext()) {
+
+            if (responseMono != null && !timeoutPolicy.shouldRetryBasedOnResponse(httpMethod, responseMono)) {
+                return responseMono;
+            }
+
+            ResponseTimeoutAndDelays current = timeoutAndDelaysIterator.next();
+            request.setResponseTimeout(current.getResponseTimeout());
+            Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
+            responseMono =  BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics), current.getDelayForNextRequest()));
+        }
+
+        return responseMono;
     }
 
     @Override

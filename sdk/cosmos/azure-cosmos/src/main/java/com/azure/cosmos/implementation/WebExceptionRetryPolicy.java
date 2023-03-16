@@ -17,22 +17,24 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
     // total wait time in seconds to retry. should be max of primary reconfigrations/replication wait duration etc
     private final static int waitTimeInSeconds = 30;
-    private final static int initialBackoffSeconds = 1;
-    private final static int backoffMultiplier = 2;
+//    private final static int initialBackoffSeconds = 1;
+//    private final static int backoffMultiplier = 2;
 
     private StopWatch durationTimer = new StopWatch();
     private int attemptCount = 1;
     // Don't penalise first retry with delay.
-    private int currentBackoffSeconds = WebExceptionRetryPolicy.initialBackoffSeconds;
+    private int currentBackoffSeconds;
+//    private int currentBackoffSeconds = WebExceptionRetryPolicy.initialBackoffSeconds;
     private RetryContext retryContext;
 
     public WebExceptionRetryPolicy() {
         durationTimer.start();
     }
 
-    public WebExceptionRetryPolicy(RetryContext retryContext) {
+    public WebExceptionRetryPolicy(RetryContext retryContext, int currentBackoffSeconds) {
         durationTimer.start();
         this.retryContext = retryContext;
+        this.currentBackoffSeconds = currentBackoffSeconds;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             }
 
             backoffTime = Duration.ofSeconds(Math.min(this.currentBackoffSeconds, remainingSeconds));
-            this.currentBackoffSeconds *= WebExceptionRetryPolicy.backoffMultiplier;
+//            this.currentBackoffSeconds *= WebExceptionRetryPolicy.backoffMultiplier;
         }
 
         logger.warn("Received retriable web exception, will retry", exception);

@@ -5,9 +5,9 @@ import java.time.Duration;
 public class ResponseTimeoutAndDelays {
 
     private final Duration responseTimeout;
-    private final Duration delayForNextRequest;
+    private final int delayForNextRequest;
 
-    ResponseTimeoutAndDelays(Duration requestTimeout, Duration delayForNextRequest) {
+    ResponseTimeoutAndDelays(Duration requestTimeout, int delayForNextRequest) {
         this.responseTimeout = requestTimeout;
         this.delayForNextRequest = delayForNextRequest;
     }
@@ -16,7 +16,7 @@ public class ResponseTimeoutAndDelays {
         return responseTimeout;
     }
 
-    public Duration getDelayForNextRequest() {
+    public int getDelayForNextRequest() {
         return delayForNextRequest;
     }
 
