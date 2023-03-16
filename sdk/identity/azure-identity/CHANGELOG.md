@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.0-beta.2 (2023-03-16)
 
 ### Features Added
 - Added CAE support to service principal authentication.
