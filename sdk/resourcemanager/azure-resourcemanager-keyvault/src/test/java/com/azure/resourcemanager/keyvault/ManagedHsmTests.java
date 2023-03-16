@@ -29,9 +29,18 @@ import java.util.UUID;
 public class ManagedHsmTests extends KeyVaultManagementTest {
     @Test
     public void canOperateManagedHsmAndKeys() {
-        ManagedHsm managedHsm = prepareManagedHsm();
+        ManagedHsm managedHsm = getManagedHsm();
 
         try {
+
+            KeyVaultAccessControlAsyncClient accessControlAsyncClient =
+                new KeyVaultAccessControlClientBuilder()
+                    .pipeline(keyVaultManager.httpPipeline())
+                    .vaultUrl(managedHsm.hsmUri())
+                    .buildAsyncClient();
+
+            prepareManagedHsm(managedHsm, accessControlAsyncClient);
+
             // listByResourceGroups
             PagedIterable<ManagedHsm> hsms = keyVaultManager.managedHsms()
                 .listByResourceGroup(rgName);
@@ -68,6 +77,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
                 .withKeySize(4096)
                 .create();
 
+            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.fromString(String.format("/keys/%s", keyName)), "21dbd100-6940-42c2-9190-5d6cb909625b", managedHsm.initialAdminObjectIds().get(0)).block();
             keys.deleteById(key.id());
         } finally {
             keyVaultManager.managedHsms().deleteById(managedHsm.id());
@@ -75,7 +85,11 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         }
     }
 
-    private ManagedHsm prepareManagedHsm() {
+    private void prepareManagedHsm(ManagedHsm managedHsm, KeyVaultAccessControlAsyncClient accessControlAsyncClient) {
+        accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, "21dbd100-6940-42c2-9190-5d6cb909625b", managedHsm.initialAdminObjectIds().get(0)).block();
+    }
+
+    private ManagedHsm getManagedHsm() {
         String objectId = authorizationManager
             .users()
             .getByNameAsync(clientIdFromFile())
@@ -99,11 +113,6 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
                             .withEnablePurgeProtection(false)),
                 Context.NONE);
 
-        KeyVaultAccessControlAsyncClient accessControlAsyncClient =
-            new KeyVaultAccessControlClientBuilder()
-                .pipeline(keyVaultManager.httpPipeline())
-                .vaultUrl(inner.properties().hsmUri())
-                .buildAsyncClient();
         return null;
     }
 }

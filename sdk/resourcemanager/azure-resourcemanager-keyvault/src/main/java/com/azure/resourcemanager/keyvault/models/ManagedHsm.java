@@ -45,7 +45,7 @@ public interface ManagedHsm
     CreateMode createMode();
 
     /** @return rules governing the accessibility of the key vault from specific network locations */
-    NetworkRuleSet networkRuleSet();
+    MhsmNetworkRuleSet networkRuleSet();
 
     /** @return provisioning state */
     ProvisioningState state();
