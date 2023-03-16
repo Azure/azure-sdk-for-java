@@ -1,5 +1,15 @@
 # Release History
 
+## 5.15.3 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.2` to version `2.8.3`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+
 ## 5.15.2 (2023-02-13)
 
 ### Bugs Fixed
