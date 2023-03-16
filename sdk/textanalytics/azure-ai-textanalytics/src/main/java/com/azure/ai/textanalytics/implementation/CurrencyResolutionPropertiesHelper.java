@@ -28,7 +28,7 @@ public final class CurrencyResolutionPropertiesHelper {
         accessor = currencyResolutionAccessor;
     }
 
-    public static void setISO4217(CurrencyResolution currencyResolution, String iso4217) {
+    public static void setIso4217(CurrencyResolution currencyResolution, String iso4217) {
         accessor.setIso4217(currencyResolution, iso4217);
     }
 

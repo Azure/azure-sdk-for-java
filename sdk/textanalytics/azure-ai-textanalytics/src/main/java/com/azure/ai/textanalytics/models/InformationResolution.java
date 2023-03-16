@@ -43,6 +43,11 @@ public final class InformationResolution extends BaseResolution {
         return this.unit;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.INFORMATION_RESOLUTION;
+    }
+
     /**
      * Get the value property: The numeric value that the extracted text denotes.
      *

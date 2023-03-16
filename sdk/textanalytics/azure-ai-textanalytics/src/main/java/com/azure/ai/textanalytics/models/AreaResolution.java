@@ -51,6 +51,11 @@ public final class AreaResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.AREA_RESOLUTION;
+    }
+
     private void setUnit(AreaUnit unit) {
         this.unit = unit;
     }

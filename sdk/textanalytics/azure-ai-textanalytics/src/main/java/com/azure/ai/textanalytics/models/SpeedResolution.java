@@ -51,6 +51,11 @@ public final class SpeedResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.SPEED_RESOLUTION;
+    }
+
     private void setUnit(SpeedUnit unit) {
         this.unit = unit;
     }

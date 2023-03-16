@@ -5,4 +5,12 @@ package com.azure.ai.textanalytics.models;
 
 /** Base class for all resolution types */
 public abstract class BaseResolution {
+    /**
+     * The resolution type.
+     *
+     * @return resolution type.
+     */
+    public ResolutionKind getType() {
+        return ResolutionKind.valueOf("BaseResolution");
+    }
 }

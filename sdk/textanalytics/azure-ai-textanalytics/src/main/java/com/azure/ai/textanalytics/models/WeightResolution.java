@@ -51,6 +51,11 @@ public final class WeightResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.WEIGHT_RESOLUTION;
+    }
+
     private void setUnit(WeightUnit unit) {
         this.unit = unit;
     }

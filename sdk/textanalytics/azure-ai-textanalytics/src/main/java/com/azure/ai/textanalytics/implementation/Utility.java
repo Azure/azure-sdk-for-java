@@ -169,6 +169,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -700,7 +701,7 @@ public final class Utility {
     public static IterableStream<com.azure.ai.textanalytics.models.BaseResolution> toBaseResolutions(
             List<BaseResolution> resolutions) {
         if (resolutions == null) {
-            return null;
+            return IterableStream.of(Collections.emptyList());
         }
 
         List<com.azure.ai.textanalytics.models.BaseResolution> baseResolutions = new ArrayList<>();
@@ -777,7 +778,7 @@ public final class Utility {
             CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
             com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
                     = new com.azure.ai.textanalytics.models.CurrencyResolution();
-            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getIso4217());
+            CurrencyResolutionPropertiesHelper.setIso4217(currencyResolution, currencyResolutionImpl.getIso4217());
             CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
             CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;

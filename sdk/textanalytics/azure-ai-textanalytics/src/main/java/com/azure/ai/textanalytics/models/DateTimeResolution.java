@@ -92,6 +92,11 @@ public final class DateTimeResolution extends BaseResolution {
         return this.modifier;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.DATE_TIME_RESOLUTION;
+    }
+
     private void setTimex(String timex) {
         this.timex = timex;
     }

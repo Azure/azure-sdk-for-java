@@ -52,6 +52,11 @@ public final class NumberResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.NUMBER_RESOLUTION;
+    }
+
     private void setNumberKind(NumberKind numberKind) {
         this.numberKind = numberKind;
     }

@@ -52,6 +52,11 @@ public final class TemperatureResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.TEMPERATURE_RESOLUTION;
+    }
+
     private void setUnit(TemperatureUnit unit) {
         this.unit = unit;
     }

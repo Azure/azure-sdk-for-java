@@ -116,6 +116,11 @@ public final class TemporalSpanResolution extends BaseResolution {
         return this.timex;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.TEMPORAL_SPAN_RESOLUTION;
+    }
+
     private void setBegin(String begin) {
         this.begin = begin;
     }

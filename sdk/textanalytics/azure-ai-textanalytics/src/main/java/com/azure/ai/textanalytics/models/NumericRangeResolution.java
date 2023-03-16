@@ -71,6 +71,11 @@ public final class NumericRangeResolution extends BaseResolution {
         return this.maximum;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.NUMERIC_RANGE_RESOLUTION;
+    }
+
     private void setRangeKind(RangeKind rangeKind) {
         this.rangeKind = rangeKind;
     }

@@ -3,59 +3,63 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-
 /** Defines values for ResolutionKind. */
-public final class ResolutionKind extends ExpandableStringEnum<ResolutionKind> {
-    /** Static value DateTimeResolution for ResolutionKind. */
-    public static final ResolutionKind DATE_TIME_RESOLUTION = fromString("DateTimeResolution");
+public enum ResolutionKind {
+    /** Enum value AgeResolution. */
+    AGE_RESOLUTION("AgeResolution"),
 
-    /** Static value NumberResolution for ResolutionKind. */
-    public static final ResolutionKind NUMBER_RESOLUTION = fromString("NumberResolution");
+    /** Enum value AreaResolution. */
+    AREA_RESOLUTION("AreaResolution"),
 
-    /** Static value OrdinalResolution for ResolutionKind. */
-    public static final ResolutionKind ORDINAL_RESOLUTION = fromString("OrdinalResolution");
+    /** Enum value CurrencyResolution. */
+    CURRENCY_RESOLUTION("CurrencyResolution"),
 
-    /** Static value SpeedResolution for ResolutionKind. */
-    public static final ResolutionKind SPEED_RESOLUTION = fromString("SpeedResolution");
+    /** Enum value DateTimeResolution. */
+    DATE_TIME_RESOLUTION("DateTimeResolution"),
 
-    /** Static value WeightResolution for ResolutionKind. */
-    public static final ResolutionKind WEIGHT_RESOLUTION = fromString("WeightResolution");
+    /** Enum value InformationResolution. */
+    INFORMATION_RESOLUTION("InformationResolution"),
 
-    /** Static value LengthResolution for ResolutionKind. */
-    public static final ResolutionKind LENGTH_RESOLUTION = fromString("LengthResolution");
+    /** Enum value LengthResolution. */
+    LENGTH_RESOLUTION("LengthResolution"),
 
-    /** Static value VolumeResolution for ResolutionKind. */
-    public static final ResolutionKind VOLUME_RESOLUTION = fromString("VolumeResolution");
+    /** Enum value NumberResolution. */
+    NUMBER_RESOLUTION("NumberResolution"),
 
-    /** Static value AreaResolution for ResolutionKind. */
-    public static final ResolutionKind AREA_RESOLUTION = fromString("AreaResolution");
+    /** Enum value NumericRangeResolution. */
+    NUMERIC_RANGE_RESOLUTION("NumericRangeResolution"),
 
-    /** Static value AgeResolution for ResolutionKind. */
-    public static final ResolutionKind AGE_RESOLUTION = fromString("AgeResolution");
+    /** Enum value OrdinalResolution. */
+    ORDINAL_RESOLUTION("OrdinalResolution"),
 
-    /** Static value InformationResolution for ResolutionKind. */
-    public static final ResolutionKind INFORMATION_RESOLUTION = fromString("InformationResolution");
+    /** Enum value SpeedResolution. */
+    SPEED_RESOLUTION("SpeedResolution"),
 
-    /** Static value TemperatureResolution for ResolutionKind. */
-    public static final ResolutionKind TEMPERATURE_RESOLUTION = fromString("TemperatureResolution");
+    /** Enum value TemporalSpanResolution. */
+    TEMPORAL_SPAN_RESOLUTION("TemporalSpanResolution"),
 
-    /** Static value CurrencyResolution for ResolutionKind. */
-    public static final ResolutionKind CURRENCY_RESOLUTION = fromString("CurrencyResolution");
+    /** Enum value TemperatureResolution. */
+    TEMPERATURE_RESOLUTION("TemperatureResolution"),
 
-    /** Static value NumericRangeResolution for ResolutionKind. */
-    public static final ResolutionKind NUMERIC_RANGE_RESOLUTION = fromString("NumericRangeResolution");
+    /** Enum value VolumeResolution. */
+    VOLUME_RESOLUTION("VolumeResolution"),
 
-    /** Static value TemporalSpanResolution for ResolutionKind. */
-    public static final ResolutionKind TEMPORAL_SPAN_RESOLUTION = fromString("TemporalSpanResolution");
+    /** Enum value WeightResolution. */
+    WEIGHT_RESOLUTION("WeightResolution");
+
+    /** The actual serialized value for a ResolutionKind instance. */
+    private final String value;
+
+    ResolutionKind(String value) {
+        this.value = value;
+    }
 
     /**
-     * Creates or finds a ResolutionKind from its string representation.
+     * Get the enum value in string.
      *
-     * @param name a name to look for.
-     * @return the corresponding ResolutionKind.
+     * @return the enum value in string.
      */
-    public static ResolutionKind fromString(String name) {
-        return fromString(name, ResolutionKind.class);
+    public String getValue() {
+        return value;
     }
 }

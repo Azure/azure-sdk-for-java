@@ -51,6 +51,11 @@ public final class LengthResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.LENGTH_RESOLUTION;
+    }
+
     private void setUnit(LengthUnit unit) {
         this.unit = unit;
     }

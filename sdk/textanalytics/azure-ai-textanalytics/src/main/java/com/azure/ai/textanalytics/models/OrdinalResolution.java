@@ -72,6 +72,11 @@ public final class OrdinalResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.ORDINAL_RESOLUTION;
+    }
+
     private void setOffset(String offset) {
         this.offset = offset;
     }

@@ -51,6 +51,11 @@ public final class VolumeResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.VOLUME_RESOLUTION;
+    }
+
     private void setUnit(VolumeUnit unit) {
         this.unit = unit;
     }

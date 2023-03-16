@@ -51,6 +51,11 @@ public final class AgeResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.AGE_RESOLUTION;
+    }
+
     private void setUnit(AgeUnit unit) {
         this.unit = unit;
     }

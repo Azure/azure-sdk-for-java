@@ -3,8 +3,10 @@
 ## 5.3.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added a method `getType()` to get the type of resolution in `BaseResulution` and override method in all derived class.
 
 ### Breaking Changes
+- Changed `ResolutionKind` to an `enum` type but not `ExpandableStringEnum`.
 
 ### Bugs Fixed
 

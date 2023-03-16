@@ -75,6 +75,11 @@ public final class CurrencyResolution extends BaseResolution {
         return this.value;
     }
 
+    @Override
+    public ResolutionKind getType() {
+        return ResolutionKind.CURRENCY_RESOLUTION;
+    }
+
     private void setIso4217(String iso4217) {
         this.iso4217 = iso4217;
     }
