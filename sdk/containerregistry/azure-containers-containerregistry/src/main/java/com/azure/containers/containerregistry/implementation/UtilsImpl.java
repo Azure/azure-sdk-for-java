@@ -85,7 +85,10 @@ public final class UtilsImpl {
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
     // TODO (limolkova) should we send index and list too so that we won't need to change the default later on?
-    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
+    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST
+        + "," + ManifestMediaType.DOCKER_MANIFEST
+        + ",application/vnd.oci.image.index.v1+json"
+        + ",application/vnd.docker.distribution.manifest.list.v2+json";
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;

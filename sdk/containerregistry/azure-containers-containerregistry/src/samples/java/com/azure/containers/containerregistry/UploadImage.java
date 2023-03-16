@@ -9,8 +9,6 @@ import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -32,7 +30,7 @@ public class UploadImage {
 
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -70,7 +68,7 @@ public class UploadImage {
     private void uploadBlobBinaryData() {
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -85,7 +83,7 @@ public class UploadImage {
     private void uploadStream() throws IOException {
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -101,7 +99,7 @@ public class UploadImage {
     private void uploadManifest() {
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -134,7 +132,7 @@ public class UploadImage {
     private void uploadCustomManifestMediaType() {
         ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 

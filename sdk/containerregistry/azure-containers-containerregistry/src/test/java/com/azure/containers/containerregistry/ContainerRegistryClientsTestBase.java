@@ -9,7 +9,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -124,9 +123,9 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
         return new ContainerRegistryBlobClientBuilder()
             .endpoint(getEndpoint(endpoint))
-            .repository(repositoryName)
+            .repositoryName(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).addAllowedHeaderName("Range").addAllowedHeaderName("Content-Range"))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
     }

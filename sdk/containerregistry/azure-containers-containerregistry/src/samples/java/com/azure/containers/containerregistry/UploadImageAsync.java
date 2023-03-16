@@ -8,8 +8,6 @@ import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
@@ -35,7 +33,7 @@ public class UploadImageAsync {
 
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
@@ -94,7 +92,7 @@ public class UploadImageAsync {
     private void uploadManifest() {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
@@ -134,7 +132,7 @@ public class UploadImageAsync {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(credential)
             .buildAsyncClient();
 
@@ -170,7 +168,7 @@ public class UploadImageAsync {
     private void uploadBlob() throws FileNotFoundException {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
