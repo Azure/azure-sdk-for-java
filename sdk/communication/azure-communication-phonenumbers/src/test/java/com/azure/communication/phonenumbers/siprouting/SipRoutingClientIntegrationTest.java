@@ -255,7 +255,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksEmptyBeforeWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithAADSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks()).size() ==0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         client.setTrunks(EXPECTED_TRUNKS);
 
