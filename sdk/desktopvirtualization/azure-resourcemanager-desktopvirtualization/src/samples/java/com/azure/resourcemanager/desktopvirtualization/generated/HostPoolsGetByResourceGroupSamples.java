@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for HostPools GetByResourceGroup. */
 public final class HostPoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Get.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/HostPool_Get.json
      */
     /**
      * Sample code: HostPool_Get.
@@ -18,6 +16,8 @@ public final class HostPoolsGetByResourceGroupSamples {
      */
     public static void hostPoolGet(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager.hostPools().getByResourceGroupWithResponse("resourceGroup1", "hostPool1", Context.NONE);
+        manager
+            .hostPools()
+            .getByResourceGroupWithResponse("resourceGroup1", "hostPool1", com.azure.core.util.Context.NONE);
     }
 }
