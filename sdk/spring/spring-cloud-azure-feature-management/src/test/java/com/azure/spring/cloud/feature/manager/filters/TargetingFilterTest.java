@@ -21,7 +21,7 @@ import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 
-@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
+@SpringBootTest(classes = {TestConfiguration.class, SpringBootTest.class})
 public class TargetingFilterTest {
 
     private static final String USERS = "users";
@@ -331,7 +331,7 @@ public class TargetingFilterTest {
         }
 
         @Override
-        public void getContextAsync(TargetingContext context) {
+        public void configureTargetingContextAsync(TargetingContext context) {
             context.setUserId(user);
             context.setGroups(groups);
         }

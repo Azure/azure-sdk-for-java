@@ -101,7 +101,7 @@ public class TargetingFilter implements IFeatureFilter {
 
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
-        contextAccessor.getContextAsync(targetingContext);
+        contextAccessor.configureTargetingContextAsync(targetingContext);
 
         if (validateTargetingContext(targetingContext)) {
             LOGGER.warn("No targeting context available for targeting evaluation.");

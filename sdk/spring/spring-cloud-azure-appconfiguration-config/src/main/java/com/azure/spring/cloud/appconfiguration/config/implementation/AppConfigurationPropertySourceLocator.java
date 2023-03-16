@@ -170,25 +170,22 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
         List<AppConfigurationPropertySource> sources, StateHolder newState) {
         AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
+
+        if (configStore.getFeatureFlags().getEnabled()) {
+            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
+            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                monitoring.getFeatureFlagRefreshInterval());
+        }
+
         if (monitoring.isEnabled()) {
-
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
-                monitoring.getTriggers());
-            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore,
-                sources);
+            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client, monitoring.getTriggers());
 
-            if (watchKeysFeatures.size() > 0) {
-                newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
-                    monitoring.getFeatureFlagRefreshInterval());
-            }
-
-            newState.setState(configStore.getEndpoint(), watchKeysSettings,
-                monitoring.getRefreshInterval());
+            newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
         newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
-        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true, configStore.isFailFast());
-
+        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), configStore.getFeatureFlags().getEnabled(),
+            configStore.isFailFast());
     }
 
     private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
@@ -241,6 +238,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             LOGGER.warn(
                 "Unable to load configuration from Azure AppConfiguration store " + configStore.getEndpoint() + ".", e);
             newState.setLoadState(configStore.getEndpoint(), false, configStore.isFailFast());
+            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false, configStore.isFailFast());
         }
         return newState;
     }

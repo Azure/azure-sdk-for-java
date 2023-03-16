@@ -83,7 +83,7 @@ class AppConfigurationRefreshUtil {
 
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
-                if (featureStore.getEnabled() && monitor.isEnabled() && StateHolder.getLoadStateFeatureFlag(originEndpoint)) {
+                if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(originEndpoint)) {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
                             refreshWithTimeFeatureFlags(client, featureStore,
