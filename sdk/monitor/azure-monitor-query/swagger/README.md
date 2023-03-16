@@ -23,6 +23,7 @@ credential-types: tokencredential
 client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
+enable-sync-stack: true
 ```
 
 ## Metrics Query
@@ -47,6 +48,7 @@ credential-types: tokencredential
 client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
+enable-sync-stack: true
 directive:
     - rename-model:
         from: Response
@@ -76,6 +78,7 @@ credential-types: tokencredential
 client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
+enable-sync-stack: true
 ```
 
 ## Metrics Definitions Query
@@ -101,4 +104,5 @@ credential-types: tokencredential
 client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
+enable-sync-stack: true
 ```

@@ -174,7 +174,7 @@ public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClie
      * @return A synchronous {@link LogsQueryClient}.
      */
     public LogsQueryClient buildClient() {
-        return new LogsQueryClient(buildAsyncClient());
+        return new LogsQueryClient(innerLogBuilder.buildClient());
     }
 
     /**

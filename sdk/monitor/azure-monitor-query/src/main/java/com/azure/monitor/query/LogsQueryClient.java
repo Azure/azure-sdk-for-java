@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImpl;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
@@ -34,14 +35,14 @@ import java.util.List;
 @ServiceClient(builder = LogsQueryClientBuilder.class)
 public final class LogsQueryClient {
 
-    private final LogsQueryAsyncClient asyncClient;
+    private final AzureLogAnalyticsImpl serviceClient;
 
     /**
-     * Constructor that has the async client to make sync over async service calls.
-     * @param asyncClient The asynchronous client.
+     * Constructor that takes the inner service client.
+     * @param serviceClient The service client.
      */
-    LogsQueryClient(LogsQueryAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    LogsQueryClient(AzureLogAnalyticsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -68,7 +69,8 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval) {
-        return asyncClient.queryWorkspace(workspaceId, query, timeInterval).block();
+        return queryWorkspaceWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -82,7 +84,8 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
-        LogsQueryResult logsQueryResult = asyncClient.queryWorkspace(workspaceId, query, timeInterval).block();
+        LogsQueryResult logsQueryResult = queryWorkspaceWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions(), Context.NONE)
+            .getValue();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -144,7 +147,7 @@ public final class LogsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryResult> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                                 LogsQueryOptions options, Context context) {
-        return asyncClient.queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context).block();
+        return serviceClient.getQueries().executeWithResponse(workspaceId, query, timeInterval, options, context).block();
     }
 
     /**
@@ -164,7 +167,7 @@ public final class LogsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<List<T>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                             Class<T> type, LogsQueryOptions options, Context context) {
-        return asyncClient.queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context)
+        return serviceClient.queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context)
                 .map(response -> new SimpleResponse<>(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(),
                         LogsQueryHelper.toObject(response.getValue().getTable(), type)))
@@ -179,7 +182,7 @@ public final class LogsQueryClient {
      * @return A collection of query results corresponding to the input batch of queries.
      */
     LogsBatchQueryResultCollection queryBatch(String workspaceId, List<String> queries, QueryTimeInterval timeInterval) {
-        return asyncClient.queryBatch(workspaceId, queries, timeInterval).block();
+        return serviceClient.queryBatch(workspaceId, queries, timeInterval).block();
     }
 
     /**
@@ -212,7 +215,7 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsBatchQueryResultCollection queryBatch(LogsBatchQuery logsBatchQuery) {
-        return asyncClient.queryBatch(logsBatchQuery).block();
+        return serviceClient.queryBatch(logsBatchQuery).block();
     }
 
 
@@ -226,7 +229,7 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsBatchQueryResultCollection> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
-        return asyncClient.queryBatchWithResponse(logsBatchQuery, context).block();
+        return serviceClient.queryBatchWithResponse(logsBatchQuery, context).block();
     }
 
     /**
@@ -253,7 +256,7 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryResource(String resourceId, String query, QueryTimeInterval timeInterval) {
-        return asyncClient.queryResource(resourceId, query, timeInterval).block();
+        return serviceClient.queryResource(resourceId, query, timeInterval).block();
     }
 
     /**
@@ -267,7 +270,7 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
-        LogsQueryResult logsQueryResult = asyncClient.queryResource(resourceId, query, timeInterval).block();
+        LogsQueryResult logsQueryResult = serviceClient.queryResource(resourceId, query, timeInterval).block();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -329,7 +332,7 @@ public final class LogsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryResult> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
                                                                 LogsQueryOptions options, Context context) {
-        return asyncClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context).block();
+        return serviceClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context).block();
     }
 
     /**
@@ -349,7 +352,7 @@ public final class LogsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<List<T>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
                                                             Class<T> type, LogsQueryOptions options, Context context) {
-        return asyncClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context)
+        return serviceClient.queryResourceWithResponse(resourceId, query, timeInterval, options, context)
             .map(response -> new SimpleResponse<>(response.getRequest(),
                 response.getStatusCode(), response.getHeaders(),
                 LogsQueryHelper.toObject(response.getValue().getTable(), type)))
