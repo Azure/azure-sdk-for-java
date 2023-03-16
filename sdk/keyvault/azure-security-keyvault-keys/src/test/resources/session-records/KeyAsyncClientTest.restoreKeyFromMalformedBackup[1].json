@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/restore?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/restore?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "78",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Fri, 11 Nov 2022 22:29:31 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "d0f03862-4023-4d7d-91e2-b3916b41be70",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
+      "Content-Length" : "78",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "11aa84fa-d28e-4715-b0f7-054fa561944f",
       "Body" : "{\"error\":{\"code\":\"Malformed backup blob\",\"message\":\"Backup blob is corrupt.\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
