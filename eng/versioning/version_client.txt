@@ -69,7 +69,7 @@ com.azure:azure-communication-phonenumbers;1.0.19;1.1.0-beta.15
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-rooms;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-containers-containerregistry;1.0.12;1.1.0-beta.4
+com.azure:azure-containers-containerregistry;1.0.12;1.0.13
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.37.0;1.38.0-beta.1
 com.azure:azure-core-amqp;2.8.3;2.9.0-beta.1
