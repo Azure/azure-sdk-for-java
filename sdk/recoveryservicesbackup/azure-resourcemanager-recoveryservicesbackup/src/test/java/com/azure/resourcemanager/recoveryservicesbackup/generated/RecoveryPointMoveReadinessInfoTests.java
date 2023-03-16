@@ -13,18 +13,18 @@ public final class RecoveryPointMoveReadinessInfoTests {
     public void testDeserialize() throws Exception {
         RecoveryPointMoveReadinessInfo model =
             BinaryData
-                .fromString("{\"isReadyForMove\":true,\"additionalInfo\":\"rmewipmve\"}")
+                .fromString("{\"isReadyForMove\":false,\"additionalInfo\":\"cf\"}")
                 .toObject(RecoveryPointMoveReadinessInfo.class);
-        Assertions.assertEquals(true, model.isReadyForMove());
-        Assertions.assertEquals("rmewipmve", model.additionalInfo());
+        Assertions.assertEquals(false, model.isReadyForMove());
+        Assertions.assertEquals("cf", model.additionalInfo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointMoveReadinessInfo model =
-            new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("rmewipmve");
+            new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("cf");
         model = BinaryData.fromObject(model).toObject(RecoveryPointMoveReadinessInfo.class);
-        Assertions.assertEquals(true, model.isReadyForMove());
-        Assertions.assertEquals("rmewipmve", model.additionalInfo());
+        Assertions.assertEquals(false, model.isReadyForMove());
+        Assertions.assertEquals("cf", model.additionalInfo());
     }
 }

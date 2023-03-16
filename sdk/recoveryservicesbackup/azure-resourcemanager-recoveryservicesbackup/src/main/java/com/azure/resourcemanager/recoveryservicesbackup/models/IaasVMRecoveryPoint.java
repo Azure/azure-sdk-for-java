@@ -110,10 +110,22 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
 
     /*
+     * Security Type of the Disk
+     */
+    @JsonProperty(value = "securityType")
+    private String securityType;
+
+    /*
      * Properties of Recovery Point
      */
     @JsonProperty(value = "recoveryPointProperties")
     private RecoveryPointProperties recoveryPointProperties;
+
+    /*
+     * This flag denotes if any of the disks in the VM are using Private access network setting
+     */
+    @JsonProperty(value = "isPrivateAccessEnabledOnAnyDisk")
+    private Boolean isPrivateAccessEnabledOnAnyDisk;
 
     /** Creates an instance of IaasVMRecoveryPoint class. */
     public IaasVMRecoveryPoint() {
@@ -425,6 +437,26 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the securityType property: Security Type of the Disk.
+     *
+     * @return the securityType value.
+     */
+    public String securityType() {
+        return this.securityType;
+    }
+
+    /**
+     * Set the securityType property: Security Type of the Disk.
+     *
+     * @param securityType the securityType value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withSecurityType(String securityType) {
+        this.securityType = securityType;
+        return this;
+    }
+
+    /**
      * Get the recoveryPointProperties property: Properties of Recovery Point.
      *
      * @return the recoveryPointProperties value.
@@ -441,6 +473,28 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      */
     public IaasVMRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
         this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
+     * Get the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
+     * Private access network setting.
+     *
+     * @return the isPrivateAccessEnabledOnAnyDisk value.
+     */
+    public Boolean isPrivateAccessEnabledOnAnyDisk() {
+        return this.isPrivateAccessEnabledOnAnyDisk;
+    }
+
+    /**
+     * Set the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
+     * Private access network setting.
+     *
+     * @param isPrivateAccessEnabledOnAnyDisk the isPrivateAccessEnabledOnAnyDisk value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withIsPrivateAccessEnabledOnAnyDisk(Boolean isPrivateAccessEnabledOnAnyDisk) {
+        this.isPrivateAccessEnabledOnAnyDisk = isPrivateAccessEnabledOnAnyDisk;
         return this;
     }
 

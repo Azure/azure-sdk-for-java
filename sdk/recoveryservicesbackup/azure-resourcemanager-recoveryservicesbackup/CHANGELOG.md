@@ -1,14 +1,45 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2023-03-16)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.TargetDiskNetworkAccessSettings` was added
 
-### Bugs Fixed
+* `models.TargetDiskNetworkAccessOption` was added
 
-### Other Changes
+* `models.SecuredVMDetails` was added
+
+* `models.ExtendedLocation` was added
+
+#### `models.IaasVMRestoreRequest` was modified
+
+* `withSecuredVMDetails(models.SecuredVMDetails)` was added
+* `extendedLocation()` was added
+* `withTargetDiskNetworkAccessSettings(models.TargetDiskNetworkAccessSettings)` was added
+* `targetDiskNetworkAccessSettings()` was added
+* `securedVMDetails()` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.IaasVMRestoreWithRehydrationRequest` was modified
+
+* `withTargetDiskNetworkAccessSettings(models.TargetDiskNetworkAccessSettings)` was added
+* `withSecuredVMDetails(models.SecuredVMDetails)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.RecoveryPointProperties` was modified
+
+* `isSoftDeleted()` was added
+* `withIsSoftDeleted(java.lang.Boolean)` was added
+
+#### `models.IaasVMRecoveryPoint` was modified
+
+* `withIsPrivateAccessEnabledOnAnyDisk(java.lang.Boolean)` was added
+* `securityType()` was added
+* `withSecurityType(java.lang.String)` was added
+* `isPrivateAccessEnabledOnAnyDisk()` was added
 
 ## 1.0.0 (2023-02-27)
 

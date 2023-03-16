@@ -22,6 +22,12 @@ public final class RecoveryPointProperties {
     @JsonProperty(value = "ruleName")
     private String ruleName;
 
+    /*
+     * Bool to indicate whether RP is in soft delete state or not
+     */
+    @JsonProperty(value = "isSoftDeleted")
+    private Boolean isSoftDeleted;
+
     /** Creates an instance of RecoveryPointProperties class. */
     public RecoveryPointProperties() {
     }
@@ -63,6 +69,26 @@ public final class RecoveryPointProperties {
      */
     public RecoveryPointProperties withRuleName(String ruleName) {
         this.ruleName = ruleName;
+        return this;
+    }
+
+    /**
+     * Get the isSoftDeleted property: Bool to indicate whether RP is in soft delete state or not.
+     *
+     * @return the isSoftDeleted value.
+     */
+    public Boolean isSoftDeleted() {
+        return this.isSoftDeleted;
+    }
+
+    /**
+     * Set the isSoftDeleted property: Bool to indicate whether RP is in soft delete state or not.
+     *
+     * @param isSoftDeleted the isSoftDeleted value to set.
+     * @return the RecoveryPointProperties object itself.
+     */
+    public RecoveryPointProperties withIsSoftDeleted(Boolean isSoftDeleted) {
+        this.isSoftDeleted = isSoftDeleted;
         return this;
     }
 
