@@ -8,14 +8,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,13 +23,11 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
-import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
-import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
-import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
-import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE;
-import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,14 +35,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
+ * Tests {@link SchemaRegistryAsyncClient}.
  */
 public class SchemaRegistryAsyncClientTests extends TestBase {
+    static final int RESOURCE_LENGTH = 16;
+    static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
+    static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
+    static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
+    static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
+
+    // When we regenerate recordings, make sure that the schema group matches what we are persisting.
+    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
-    private SchemaRegistryAsyncClientTestsBase testBase;
 
     @Override
     protected void beforeTest() {
@@ -65,7 +70,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
@@ -77,21 +82,12 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+            builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.addPolicy(new RetryPolicy())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
-
-        testBase = new SchemaRegistryAsyncClientTestsBase(schemaGroup, SchemaFormat.AVRO);
-    }
-
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .skipRequest((httpRequest, context) -> false)
-            .build();
     }
 
     @Override
@@ -109,8 +105,33 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
 
+        final AtomicReference<String> schemaId = new AtomicReference<>();
+
         // Act & Assert
-        testBase.registerAndGetSchema(client1, client2, schemaName, SCHEMA_CONTENT);
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+            .assertNext(response -> {
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
+            }).verifyComplete();
+
+
+        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
+        // cached, so it won't make a network call when getting the schema. client2 will not have this information.
+        final String schemaIdToGet = schemaId.get();
+        assertNotNull(schemaIdToGet);
+
+        // Act & Assert
+        StepVerifier.create(client2.getSchema(schemaIdToGet))
+            .assertNext(schema -> {
+                assertNotNull(schema.getProperties());
+                assertEquals(schemaIdToGet, schema.getProperties().getId());
+                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
+
+                // Replace white space.
+                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getDefinition()).replaceAll("");
+                assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
+            })
+            .verifyComplete();
     }
 
     /**
@@ -125,8 +146,33 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
 
+        final AtomicReference<String> schemaId = new AtomicReference<>();
+        final AtomicReference<String> schemaId2 = new AtomicReference<>();
+
         // Act & Assert
-        testBase.registerAndGetSchemaTwice(client1, client2, schemaName, SCHEMA_CONTENT, schemaContentModified);
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+            .assertNext(response -> {
+                assertEquals(SchemaFormat.AVRO, response.getFormat());
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
+            }).verifyComplete();
+
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, SchemaFormat.AVRO))
+            .assertNext(response -> {
+                assertEquals(SchemaFormat.AVRO, response.getFormat());
+                assertNotNull(response.getId());
+                schemaId2.set(response.getId());
+            }).verifyComplete();
+
+        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
+        // cached, so it won't make a network call when getting the schema. client2 will not have this information.
+        assertNotEquals(schemaId.get(), schemaId2.get());
+
+        // Act & Assert
+        final String schemaIdToGet = schemaId2.get();
+        StepVerifier.create(client2.getSchema(schemaIdToGet))
+            .assertNext(schema -> assertSchemaRegistrySchema(schema, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT))
+            .verifyComplete();
     }
 
     /**
@@ -139,12 +185,34 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
 
+        final AtomicReference<String> schemaId = new AtomicReference<>();
+
         // Act & Assert
-        testBase.registerAndGetSchemaId(client1, client2, schemaName, SCHEMA_CONTENT);
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+            .assertNext(response -> {
+                assertSchemaProperties(response, null, SchemaFormat.AVRO, schemaGroup, schemaName);
+                assertEquals(1, response.getVersion());
+                schemaId.set(response.getId());
+            }).verifyComplete();
+
+        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
+        // cached, so it won't make a network call when getting the schema. client2 will not have this information.
+        final String schemaIdToGet = schemaId.get();
+        assertNotNull(schemaIdToGet);
+
+        // Act & Assert
+        StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+            .assertNext(schema -> {
+                assertSchemaProperties(schema, schemaIdToGet, SchemaFormat.AVRO, schemaGroup, schemaName);
+
+                // Should be the same version since we did not register a new one.
+                assertEquals(1, schema.getVersion());
+            })
+            .verifyComplete();
     }
 
     /**
-     * Verifies that a 4xx is returned if we use an invalid schema format.
+     * Verifies that a 415 is returned if we use an invalid schema format.
      */
     @Test
     public void registerSchemaInvalidFormat() {
@@ -159,7 +227,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(403, responseException.getResponse().getStatusCode());
+                assertEquals(415, responseException.getResponse().getStatusCode());
             })
             .verify();
     }
@@ -186,12 +254,12 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(404, responseException.getResponse().getStatusCode());
+                assertEquals(415, responseException.getResponse().getStatusCode());
             }).verify();
     }
 
     /**
-     * Verifies that an error is returned if we try to register an invalid schema.
+     * Verifies that we can register a schema and then get it by its schemaId.
      */
     @Test
     public void registerBadRequest() {
@@ -201,7 +269,13 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        testBase.registerBadRequest(client1, schemaName, invalidContent);
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof HttpResponseException);
+
+                final HttpResponseException exception = (HttpResponseException) error;
+                assertEquals(400, exception.getResponse().getStatusCode());
+            }).verify();
     }
 
     /**
@@ -266,4 +340,36 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
+    static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
+        String expectedContents) {
+
+        assertNotEquals(expectedContents, "'expectedContents' should not be null.");
+
+        assertEquals(format, actual.getProperties().getFormat());
+
+        assertNotNull(actual.getProperties().getId());
+
+        if (expectedSchemaId != null) {
+            assertEquals(expectedSchemaId, actual.getProperties().getId());
+        }
+
+        // Replace white space.
+        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getDefinition()).replaceAll("");
+        final String expectedContentsNoWhitespace = WHITESPACE_PATTERN.matcher(actualContents).replaceAll("");
+
+        assertEquals(expectedContentsNoWhitespace, actualContents);
+    }
+
+    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat,
+        String schemaGroup, String schemaName) {
+        assertNotNull(actual);
+
+        if (expectedSchemaId != null) {
+            assertEquals(expectedSchemaId, actual.getId());
+        }
+
+        assertEquals(schemaGroup, actual.getGroupName());
+        assertEquals(schemaName, actual.getName());
+        assertEquals(schemaFormat, actual.getFormat());
+    }
 }

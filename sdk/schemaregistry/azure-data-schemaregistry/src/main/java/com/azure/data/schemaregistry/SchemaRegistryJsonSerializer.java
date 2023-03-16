@@ -56,6 +56,7 @@ class SchemaRegistryJsonSerializer implements SerializerAdapter {
      */
     @Override
     public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        //TODO (conniey): Test this.
         return adapter.deserialize(value, type, encoding);
     }
 
