@@ -182,7 +182,7 @@ public final class ResourceManagerUtils {
                     resource = environment.getDataLakeEndpointResourceId();
                     resource = removeTrailingSlash(resource);
                     break;
-                } else if (endpoint.getKey().equals(".managedhsm.azure.net")) {
+                } else if (endpoint.getKey().equals("managedHsm")) {
                     resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
                     resource = removeTrailingSlash(resource);
                     break;
