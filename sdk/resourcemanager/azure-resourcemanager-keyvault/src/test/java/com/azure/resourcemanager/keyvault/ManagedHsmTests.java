@@ -14,7 +14,7 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuFamily;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
-import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
+import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.ProvisioningState;
 import com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient;
 import com.azure.security.keyvault.administration.KeyVaultAccessControlClientBuilder;
@@ -65,7 +65,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             // he create mode to indicate whether the resource is being created or is being recovered from a deleted resource.
             CreateMode createMode = hsm.createMode();
             // Rules governing the accessibility of the key vault from specific network locations.
-            NetworkRuleSet ruleSet = hsm.networkRuleSet();
+            MhsmNetworkRuleSet ruleSet = hsm.networkRuleSet();
             // Provisioning state.
             ProvisioningState provisioningState = hsm.state();
 

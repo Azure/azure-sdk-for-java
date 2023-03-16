@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -22,6 +23,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkReso
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -34,9 +38,19 @@ import java.util.stream.Collectors;
 class ManagedHsmImpl
     extends GroupableResourceImpl<ManagedHsm, ManagedHsmInner, ManagedHsmImpl, KeyVaultManager>
     implements ManagedHsm {
+    private KeyAsyncClient keyClient;
+    private final HttpPipeline mhsmHttpPipeline;
 
     ManagedHsmImpl(String name, ManagedHsmInner innerObject, KeyVaultManager manager) {
         super(name, innerObject, manager);
+        mhsmHttpPipeline = manager().httpPipeline();
+        if (innerModel().properties() != null && innerModel().properties().hsmUri() != null) {
+            keyClient = new KeyClientBuilder()
+                .pipeline(mhsmHttpPipeline)
+                .vaultUrl(innerModel().properties().hsmUri())
+                .serviceVersion(KeyServiceVersion.V7_2)
+                .buildAsyncClient();
+        }
     }
 
     @Override
@@ -129,7 +143,7 @@ class ManagedHsmImpl
 
     @Override
     public Keys keys() {
-
+        return new KeysImpl(keyClient, mhsmHttpPipeline);
     }
 
     @Override
