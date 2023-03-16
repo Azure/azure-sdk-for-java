@@ -101,6 +101,10 @@ public final class ExportPolicyRule {
     @JsonProperty(value = "chownMode")
     private ChownMode chownMode;
 
+    /** Creates an instance of ExportPolicyRule class. */
+    public ExportPolicyRule() {
+    }
+
     /**
      * Get the ruleIndex property: Order index.
      *

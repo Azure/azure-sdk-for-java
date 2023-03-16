@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 
 /** Samples for VolumeQuotaRules Update. */
 public final class VolumeQuotaRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeQuotaRules_Update.json
      */
     /**
      * Sample code: VolumeQuotaRules_Update.
@@ -21,7 +20,8 @@ public final class VolumeQuotaRulesUpdateSamples {
         VolumeQuotaRule resource =
             manager
                 .volumeQuotaRules()
-                .getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", Context.NONE)
+                .getWithResponse(
+                    "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withQuotaSizeInKiBs(100009L).apply();
     }

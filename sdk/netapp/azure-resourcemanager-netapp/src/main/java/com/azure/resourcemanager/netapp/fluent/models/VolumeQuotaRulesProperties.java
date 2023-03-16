@@ -39,6 +39,10 @@ public final class VolumeQuotaRulesProperties {
     @JsonProperty(value = "quotaTarget")
     private String quotaTarget;
 
+    /** Creates an instance of VolumeQuotaRulesProperties class. */
+    public VolumeQuotaRulesProperties() {
+    }
+
     /**
      * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
      *

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import java.time.OffsetDateTime;
@@ -39,6 +40,13 @@ public interface Backup {
      * @return the location value.
      */
     String location();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the backupId property: backupId
@@ -173,7 +181,7 @@ public interface Backup {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
@@ -298,4 +306,29 @@ public interface Backup {
      * @return the refreshed resource.
      */
     Backup refresh(Context context);
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restoreFiles(BackupRestoreFiles body);
+
+    /**
+     * Create a new Backup Restore Files request
+     *
+     * <p>Restore the specified files from the specified backup to the active filesystem.
+     *
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restoreFiles(BackupRestoreFiles body, Context context);
 }
