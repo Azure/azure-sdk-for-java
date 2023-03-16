@@ -563,7 +563,6 @@ public class AppConfigurationRefreshUtilTest {
         clients.add(clientOriginMock);
         configStore.setEndpoint(endpoint);
         configStore.setFeatureFlags(featureStore);
-        monitoring.setEnabled(false);
         configStore.setMonitoring(monitoring);
 
         List<ConfigurationSetting> listedKeys = new ArrayList<>();

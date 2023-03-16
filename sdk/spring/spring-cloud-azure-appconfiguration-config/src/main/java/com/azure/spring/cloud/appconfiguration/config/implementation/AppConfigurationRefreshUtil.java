@@ -239,7 +239,7 @@ class AppConfigurationRefreshUtil {
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
     }
-    
+
     private static int checkFeatureFlags(List<ConfigurationSetting> currentKeys, State state,
         AppConfigurationReplicaClient client, RefreshEventData eventData) {
         int watchedKeySize = 0;
