@@ -336,7 +336,7 @@ public final class CosmosEncryptionAsyncContainer {
         final CosmosItemRequestOptions options = Optional.ofNullable(requestOptions)
             .orElse(new CosmosItemRequestOptions());
 
-        return deleteAllItemsByPartitionKeyInternal(partitionKey, requestOptions);
+        return deleteAllItemsByPartitionKeyInternal(partitionKey, options);
     }
 
     private Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyInternal(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
