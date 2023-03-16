@@ -3,8 +3,8 @@
 
 package com.azure.containers.containerregistry.implementation;
 
-import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import java.time.OffsetDateTime;
 
 /**
  * The helper class to set the non-public properties of an {@link ArtifactTagProperties} instance.
@@ -19,7 +19,11 @@ public final class ArtifactTagPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link ArtifactTagProperties} instance.
      */
     public interface ArtifactTagPropertiesAccessor {
-        ArtifactTagProperties create(ArtifactTagPropertiesInternal internal);
+        void setRepositoryName(ArtifactTagProperties tagProperties, String repositoryName);
+        void setName(ArtifactTagProperties tagProperties, String tagName);
+        void setDigest(ArtifactTagProperties tagProperties, String digest);
+        void setCreatedOn(ArtifactTagProperties tagProperties, OffsetDateTime  createdOn);
+        void setlastUpdatedOn(ArtifactTagProperties tagProperties, OffsetDateTime lastUpdatedOn);
     }
 
     /**
@@ -31,12 +35,23 @@ public final class ArtifactTagPropertiesHelper {
         accessor = tagPropertiesAccessor;
     }
 
-    public static ArtifactTagProperties create(ArtifactTagPropertiesInternal internal) {
-        if (accessor == null) {
-            new ArtifactTagProperties();
-        }
+    public static void setName(ArtifactTagProperties tagProperties, String name) {
+        accessor.setName(tagProperties, name);
+    }
 
-        assert accessor != null;
-        return accessor.create(internal);
+    public static void setRepositoryName(ArtifactTagProperties tagProperties, String repositoryName) {
+        accessor.setRepositoryName(tagProperties, repositoryName);
+    }
+
+    public static void setDigest(ArtifactTagProperties tagProperties, String digest) {
+        accessor.setDigest(tagProperties, digest);
+    }
+
+    public static void setCreatedOn(ArtifactTagProperties tagProperties, OffsetDateTime createdOn) {
+        accessor.setCreatedOn(tagProperties, createdOn);
+    }
+
+    public static void setlastUpdatedOn(ArtifactTagProperties tagProperties, OffsetDateTime lastUpdatedOn) {
+        accessor.setlastUpdatedOn(tagProperties, lastUpdatedOn);
     }
 }

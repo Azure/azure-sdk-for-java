@@ -3,11 +3,11 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -18,18 +18,13 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.CountDownLatch;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ContainerRegistryTokenServiceTest {
 
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
+    private SerializerAdapter serializerAdapter;
     private TokenServiceImpl tokenServiceImpl;
     private AccessTokenCacheImpl refreshTokenCache;
     private ContainerRegistryTokenRequestContext requestContext;
@@ -40,14 +35,16 @@ public class ContainerRegistryTokenServiceTest {
     private static final String REFRESHTOKEN = "refresh_token";
     private static final String ACCESSTOKEN = "access_token";
 
+
     @BeforeEach
     public void setup() {
         this.httpPipeline = mock(HttpPipeline.class);
+        this.serializerAdapter = mock(SerializerAdapter.class);
 
         TokenServiceImpl impl = mock(TokenServiceImpl.class);
         AccessToken refreshToken = new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusMinutes(30));
         AccessToken accessToken = new AccessToken(ACCESSTOKEN, OffsetDateTime.now().plusMinutes(30));
-        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString(), any(TokenGrantType.class))).thenReturn(Mono.just(accessToken));
+        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString(), anyString())).thenReturn(Mono.just(accessToken));
         when(impl.getAcrRefreshTokenAsync(anyString(), anyString())).thenReturn(Mono.just(refreshToken));
 
         TokenCredential tokenCredential = mock(TokenCredential.class);
@@ -77,7 +74,8 @@ public class ContainerRegistryTokenServiceTest {
             null,
             "myString",
             null,
-            this.httpPipeline
+            this.httpPipeline,
+            this.serializerAdapter
         );
 
         service.setTokenService(this.tokenServiceImpl);

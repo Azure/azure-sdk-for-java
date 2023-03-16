@@ -2,78 +2,46 @@
 
 > see https://aka.ms/autorest
 
-This is the template AutoRest configuration file for client SDKs.
-
 ## Getting Started
 
-To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
-
-> `autorest`
-
-To see additional help and options, run:
-
-> `autorest --help`
+To build the client SDK for ContainerRegistry simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
 
 ### Setup
-
-Fork and clone [autorest.java](https://github.com/Azure/autorest.java) and run the following:
-
 ```ps
 You need to have the following installed on your machine:
 
-Node.JS LTS
+Node.JS v10.x - v13.x
 Java 8+
 Maven 3.x
-You need to have autorest installed through NPM:
+You need to have autorest-beta installed through NPM:
 
 npm i -g autorest
 ```
 
 ### Generation
 
-Generating client SDKs from Swagger involves using the `autorest` command installed to the command line above while
-also referencing the Java AutoRest packages, either the local installation performed above or using a released version.
-
-#### Local Installation
-
-Using a local installation of Java AutoRest allows for the most up-to-date code to be used and allows for debugging of
-code generation, see the [autorest.java usage](https://github.com/Azure/autorest.java#usage) for more details.
+There is one swagger for Container Registry APIs.
 
 ```ps
 cd <swagger-folder>
-autorest --use=<directory where autorest.java was cloned>
-```
-
-#### Released Version
-
-Using a released build of Java AutoRest ensures that a well-tested and durable implementation is used, as rebuilding
-the local installation of Java AutoRest won't affect code generation as it would above.
-
-```ps
-cd <swagger-folder>
-autorest --java --use:@autorest/java@4.1.*
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.15'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
 generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
-sync-methods: none
+add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
+custom-types: ArtifactManifestOrderBy,ArtifactTagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties
 custom-types-subpackage: models
-enable-sync-stack: true
-generic-response-type: true
-disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy
@@ -82,7 +50,7 @@ directive:
 - from: swagger-document
   where: $.definitions.TagOrderBy
   transform: >
-    $["x-ms-enum"].name = "ArtifactTagOrder";
+    $["x-ms-enum"].name = ArtifactTagOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -92,7 +60,7 @@ directive:
 - from: swagger-document
   where: $.definitions.ManifestOrderBy
   transform: >
-    $["x-ms-enum"].name = "ArtifactManifestOrder";
+    $["x-ms-enum"].name = ArtifactManifestOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -120,46 +88,13 @@ directive:
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
 
-### Remove readonly for ManifestAttributes
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ManifestAttributes
-  transform: >
-    $["x-ms-client-name"] = "ArtifactManifestPropertiesInternal";
-    delete $.properties.registry.readOnly;
-    delete $.properties.imageName.readOnly;
-    delete $.properties.manifest.readOnly;
-```
-
-### Set readonly flag to properties of ManifestAttributesBase and rename size to sizeInBytes
+### Set readonly flag to properties of ManifestAttributesBase
 ```yaml
 directive:
 - from: swagger-document
   where: $.definitions.ManifestAttributesBase
   transform: >
-    delete $.properties.configMediaType;
-    $.properties.imageSize["x-ms-client-name"] = "sizeInBytes";
-    delete $.properties.digest.readOnly;
-    delete $.properties.imageSize.readOnly;
-    delete $.properties.createdTime.readOnly;
-    delete $.properties.lastUpdateTime.readOnly;
-    delete $.properties.architecture.readOnly;
-    delete $.properties.os.readOnly;
-    delete $.properties.references.readOnly;
-    delete $.properties.tags.readOnly;
-```
-
-### Remove readonly for TagAttributes
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.TagAttributes
-    transform: >
-      $["x-ms-client-name"] = "ArtifactTagPropertiesInternal";
-      delete $.properties.registry.readOnly;
-      delete $.properties.imageName.readOnly;
-      delete $.properties.tag.readOnly;
+      delete  $["properties"]["configMediaType"];
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
@@ -168,11 +103,7 @@ directive:
 - from: swagger-document
   where: $.definitions.TagAttributesBase
   transform: >
-    delete $.properties.signed;
-    delete $.properties.name.readOnly;
-    delete $.properties.digest.readOnly;
-    delete $.properties.createdTime.readOnly;
-    delete $.properties.lastUpdateTime.readOnly;
+      delete  $["properties"]["signed"];
 ```
 
 ### Update the field names for TagChangeableAttributes
@@ -186,97 +117,5 @@ directive:
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
-# Add content-type parameter
-```yaml
-directive:
-    from: swagger-document
-    where: $.paths["/v2/{name}/manifests/{reference}"].put
-    transform: >
-        $.parameters.push({
-            "name": "Content-Type",
-            "in": "header",
-            "type": "string",
-            "description": "The manifest's Content-Type."
-        });
-        delete $.responses["201"].schema;
-```
 
-# Rename accept parameter
-```yaml
-directive:
-    from: swagger-document
-    where: $.paths["/v2/{name}/manifests/{reference}"].get
-    transform: >
-        $.parameters[2].name = "Accept";
-```
 
-# Change NextLink client name to nextLink
-```yaml
-directive:
-  from: swagger-document
-  where: $.parameters.NextLink
-  transform: >
-    $["x-ms-client-name"] = "nextLink"
-```
-
-# Updates to OCIManifest
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.OCIManifest
-  transform: >
-    $["x-ms-client-name"] = "OciImageManifest";
-    $.required = ["schemaVersion"];
-    delete $["x-accessibility"];
-    delete $["allOf"];
-    $.properties["schemaVersion"] = {
-      "type": "integer",
-      "description": "Schema version",
-      "x-ms-client-default": 2
-    };
-```
-
-# Take stream as manifest body
-```yaml
-directive:
-  from: swagger-document
-  where: $.parameters.ManifestBody
-  transform: >
-    $.schema = {
-        "type": "string",
-        "format": "binary"
-      }
-```
-
-# Replace ManifestWrapper with stream response to calculate MD5
-```yaml
-directive:
-  from: swagger-document
-  where: $.paths["/v2/{name}/manifests/{reference}"].get.responses["200"]
-  transform: >
-      $.schema = {
-          "type": "string",
-          "format": "binary"
-        }
-```
-
-# Rename ArtifactBlobDescriptor to OciDescriptor
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.Descriptor
-  transform: >
-    $["x-ms-client-name"] = "OciDescriptor";
-    $.properties.size["x-ms-client-name"] = "sizeInBytes";      
-    delete $["x-accessibility"]
-```
-
-# Make OciAnnotations a public type
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.Annotations
-  transform: >
-    $["x-ms-client-name"] = "OciAnnotations";
-    delete $["x-accessibility"]
-```

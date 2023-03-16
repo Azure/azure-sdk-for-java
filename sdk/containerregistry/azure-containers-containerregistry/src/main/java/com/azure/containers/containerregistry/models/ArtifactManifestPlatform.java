@@ -5,33 +5,28 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The artifact's platform, consisting of operating system and architecture. */
 @Immutable
-public final class ArtifactManifestPlatform implements JsonSerializable<ArtifactManifestPlatform> {
+public final class ArtifactManifestPlatform {
     /*
      * Manifest digest
      */
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * CPU architecture
      */
+    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
+    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactOperatingSystem operatingSystem;
-
-    /** Creates an instance of ArtifactManifestPlatform class. */
-    public ArtifactManifestPlatform() {}
 
     /**
      * Get the digest property: Manifest digest.
@@ -58,48 +53,5 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      */
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
-        jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ArtifactManifestPlatform from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ArtifactManifestPlatform if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ArtifactManifestPlatform.
-     */
-    public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("digest".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.digest = reader.getString();
-                        } else if ("architecture".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.architecture =
-                                    ArtifactArchitecture.fromString(reader.getString());
-                        } else if ("os".equals(fieldName)) {
-                            deserializedArtifactManifestPlatform.operatingSystem =
-                                    ArtifactOperatingSystem.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedArtifactManifestPlatform;
-                });
     }
 }

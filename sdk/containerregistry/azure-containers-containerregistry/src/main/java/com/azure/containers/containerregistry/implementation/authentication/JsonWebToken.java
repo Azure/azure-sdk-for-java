@@ -4,9 +4,8 @@
 package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -15,6 +14,8 @@ import java.time.ZoneOffset;
 import java.util.Base64;
 
 class JsonWebToken {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     /**
      * Retrieves the expiration date from the specified JWT value.
      *
@@ -27,42 +28,33 @@ class JsonWebToken {
             throw new IllegalArgumentException("Value cannot be null or empty: 'jwtValue'.");
         }
 
-        // Need at least two '.'s
-        int firstIndex = jwtValue.indexOf('.');
-        if (firstIndex == -1) {
+        String[] jwtParts = jwtValue.split("[.]");
+
+        // Would normally be 3, but 2 is the minimum here since Java's split ignores trailing empty strings.
+        if (jwtParts.length < 2) {
             return null;
         }
 
-        int secondIndex = jwtValue.indexOf('.', firstIndex + 1);
-        if (secondIndex == -1) {
-            return null;
-        }
-
-        String jwtPayloadEncoded = jwtValue.substring(firstIndex + 1, secondIndex);
+        String jwtPayloadEncoded = jwtParts[1];
 
         if (CoreUtils.isNullOrEmpty(jwtPayloadEncoded)) {
             return null;
         }
 
-        try (JsonReader jsonReader = JsonProviders.createReader(Base64.getDecoder().decode(jwtPayloadEncoded))) {
-            Long expirationValue = jsonReader.readObject(reader -> {
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+        byte[] jwtPayloadDecodedData = Base64.getDecoder().decode(jwtPayloadEncoded);
 
-                    if ("exp".equals(fieldName)) {
-                        return reader.getLong();
-                    }
-                }
-
-                return null;
-            });
-
-            return (expirationValue == null)
-                ? null
-                : OffsetDateTime.ofInstant(Instant.ofEpochSecond(expirationValue), ZoneOffset.UTC);
+        JsonNode rootNode;
+        try {
+            rootNode = MAPPER.readTree(jwtPayloadDecodedData);
         } catch (IOException exception) {
             return null;
         }
+
+        if (!rootNode.has("exp")) {
+            return null;
+        }
+
+        long expirationValue = rootNode.get("exp").asLong();
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(expirationValue), ZoneOffset.UTC);
     }
 }

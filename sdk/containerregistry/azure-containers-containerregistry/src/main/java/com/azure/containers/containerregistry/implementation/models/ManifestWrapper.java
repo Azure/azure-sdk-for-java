@@ -4,13 +4,8 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.containers.containerregistry.models.OciAnnotations;
-import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Returns the requested manifest file. */
@@ -19,60 +14,68 @@ public final class ManifestWrapper extends Manifest {
     /*
      * Media type for this Manifest
      */
+    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * (ManifestList, OCIIndex) List of V2 image layer information
      */
+    @JsonProperty(value = "manifests")
     private List<ManifestListAttributes> manifests;
 
     /*
      * (V2, OCI) Image config descriptor
      */
-    private OciDescriptor config;
+    @JsonProperty(value = "config")
+    private Descriptor config;
 
     /*
      * (V2, OCI) List of V2 image layer information
      */
-    private List<OciDescriptor> layers;
+    @JsonProperty(value = "layers")
+    private List<Descriptor> layers;
 
     /*
      * (OCI, OCIIndex) Additional metadata
      */
-    private OciAnnotations annotations;
+    @JsonProperty(value = "annotations")
+    private Annotations annotations;
 
     /*
      * (V1) CPU architecture
      */
+    @JsonProperty(value = "architecture")
     private String architecture;
 
     /*
      * (V1) Image name
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * (V1) Image tag
      */
+    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * (V1) List of layer information
      */
+    @JsonProperty(value = "fsLayers")
     private List<FsLayer> fsLayers;
 
     /*
      * (V1) Image history
      */
+    @JsonProperty(value = "history")
     private List<History> history;
 
     /*
      * (V1) Image signature
      */
+    @JsonProperty(value = "signatures")
     private List<ImageSignature> signatures;
-
-    /** Creates an instance of ManifestWrapper class. */
-    public ManifestWrapper() {}
 
     /**
      * Get the mediaType property: Media type for this Manifest.
@@ -119,7 +122,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the config value.
      */
-    public OciDescriptor getConfig() {
+    public Descriptor getConfig() {
         return this.config;
     }
 
@@ -129,7 +132,7 @@ public final class ManifestWrapper extends Manifest {
      * @param config the config value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setConfig(OciDescriptor config) {
+    public ManifestWrapper setConfig(Descriptor config) {
         this.config = config;
         return this;
     }
@@ -139,7 +142,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the layers value.
      */
-    public List<OciDescriptor> getLayers() {
+    public List<Descriptor> getLayers() {
         return this.layers;
     }
 
@@ -149,7 +152,7 @@ public final class ManifestWrapper extends Manifest {
      * @param layers the layers value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setLayers(List<OciDescriptor> layers) {
+    public ManifestWrapper setLayers(List<Descriptor> layers) {
         this.layers = layers;
         return this;
     }
@@ -159,7 +162,7 @@ public final class ManifestWrapper extends Manifest {
      *
      * @return the annotations value.
      */
-    public OciAnnotations getAnnotations() {
+    public Annotations getAnnotations() {
         return this.annotations;
     }
 
@@ -169,7 +172,7 @@ public final class ManifestWrapper extends Manifest {
      * @param annotations the annotations value to set.
      * @return the ManifestWrapper object itself.
      */
-    public ManifestWrapper setAnnotations(OciAnnotations annotations) {
+    public ManifestWrapper setAnnotations(Annotations annotations) {
         this.annotations = annotations;
         return this;
     }
@@ -292,86 +295,5 @@ public final class ManifestWrapper extends Manifest {
     public ManifestWrapper setSignatures(List<ImageSignature> signatures) {
         this.signatures = signatures;
         return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManifestWrapper setSchemaVersion(Integer schemaVersion) {
-        super.setSchemaVersion(schemaVersion);
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("schemaVersion", getSchemaVersion());
-        jsonWriter.writeStringField("mediaType", this.mediaType);
-        jsonWriter.writeArrayField("manifests", this.manifests, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("config", this.config);
-        jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("annotations", this.annotations);
-        jsonWriter.writeStringField("architecture", this.architecture);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("tag", this.tag);
-        jsonWriter.writeArrayField("fsLayers", this.fsLayers, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("history", this.history, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("signatures", this.signatures, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ManifestWrapper from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ManifestWrapper if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ManifestWrapper.
-     */
-    public static ManifestWrapper fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ManifestWrapper deserializedManifestWrapper = new ManifestWrapper();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("schemaVersion".equals(fieldName)) {
-                            deserializedManifestWrapper.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                        } else if ("mediaType".equals(fieldName)) {
-                            deserializedManifestWrapper.mediaType = reader.getString();
-                        } else if ("manifests".equals(fieldName)) {
-                            List<ManifestListAttributes> manifests =
-                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                            deserializedManifestWrapper.manifests = manifests;
-                        } else if ("config".equals(fieldName)) {
-                            deserializedManifestWrapper.config = OciDescriptor.fromJson(reader);
-                        } else if ("layers".equals(fieldName)) {
-                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                            deserializedManifestWrapper.layers = layers;
-                        } else if ("annotations".equals(fieldName)) {
-                            deserializedManifestWrapper.annotations = OciAnnotations.fromJson(reader);
-                        } else if ("architecture".equals(fieldName)) {
-                            deserializedManifestWrapper.architecture = reader.getString();
-                        } else if ("name".equals(fieldName)) {
-                            deserializedManifestWrapper.name = reader.getString();
-                        } else if ("tag".equals(fieldName)) {
-                            deserializedManifestWrapper.tag = reader.getString();
-                        } else if ("fsLayers".equals(fieldName)) {
-                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
-                            deserializedManifestWrapper.fsLayers = fsLayers;
-                        } else if ("history".equals(fieldName)) {
-                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
-                            deserializedManifestWrapper.history = history;
-                        } else if ("signatures".equals(fieldName)) {
-                            List<ImageSignature> signatures =
-                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
-                            deserializedManifestWrapper.signatures = signatures;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedManifestWrapper;
-                });
     }
 }

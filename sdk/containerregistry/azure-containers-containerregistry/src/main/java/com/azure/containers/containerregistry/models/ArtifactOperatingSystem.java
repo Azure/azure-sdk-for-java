@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ArtifactOperatingSystem. */
@@ -52,28 +53,17 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
     public static final ArtifactOperatingSystem WINDOWS = fromString("windows");
 
     /**
-     * Creates a new instance of ArtifactOperatingSystem value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public ArtifactOperatingSystem() {}
-
-    /**
      * Creates or finds a ArtifactOperatingSystem from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ArtifactOperatingSystem.
      */
+    @JsonCreator
     public static ArtifactOperatingSystem fromString(String name) {
         return fromString(name, ArtifactOperatingSystem.class);
     }
 
-    /**
-     * Gets known ArtifactOperatingSystem values.
-     *
-     * @return known ArtifactOperatingSystem values.
-     */
+    /** @return known ArtifactOperatingSystem values. */
     public static Collection<ArtifactOperatingSystem> values() {
         return values(ArtifactOperatingSystem.class);
     }
