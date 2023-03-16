@@ -883,7 +883,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 certificateClient.importCertificate(importCertificateOptions);
 
             assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
+                .equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
             // Load the CER part into X509Certificate object
@@ -897,7 +897,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
 
             assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
-            assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
+            assertEquals("CN=Root Agency", x509Certificate.getIssuerX500Principal().getName());
         });
     }
 
