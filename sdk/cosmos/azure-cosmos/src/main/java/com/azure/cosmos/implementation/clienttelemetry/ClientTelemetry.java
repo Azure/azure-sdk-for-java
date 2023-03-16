@@ -45,6 +45,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -272,7 +273,8 @@ public class ClientTelemetry {
                         ByteBuffer byteBuffer =
                             BridgeInternal.serializeJsonToByteBuffer(this.clientTelemetryInfo,
                                 ClientTelemetry.OBJECT_MAPPER);
-                        Flux<byte[]> fluxBytes = Flux.just(RxDocumentServiceRequest.toByteArray(byteBuffer));
+                        byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
+                        Flux<byte[]> fluxBytes = Flux.just(tempBuffer);
 
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();
@@ -306,8 +308,9 @@ public class ClientTelemetry {
                             Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
                             if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
-                                logger.error("Client telemetry request did not succeeded, status code {}",
-                                    response.statusCode());
+                                logger.error("Client telemetry request did not succeeded, status code {}, request body {}",
+                                    response.statusCode(),
+                                    new String(tempBuffer, StandardCharsets.UTF_8));
                             }
                             this.clearDataForNextRun();
                             return this.sendClientTelemetry();
