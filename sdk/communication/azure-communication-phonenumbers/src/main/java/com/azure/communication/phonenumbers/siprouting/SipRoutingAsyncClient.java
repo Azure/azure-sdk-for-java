@@ -4,16 +4,14 @@
 package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.implementation.SipRoutingAdminClientImpl;
-import com.azure.communication.phonenumbers.siprouting.implementation.converters.SipRoutingErrorConverter;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipConfiguration;
-import com.azure.communication.phonenumbers.siprouting.models.SipRoutingError;
-import com.azure.communication.phonenumbers.siprouting.models.SipRoutingResponseException;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -412,12 +410,8 @@ public final class SipRoutingAsyncClient {
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException);
     }
 
-    private SipRoutingResponseException translateException(CommunicationErrorResponseException exception) {
-        SipRoutingError error = null;
-        if (exception.getValue() != null) {
-            error = SipRoutingErrorConverter.convert(exception.getValue().getError());
-        }
-        return new SipRoutingResponseException(exception.getMessage(), exception.getResponse(), error);
+    private HttpResponseException translateException(CommunicationErrorResponseException exception) {
+        return new HttpResponseException(exception.getMessage(), exception.getResponse());
     }
 
     private Mono<List<SipTrunk>> getTrunksInternal() {

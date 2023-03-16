@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers.siprouting;
 
-import com.azure.communication.phonenumbers.siprouting.models.SipRoutingResponseException;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -372,10 +372,10 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksInvalidFqdnSync");
 
         SipTrunk invalidTrunk = new SipTrunk(SET_TRUNK_INVALID_FQDN, SET_TRUNK_PORT);
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.setTrunk(invalidTrunk));
 
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.setTrunks(asList(invalidTrunk)));
     }
 
@@ -386,10 +386,10 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         client.setTrunk(SET_TRUNK);
 
         SipTrunk invalidTrunk = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_INVALID_PORT);
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.setTrunk(invalidTrunk));
 
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.setTrunks(asList(invalidTrunk)));
 
         SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
@@ -404,8 +404,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         client.setTrunk(SET_TRUNK);
         client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK);
 
-        assertThrows(SipRoutingResponseException.class, () -> client.setTrunks(EXPECTED_TRUNKS));
-        assertThrows(SipRoutingResponseException.class, () -> client.deleteTrunk(SET_TRUNK_FQDN));
+        assertThrows(HttpResponseException.class, () -> client.setTrunks(EXPECTED_TRUNKS));
+        assertThrows(HttpResponseException.class, () -> client.deleteTrunk(SET_TRUNK_FQDN));
 
         client.setRoutes(new ArrayList<>());
     }
@@ -417,9 +417,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         client.setTrunk(SET_TRUNK);
         client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK);
 
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE));
-        assertThrows(SipRoutingResponseException.class,
+        assertThrows(HttpResponseException.class,
             () -> client.deleteTrunkWithResponse(SET_TRUNK_FQDN, Context.NONE));
 
         client.setRoutes(new ArrayList<>());
@@ -579,8 +579,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNameSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(null, SET_TRUNK_ROUTE_NUMBER_PATTERN);
 
-        assertThrows(SipRoutingResponseException.class,
-            () -> client.setRoutes(asList(invalidRoute)));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutes(asList(invalidRoute)));
+        assertEquals(MESSAGE_INVALID_ROUTE_NAME, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -589,8 +589,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNameWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(null, SET_TRUNK_ROUTE_NUMBER_PATTERN);
 
-        assertThrows(SipRoutingResponseException.class,
-            () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        assertEquals(MESSAGE_INVALID_ROUTE_NAME, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -599,8 +599,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, null);
 
-        assertThrows(SipRoutingResponseException.class,
-            () -> client.setRoutes(asList(invalidRoute)));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutes(asList(invalidRoute)));
+        assertEquals(MESSAGE_INVALID_NUMBER_PATTERN, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -609,8 +609,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, null);
 
-        assertThrows(SipRoutingResponseException.class,
-            () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        assertEquals(MESSAGE_INVALID_NUMBER_PATTERN, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -619,7 +619,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesSync");
         List<SipTrunkRoute> invalidRoutes = asList(SET_TRUNK_ROUTE, SET_TRUNK_ROUTE);
 
-        assertThrows(SipRoutingResponseException.class, () -> client.setRoutes(invalidRoutes));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutes(invalidRoutes));
+        assertEquals(MESSAGE_DUPLICATE_ROUTES, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -628,8 +629,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesWithResponseSync");
         List<SipTrunkRoute> invalidRoutes = asList(SET_TRUNK_ROUTE, SET_TRUNK_ROUTE);
 
-        assertThrows(SipRoutingResponseException.class,
-            () -> client.setRoutesWithResponse(invalidRoutes, Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(invalidRoutes, Context.NONE));
+        assertEquals(MESSAGE_DUPLICATE_ROUTES, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -640,7 +641,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipTrunkRoute routeWithDuplicatedTrunks = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
             .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
 
-        assertThrows(SipRoutingResponseException.class, () -> client.setRoutes(asList(routeWithDuplicatedTrunks)));
+        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutes(asList(routeWithDuplicatedTrunks)));
+        assertEquals(MESSAGE_DUPLICATE_TRUNKS, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -651,8 +653,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipTrunkRoute routeWithDuplicatedTrunks = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
             .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
 
-        assertThrows(SipRoutingResponseException.class,
+        Throwable exception = assertThrows(HttpResponseException.class,
             () -> client.setRoutesWithResponse(asList(routeWithDuplicatedTrunks), Context.NONE));
+        assertEquals(MESSAGE_DUPLICATE_TRUNKS, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -661,8 +664,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesMissingTrunkSync");
         client.setTrunks(new ArrayList<>());
 
-        assertThrows(SipRoutingResponseException.class,
+        Throwable exception = assertThrows(HttpResponseException.class,
             () -> client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK));
+        assertEquals(MESSAGE_MISSING_TRUNK, exception.getMessage());
     }
 
     @ParameterizedTest
@@ -671,8 +675,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesMissingTrunkWithResponseSync");
         client.setTrunks(new ArrayList<>());
 
-        assertThrows(SipRoutingResponseException.class,
+        Throwable exception = assertThrows(HttpResponseException.class,
             () -> client.setRoutesWithResponse(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK, Context.NONE));
+        assertEquals(MESSAGE_MISSING_TRUNK, exception.getMessage());
     }
 
     // delete trunk

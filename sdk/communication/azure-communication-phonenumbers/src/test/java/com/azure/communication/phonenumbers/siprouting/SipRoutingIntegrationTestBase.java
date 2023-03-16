@@ -103,6 +103,17 @@ public class SipRoutingIntegrationTestBase extends TestBase {
     private static final Pattern UUID_FQDN_REDACTION_PATTERN =
         Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
 
+    protected static final String MESSAGE_DUPLICATE_ROUTES = 
+        "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}\"";
+    protected static final String MESSAGE_DUPLICATE_TRUNKS = 
+        "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"RouteWithDuplicatedTrunk\",\"message\":\"There is a duplicated trunk in a route.\"}}}\"";
+    protected static final String MESSAGE_MISSING_TRUNK =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"MissingTrunk\",\"message\":\"Route targeting a missing trunk.\"}}}\"";
+    protected static final String MESSAGE_INVALID_NUMBER_PATTERN =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteNumberPattern\",\"message\":\"Route with an invalid number pattern.\"}}}\"";
+    protected static final String MESSAGE_INVALID_ROUTE_NAME =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteName\",\"message\":\"Route with an invalid name.\"}}}\"";
+
     protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
