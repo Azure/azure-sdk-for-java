@@ -92,7 +92,7 @@ abstract class AsyncBenchmark<T> {
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
-            logger.info("USING AZURE METRIC REGISTRY");
+            logger.info("USING AZURE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
                 .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry))
                 .sendClientTelemetryToService(cfg.isClientTelemetryEnabled());
@@ -101,13 +101,13 @@ abstract class AsyncBenchmark<T> {
             registry = configuration.getGraphiteMeterRegistry();
 
             if (registry != null) {
-                logger.info("USING GRAPHITE METRIC REGISTRY");
+                logger.info("USING GRAPHITE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
                 CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry))
                     .sendClientTelemetryToService(cfg.isClientTelemetryEnabled());
                 cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
             } else {
-                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY");
+                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
                 CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(null))
                     .sendClientTelemetryToService(cfg.isClientTelemetryEnabled());
