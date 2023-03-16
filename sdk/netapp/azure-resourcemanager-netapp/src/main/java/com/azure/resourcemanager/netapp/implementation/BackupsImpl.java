@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.Backup;
+import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
 import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.RestoreStatus;
@@ -28,15 +29,6 @@ public final class BackupsImpl implements Backups {
     public BackupsImpl(BackupsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BackupStatus getStatus(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        BackupStatusInner inner = this.serviceClient().getStatus(resourceGroupName, accountName, poolName, volumeName);
-        if (inner != null) {
-            return new BackupStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BackupStatus> getStatusWithResponse(
@@ -54,12 +46,10 @@ public final class BackupsImpl implements Backups {
         }
     }
 
-    public RestoreStatus getVolumeRestoreStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        RestoreStatusInner inner =
-            this.serviceClient().getVolumeRestoreStatus(resourceGroupName, accountName, poolName, volumeName);
+    public BackupStatus getStatus(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        BackupStatusInner inner = this.serviceClient().getStatus(resourceGroupName, accountName, poolName, volumeName);
         if (inner != null) {
-            return new RestoreStatusImpl(inner, this.manager());
+            return new BackupStatusImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,6 +72,17 @@ public final class BackupsImpl implements Backups {
         }
     }
 
+    public RestoreStatus getVolumeRestoreStatus(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        RestoreStatusInner inner =
+            this.serviceClient().getVolumeRestoreStatus(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new RestoreStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Backup> list(
         String resourceGroupName, String accountName, String poolName, String volumeName) {
         PagedIterable<BackupInner> inner =
@@ -94,16 +95,6 @@ public final class BackupsImpl implements Backups {
         PagedIterable<BackupInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName, context);
         return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
-    }
-
-    public Backup get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
-        BackupInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, backupName);
-        if (inner != null) {
-            return new BackupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Backup> getWithResponse(
@@ -128,6 +119,16 @@ public final class BackupsImpl implements Backups {
         }
     }
 
+    public Backup get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
+        BackupInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, backupName);
+        if (inner != null) {
+            return new BackupImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, backupName);
@@ -141,6 +142,29 @@ public final class BackupsImpl implements Backups {
         String backupName,
         Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, backupName, context);
+    }
+
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body) {
+        this.serviceClient().restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body);
+    }
+
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String backupName,
+        BackupRestoreFiles body,
+        Context context) {
+        this
+            .serviceClient()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body, context);
     }
 
     public Backup getById(String id) {

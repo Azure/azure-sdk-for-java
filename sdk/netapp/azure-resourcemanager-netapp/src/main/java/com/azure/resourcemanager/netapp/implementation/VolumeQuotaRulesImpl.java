@@ -41,17 +41,6 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
         return Utils.mapPage(inner, inner1 -> new VolumeQuotaRuleImpl(inner1, this.manager()));
     }
 
-    public VolumeQuotaRule get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        VolumeQuotaRuleInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
-        if (inner != null) {
-            return new VolumeQuotaRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VolumeQuotaRule> getWithResponse(
         String resourceGroupName,
         String accountName,
@@ -69,6 +58,17 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VolumeQuotaRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VolumeQuotaRule get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+        VolumeQuotaRuleInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
+        if (inner != null) {
+            return new VolumeQuotaRuleImpl(inner, this.manager());
         } else {
             return null;
         }

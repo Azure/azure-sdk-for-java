@@ -1,14 +1,139 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.12 (2023-03-16)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.Vaults` was removed
 
-### Other Changes
+* `models.IdentityType` was removed
+
+* `models.Identity` was removed
+
+* `models.Vault` was removed
+
+* `models.VaultList` was removed
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withIdentity(models.Identity)` was removed
+
+#### `models.Volume` was modified
+
+* `breakReplication(models.BreakReplicationRequest)` was removed
+* `relocate(models.RelocateVolumeRequest)` was removed
+
+#### `NetAppFilesManager` was modified
+
+* `vaults()` was removed
+
+#### `models.Volumes` was modified
+
+* `breakReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BreakReplicationRequest)` was removed
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.RelocateVolumeRequest)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean)` was removed
+
+#### `models.NetAppAccount` was modified
+
+* `models.Identity identity()` -> `models.ManagedServiceIdentity identity()`
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.lang.String clientId()` -> `java.util.UUID clientId()`
+* `java.lang.String principalId()` -> `java.util.UUID principalId()`
+
+#### `models.VolumeBackupProperties` was modified
+
+* `withVaultId(java.lang.String)` was removed
+* `vaultId()` was removed
+
+### Features Added
+
+* `models.BreakFileLocksRequest` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.VolumeRelocationProperties` was added
+
+* `models.BackupRestoreFiles` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.FileAccessLogs` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Volume` was modified
+
+* `dataStoreResourceId()` was added
+* `provisionedAvailabilityZone()` was added
+* `isLargeVolume()` was added
+* `breakFileLocks()` was added
+* `breakFileLocks(models.BreakFileLocksRequest,com.azure.core.util.Context)` was added
+* `fileAccessLogs()` was added
+
+#### `models.ActiveDirectory` was modified
+
+* `withPreferredServersForLdapClient(java.lang.String)` was added
+* `preferredServersForLdapClient()` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `volumeRelocation()` was added
+* `withVolumeRelocation(models.VolumeRelocationProperties)` was added
+
+#### `models.Backup` was modified
+
+* `systemData()` was added
+* `restoreFiles(models.BackupRestoreFiles)` was added
+* `restoreFiles(models.BackupRestoreFiles,com.azure.core.util.Context)` was added
+
+#### `models.Backups` was modified
+
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles,com.azure.core.util.Context)` was added
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withIsLargeVolume(java.lang.Boolean)` was added
+
+#### `models.VolumeQuotaRule$Update` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was added
+
+#### `models.Volumes` was modified
+
+* `breakFileLocks(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `breakFileLocks(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BreakFileLocksRequest,com.azure.core.util.Context)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `fileAccessLogs()` was added
+* `withIsLargeVolume(java.lang.Boolean)` was added
+* `dataStoreResourceId()` was added
+* `provisionedAvailabilityZone()` was added
+* `isLargeVolume()` was added
+
+#### `models.VolumeQuotaRulePatch` was modified
+
+* `withTags(java.util.Map)` was added
+* `tags()` was added
+
+#### `models.NetAppAccount` was modified
+
+* `systemData()` was added
+
+#### `models.SubscriptionQuotaItem` was modified
+
+* `systemData()` was added
 
 ## 1.0.0-beta.11 (2022-09-19)
 

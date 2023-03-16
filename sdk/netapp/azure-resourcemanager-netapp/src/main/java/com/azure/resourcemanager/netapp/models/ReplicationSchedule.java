@@ -20,6 +20,15 @@ public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationS
     public static final ReplicationSchedule DAILY = fromString("daily");
 
     /**
+     * Creates a new instance of ReplicationSchedule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationSchedule() {
+    }
+
+    /**
      * Creates or finds a ReplicationSchedule from its string representation.
      *
      * @param name a name to look for.
