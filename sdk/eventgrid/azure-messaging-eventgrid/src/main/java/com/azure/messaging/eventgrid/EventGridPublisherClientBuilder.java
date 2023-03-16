@@ -36,11 +36,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
+import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
 import java.net.MalformedURLException;
@@ -49,8 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.messaging.eventgrid.implementation.Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE;
 
 /**
  * A Builder class to create service clients that can publish events to EventGrid.
@@ -196,25 +192,15 @@ public final class EventGridPublisherClientBuilder implements
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
-        TracingOptions tracingOptions = null;
-        if (clientOptions != null) {
-            tracingOptions = clientOptions.getTracingOptions();
+        if (TracerProxy.isTracingEnabled()) {
+            httpPipelinePolicies.add(new CloudEventTracingPipelinePolicy());
         }
-
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, EVENT_GRID_TRACING_NAMESPACE_VALUE, tracingOptions);
-
-        if (tracer.isEnabled()) {
-            httpPipelinePolicies.add(new CloudEventTracingPipelinePolicy(tracer));
-        }
-
         httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline buildPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .clientOptions(clientOptions)
-            .tracer(tracer)
             .build();
 
 
