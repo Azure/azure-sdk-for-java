@@ -3,8 +3,6 @@
 
 package com.azure.communication.phonenumbers.siprouting;
 
-import com.azure.communication.phonenumbers.SipRoutingAsyncClient;
-import com.azure.communication.phonenumbers.SipRoutingClientBuilder;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 
@@ -38,22 +36,9 @@ public class AsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks
         sipRoutingAsyncClient.listTrunks()
-            .subscribe(trunks -> trunks.forEach(trunk ->
-                System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort())));
+            .subscribe(trunk ->
+                System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort()));
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunks
-    }
-
-    /**
-     * Sample code for listing SIP trunks with response.
-     */
-    public void listTrunksWithResponse() {
-        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
-
-        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunksWithResponse
-        sipRoutingAsyncClient.listTrunksWithResponse()
-            .subscribe(response -> response.getValue().forEach(trunk ->
-                System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort())));
-        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listTrunksWithResponse
     }
 
     /**
@@ -63,30 +48,13 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutes
-        sipRoutingAsyncClient.listRoutes().subscribe(routes -> routes.forEach(route -> {
+        sipRoutingAsyncClient.listRoutes().subscribe(route -> {
             System.out.println("Route name: " + route.getName());
             System.out.println("Route description: " + route.getDescription());
             System.out.println("Route number pattern: " + route.getNumberPattern());
             System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
-        }));
+        });
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutes
-    }
-
-    /**
-     * Sample code for listing SIP routing routes with response.
-     */
-    public void listRoutesWithResponse() {
-        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
-
-        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutesWithResponse
-        sipRoutingAsyncClient.listRoutesWithResponse()
-            .subscribe(response -> response.getValue().forEach(route -> {
-                System.out.println("Route name: " + route.getName());
-                System.out.println("Route description: " + route.getDescription());
-                System.out.println("Route number pattern: " + route.getNumberPattern());
-                System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
-            }));
-        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutesWithResponse
     }
 
     /**
