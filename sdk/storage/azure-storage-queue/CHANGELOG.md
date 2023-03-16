@@ -1,5 +1,16 @@
 # Release History
 
+## 12.16.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-storage-common` from `12.20.0` to version `12.20.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+
 ## 12.16.0 (2023-02-21)
 
 ### Features Added
