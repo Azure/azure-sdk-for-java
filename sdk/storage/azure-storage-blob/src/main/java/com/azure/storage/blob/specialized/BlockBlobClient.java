@@ -25,19 +25,16 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,7 +42,6 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +58,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
-public class BlockBlobClient extends BlobClientBase {
+public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
     private final BlockBlobAsyncClient client;
@@ -222,36 +218,6 @@ public class BlockBlobClient extends BlobClientBase {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
         return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
-    }
-
-    /**
-     * Opens a seekable byte channel in write-only mode to upload the blob.
-     *
-     * @param options {@link BlobSeekableByteChannelReadOptions}
-     * @return A <code>SeekableByteChannel</code> object that represents the channel to use for writing to the blob.
-     * @throws BlobStorageException If a storage service error occurred.
-     * @throws NullPointerException if 'options' is null.
-     */
-    public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options) {
-        Objects.requireNonNull(options);
-
-        // Behavior can support more modes but this client does not currently support them
-        StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode internalMode;
-        long startingPosition = 0L;
-        if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
-            internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Unsupported value for `options.getWriteMode()`."));
-        }
-
-        return new StorageSeekableByteChannel(
-            options.getChunkSize() != null
-                ? options.getChunkSize().intValue()
-                : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
-                options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
-            startingPosition);
     }
 
     private BlobClientBuilder prepareBuilder() {

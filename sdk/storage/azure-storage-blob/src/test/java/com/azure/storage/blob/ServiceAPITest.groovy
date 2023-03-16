@@ -468,42 +468,6 @@ class ServiceAPITest extends APISpec {
         cc.delete()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    def "Find blobs by page async"() {
-        setup:
-        def containerAsyncClient = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        containerAsyncClient.create().block()
-        def tags = Collections.singletonMap(tagKey, tagValue)
-
-        for (i in (1..15)) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(data.defaultInputStream).setTags(tags), null, null)
-        }
-        sleepIfRecord(10 * 1000) // To allow tags to index
-        def query = String.format("\"%s\"='%s'", tagKey, tagValue)
-        def searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12)
-
-        when:
-        def list = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage(10) // byPage should take precedence
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block()
-
-        then:
-        list.size() == 10
-
-        when:
-        def list2 = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage() // since no number is specified, it should use the max number specified in options
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block()
-
-        then:
-        list2.size() == 12
-    }
-
     def "Find blobs error"() {
         when:
         primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count()
