@@ -125,10 +125,9 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             MhsmNetworkRuleSet ruleSet = hsm.networkRuleSet();
 
             // create role assignments
-            KeyVaultRoleDefinition cryptoUser = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto Officer");
-            KeyVaultRoleDefinition cryptoOfficer = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
+            // cryptoUser for key operations
+            KeyVaultRoleDefinition cryptoUser = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
             accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoUser.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
-            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoOfficer.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
 
             // key operations, same interface as the key vault
             Keys keys = hsm.keys();
@@ -138,22 +137,17 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
                 .withKeySize(4096)
                 .create();
 
+            // for managing individual key
             accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.fromString(String.format("/keys/%s", keyName)), getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User").getId(), managedHsm.initialAdminObjectIds().get(0)).block();
+            // cryptoOfficer for polling deleted key status
+            KeyVaultRoleDefinition cryptoOfficer = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto Officer");
+            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoOfficer.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
+
             keys.deleteById(key.id());
         } finally {
             keyVaultManager.managedHsms().deleteById(managedHsm.id());
             keyVaultManager.serviceClient().getManagedHsms().purgeDeleted(managedHsm.name(), managedHsm.regionName());
         }
-    }
-
-    @Test
-    public void purge() {
-        keyVaultManager.managedHsms().deleteById(keyVaultManager.managedHsms().getByResourceGroup("javacsmrg46833", "mhsm53678").id());
-        keyVaultManager.serviceClient().getManagedHsms().purgeDeleted("mhsm53678", Region.US_EAST2.name());
-    }
-
-    private void prepareManagedHsm(ManagedHsm managedHsm, KeyVaultAccessControlAsyncClient accessControlAsyncClient) throws Exception {
-        activateManagedHsm(managedHsm);
     }
 
     private KeyVaultRoleDefinition getRoleDefinitionByName(KeyVaultAccessControlAsyncClient accessControlAsyncClient, String roleName) {
