@@ -1,25 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a657f8c7-7a1a-481c-b9bc-23b6a7ac7677",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf3abc7d-879e-4194-8135-2fc94f225bb3",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "39",
-      "apim-request-id" : "3fb7952f-8e87-4aca-82b7-bf39682f60d0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 16 Feb 2023 22:35:16 GMT",
+      "content-length" : "324",
+      "x-envoy-upstream-service-time" : "27",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.Language.Text.PII=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Content-Length" : "324",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "c6a6f301-6525-4e09-bbb5-2efefdb97050",
+      "retry-after" : "0",
+      "StatusCode" : "200",
       "Body" : "{\"kind\":\"PiiEntityRecognitionResults\",\"results\":{\"documents\":[{\"redactedText\":\"👩🏻‍👩🏽‍👧🏾‍👦🏿 SSN: ***********\",\"id\":\"0\",\"entities\":[{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":25,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}",
+      "Date" : "Fri, 05 Aug 2022 20:39:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -1,25 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8fc91c1e-ea21-4261-91c5-5b411d32a6e2",
+      "x-ms-client-request-id" : "9b2f88d7-558f-4f3c-aa1b-3bc6f865afc5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "205",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "8",
-      "apim-request-id" : "1245e0b0-cc36-492c-a9bb-f031986e2f77",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Mon, 14 Nov 2022 18:41:31 GMT",
+      "x-envoy-upstream-service-time" : "9",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "1455f874-29bf-47e0-b9d7-ce0a6da936c5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
       "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
+      "Date" : "Fri, 05 Aug 2022 20:49:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

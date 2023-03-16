@@ -44,9 +44,6 @@ public final class InnerErrorModel {
     @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
 
-    /** Creates an instance of InnerErrorModel class. */
-    public InnerErrorModel() {}
-
     /**
      * Get the code property: One of a server-defined set of error codes.
      *

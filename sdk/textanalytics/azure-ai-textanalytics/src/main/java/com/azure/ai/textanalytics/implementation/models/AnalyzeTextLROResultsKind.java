@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enumeration of supported Text Analysis long-running operation task results. */
+/** Defines values for AnalyzeTextLROResultsKind. */
 public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<AnalyzeTextLROResultsKind> {
     /** Static value SentimentAnalysisLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind SENTIMENT_ANALYSIS_LRORESULTS =
@@ -32,10 +32,6 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
     /** Static value HealthcareLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind HEALTHCARE_LRORESULTS = fromString("HealthcareLROResults");
 
-    /** Static value ExtractiveSummarizationLROResults for AnalyzeTextLROResultsKind. */
-    public static final AnalyzeTextLROResultsKind EXTRACTIVE_SUMMARIZATION_LRORESULTS =
-            fromString("ExtractiveSummarizationLROResults");
-
     /** Static value CustomEntityRecognitionLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind CUSTOM_ENTITY_RECOGNITION_LRORESULTS =
             fromString("CustomEntityRecognitionLROResults");
@@ -47,10 +43,6 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
     /** Static value CustomMultiLabelClassificationLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind CUSTOM_MULTI_LABEL_CLASSIFICATION_LRORESULTS =
             fromString("CustomMultiLabelClassificationLROResults");
-
-    /** Static value AbstractiveSummarizationLROResults for AnalyzeTextLROResultsKind. */
-    public static final AnalyzeTextLROResultsKind ABSTRACTIVE_SUMMARIZATION_LRORESULTS =
-            fromString("AbstractiveSummarizationLROResults");
 
     /**
      * Creates or finds a AnalyzeTextLROResultsKind from its string representation.

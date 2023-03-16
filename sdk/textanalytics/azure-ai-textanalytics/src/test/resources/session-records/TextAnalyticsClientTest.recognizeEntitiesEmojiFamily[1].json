@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "349594d5-83bf-41cc-acdd-8874fd7f8e7b",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3d52bcd3-0525-4abb-a36a-03394f3bfacd",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "232",
-      "x-envoy-upstream-service-time" : "27",
+      "x-envoy-upstream-service-time" : "29",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "59d05b98-5f67-4e37-8f85-25c583e0869e",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "dab36294-bea5-4927-ad11-52c9fc7a171a",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":22,\"length\":9,\"confidenceScore\":0.99}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 20:02:06 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:38:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

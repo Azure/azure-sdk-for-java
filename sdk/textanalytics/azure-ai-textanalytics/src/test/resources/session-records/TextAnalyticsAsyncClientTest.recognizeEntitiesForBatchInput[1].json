@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "98599c5e-bfef-4b6e-8975-5b8b44f7808c",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "73578f07-f94c-40a1-b554-7804a020a470",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "571",
-      "x-envoy-upstream-service-time" : "68",
+      "x-envoy-upstream-service-time" : "32",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "89be10f2-f993-4b96-8df9-7e876727dad7",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "f9d0a5c2-a727-491d-9dc2-17e21259fbbd",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":10,\"length\":9,\"confidenceScore\":0.99}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:06:46 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:44:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

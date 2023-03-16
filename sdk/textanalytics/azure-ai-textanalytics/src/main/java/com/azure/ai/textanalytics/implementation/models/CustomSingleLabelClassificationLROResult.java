@@ -21,9 +21,6 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
     @JsonProperty(value = "results", required = true)
     private CustomLabelClassificationResult results;
 
-    /** Creates an instance of CustomSingleLabelClassificationLROResult class. */
-    public CustomSingleLabelClassificationLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

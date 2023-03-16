@@ -22,9 +22,6 @@ public final class DocumentError {
     @JsonProperty(value = "error", required = true)
     private Error error;
 
-    /** Creates an instance of DocumentError class. */
-    public DocumentError() {}
-
     /**
      * Get the id property: Document Id.
      *

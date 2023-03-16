@@ -17,9 +17,6 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "entities", required = true)
     private List<LinkedEntity> entities;
 
-    /** Creates an instance of LinkedEntitiesDocumentResult class. */
-    public LinkedEntitiesDocumentResult() {}
-
     /**
      * Get the entities property: Recognized well known entities in the document.
      *

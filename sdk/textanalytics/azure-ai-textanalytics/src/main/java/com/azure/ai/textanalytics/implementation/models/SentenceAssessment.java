@@ -46,9 +46,6 @@ public final class SentenceAssessment {
     @JsonProperty(value = "isNegated", required = true)
     private boolean isNegated;
 
-    /** Creates an instance of SentenceAssessment class. */
-    public SentenceAssessment() {}
-
     /**
      * Get the sentiment property: Assessment sentiment in the sentence.
      *

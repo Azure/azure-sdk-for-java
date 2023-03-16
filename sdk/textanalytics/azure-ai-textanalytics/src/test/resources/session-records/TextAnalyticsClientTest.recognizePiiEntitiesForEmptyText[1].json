@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "468a2bee-808c-4cfa-8407-0d7b8e24100f",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e69b4668-0c88-48bb-a7e3-eaac01abed27",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,12 +12,11 @@
       "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "35f6e951-bd25-47c4-973d-5ebe44470f60",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "d1022636-f826-470c-9ccb-319588f1007f",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"PiiEntityRecognitionResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2021-01-15\"}}",
-      "Date" : "Tue, 11 Oct 2022 20:00:31 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:36:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

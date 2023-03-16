@@ -20,9 +20,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private EntityLinkingTaskParameters parameters;
 
-    /** Creates an instance of EntityLinkingLROTask class. */
-    public EntityLinkingLROTask() {}
-
     /**
      * Get the parameters property: Supported parameters for an Entity Linking task.
      *

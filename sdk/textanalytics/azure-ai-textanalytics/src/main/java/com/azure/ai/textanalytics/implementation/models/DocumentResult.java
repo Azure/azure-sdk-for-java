@@ -29,9 +29,6 @@ public class DocumentResult {
     @JsonProperty(value = "statistics")
     private DocumentStatistics statistics;
 
-    /** Creates an instance of DocumentResult class. */
-    public DocumentResult() {}
-
     /**
      * Get the id property: Unique, non-empty document identifier.
      *

@@ -1,25 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "66c81bb6-4343-420d-9738-01926c70b580",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ec2b355d-4c76-4398-8bd5-696291cf25eb",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "19",
-      "apim-request-id" : "0013dd0b-5157-4aed-b3e9-bbed19850e07",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 16 Feb 2023 22:47:41 GMT",
+      "content-length" : "541",
+      "x-envoy-upstream-service-time" : "18",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.Language.Text.Sentiment=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Content-Length" : "540",
-      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":32,\"text\":\"The hotel was dark and unclean. \"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-11-01\"}}",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "6262fe64-e7eb-4db7-a45f-cf1a0e96db0a",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":0.99},\"offset\":0,\"length\":32,\"text\":\"The hotel was dark and unclean. \"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-10-01\"}}",
+      "Date" : "Fri, 06 May 2022 17:49:13 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

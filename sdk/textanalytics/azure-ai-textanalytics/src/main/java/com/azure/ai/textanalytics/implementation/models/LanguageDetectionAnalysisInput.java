@@ -17,9 +17,6 @@ public final class LanguageDetectionAnalysisInput {
     @JsonProperty(value = "documents")
     private List<LanguageInput> documents;
 
-    /** Creates an instance of LanguageDetectionAnalysisInput class. */
-    public LanguageDetectionAnalysisInput() {}
-
     /**
      * Get the documents property: The documents property.
      *

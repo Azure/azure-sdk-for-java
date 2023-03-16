@@ -22,8 +22,6 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
-    private Iterable<AbstractSummaryAction> abstractSummaryActions;
-    private Iterable<ExtractSummaryAction> extractSummaryActions;
 
     /**
      * Gets the custom name for the actions.
@@ -264,48 +262,6 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
         this.multiLabelClassifyActions = multiLabelClassifyActions == null
                                                 ? null : Arrays.asList(multiLabelClassifyActions);
-        return this;
-    }
-
-    /**
-     * Gets the list of {@link AbstractSummaryAction} to be executed.
-     *
-     * @return the list of {@link AbstractSummaryAction} to be executed.
-     */
-    public Iterable<AbstractSummaryAction> getAbstractSummaryActions() {
-        return abstractSummaryActions;
-    }
-
-    /**
-     * Sets the list of {@link AbstractSummaryAction} to be executed.
-     *
-     * @param abstractSummaryActions The list of {@link AbstractSummaryAction} to be executed.
-     *
-     * @return The {@link TextAnalyticsActions} object itself.
-     */
-    public TextAnalyticsActions setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions) {
-        this.abstractSummaryActions = abstractSummaryActions == null ? null : Arrays.asList(abstractSummaryActions);
-        return this;
-    }
-
-    /**
-     * Gets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return the list of {@link ExtractSummaryAction} to be executed.
-     */
-    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
-        return extractSummaryActions;
-    }
-
-    /**
-     * Sets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return The {@link TextAnalyticsActions} object itself.
-     */
-    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
         return this;
     }
 }

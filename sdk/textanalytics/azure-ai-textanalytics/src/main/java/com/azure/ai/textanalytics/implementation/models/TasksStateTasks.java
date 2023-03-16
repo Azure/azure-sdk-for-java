@@ -41,9 +41,6 @@ public final class TasksStateTasks {
     @JsonProperty(value = "items")
     private List<AnalyzeTextLROResult> items;
 
-    /** Creates an instance of TasksStateTasks class. */
-    public TasksStateTasks() {}
-
     /**
      * Get the completed property: The completed property.
      *

@@ -28,9 +28,6 @@ public final class HealthcareAssertion {
     @JsonProperty(value = "association")
     private Association association;
 
-    /** Creates an instance of HealthcareAssertion class. */
-    public HealthcareAssertion() {}
-
     /**
      * Get the conditionality property: Describes any conditionality on the entity.
      *

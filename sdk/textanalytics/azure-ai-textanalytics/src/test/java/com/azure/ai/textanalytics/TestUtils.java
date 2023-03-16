@@ -3,22 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassificationCategoryPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassifyDocumentResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.DynamicClassifyDocumentResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
@@ -30,23 +21,15 @@ import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionRe
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -54,8 +37,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -77,8 +58,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -86,13 +65,10 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -107,9 +83,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -128,7 +102,7 @@ final class TestUtils {
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";
-
+    static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     static final String CUSTOM_ACTION_NAME = "customActionName";
 
     static final List<String> CUSTOM_ENTITIES_INPUT = asList(
@@ -143,13 +117,6 @@ final class TestUtils {
     static final List<String> CUSTOM_MULTI_CLASSIFICATION = asList(
         "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add"
             + " it to my playlist");
-
-    static final List<String> DYNAMIC_CLASSIFICATION = asList(
-        "The WHO is issuing a warning about Monkey Pox.",
-        "Mo Salah plays in Liverpool FC in England.");
-
-    static final List<String> DYNAMIC_CLASSIFICATION_CATEGORIES =
-        Arrays.asList("Health", "Politics", "Music", "Sports");
 
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
@@ -178,7 +145,6 @@ final class TestUtils {
     static final List<String> CATEGORIZED_ENTITY_INPUTS = asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-    static final String ENTITY_RESOLUTION_INPUT = "The cat is 1 year old and weighs 10 pounds.";
     static final List<String> PII_ENTITY_INPUTS = asList(
         "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
@@ -198,7 +164,7 @@ final class TestUtils {
         "Je m'appelle Mondly.");
 
     static final List<String> DETECT_LANGUAGE_INPUTS = asList(
-        "This is written in English", "Este es un documento escrito en Español.");
+        "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
     static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
     static final String SENTIMENT_OFFSET_INPUT = "The hotel was unclean.";
@@ -231,7 +197,9 @@ final class TestUtils {
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return asList(
             new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
-            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"));
+            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"),
+            new DetectLanguageInput("2", DETECT_LANGUAGE_INPUTS.get(2), "US")
+        );
     }
 
     static List<DetectLanguageInput> getDuplicateIdDetectLanguageInputs() {
@@ -269,10 +237,11 @@ final class TestUtils {
      * @return A {@link DetectLanguageResultCollection}.
      */
     static DetectLanguageResultCollection getExpectedBatchDetectedLanguages() {
-        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
+        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         final List<DetectLanguageResult> detectLanguageResultList = asList(
             new DetectLanguageResult("0", new TextDocumentStatistics(26, 1), null, getDetectedLanguageEnglish()),
-            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()));
+            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()),
+            new DetectLanguageResult("2", new TextDocumentStatistics(6, 1), null, getUnknownDetectedLanguage()));
         return new DetectLanguageResultCollection(detectLanguageResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
@@ -282,6 +251,10 @@ final class TestUtils {
 
     static DetectedLanguage getDetectedLanguageSpanish() {
         return new DetectedLanguage("Spanish", "es", 0.0, null);
+    }
+
+    static DetectedLanguage getUnknownDetectedLanguage() {
+        return new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
     }
 
     /**
@@ -550,7 +523,7 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
 
         ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, new KeyPhrasesCollection(new IterableStream<>(asList("Hello world", "input text")), null));
-        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(asList("monde")), null));
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(asList("Bonjour", "monde")), null));
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
@@ -626,11 +599,11 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The hotel was dark and unclean. ", TextSentiment.NEGATIVE,
+            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 32);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
@@ -699,11 +672,11 @@ final class TestUtils {
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The restaurant had amazing gnocchi. ", TextSentiment.POSITIVE,
+            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 36);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
@@ -765,17 +738,6 @@ final class TestUtils {
     }
 
     /**
-     * Helper method that add FHIR expected result to the AnalyzeHealthcareEntitiesResult
-     */
-    static List<AnalyzeHealthcareEntitiesResultCollection>
-        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir() {
-        return asList(
-            getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
-                asList(getRecognizeHealthcareEntitiesResultWithFhir1("0"),
-                    getRecognizeHealthcareEntitiesResultWithFhir2())));
-    }
-
-    /**
      * Helper method that get a multiple-pages {@link AnalyzeHealthcareEntitiesResultCollection} list.
      */
     static List<AnalyzeHealthcareEntitiesResultCollection>
@@ -818,15 +780,6 @@ final class TestUtils {
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(analyzeHealthcareEntitiesResultCollection,
             textDocumentBatchStatistics);
         return analyzeHealthcareEntitiesResultCollection;
-    }
-
-    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir1(String documentId) {
-        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult1 =
-            getRecognizeHealthcareEntitiesResult1(documentId);
-        Map<String, Object> fhir1 = new HashMap<>();
-        fhir1.put("dummyString", "dummyObject");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1, fhir1);
-        return recognizeHealthcareEntitiesResult1;
     }
 
     /**
@@ -904,7 +857,6 @@ final class TestUtils {
             HealthcareEntityRelationType.fromString("CourseOfCondition"));
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
-        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation1, 1.0);
 
         final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
@@ -914,19 +866,10 @@ final class TestUtils {
             HealthcareEntityRelationType.TIME_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
             IterableStream.of(asList(role2, role3)));
-        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation2, 1.0);
 
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult1,
             IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult1;
-    }
-
-    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir2() {
-        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult2 = getRecognizeHealthcareEntitiesResult2();
-        Map<String, Object> fhir2 = new HashMap<>();
-        fhir2.put("dummyString2", "dummyObject2");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2, fhir2);
-        return recognizeHealthcareEntitiesResult2;
     }
 
     /**
@@ -1015,8 +958,6 @@ final class TestUtils {
             HealthcareEntityRelationType.TIME_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
-        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation1,
-            1.0);
 
         final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
@@ -1026,9 +967,6 @@ final class TestUtils {
             HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
             IterableStream.of(asList(role3, role2)));
-        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation2,
-            1.0);
-
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult,
             IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult;
@@ -1182,18 +1120,6 @@ final class TestUtils {
         return actionResult;
     }
 
-    static AnalyzeHealthcareEntitiesActionResult getExpectedAnalyzeHealthcareEntitiesActionResult(boolean isError,
-        String actionName, OffsetDateTime completeAt, AnalyzeHealthcareEntitiesResultCollection resultCollection,
-        TextAnalyticsError actionError) {
-        AnalyzeHealthcareEntitiesActionResult actionResult = new AnalyzeHealthcareEntitiesActionResult();
-        AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
-        return actionResult;
-    }
-
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
@@ -1201,29 +1127,20 @@ final class TestUtils {
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
         IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
-        IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
-        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults,
-        IterableStream<AbstractSummaryActionResult> abstractSummaryActionResults) {
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
             recognizeEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesResults(analyzeActionsResult,
             recognizePiiEntitiesActionResults);
-        AnalyzeActionsResultPropertiesHelper.setAnalyzeHealthcareEntitiesResults(analyzeActionsResult,
-            analyzeHealthcareEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesResults(analyzeActionsResult,
             extractKeyPhrasesActionResults);
         AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
             recognizeLinkedEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
             analyzeSentimentActionResults);
-        AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
-            extractSummaryActionResults);
-        AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            abstractSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1327,13 +1244,10 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+                false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null)))
         ));
         // Second Page
         startIndex += firstPage;
@@ -1344,145 +1258,12 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+                false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null)))
         ));
         return analyzeActionsResults;
-    }
-
-    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
-        ExtractSummaryResult extractSummaryResult) {
-        final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
-            asList(extractSummaryResult));
-        return expectResultCollection;
-    }
-
-    static ExtractSummaryResult getExpectedExtractSummaryResultSortByOffset() {
-        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
-        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult("0", textDocumentStatistics, null);
-
-        final IterableStream<SummarySentence> summarySentences = IterableStream.of(asList(
-            getExpectedSummarySentence(
-                "At Microsoft, we have been on a quest to advance AI beyond existing"
-                    + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
-                0.69, 0, 160),
-            getExpectedSummarySentence(
-                "The goal is to have pretrained models that can jointly learn representations to support a broad"
-                    + " range of downstream AI tasks, much in the way humans do today.",
-                0.81, 856, 158),
-            getExpectedSummarySentence(
-                "Over the past five years, we have achieved human performance on benchmarks in conversational "
-                    + "speech recognition, machine translation, conversational question answering, machine reading"
-                    + " comprehension, and image captioning.",
-                0.79, 1015, 221)
-        ));
-
-        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);
-        ExtractSummaryResultPropertiesHelper.setWarnings(extractSummaryResult, null);
-        return extractSummaryResult;
-    }
-
-    static ExtractSummaryActionResult getExtractSummaryActionResult(boolean isError, String actionName,
-        OffsetDateTime completeAt, ExtractSummaryResultCollection resultCollection, TextAnalyticsError actionError) {
-        ExtractSummaryActionResult actionResult = new ExtractSummaryActionResult();
-        ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
-        return actionResult;
-    }
-
-    static SummarySentence getExpectedSummarySentence(String text, double rankScore, int offset, int length) {
-        final SummarySentence summarySentence = new SummarySentence();
-        SummarySentencePropertiesHelper.setText(summarySentence, text);
-        SummarySentencePropertiesHelper.setRankScore(summarySentence, rankScore);
-        SummarySentencePropertiesHelper.setOffset(summarySentence, offset);
-        SummarySentencePropertiesHelper.setLength(summarySentence, length);
-        return summarySentence;
-    }
-
-    static AbstractSummaryResult getExpectedAbstractiveSummaryResult() {
-        AbstractSummaryResult abstractSummaryResult = new AbstractSummaryResult("0",
-                null, null);
-
-        final IterableStream<AbstractiveSummary> abstractiveSummaries = IterableStream.of(asList(
-                getExpectedAbstractiveSummary(
-                    "Microsoft is taking a more holistic, human-centric approach to"
-                            + " learning and understanding. The goal is to achieve a leap in AI capabilities, "
-                            + "achieving multisensory and multilingual learning that is closer to how humans learn"
-                            + " and understand.",
-                        0, 1627)
-        ));
-
-        AbstractSummaryResultPropertiesHelper.setSummaries(abstractSummaryResult, abstractiveSummaries);
-        return abstractSummaryResult;
-    }
-
-    static AbstractSummaryActionResult getAbstractSummaryActionResult(boolean isError, String actionName,
-        OffsetDateTime completeAt, AbstractSummaryResultCollection resultCollection,
-        TextAnalyticsError actionError) {
-        AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
-        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
-        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
-        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
-        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
-        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
-        return actionResult;
-    }
-
-    static AbstractiveSummary getExpectedAbstractiveSummary(String text, int offset, int length) {
-        AbstractiveSummary abstractiveSummary = new AbstractiveSummary();
-        AbstractiveSummaryPropertiesHelper.setText(abstractiveSummary, text);
-        List<SummaryContext> summaryContexts = new ArrayList<>();
-        SummaryContext summaryContext = new SummaryContext();
-        SummaryContextPropertiesHelper.setOffset(summaryContext, offset);
-        SummaryContextPropertiesHelper.setLength(summaryContext, length);
-        summaryContexts.add(summaryContext);
-        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary, IterableStream.of(summaryContexts));
-        return abstractiveSummary;
-    }
-
-    // Dynamic classification
-    static DynamicClassifyDocumentResultCollection getExpectedDynamicClassifyDocumentResultCollection() {
-        ClassifyDocumentResult classifyDocumentResult1 = new ClassifyDocumentResult("0",
-            new TextDocumentStatistics(46, 1), null);
-
-        ClassificationCategory classificationCategory1 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory1, "Health");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory1, 0.88);
-        ClassificationCategory classificationCategory2 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory2, "Music");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory2, 0.04);
-
-        ClassificationCategory classificationCategory3 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory3, "Sports");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory3, 0.04);
-
-        ClassificationCategory classificationCategory4 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory4, "Politics");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory4, 0.03);
-
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult1,
-            IterableStream.of(asList(classificationCategory1, classificationCategory2, classificationCategory3,
-            classificationCategory4)));
-
-        ClassifyDocumentResult classifyDocumentResult2 = new ClassifyDocumentResult("1",
-            new TextDocumentStatistics(42, 1), null);
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult2,
-            IterableStream.of(asList(classificationCategory3, classificationCategory2, classificationCategory1,
-                classificationCategory4)));
-
-        DynamicClassifyDocumentResultCollection classifyDocumentResults =
-            new DynamicClassifyDocumentResultCollection(asList(classifyDocumentResult1, classifyDocumentResult2));
-        DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(classifyDocumentResults,
-            new TextDocumentBatchStatistics(2, 2, 0, 0));
-        return classifyDocumentResults;
     }
 
     /**

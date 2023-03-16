@@ -20,9 +20,6 @@ public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROT
     @JsonProperty(value = "parameters")
     private CustomMultiLabelClassificationTaskParameters parameters;
 
-    /** Creates an instance of CustomMultiLabelClassificationLROTask class. */
-    public CustomMultiLabelClassificationLROTask() {}
-
     /**
      * Get the parameters property: Supported parameters for a Custom Multi Classification task.
      *

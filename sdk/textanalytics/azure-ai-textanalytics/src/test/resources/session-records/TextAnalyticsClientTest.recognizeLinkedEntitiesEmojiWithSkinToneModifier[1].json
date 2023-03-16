@@ -1,25 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6a3ce4ea-7418-47a4-a629-ea248f00549f",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "85c634c7-77e7-4f2c-a0b4-8fb3e83e2edb",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "16",
-      "apim-request-id" : "a1af5e6d-8424-48fc-bd9e-557044fe2c3e",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 16 Feb 2023 22:37:45 GMT",
+      "content-length" : "389",
+      "x-envoy-upstream-service-time" : "11",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.Language.Text.EntityLinking=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Content-Length" : "389",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "fded01c9-a581-4b13-ae83-138dc30bca17",
+      "retry-after" : "0",
+      "StatusCode" : "200",
       "Body" : "{\"kind\":\"EntityLinkingResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":15,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
+      "Date" : "Fri, 05 Aug 2022 20:32:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

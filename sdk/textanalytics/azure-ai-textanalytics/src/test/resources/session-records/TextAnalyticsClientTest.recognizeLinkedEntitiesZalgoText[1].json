@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7b409dba-aefc-4c82-ab1a-267a265c8deb",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dc5fb41a-cf53-4728-be5b-0c3d06a526a9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "390",
-      "x-envoy-upstream-service-time" : "38",
+      "x-envoy-upstream-service-time" : "15",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "d4b88d29-7082-4f2f-9a97-33c18c9664d0",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "180a324e-8d8d-4780-b154-b4a949807c9b",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"EntityLinkingResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":126,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 18:55:24 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:39:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

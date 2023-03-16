@@ -26,9 +26,6 @@ public final class AnalyzeTextLanguageDetectionInput extends AnalyzeTextTask {
     @JsonProperty(value = "parameters")
     private LanguageDetectionTaskParameters parameters;
 
-    /** Creates an instance of AnalyzeTextLanguageDetectionInput class. */
-    public AnalyzeTextLanguageDetectionInput() {}
-
     /**
      * Get the analysisInput property: The analysisInput property.
      *

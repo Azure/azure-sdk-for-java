@@ -1,42 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "028eb2ed-9788-4f98-b8ba-531c861745fb",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "19",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6a77ccc1-4005-46f6-8331-751b64f63e1f",
-      "retry-after" : "0",
-      "StatusCode" : "503",
-      "Body" : "no healthy upstream",
-      "Date" : "Tue, 11 Oct 2022 19:19:20 GMT",
-      "Content-Type" : "text/plain"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "028eb2ed-9788-4f98-b8ba-531c861745fb",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "52d00142-8847-4307-ad30-636cefcc32de",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "12",
+      "x-envoy-upstream-service-time" : "6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a473861c-6019-42e6-8f28-661c6d2cd912",
+      "apim-request-id" : "b9cbc086-43dd-4be8-87b5-cb99ad237260",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Tue, 11 Oct 2022 19:19:20 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:49:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
