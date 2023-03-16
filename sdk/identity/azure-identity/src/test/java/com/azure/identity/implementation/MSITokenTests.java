@@ -66,10 +66,10 @@ public class MSITokenTests {
                 String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()),
                 String.valueOf(240));
 
-            Assert.assertEquals(now.plusSeconds(240).toEpochSecond(), hasRefresh.getRefreshAtSeconds());
-            Assert.assertEquals(now.plusHours(1).toEpochSecond(), expirationMinus11HoursToken.getRefreshAtSeconds());
+            Assert.assertEquals(now.plusSeconds(240).toEpochSecond(), hasRefresh.getRefreshAtEpochSeconds());
+            Assert.assertEquals(now.plusHours(1).toEpochSecond(), expirationMinus11HoursToken.getRefreshAtEpochSeconds());
             long expected = Duration.between(now, expirationMinusOneHour).getSeconds() / 2;
-            Assert.assertEquals(now.plusSeconds(expected).toEpochSecond(), expirationMinusOneHourToken.getRefreshAtSeconds());
+            Assert.assertEquals(now.plusSeconds(expected).toEpochSecond(), expirationMinusOneHourToken.getRefreshAtEpochSeconds());
 
         }
 
@@ -102,7 +102,7 @@ public class MSITokenTests {
                 }
 
                 Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
-                Assert.assertEquals(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(3600).toEpochSecond(), token.getRefreshAtSeconds());
+                Assert.assertEquals(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(3600).toEpochSecond(), token.getRefreshAtEpochSeconds());
             }
         }
     }

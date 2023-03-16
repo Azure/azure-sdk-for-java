@@ -116,7 +116,7 @@ public final class MSIToken extends AccessToken {
      * less than two hours, at which point it is the same as time to expiry.
      * @return The number of seconds until refresh.
      */
-    long getRefreshAtSeconds() {
+    long getRefreshAtEpochSeconds() {
         if (this.refreshIn != null) {
             return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(Long.parseLong(refreshIn)).toEpochSecond();
         }
