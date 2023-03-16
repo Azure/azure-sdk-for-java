@@ -1940,7 +1940,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def payloadAsInputStream = new ByteArrayInputStream(randomData)
         def os = new ByteArrayOutputStream()
         def blobParallelUploadOptions = new BlobParallelUploadOptions(payloadAsInputStream)
-        blobParallelUploadOptions.setHeaders(new BlobHttpHeaders().setContentType("text"))
 
         when:
         ebc.uploadWithResponse(blobParallelUploadOptions, null, Context.NONE)
