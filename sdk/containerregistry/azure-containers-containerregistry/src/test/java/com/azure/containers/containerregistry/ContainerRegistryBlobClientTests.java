@@ -174,7 +174,7 @@ public class ContainerRegistryBlobClientTests {
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getContent().toBytes());
         assertNotNull(result.asOciManifest());
-        //assertEquals(ManifestMediaType.OCI_MANIFEST, result.getMediaType());
+        assertEquals(ManifestMediaType.OCI_MANIFEST, result.getManifestMediaType());
     }
 
     @SyncAsyncTest
@@ -188,7 +188,7 @@ public class ContainerRegistryBlobClientTests {
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
         assertNotNull(result.getValue().asOciManifest());
-        //assertEquals(ManifestMediaType.DOCKER_MANIFEST, result.getValue().getMediaType());
+        assertEquals(ManifestMediaType.DOCKER_MANIFEST, result.getValue().getManifestMediaType());
     }
 
     @SyncAsyncTest
