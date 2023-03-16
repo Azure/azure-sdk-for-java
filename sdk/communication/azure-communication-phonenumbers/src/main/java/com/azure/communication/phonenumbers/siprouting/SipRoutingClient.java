@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.phonenumbers;
+package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.implementation.SipRoutingAdminClientImpl;
 import com.azure.communication.phonenumbers.siprouting.implementation.converters.SipRoutingErrorConverter;
@@ -14,6 +14,9 @@ import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -107,7 +110,7 @@ public final class SipRoutingClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
      * <pre>
-     * List&lt;SipTrunk&gt; trunks = sipRoutingClient.listTrunks&#40;&#41;;
+     * PagedIterable&lt;SipTrunk&gt; trunks = sipRoutingClient.listTrunks&#40;&#41;;
      * for &#40;SipTrunk trunk : trunks&#41; &#123;
      *     System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
      * &#125;
@@ -117,34 +120,21 @@ public final class SipRoutingClient {
      * @return SIP Trunks.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SipTrunk> listTrunks() {
-        return convertFromApi(getSipConfiguration().getTrunks());
+    public PagedIterable<SipTrunk> listTrunks() {
+        return new PagedIterable<SipTrunk>(() -> getOnePageTrunk());
     }
 
-    /**
-     * Lists SIP Trunks.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listTrunksWithResponse -->
-     * <pre>
-     * Response&lt;List&lt;SipTrunk&gt;&gt; response = sipRoutingClient.listTrunksWithResponse&#40;Context.NONE&#41;;
-     * List&lt;SipTrunk&gt; trunks = response.getValue&#40;&#41;;
-     * for &#40;SipTrunk trunk : trunks&#41; &#123;
-     *     System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.communication.phonenumbers.siprouting.client.listTrunksWithResponse -->
-     *
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return Response object with the SIP Trunks.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<SipTrunk>> listTrunksWithResponse(Context context) {
-        return client.getSipRoutings().getWithResponseAsync(context)
-            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getTrunks())))
-            .block();
+    private PagedResponse<SipTrunk> getOnePageTrunk() {
+        return client.getSipRoutings().getWithResponseAsync()
+        .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+        .map(result -> new PagedResponseBase<>(
+            result.getRequest(),
+            result.getStatusCode(),
+            result.getHeaders(),
+            convertFromApi(result.getValue().getTrunks()),
+            null,
+            null))
+        .block();
     }
 
     /**
@@ -154,7 +144,7 @@ public final class SipRoutingClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listRoutes -->
      * <pre>
-     * List&lt;SipTrunkRoute&gt; routes = sipRoutingClient.listRoutes&#40;&#41;;
+     * PagedIterable&lt;SipTrunkRoute&gt; routes = sipRoutingClient.listRoutes&#40;&#41;;
      * for &#40;SipTrunkRoute route : routes&#41; &#123;
      *     System.out.println&#40;&quot;Route name: &quot; + route.getName&#40;&#41;&#41;;
      *     System.out.println&#40;&quot;Route description: &quot; + route.getDescription&#40;&#41;&#41;;
@@ -167,37 +157,21 @@ public final class SipRoutingClient {
      * @return SIP Trunk Routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SipTrunkRoute> listRoutes() {
-        return convertFromApi(getSipConfiguration().getRoutes());
+    public PagedIterable<SipTrunkRoute> listRoutes() {
+        return new PagedIterable<SipTrunkRoute>(() -> getOnePageRoute());
     }
 
-    /**
-     * Lists SIP Trunk Routes.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listRoutesWithResponse -->
-     * <pre>
-     * Response&lt;List&lt;SipTrunkRoute&gt;&gt; response = sipRoutingClient.listRoutesWithResponse&#40;Context.NONE&#41;;
-     * List&lt;SipTrunkRoute&gt; routes = response.getValue&#40;&#41;;
-     * for &#40;SipTrunkRoute route : routes&#41; &#123;
-     *     System.out.println&#40;&quot;Route name: &quot; + route.getName&#40;&#41;&#41;;
-     *     System.out.println&#40;&quot;Route description: &quot; + route.getDescription&#40;&#41;&#41;;
-     *     System.out.println&#40;&quot;Route number pattern: &quot; + route.getNumberPattern&#40;&#41;&#41;;
-     *     System.out.println&#40;&quot;Route trunks: &quot; + String.join&#40;&quot;,&quot;, route.getTrunks&#40;&#41;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.communication.phonenumbers.siprouting.client.listRoutesWithResponse -->
-     *
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return Response object with the SIP Trunk Routes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<SipTrunkRoute>> listRoutesWithResponse(Context context) {
-        return client.getSipRoutings().getWithResponseAsync(context)
-            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getRoutes())))
-            .block();
+    private PagedResponse<SipTrunkRoute> getOnePageRoute() {
+        return client.getSipRoutings().getWithResponseAsync()
+        .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+        .map(result -> new PagedResponseBase<>(
+            result.getRequest(),
+            result.getStatusCode(),
+            result.getHeaders(),
+            convertFromApi(result.getValue().getRoutes()),
+            null,
+            null))
+        .block();
     }
 
     /**
@@ -356,7 +330,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTrunk(String fqdn) {
-        List<SipTrunk> trunks = listTrunks();
+        PagedIterable<SipTrunk> trunks = listTrunks();
         List<SipTrunk> deletedTrunks = trunks.stream()
             .filter(trunk -> fqdn.equals(trunk.getFqdn()))
             .collect(Collectors.toList());
@@ -387,7 +361,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTrunkWithResponse(String fqdn, Context context) {
-        List<SipTrunk> trunks = listTrunks();
+        PagedIterable<SipTrunk> trunks = listTrunks();
         List<SipTrunk> deletedTrunks = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn()))
             .collect(Collectors.toList());
 
