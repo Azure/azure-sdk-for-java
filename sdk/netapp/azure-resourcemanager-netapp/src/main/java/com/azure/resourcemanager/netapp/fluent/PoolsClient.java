@@ -21,7 +21,7 @@ public interface PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +36,7 @@ public interface PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,23 +52,7 @@ public interface PoolsClient {
      *
      * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityPoolInner get(String resourceGroupName, String accountName, String poolName);
-
-    /**
-     * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -82,11 +66,27 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified capacity pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityPoolInner get(String resourceGroupName, String accountName, String poolName);
+
+    /**
      * Create or Update the specified capacity pool within the resource group
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -104,7 +104,7 @@ public interface PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -123,7 +123,7 @@ public interface PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -141,7 +141,7 @@ public interface PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -160,7 +160,7 @@ public interface PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -178,7 +178,7 @@ public interface PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -197,7 +197,7 @@ public interface PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -214,7 +214,7 @@ public interface PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -233,7 +233,7 @@ public interface PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,7 +249,7 @@ public interface PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -267,7 +267,7 @@ public interface PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +282,7 @@ public interface PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.

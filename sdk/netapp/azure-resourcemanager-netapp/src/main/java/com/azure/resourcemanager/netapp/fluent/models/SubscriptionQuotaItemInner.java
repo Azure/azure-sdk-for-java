@@ -4,18 +4,29 @@
 
 package com.azure.resourcemanager.netapp.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information regarding Subscription Quota Item. */
-@Fluent
+@Immutable
 public final class SubscriptionQuotaItemInner extends ProxyResource {
     /*
      * SubscriptionQuotaItem properties
      */
     @JsonProperty(value = "properties")
     private SubscriptionQuotaItemProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of SubscriptionQuotaItemInner class. */
+    public SubscriptionQuotaItemInner() {
+    }
 
     /**
      * Get the innerProperties property: SubscriptionQuotaItem properties.
@@ -24,6 +35,15 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
      */
     private SubscriptionQuotaItemProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

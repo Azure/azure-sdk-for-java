@@ -41,6 +41,10 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultStatus status;
 
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
+
     /**
      * Get the keyVaultId property: UUID v4 used to identify the Azure Key Vault configuration.
      *

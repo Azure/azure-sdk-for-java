@@ -100,7 +100,7 @@ public interface SubvolumeInfo {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
