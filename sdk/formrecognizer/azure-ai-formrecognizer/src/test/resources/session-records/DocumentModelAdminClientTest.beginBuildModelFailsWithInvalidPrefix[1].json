@@ -1,23 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aa03e0ce-ef1c-42a6-8927-202c6f367b4b",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0800257e-8b74-4338-91a6-73a16a137aeb",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "1379",
+      "x-envoy-upstream-service-time" : "654",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dea63468-51b9-453a-b4a0-80a76cc22ef2",
+      "apim-request-id" : "316bfb84-e2fc-4f22-a7a3-ad8e1e142c02",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"innererror\": {\n      \"code\": \"TrainingContentMissing\",\n      \"message\": \"Training data is missing: Could not find any training data at the given path.\"\n    }\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:20:57 GMT",
+      "Date" : "Fri, 19 Aug 2022 22:34:55 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

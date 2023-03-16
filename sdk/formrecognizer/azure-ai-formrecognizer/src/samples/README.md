@@ -1,12 +1,12 @@
 ---
 page_type: sample
 languages:
-  - java
-products:
-  - azure
-  - azure-cognitive-services
-  - azure-form-recognizer
-urlFragment: formrecognizer-java-samples
+- java
+  products:
+- azure
+- azure-cognitive-services
+- azure-form-recognizer
+  urlFragment: formrecognizer-java-samples
 ---
 
 # Azure Form Recognizer client library samples for Java
@@ -64,7 +64,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#include-the-package
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
-[java_fr_ref_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-doc
+[java_fr_ref_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer#create-a-form-recognizer-resource
 [get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer#create-a-form-recognizer-client-using-azurekeycredential
 

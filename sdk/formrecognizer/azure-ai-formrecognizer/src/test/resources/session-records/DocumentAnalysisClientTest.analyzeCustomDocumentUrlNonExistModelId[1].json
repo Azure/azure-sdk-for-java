@@ -1,25 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9d94c0cd-a603-45ff-baed-ce28e3655130",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dfdc529e-7cec-4f50-aef6-2a8950763b96",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "347",
+      "content-length" : "146",
+      "x-envoy-upstream-service-time" : "278",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2eeb3f5c-89d7-489c-821c-e376f33ef360",
+      "apim-request-id" : "0fa01e8b-b634-490f-a611-a4055cab373c",
       "retry-after" : "0",
-      "Content-Length" : "146",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Resource not found.\",\"innererror\":{\"code\":\"ModelNotFound\",\"message\":\"The requested model was not found.\"}}}",
-      "Date" : "Tue, 14 Mar 2023 18:21:47 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ms-azure-ai-errorcode" : "NotFound"
+      "Date" : "Fri, 19 Aug 2022 22:35:47 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

@@ -15,7 +15,7 @@ public final class AnalyzeResult {
      * API version used to produce this result.
      */
     @JsonProperty(value = "apiVersion", required = true)
-    private String apiVersion;
+    private ApiVersion apiVersion;
 
     /*
      * Document model ID used to produce this result.
@@ -85,7 +85,7 @@ public final class AnalyzeResult {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public ApiVersion getApiVersion() {
         return this.apiVersion;
     }
 
@@ -95,7 +95,7 @@ public final class AnalyzeResult {
      * @param apiVersion the apiVersion value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setApiVersion(String apiVersion) {
+    public AnalyzeResult setApiVersion(ApiVersion apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }

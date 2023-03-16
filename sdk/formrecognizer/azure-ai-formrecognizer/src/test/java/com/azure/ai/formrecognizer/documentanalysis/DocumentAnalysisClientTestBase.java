@@ -311,7 +311,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
         // assert contact name page number
         DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueAsList().get(0);
-        assertEquals("JOHN\nSINGER", contactNameField.getContent());
+        assertEquals("JOHN SINGER", contactNameField.getContent());
         assertNotNull(contactNameField.getConfidence());
 
         assertEquals(2, businessCard2.getPageNumber());
@@ -567,7 +567,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {3, 3, 6}};
+        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;
@@ -749,8 +749,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         AddressValue employeeAddrFields = employeeFields.get("Address")
             .getValueAsAddress();
         assertEquals("WA", employeeAddrFields.getState());
-        // service regression
-        // assertEquals("12345", employeeAddrFields.getPostalCode());
+        assertEquals("12345", employeeAddrFields.getPostalCode());
         assertEquals("BUFFALO", employeeAddrFields.getCity());
         assertEquals("4567 MAIN STREET", employeeAddrFields.getStreetAddress());
         assertEquals("4567", employeeAddrFields.getHouseNumber());
@@ -763,8 +762,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueAsMap();
         AddressValue employerAddress = employerFields.get("Address").getValueAsAddress();
         assertEquals("WA", employerAddress.getState());
-        // service regression
-        // assertEquals("98765", employerAddress.getPostalCode());
+        assertEquals("98765", employerAddress.getPostalCode());
         assertEquals("REDMOND", employerAddress.getCity());
         assertEquals("CONTOSO LTD", employerFields.get("Name")
             .getValueAsString());

@@ -1,84 +1,80 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "28a90174-0ebe-438a-b71f-dfd64c4b46b8",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "661a9454-469e-4ebf-965f-3e7fdb9d57d7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "2380",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2114",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31487549931_8493424b-2feb-4314-aa74-5017623a5df9?api-version=2023-02-28-preview",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31505419496_060d1cd2-8137-47dc-bd1f-e22c0837fa26?api-version=2022-08-31",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8493424b-2feb-4314-aa74-5017623a5df9",
+      "apim-request-id" : "060d1cd2-8137-47dc-bd1f-e22c0837fa26",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "Date" : "Tue, 14 Mar 2023 18:21:10 GMT"
+      "Date" : "Fri, 19 Aug 2022 22:35:05 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31487549931_8493424b-2feb-4314-aa74-5017623a5df9?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419496_060d1cd2-8137-47dc-bd1f-e22c0837fa26?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4115269f-e4eb-417e-b349-e8e0d2dfbf2c"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1ad15c40-61c3-44e8-b96b-2b96ad259f60"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "25",
+      "x-envoy-upstream-service-time" : "23",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "02804ae1-54be-4edd-aab4-a152b3f68774",
+      "apim-request-id" : "9f71d5b1-e6b2-4b27-82a8-07199670f14b",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"operationId\": \"31487549931_8493424b-2feb-4314-aa74-5017623a5df9\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-03-14T18:21:08Z\",\n  \"lastUpdatedDateTime\": \"2023-03-14T18:21:12Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"test-model\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"PhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Website\": {\n            \"type\": \"string\"\n          },\n          \"Email\": {\n            \"type\": \"string\"\n          },\n          \"PurchaseOrderNumber\": {\n            \"type\": \"string\"\n          },\n          \"DatedAs\": {\n            \"type\": \"string\"\n          },\n          \"VendorName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyAddress\": {\n            \"type\": \"string\"\n          },\n          \"CompanyPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Quantity\": {\n            \"type\": \"number\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"CompanyAddress\": 0.8,\n          \"CompanyName\": 0.995,\n          \"CompanyPhoneNumber\": 0.995,\n          \"DatedAs\": 0.995,\n          \"Email\": 0.8,\n          \"Merchant\": 0.995,\n          \"PhoneNumber\": 0.995,\n          \"PurchaseOrderNumber\": 0.995,\n          \"Quantity\": 0.995,\n          \"Signature\": 0.8,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Total\": 0.995,\n          \"VendorName\": 0.995,\n          \"Website\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"test-model\",\n    \"createdDateTime\": \"2023-03-14T18:21:12Z\",\n    \"expirationDateTime\": \"2025-03-13T18:21:12Z\",\n    \"apiVersion\": \"2023-02-28-preview\",\n    \"description\": \"optional desc\",\n    \"tags\": {\n      \"createdBy\": \"java_test\"\n    }\n  },\n  \"tags\": {\n    \"createdBy\": \"java_test\"\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:16 GMT",
+      "Body" : "{\n  \"operationId\": \"31505419496_060d1cd2-8137-47dc-bd1f-e22c0837fa26\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2022-08-19T22:35:03Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:35:07Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"test-model\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"PhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Website\": {\n            \"type\": \"string\"\n          },\n          \"Email\": {\n            \"type\": \"string\"\n          },\n          \"PurchaseOrderNumber\": {\n            \"type\": \"string\"\n          },\n          \"DatedAs\": {\n            \"type\": \"string\"\n          },\n          \"VendorName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyAddress\": {\n            \"type\": \"string\"\n          },\n          \"CompanyPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Quantity\": {\n            \"type\": \"number\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"CompanyAddress\": 0.8,\n          \"CompanyName\": 0.995,\n          \"CompanyPhoneNumber\": 0.995,\n          \"DatedAs\": 0.995,\n          \"Email\": 0.8,\n          \"Merchant\": 0.995,\n          \"PhoneNumber\": 0.995,\n          \"PurchaseOrderNumber\": 0.995,\n          \"Quantity\": 0.995,\n          \"Signature\": 0.8,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Total\": 0.995,\n          \"VendorName\": 0.995,\n          \"Website\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"test-model\",\n    \"createdDateTime\": \"2022-08-19T22:35:07Z\",\n    \"apiVersion\": \"2022-08-31\",\n    \"description\": \"optional desc\",\n    \"tags\": {\n      \"createdBy\": \"java_test\"\n    }\n  },\n  \"tags\": {\n    \"createdBy\": \"java_test\"\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:10 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31487549931_8493424b-2feb-4314-aa74-5017623a5df9?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419496_060d1cd2-8137-47dc-bd1f-e22c0837fa26?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b91c2f62-4ea4-4f1c-8905-ac15b93a0f14"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bdd4726e-671b-4bda-9e6e-83135b5a7d49"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "15",
+      "x-envoy-upstream-service-time" : "25",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f9de28b2-49b8-45f9-bd75-ccc06caeeb87",
+      "apim-request-id" : "012ebf5a-0939-4e31-9ed4-25ab611b5c28",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"operationId\": \"31487549931_8493424b-2feb-4314-aa74-5017623a5df9\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-03-14T18:21:08Z\",\n  \"lastUpdatedDateTime\": \"2023-03-14T18:21:12Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"test-model\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"PhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Website\": {\n            \"type\": \"string\"\n          },\n          \"Email\": {\n            \"type\": \"string\"\n          },\n          \"PurchaseOrderNumber\": {\n            \"type\": \"string\"\n          },\n          \"DatedAs\": {\n            \"type\": \"string\"\n          },\n          \"VendorName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyAddress\": {\n            \"type\": \"string\"\n          },\n          \"CompanyPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Quantity\": {\n            \"type\": \"number\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"CompanyAddress\": 0.8,\n          \"CompanyName\": 0.995,\n          \"CompanyPhoneNumber\": 0.995,\n          \"DatedAs\": 0.995,\n          \"Email\": 0.8,\n          \"Merchant\": 0.995,\n          \"PhoneNumber\": 0.995,\n          \"PurchaseOrderNumber\": 0.995,\n          \"Quantity\": 0.995,\n          \"Signature\": 0.8,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Total\": 0.995,\n          \"VendorName\": 0.995,\n          \"Website\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"test-model\",\n    \"createdDateTime\": \"2023-03-14T18:21:12Z\",\n    \"expirationDateTime\": \"2025-03-13T18:21:12Z\",\n    \"apiVersion\": \"2023-02-28-preview\",\n    \"description\": \"optional desc\",\n    \"tags\": {\n      \"createdBy\": \"java_test\"\n    }\n  },\n  \"tags\": {\n    \"createdBy\": \"java_test\"\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:15 GMT",
+      "Body" : "{\n  \"operationId\": \"31505419496_060d1cd2-8137-47dc-bd1f-e22c0837fa26\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2022-08-19T22:35:03Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:35:07Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"test-model\": {\n        \"fieldSchema\": {\n          \"Merchant\": {\n            \"type\": \"string\"\n          },\n          \"PhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Website\": {\n            \"type\": \"string\"\n          },\n          \"Email\": {\n            \"type\": \"string\"\n          },\n          \"PurchaseOrderNumber\": {\n            \"type\": \"string\"\n          },\n          \"DatedAs\": {\n            \"type\": \"string\"\n          },\n          \"VendorName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyName\": {\n            \"type\": \"string\"\n          },\n          \"CompanyAddress\": {\n            \"type\": \"string\"\n          },\n          \"CompanyPhoneNumber\": {\n            \"type\": \"string\"\n          },\n          \"Subtotal\": {\n            \"type\": \"string\"\n          },\n          \"Tax\": {\n            \"type\": \"string\"\n          },\n          \"Total\": {\n            \"type\": \"string\"\n          },\n          \"Signature\": {\n            \"type\": \"string\"\n          },\n          \"Quantity\": {\n            \"type\": \"number\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"CompanyAddress\": 0.8,\n          \"CompanyName\": 0.995,\n          \"CompanyPhoneNumber\": 0.995,\n          \"DatedAs\": 0.995,\n          \"Email\": 0.8,\n          \"Merchant\": 0.995,\n          \"PhoneNumber\": 0.995,\n          \"PurchaseOrderNumber\": 0.995,\n          \"Quantity\": 0.995,\n          \"Signature\": 0.8,\n          \"Subtotal\": 0.995,\n          \"Tax\": 0.995,\n          \"Total\": 0.995,\n          \"VendorName\": 0.995,\n          \"Website\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"test-model\",\n    \"createdDateTime\": \"2022-08-19T22:35:07Z\",\n    \"apiVersion\": \"2022-08-31\",\n    \"description\": \"optional desc\",\n    \"tags\": {\n      \"createdBy\": \"java_test\"\n    }\n  },\n  \"tags\": {\n    \"createdBy\": \"java_test\"\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/test-model?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d19b09f2-42e3-46ec-a131-f3fe31e93e3d"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c2408a14-f494-4326-b500-9e2df1824aef"
     },
     "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "71",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "106",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a07ac0df-275d-4d11-ae07-70ba980fdd63",
+      "apim-request-id" : "dacd03be-6546-4a52-ba08-5d375917a77b",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 14 Mar 2023 18:21:16 GMT"
+      "Date" : "Fri, 19 Aug 2022 22:35:11 GMT"
     },
     "Exception" : null
   } ],

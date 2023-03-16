@@ -1,22 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000?api-version=2023-02-28-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0b0f34f0-daaf-4f91-a6a9-784c876e1ca6"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "66a24da6-dfe6-437c-8415-a25b4630789b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "35",
+      "x-envoy-upstream-service-time" : "46",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f52c2bc6-0612-4679-bc45-dfef6ec53655",
+      "apim-request-id" : "fe971981-8430-472b-b5a9-e47588118420",
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "{\n  \"error\": {\n    \"code\": \"NotFound\",\n    \"message\": \"Resource not found.\",\n    \"innererror\": {\n      \"code\": \"ModelNotFound\",\n      \"message\": \"The requested model was not found.\"\n    }\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:05 GMT",
+      "Date" : "Fri, 19 Aug 2022 22:35:03 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

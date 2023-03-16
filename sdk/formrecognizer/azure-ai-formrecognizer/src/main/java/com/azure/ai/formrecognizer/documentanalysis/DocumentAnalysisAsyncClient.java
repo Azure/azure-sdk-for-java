@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
@@ -30,7 +29,6 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -60,18 +58,18 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisAsyncClient.class);
-    private final DocumentModelsImpl documentModelsImpl;
+    private final FormRecognizerClientImpl service;
     private final DocumentAnalysisServiceVersion serviceVersion;
 
     /**
      * Create a {@link DocumentAnalysisAsyncClient} that sends requests to the Form recognizer service's endpoint. Each
      * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
-     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
+     * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
      */
-    DocumentAnalysisAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion) {
-        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
+    DocumentAnalysisAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion) {
+        this.service = service;
         this.serviceVersion = serviceVersion;
     }
 
@@ -189,14 +187,12 @@ public final class DocumentAnalysisAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
-                        documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
+                        service.analyzeDocumentWithResponseAsync(modelId,
                                 CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
                                     ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                Collections.emptyList(),
-                                Collections.emptyList(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
@@ -204,11 +200,11 @@ public final class DocumentAnalysisAsyncClient {
                                     analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(resultId ->
-                    documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
+                    service.getAnalyzeDocumentResultWithResponseAsync(modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId ->
-                    documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                    service.getAnalyzeDocumentResultWithResponseAsync(
                         modelId,
                         resultId,
                         context))
@@ -348,15 +344,13 @@ public final class DocumentAnalysisAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
-                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
+                    service.analyzeDocumentWithResponseAsync(modelId,
                             null,
                             CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
                                 ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            Collections.emptyList(),
-                            Collections.emptyList(),
                             document,
                             document.getLength(),
                             context)
@@ -364,11 +358,11 @@ public final class DocumentAnalysisAsyncClient {
                             analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(
-                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                    resultId -> service.getAnalyzeDocumentResultWithResponseAsync(
                         modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
+                fetchingOperation(resultId -> service.getAnalyzeDocumentResultWithResponseAsync(
                     modelId, resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
