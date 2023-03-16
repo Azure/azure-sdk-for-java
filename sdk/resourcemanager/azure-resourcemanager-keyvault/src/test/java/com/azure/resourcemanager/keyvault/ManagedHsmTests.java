@@ -115,6 +115,11 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         }
     }
 
+    @Test
+    public void purge() {
+        keyVaultManager.serviceClient().getManagedHsms().purgeDeleted("mhsm56493", Region.US_EAST2.name());
+    }
+
     private void prepareManagedHsm(ManagedHsm managedHsm, KeyVaultAccessControlAsyncClient accessControlAsyncClient) throws Exception {
         activateManagedHsm(managedHsm);
         accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, "21dbd100-6940-42c2-9190-5d6cb909625b", managedHsm.initialAdminObjectIds().get(0)).block();
@@ -148,7 +153,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
     }
 
     private void pollUntilSuccess(ManagedHsm managedHsm) {
-        String url = String.format("%s/securitydomain/download/pending?api-version=7.2", managedHsm.hsmUri());
+        String url = String.format("%ssecuritydomain/download/pending?api-version=7.2", managedHsm.hsmUri());
         HttpRequest request = new HttpRequest(HttpMethod.POST, url);
         request.setHeader("Content-Type", "application/json charset=utf-8");
         keyVaultManager.httpPipeline().send(request)
@@ -178,7 +183,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
     }
 
     private HttpRequest createActivateRequest(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3) {
-        String url = String.format("%s/securitydomain/download?api-version=7.2", managedHsm.hsmUri());
+        String url = String.format("%ssecuritydomain/download?api-version=7.2", managedHsm.hsmUri());
         HttpRequest request = new HttpRequest(HttpMethod.POST, url);
         request.setHeader("Content-Type", "application/json charset=utf-8");
         Map<String, Object> body = new HashMap<>();
