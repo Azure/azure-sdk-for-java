@@ -3,12 +3,12 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
@@ -445,11 +445,11 @@ public class CryptographyClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -491,10 +491,10 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -537,12 +537,12 @@ public class CryptographyClient {
      * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
-     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
+     * {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
+     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256},
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
+     * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -584,12 +584,12 @@ public class CryptographyClient {
      * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
-     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
-     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
+     * {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
+     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256},
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
+     * {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -818,10 +818,10 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -860,10 +860,10 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -904,10 +904,10 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -948,10 +948,10 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the

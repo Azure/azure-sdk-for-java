@@ -66,7 +66,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient)   {
+    HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {

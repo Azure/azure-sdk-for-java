@@ -67,7 +67,7 @@ public class JsonWebKey {
 
     /**
      * JsonWebKey key type (kty). Possible values include: 'EC', 'EC-HSM', 'RSA',
-     * 'RSA-HSM', 'oct', and 'oct-HSM'.
+     * 'RSA-HSM', 'oct', 'oct-HSM'.
      */
     @JsonProperty(value = "kty")
     private KeyType keyType;
@@ -140,7 +140,7 @@ public class JsonWebKey {
 
     /**
      * Elliptic curve name. For valid values, see KeyCurveName. Possible
-     * values include: 'P-256', 'P-384', 'P-521', and 'SECP256K1'.
+     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
      */
     @JsonProperty(value = "crv")
     private KeyCurveName crv;
@@ -1216,7 +1216,6 @@ public class JsonWebKey {
         curveToSpecMap.put(KeyCurveName.P_384, "secp384r1");
         curveToSpecMap.put(KeyCurveName.P_521, "secp521r1");
         curveToSpecMap.put(KeyCurveName.P_256K, "secp256k1");
-
         return curveToSpecMap;
     }
 

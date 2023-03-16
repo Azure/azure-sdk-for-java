@@ -138,7 +138,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link KeyType keyType} indicates the type of {@link KeyVaultKey key} to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
-     * {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
@@ -179,7 +179,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link KeyType keyType} indicates the type of {@link KeyVaultKey key} to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
-     * {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
@@ -231,7 +231,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of {@link KeyVaultKey key} to create.
      * Possible values include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
-     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} which activates in one day and expires in one year. Subscribes to
