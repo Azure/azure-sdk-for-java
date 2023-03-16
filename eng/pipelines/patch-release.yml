@@ -8,18 +8,6 @@ extends:
       groupId: com.azure
       safeName: azuremessagingeventhubs
       ServiceDirectory: eventhubs
-    - name: azure-security-keyvault-keys
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultkeys
-      ServiceDirectory: keyvault
-    - name: azure-security-keyvault-certificates
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultcertificates
-      ServiceDirectory: keyvault
-    - name: azure-security-keyvault-secrets
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultsecrets
-      ServiceDirectory: keyvault
     - name: azure-messaging-eventgrid
       groupId: com.azure
       safeName: azuremessagingeventgrid
@@ -68,10 +56,6 @@ extends:
       groupId: com.azure
       safeName: azureiotdeviceupdate
       ServiceDirectory: deviceupdate
-    - name: azure-security-keyvault-administration
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultadministration
-      ServiceDirectory: keyvault
     - name: azure-storage-common
       groupId: com.azure
       safeName: azurestoragecommon
