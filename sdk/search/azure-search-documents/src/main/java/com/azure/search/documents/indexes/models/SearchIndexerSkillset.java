@@ -7,45 +7,48 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
 /** A list of skills. */
 @Fluent
-public final class SearchIndexerSkillset implements JsonSerializable<SearchIndexerSkillset> {
+public final class SearchIndexerSkillset {
     /*
      * The name of the skillset.
      */
-    private final String name;
+    @JsonProperty(value = "name", required = true)
+    private String name;
 
     /*
      * The description of the skillset.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A list of skills in the skillset.
      */
+    @JsonProperty(value = "skills", required = true)
     private List<SearchIndexerSkill> skills;
 
     /*
      * Details about cognitive services to be used when running skills.
      */
+    @JsonProperty(value = "cognitiveServices")
     private CognitiveServicesAccount cognitiveServicesAccount;
 
     /*
      * Definition of additional projections to azure blob, table, or files, of enriched data.
      */
+    @JsonProperty(value = "knowledgeStore")
     private SearchIndexerKnowledgeStore knowledgeStore;
 
     /*
      * The ETag of the skillset.
      */
+    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /*
@@ -57,16 +60,8 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * will be unaffected. Encryption with customer-managed keys is not available for free search services, and is only
      * available for paid services created on or after January 1, 2019.
      */
+    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
-
-    /**
-     * Creates an instance of SearchIndexerSkillset class.
-     *
-     * @param name the name value to set.
-     */
-    public SearchIndexerSkillset(String name) {
-        this.name = name;
-    }
 
     /**
      * Creates an instance of SearchIndexerSkillset class.
@@ -74,9 +69,21 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param name the name value to set.
      * @param skills the skills value to set.
      */
-    public SearchIndexerSkillset(String name, List<SearchIndexerSkill> skills) {
-        this(name);
+    @JsonCreator
+    public SearchIndexerSkillset(
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "skills") List<SearchIndexerSkill> skills) {
+        this.name = name;
         this.skills = skills;
+    }
+
+    /**
+     * Creates an instance of SearchIndexerSkillset class.
+     *
+     * @param name the name value to set.
+     */
+    public SearchIndexerSkillset(String name) {
+        this(name, null);
     }
 
     /**
@@ -115,17 +122,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      */
     public List<SearchIndexerSkill> getSkills() {
         return this.skills;
-    }
-
-    /**
-     * Set the skills property: A list of skills in the skillset.
-     *
-     * @param skills the skills value to set.
-     * @return the SearchIndexerSkillset object itself.
-     */
-    public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
-        this.skills = skills;
-        return this;
     }
 
     /**
@@ -222,85 +218,20 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
         return this;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("cognitiveServices", this.cognitiveServicesAccount);
-        jsonWriter.writeJsonField("knowledgeStore", this.knowledgeStore);
-        jsonWriter.writeStringField("@odata.etag", this.eTag);
-        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
-        return jsonWriter.writeEndObject();
-    }
-
     /**
-     * Reads an instance of SearchIndexerSkillset from the JsonReader.
+     * Sets the skills property: A list of skills in the skillset.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchIndexerSkillset if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchIndexerSkillset.
+     * @param skills the skills value to set.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public static SearchIndexerSkillset fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    String description = null;
-                    List<SearchIndexerSkill> skills = null;
-                    CognitiveServicesAccount cognitiveServicesAccount = null;
-                    SearchIndexerKnowledgeStore knowledgeStore = null;
-                    String eTag = null;
-                    SearchResourceEncryptionKey encryptionKey = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
-                        } else if ("skills".equals(fieldName)) {
-                            skills = reader.readArray(reader1 -> SearchIndexerSkill.fromJson(reader1));
-                        } else if ("cognitiveServices".equals(fieldName)) {
-                            cognitiveServicesAccount = CognitiveServicesAccount.fromJson(reader);
-                        } else if ("knowledgeStore".equals(fieldName)) {
-                            knowledgeStore = SearchIndexerKnowledgeStore.fromJson(reader);
-                        } else if ("@odata.etag".equals(fieldName)) {
-                            eTag = reader.getString();
-                        } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound) {
-                        SearchIndexerSkillset deserializedValue = new SearchIndexerSkillset(name);
-                        deserializedValue.description = description;
-                        deserializedValue.skills = skills;
-                        deserializedValue.cognitiveServicesAccount = cognitiveServicesAccount;
-                        deserializedValue.knowledgeStore = knowledgeStore;
-                        deserializedValue.eTag = eTag;
-                        deserializedValue.encryptionKey = encryptionKey;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+    @JsonSetter
+    public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
+        this.skills = skills;
+        return this;
     }
 
     /**
-     * Set the skills property: A list of skills in the skillset.
+     * Sets the skills property: A list of skills in the skillset.
      *
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.

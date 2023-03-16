@@ -6,28 +6,43 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Base type for character filters. */
-@Immutable
-public abstract class CharFilter implements JsonSerializable<CharFilter> {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata.type",
+        defaultImpl = CharFilter.class,
+        visible = true)
+@JsonTypeName("CharFilter")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MappingCharFilter", value = MappingCharFilter.class),
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.PatternReplaceCharFilter",
+            value = PatternReplaceCharFilter.class)
+})
+@Fluent
+public abstract class CharFilter {
     /*
      * The name of the char filter. It must only contain letters, digits, spaces, dashes or underscores, can only start
      * and end with alphanumeric characters, and is limited to 128 characters.
      */
-    private final String name;
+    @JsonProperty(value = "name", required = true)
+    private String name;
 
     /**
      * Creates an instance of CharFilter class.
      *
      * @param name the name value to set.
      */
-    public CharFilter(String name) {
+    @JsonCreator
+    public CharFilter(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -39,68 +54,5 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
      */
     public String getName() {
         return this.name;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CharFilter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CharFilter if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the CharFilter.
-     */
-    public static CharFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = null;
-
-                    // Read the first field name and determine if it's the discriminator field.
-                    reader.nextToken();
-                    if ("@odata.type".equals(reader.getFieldName())) {
-                        reader.nextToken();
-                        discriminatorValue = reader.getString();
-                        readerToUse = reader;
-                    } else {
-                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
-                        // discriminator field value.
-                        JsonReader replayReader = reader.bufferObject();
-                        replayReader.nextToken(); // Prepare for reading
-                        while (replayReader.nextToken() != JsonToken.END_OBJECT) {
-                            String fieldName = replayReader.getFieldName();
-                            replayReader.nextToken();
-                            if ("@odata.type".equals(fieldName)) {
-                                discriminatorValue = replayReader.getString();
-                                break;
-                            } else {
-                                replayReader.skipChildren();
-                            }
-                        }
-
-                        if (discriminatorValue != null) {
-                            readerToUse = replayReader.reset();
-                        }
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("#Microsoft.Azure.Search.MappingCharFilter".equals(discriminatorValue)) {
-                        return MappingCharFilter.fromJson(readerToUse);
-                    } else if ("#Microsoft.Azure.Search.PatternReplaceCharFilter".equals(discriminatorValue)) {
-                        return PatternReplaceCharFilter.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.MappingCharFilter', or '#Microsoft.Azure.Search.PatternReplaceCharFilter'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
-                    }
-                });
     }
 }

@@ -7,33 +7,27 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Credentials of a registered application created for your search service, used for authenticated access to the
  * encryption keys stored in Azure Key Vault.
  */
 @Fluent
-public final class AzureActiveDirectoryApplicationCredentials
-        implements JsonSerializable<AzureActiveDirectoryApplicationCredentials> {
+public final class AzureActiveDirectoryApplicationCredentials {
     /*
      * An AAD Application ID that was granted the required access permissions to the Azure Key Vault that is to be used
      * when encrypting your data at rest. The Application ID should not be confused with the Object ID for your AAD
      * Application.
      */
+    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The authentication key of the specified AAD application.
      */
+    @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
-
-    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
-    public AzureActiveDirectoryApplicationCredentials() {}
 
     /**
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
@@ -77,47 +71,5 @@ public final class AzureActiveDirectoryApplicationCredentials
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("applicationId", this.applicationId);
-        jsonWriter.writeStringField("applicationSecret", this.applicationSecret);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureActiveDirectoryApplicationCredentials from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureActiveDirectoryApplicationCredentials if the JsonReader was pointing to an instance
-     *     of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AzureActiveDirectoryApplicationCredentials.
-     */
-    public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String applicationId = null;
-                    String applicationSecret = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("applicationId".equals(fieldName)) {
-                            applicationId = reader.getString();
-                        } else if ("applicationSecret".equals(fieldName)) {
-                            applicationSecret = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    AzureActiveDirectoryApplicationCredentials deserializedValue =
-                            new AzureActiveDirectoryApplicationCredentials();
-                    deserializedValue.applicationId = applicationId;
-                    deserializedValue.applicationSecret = applicationSecret;
-
-                    return deserializedValue;
-                });
     }
 }

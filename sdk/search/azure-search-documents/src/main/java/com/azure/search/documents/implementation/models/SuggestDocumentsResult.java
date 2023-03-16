@@ -7,26 +7,24 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response containing suggestion query results from an index. */
 @Immutable
-public final class SuggestDocumentsResult implements JsonSerializable<SuggestDocumentsResult> {
+public final class SuggestDocumentsResult {
     /*
      * The sequence of results returned by the query.
      */
-    private final List<SuggestResult> results;
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private List<SuggestResult> results;
 
     /*
      * A value indicating the percentage of the index that was included in the query, or null if minimumCoverage was
      * not set in the request.
      */
+    @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
     /**
@@ -34,7 +32,10 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      *
      * @param results the results value to set.
      */
-    public SuggestDocumentsResult(List<SuggestResult> results) {
+    @JsonCreator
+    public SuggestDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SuggestResult> results) {
         this.results = results;
     }
 
@@ -55,57 +56,5 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
      */
     public Double getCoverage() {
         return this.coverage;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("@search.coverage", this.coverage);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SuggestDocumentsResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SuggestDocumentsResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SuggestDocumentsResult.
-     */
-    public static SuggestDocumentsResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean resultsFound = false;
-                    List<SuggestResult> results = null;
-                    Double coverage = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("value".equals(fieldName)) {
-                            results = reader.readArray(reader1 -> SuggestResult.fromJson(reader1));
-                            resultsFound = true;
-                        } else if ("@search.coverage".equals(fieldName)) {
-                            coverage = reader.getNullable(JsonReader::getDouble);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (resultsFound) {
-                        SuggestDocumentsResult deserializedValue = new SuggestDocumentsResult(results);
-                        deserializedValue.coverage = coverage;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!resultsFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

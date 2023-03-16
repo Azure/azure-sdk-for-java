@@ -7,35 +7,46 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
 /** A skill that extracts content from a file within the enrichment pipeline. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "@odata.type",
+        visible = true)
+@JsonTypeName("#Microsoft.Skills.Util.DocumentExtractionSkill")
 @Fluent
 public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Util.DocumentExtractionSkill";
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Skills.Util.DocumentExtractionSkill";
 
     /*
      * The parsingMode for the skill. Will be set to 'default' if not defined.
      */
+    @JsonProperty(value = "parsingMode")
     private String parsingMode;
 
     /*
      * The type of data to be extracted for the skill. Will be set to 'contentAndMetadata' if not defined.
      */
+    @JsonProperty(value = "dataToExtract")
     private String dataToExtract;
 
     /*
      * A dictionary of configurations for the skill.
      */
+    @JsonProperty(value = "configuration")
     private Map<String, Object> configuration;
 
     /**
@@ -44,7 +55,10 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    public DocumentExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+    @JsonCreator
+    public DocumentExtractionSkill(
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -129,104 +143,5 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     public DocumentExtractionSkill setContext(String context) {
         super.setContext(context);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("parsingMode", this.parsingMode);
-        jsonWriter.writeStringField("dataToExtract", this.dataToExtract);
-        jsonWriter.writeMapField(
-                "configuration", this.configuration, (writer, element) -> writer.writeUntyped(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentExtractionSkill from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentExtractionSkill if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the DocumentExtractionSkill.
-     */
-    public static DocumentExtractionSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean inputsFound = false;
-                    List<InputFieldMappingEntry> inputs = null;
-                    boolean outputsFound = false;
-                    List<OutputFieldMappingEntry> outputs = null;
-                    String name = null;
-                    String description = null;
-                    String context = null;
-                    String parsingMode = null;
-                    String dataToExtract = null;
-                    Map<String, Object> configuration = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                            inputsFound = true;
-                        } else if ("outputs".equals(fieldName)) {
-                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                            outputsFound = true;
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                        } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
-                        } else if ("context".equals(fieldName)) {
-                            context = reader.getString();
-                        } else if ("parsingMode".equals(fieldName)) {
-                            parsingMode = reader.getString();
-                        } else if ("dataToExtract".equals(fieldName)) {
-                            dataToExtract = reader.getString();
-                        } else if ("configuration".equals(fieldName)) {
-                            configuration = reader.readMap(reader1 -> reader1.readUntyped());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (inputsFound && outputsFound) {
-                        DocumentExtractionSkill deserializedValue = new DocumentExtractionSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.parsingMode = parsingMode;
-                        deserializedValue.dataToExtract = dataToExtract;
-                        deserializedValue.configuration = configuration;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!inputsFound) {
-                        missingProperties.add("inputs");
-                    }
-                    if (!outputsFound) {
-                        missingProperties.add("outputs");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

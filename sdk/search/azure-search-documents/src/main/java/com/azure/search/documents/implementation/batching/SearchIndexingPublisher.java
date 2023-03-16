@@ -259,7 +259,7 @@ public final class SearchIndexingPublisher<T> {
             batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
         }
 
-        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponseAsync(restClient, actions, true,
+        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
             context, LOGGER);
 
         if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
@@ -313,7 +313,7 @@ public final class SearchIndexingPublisher<T> {
                 return Mono.just(new IndexBatchResponse(statusCode, null, actions.size(), true));
             })
             // General catch all to allow operation to continue.
-            .onErrorResume(Exception.class, ignored ->
+            .onErrorResume(Throwable.class, ignored ->
                 Mono.just(new IndexBatchResponse(0, null, actions.size(), true)));
     }
 

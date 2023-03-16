@@ -7,11 +7,8 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Projection definition for what data to store in Azure Files. */
@@ -23,7 +20,9 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
      *
      * @param storageContainer the storageContainer value to set.
      */
-    public SearchIndexerKnowledgeStoreFileProjectionSelector(String storageContainer) {
+    @JsonCreator
+    public SearchIndexerKnowledgeStoreFileProjectionSelector(
+            @JsonProperty(value = "storageContainer", required = true) String storageContainer) {
         super(storageContainer);
     }
 
@@ -60,78 +59,5 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     public SearchIndexerKnowledgeStoreFileProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("storageContainer", getStorageContainer());
-        jsonWriter.writeStringField("referenceKeyName", getReferenceKeyName());
-        jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName());
-        jsonWriter.writeStringField("source", getSource());
-        jsonWriter.writeStringField("sourceContext", getSourceContext());
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SearchIndexerKnowledgeStoreFileProjectionSelector from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchIndexerKnowledgeStoreFileProjectionSelector if the JsonReader was pointing to an
-     *     instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreFileProjectionSelector.
-     */
-    public static SearchIndexerKnowledgeStoreFileProjectionSelector fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean storageContainerFound = false;
-                    String storageContainer = null;
-                    String referenceKeyName = null;
-                    String generatedKeyName = null;
-                    String source = null;
-                    String sourceContext = null;
-                    List<InputFieldMappingEntry> inputs = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("storageContainer".equals(fieldName)) {
-                            storageContainer = reader.getString();
-                            storageContainerFound = true;
-                        } else if ("referenceKeyName".equals(fieldName)) {
-                            referenceKeyName = reader.getString();
-                        } else if ("generatedKeyName".equals(fieldName)) {
-                            generatedKeyName = reader.getString();
-                        } else if ("source".equals(fieldName)) {
-                            source = reader.getString();
-                        } else if ("sourceContext".equals(fieldName)) {
-                            sourceContext = reader.getString();
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (storageContainerFound) {
-                        SearchIndexerKnowledgeStoreFileProjectionSelector deserializedValue =
-                                new SearchIndexerKnowledgeStoreFileProjectionSelector(storageContainer);
-                        deserializedValue.setReferenceKeyName(referenceKeyName);
-                        deserializedValue.setGeneratedKeyName(generatedKeyName);
-                        deserializedValue.setSource(source);
-                        deserializedValue.setSourceContext(sourceContext);
-                        deserializedValue.setInputs(inputs);
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!storageContainerFound) {
-                        missingProperties.add("storageContainer");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

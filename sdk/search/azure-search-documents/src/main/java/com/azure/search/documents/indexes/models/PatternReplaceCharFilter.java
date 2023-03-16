@@ -6,13 +6,12 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A character filter that replaces characters in the input string. It uses a regular expression to identify character
@@ -20,22 +19,32 @@ import java.util.List;
  * "aa bb aa bb", pattern "(aa)\s+(bb)", and replacement "$1#$2", the result would be "aa#bb aa#bb". This character
  * filter is implemented using Apache Lucene.
  */
-@Immutable
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "@odata.type",
+        visible = true)
+@JsonTypeName("#Microsoft.Azure.Search.PatternReplaceCharFilter")
+@Fluent
 public final class PatternReplaceCharFilter extends CharFilter {
     /*
      * Identifies the concrete type of the char filter.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
 
     /*
      * A regular expression pattern.
      */
-    private final String pattern;
+    @JsonProperty(value = "pattern", required = true)
+    private String pattern;
 
     /*
      * The replacement text.
      */
-    private final String replacement;
+    @JsonProperty(value = "replacement", required = true)
+    private String replacement;
 
     /**
      * Creates an instance of PatternReplaceCharFilter class.
@@ -44,7 +53,11 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * @param pattern the pattern value to set.
      * @param replacement the replacement value to set.
      */
-    public PatternReplaceCharFilter(String name, String pattern, String replacement) {
+    @JsonCreator
+    public PatternReplaceCharFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;
@@ -66,83 +79,5 @@ public final class PatternReplaceCharFilter extends CharFilter {
      */
     public String getReplacement() {
         return this.replacement;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("pattern", this.pattern);
-        jsonWriter.writeStringField("replacement", this.replacement);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PatternReplaceCharFilter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PatternReplaceCharFilter if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the PatternReplaceCharFilter.
-     */
-    public static PatternReplaceCharFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean patternFound = false;
-                    String pattern = null;
-                    boolean replacementFound = false;
-                    String replacement = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("pattern".equals(fieldName)) {
-                            pattern = reader.getString();
-                            patternFound = true;
-                        } else if ("replacement".equals(fieldName)) {
-                            replacement = reader.getString();
-                            replacementFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound && patternFound && replacementFound) {
-                        PatternReplaceCharFilter deserializedValue =
-                                new PatternReplaceCharFilter(name, pattern, replacement);
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!patternFound) {
-                        missingProperties.add("pattern");
-                    }
-                    if (!replacementFound) {
-                        missingProperties.add("replacement");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

@@ -7,9 +7,10 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by TextTranslationSkill. */
+/** Defines values for TextTranslationSkillLanguage. */
 public final class TextTranslationSkillLanguage extends ExpandableStringEnum<TextTranslationSkillLanguage> {
     /** Static value af for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage AF = fromString("af");
@@ -107,12 +108,6 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
     /** Static value tlh for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TLH = fromString("tlh");
 
-    /** Static value tlh-Latn for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage TLH_LATN = fromString("tlh-Latn");
-
-    /** Static value tlh-Piqd for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage TLH_PIQD = fromString("tlh-Piqd");
-
     /** Static value ko for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage KO = fromString("ko");
 
@@ -142,12 +137,6 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
 
     /** Static value pt for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage PT = fromString("pt");
-
-    /** Static value pt-br for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage PT_BR = fromString("pt-br");
-
-    /** Static value pt-PT for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage PT_PT = fromString("pt-PT");
 
     /** Static value otq for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage OTQ = fromString("otq");
@@ -212,35 +201,13 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
     /** Static value yua for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage YUA = fromString("yua");
 
-    /** Static value ga for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage GA = fromString("ga");
-
-    /** Static value kn for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage KN = fromString("kn");
-
-    /** Static value mi for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage MI = fromString("mi");
-
-    /** Static value ml for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage ML = fromString("ml");
-
-    /** Static value pa for TextTranslationSkillLanguage. */
-    public static final TextTranslationSkillLanguage PA = fromString("pa");
-
-    /**
-     * Creates a new instance of TextTranslationSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public TextTranslationSkillLanguage() {}
-
     /**
      * Creates or finds a TextTranslationSkillLanguage from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding TextTranslationSkillLanguage.
      */
+    @JsonCreator
     public static TextTranslationSkillLanguage fromString(String name) {
         return fromString(name, TextTranslationSkillLanguage.class);
     }

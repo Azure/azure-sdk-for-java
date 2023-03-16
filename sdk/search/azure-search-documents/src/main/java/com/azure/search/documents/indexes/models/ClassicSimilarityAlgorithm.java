@@ -7,66 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Legacy similarity algorithm which uses the Lucene TFIDFSimilarity implementation of TF-IDF. This variation of TF-IDF
  * introduces static document length normalization as well as coordinating factors that penalize documents that only
  * partially match the searched queries.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "@odata.type",
+        visible = true)
+@JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.ClassicSimilarity";
-
-    /** Creates an instance of ClassicSimilarityAlgorithm class. */
-    public ClassicSimilarityAlgorithm() {}
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ClassicSimilarityAlgorithm from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ClassicSimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the ClassicSimilarityAlgorithm.
-     */
-    public static ClassicSimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    ClassicSimilarityAlgorithm deserializedValue = new ClassicSimilarityAlgorithm();
-
-                    return deserializedValue;
-                });
-    }
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
 }

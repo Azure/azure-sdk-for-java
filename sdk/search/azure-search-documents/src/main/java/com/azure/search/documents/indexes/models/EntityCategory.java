@@ -7,9 +7,10 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A string indicating what entity categories to return. */
+/** Defines values for EntityCategory. */
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     /** Static value location for EntityCategory. */
     public static final EntityCategory LOCATION = fromString("location");
@@ -33,19 +34,12 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     public static final EntityCategory EMAIL = fromString("email");
 
     /**
-     * Creates a new instance of EntityCategory value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public EntityCategory() {}
-
-    /**
      * Creates or finds a EntityCategory from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding EntityCategory.
      */
+    @JsonCreator
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
     }

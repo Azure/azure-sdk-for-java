@@ -7,26 +7,23 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of Autocomplete requests. */
 @Immutable
-public final class AutocompleteItem implements JsonSerializable<AutocompleteItem> {
+public final class AutocompleteItem {
     /*
      * The completed term.
      */
-    private final String text;
+    @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String text;
 
     /*
      * The query along with the completed term.
      */
-    private final String queryPlusText;
+    @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String queryPlusText;
 
     /**
      * Creates an instance of AutocompleteItem class.
@@ -34,7 +31,11 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      * @param text the text value to set.
      * @param queryPlusText the queryPlusText value to set.
      */
-    public AutocompleteItem(String text, String queryPlusText) {
+    @JsonCreator
+    public AutocompleteItem(
+            @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY) String text,
+            @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    String queryPlusText) {
         this.text = text;
         this.queryPlusText = queryPlusText;
     }
@@ -55,61 +56,5 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
      */
     public String getQueryPlusText() {
         return this.queryPlusText;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("queryPlusText", this.queryPlusText);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AutocompleteItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AutocompleteItem if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AutocompleteItem.
-     */
-    public static AutocompleteItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean textFound = false;
-                    String text = null;
-                    boolean queryPlusTextFound = false;
-                    String queryPlusText = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("text".equals(fieldName)) {
-                            text = reader.getString();
-                            textFound = true;
-                        } else if ("queryPlusText".equals(fieldName)) {
-                            queryPlusText = reader.getString();
-                            queryPlusTextFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (textFound && queryPlusTextFound) {
-                        AutocompleteItem deserializedValue = new AutocompleteItem(text, queryPlusText);
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!textFound) {
-                        missingProperties.add("text");
-                    }
-                    if (!queryPlusTextFound) {
-                        missingProperties.add("queryPlusText");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

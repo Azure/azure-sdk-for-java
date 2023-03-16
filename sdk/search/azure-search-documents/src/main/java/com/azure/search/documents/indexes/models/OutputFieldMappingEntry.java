@@ -7,25 +7,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output field mapping for a skill. */
 @Fluent
-public final class OutputFieldMappingEntry implements JsonSerializable<OutputFieldMappingEntry> {
+public final class OutputFieldMappingEntry {
     /*
      * The name of the output defined by the skill.
      */
-    private final String name;
+    @JsonProperty(value = "name", required = true)
+    private String name;
 
     /*
      * The target name of the output. It is optional and default to name.
      */
+    @JsonProperty(value = "targetName")
     private String targetName;
 
     /**
@@ -33,7 +30,8 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
      *
      * @param name the name value to set.
      */
-    public OutputFieldMappingEntry(String name) {
+    @JsonCreator
+    public OutputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
@@ -64,57 +62,5 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
     public OutputFieldMappingEntry setTargetName(String targetName) {
         this.targetName = targetName;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("targetName", this.targetName);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OutputFieldMappingEntry from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OutputFieldMappingEntry if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OutputFieldMappingEntry.
-     */
-    public static OutputFieldMappingEntry fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    String targetName = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("targetName".equals(fieldName)) {
-                            targetName = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound) {
-                        OutputFieldMappingEntry deserializedValue = new OutputFieldMappingEntry(name);
-                        deserializedValue.targetName = targetName;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

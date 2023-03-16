@@ -7,20 +7,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the names of all character filters supported by Azure Cognitive Search. */
+/** Defines values for CharFilterName. */
 public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
     /** Static value html_strip for CharFilterName. */
     public static final CharFilterName HTML_STRIP = fromString("html_strip");
-
-    /**
-     * Creates a new instance of CharFilterName value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CharFilterName() {}
 
     /**
      * Creates or finds a CharFilterName from its string representation.
@@ -28,6 +21,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * @param name a name to look for.
      * @return the corresponding CharFilterName.
      */
+    @JsonCreator
     public static CharFilterName fromString(String name) {
         return fromString(name, CharFilterName.class);
     }

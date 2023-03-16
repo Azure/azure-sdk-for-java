@@ -7,52 +7,65 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /** A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "@odata.type",
+        visible = true)
+@JsonTypeName("#Microsoft.Skills.Custom.WebApiSkill")
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Custom.WebApiSkill";
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
     /*
      * The url for the Web API.
      */
-    private final String uri;
+    @JsonProperty(value = "uri", required = true)
+    private String uri;
 
     /*
      * The headers required to make the http request.
      */
+    @JsonProperty(value = "httpHeaders")
     private Map<String, String> httpHeaders;
 
     /*
      * The method for the http request.
      */
+    @JsonProperty(value = "httpMethod")
     private String httpMethod;
 
     /*
      * The desired timeout for the request. Default is 30 seconds.
      */
+    @JsonProperty(value = "timeout")
     private Duration timeout;
 
     /*
      * The desired batch size which indicates number of documents.
      */
+    @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /*
      * If set, the number of parallel calls that can be made to the Web API.
      */
+    @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
     /**
@@ -62,7 +75,11 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param uri the uri value to set.
      */
-    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+    @JsonCreator
+    public WebApiSkill(
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "uri", required = true) String uri) {
         super(inputs, outputs);
         this.uri = uri;
     }
@@ -195,122 +212,5 @@ public final class WebApiSkill extends SearchIndexerSkill {
     public WebApiSkill setContext(String context) {
         super.setContext(context);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("uri", this.uri);
-        jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("httpMethod", this.httpMethod);
-        jsonWriter.writeStringField("timeout", Objects.toString(this.timeout, null));
-        jsonWriter.writeNumberField("batchSize", this.batchSize);
-        jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WebApiSkill from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WebApiSkill if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the WebApiSkill.
-     */
-    public static WebApiSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean inputsFound = false;
-                    List<InputFieldMappingEntry> inputs = null;
-                    boolean outputsFound = false;
-                    List<OutputFieldMappingEntry> outputs = null;
-                    String name = null;
-                    String description = null;
-                    String context = null;
-                    boolean uriFound = false;
-                    String uri = null;
-                    Map<String, String> httpHeaders = null;
-                    String httpMethod = null;
-                    Duration timeout = null;
-                    Integer batchSize = null;
-                    Integer degreeOfParallelism = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                            inputsFound = true;
-                        } else if ("outputs".equals(fieldName)) {
-                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                            outputsFound = true;
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                        } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
-                        } else if ("context".equals(fieldName)) {
-                            context = reader.getString();
-                        } else if ("uri".equals(fieldName)) {
-                            uri = reader.getString();
-                            uriFound = true;
-                        } else if ("httpHeaders".equals(fieldName)) {
-                            httpHeaders = reader.readMap(reader1 -> reader1.getString());
-                        } else if ("httpMethod".equals(fieldName)) {
-                            httpMethod = reader.getString();
-                        } else if ("timeout".equals(fieldName)) {
-                            timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                        } else if ("batchSize".equals(fieldName)) {
-                            batchSize = reader.getNullable(JsonReader::getInt);
-                        } else if ("degreeOfParallelism".equals(fieldName)) {
-                            degreeOfParallelism = reader.getNullable(JsonReader::getInt);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (inputsFound && outputsFound && uriFound) {
-                        WebApiSkill deserializedValue = new WebApiSkill(inputs, outputs, uri);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.httpHeaders = httpHeaders;
-                        deserializedValue.httpMethod = httpMethod;
-                        deserializedValue.timeout = timeout;
-                        deserializedValue.batchSize = batchSize;
-                        deserializedValue.degreeOfParallelism = degreeOfParallelism;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!inputsFound) {
-                        missingProperties.add("inputs");
-                    }
-                    if (!outputsFound) {
-                        missingProperties.add("outputs");
-                    }
-                    if (!uriFound) {
-                        missingProperties.add("uri");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

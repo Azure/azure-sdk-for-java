@@ -6,7 +6,10 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Specifies which side of the input an n-gram should be generated from. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for EdgeNGramTokenFilterSide. */
 public enum EdgeNGramTokenFilterSide {
     /** Enum value front. */
     FRONT("front"),
@@ -27,6 +30,7 @@ public enum EdgeNGramTokenFilterSide {
      * @param value the serialized value to parse.
      * @return the parsed EdgeNGramTokenFilterSide object, or null if unable to parse.
      */
+    @JsonCreator
     public static EdgeNGramTokenFilterSide fromString(String value) {
         if (value == null) {
             return null;
@@ -40,7 +44,7 @@ public enum EdgeNGramTokenFilterSide {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

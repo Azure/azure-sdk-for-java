@@ -5,7 +5,7 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.search.documents.indexes.SearchableField;
 
-public class HotelAnalyzerException extends RuntimeException {
+public class HotelAnalyzerException {
     private String tag;
 
     /**

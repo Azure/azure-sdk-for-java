@@ -7,28 +7,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /** Represents a schedule for indexer execution. */
 @Fluent
-public final class IndexingSchedule implements JsonSerializable<IndexingSchedule> {
+public final class IndexingSchedule {
     /*
      * The interval of time between indexer executions.
      */
-    private final Duration interval;
+    @JsonProperty(value = "interval", required = true)
+    private Duration interval;
 
     /*
      * The time when an indexer should start running.
      */
+    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /**
@@ -36,7 +32,8 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      *
      * @param interval the interval value to set.
      */
-    public IndexingSchedule(Duration interval) {
+    @JsonCreator
+    public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
         this.interval = interval;
     }
 
@@ -67,59 +64,5 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
     public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("interval", Objects.toString(this.interval, null));
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of IndexingSchedule from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IndexingSchedule if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the IndexingSchedule.
-     */
-    public static IndexingSchedule fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean intervalFound = false;
-                    Duration interval = null;
-                    OffsetDateTime startTime = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("interval".equals(fieldName)) {
-                            interval = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                            intervalFound = true;
-                        } else if ("startTime".equals(fieldName)) {
-                            startTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (intervalFound) {
-                        IndexingSchedule deserializedValue = new IndexingSchedule(interval);
-                        deserializedValue.startTime = startTime;
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!intervalFound) {
-                        missingProperties.add("interval");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

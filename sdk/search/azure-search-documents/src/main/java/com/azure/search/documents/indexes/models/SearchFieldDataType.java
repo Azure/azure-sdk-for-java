@@ -7,9 +7,10 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the data type of a field in a search index. */
+/** Defines values for SearchFieldDataType. */
 public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldDataType> {
     /** Static value Edm.String for SearchFieldDataType. */
     public static final SearchFieldDataType STRING = fromString("Edm.String");
@@ -36,19 +37,12 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**
-     * Creates a new instance of SearchFieldDataType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public SearchFieldDataType() {}
-
-    /**
      * Creates or finds a SearchFieldDataType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding SearchFieldDataType.
      */
+    @JsonCreator
     public static SearchFieldDataType fromString(String name) {
         return fromString(name, SearchFieldDataType.class);
     }
@@ -63,11 +57,12 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     }
 
     /**
-     * Returns a collection of a specific SearchFieldDataType.
+     * Returns a collection of a specific SearchFieldDataType
      *
      * @param dataType the corresponding SearchFieldDataType
      * @return a Collection of the corresponding SearchFieldDataType
      */
+    @JsonCreator
     public static SearchFieldDataType collection(SearchFieldDataType dataType) {
         return fromString(String.format("Collection(%s)", dataType.toString()));
     }

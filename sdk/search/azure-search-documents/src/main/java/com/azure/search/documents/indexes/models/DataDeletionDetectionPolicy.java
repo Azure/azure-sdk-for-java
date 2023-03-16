@@ -7,72 +7,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Base type for data deletion detection policies. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata.type",
+        defaultImpl = DataDeletionDetectionPolicy.class,
+        visible = true)
+@JsonTypeName("DataDeletionDetectionPolicy")
+@JsonSubTypes({
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+            value = SoftDeleteColumnDeletionDetectionPolicy.class)
+})
 @Immutable
-public abstract class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletionDetectionPolicy> {
-    /** Creates an instance of DataDeletionDetectionPolicy class. */
-    public DataDeletionDetectionPolicy() {}
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DataDeletionDetectionPolicy from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DataDeletionDetectionPolicy if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the DataDeletionDetectionPolicy.
-     */
-    public static DataDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = null;
-
-                    // Read the first field name and determine if it's the discriminator field.
-                    reader.nextToken();
-                    if ("@odata.type".equals(reader.getFieldName())) {
-                        reader.nextToken();
-                        discriminatorValue = reader.getString();
-                        readerToUse = reader;
-                    } else {
-                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
-                        // discriminator field value.
-                        JsonReader replayReader = reader.bufferObject();
-                        replayReader.nextToken(); // Prepare for reading
-                        while (replayReader.nextToken() != JsonToken.END_OBJECT) {
-                            String fieldName = replayReader.getFieldName();
-                            replayReader.nextToken();
-                            if ("@odata.type".equals(fieldName)) {
-                                discriminatorValue = replayReader.getString();
-                                break;
-                            } else {
-                                replayReader.skipChildren();
-                            }
-                        }
-
-                        if (discriminatorValue != null) {
-                            readerToUse = replayReader.reset();
-                        }
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(discriminatorValue)) {
-                        return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'");
-                    }
-                });
-    }
-}
+public abstract class DataDeletionDetectionPolicy {}

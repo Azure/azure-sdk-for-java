@@ -6,27 +6,25 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of additional projections to azure blob, table, or files, of enriched data. */
-@Immutable
-public final class SearchIndexerKnowledgeStore implements JsonSerializable<SearchIndexerKnowledgeStore> {
+@Fluent
+public final class SearchIndexerKnowledgeStore {
     /*
      * The connection string to the storage account projections will be stored in.
      */
-    private final String storageConnectionString;
+    @JsonProperty(value = "storageConnectionString", required = true)
+    private String storageConnectionString;
 
     /*
      * A list of additional projections to perform during indexing.
      */
-    private final List<SearchIndexerKnowledgeStoreProjection> projections;
+    @JsonProperty(value = "projections", required = true)
+    private List<SearchIndexerKnowledgeStoreProjection> projections;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.
@@ -34,8 +32,11 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * @param storageConnectionString the storageConnectionString value to set.
      * @param projections the projections value to set.
      */
+    @JsonCreator
     public SearchIndexerKnowledgeStore(
-            String storageConnectionString, List<SearchIndexerKnowledgeStoreProjection> projections) {
+            @JsonProperty(value = "storageConnectionString", required = true) String storageConnectionString,
+            @JsonProperty(value = "projections", required = true)
+                    List<SearchIndexerKnowledgeStoreProjection> projections) {
         this.storageConnectionString = storageConnectionString;
         this.projections = projections;
     }
@@ -57,64 +58,5 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      */
     public List<SearchIndexerKnowledgeStoreProjection> getProjections() {
         return this.projections;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
-        jsonWriter.writeArrayField("projections", this.projections, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SearchIndexerKnowledgeStore from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchIndexerKnowledgeStore if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStore.
-     */
-    public static SearchIndexerKnowledgeStore fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean storageConnectionStringFound = false;
-                    String storageConnectionString = null;
-                    boolean projectionsFound = false;
-                    List<SearchIndexerKnowledgeStoreProjection> projections = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("storageConnectionString".equals(fieldName)) {
-                            storageConnectionString = reader.getString();
-                            storageConnectionStringFound = true;
-                        } else if ("projections".equals(fieldName)) {
-                            projections =
-                                    reader.readArray(
-                                            reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
-                            projectionsFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (storageConnectionStringFound && projectionsFound) {
-                        SearchIndexerKnowledgeStore deserializedValue =
-                                new SearchIndexerKnowledgeStore(storageConnectionString, projections);
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!storageConnectionStringFound) {
-                        missingProperties.add("storageConnectionString");
-                    }
-                    if (!projectionsFound) {
-                        missingProperties.add("projections");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

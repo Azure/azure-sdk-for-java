@@ -7,74 +7,31 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An empty object that represents the default cognitive service resource for a skillset. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "@odata.type",
+        visible = true)
+@JsonTypeName("#Microsoft.Azure.Search.DefaultCognitiveServices")
 @Fluent
 public final class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DefaultCognitiveServices";
-
-    /** Creates an instance of DefaultCognitiveServicesAccount class. */
-    public DefaultCognitiveServicesAccount() {}
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
     /** {@inheritDoc} */
     @Override
     public DefaultCognitiveServicesAccount setDescription(String description) {
         super.setDescription(description);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
-        jsonWriter.writeStringField("description", getDescription());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DefaultCognitiveServicesAccount from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DefaultCognitiveServicesAccount if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the DefaultCognitiveServicesAccount.
-     */
-    public static DefaultCognitiveServicesAccount fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String description = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    DefaultCognitiveServicesAccount deserializedValue = new DefaultCognitiveServicesAccount();
-                    deserializedValue.setDescription(description);
-
-                    return deserializedValue;
-                });
     }
 }

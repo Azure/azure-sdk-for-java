@@ -7,27 +7,34 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Defines a function that boosts scores based on distance from a geographic location. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true)
+@JsonTypeName("distance")
 @Fluent
 public final class DistanceScoringFunction extends ScoringFunction {
     /*
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
      * function type must be lower case.
      */
-    private static final String TYPE = "distance";
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "distance";
 
     /*
      * Parameter values for the distance scoring function.
      */
-    private final DistanceScoringParameters parameters;
+    @JsonProperty(value = "distance", required = true)
+    private DistanceScoringParameters parameters;
 
     /**
      * Creates an instance of DistanceScoringFunction class.
@@ -36,7 +43,11 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
      */
-    public DistanceScoringFunction(String fieldName, double boost, DistanceScoringParameters parameters) {
+    @JsonCreator
+    public DistanceScoringFunction(
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "distance", required = true) DistanceScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -55,88 +66,5 @@ public final class DistanceScoringFunction extends ScoringFunction {
     public DistanceScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         super.setInterpolation(interpolation);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", TYPE);
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
-        jsonWriter.writeStringField("interpolation", Objects.toString(getInterpolation(), null));
-        jsonWriter.writeJsonField("distance", this.parameters);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DistanceScoringFunction from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DistanceScoringFunction if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the DistanceScoringFunction.
-     */
-    public static DistanceScoringFunction fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean fieldNameFound = false;
-                    String fieldName = null;
-                    boolean boostFound = false;
-                    double boost = 0.0;
-                    ScoringFunctionInterpolation interpolation = null;
-                    boolean parametersFound = false;
-                    DistanceScoringParameters parameters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String jsonFieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("type".equals(jsonFieldName)) {
-                            String type = reader.getString();
-                            if (!TYPE.equals(type)) {
-                                throw new IllegalStateException(
-                                        "'type' was expected to be non-null and equal to '"
-                                                + TYPE
-                                                + "'. The found 'type' was '"
-                                                + type
-                                                + "'.");
-                            }
-                        } else if ("fieldName".equals(jsonFieldName)) {
-                            fieldName = reader.getString();
-                            fieldNameFound = true;
-                        } else if ("boost".equals(jsonFieldName)) {
-                            boost = reader.getDouble();
-                            boostFound = true;
-                        } else if ("interpolation".equals(jsonFieldName)) {
-                            interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
-                        } else if ("distance".equals(jsonFieldName)) {
-                            parameters = DistanceScoringParameters.fromJson(reader);
-                            parametersFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (fieldNameFound && boostFound && parametersFound) {
-                        DistanceScoringFunction deserializedValue =
-                                new DistanceScoringFunction(fieldName, boost, parameters);
-                        deserializedValue.setInterpolation(interpolation);
-
-                        return deserializedValue;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!fieldNameFound) {
-                        missingProperties.add("fieldName");
-                    }
-                    if (!boostFound) {
-                        missingProperties.add("boost");
-                    }
-                    if (!parametersFound) {
-                        missingProperties.add("distance");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

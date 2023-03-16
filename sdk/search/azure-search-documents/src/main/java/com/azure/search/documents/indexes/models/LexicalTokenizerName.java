@@ -7,9 +7,10 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the names of all tokenizers supported by Azure Cognitive Search. */
+/** Defines values for LexicalTokenizerName. */
 public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalTokenizerName> {
     /** Static value classic for LexicalTokenizerName. */
     public static final LexicalTokenizerName CLASSIC = fromString("classic");
@@ -52,19 +53,12 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
     public static final LexicalTokenizerName WHITESPACE = fromString("whitespace");
 
     /**
-     * Creates a new instance of LexicalTokenizerName value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public LexicalTokenizerName() {}
-
-    /**
      * Creates or finds a LexicalTokenizerName from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding LexicalTokenizerName.
      */
+    @JsonCreator
     public static LexicalTokenizerName fromString(String name) {
         return fromString(name, LexicalTokenizerName.class);
     }

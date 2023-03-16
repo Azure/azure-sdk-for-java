@@ -6,7 +6,10 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Defines the aggregation function used to combine the results of all the scoring functions in a scoring profile. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for ScoringFunctionAggregation. */
 public enum ScoringFunctionAggregation {
     /** Enum value sum. */
     SUM("sum"),
@@ -36,6 +39,7 @@ public enum ScoringFunctionAggregation {
      * @param value the serialized value to parse.
      * @return the parsed ScoringFunctionAggregation object, or null if unable to parse.
      */
+    @JsonCreator
     public static ScoringFunctionAggregation fromString(String value) {
         if (value == null) {
             return null;
@@ -49,7 +53,7 @@ public enum ScoringFunctionAggregation {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
