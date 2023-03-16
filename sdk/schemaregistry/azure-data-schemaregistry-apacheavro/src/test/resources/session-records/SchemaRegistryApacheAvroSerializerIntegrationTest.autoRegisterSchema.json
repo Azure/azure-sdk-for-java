@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person?api-version=2021-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f4945e1b-a946-4136-acb3-5f97c2898fb6",
-      "Content-Type" : "application/json; serialization=Avro"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.2.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c868be1-7ac7-4933-b8cc-19438d3ffce1",
+      "Content-Type" : "application/json; serialization=avro"
     },
     "Response" : {
+      "content-length" : "0",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
       "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/$schemas/e8fe39a464f34aeebe7235a7232b34d0?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/e9029a7448d6481183513c401ef452b0?api-version=2021-10",
       "StatusCode" : "204",
-      "Date" : "Thu, 26 Jan 2023 01:42:28 GMT",
+      "Date" : "Thu, 12 May 2022 18:02:26 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "e8fe39a464f34aeebe7235a7232b34d0",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2022-10"
+      "Schema-Id" : "e9029a7448d6481183513c401ef452b0",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2021-10"
     },
     "Exception" : null
   } ],
