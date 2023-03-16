@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScalingHostPoolType. */
+/** HostPool type for desktop. */
 public final class ScalingHostPoolType extends ExpandableStringEnum<ScalingHostPoolType> {
     /** Static value Pooled for ScalingHostPoolType. */
     public static final ScalingHostPoolType POOLED = fromString("Pooled");
+
+    /**
+     * Creates a new instance of ScalingHostPoolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScalingHostPoolType() {
+    }
 
     /**
      * Creates or finds a ScalingHostPoolType from its string representation.
