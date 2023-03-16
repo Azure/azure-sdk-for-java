@@ -103,12 +103,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
-    /**
-     * Special directory name for the root directory of the file system.
-     * <p>
-     * This should only be used while getting the root directory from the file system client.
-     */
-    public static final String ROOT_DIRECTORY_NAME = "";
+    private static final String ROOT_DIRECTORY_NAME = "";
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
@@ -217,14 +212,11 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
-     * Note: this should only be used while getting the root directory from the file system client.
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
      * <pre>
-     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient =
-     *     client.getDirectoryAsyncClient&#40;DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME&#41;;
+     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
      *

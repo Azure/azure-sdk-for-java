@@ -39,7 +39,6 @@ import com.azure.storage.file.datalake.models.FileRange
 import com.azure.storage.file.datalake.models.LeaseDurationType
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
-import com.azure.storage.file.datalake.models.ListPathsOptions
 import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathHttpHeaders
@@ -208,44 +207,6 @@ class FileAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_04_10")
-    def "Create encryption context"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-        fsc.create()
-        fsc.getDirectoryClient(generatePathName()).create()
-        fc = fsc.getFileClient(generatePathName())
-
-        // testing encryption context with create()
-        when:
-        def encryptionContext = "encryptionContext"
-        def options = new DataLakePathCreateOptions().setEncryptionContext(encryptionContext)
-        fc.createWithResponse(options, null, Context.NONE)
-        def response = fc.getProperties()
-
-        then:
-        response.getEncryptionContext() == encryptionContext
-
-        // testing encryption context with read()
-        when:
-        def stream = new ByteArrayOutputStream()
-        response = fc.readWithResponse(stream, null, null, null, false, null, null)
-
-        then:
-        response.getDeserializedHeaders().getEncryptionContext() == encryptionContext
-
-        // testing encryption context with listPaths()
-        when:
-        response = fsc.listPaths(new ListPathsOptions().setRecursive(true), null).iterator()
-
-        then:
-        def dirPath = response.next()
-        response.hasNext()
-        def filePath = response.next()
-        filePath.getEncryptionContext() == encryptionContext
-        !response.hasNext()
     }
 
     @Unroll
@@ -597,25 +558,6 @@ class FileAPITest extends APISpec {
             .setUmask(umask),
             null,
             Context.NONE).getStatusCode() == 201
-    }
-
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_04_10")
-    def "Create if not exists encryption context"() {
-        setup:
-        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-        fsc.create()
-        def dirClient = fsc.getDirectoryClient(generatePathName())
-        dirClient.create()
-        fc = dirClient.getFileClient(generatePathName())
-
-        when:
-        def encryptionContext = "encryptionContext"
-        def options = new DataLakePathCreateOptions().setEncryptionContext(encryptionContext)
-        fc.createIfNotExistsWithResponse(options, null, Context.NONE)
-        def response = fc.getProperties()
-
-        then:
-        response.getEncryptionContext() == encryptionContext
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")

@@ -29,7 +29,6 @@ public class DataLakePathCreateOptions {
     private String sourceLeaseId;
     private String proposedLeaseId;
     private Integer leaseDuration;
-    private String encryptionContext;
 
     /**
      * Optional parameters for creating a file or directory.
@@ -253,7 +252,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Optional. Specifies the duration of the lease, in seconds, or specify -1 for a lease that never expires.
+     * Optional.  Specifies the duration of the lease, in seconds, or specify -1 for a lease that never expires.
      * A non-infinite lease can be between 15 and 60 seconds.
      * Does not apply to directories.
      *
@@ -263,27 +262,6 @@ public class DataLakePathCreateOptions {
      */
     public DataLakePathCreateOptions setLeaseDuration(Integer duration) {
         leaseDuration = duration;
-        return this;
-    }
-
-    /**
-     * Encryption context that is set on the file.
-     *
-     * @return Encryption context that is set on the file.
-     */
-    public String getEncryptionContext() {
-        return encryptionContext;
-    }
-
-    /**
-     * Optional encryption context that can be set on the file. Encryption context is intended to store metadata that
-     * can be used to decrypt the blob.
-     *
-     * @param encryptionContext the encryption context to be set on the file.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setEncryptionContext(String encryptionContext) {
-        this.encryptionContext = encryptionContext;
         return this;
     }
 

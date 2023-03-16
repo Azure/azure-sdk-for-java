@@ -130,7 +130,6 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-lease-duration") Long leaseDuration,
                 @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
                 @HeaderParam("x-ms-expiry-time") String expiresOn,
-                @HeaderParam("x-ms-encryption-context") String encryptionContext,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -176,7 +175,6 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-lease-duration") Long leaseDuration,
                 @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
                 @HeaderParam("x-ms-expiry-time") String expiresOn,
-                @HeaderParam("x-ms-encryption-context") String encryptionContext,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -887,7 +885,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -917,7 +914,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1058,7 +1054,6 @@ public final class PathsImpl {
                                 leaseDuration,
                                 expiryOptions,
                                 expiresOn,
-                                encryptionContext,
                                 accept,
                                 context));
     }
@@ -1118,7 +1113,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -1149,7 +1143,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1289,7 +1282,6 @@ public final class PathsImpl {
                 leaseDuration,
                 expiryOptions,
                 expiresOn,
-                encryptionContext,
                 accept,
                 context);
     }
@@ -1349,7 +1341,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -1379,7 +1370,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1403,7 +1393,6 @@ public final class PathsImpl {
                         leaseDuration,
                         expiryOptions,
                         expiresOn,
-                        encryptionContext,
                         pathHttpHeaders,
                         leaseAccessConditions,
                         modifiedAccessConditions,
@@ -1467,7 +1456,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -1498,7 +1486,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1523,7 +1510,6 @@ public final class PathsImpl {
                         leaseDuration,
                         expiryOptions,
                         expiresOn,
-                        encryptionContext,
                         pathHttpHeaders,
                         leaseAccessConditions,
                         modifiedAccessConditions,
@@ -1588,7 +1574,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -1618,7 +1603,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1759,7 +1743,6 @@ public final class PathsImpl {
                                 leaseDuration,
                                 expiryOptions,
                                 expiresOn,
-                                encryptionContext,
                                 accept,
                                 context));
     }
@@ -1819,7 +1802,6 @@ public final class PathsImpl {
      *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param expiresOn The time to set the blob to expiry.
-     * @param encryptionContext Specifies the encryption context to set on the file.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
@@ -1850,7 +1832,6 @@ public final class PathsImpl {
             Long leaseDuration,
             PathExpiryOptions expiryOptions,
             String expiresOn,
-            String encryptionContext,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
@@ -1990,7 +1971,6 @@ public final class PathsImpl {
                 leaseDuration,
                 expiryOptions,
                 expiresOn,
-                encryptionContext,
                 accept,
                 context);
     }

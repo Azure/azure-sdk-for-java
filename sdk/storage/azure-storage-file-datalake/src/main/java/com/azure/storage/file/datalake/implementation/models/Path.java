@@ -73,12 +73,6 @@ public final class Path {
     private String expiryTime;
 
     /*
-     * The EncryptionContext property.
-     */
-    @JsonProperty(value = "EncryptionContext")
-    private String encryptionContext;
-
-    /*
      * The etag property.
      */
     @JsonProperty(value = "etag")
@@ -284,26 +278,6 @@ public final class Path {
      */
     public Path setExpiryTime(String expiryTime) {
         this.expiryTime = expiryTime;
-        return this;
-    }
-
-    /**
-     * Get the encryptionContext property: The EncryptionContext property.
-     *
-     * @return the encryptionContext value.
-     */
-    public String getEncryptionContext() {
-        return this.encryptionContext;
-    }
-
-    /**
-     * Set the encryptionContext property: The EncryptionContext property.
-     *
-     * @param encryptionContext the encryptionContext value to set.
-     * @return the Path object itself.
-     */
-    public Path setEncryptionContext(String encryptionContext) {
-        this.encryptionContext = encryptionContext;
         return this;
     }
 

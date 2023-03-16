@@ -488,7 +488,7 @@ public class DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
                 options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
                 options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
-                leaseDuration, expiryOptions, expiresOnString, options.getEncryptionContext(), options.getPathHttpHeaders(),
+                leaseDuration, expiryOptions, expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -882,7 +882,7 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response))));
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }
 
     /**
@@ -1643,10 +1643,9 @@ public class DataLakePathAsyncClient {
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
                 null /* request id */, null /* timeout */, null /* pathResourceType */,
                 null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
-                null /* properties */, null /* permissions */, null /* umask */, null /* owner */,
-                null /* group */, null /* acl */, null /* proposedLeaseId */, null /* leaseDuration */,
-                null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
-                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */,
+                null /* metadata */, null /* permissions */, null /* umask */,
+                null /* pathHttpHeaders */, null, null, null, null, null, null,
+                null, destLac, destMac, sourceConditions, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }

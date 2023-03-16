@@ -69,8 +69,7 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void getRootDirectoryClient() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
-        DataLakeDirectoryClient dataLakeDirectoryClient =
-            client.getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
+        DataLakeDirectoryClient dataLakeDirectoryClient = client.getRootDirectoryClient();
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
     }
 

@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -116,8 +114,6 @@ class Transforms {
         FileQueryParquetSerialization.class.getSimpleName());
 
     private static final long EPOCH_CONVERSION;
-
-    public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -303,10 +299,6 @@ class Transforms {
     }
 
     static PathProperties toPathProperties(BlobProperties properties) {
-        return toPathProperties(properties, null);
-    }
-
-    static PathProperties toPathProperties(BlobProperties properties, String encryptionContext) {
         if (properties == null) {
             return null;
         } else {
@@ -323,15 +315,8 @@ class Transforms {
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
-            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext);
+            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope());
         }
-    }
-
-    static String getEncryptionContext(Response<?> r) {
-        if (r == null) {
-            return null;
-        }
-        return r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
     }
 
 
@@ -376,7 +361,7 @@ class Transforms {
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
 
-        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
+        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -420,10 +405,10 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), getEncryptionContext(r)));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
     }
 
-    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h) {
         if (h == null) {
             return null;
         }
@@ -458,8 +443,7 @@ class Transforms {
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode())
-            .setCreationTime(h.getCreationTime())
-            .setEncryptionContext(encryptionContext);
+            .setCreationTime(h.getCreationTime());
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {
