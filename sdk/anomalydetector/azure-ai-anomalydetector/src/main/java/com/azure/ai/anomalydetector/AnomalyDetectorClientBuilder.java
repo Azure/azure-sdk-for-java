@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AnomalyDetectorClient type. */
 @ServiceClientBuilder(serviceClients = {AnomalyDetectorClient.class, AnomalyDetectorAsyncClient.class})
@@ -245,10 +244,9 @@ public final class AnomalyDetectorClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -256,10 +254,9 @@ public final class AnomalyDetectorClientBuilder
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =

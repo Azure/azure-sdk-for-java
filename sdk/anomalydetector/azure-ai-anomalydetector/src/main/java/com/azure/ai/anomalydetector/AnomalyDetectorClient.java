@@ -793,7 +793,7 @@ public final class AnomalyDetectorClient {
      *
      * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -818,7 +818,7 @@ public final class AnomalyDetectorClient {
      *
      * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -842,7 +842,7 @@ public final class AnomalyDetectorClient {
      *
      * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -868,7 +868,7 @@ public final class AnomalyDetectorClient {
      *
      * @param resultId ID of a batch detection result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -896,7 +896,7 @@ public final class AnomalyDetectorClient {
      *
      * @param modelInfo Model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -921,7 +921,7 @@ public final class AnomalyDetectorClient {
      * @param skip Skip indicates how many models will be skipped.
      * @param top Top indicates how many models will be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -940,7 +940,7 @@ public final class AnomalyDetectorClient {
      *
      * <p>List models of a resource.
      *
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -961,7 +961,7 @@ public final class AnomalyDetectorClient {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -982,7 +982,7 @@ public final class AnomalyDetectorClient {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -1012,7 +1012,7 @@ public final class AnomalyDetectorClient {
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
@@ -1040,7 +1040,7 @@ public final class AnomalyDetectorClient {
      * @param modelId Model identifier.
      * @param options Request of last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.

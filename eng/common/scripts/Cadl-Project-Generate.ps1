@@ -65,7 +65,7 @@ $innerFolder = Split-Path $specSubDirectory -Leaf
 
 $tempFolder = "$ProjectDirectory/TempCadlFiles"
 $npmWorkingDir = Resolve-Path $tempFolder/$innerFolder
-$mainCadlFile = If (Test-Path "$npmWorkingDir/client.cadl") { Resolve-Path "$npmWorkingDir/client.cadl" } Else { Resolve-Path "$npmWorkingDir/main.cadl"}
+$mainCadlFile = If (Test-Path "$npmWorkingDir/client.tsp") { Resolve-Path "$npmWorkingDir/client.tsp" } Else { Resolve-Path "$npmWorkingDir/main.tsp"}
 
 try {
     Push-Location $npmWorkingDir
@@ -79,7 +79,7 @@ try {
             $emitterAdditionalOptions = " $emitterAdditionalOptions"
         }
     }
-    $cadlCompileCommand = "npx cadl compile $mainCadlFile --emit $emitterName$emitterAdditionalOptions"
+    $cadlCompileCommand = "npx tsp compile $mainCadlFile --emit $emitterName$emitterAdditionalOptions"
     if ($CadlAdditionalOptions) {
         $options = $CadlAdditionalOptions.Split(";");
         foreach ($option in $options) {
