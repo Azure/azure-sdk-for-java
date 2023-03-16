@@ -343,7 +343,7 @@ public final class CosmosEncryptionAsyncContainer {
         return this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
             .thenReturn(this.encryptionProcessor.getEncryptionSettings())
             .flatMap(encryptedSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptedSettings))
-            .flatMap(encryptedPartitionKey -> container.deleteAllItemsByPartitionKey(partitionKey, requestOptions));
+            .flatMap(encryptedPartitionKey -> container.deleteAllItemsByPartitionKey(encryptedPartitionKey, requestOptions));
     }
 
     /**
@@ -742,7 +742,7 @@ public final class CosmosEncryptionAsyncContainer {
                 checkAndGetEncryptedId(itemId, encryptionSettings),
                 checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
             .flatMap(encryptedIdPartitionKeyTuple ->
-                this.container.patchItem(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
+                this.container.patchItem(encryptedIdPartitionKeyTuple.getT1(), encryptedIdPartitionKeyTuple.getT2(), encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
                 flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
                     this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
@@ -846,8 +846,8 @@ public final class CosmosEncryptionAsyncContainer {
             checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
         .flatMap(encryptedIdPartitionKeyTuple ->
             this.container.readItem(
-                id,
-                partitionKey,
+                encryptedIdPartitionKeyTuple.getT1(),
+                encryptedIdPartitionKeyTuple.getT2(),
                 requestOptions, byte[].class)));
         return responseMessageMono.onErrorResume(exception -> {
             if (!isRetry && exception instanceof CosmosException) {
