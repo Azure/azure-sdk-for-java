@@ -88,3 +88,5 @@ vmware:
 web:
   service: appservice
   suffix: generated
+graphservicesprod:
+  service: graphservices
