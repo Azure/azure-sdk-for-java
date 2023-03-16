@@ -4,10 +4,17 @@
 
 ### Features Added
 
-### Breaking Changes
+### Breaking Changes from version 1.1.0-beta.3
 
 - Replaced `uploadManifest(OciImageManifest)` method on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes
   with `uploadManifest(OciImageManifest manifest, String tag)` method.
+- Removed `DownloadBlobAsyncResult` in favor of using `BinaryData` instead.
+- Removed `Collection<ManifestMediaType> mediaTypes` parameter from `downloadManifestWithResponse` method on blob clients.
+- Renamed `ContainerRegistryBlobClient.downloadStream(String, WritableByteChannel, Context`) to `downloadStreamWithResponse`. It also now returns `Response<Void>`.
+- Renamed `ContainerRegistryBlobClientBuilder.repository` method to `repositoryName`.
+- Renamed `DownloadManifestResult.getMediaType` to `getManifestMediaType` 
+- Renamed `UploadManifestOptions.getMediaType` to `getManifestMediaType`
+- Moved `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes to `com.azure.containers.containerregistry` package.
 
 ### Bugs Fixed
 
