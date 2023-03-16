@@ -8,33 +8,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Translation text type. */
-public enum TextTypes {
+public enum TextType {
     /** Enum value plain. */
     PLAIN("plain"),
 
     /** Enum value html. */
     HTML("html");
 
-    /** The actual serialized value for a TextTypes instance. */
+    /** The actual serialized value for a TextType instance. */
     private final String value;
 
-    TextTypes(String value) {
+    TextType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TextTypes instance.
+     * Parses a serialized value to a TextType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextTypes object, or null if unable to parse.
+     * @return the parsed TextType object, or null if unable to parse.
      */
     @JsonCreator
-    public static TextTypes fromString(String value) {
+    public static TextType fromString(String value) {
         if (value == null) {
             return null;
         }
-        TextTypes[] items = TextTypes.values();
-        for (TextTypes item : items) {
+        TextType[] items = TextType.values();
+        for (TextType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

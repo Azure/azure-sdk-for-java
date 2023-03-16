@@ -8,33 +8,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Translator profanity markers. */
-public enum ProfanityMarkers {
+public enum ProfanityMarker {
     /** Enum value Asterisk. */
     ASTERISK("Asterisk"),
 
     /** Enum value Tag. */
     TAG("Tag");
 
-    /** The actual serialized value for a ProfanityMarkers instance. */
+    /** The actual serialized value for a ProfanityMarker instance. */
     private final String value;
 
-    ProfanityMarkers(String value) {
+    ProfanityMarker(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ProfanityMarkers instance.
+     * Parses a serialized value to a ProfanityMarker instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ProfanityMarkers object, or null if unable to parse.
+     * @return the parsed ProfanityMarker object, or null if unable to parse.
      */
     @JsonCreator
-    public static ProfanityMarkers fromString(String value) {
+    public static ProfanityMarker fromString(String value) {
         if (value == null) {
             return null;
         }
-        ProfanityMarkers[] items = ProfanityMarkers.values();
-        for (ProfanityMarkers item : items) {
+        ProfanityMarker[] items = ProfanityMarker.values();
+        for (ProfanityMarker item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

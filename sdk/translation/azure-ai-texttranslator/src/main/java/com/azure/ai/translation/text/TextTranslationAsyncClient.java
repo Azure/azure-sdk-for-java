@@ -5,16 +5,16 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
-import com.azure.ai.translation.text.models.BreakSentenceElement;
-import com.azure.ai.translation.text.models.DictionaryExampleElement;
-import com.azure.ai.translation.text.models.DictionaryExampleTextElement;
-import com.azure.ai.translation.text.models.DictionaryLookupElement;
+import com.azure.ai.translation.text.models.BreakSentenceItem;
+import com.azure.ai.translation.text.models.DictionaryExampleItem;
+import com.azure.ai.translation.text.models.DictionaryExampleTextItem;
+import com.azure.ai.translation.text.models.DictionaryLookupItem;
 import com.azure.ai.translation.text.models.GetLanguagesResult;
-import com.azure.ai.translation.text.models.InputTextElement;
-import com.azure.ai.translation.text.models.ProfanityActions;
-import com.azure.ai.translation.text.models.ProfanityMarkers;
-import com.azure.ai.translation.text.models.TextTypes;
-import com.azure.ai.translation.text.models.TranslatedTextElement;
+import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.ProfanityAction;
+import com.azure.ai.translation.text.models.ProfanityMarker;
+import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -645,15 +645,15 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TranslatedTextElement>> translate(
+    public Mono<List<TranslatedTextItem>> translate(
             List<String> to,
-            List<InputTextElement> content,
+            List<InputTextItem> content,
             String clientTraceId,
             String from,
-            TextTypes textType,
+            TextType textType,
             String category,
-            ProfanityActions profanityAction,
-            ProfanityMarkers profanityMarker,
+            ProfanityAction profanityAction,
+            ProfanityMarker profanityMarker,
             Boolean includeAlignment,
             Boolean includeSentenceLength,
             String suggestedFrom,
@@ -700,7 +700,7 @@ public final class TextTranslationAsyncClient {
         }
         return translateWithResponse(to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM));
     }
 
     /**
@@ -721,12 +721,12 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TranslatedTextElement>> translate(List<String> to, List<InputTextElement> content) {
+    public Mono<List<TranslatedTextItem>> translate(List<String> to, List<InputTextItem> content) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return translateWithResponse(to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM));
     }
 
     /**
@@ -751,7 +751,7 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TransliteratedText>> transliterate(
-            String language, String fromScript, String toScript, List<InputTextElement> content, String clientTraceId) {
+            String language, String fromScript, String toScript, List<InputTextItem> content, String clientTraceId) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
@@ -783,7 +783,7 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TransliteratedText>> transliterate(
-            String language, String fromScript, String toScript, List<InputTextElement> content) {
+            String language, String fromScript, String toScript, List<InputTextItem> content) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(content), requestOptions)
@@ -810,8 +810,8 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<BreakSentenceElement>> findSentenceBoundaries(
-            List<InputTextElement> content, String clientTraceId, String language, String script) {
+    public Mono<List<BreakSentenceItem>> findSentenceBoundaries(
+            List<InputTextItem> content, String clientTraceId, String language, String script) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
@@ -825,7 +825,7 @@ public final class TextTranslationAsyncClient {
         }
         return findSentenceBoundariesWithResponse(BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
 
     /**
@@ -842,12 +842,12 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<BreakSentenceElement>> findSentenceBoundaries(List<InputTextElement> content) {
+    public Mono<List<BreakSentenceItem>> findSentenceBoundaries(List<InputTextItem> content) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return findSentenceBoundariesWithResponse(BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
 
     /**
@@ -869,8 +869,8 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DictionaryLookupElement>> lookupDictionaryEntries(
-            String from, String to, List<InputTextElement> content, String clientTraceId) {
+    public Mono<List<DictionaryLookupItem>> lookupDictionaryEntries(
+            String from, String to, List<InputTextItem> content, String clientTraceId) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
@@ -878,7 +878,7 @@ public final class TextTranslationAsyncClient {
         }
         return lookupDictionaryEntriesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM));
     }
 
     /**
@@ -899,13 +899,13 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DictionaryLookupElement>> lookupDictionaryEntries(
-            String from, String to, List<InputTextElement> content) {
+    public Mono<List<DictionaryLookupItem>> lookupDictionaryEntries(
+            String from, String to, List<InputTextItem> content) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return lookupDictionaryEntriesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM));
     }
 
     /**
@@ -927,8 +927,8 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DictionaryExampleElement>> lookupDictionaryExamples(
-            String from, String to, List<DictionaryExampleTextElement> content, String clientTraceId) {
+    public Mono<List<DictionaryExampleItem>> lookupDictionaryExamples(
+            String from, String to, List<DictionaryExampleTextItem> content, String clientTraceId) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
@@ -936,7 +936,7 @@ public final class TextTranslationAsyncClient {
         }
         return lookupDictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ITEM));
     }
 
     /**
@@ -957,27 +957,27 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<DictionaryExampleElement>> lookupDictionaryExamples(
-            String from, String to, List<DictionaryExampleTextElement> content) {
+    public Mono<List<DictionaryExampleItem>> lookupDictionaryExamples(
+            String from, String to, List<DictionaryExampleTextItem> content) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return lookupDictionaryExamplesWithResponse(from, to, BinaryData.fromObject(content), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT));
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ITEM));
     }
-
-    private static final TypeReference<List<TranslatedTextElement>> TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ELEMENT =
-            new TypeReference<List<TranslatedTextElement>>() {};
 
     private static final TypeReference<List<TransliteratedText>> TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT =
             new TypeReference<List<TransliteratedText>>() {};
 
-    private static final TypeReference<List<BreakSentenceElement>> TYPE_REFERENCE_LIST_BREAK_SENTENCE_ELEMENT =
-            new TypeReference<List<BreakSentenceElement>>() {};
+    private static final TypeReference<List<BreakSentenceItem>> TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM =
+            new TypeReference<List<BreakSentenceItem>>() {};
 
-    private static final TypeReference<List<DictionaryLookupElement>> TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ELEMENT =
-            new TypeReference<List<DictionaryLookupElement>>() {};
+    private static final TypeReference<List<DictionaryLookupItem>> TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM =
+            new TypeReference<List<DictionaryLookupItem>>() {};
 
-    private static final TypeReference<List<DictionaryExampleElement>> TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ELEMENT =
-            new TypeReference<List<DictionaryExampleElement>>() {};
+    private static final TypeReference<List<DictionaryExampleItem>> TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ITEM =
+            new TypeReference<List<DictionaryExampleItem>>() {};
+
+    private static final TypeReference<List<TranslatedTextItem>> TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM =
+            new TypeReference<List<TranslatedTextItem>>() {};
 }

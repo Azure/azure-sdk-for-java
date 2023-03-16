@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.InputTextElement;
-import com.azure.ai.translation.text.models.ProfanityActions;
-import com.azure.ai.translation.text.models.ProfanityMarkers;
-import com.azure.ai.translation.text.models.TextTypes;
-import com.azure.ai.translation.text.models.TranslatedTextElement;
+import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.ProfanityAction;
+import com.azure.ai.translation.text.models.ProfanityMarker;
+import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.Translation;
 
 /**
@@ -40,12 +40,12 @@ public class TranslateWithTransliteration {
         String toScript = "Latn";
         List<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("zh-Hans");
-        List<InputTextElement> content = new ArrayList<>();
-        content.add(new InputTextElement("hudha akhtabar."));
+        List<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("hudha akhtabar."));
 
-        List<TranslatedTextElement> translations = client.translate(targetLanguages, content, null, fromLanguage, TextTypes.PLAIN, null, ProfanityActions.NO_ACTION, ProfanityMarkers.ASTERISK, false, false, null, fromScript, toScript, false);
+        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, fromLanguage, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, fromScript, toScript, false);
 
-        for (TranslatedTextElement translation : translations)
+        for (TranslatedTextItem translation : translations)
         {
             System.out.println("Source Text: " + translation.getSourceText().getText());
             for (Translation textTranslation : translation.getTranslations())

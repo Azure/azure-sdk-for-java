@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Element containing the text with translation. */
 @Immutable
-public final class DictionaryExampleTextElement extends InputTextElement {
+public final class DictionaryExampleTextItem extends InputTextItem {
     /*
      * A string specifying the translated text previously returned by the Dictionary lookup operation.
      * This should be the value from the normalizedTarget field in the translations list of the Dictionary
@@ -20,13 +20,13 @@ public final class DictionaryExampleTextElement extends InputTextElement {
     private String translation;
 
     /**
-     * Creates an instance of DictionaryExampleTextElement class.
+     * Creates an instance of DictionaryExampleTextItem class.
      *
      * @param text the text value to set.
      * @param translation the translation value to set.
      */
     @JsonCreator
-    public DictionaryExampleTextElement(
+    public DictionaryExampleTextItem(
             @JsonProperty(value = "text", required = true) String text,
             @JsonProperty(value = "translation", required = true) String translation) {
         super(text);

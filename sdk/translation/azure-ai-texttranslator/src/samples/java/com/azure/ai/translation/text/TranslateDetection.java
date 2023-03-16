@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.InputTextElement;
-import com.azure.ai.translation.text.models.ProfanityActions;
-import com.azure.ai.translation.text.models.ProfanityMarkers;
-import com.azure.ai.translation.text.models.TextTypes;
-import com.azure.ai.translation.text.models.TranslatedTextElement;
+import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.ProfanityAction;
+import com.azure.ai.translation.text.models.ProfanityMarker;
+import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.Translation;
 
 /**
@@ -44,12 +44,12 @@ public class TranslateDetection {
 
         List<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
-        List<InputTextElement> content = new ArrayList<>();
-        content.add(new InputTextElement("This is a test."));
+        List<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("This is a test."));
 
-        List<TranslatedTextElement> translations = client.translate(targetLanguages, content);
+        List<TranslatedTextItem> translations = client.translate(targetLanguages, content);
 
-        for (TranslatedTextElement translation : translations)
+        for (TranslatedTextItem translation : translations)
         {
             if (translation.getDetectedLanguage() != null)
             {

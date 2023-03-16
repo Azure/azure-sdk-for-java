@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Translator profanity actions. */
-public enum ProfanityActions {
+public enum ProfanityAction {
     /** Enum value NoAction. */
     NO_ACTION("NoAction"),
 
@@ -18,26 +18,26 @@ public enum ProfanityActions {
     /** Enum value Deleted. */
     DELETED("Deleted");
 
-    /** The actual serialized value for a ProfanityActions instance. */
+    /** The actual serialized value for a ProfanityAction instance. */
     private final String value;
 
-    ProfanityActions(String value) {
+    ProfanityAction(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ProfanityActions instance.
+     * Parses a serialized value to a ProfanityAction instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ProfanityActions object, or null if unable to parse.
+     * @return the parsed ProfanityAction object, or null if unable to parse.
      */
     @JsonCreator
-    public static ProfanityActions fromString(String value) {
+    public static ProfanityAction fromString(String value) {
         if (value == null) {
             return null;
         }
-        ProfanityActions[] items = ProfanityActions.values();
-        for (ProfanityActions item : items) {
+        ProfanityAction[] items = ProfanityAction.values();
+        for (ProfanityAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
-import com.azure.ai.translation.text.models.DictionaryExampleElement;
-import com.azure.ai.translation.text.models.DictionaryExampleTextElement;
+import com.azure.ai.translation.text.models.DictionaryExampleItem;
+import com.azure.ai.translation.text.models.DictionaryExampleTextItem;
 
 /**
  * Returns grammatical structure and context examples for the source term and target term pair.
@@ -31,12 +31,12 @@ public class DictionaryExamples {
 
         String sourceLanguage = "en";
         String targetLanguage = "es";
-        List<DictionaryExampleTextElement> content = new ArrayList<>();
-        content.add(new DictionaryExampleTextElement("fly", "volar"));
+        List<DictionaryExampleTextItem> content = new ArrayList<>();
+        content.add(new DictionaryExampleTextItem("fly", "volar"));
 
-        List<DictionaryExampleElement> dictionaryEntries = client.lookupDictionaryExamples(sourceLanguage, targetLanguage, content);
+        List<DictionaryExampleItem> dictionaryEntries = client.lookupDictionaryExamples(sourceLanguage, targetLanguage, content);
 
-        for (DictionaryExampleElement dictionaryEntry : dictionaryEntries)
+        for (DictionaryExampleItem dictionaryEntry : dictionaryEntries)
         {
             System.out.println("For the given input " + dictionaryEntry.getExamples().size() + " entries were found in the dictionary.");
             System.out.println("Example: '" + dictionaryEntry.getExamples().get(0).getTargetPrefix() + dictionaryEntry.getExamples().get(0).getTargetTerm() + dictionaryEntry.getExamples().get(0).getTargetSuffix());

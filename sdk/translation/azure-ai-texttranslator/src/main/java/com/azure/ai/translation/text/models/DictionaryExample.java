@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dictionary Example. */
 @Immutable
-public final class Example {
+public final class DictionaryExample {
     /*
      * The string to concatenate before the value of sourceTerm to form a complete example.
      * Do not add a space character, since it is already there when it should be.
@@ -54,7 +54,7 @@ public final class Example {
     private String targetSuffix;
 
     /**
-     * Creates an instance of Example class.
+     * Creates an instance of DictionaryExample class.
      *
      * @param sourcePrefix the sourcePrefix value to set.
      * @param sourceTerm the sourceTerm value to set.
@@ -64,7 +64,7 @@ public final class Example {
      * @param targetSuffix the targetSuffix value to set.
      */
     @JsonCreator
-    private Example(
+    private DictionaryExample(
             @JsonProperty(value = "sourcePrefix", required = true) String sourcePrefix,
             @JsonProperty(value = "sourceTerm", required = true) String sourceTerm,
             @JsonProperty(value = "sourceSuffix", required = true) String sourceSuffix,

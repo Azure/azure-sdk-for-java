@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Dictionary Example element. */
 @Immutable
-public final class DictionaryExampleElement {
+public final class DictionaryExampleItem {
     /*
      * A string giving the normalized form of the source term. Generally, this should be identical
      * to the value of the Text field at the matching list index in the body of the request.
@@ -30,20 +30,20 @@ public final class DictionaryExampleElement {
      * A list of examples for the (source term, target term) pair.
      */
     @JsonProperty(value = "examples", required = true)
-    private List<Example> examples;
+    private List<DictionaryExample> examples;
 
     /**
-     * Creates an instance of DictionaryExampleElement class.
+     * Creates an instance of DictionaryExampleItem class.
      *
      * @param normalizedSource the normalizedSource value to set.
      * @param normalizedTarget the normalizedTarget value to set.
      * @param examples the examples value to set.
      */
     @JsonCreator
-    private DictionaryExampleElement(
+    private DictionaryExampleItem(
             @JsonProperty(value = "normalizedSource", required = true) String normalizedSource,
             @JsonProperty(value = "normalizedTarget", required = true) String normalizedTarget,
-            @JsonProperty(value = "examples", required = true) List<Example> examples) {
+            @JsonProperty(value = "examples", required = true) List<DictionaryExample> examples) {
         this.normalizedSource = normalizedSource;
         this.normalizedTarget = normalizedTarget;
         this.examples = examples;
@@ -74,7 +74,7 @@ public final class DictionaryExampleElement {
      *
      * @return the examples value.
      */
-    public List<Example> getExamples() {
+    public List<DictionaryExample> getExamples() {
         return this.examples;
     }
 }

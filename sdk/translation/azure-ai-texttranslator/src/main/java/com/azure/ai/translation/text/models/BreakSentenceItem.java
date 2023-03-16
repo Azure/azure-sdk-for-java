@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Elemented containing break sentence result. */
 @Immutable
-public final class BreakSentenceElement {
+public final class BreakSentenceItem {
     /*
      * The detectedLanguage property is only present in the result object when language auto-detection is requested.
      */
@@ -26,12 +26,12 @@ public final class BreakSentenceElement {
     private List<Integer> sentLen;
 
     /**
-     * Creates an instance of BreakSentenceElement class.
+     * Creates an instance of BreakSentenceItem class.
      *
      * @param sentLen the sentLen value to set.
      */
     @JsonCreator
-    private BreakSentenceElement(@JsonProperty(value = "sentLen", required = true) List<Integer> sentLen) {
+    private BreakSentenceItem(@JsonProperty(value = "sentLen", required = true) List<Integer> sentLen) {
         this.sentLen = sentLen;
     }
 

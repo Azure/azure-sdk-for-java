@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
-import com.azure.ai.translation.text.models.BreakSentenceElement;
-import com.azure.ai.translation.text.models.InputTextElement;
+import com.azure.ai.translation.text.models.BreakSentenceItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 
 /**
  * Break Sentence API simple call.
@@ -31,12 +31,12 @@ public class BreakSentence {
 
         String sourceLanguage = "zh-Hans";
         String sourceScript = "Latn";
-        List<InputTextElement> content = new ArrayList<>();
-        content.add(new InputTextElement("zhè shì gè cè shì。"));
+        List<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("zhè shì gè cè shì。"));
 
-        List<BreakSentenceElement> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
+        List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
 
-        for (BreakSentenceElement breakSentence : breakSentences)
+        for (BreakSentenceItem breakSentence : breakSentences)
         {
             System.out.println("The detected sentece boundaries: " + breakSentence.getSentLen());
         }

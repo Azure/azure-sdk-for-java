@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Element containing the text for translation. */
 @Immutable
-public class InputTextElement {
+public class InputTextItem {
     /*
      * Text to translate.
      */
@@ -18,12 +18,12 @@ public class InputTextElement {
     private String text;
 
     /**
-     * Creates an instance of InputTextElement class.
+     * Creates an instance of InputTextItem class.
      *
      * @param text the text value to set.
      */
     @JsonCreator
-    public InputTextElement(@JsonProperty(value = "text", required = true) String text) {
+    public InputTextItem(@JsonProperty(value = "text", required = true) String text) {
         this.text = text;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Element containing the translated text. */
 @Immutable
-public final class TranslatedTextElement {
+public final class TranslatedTextItem {
     /*
      * The detectedLanguage property is only present in the result object when language auto-detection is requested.
      */
@@ -35,13 +35,12 @@ public final class TranslatedTextElement {
     private SourceText sourceText;
 
     /**
-     * Creates an instance of TranslatedTextElement class.
+     * Creates an instance of TranslatedTextItem class.
      *
      * @param translations the translations value to set.
      */
     @JsonCreator
-    private TranslatedTextElement(
-            @JsonProperty(value = "translations", required = true) List<Translation> translations) {
+    private TranslatedTextItem(@JsonProperty(value = "translations", required = true) List<Translation> translations) {
         this.translations = translations;
     }
 

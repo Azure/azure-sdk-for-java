@@ -33,7 +33,7 @@ public final class Translation {
      * Alignment information.
      */
     @JsonProperty(value = "alignment")
-    private Alignment alignment;
+    private TranslatedTextAlignment alignment;
 
     /*
      * Sentence boundaries in the input and output texts.
@@ -88,7 +88,7 @@ public final class Translation {
      *
      * @return the alignment value.
      */
-    public Alignment getAlignment() {
+    public TranslatedTextAlignment getAlignment() {
         return this.alignment;
     }
 

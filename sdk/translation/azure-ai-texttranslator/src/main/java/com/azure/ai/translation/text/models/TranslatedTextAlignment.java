@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Alignment information object. */
 @Immutable
-public final class Alignment {
+public final class TranslatedTextAlignment {
     /*
      * Maps input text to translated text. The alignment information is only provided when the request
      * parameter includeAlignment is true. Alignment is returned as a string value of the following
@@ -23,12 +23,12 @@ public final class Alignment {
     private String proj;
 
     /**
-     * Creates an instance of Alignment class.
+     * Creates an instance of TranslatedTextAlignment class.
      *
      * @param proj the proj value to set.
      */
     @JsonCreator
-    private Alignment(@JsonProperty(value = "proj", required = true) String proj) {
+    private TranslatedTextAlignment(@JsonProperty(value = "proj", required = true) String proj) {
         this.proj = proj;
     }
 

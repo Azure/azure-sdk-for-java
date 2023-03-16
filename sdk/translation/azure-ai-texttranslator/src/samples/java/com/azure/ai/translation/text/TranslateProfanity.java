@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.InputTextElement;
-import com.azure.ai.translation.text.models.ProfanityActions;
-import com.azure.ai.translation.text.models.ProfanityMarkers;
-import com.azure.ai.translation.text.models.TextTypes;
-import com.azure.ai.translation.text.models.TranslatedTextElement;
+import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.ProfanityAction;
+import com.azure.ai.translation.text.models.ProfanityMarker;
+import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.Translation;
 
 /**
@@ -45,17 +45,17 @@ public class TranslateProfanity {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        ProfanityActions profanityAction = ProfanityActions.MARKED;
-        ProfanityMarkers profanityMarkers = ProfanityMarkers.ASTERISK;
+        ProfanityAction profanityAction = ProfanityAction.MARKED;
+        ProfanityMarker profanityMarkers = ProfanityMarker.ASTERISK;
         String from = "en";
         List<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
-        List<InputTextElement> content = new ArrayList<>();
-        content.add(new InputTextElement("This is ***."));
+        List<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("This is ***."));
 
-        List<TranslatedTextElement> translations = client.translate(targetLanguages, content, null, from, TextTypes.PLAIN, null, profanityAction, profanityMarkers, false, false, null, null, null, false);
+        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, profanityAction, profanityMarkers, false, false, null, null, null, false);
 
-        for (TranslatedTextElement translation : translations)
+        for (TranslatedTextItem translation : translations)
         {
             for (Translation textTranslation : translation.getTranslations())
             {

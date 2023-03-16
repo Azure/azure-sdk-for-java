@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Dictionary Lookup Element. */
 @Immutable
-public final class DictionaryLookupElement {
+public final class DictionaryLookupItem {
     /*
      * A string giving the normalized form of the source term.
      * For example, if the request is "JOHN", the normalized form will be "john".
@@ -35,14 +35,14 @@ public final class DictionaryLookupElement {
     private List<DictionaryTranslation> translations;
 
     /**
-     * Creates an instance of DictionaryLookupElement class.
+     * Creates an instance of DictionaryLookupItem class.
      *
      * @param normalizedSource the normalizedSource value to set.
      * @param displaySource the displaySource value to set.
      * @param translations the translations value to set.
      */
     @JsonCreator
-    private DictionaryLookupElement(
+    private DictionaryLookupItem(
             @JsonProperty(value = "normalizedSource", required = true) String normalizedSource,
             @JsonProperty(value = "displaySource", required = true) String displaySource,
             @JsonProperty(value = "translations", required = true) List<DictionaryTranslation> translations) {
