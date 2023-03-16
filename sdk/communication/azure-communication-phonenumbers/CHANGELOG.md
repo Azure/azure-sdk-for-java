@@ -9,6 +9,8 @@
 ### Other Changes
 - Changed listTrunks and listRoutes methods to return PagedIterable for sync client and PagedFlux for async client.
 - Moved SIP routing clients to com.azure.communication.phonenumbers.siprouting subpackage.
+- Added `PhoneNumberAreaCode` public model.
+- Removed `PhoneNumberOfferings`, `PhoneNumberLocalities` and `PhoneNumberCountries` from the models package. Since no public method exposed them, this is not a breaking change.
 
 #### Dependency Updates
 

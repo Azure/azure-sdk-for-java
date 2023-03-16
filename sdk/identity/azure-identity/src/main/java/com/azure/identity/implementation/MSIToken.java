@@ -83,7 +83,7 @@ public final class MSIToken extends AccessToken {
         String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
 
         try {
-            Long seconds = Long.parseLong(dateToParse);
+            long seconds = Long.parseLong(dateToParse);
             // we have an expiresOn, so no parsing required.
             if (!CoreUtils.isNullOrEmpty(expiresOn)) {
                 return seconds;
@@ -110,21 +110,24 @@ public final class MSIToken extends AccessToken {
     }
 
     /**
-     * Returns the number of seconds from creation to when refresh should occur.
-     * If the service specified refresh_in, it is that value. Otherwise, it is half the value to expiry, unless that is
+     * Returns the epoch time at which refresh should occur.
+     * If the service specified refresh_in, it is added to creation time.
+     * If it is not passed in, it is half the value to expiry, unless that is
      * less than two hours, at which point it is the same as time to expiry.
      * @return The number of seconds until refresh.
      */
-    public long getRefreshInSeconds() {
-        if (refreshIn != null) {
-            return Long.parseLong(refreshIn);
+    long getRefreshAtEpochSeconds() {
+        if (this.refreshIn != null) {
+            return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(Long.parseLong(refreshIn)).toEpochSecond();
         }
 
-        Duration duration = Duration.between(OffsetDateTime.now(), EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
+        OffsetDateTime expiresAt = EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn));
+        Duration duration = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresAt);
         if (duration.toHours() >= 2) {
-            return duration.getSeconds() / 2;
+            long halfDuration = duration.getSeconds() / 2;
+            return expiresAt.minusSeconds(halfDuration).toEpochSecond();
         } else {
-            return duration.getSeconds();
+            return expiresAt.toEpochSecond();
         }
     }
 }

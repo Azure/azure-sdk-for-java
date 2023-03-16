@@ -16,31 +16,26 @@ import java.util.Map;
 @Fluent
 public class ResourceModelWithAllowedPropertySet extends Resource {
     /*
-     * The fully qualified resource ID of the resource that manages this
-     * resource. Indicates if this resource is managed by another Azure
-     * resource. If this is present, complete mode deployment will not delete
-     * the resource if it is removed from the template since it is managed by
-     * another resource.
+     * The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is
+     * managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if
+     * it is removed from the template since it is managed by another resource.
      */
     @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
-     * Metadata used by portal/tooling/etc to render different UX experiences
-     * for resources of the same type; e.g. ApiApps are a kind of
-     * Microsoft.Web/sites type.  If supported, the resource provider must
-     * validate and persist this value.
+     * Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g.
+     * ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist
+     * this value.
      */
     @JsonProperty(value = "kind")
     private String kind;
 
     /*
-     * The etag field is *not* required. If it is provided in the response
-     * body, it must also be provided as a header per the normal etag
-     * convention.  Entity tags are used for comparing two or more entities
-     * from the same requested resource. HTTP/1.1 uses entity tags in the etag
-     * (section 14.19), If-Match (section 14.24), If-None-Match (section
-     * 14.26), and If-Range (section 14.27) header fields.
+     * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
+     * per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
+     * (section 14.26), and If-Range (section 14.27) header fields.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -62,6 +57,10 @@ public class ResourceModelWithAllowedPropertySet extends Resource {
      */
     @JsonProperty(value = "plan")
     private ResourceModelWithAllowedPropertySetPlan plan;
+
+    /** Creates an instance of ResourceModelWithAllowedPropertySet class. */
+    public ResourceModelWithAllowedPropertySet() {
+    }
 
     /**
      * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates

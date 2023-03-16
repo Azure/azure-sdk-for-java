@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.WorkspaceIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** WorkspaceList List of Workspace definitions. */
+/**
+ * WorkspaceList
+ *
+ * <p>List of Workspace definitions.
+ */
 @Fluent
 public final class WorkspaceList {
     /*
@@ -23,6 +27,10 @@ public final class WorkspaceList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkspaceList class. */
+    public WorkspaceList() {
+    }
 
     /**
      * Get the value property: List of Workspace definitions.
