@@ -4,22 +4,22 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ff74ed80-7d2a-4a34-93c4-aafe6e341027",
+      "x-ms-client-request-id" : "323fb1b5-470a-4842-83a3-ff6475e812ac",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
+      "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 12 Jan 2023 09:57:04 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:05 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "102ms",
-      "MS-CV" : "lULgeCZlD0qxIqUQpUwaHQ.0",
-      "X-Azure-Ref" : "0cNm/YwAAAAB9ySJtjgj1RbcsJaAEyQUBSEVMMDFFREdFMjAxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "MS-CV" : "txojMci+50+KEXWdykZa4Q.0",
+      "X-Azure-Ref" : "0cZ4JZAAAAABErHtibj5rQIFBEkxfpwDsSEVMMDFFREdFMjAwNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"Provided UserId has invalid format.\",\"target\":\"userId\"}}",
-      "x-ms-client-request-id" : "ff74ed80-7d2a-4a34-93c4-aafe6e341027",
+      "x-ms-client-request-id" : "323fb1b5-470a-4842-83a3-ff6475e812ac",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

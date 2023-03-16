@@ -18,40 +18,28 @@ public final class StorageTargetsResultTests {
         StorageTargetsResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"wfqkquj\",\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"unknown\",\"provisioningState\":\"Failed\",\"state\":\"Busy\",\"allocationPercentage\":1422532209},\"location\":\"ccm\",\"id\":\"udxytlmoyrx\",\"name\":\"wfudwpzntxhdzhl\",\"type\":\"qj\"},{\"properties\":{\"junctions\":[],\"targetType\":\"unknown\",\"provisioningState\":\"Creating\",\"state\":\"Busy\",\"allocationPercentage\":1085647312},\"location\":\"pycanuzbpz\",\"id\":\"fkuwbcrnwbmehhse\",\"name\":\"v\",\"type\":\"us\"},{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Updating\",\"state\":\"Flushing\",\"allocationPercentage\":2077576568},\"location\":\"mx\",\"id\":\"kv\",\"name\":\"melmqkrha\",\"type\":\"vljua\"},{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Creating\",\"state\":\"Busy\",\"allocationPercentage\":591978059},\"location\":\"xqpvfadmw\",\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"}]}")
+                    "{\"nextLink\":\"cq\",\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"nfs3\",\"provisioningState\":\"Canceled\",\"state\":\"Ready\",\"allocationPercentage\":1172540413},\"location\":\"xv\",\"id\":\"u\",\"name\":\"wpzntxhdzh\",\"type\":\"rqjbhckfrl\"}]}")
                 .toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("wfqkquj", model.nextLink());
-        Assertions.assertEquals(StorageTargetType.UNKNOWN, model.value().get(0).targetType());
-        Assertions.assertEquals(OperationalStateType.BUSY, model.value().get(0).state());
+        Assertions.assertEquals("cq", model.nextLink());
+        Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
+        Assertions.assertEquals(OperationalStateType.READY, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageTargetsResult model =
             new StorageTargetsResult()
-                .withNextLink("wfqkquj")
+                .withNextLink("cq")
                 .withValue(
                     Arrays
                         .asList(
                             new StorageTargetInner()
                                 .withJunctions(Arrays.asList())
-                                .withTargetType(StorageTargetType.UNKNOWN)
-                                .withState(OperationalStateType.BUSY),
-                            new StorageTargetInner()
-                                .withJunctions(Arrays.asList())
-                                .withTargetType(StorageTargetType.UNKNOWN)
-                                .withState(OperationalStateType.BUSY),
-                            new StorageTargetInner()
-                                .withJunctions(Arrays.asList())
-                                .withTargetType(StorageTargetType.CLFS)
-                                .withState(OperationalStateType.FLUSHING),
-                            new StorageTargetInner()
-                                .withJunctions(Arrays.asList())
-                                .withTargetType(StorageTargetType.CLFS)
-                                .withState(OperationalStateType.BUSY)));
+                                .withTargetType(StorageTargetType.NFS3)
+                                .withState(OperationalStateType.READY)));
         model = BinaryData.fromObject(model).toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("wfqkquj", model.nextLink());
-        Assertions.assertEquals(StorageTargetType.UNKNOWN, model.value().get(0).targetType());
-        Assertions.assertEquals(OperationalStateType.BUSY, model.value().get(0).state());
+        Assertions.assertEquals("cq", model.nextLink());
+        Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
+        Assertions.assertEquals(OperationalStateType.READY, model.value().get(0).state());
     }
 }

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -26,6 +27,7 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 
 import org.slf4j.Logger;
@@ -43,6 +45,8 @@ public class ReadmeSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
     private static final String CONNECTION_STRING = System.getenv("AZURE_CONNECTION_STRING");
+
+    private TokenCredential tokenCredential;
 
     ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().buildClient();
     ShareClient shareClient = new ShareClientBuilder().buildClient();
@@ -87,6 +91,21 @@ public class ReadmeSamples {
         ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
             .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
         // END: readme-sample-createShareClientWithConnectionString
+    }
+
+    public void createShareServiceClientWithTokenCredential() {
+        String shareName = "testshare";
+
+        // BEGIN: readme-sample-createShareClientWithTokenCredential
+        String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+
+        ShareClient serviceClient = new ShareClientBuilder()
+            .endpoint(shareURL)
+            .credential(tokenCredential)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .shareName(shareName)
+            .buildClient();
+        // END: readme-sample-createShareClientWithTokenCredential
     }
 
     public void createDirectoryClient() {

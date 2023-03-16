@@ -32,6 +32,16 @@ public final class VolumePropertiesDataProtection {
     @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
+    /*
+     * VolumeRelocation properties
+     */
+    @JsonProperty(value = "volumeRelocation")
+    private VolumeRelocationProperties volumeRelocation;
+
+    /** Creates an instance of VolumePropertiesDataProtection class. */
+    public VolumePropertiesDataProtection() {
+    }
+
     /**
      * Get the backup property: Backup Properties.
      *
@@ -93,6 +103,26 @@ public final class VolumePropertiesDataProtection {
     }
 
     /**
+     * Get the volumeRelocation property: VolumeRelocation properties.
+     *
+     * @return the volumeRelocation value.
+     */
+    public VolumeRelocationProperties volumeRelocation() {
+        return this.volumeRelocation;
+    }
+
+    /**
+     * Set the volumeRelocation property: VolumeRelocation properties.
+     *
+     * @param volumeRelocation the volumeRelocation value to set.
+     * @return the VolumePropertiesDataProtection object itself.
+     */
+    public VolumePropertiesDataProtection withVolumeRelocation(VolumeRelocationProperties volumeRelocation) {
+        this.volumeRelocation = volumeRelocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +136,9 @@ public final class VolumePropertiesDataProtection {
         }
         if (snapshot() != null) {
             snapshot().validate();
+        }
+        if (volumeRelocation() != null) {
+            volumeRelocation().validate();
         }
     }
 }

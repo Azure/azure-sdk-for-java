@@ -4,14 +4,14 @@
 
 #### Features Added
 * Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
-* GA of subpartitioning functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* GA of `subpartition` functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 * Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
-
+* Enable `handleLatestVersionChanges` in ChangeFeedProcessor - See [33972](https://github.com/Azure/azure-sdk-for-java/pull/33972)
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed `readMany` API to take in hierarchical partition keys - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
-
+* Fixed an issue in the Direct Transport metrics for acquired/closed channels which would be triggered when endpoint get closed/evicted due to exceeding idle timeouts. This would surface as stale metrics for these endpoints. - See [33969](https://github.com/Azure/azure-sdk-for-java/pull/33969) 
 #### Other Changes
 * Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329).
 

@@ -6,9 +6,10 @@ package com.azure.communication.phonenumbers.implementation;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.OfferingsResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCodes;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCountries;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberLocalities;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
@@ -18,10 +19,9 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
+import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCountries;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
-import com.azure.communication.phonenumbers.models.PhoneNumberLocalities;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;

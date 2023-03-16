@@ -76,6 +76,13 @@ Licensed under the MIT License.
       </exclusions>
     </dependency>
 
+    <!-- Can be removed after diagnostic improvements PR -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.33</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>

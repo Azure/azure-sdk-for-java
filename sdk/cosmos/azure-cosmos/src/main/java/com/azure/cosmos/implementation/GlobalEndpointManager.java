@@ -115,7 +115,12 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        return this.locationCache.resolveServiceEndpoint(request);
+        URI serviceEndpoint = this.locationCache.resolveServiceEndpoint(request);
+        if (request.faultInjectionRequestContext != null) {
+            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+        }
+
+        return serviceEndpoint;
     }
 
     public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {

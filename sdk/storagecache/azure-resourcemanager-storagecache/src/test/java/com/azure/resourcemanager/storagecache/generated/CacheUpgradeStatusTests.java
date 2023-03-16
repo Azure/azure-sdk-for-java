@@ -13,7 +13,7 @@ public final class CacheUpgradeStatusTests {
         CacheUpgradeStatus model =
             BinaryData
                 .fromString(
-                    "{\"currentFirmwareVersion\":\"yxzk\",\"firmwareUpdateStatus\":\"unavailable\",\"firmwareUpdateDeadline\":\"2021-05-16T08:19Z\",\"lastFirmwareUpdate\":\"2021-03-20T11:43:44Z\",\"pendingFirmwareVersion\":\"lyaxuc\"}")
+                    "{\"currentFirmwareVersion\":\"tvfcivfsn\",\"firmwareUpdateStatus\":\"available\",\"firmwareUpdateDeadline\":\"2021-03-08T06:28:46Z\",\"lastFirmwareUpdate\":\"2021-07-09T15:46:39Z\",\"pendingFirmwareVersion\":\"jf\"}")
                 .toObject(CacheUpgradeStatus.class);
     }
 

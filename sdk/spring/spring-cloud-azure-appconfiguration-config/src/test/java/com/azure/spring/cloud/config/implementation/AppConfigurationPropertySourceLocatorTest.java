@@ -363,8 +363,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
             // /application/]
             String[] expectedSourceNames = new String[] {
-                KEY_FILTER + "store1/\0",
-                "FM_store1/ "
+                "FM_store1/ ",
+                KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
@@ -401,8 +401,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
             // /application/]
             String[] expectedSourceNames = new String[] {
-                KEY_FILTER + "store1/\0",
-                "FM_store1/ "
+                "FM_store1/ ",
+                KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());

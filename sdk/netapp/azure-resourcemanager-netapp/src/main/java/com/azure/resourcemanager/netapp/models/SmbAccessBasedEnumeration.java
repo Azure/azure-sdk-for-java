@@ -21,6 +21,15 @@ public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAcc
     public static final SmbAccessBasedEnumeration ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of SmbAccessBasedEnumeration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SmbAccessBasedEnumeration() {
+    }
+
+    /**
      * Creates or finds a SmbAccessBasedEnumeration from its string representation.
      *
      * @param name a name to look for.

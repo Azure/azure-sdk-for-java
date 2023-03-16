@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey404258cc7/create?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey49769580a/create?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:30 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "6652afcb-2b1e-4656-a2f1-4464be5ced97",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey404258cc7/9278bb5bd2884e7a8f5a2ec560077d75\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"5mPoKXJOER2GHzC3y-plDpz-btYJKikoMyAz02D8DfpqV4hVbft-5oHO2ssbzWhMgKxnw1798Q9OCFvWyFooKEdTYC_DMV_zdHdlPT6RiaB-vNwaIHy-4DMNzpifJMdjVAwmWMFn1pa76yZVzr-XCvpTQqVeRiJ7bU-A8nXQgD0sJNLs5tYZTEbOp1GRCRRz8a8rSxajUoL5b0cw3vaYlXTa9vFcNyjtF7W9TGFi2HhIbd8yGeCK4EhXLxJhfH01AyEtDAPtgbIZYcIRi3SPhEamcgS0oBUbl-JH5Sx9M1vpAuM0o9wHb5v3aQH5O7M2RJbyGifBAPzAoAdjkD7EbQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "734",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "bbf62c0f-35e0-42e7-94ca-6b95dd8d9652",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey49769580a/34d35e11f3f34e668fb2efcff3702aec\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3nG_t3G19BItUgAigFXWIBlErH9Fwi7SrFledpMYWTDzpPZa46vXqo30TbujrBiqKRPjiXeq6c21oQ0QhyxERDHgUjgwMyO0w4B40AvYg-Yu1UgCNZVBcAvwTEEfTaIZDKUbrmrkhHBiPlunxAUWrVgjqZ3xdGVHT3PMZtZNDDeqjmhEUfSh96cdBn5tACgouTXQKxOCR1Z0rvsMACZEZDBU1ap_No6Op0rD92iQ34liMyXH0NRc5UUY_1H9WdnQfzhEgWuuKTfa-FO83jwyi2yUdUpBxVh5AJ3UOQOATyAzeMJbxHY-0Q2KWsSNn8e6nb00via_TJzkdjbPAw3STQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey404258cc7/?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey49769580a/?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:31 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:30 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "966067f5-72c8-40c8-a52d-59bb362f5aed",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey404258cc7/9278bb5bd2884e7a8f5a2ec560077d75\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"5mPoKXJOER2GHzC3y-plDpz-btYJKikoMyAz02D8DfpqV4hVbft-5oHO2ssbzWhMgKxnw1798Q9OCFvWyFooKEdTYC_DMV_zdHdlPT6RiaB-vNwaIHy-4DMNzpifJMdjVAwmWMFn1pa76yZVzr-XCvpTQqVeRiJ7bU-A8nXQgD0sJNLs5tYZTEbOp1GRCRRz8a8rSxajUoL5b0cw3vaYlXTa9vFcNyjtF7W9TGFi2HhIbd8yGeCK4EhXLxJhfH01AyEtDAPtgbIZYcIRi3SPhEamcgS0oBUbl-JH5Sx9M1vpAuM0o9wHb5v3aQH5O7M2RJbyGifBAPzAoAdjkD7EbQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "734",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "dbdd4533-d4ee-4b7f-bc53-e2e26adcb116",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey49769580a/34d35e11f3f34e668fb2efcff3702aec\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3nG_t3G19BItUgAigFXWIBlErH9Fwi7SrFledpMYWTDzpPZa46vXqo30TbujrBiqKRPjiXeq6c21oQ0QhyxERDHgUjgwMyO0w4B40AvYg-Yu1UgCNZVBcAvwTEEfTaIZDKUbrmrkhHBiPlunxAUWrVgjqZ3xdGVHT3PMZtZNDDeqjmhEUfSh96cdBn5tACgouTXQKxOCR1Z0rvsMACZEZDBU1ap_No6Op0rD92iQ34liMyXH0NRc5UUY_1H9WdnQfzhEgWuuKTfa-FO83jwyi2yUdUpBxVh5AJ3UOQOATyAzeMJbxHY-0Q2KWsSNn8e6nb00via_TJzkdjbPAw3STQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testkey404258cc7" ]
+  "variables" : [ "testkey49769580a" ]
 }

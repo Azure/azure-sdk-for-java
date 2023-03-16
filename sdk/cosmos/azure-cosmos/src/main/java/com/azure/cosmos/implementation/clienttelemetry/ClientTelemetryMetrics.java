@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndpointMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsCompletionRecorder;
@@ -1102,8 +1103,8 @@ public final class ClientTelemetryMetrics {
                 if (options.isEnabled()) {
                     FunctionCounter.builder(
                         options.getMeterName().toString(),
-                        endpoint,
-                        RntbdEndpoint::totalChannelsAcquiredMetric)
+                        endpoint.durableEndpointMetrics(),
+                        RntbdDurableEndpointMetrics::totalChannelsAcquiredMetric)
                                    .description("RNTBD acquired channel count")
                                    .tags(getEffectiveTags(tags, options))
                                    .register(registry);
@@ -1114,8 +1115,8 @@ public final class ClientTelemetryMetrics {
                 if (options.isEnabled()) {
                     FunctionCounter.builder(
                         options.getMeterName().toString(),
-                        endpoint,
-                        RntbdEndpoint::totalChannelsClosedMetric)
+                        endpoint.durableEndpointMetrics(),
+                        RntbdDurableEndpointMetrics::totalChannelsClosedMetric)
                                    .description("RNTBD closed channel count")
                                    .tags(getEffectiveTags(tags, options))
                                    .register(registry);
@@ -1124,7 +1125,10 @@ public final class ClientTelemetryMetrics {
                 options = client
                     .getMeterOptions(CosmosMetricName.DIRECT_CHANNELS_AVAILABLE_COUNT);
                 if (options.isEnabled()) {
-                    Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::channelsAvailableMetric)
+                    Gauge.builder(
+                        options.getMeterName().toString(),
+                        endpoint.durableEndpointMetrics(),
+                        RntbdDurableEndpointMetrics::channelsAvailableMetric)
                          .description("RNTBD available channel count")
                          .tags(getEffectiveTags(tags, options))
                          .register(registry);

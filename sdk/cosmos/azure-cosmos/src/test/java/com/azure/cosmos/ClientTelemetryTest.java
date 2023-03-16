@@ -331,7 +331,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
             Thread.sleep(5000);
             StepVerifier.create(httpResponseMono.get()).expectNextMatches(httpResponse -> {
                 logger.info("clientTelemetryWithStageJunoEndpoint statusCode from juno {}",  httpResponse.statusCode());
-                return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
+                return httpResponse.statusCode() == HttpConstants.StatusCodes.NO_CONTENT;
             }).verifyComplete();
         } finally {
             if (cosmosClient != null) {

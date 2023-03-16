@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -42,6 +41,7 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputControlTracki
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;

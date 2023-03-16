@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
@@ -14,6 +15,7 @@ import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoRep
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
+import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.Module;
@@ -40,6 +42,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Protocol clientProtocol() {
@@ -81,6 +87,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
 
     public DatabasePropertiesGeoReplication geoReplication() {
         return this.innerModel().geoReplication();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DatabaseInner innerModel() {
@@ -181,12 +191,12 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    public AccessKeys listKeys() {
-        return serviceManager.databases().listKeys(resourceGroupName, clusterName, databaseName);
-    }
-
     public Response<AccessKeys> listKeysWithResponse(Context context) {
         return serviceManager.databases().listKeysWithResponse(resourceGroupName, clusterName, databaseName, context);
+    }
+
+    public AccessKeys listKeys() {
+        return serviceManager.databases().listKeys(resourceGroupName, clusterName, databaseName);
     }
 
     public AccessKeys regenerateKey(RegenerateKeyParameters parameters) {
@@ -221,6 +231,14 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
 
     public void forceUnlink(ForceUnlinkParameters parameters, Context context) {
         serviceManager.databases().forceUnlink(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
+    public void flush(FlushParameters parameters) {
+        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters);
+    }
+
+    public void flush(FlushParameters parameters, Context context) {
+        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
     public DatabaseImpl withClientProtocol(Protocol clientProtocol) {

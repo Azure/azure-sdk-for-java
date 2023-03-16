@@ -26,6 +26,15 @@ public final class AgentPoolProvisioningState extends ExpandableStringEnum<Agent
     public static final AgentPoolProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of AgentPoolProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentPoolProvisioningState() {
+    }
+
+    /**
      * Creates or finds a AgentPoolProvisioningState from its string representation.
      *
      * @param name a name to look for.

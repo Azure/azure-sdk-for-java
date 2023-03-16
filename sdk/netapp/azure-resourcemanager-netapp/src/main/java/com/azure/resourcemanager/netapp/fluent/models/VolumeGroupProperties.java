@@ -31,6 +31,10 @@ public final class VolumeGroupProperties {
     @JsonProperty(value = "volumes")
     private List<VolumeGroupVolumeProperties> volumes;
 
+    /** Creates an instance of VolumeGroupProperties class. */
+    public VolumeGroupProperties() {
+    }
+
     /**
      * Get the provisioningState property: Azure lifecycle management.
      *
