@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.WeightResolution;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -33,8 +32,8 @@ public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
