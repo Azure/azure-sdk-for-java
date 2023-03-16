@@ -6,7 +6,6 @@ package com.azure.health.insights.cancerprofiling;
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class AllSamples {
     String endpoint;
