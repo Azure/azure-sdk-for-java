@@ -33,15 +33,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImplBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.CoreUtils.getApplicationId;
-import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -118,6 +117,11 @@ public final class ConfigurationClientBuilder implements
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
 
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private static final SerializerAdapter SERIALIZER_ADAPTER;
+
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
     private static final HttpPipelinePolicy ADD_HEADERS_POLICY;
@@ -130,7 +134,14 @@ public final class ConfigurationClientBuilder implements
             .set("x-ms-return-client-request-id", "true")
             .set("Content-Type", "application/json")
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
+
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+
+        SERIALIZER_ADAPTER = jacksonAdapter;
     }
+
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -203,17 +214,17 @@ public final class ConfigurationClientBuilder implements
      *
      * @return an instance of ConfigurationClientImpl.
      */
-    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
-        return new AzureAppConfigurationImplBuilder()
-                   .pipeline(pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline)
-                   .apiVersion(serviceVersion.getVersion())
-                   .endpoint(endpoint)
-                   .buildClient();
+        return new ConfigurationClientImpl(
+            pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline,
+            SERIALIZER_ADAPTER,
+            endpoint,
+            serviceVersion.getVersion());
     }
 
     private HttpPipeline createHttpPipeline(SyncTokenPolicy syncTokenPolicy) {
@@ -275,14 +286,7 @@ public final class ConfigurationClientBuilder implements
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .tracer(createTracer(clientOptions))
             .build();
-    }
-
-    private static Tracer createTracer(ClientOptions clientOptions) {
-        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
-        return TracerProvider.getDefaultProvider()
-            .createTracer(CLIENT_NAME, CLIENT_VERSION, APP_CONFIG_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 
     /**
