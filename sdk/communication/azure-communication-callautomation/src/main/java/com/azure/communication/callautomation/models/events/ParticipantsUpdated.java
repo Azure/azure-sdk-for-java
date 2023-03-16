@@ -26,6 +26,9 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
     @JsonIgnore
     private final List<CallParticipant> participants;
 
+    @JsonProperty("sequenceNumber")
+    private final int sequenceNumber;
+
     @JsonCreator
     private ParticipantsUpdated(@JsonProperty("participants") List<Map<String, Object>> participants) {
         ObjectMapper mapper = new ObjectMapper();
