@@ -440,7 +440,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
   Set-Content -Path $hostConfigurationPath -Value ($configuration | ConvertTo-Json) | Out-Null
 
   docker run -v "${workingDirectory}:${containerWorkingDirectory}" `
-    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath -t $DocValidationImageId 2>&1 `
+    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath $DocValidationImageId 2>&1 `
     | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages
     | Out-Host
 
