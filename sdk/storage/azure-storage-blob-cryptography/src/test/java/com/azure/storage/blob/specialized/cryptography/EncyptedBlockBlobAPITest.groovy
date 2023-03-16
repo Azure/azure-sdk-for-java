@@ -1936,7 +1936,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Encryption upload IS no length with options"() {
         setup:
-        def randomData = getRandomByteArray(20)
+        def randomData = getRandomByteArray(Constants.KB)
         def payloadAsInputStream = new ByteArrayInputStream(randomData)
         def os = new ByteArrayOutputStream()
         def blobParallelUploadOptions = new BlobParallelUploadOptions(payloadAsInputStream)
