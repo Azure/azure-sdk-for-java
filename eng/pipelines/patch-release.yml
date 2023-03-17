@@ -4,10 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-messaging-eventhubs
-      groupId: com.azure
-      safeName: azuremessagingeventhubs
-      ServiceDirectory: eventhubs
     - name: azure-messaging-eventgrid
       groupId: com.azure
       safeName: azuremessagingeventgrid
@@ -24,10 +20,6 @@ extends:
       groupId: com.azure
       safeName: azurestoragefiledatalake
       ServiceDirectory: storage
-    - name: azure-mixedreality-remoterendering
-      groupId: com.azure
-      safeName: azuremixedrealityremoterendering
-      ServiceDirectory: remoterendering
     - name: azure-monitor-query
       groupId: com.azure
       safeName: azuremonitorquery
@@ -86,10 +78,6 @@ extends:
       groupId: com.azure
       safeName: azuresearch
       ServiceDirectory: search
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-storage-file-share
       groupId: com.azure
       safeName: azurestoragefileshare
