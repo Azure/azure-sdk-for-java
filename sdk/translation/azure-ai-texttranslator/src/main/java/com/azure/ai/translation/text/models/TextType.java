@@ -4,48 +4,43 @@
 
 package com.azure.ai.translation.text.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Translation text type. */
-public enum TextType {
-    /** Enum value plain. */
-    PLAIN("plain"),
+/** Defines values for TextType. */
+public final class TextType extends ExpandableStringEnum<TextType> {
+    /** Static value plain for TextType. */
+    public static final TextType PLAIN = fromString("plain");
 
-    /** Enum value html. */
-    HTML("html");
+    /** Static value html for TextType. */
+    public static final TextType HTML = fromString("html");
 
-    /** The actual serialized value for a TextType instance. */
-    private final String value;
+    /**
+     * Creates a new instance of TextType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextType() {}
 
-    TextType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a TextType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding TextType.
+     */
+    @JsonCreator
+    public static TextType fromString(String name) {
+        return fromString(name, TextType.class);
     }
 
     /**
-     * Parses a serialized value to a TextType instance.
+     * Gets known TextType values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TextType object, or null if unable to parse.
+     * @return known TextType values.
      */
-    @JsonCreator
-    public static TextType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        TextType[] items = TextType.values();
-        for (TextType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<TextType> values() {
+        return values(TextType.class);
     }
 }

@@ -4,48 +4,43 @@
 
 package com.azure.ai.translation.text.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Translator profanity markers. */
-public enum ProfanityMarker {
-    /** Enum value Asterisk. */
-    ASTERISK("Asterisk"),
+/** Defines values for ProfanityMarker. */
+public final class ProfanityMarker extends ExpandableStringEnum<ProfanityMarker> {
+    /** Static value Asterisk for ProfanityMarker. */
+    public static final ProfanityMarker ASTERISK = fromString("Asterisk");
 
-    /** Enum value Tag. */
-    TAG("Tag");
+    /** Static value Tag for ProfanityMarker. */
+    public static final ProfanityMarker TAG = fromString("Tag");
 
-    /** The actual serialized value for a ProfanityMarker instance. */
-    private final String value;
+    /**
+     * Creates a new instance of ProfanityMarker value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfanityMarker() {}
 
-    ProfanityMarker(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ProfanityMarker from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProfanityMarker.
+     */
+    @JsonCreator
+    public static ProfanityMarker fromString(String name) {
+        return fromString(name, ProfanityMarker.class);
     }
 
     /**
-     * Parses a serialized value to a ProfanityMarker instance.
+     * Gets known ProfanityMarker values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProfanityMarker object, or null if unable to parse.
+     * @return known ProfanityMarker values.
      */
-    @JsonCreator
-    public static ProfanityMarker fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProfanityMarker[] items = ProfanityMarker.values();
-        for (ProfanityMarker item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProfanityMarker> values() {
+        return values(ProfanityMarker.class);
     }
 }

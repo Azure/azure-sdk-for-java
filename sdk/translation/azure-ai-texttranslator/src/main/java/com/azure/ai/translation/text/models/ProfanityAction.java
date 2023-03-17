@@ -4,51 +4,46 @@
 
 package com.azure.ai.translation.text.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Translator profanity actions. */
-public enum ProfanityAction {
-    /** Enum value NoAction. */
-    NO_ACTION("NoAction"),
+/** Defines values for ProfanityAction. */
+public final class ProfanityAction extends ExpandableStringEnum<ProfanityAction> {
+    /** Static value NoAction for ProfanityAction. */
+    public static final ProfanityAction NO_ACTION = fromString("NoAction");
 
-    /** Enum value Marked. */
-    MARKED("Marked"),
+    /** Static value Marked for ProfanityAction. */
+    public static final ProfanityAction MARKED = fromString("Marked");
 
-    /** Enum value Deleted. */
-    DELETED("Deleted");
+    /** Static value Deleted for ProfanityAction. */
+    public static final ProfanityAction DELETED = fromString("Deleted");
 
-    /** The actual serialized value for a ProfanityAction instance. */
-    private final String value;
+    /**
+     * Creates a new instance of ProfanityAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfanityAction() {}
 
-    ProfanityAction(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ProfanityAction from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ProfanityAction.
+     */
+    @JsonCreator
+    public static ProfanityAction fromString(String name) {
+        return fromString(name, ProfanityAction.class);
     }
 
     /**
-     * Parses a serialized value to a ProfanityAction instance.
+     * Gets known ProfanityAction values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ProfanityAction object, or null if unable to parse.
+     * @return known ProfanityAction values.
      */
-    @JsonCreator
-    public static ProfanityAction fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ProfanityAction[] items = ProfanityAction.values();
-        for (ProfanityAction item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProfanityAction> values() {
+        return values(ProfanityAction.class);
     }
 }
