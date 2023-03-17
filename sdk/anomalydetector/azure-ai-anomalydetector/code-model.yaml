@@ -3443,7 +3443,15 @@ clients:
           - *ref_79
     apiVersions:
       - version: v1.1
-    globalParameters: []
+    globalParameters:
+      - *ref_48
+      - *ref_49
+    serviceVersion:
+      language:
+        default:
+          name: AnomalyDetectorServiceVersion
+          description: AnomalyDetectorClient
+      protocol: {}
 globalParameters:
   - *ref_48
   - *ref_49
