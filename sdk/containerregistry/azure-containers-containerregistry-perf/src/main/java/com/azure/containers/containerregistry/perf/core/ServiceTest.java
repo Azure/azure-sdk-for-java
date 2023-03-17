@@ -6,9 +6,6 @@ package com.azure.containers.containerregistry.perf.core;
 import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -32,7 +29,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_RESOURCE_GROUP;
@@ -59,9 +55,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * The ContainerRegistryAsyncClient used in an asynchronous performance test.
      */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
-
-    protected ContainerRegistryBlobClient blobClient;
-    protected ContainerRegistryBlobAsyncClient blobAsyncClient;
 
     /**
      * The base class for Azure Container Registry performance tests.
@@ -90,15 +83,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         this.containerRegistryClient = builder.buildClient();
         this.containerRegistryAsyncClient  = builder.buildAsyncClient();
-
-        ContainerRegistryBlobClientBuilder blobClientBuilder = new ContainerRegistryBlobClientBuilder()
-            .credential(tokenCredential)
-            .clientOptions(httpOptions)
-            .endpoint(registryEndpoint)
-            .repository("oci-artifact");
-
-        this.blobClient = blobClientBuilder.buildClient();
-        this.blobAsyncClient = blobClientBuilder.buildAsyncClient();
     }
 
     private String getConfigurationValue(String configurationName) {
@@ -137,20 +121,5 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 .withSource(new ImportSource().withSourceImage(repositoryName)
                     .withRegistryUri(REGISTRY_URI))
                 .withTargetTags(tags));
-    }
-
-    protected static Flux<ByteBuffer> generateAsyncStream(long size) {
-        RepeatingInputStream input = new RepeatingInputStream(size);
-        byte[] chunk = new byte[CHUNK_SIZE];
-        return Flux.create(sink -> {
-            int read;
-            while((read = input.read(chunk, 0, CHUNK_SIZE)) >= 0) {
-                ByteBuffer buffer = ByteBuffer.wrap(chunk);
-                buffer.limit(read);
-                sink.next(buffer);
-            }
-
-            sink.complete();
-        });
     }
 }
