@@ -808,6 +808,14 @@
         ]
     },
     {
+      "filename": "sdk/schemaregistry/azure-data-schemaregistry/**",
+      "words": [
+        "conniey",
+        "Alina",
+        "serde"
+      ]
+    },
+    {
       "filename": "sdk/spring/scripts/**",
       "words": [
         "antlr",
