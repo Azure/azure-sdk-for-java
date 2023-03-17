@@ -9,9 +9,11 @@ import com.azure.ai.translation.text.CustomEndpointUtils;
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -50,7 +52,9 @@ import java.util.Objects;
 public final class TextTranslationClientBuilder
         implements HttpTrait<TextTranslationClientBuilder>,
                 ConfigurationTrait<TextTranslationClientBuilder>,
-                EndpointTrait<TextTranslationClientBuilder> {
+                EndpointTrait<TextTranslationClientBuilder>,
+                AzureKeyCredentialTrait<TextTranslationClientBuilder>,
+                TokenCredentialTrait<TextTranslationClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
