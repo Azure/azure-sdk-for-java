@@ -969,7 +969,7 @@ public final class DiagnosticsProvider {
                     }
                 }
 
-                for (ClientSideRequestStatistics c: feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
+                for (ClientSideRequestStatistics c: feedResponseDiagnostics.getClientSideRequestStatisticsSet()) {
                     addClientSideRequestStatisticsOnTracerEvent(c, context);
                 }
             }
@@ -1226,7 +1226,7 @@ public final class DiagnosticsProvider {
         }
 
         private void traceTransportLevelRequests(
-            List<ClientSideRequestStatistics> clientSideRequestStatistics,
+            Set<ClientSideRequestStatistics> clientSideRequestStatistics,
             Context context) {
 
             if (clientSideRequestStatistics != null) {
@@ -1255,7 +1255,7 @@ public final class DiagnosticsProvider {
                     diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics);
                 if (feedResponseDiagnostics != null) {
                     traceTransportLevelRequests(
-                        feedResponseDiagnostics.getClientSideRequestStatisticsList(),
+                        feedResponseDiagnostics.getClientSideRequestStatisticsSet(),
                         context);
                 }
             }

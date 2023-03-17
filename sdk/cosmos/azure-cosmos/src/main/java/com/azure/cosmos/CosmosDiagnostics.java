@@ -93,8 +93,8 @@ public final class CosmosDiagnostics {
     public Duration getDuration() {
         if (this.feedResponseDiagnostics != null) {
 
-            List<ClientSideRequestStatistics> statistics =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
+            Set<ClientSideRequestStatistics> statistics =
+                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
             if (statistics == null) {
                 return Duration.ZERO;
             }

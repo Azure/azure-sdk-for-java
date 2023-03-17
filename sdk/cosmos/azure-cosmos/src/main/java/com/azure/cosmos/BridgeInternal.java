@@ -201,11 +201,11 @@ public final class BridgeInternal {
         ClientSideRequestStatistics requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
         if (requestStatistics != null) {
             BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
-                Collections.singletonList(requestStatistics));
+                Collections.singleton(requestStatistics));
         }
         BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
             cosmosDiagnostics.getFeedResponseDiagnostics()
-                             .getClientSideRequestStatisticsList());
+                             .getClientSideRequestStatisticsSet());
 
         return feedResponseWithDiagnostics;
     }
