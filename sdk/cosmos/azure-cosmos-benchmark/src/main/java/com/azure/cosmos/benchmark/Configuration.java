@@ -201,6 +201,12 @@ public class Configuration {
     @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
     private String clientTelemetryEndpoint;
 
+    @Parameter(names = "-pointLatencyThresholdMs", description = "Latency threshold for point operations")
+    private int pointLatencyThresholdMs = -1;
+
+    @Parameter(names = "-nonPointLatencyThresholdMs", description = "Latency threshold for non-point operations")
+    private int nonPointLatencyThresholdMs = -1;
+
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
         Staging; // This is the CTL environment where the worload runs as a long running job
@@ -520,6 +526,22 @@ public class Configuration {
 
     public Integer getTupleSize() {
         return tupleSize;
+    }
+
+    public Duration getPointOperationThreshold() {
+        if (this.pointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.pointLatencyThresholdMs);
+    }
+
+    public Duration getNonPointOperationThreshold() {
+        if (this.nonPointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.nonPointLatencyThresholdMs);
     }
 
     public void tryGetValuesFromSystem() {
