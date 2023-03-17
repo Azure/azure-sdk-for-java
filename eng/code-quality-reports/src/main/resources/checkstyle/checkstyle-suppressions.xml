@@ -465,7 +465,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="511,545,559"/>
+            lines="498,532,546"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
