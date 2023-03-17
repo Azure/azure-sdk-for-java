@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DesktopList List of Desktop definitions. */
+/**
+ * DesktopList
+ *
+ * <p>List of Desktop definitions.
+ */
 @Fluent
 public final class DesktopList {
     /*
@@ -23,6 +27,10 @@ public final class DesktopList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DesktopList class. */
+    public DesktopList() {
+    }
 
     /**
      * Get the value property: List of Desktop definitions.

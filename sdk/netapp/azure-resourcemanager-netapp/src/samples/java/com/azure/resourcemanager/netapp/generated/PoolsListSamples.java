@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pools List. */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Pools_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Pools_List.json
      */
     /**
      * Sample code: Pools_List.
@@ -17,6 +15,6 @@ public final class PoolsListSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void poolsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().list("myRG", "account1", Context.NONE);
+        manager.pools().list("myRG", "account1", com.azure.core.util.Context.NONE);
     }
 }

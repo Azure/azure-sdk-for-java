@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity used to authenticate with key vault. */
 @Fluent
-public class EncryptionIdentity {
+public final class EncryptionIdentity {
     /*
      * The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
      */
@@ -22,6 +22,10 @@ public class EncryptionIdentity {
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
+
+    /** Creates an instance of EncryptionIdentity class. */
+    public EncryptionIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID (object ID) of the identity used to authenticate with key vault.

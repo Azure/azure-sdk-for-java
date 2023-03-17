@@ -18,6 +18,10 @@ public final class ListReplications {
     @JsonProperty(value = "value")
     private List<ReplicationInner> value;
 
+    /** Creates an instance of ListReplications class. */
+    public ListReplications() {
+    }
+
     /**
      * Get the value property: A list of replications.
      *

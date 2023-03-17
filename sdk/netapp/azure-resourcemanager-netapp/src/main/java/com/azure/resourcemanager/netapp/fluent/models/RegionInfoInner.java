@@ -29,6 +29,10 @@ public final class RegionInfoInner {
     @JsonProperty(value = "availabilityZoneMappings")
     private List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings;
 
+    /** Creates an instance of RegionInfoInner class. */
+    public RegionInfoInner() {
+    }
+
     /**
      * Get the storageToNetworkProximity property: Storage to Network Proximity
      *

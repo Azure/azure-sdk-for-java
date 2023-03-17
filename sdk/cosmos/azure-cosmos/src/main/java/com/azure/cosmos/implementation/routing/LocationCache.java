@@ -217,6 +217,10 @@ public class LocationCache {
         throw new IllegalArgumentException("Can not find service endpoint for region " + region);
     }
 
+    public URI getDefaultEndpoint() {
+        return this.defaultEndpoint;
+    }
+
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
         canRefreshInBackground.v = true;
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
