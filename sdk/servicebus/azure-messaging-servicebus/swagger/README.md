@@ -27,7 +27,8 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./servicebus-swagger.json
+use: '@autorest/java@4.1.0'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e9539003a0a7cde9a2dc9dd0ddd85f25fa7159a6/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -41,6 +42,7 @@ models-subpackage: implementation.models
 custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku
 custom-types-subpackage: models
 context-client-method-parameter: true
+customization-class: src/main/java/AdministrationClientCustomization.java
 enable-xml: true
 enable-sync-stack: true
 ```
