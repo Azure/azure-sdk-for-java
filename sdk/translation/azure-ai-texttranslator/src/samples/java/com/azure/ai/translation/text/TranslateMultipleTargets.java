@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
 import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.ProfanityAction;
@@ -29,10 +28,11 @@ public class TranslateMultipleTargets {
     public static void main(final String[] args) {
         String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
-        AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
+        AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         TextTranslationClient client = new TextTranslationClientBuilder()
-                .credential(regionalCredential)
+                .credential(credential)
+                .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 

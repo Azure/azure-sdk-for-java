@@ -14,30 +14,28 @@ import reactor.core.publisher.Mono;
 /**
  * Adds MT custom authentication headers to the requests.
  */
-public class GlobalEndpointAuthenticationPolicy implements HttpPipelinePolicy {
+public class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
 
-    private static final String KEY_HEADER_NAME = "Ocp-Apim-Subscription-Key";
     private static final String REGION_HEADER_NAME = "Ocp-Apim-Subscription-Region";
 
-    private final AzureRegionalKeyCredential credentials;
+    private final String region;
 
     /**
-     * Creates an instance of GlobalEndpointAuthenticationPolicy class.
+     * Creates an instance of TranslatorRegionAuthenticationPolicy class.
      *
-     * @param credentials Regional Azure Key Credentials..
+     * @param region - region where the Translator resource was created.
      */
-    public GlobalEndpointAuthenticationPolicy(AzureRegionalKeyCredential credentials)
+    public TranslatorRegionAuthenticationPolicy(String region)
     {
-        Objects.requireNonNull(credentials, "'credentials' cannot be null.");
-        this.credentials = credentials;
+        Objects.requireNonNull(region, "'region' cannot be null.");
+        this.region = region;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy nextPolicy) {
         return Mono.fromRunnable(() -> {
             HttpRequest request = context.getHttpRequest();
-            request.setHeader(KEY_HEADER_NAME, this.credentials.getKey().getKey());
-            request.setHeader(REGION_HEADER_NAME, this.credentials.getRegion());
+            request.setHeader(REGION_HEADER_NAME, this.region);
 
         }).then(nextPolicy.process());
     }

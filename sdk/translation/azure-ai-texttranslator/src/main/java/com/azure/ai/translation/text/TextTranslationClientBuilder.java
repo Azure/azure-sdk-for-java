@@ -4,8 +4,7 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
-import com.azure.ai.translation.text.authentication.GlobalEndpointAuthenticationPolicy;
+import com.azure.ai.translation.text.authentication.TranslatorRegionAuthenticationPolicy;
 import com.azure.ai.translation.text.CustomEndpointUtils;
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
@@ -59,7 +58,7 @@ public final class TextTranslationClientBuilder
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
-    private AzureRegionalKeyCredential regionalCredential;
+    private String region;
     private AzureKeyCredential credential;
     private TokenCredential tokenCredential;
 
@@ -226,15 +225,15 @@ public final class TextTranslationClientBuilder
     }
 
     /**
-     * Sets the {@link AzureRegionalKeyCredential} used to authorize requests sent to the service.
+     * Sets the region used to authorize requests sent to the service.
      *
-     * @param regionalCredential {@link AzureRegionalKeyCredential} used to authorize requests sent to the service.
+     * @param region where the Translator resource is created.
      * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public TextTranslationClientBuilder credential(AzureRegionalKeyCredential regionalCredential) {
-        Objects.requireNonNull(regionalCredential, "'regionalCredential' cannot be null.");
-        this.regionalCredential = regionalCredential;
+    public TextTranslationClientBuilder region(String region) {
+        Objects.requireNonNull(region, "'region' cannot be null.");
+        this.region = region;
         return this;
     }
 
@@ -311,16 +310,16 @@ public final class TextTranslationClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
 
-        if (this.regionalCredential != null) {
-            policies.add(new GlobalEndpointAuthenticationPolicy(this.regionalCredential));
-        }
-
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         }
 
         if (this.credential != null) {
             policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+
+            if (this.region != null) {
+                policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
+            }
         }
 
         this.pipelinePolicies.stream()

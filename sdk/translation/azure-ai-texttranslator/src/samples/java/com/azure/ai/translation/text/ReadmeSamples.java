@@ -3,7 +3,6 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.authentication.AzureRegionalKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 
 public final class ReadmeSamples {
@@ -21,12 +20,13 @@ public final class ReadmeSamples {
      * Sample for creating text translator client using Text Translator API Key and Region.
      */
     public void createClient() {
-        String apiKey = "<text-translator-api-key>";
-        String region = "<text-translator-region>";
-        AzureRegionalKeyCredential regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(apiKey), region);
+        String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
+        String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
+        AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         TextTranslationClient client = new TextTranslationClientBuilder()
-                .credential(regionalCredential)
+                .credential(credential)
+                .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
     }
