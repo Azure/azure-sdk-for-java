@@ -37,7 +37,7 @@ public final class VirtualNetworksOperationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"infraVnetProfile\":{},\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[\"fwafqrouda\",\"pavehhr\"],\"dnsServers\":[\"unzo\",\"ud\",\"cxgkmoyxcdyui\"],\"gateway\":\"mfdn\",\"ipAddressPrefix\":\"ydvfvfcjnae\",\"vlanID\":\"srvhmgorffuki\",\"provisioningState\":\"Succeeded\",\"status\":{}},\"extendedLocation\":{\"type\":\"plef\",\"name\":\"vxilcbt\"},\"location\":\"nhnzeyqxt\",\"tags\":{\"vodggxdbee\":\"zqlqhyc\",\"wiuagydwqf\":\"mieknlraria\",\"ocqwogfnzjvus\":\"ylyrfgiagtco\"},\"id\":\"zldmozuxy\",\"name\":\"fsbtkad\",\"type\":\"ysownbtgkbug\"}";
+            "{\"properties\":{\"infraVnetProfile\":{},\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[\"cbiqtgdqoh\"],\"dnsServers\":[\"sldrizetpwbral\",\"libph\",\"qzmiza\",\"a\"],\"gateway\":\"nkjpdnjzha\",\"ipAddressPrefix\":\"ylhjlm\",\"vlanID\":\"y\",\"provisioningState\":\"Succeeded\",\"status\":{}},\"extendedLocation\":{\"type\":\"pteecjme\",\"name\":\"ls\"},\"location\":\"vasylwxdzau\",\"tags\":{\"fuzboyjathwtzolb\":\"oohgu\",\"jpahlxvea\":\"emwmdxmebwjs\",\"xnmwmqtibxyijddt\":\"f\",\"ekpndzaapmudq\":\"qcttadijaeukmrsi\"},\"id\":\"eqw\",\"name\":\"gp\",\"type\":\"bu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,22 +68,29 @@ public final class VirtualNetworksOperationsCreateOrUpdateMockTests {
         VirtualNetworks response =
             manager
                 .virtualNetworksOperations()
-                .define("hezwwvaiq")
-                .withRegion("mtk")
-                .withExistingResourceGroup("auzzptjazysd")
-                .withTags(mapOf("dxzxhi", "tppn", "vqagtltdhlf", "frbbc"))
+                .define("knh")
+                .withRegion("euutlwxezwzh")
+                .withExistingResourceGroup("cc")
+                .withTags(mapOf("ehgpp", "bwnhhtql", "csheafidltugsr", "pifhpfeoajvgcxtx"))
                 .withProperties(
                     new VirtualNetworksProperties()
                         .withInfraVnetProfile(new VirtualNetworksPropertiesInfraVnetProfile())
                         .withVipPool(Arrays.asList())
-                        .withVmipPool(Arrays.asList()))
-                .withExtendedLocation(new VirtualNetworksExtendedLocation().withType("i").withName("zvhxnk"))
+                        .withVmipPool(Arrays.asList())
+                        .withDnsServers(Arrays.asList("vbroylaxxu", "cdisd", "sfjbjsvg"))
+                        .withGateway("whryvycytdcl")
+                        .withIpAddressPrefix("ccknfnwmbtmvp"))
+                .withExtendedLocation(
+                    new VirtualNetworksExtendedLocation().withType("crjdqnsdfzpbgtg").withName("lkdghr"))
                 .create();
 
-        Assertions.assertEquals("nhnzeyqxt", response.location());
-        Assertions.assertEquals("zqlqhyc", response.tags().get("vodggxdbee"));
-        Assertions.assertEquals("plef", response.extendedLocation().type());
-        Assertions.assertEquals("vxilcbt", response.extendedLocation().name());
+        Assertions.assertEquals("vasylwxdzau", response.location());
+        Assertions.assertEquals("oohgu", response.tags().get("fuzboyjathwtzolb"));
+        Assertions.assertEquals("sldrizetpwbral", response.properties().dnsServers().get(0));
+        Assertions.assertEquals("nkjpdnjzha", response.properties().gateway());
+        Assertions.assertEquals("ylhjlm", response.properties().ipAddressPrefix());
+        Assertions.assertEquals("pteecjme", response.extendedLocation().type());
+        Assertions.assertEquals("ls", response.extendedLocation().name());
     }
 
     @SuppressWarnings("unchecked")

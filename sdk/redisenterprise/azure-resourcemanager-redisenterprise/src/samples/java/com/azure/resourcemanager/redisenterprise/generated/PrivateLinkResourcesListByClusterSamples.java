@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByCluster. */
 public final class PrivateLinkResourcesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseListPrivateLinkResources.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseListPrivateLinkResources.json
      */
     /**
      * Sample code: RedisEnterpriseListPrivateLinkResources.
@@ -18,6 +16,6 @@ public final class PrivateLinkResourcesListByClusterSamples {
      */
     public static void redisEnterpriseListPrivateLinkResources(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.privateLinkResources().listByCluster("rg1", "cache1", Context.NONE);
+        manager.privateLinkResources().listByCluster("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

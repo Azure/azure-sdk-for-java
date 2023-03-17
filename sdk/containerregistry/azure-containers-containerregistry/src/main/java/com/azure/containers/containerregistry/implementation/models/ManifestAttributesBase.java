@@ -360,42 +360,36 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
     public static ManifestAttributesBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String digest = null;
-                    OffsetDateTime createdOn = null;
-                    OffsetDateTime lastUpdatedOn = null;
-                    Long sizeInBytes = null;
-                    ArtifactArchitecture architecture = null;
-                    ArtifactOperatingSystem operatingSystem = null;
-                    List<ArtifactManifestPlatform> relatedArtifacts = null;
-                    List<String> tags = null;
-                    Boolean deleteEnabled = null;
-                    Boolean writeEnabled = null;
-                    Boolean listEnabled = null;
-                    Boolean readEnabled = null;
+                    ManifestAttributesBase deserializedManifestAttributesBase = new ManifestAttributesBase();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("digest".equals(fieldName)) {
-                            digest = reader.getString();
+                            deserializedManifestAttributesBase.digest = reader.getString();
                         } else if ("createdTime".equals(fieldName)) {
-                            createdOn =
+                            deserializedManifestAttributesBase.createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            lastUpdatedOn =
+                            deserializedManifestAttributesBase.lastUpdatedOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("imageSize".equals(fieldName)) {
-                            sizeInBytes = reader.getNullable(JsonReader::getLong);
+                            deserializedManifestAttributesBase.sizeInBytes = reader.getNullable(JsonReader::getLong);
                         } else if ("architecture".equals(fieldName)) {
-                            architecture = ArtifactArchitecture.fromString(reader.getString());
+                            deserializedManifestAttributesBase.architecture =
+                                    ArtifactArchitecture.fromString(reader.getString());
                         } else if ("os".equals(fieldName)) {
-                            operatingSystem = ArtifactOperatingSystem.fromString(reader.getString());
+                            deserializedManifestAttributesBase.operatingSystem =
+                                    ArtifactOperatingSystem.fromString(reader.getString());
                         } else if ("references".equals(fieldName)) {
-                            relatedArtifacts = reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
+                            List<ArtifactManifestPlatform> relatedArtifacts =
+                                    reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
+                            deserializedManifestAttributesBase.relatedArtifacts = relatedArtifacts;
                         } else if ("tags".equals(fieldName)) {
-                            tags = reader.readArray(reader1 -> reader1.getString());
+                            List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                            deserializedManifestAttributesBase.tags = tags;
                         } else if ("changeableAttributes".equals(fieldName)
                                 && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -403,13 +397,17 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
                                 reader.nextToken();
 
                                 if ("deleteEnabled".equals(fieldName)) {
-                                    deleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedManifestAttributesBase.deleteEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("writeEnabled".equals(fieldName)) {
-                                    writeEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedManifestAttributesBase.writeEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("listEnabled".equals(fieldName)) {
-                                    listEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedManifestAttributesBase.listEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else if ("readEnabled".equals(fieldName)) {
-                                    readEnabled = reader.getNullable(JsonReader::getBoolean);
+                                    deserializedManifestAttributesBase.readEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
                                 } else {
                                     reader.skipChildren();
                                 }
@@ -418,21 +416,8 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
                             reader.skipChildren();
                         }
                     }
-                    ManifestAttributesBase deserializedValue = new ManifestAttributesBase();
-                    deserializedValue.digest = digest;
-                    deserializedValue.createdOn = createdOn;
-                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
-                    deserializedValue.sizeInBytes = sizeInBytes;
-                    deserializedValue.architecture = architecture;
-                    deserializedValue.operatingSystem = operatingSystem;
-                    deserializedValue.relatedArtifacts = relatedArtifacts;
-                    deserializedValue.tags = tags;
-                    deserializedValue.deleteEnabled = deleteEnabled;
-                    deserializedValue.writeEnabled = writeEnabled;
-                    deserializedValue.listEnabled = listEnabled;
-                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedValue;
+                    return deserializedManifestAttributesBase;
                 });
     }
 }

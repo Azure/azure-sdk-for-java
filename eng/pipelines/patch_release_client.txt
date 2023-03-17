@@ -14,7 +14,7 @@
 # performance improvement or new features, they should go ahead with their release during release week and not worry
 # about updating this file. The automated release process will happen the week after release week, followed by
 # the release of the Azure SDK BOM the week after that.
-# 
+#
 # Test owners listed here are responsible for ensuring their library works properly before and after releases and for
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
@@ -22,11 +22,13 @@
 com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
+com.azure:azure-communication-chat # Tests owner: jiminwen
 com.azure:azure-containers-containerregistry # Tests owner: lmolkova
 com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
 com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
@@ -34,6 +36,7 @@ com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-monitor-query # Tests owner: srnagar
+com.azure:azure-remote-rendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
 com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
@@ -41,3 +44,13 @@ com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
+com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft
+
+

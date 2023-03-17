@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FaultInjectionRequestContext {
     private final Map<String, Integer> hitCountByRuleMap;
     private final Map<Long, String> transportRequestIdRuleIdMap;
+
+    private volatile URI locationEndpointToRoute;
 
     /***
      * This usually is called during retries.
@@ -50,6 +53,15 @@ public class FaultInjectionRequestContext {
         return this.hitCountByRuleMap.getOrDefault(ruleId, 0);
     }
     public String getFaultInjectionRuleId(long transportRequesetId) {
-        return this.transportRequestIdRuleIdMap.getOrDefault(transportRequesetId, null); }
+        return this.transportRequestIdRuleIdMap.getOrDefault(transportRequesetId, null);
+    }
+
+    public void setLocationEndpointToRoute(URI locationEndpointToRoute) {
+        this.locationEndpointToRoute = locationEndpointToRoute;
+    }
+
+    public URI getLocationEndpointToRoute() {
+        return this.locationEndpointToRoute;
+    }
 }
 
