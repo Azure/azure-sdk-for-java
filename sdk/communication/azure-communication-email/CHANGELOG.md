@@ -2,7 +2,7 @@
 
 ## 1.0.0 (2023-03-31)
 
-### Feature Added
+### Features Added
 
 The public release of the Azure Communication Services SDK for Email has the following features:
 
