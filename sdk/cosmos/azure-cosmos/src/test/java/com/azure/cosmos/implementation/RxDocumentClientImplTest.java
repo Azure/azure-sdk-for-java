@@ -277,7 +277,7 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request, HttpTimeoutPolicy timeoutPolicy) {
+            public Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout) {
                 return null;
             }
 

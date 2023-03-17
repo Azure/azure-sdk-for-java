@@ -137,13 +137,15 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
-            HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
-            if (OperationType.QueryPlan.equals(request.getOperationType()) || request.isAddressRefresh()) {
-                timeoutPolicy = HttpTimeoutPolicyControlPlaneHotPath.instance;
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient
-                    .send(httpRequest, timeoutPolicy)
+                    .send(httpRequest, responseTimeout)
                     .doOnSubscribe(subscription -> {
                         sendTimeUtc.v = Instant.now();
                         this.beforeRequest(

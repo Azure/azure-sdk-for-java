@@ -75,10 +75,10 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
 
         doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            HttpTimeoutPolicy timeoutPolicy = invocationOnMock.getArgument(1, HttpTimeoutPolicy.class);
+            Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
             httpRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest, timeoutPolicy);
-        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
+            return origHttpClient.send(httpRequest, responseTimeout);
+        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
         return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,

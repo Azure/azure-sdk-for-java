@@ -739,7 +739,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
@@ -752,7 +752,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
             mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
@@ -768,7 +768,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
             mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);

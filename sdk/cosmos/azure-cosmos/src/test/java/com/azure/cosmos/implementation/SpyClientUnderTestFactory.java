@@ -197,15 +197,15 @@ public class SpyClientUnderTestFactory {
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
             if (invocationOnMock.getArguments().length == 2) {
-                timeoutPolicy = invocationOnMock.getArgument(1, HttpTimeoutPolicyDefault.class);
+                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
             }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
             return origHttpClient
-                .send(httpRequest, timeoutPolicy)
+                .send(httpRequest, responseTimeout)
                 .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
                 .doOnError(f::completeExceptionally);
         }
@@ -217,7 +217,7 @@ public class SpyClientUnderTestFactory {
                 .send(Mockito.any(HttpRequest.class));
             doAnswer(this::captureHttpRequest)
                 .when(spyHttpClient)
-                .send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
+                .send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
             this.origHttpClient = originalClient;
             this.spyHttpClient = spyHttpClient;
@@ -301,16 +301,16 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-                HttpTimeoutPolicy timeoutPolicy = invocationOnMock.getArgument(1, HttpTimeoutPolicyDefault.class);
+                Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                    .send(httpRequest, timeoutPolicy)
+                    .send(httpRequest, responseTimeout)
                     .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
                     .doOnError(f::completeExceptionally);
 
-            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
+            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override

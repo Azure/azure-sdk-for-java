@@ -479,31 +479,15 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-        HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
-        if (OperationType.QueryPlan.equals(request.getOperationType()) || request.isAddressRefresh()) {
-            timeoutPolicy = HttpTimeoutPolicyControlPlaneHotPath.instance;
-        }
 
-        HttpMethod httpMethod = null;
-        if (request.isReadOnlyRequest()) {
-            httpMethod = HttpMethod.GET;
-        }
+        final WebExceptionRetryPolicy policyInstance = new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
+        return BackoffRetryUtility.executeRetry(() -> {
+            policyInstance.onBeforeSendRequest(request);
+            return invokeAsyncInternal(request).single();
+        }, policyInstance);
 
-        Mono<RxDocumentServiceResponse> responseMono = null;
-        Iterator<ResponseTimeoutAndDelays> timeoutAndDelaysIterator = timeoutPolicy.getTimeoutIterator();
-        while (timeoutAndDelaysIterator.hasNext()) {
-
-            if (responseMono != null && !timeoutPolicy.shouldRetryBasedOnResponse(httpMethod, responseMono)) {
-                return responseMono;
-            }
-
-            ResponseTimeoutAndDelays current = timeoutAndDelaysIterator.next();
-            request.setResponseTimeout(current.getResponseTimeout());
-            Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-            responseMono =  BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics), current.getDelayForNextRequest()));
-        }
-
-        return responseMono;
+//        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
+//        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
     }
 
     @Override

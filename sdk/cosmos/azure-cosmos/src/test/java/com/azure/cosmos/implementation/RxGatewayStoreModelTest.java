@@ -83,7 +83,7 @@ public class RxGatewayStoreModelTest {
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
+                .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(ConsistencyLevel.SESSION)
@@ -125,7 +125,7 @@ public class RxGatewayStoreModelTest {
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
-               .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
+               .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(ConsistencyLevel.SESSION)
@@ -178,7 +178,7 @@ public class RxGatewayStoreModelTest {
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-            .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
+            .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(defaultConsistency)

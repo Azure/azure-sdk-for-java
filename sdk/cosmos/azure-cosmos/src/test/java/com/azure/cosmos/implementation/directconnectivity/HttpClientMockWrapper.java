@@ -139,7 +139,7 @@ public class HttpClientMockWrapper {
             } else {
                 return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
             }
-        }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
+        }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
     }
 
     public HttpClientMockWrapper(HttpClientBehaviourBuilder builder) {

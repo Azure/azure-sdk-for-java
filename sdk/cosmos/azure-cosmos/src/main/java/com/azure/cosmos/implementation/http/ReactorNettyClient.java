@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
@@ -42,6 +43,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -156,11 +158,11 @@ public class ReactorNettyClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
-        return send(request, HttpTimeoutPolicyDefault.instance);
+        return send(request, Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
     }
 
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request, HttpTimeoutPolicy timeoutPolicy) {
+    public Mono<HttpResponse> send(final HttpRequest request, Duration responseTimeout) {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
@@ -170,53 +172,6 @@ public class ReactorNettyClient implements HttpClient {
             request.withReactorNettyRequestRecord(reactorNettyRequestRecord);
         }
 
-        Instant startTimeUtc = Instant.now();
-        Iterator<ResponseTimeoutAndDelays> timeoutAndDelaysIterator = timeoutPolicy.getTimeoutIterator();
-        while (timeoutAndDelaysIterator.hasNext()) {
-            ResponseTimeoutAndDelays current = timeoutAndDelaysIterator.next();
-
-            Instant requestStartTime = Instant.now();
-            Mono<HttpResponse> responseMono = null;
-            try {
-                responseMono = sendHelper(request, current.getResponseTimeout());
-                if (!timeoutPolicy.shouldRetryBasedOnResponse(request.httpMethod(), responseMono)) {
-                    return responseMono;
-                }
-
-                if (isOutOfRetries(timeoutPolicy, startTimeUtc, timeoutAndDelaysIterator)) {
-                    return responseMono;
-                }
-            } catch (Exception exception) {
-                boolean isOutOfRetries = isOutOfRetries(timeoutPolicy, startTimeUtc, timeoutAndDelaysIterator);
-
-                if (exception instanceof TimeoutException) {
-                    if (isOutOfRetries || !timeoutPolicy.isSafeToRetry(request.httpMethod())) {
-                        //throw current exception (caught in transport handler)
-                        String message = "Request timeout. Start time UTC: " + startTimeUtc + "; Total Duration: " +
-                            (Duration.between(Instant.now(), startTimeUtc)) + "Ms; Request Timeout" +
-                            requestStartTime.toEpochMilli() + "Ms; Activity id: " + getActivityId(responseMono);
-
-                        if (timeoutPolicy.shouldThrow503OnTimeout) {
-                            throw new ServiceUnavailableException(message, exception, null, null);
-                        }
-
-                        throw new RequestTimeoutException(message, null);
-                    }
-                }
-                if (WebExceptionUtility.isNetworkFailure(exception)) {
-                    if (exception != null && Exceptions.isSubStatusCode((CosmosException) exception, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
-                        if (isOutOfRetries || (!timeoutPolicy.isSafeToRetry(request.httpMethod()) && !WebExceptionUtility.isWebExceptionRetriable(exception))) {
-                            throw exception;
-                        }
-                    }
-                }
-            }
-        }
-
-        return Mono.empty();
-    }
-
-    private Mono<HttpResponse> sendHelper(final HttpRequest request, Duration responseTimeout) {
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
         return this.httpClient
@@ -247,21 +202,6 @@ public class ReactorNettyClient implements HttpClient {
                 return throwable;
             })
             .single();
-    }
-
-    private static Boolean isOutOfRetries( HttpTimeoutPolicy timeoutPolicy, Instant startTimeUtc,
-                                           Iterator<ResponseTimeoutAndDelays> timeoutAndDelaysIterator) {
-        return Duration.between(Instant.now(), startTimeUtc).toMillis() >
-            timeoutPolicy.maximumRetryTimeLimit().toMillis() || !timeoutAndDelaysIterator.hasNext();
-    }
-
-    private static String getActivityId(Mono<HttpResponse> responseMono) {
-        final AtomicReference<String> activityId = new AtomicReference<>();
-        responseMono.flatMap(rm -> {
-            activityId.set(rm.headerValue(HttpConstants.HttpHeaders.ACTIVITY_ID));
-            return Mono.empty();
-        });
-        return activityId.get();
     }
 
     /**

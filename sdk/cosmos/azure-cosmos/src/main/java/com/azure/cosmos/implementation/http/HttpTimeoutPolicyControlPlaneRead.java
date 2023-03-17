@@ -33,8 +33,8 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
     }
 
     @Override
-    public Iterator<ResponseTimeoutAndDelays> getTimeoutIterator() {
-        return getTimeoutAndDelays().listIterator();
+    public List<ResponseTimeoutAndDelays> getTimeoutList() {
+        return getTimeoutAndDelays();
     }
 
     @Override

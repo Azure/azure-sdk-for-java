@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
     public Boolean shouldThrow503OnTimeout = false;
@@ -43,7 +44,7 @@ public abstract class HttpTimeoutPolicy {
 
     public abstract Integer totalRetryCount();
 
-    public abstract Iterator<ResponseTimeoutAndDelays> getTimeoutIterator();
+    public abstract List<ResponseTimeoutAndDelays> getTimeoutList();
 
     public abstract Boolean isSafeToRetry(HttpMethod httpMethod);
 

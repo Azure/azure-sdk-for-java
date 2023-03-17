@@ -868,7 +868,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
                 .thenReturn(Mono.error(new CosmosException(400, "TestBadRequest")));
             RxStoreModel rxGatewayStoreModel = rxGatewayStoreModel = ReflectionUtils.getGatewayProxy((RxDocumentClientImpl) client.asyncClient().getDocClientWrapper());
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);

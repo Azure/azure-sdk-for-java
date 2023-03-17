@@ -12,8 +12,6 @@ import java.time.Duration;
  */
 public interface HttpClient {
 
-
-
     /**
      * Send the provided request asynchronously.
      *

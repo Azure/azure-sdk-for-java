@@ -395,12 +395,12 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<HttpResponse> httpResponseMono;
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,
-                HttpTimeoutPolicyControlPlaneHotPath.instance);
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
                 .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    HttpTimeoutPolicyControlPlaneHotPath.instance));
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);
@@ -740,12 +740,12 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,
-                HttpTimeoutPolicyControlPlaneHotPath.instance);
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(defaultHttpHeaders)
                 .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    HttpTimeoutPolicyControlPlaneHotPath.instance));
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono, httpRequest);

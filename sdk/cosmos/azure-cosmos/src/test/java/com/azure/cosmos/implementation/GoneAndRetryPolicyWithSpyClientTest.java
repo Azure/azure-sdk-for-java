@@ -117,7 +117,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         Mono<HttpResponse> responseObservable;
         if (invocation.getArguments().length == 2) {
-            responseObservable = originalClient.send(request, invocation.getArgument(1, HttpTimeoutPolicy.class));
+            responseObservable = originalClient.send(request, invocation.getArgument(1, Duration.class));
         } else {
             responseObservable = originalClient.send(request);
         }
@@ -161,7 +161,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         .when(spyHttpClient)
         .send(
             Mockito.any(HttpRequest.class),
-            Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class));
+            Mockito.any(Duration.class));
 
         doAnswer(invocation -> this.captureAndLogRequest(
             invocation, origHttpClient, forceRefreshHeaderSeen, null))
@@ -298,7 +298,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .when(spyHttpClient)
             .send(
                 Mockito.any(HttpRequest.class),
-                Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class));
+                Mockito.any(Duration.class));
 
         doAnswer(invocation -> this.captureAndLogRequest(
             invocation, origHttpClient, forceRefreshHeaderSeen, forceCollectionRoutingMapRefreshHeaderSeen))

@@ -33,8 +33,8 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     }
 
     @Override
-    public Iterator<ResponseTimeoutAndDelays> getTimeoutIterator() {
-        return getTimeoutAndDelays().listIterator();
+    public List<ResponseTimeoutAndDelays> getTimeoutList() {
+        return getTimeoutAndDelays();
     }
 
     // Assume that it is not safe to retry unless it is a get method.
