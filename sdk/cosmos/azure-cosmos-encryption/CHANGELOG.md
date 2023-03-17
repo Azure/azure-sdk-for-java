@@ -8,9 +8,10 @@
 #### Breaking Changes
 * Adds code to support ParititonKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
 
-#### Bugs Fixed
+### 1.12.0 (2023-03-17)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.42.0`.
 
 ### 1.11.0 (2023-02-17)
 

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.phonenumbers;
+package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
@@ -102,6 +102,17 @@ public class SipRoutingIntegrationTestBase extends TestBase {
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
     private static final Pattern UUID_FQDN_REDACTION_PATTERN =
         Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
+
+    protected static final String MESSAGE_DUPLICATE_ROUTES = 
+        "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}\"";
+    protected static final String MESSAGE_DUPLICATE_TRUNKS = 
+        "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"RouteWithDuplicatedTrunk\",\"message\":\"There is a duplicated trunk in a route.\"}}}\"";
+    protected static final String MESSAGE_MISSING_TRUNK =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"MissingTrunk\",\"message\":\"Route targeting a missing trunk.\"}}}\"";
+    protected static final String MESSAGE_INVALID_NUMBER_PATTERN =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteNumberPattern\",\"message\":\"Route with an invalid number pattern.\"}}}\"";
+    protected static final String MESSAGE_INVALID_ROUTE_NAME =
+        "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteName\",\"message\":\"Route with an invalid name.\"}}}\"";
 
     protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
@@ -212,5 +223,4 @@ public class SipRoutingIntegrationTestBase extends TestBase {
         String unique = UUID.randomUUID().toString().replace("-", "");
         return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
-
 }

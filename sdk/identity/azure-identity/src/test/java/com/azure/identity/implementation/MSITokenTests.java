@@ -66,9 +66,10 @@ public class MSITokenTests {
                 String.valueOf(expirationMinusElevenHoursSeconds.getSeconds()),
                 String.valueOf(240));
 
-            Assert.assertEquals(240, hasRefresh.getRefreshInSeconds());
-            Assert.assertEquals(Duration.ofHours(1).getSeconds(), expirationMinus11HoursToken.getRefreshInSeconds());
-            Assert.assertEquals(Duration.between(now, expirationMinusOneHour).getSeconds() / 2, expirationMinusOneHourToken.getRefreshInSeconds());
+            Assert.assertEquals(now.plusSeconds(240).toEpochSecond(), hasRefresh.getRefreshAtEpochSeconds());
+            Assert.assertEquals(now.plusHours(1).toEpochSecond(), expirationMinus11HoursToken.getRefreshAtEpochSeconds());
+            long expected = Duration.between(now, expirationMinusOneHour).getSeconds() / 2;
+            Assert.assertEquals(now.plusSeconds(expected).toEpochSecond(), expirationMinusOneHourToken.getRefreshAtEpochSeconds());
 
         }
 
@@ -81,20 +82,29 @@ public class MSITokenTests {
             + "  \"refresh_token\": \"\",\n"
             + "  \"expires_in\": \"3599\",\n"
             + "  \"expires_on\": \"1506484173\",\n"
-            + "  \"refresh_in\": \"3599\",\n"
+            + "  \"refresh_in\": \"3600\",\n"
             + "  \"not_before\": \"1506480273\",\n"
             + "  \"resource\": \"https://managementazurecom/\",\n"
             + "  \"token_type\": \"Bearer\"\n"
             + "}";
-        MSIToken token;
-        try {
-            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
-        Assert.assertEquals(3599, token.getRefreshInSeconds());
+        try (MockedStatic<OffsetDateTime> offsetDateTimeMockedStatic = mockStatic(OffsetDateTime.class, CALLS_REAL_METHODS)) {
+
+            offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((ZoneId) any())).thenReturn(expected);
+            offsetDateTimeMockedStatic.when(() -> OffsetDateTime.now((Clock) any())).thenReturn(expected);
+            offsetDateTimeMockedStatic.when(OffsetDateTime::now).thenReturn(expected);
+            {
+                MSIToken token;
+                try {
+                    token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
+                Assert.assertEquals(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(3600).toEpochSecond(), token.getRefreshAtEpochSeconds());
+            }
+        }
     }
 
     @Test
