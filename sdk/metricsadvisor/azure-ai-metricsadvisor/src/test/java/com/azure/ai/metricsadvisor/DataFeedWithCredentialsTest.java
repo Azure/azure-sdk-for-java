@@ -41,7 +41,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     @Override
     public void testSqlServer(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildClient();
         List<String> credIds = new ArrayList<>();
 
         DataFeed dataFeed = super.initDataFeed();

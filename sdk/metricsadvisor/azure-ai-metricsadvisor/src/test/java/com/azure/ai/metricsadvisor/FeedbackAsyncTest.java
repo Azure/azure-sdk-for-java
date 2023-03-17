@@ -63,7 +63,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     void testListMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         listMetricFeedbackRunner(inputMetricFeedbackList -> {
             List<MetricFeedback> actualMetricFeedbackList = new ArrayList<>();
@@ -122,7 +122,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             final MetricFeedback feedbackAdded = client.addFeedback(METRIC_ID, inputMetricFeedback
                 .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
@@ -152,7 +152,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListMetricFeedbackFilterByFeedbackType(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         int[] count = new int[1];
 
         // Act & Assert
@@ -181,7 +181,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     void testListMetricFeedbackFilterStartTime(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             final MetricFeedback createdMetricFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback).block();
 
@@ -207,7 +207,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getMetricFeedbackNullId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getFeedback(null))
@@ -223,7 +223,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getMetricFeedbackInvalidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getFeedback(INCORRECT_UUID))
@@ -240,7 +240,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     public void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
             // Act & Assert
             MetricFeedback createdMetricFeedback
@@ -265,7 +265,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     public void createCommentMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(expectedMetricFeedback ->
 
             // Act & Assert
@@ -283,7 +283,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     public void createAnomalyFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(expectedMetricFeedback ->
 
             // Act & Assert
@@ -301,7 +301,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     public void createPeriodMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(expectedMetricFeedback ->
 
             // Act & Assert
@@ -319,7 +319,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     @Disabled
     public void createChangePointMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatMetricFeedbackRunner(expectedMetricFeedback ->
             // Act & Assert
             StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))

@@ -30,7 +30,7 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildClient();
             super.creatDatasourceCredentialRunner(expectedCredential -> {
                 // Act & Assert
                 DataSourceCredentialEntity createdCredential

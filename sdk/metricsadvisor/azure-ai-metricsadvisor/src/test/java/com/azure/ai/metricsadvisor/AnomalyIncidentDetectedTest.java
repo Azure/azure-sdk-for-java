@@ -35,7 +35,7 @@ public class AnomalyIncidentDetectedTest extends IncidentDetectedTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listIncidentsDetected(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildClient();
 
         PagedIterable<AnomalyIncident> incidentsIterable
             = client.listIncidentsForDetectionConfig(

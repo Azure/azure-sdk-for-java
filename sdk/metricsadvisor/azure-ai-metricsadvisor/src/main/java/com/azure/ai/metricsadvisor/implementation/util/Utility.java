@@ -3,14 +3,23 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.IngestionStatusType;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Helper utility class to manage common methods.
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
 
     /**
      * Extracts the result ID from the location URL.
@@ -38,5 +47,34 @@ public final class Utility {
      */
     public static String toStringOrNull(Object obj) {
         return obj != null ? obj.toString() : null;
+    }
+
+    public static Context enableSync(Context context) {
+        if (context == null || context == Context.NONE) {
+            return CONTEXT_WITH_SYNC;
+        }
+
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    public static List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
+        return ingestionStatusList
+            .stream()
+            .map(ingestionStatus -> {
+                DataFeedIngestionStatus dataFeedIngestionStatus = new DataFeedIngestionStatus();
+                DataFeedIngestionStatusHelper.setMessage(dataFeedIngestionStatus, ingestionStatus.getMessage());
+                DataFeedIngestionStatusHelper.setIngestionStatusType(dataFeedIngestionStatus, IngestionStatusType.fromString(toStringOrNull(ingestionStatus.getStatus())));
+                DataFeedIngestionStatusHelper.setTimestamp(dataFeedIngestionStatus, ingestionStatus.getTimestamp());
+                return dataFeedIngestionStatus;
+            })
+            .collect(Collectors.toList());
+    }
+
+    public static DataFeedIngestionProgress toDataFeedIngestionProgress(
+        com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress dataFeedIngestionProgressResponse) {
+        DataFeedIngestionProgress dataFeedIngestionProgress = new DataFeedIngestionProgress();
+        DataFeedIngestionProgressHelper.setLatestActiveTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestActiveTimestamp());
+        DataFeedIngestionProgressHelper.setLatestSuccessTimestamp(dataFeedIngestionProgress, dataFeedIngestionProgressResponse.getLatestSuccessTimestamp());
+        return dataFeedIngestionProgress;
     }
 }

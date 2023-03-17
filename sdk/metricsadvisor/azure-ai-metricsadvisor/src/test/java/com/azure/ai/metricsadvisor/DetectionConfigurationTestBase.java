@@ -786,7 +786,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
     protected DataFeed createDataFeed(HttpClient httpClient,
                                       MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildClient();
 
         DataFeed dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.fromBasicCredential(
             SQL_SERVER_CONNECTION_STRING,
@@ -1052,7 +1052,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                                   HttpClient httpClient,
                                   MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildClient();
 
         client.deleteDataFeed(dataFeed.getId());
     }

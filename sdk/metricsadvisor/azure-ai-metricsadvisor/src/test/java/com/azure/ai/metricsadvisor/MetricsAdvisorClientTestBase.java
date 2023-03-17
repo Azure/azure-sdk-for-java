@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -20,12 +21,32 @@ public abstract class MetricsAdvisorClientTestBase extends TestBase {
     protected void beforeTest() {
     }
 
-    MetricsAdvisorClientBuilder getMetricsAdvisorBuilder(HttpClient httpClient,
-                                                         MetricsAdvisorServiceVersion serviceVersion) {
-        return getMetricsAdvisorBuilder(httpClient, serviceVersion, true);
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
     }
 
     MetricsAdvisorClientBuilder getMetricsAdvisorBuilder(HttpClient httpClient,
+                                                         MetricsAdvisorServiceVersion serviceVersion, boolean isAsync) {
+        HttpClient httpClient1;
+        if (isAsync) {
+            httpClient1 = buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        } else {
+            httpClient1 = buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        }
+        return getMetricsAdvisorBuilderInternal(httpClient1 , serviceVersion, true);
+    }
+
+    MetricsAdvisorClientBuilder getMetricsAdvisorBuilderInternal(HttpClient httpClient,
                                                          MetricsAdvisorServiceVersion serviceVersion,
                                                          boolean useKeyCredential) {
         MetricsAdvisorClientBuilder builder = new MetricsAdvisorClientBuilder()
