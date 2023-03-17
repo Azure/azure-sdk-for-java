@@ -48,7 +48,7 @@ public final class StartCallRecordingRequestInternal {
      * `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned
      * based on the order in which participant
-     * first audio was detected. Channel to participant mapping details can be
+     * first audio was detected.  Channel to participant mapping details can be
      * found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")

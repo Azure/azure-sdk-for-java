@@ -176,7 +176,7 @@ com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-xml;1.0.0-beta.1;1.0.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-email;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-communication-email;1.0.0-beta.2;1.0.0
 com.azure:azure-developer-loadtesting;1.0.0;1.1.0-beta.1
 com.azure:azure-identity-extensions;1.1.1;1.2.0-beta.2
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.1;1.0.0-beta.2
@@ -357,7 +357,7 @@ com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.2;1.
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-beta.2

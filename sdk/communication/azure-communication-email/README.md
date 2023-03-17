@@ -12,7 +12,7 @@ This package contains the Java SDK for Azure Communication Services for Email.
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above
 - [Apache Maven](https://maven.apache.org/download.cgi)
 
-To create these resource, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
+To create these resources, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
 
 ### Include the package
 #### Include the BOM file
@@ -54,9 +54,11 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0/version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 ## Key concepts
 > More details coming soon.
 
