@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -17,30 +18,17 @@ public final class KeyVaultSetting {
     private final ClientLogger logger = new ClientLogger(KeyVaultSetting.class);
 
     /**
-     * Creates a new {@link KeyVaultSetting setting} with the specified details.
+     * Creates a new {@link KeyVaultSetting setting}  with the with the specified details.
      *
      * @param name The name of the {@link KeyVaultSetting setting}.
      * @param value The value of the {@link KeyVaultSetting setting}.
-     * @param type The data type of the contents of the {@link KeyVaultSetting setting}.
      */
-    public KeyVaultSetting(String name, String value, KeyVaultSettingType type) {
-        this.name = name;
-        this.type = type;
-
-        if (type == KeyVaultSettingType.BOOLEAN) {
-            this.value = Boolean.valueOf(value);
-        } else {
-            this.value = value;
+    public KeyVaultSetting(String name, boolean value) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The 'name' parameter cannot be null or empty"));
         }
-    }
 
-    /**
-     * Creates a new {@link KeyVaultSetting setting} with the specified details.
-     *
-     * @param name The name of the {@link KeyVaultSetting setting}.
-     * @param value The value of the {@link KeyVaultSetting setting}.
-     */
-    public KeyVaultSetting(String name, Boolean value) {
         this.name = name;
         this.value = value;
         this.type = KeyVaultSettingType.BOOLEAN;
@@ -56,27 +44,27 @@ public final class KeyVaultSetting {
     }
 
     /**
-     * Get the value of the {@link KeyVaultSetting} as a {@link Boolean}.
+     * Gets the value of the {@link KeyVaultSetting} as an {@link Object}.
      *
-     * @return The value of the {@link KeyVaultSetting} as a {@link Boolean}.
+     * @return The value of the {@link KeyVaultSetting} as an {@link Object}.
      */
-    public Boolean asBoolean() {
+    public Object getValue() {
+        return this.value;
+    }
+
+    /**
+     * Get the value of the {@link KeyVaultSetting} as a {@code boolean}.
+     *
+     * @return The value of the {@link KeyVaultSetting} as a {@code boolean}.
+     */
+    public boolean asBoolean() {
         if (type != KeyVaultSettingType.BOOLEAN) {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException(String.format("Cannot get setting value as %s from setting value of "
                     + "type %s", KeyVaultSettingType.BOOLEAN, this.getType())));
         }
 
-        return this.value == null ? null : (Boolean) this.value;
-    }
-
-    /**
-     * Get the value of the {@link KeyVaultSetting} as a {@link String}.
-     *
-     * @return The value of the {@link KeyVaultSetting} as a {@link String}.
-     */
-    public String asString() {
-        return this.value == null ? null : this.value.toString();
+        return (Boolean) this.value;
     }
 
     /**

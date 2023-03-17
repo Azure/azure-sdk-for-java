@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
@@ -57,7 +56,6 @@ public final class KeyVaultSettingsClient {
      * @return The updated {@link KeyVaultSetting account setting}.
      *
      * @throws NullPointerException if {@code setting} is {@code null}.
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -66,12 +64,12 @@ public final class KeyVaultSettingsClient {
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'setting'"));
 
-        if (CoreUtils.isNullOrEmpty(setting.getName())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
+        try {
+            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
+                implClient.updateSetting(vaultUrl, setting.getName(), setting.getValue().toString()));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
         }
-
-        return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-            this.implClient.updateSetting(vaultUrl, setting.getName(), setting.asString()));
     }
 
     /**
@@ -84,20 +82,24 @@ public final class KeyVaultSettingsClient {
      * {@link KeyVaultSetting account setting}.
      *
      * @throws NullPointerException if {@code setting} is {@code null}.
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, Context context) {
-        if (CoreUtils.isNullOrEmpty(setting.getName())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Setting name cannot be null or empty"));
+        Objects.requireNonNull(setting,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'setting'"));
+
+        try {
+            Response<Setting> response =
+                implClient.updateSettingWithResponse(vaultUrl, setting.getName(), setting.getValue().toString(),
+                    context);
+
+            return new SimpleResponse<>(response,
+                KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
         }
-
-        Response<Setting> response =
-            this.implClient.updateSettingWithResponse(vaultUrl, setting.getName(), setting.asString(), context);
-
-        return new SimpleResponse<>(response,
-            KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
     }
 
     /**
@@ -107,16 +109,16 @@ public final class KeyVaultSettingsClient {
      *
      * @return The {@link KeyVaultSetting account setting}.
      *
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
+     * @throws IllegalArgumentException thrown if the setting type is not supported.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting getSetting(String name) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+        try {
+            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSetting(vaultUrl, name));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
         }
-
-        return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSetting(vaultUrl, name));
     }
 
     /**
@@ -128,19 +130,19 @@ public final class KeyVaultSettingsClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultSetting account setting}.
      *
-     * @throws IllegalArgumentException thrown if {@code name} is {@code null} or empty.
+     * @throws IllegalArgumentException thrown if the setting type is not supported.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> getSettingWithResponse(String name, Context context) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
+        try {
+            Response<Setting> response = implClient.getSettingWithResponse(vaultUrl, name, context);
+
+            return new SimpleResponse<>(response,
+                KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
         }
-
-        Response<Setting> response = this.implClient.getSettingWithResponse(vaultUrl, name, context);
-
-        return new SimpleResponse<>(response,
-            KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
     }
 
     /**
@@ -149,16 +151,21 @@ public final class KeyVaultSettingsClient {
      * @return A {@link KeyVaultGetSettingsResult result object} wrapping the list of
      * {@link KeyVaultSetting account settings}.
      *
+     * @throws IllegalArgumentException thrown if a setting type in the list is not supported.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultGetSettingsResult getSettings() {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-        this.implClient.getSettings(vaultUrl).getSettings()
-            .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
+        try {
+            implClient.getSettings(vaultUrl).getSettings()
+                .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
-        return new KeyVaultGetSettingsResult(keyVaultSettings);
+            return new KeyVaultGetSettingsResult(keyVaultSettings);
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -169,16 +176,22 @@ public final class KeyVaultSettingsClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains a
      * {@link KeyVaultGetSettingsResult result object} wrapping the list of {@link KeyVaultSetting account settings}.
      *
+     * @throws IllegalArgumentException thrown if a setting type in the list is not supported.
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultGetSettingsResult> getSettingsWithResponse(Context context) {
-        Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
-        List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
+        try {
+            Response<SettingsListResult> response = implClient.getSettingsWithResponse(vaultUrl, context);
+            List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-        response.getValue().getSettings()
-            .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
+            response.getValue().getSettings()
+                .forEach(setting ->
+                    keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
-        return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
+            return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
+        } catch (RuntimeException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 }

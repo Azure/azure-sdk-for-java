@@ -48,6 +48,6 @@ public abstract class KeyVaultSettingsClientTestBase extends KeyVaultAdministrat
                                     KeyVaultSetting keyVaultSetting2) {
         assertEquals(keyVaultSetting1.getName(), keyVaultSetting2.getName());
         assertEquals(keyVaultSetting1.getType(), keyVaultSetting2.getType());
-        assertEquals(keyVaultSetting1.asString(), keyVaultSetting2.asString());
+        assertEquals(keyVaultSetting1.getValue().toString(), keyVaultSetting2.getValue().toString());
     }
 }

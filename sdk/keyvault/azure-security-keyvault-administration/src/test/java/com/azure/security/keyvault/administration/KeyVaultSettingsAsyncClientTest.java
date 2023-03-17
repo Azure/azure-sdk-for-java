@@ -42,7 +42,7 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
                     assertNotNull(setting);
                     assertNotNull(setting.getName());
                     assertNotNull(setting.getType());
-                    assertNotNull(setting.asString());
+                    assertNotNull(setting.getValue().toString());
                 }
             }).verifyComplete();
     }
@@ -59,7 +59,7 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
                 assertNotNull(setting);
                 assertNotNull(setting.getName());
                 assertNotNull(setting.getType());
-                assertNotNull(setting.asString());
+                assertNotNull(setting.getValue().toString());
             }).verifyComplete();
     }
 

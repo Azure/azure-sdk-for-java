@@ -41,7 +41,7 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
             assertNotNull(setting);
             assertNotNull(setting.getName());
             assertNotNull(setting.getType());
-            assertNotNull(setting.asString());
+            assertNotNull(setting.getValue().toString());
         }
     }
 
@@ -56,7 +56,7 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
         assertNotNull(setting);
         assertNotNull(setting.getName());
         assertNotNull(setting.getType());
-        assertNotNull(setting.asString());
+        assertNotNull(setting.getValue().toString());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
