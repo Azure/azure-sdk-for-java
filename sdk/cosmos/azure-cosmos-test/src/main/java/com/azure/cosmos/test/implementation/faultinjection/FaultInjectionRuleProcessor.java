@@ -168,11 +168,12 @@ public class FaultInjectionRuleProcessor {
                 // TODO: add handling for gateway mode
 
                 // Direct connection mode, populate physical addresses
+                boolean primaryAddressesOnly = this.isWriteOnlyEndpoint(rule.getCondition());
                 return BackoffRetryUtility.executeRetry(
                         () -> this.resolvePhysicalAddresses(
                             regionEndpoints,
                             rule.getCondition().getEndpoints(),
-                            this.isWriteOnlyEndpoint(rule.getCondition()),
+                            primaryAddressesOnly,
                             documentCollection),
                         new FaultInjectionRuleProcessorRetryPolicy(this.retryOptions)
                     )
@@ -186,7 +187,7 @@ public class FaultInjectionRuleProcessor {
                                     .collect(Collectors.toList());
                         }
 
-                        effectiveCondition.setAddresses(effectiveAddresses);
+                        effectiveCondition.setAddresses(effectiveAddresses, primaryAddressesOnly);
                         return effectiveCondition;
                     });
             })

@@ -51,10 +51,14 @@ public class FaultInjectionConditionInternal {
         return physicalAddresses;
     }
 
-    public void setAddresses(List<URI> physicalAddresses) {
+    public void setAddresses(List<URI> physicalAddresses, boolean primaryOnly) {
         this.physicalAddresses = physicalAddresses;
         if (physicalAddresses != null && physicalAddresses.size() > 0) {
             this.validators.add(new AddressValidator(physicalAddresses));
+        }
+
+        if (primaryOnly) {
+            this.validators.add(new PrimaryAddressValidator());
         }
     }
 
@@ -115,10 +119,19 @@ public class FaultInjectionConditionInternal {
                 && addresses.size() > 0) {
                 return this.addresses
                     .stream()
-                    .anyMatch(address -> request.requestContext.storePhysicalAddress.toString().startsWith(address.toString()));
+                    .anyMatch(address -> request.requestContext.storePhysicalAddressUri.getURIAsString().startsWith(address.toString()));
             }
 
             return true;
+        }
+    }
+
+    static class PrimaryAddressValidator implements IFaultInjectionConditionValidator {
+        PrimaryAddressValidator() {}
+
+        @Override
+        public boolean isApplicable(RxDocumentServiceRequest request) {
+            return request.requestContext.storePhysicalAddressUri.isPrimary();
         }
     }
     //endregion
