@@ -303,7 +303,8 @@ public class ClientTelemetry {
                         }
 
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
-                            targetEndpoint.getPort(), httpHeaders, fluxBytes);
+                            targetEndpoint.getPort(), httpHeaders)
+                            .withBody(tempBuffer);
                         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
                             Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
