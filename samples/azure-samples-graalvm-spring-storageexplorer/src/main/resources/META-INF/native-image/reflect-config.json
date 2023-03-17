@@ -1,0 +1,44 @@
+[
+{
+  "name":"com.azure.graalvm.samples.spring.SpringNativeApplication",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true,
+  "allDeclaredClasses":true
+},
+{
+  "name":"com.azure.graalvm.samples.spring.StorageServiceController",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"com.azure.graalvm.samples.spring.storage.StorageItem",
+  "methods":[
+    {"name":"getFileName","parameterTypes":[] },
+    {"name":"getFileSize","parameterTypes":[] }
+  ]
+},
+{
+  "name":"com.azure.graalvm.samples.spring.storage.StorageService",
+  "allDeclaredMethods":true,
+  "allPublicMethods":true
+},
+{
+  "name":"com.azure.graalvm.samples.spring.storage.azure.AzureBlobStorageService",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true,
+  "methods":[
+    {"name":"deleteFile","parameterTypes":["java.lang.String"] },
+    {"name":"getFile","parameterTypes":["java.lang.String"] },
+    {"name":"init","parameterTypes":[] },
+    {"name":"listAllFiles","parameterTypes":[] },
+    {"name":"store","parameterTypes":["java.lang.String","java.io.InputStream","long"] }
+  ]
+},
+{
+  "name":"com.azure.graalvm.samples.spring.storage.azure.AzureStorageItem",
+  "allPublicMethods":true
+}
+]
