@@ -112,20 +112,19 @@ public final class JedisCheckpointStore implements CheckpointStore {
                 jedis.watch(key);
 
                 List<byte[]> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
-                byte[] currentPartitionOwnership = keyInformation.get(0);
 
-                if (currentPartitionOwnership == null) {
-                    // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the
-                    // field
-                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
-                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
+                long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
+                partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
+                partitionOwnership.setETag("");
 
+                // if PARTITION_OWNERSHIP field does not exist for member we will get a null. Try to add a new entry
+                // and then return.
+                if (keyInformation == null || keyInformation.isEmpty() || keyInformation.get(0) == null) {
                     try {
                         long result = jedis.hsetnx(key, PARTITION_OWNERSHIP, serializedOwnership);
 
                         if (result == 1) {
                             sink.next(partitionOwnership);
-                            sink.complete();
                         } else {
                             // Sometime between fetching the ownership information and trying to set it, someone else
                             // updated/added ownership.
@@ -144,10 +143,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
                     return;
                 }
 
-                Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0)) - jedis.objectIdletime(key);
-                partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
-                partitionOwnership.setETag("default eTag");
-
+                // An entry for PARTITION_OWNERSHIP exists. We'll try to modify it.
                 Transaction transaction = jedis.multi();
                 transaction.hset(key, PARTITION_OWNERSHIP, serializedOwnership);
 
@@ -158,18 +154,20 @@ public final class JedisCheckpointStore implements CheckpointStore {
                 if (executionResponse == null) {
                     // This means that the transaction did not execute, which implies that another client has
                     // changed the ownership during this transaction
-                    addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
-                        .addKeyValue(PARTITION_ID_KEY, partitionId)
-                        .log("Unable to claim partition.");
-
-                    sink.error(new AzureException("Unable to claim partition: " + partitionId));
+                    sink.error(createClaimPartitionException(fullyQualifiedNamespace, eventHubName, consumerGroup,
+                        partitionId, "Transaction was aborted."));
+                } else if (executionResponse.isEmpty()) {
+                    sink.error(createClaimPartitionException(fullyQualifiedNamespace, eventHubName, consumerGroup,
+                        partitionId, "No command results in transaction result."));
+                } else if (executionResponse.get(0) == null) {
+                    sink.error(createClaimPartitionException(fullyQualifiedNamespace, eventHubName, consumerGroup,
+                        partitionId, "Executing update command resulted in null."));
                 } else {
                     addEventHubInformation(LOGGER.atVerbose(), fullyQualifiedNamespace, eventHubName, consumerGroup)
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Claimed partition.");
 
                     sink.next(partitionOwnership);
-                    sink.complete();
                 }
             }
         });
@@ -324,5 +322,15 @@ public final class JedisCheckpointStore implements CheckpointStore {
         return builder.addKeyValue(HOSTNAME_KEY, fullyQualifiedNamespace)
             .addKeyValue(ENTITY_NAME_KEY, eventHubName)
             .addKeyValue(CONSUMER_GROUP_KEY, consumerGroup);
+    }
+
+    private static AzureException createClaimPartitionException(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroup, String partitionId, String message) {
+
+        addEventHubInformation(LOGGER.atInfo(), fullyQualifiedNamespace, eventHubName, consumerGroup)
+            .addKeyValue(PARTITION_ID_KEY, partitionId)
+            .log("Unable to claim partition. " + message);
+
+        return new AzureException("Unable to claim partition: " + partitionId +  ". " + message);
     }
 }
