@@ -44,7 +44,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;

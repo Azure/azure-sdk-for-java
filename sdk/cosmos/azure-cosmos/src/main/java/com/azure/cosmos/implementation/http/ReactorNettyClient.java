@@ -2,14 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
@@ -37,14 +30,9 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.WrongMethodTypeException;
 import java.nio.charset.Charset;
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 

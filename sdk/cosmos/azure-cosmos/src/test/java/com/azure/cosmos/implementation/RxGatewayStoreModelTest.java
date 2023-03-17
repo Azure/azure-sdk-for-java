@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import org.mockito.Mockito;
 
 import java.time.Duration;

@@ -50,10 +50,6 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +136,7 @@ public class HttpTransportClient extends TransportClient {
             Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
-            } else {
+            } else if (request.isAddressRefresh()) {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 

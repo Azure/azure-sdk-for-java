@@ -29,8 +29,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;

@@ -18,8 +18,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;

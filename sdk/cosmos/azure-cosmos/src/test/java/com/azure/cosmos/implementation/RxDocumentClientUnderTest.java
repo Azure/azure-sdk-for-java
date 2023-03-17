@@ -8,8 +8,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
