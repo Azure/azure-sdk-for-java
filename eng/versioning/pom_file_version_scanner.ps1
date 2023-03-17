@@ -43,6 +43,7 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
+$SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples/")
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
@@ -397,6 +398,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $xmlPomFile = $null
 
     if ($_.FullName -like "*azure-arm-parent*")
+    {
+        return
+    }
+
+    # azure-samples-graalvm-spring-storageexplorer uses BOM dependency
+    # some of the dependencies do not include a version (as they are derived from BOM)
+    # so, this library should be excluded from version checks
+    if ($_.FullName -like "*azure-samples-graalvm-spring-storageexplorer*")
     {
         return
     }
