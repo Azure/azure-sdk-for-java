@@ -4,35 +4,79 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
-/** The status of the port. */
-public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value Revoked for Status. */
-    public static final Status REVOKED = fromString("Revoked");
-
-    /** Static value Initiated for Status. */
-    public static final Status INITIATED = fromString("Initiated");
-
-    /**
-     * Creates or finds a Status from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding Status.
+/** The status of the health report. */
+@Fluent
+public final class Status {
+    /*
+     * The status of the health report
      */
-    @JsonCreator
-    public static Status fromString(String name) {
-        return fromString(name, Status.class);
+    @JsonProperty(value = "code")
+    private StatusName code;
+
+    /*
+     * The date of when the status of the health report was changed in the last time
+     */
+    @JsonProperty(value = "statusChangeDate", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime statusChangeDate;
+
+    /*
+     * The date of when the resource of the health report was scanned in the first time
+     */
+    @JsonProperty(value = "firstEvaluationDate", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime firstEvaluationDate;
+
+    /** Creates an instance of Status class. */
+    public Status() {
     }
 
     /**
-     * Gets known Status values.
+     * Get the code property: The status of the health report.
      *
-     * @return known Status values.
+     * @return the code value.
      */
-    public static Collection<Status> values() {
-        return values(Status.class);
+    public StatusName code() {
+        return this.code;
+    }
+
+    /**
+     * Set the code property: The status of the health report.
+     *
+     * @param code the code value to set.
+     * @return the Status object itself.
+     */
+    public Status withCode(StatusName code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
+     * Get the statusChangeDate property: The date of when the status of the health report was changed in the last time.
+     *
+     * @return the statusChangeDate value.
+     */
+    public OffsetDateTime statusChangeDate() {
+        return this.statusChangeDate;
+    }
+
+    /**
+     * Get the firstEvaluationDate property: The date of when the resource of the health report was scanned in the first
+     * time.
+     *
+     * @return the firstEvaluationDate value.
+     */
+    public OffsetDateTime firstEvaluationDate() {
+        return this.firstEvaluationDate;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -4,26 +4,70 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the resource that was assessed. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "source",
-    defaultImpl = ResourceDetails.class)
-@JsonTypeName("ResourceDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Azure", value = AzureResourceDetails.class),
-    @JsonSubTypes.Type(name = "OnPremise", value = OnPremiseResourceDetails.class)
-})
-@Immutable
-public class ResourceDetails {
+/** The resource details of the health report. */
+@Fluent
+public final class ResourceDetails {
+    /*
+     * The status of the health report
+     */
+    @JsonProperty(value = "source")
+    private Source source;
+
+    /*
+     * The azure id of the resource
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /*
+     * The id of the connector
+     */
+    @JsonProperty(value = "connectorId", access = JsonProperty.Access.WRITE_ONLY)
+    private String connectorId;
+
     /** Creates an instance of ResourceDetails class. */
     public ResourceDetails() {
+    }
+
+    /**
+     * Get the source property: The status of the health report.
+     *
+     * @return the source value.
+     */
+    public Source source() {
+        return this.source;
+    }
+
+    /**
+     * Set the source property: The status of the health report.
+     *
+     * @param source the source value to set.
+     * @return the ResourceDetails object itself.
+     */
+    public ResourceDetails withSource(Source source) {
+        this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the id property: The azure id of the resource.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the connectorId property: The id of the connector.
+     *
+     * @return the connectorId value.
+     */
+    public String connectorId() {
+        return this.connectorId;
     }
 
     /**
