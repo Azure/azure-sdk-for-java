@@ -6,12 +6,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -288,7 +283,15 @@ public class ClientMetricsTest extends BatchTestBase {
                     300
                 );
 
-                Tag expectedConsistencyTag = Tag.of(TagName.ConsistencyLevel.toString(), "Session");
+                String expectedConsistencyLevel = ImplementationBridgeHelpers
+                    .CosmosAsyncClientHelper
+                    .getCosmosAsyncClientAccessor()
+                    .getEffectiveConsistencyLevel(
+                        client.asyncClient(),
+                        OperationType.Create,
+                        null)
+                    .toString();
+                Tag expectedConsistencyTag = Tag.of(TagName.ConsistencyLevel.toString(), expectedConsistencyLevel);
                 this.assertMetrics(
                     "cosmos.client.op.latency",
                     !suppressConsistencyLevelTag,
@@ -424,6 +427,9 @@ public class ClientMetricsTest extends BatchTestBase {
                 container.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
+            // draining the iterator - metrics will only be emitted at the end
+            feedResponseIterator3.stream().collect(Collectors.toList());
+
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
@@ -466,9 +472,65 @@ public class ClientMetricsTest extends BatchTestBase {
 
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-            CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
-                container.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
+            CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 = container
+                .readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+
+            // draining the iterator - metrics will only be emitted at the end
+            feedResponseIterator3.stream().collect(Collectors.toList());
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                10000
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
+                1,
+                10000
+            );
+
+            this.validateItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId())
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
+
+            this.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.op.maxItemCount", true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
+        this.beforeTest(
+            CosmosMetricCategory.DEFAULT,
+            CosmosMetricCategory.OPERATION_DETAILS,
+            CosmosMetricCategory.REQUEST_DETAILS);
+        try {
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+            CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 = new CosmosPagedIterable<>(
+                container.asyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class),
+                10);
+            assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+
+            // draining the iterator - metrics will only be emitted at the end
+            feedResponseIterator3.stream().collect(Collectors.toList());
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
@@ -875,8 +937,8 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
             assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
-            
-            // Now change the metricCategories on the config passed into the CosmosClientBuilder 
+
+            // Now change the metricCategories on the config passed into the CosmosClientBuilder
             // and validate that these changes take effect immediately on the client build via the builder
             this.inputMetricsOptions
                 .setMetricCategories(CosmosMetricCategory.ALL)
@@ -885,7 +947,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 .configureDefaultPercentiles(0.9)
                 .enableHistogramsByDefault(false)
                 .setEnabled(true);
-            
+
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
 
             clientMetricCategories = ImplementationBridgeHelpers
@@ -1166,21 +1228,48 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(meters.size()).isGreaterThan(0);
         }
 
-        List<Meter> meterMatches = meters
+        List<Meter> meterPrefixMatches = meters
             .stream()
-            .filter(meter -> meter.getId().getName().startsWith(prefix) &&
-                (withTag == null || meter.getId().getTags().contains(withTag)) &&
+            .filter(meter -> meter.getId().getName().startsWith(prefix))
+            .collect(Collectors.toList());
+
+        List<Meter> meterMatches = meterPrefixMatches
+            .stream()
+            .filter(meter -> (withTag == null || meter.getId().getTags().contains(withTag)) &&
                 meter.measure().iterator().next().getValue() > 0)
             .collect(Collectors.toList());
 
         if (expectedToFind) {
-            assertThat(meterMatches.size()).isGreaterThan(0);
+            if (meterMatches.size() == 0) {
+
+                String message = String.format(
+                    "No meter found for the expected constraints - prefix '%s', withTag '%s'",
+                    prefix,
+                    withTag);
+
+                logger.error(message);
+
+                logger.info("Meters matching the prefix");
+                meterPrefixMatches.forEach(meter ->
+                    logger.info("{} has measurements {}", meter.getId(), meter.measure().iterator().hasNext()));
+
+
+                fail(message);
+            }
 
             return meterMatches.get(0);
         } else {
             if (meterMatches.size() > 0) {
+                String message = String.format(
+                    "Found unexpected meter '%s' for prefix '%s' withTag '%s'",
+                    meters.get(0).getId(),
+                    prefix,
+                    withTag);
+                logger.error(message);
                 meterMatches.forEach(m ->
-                    logger.error("Found unexpected meter {}", m.getId().getName()));
+                    logger.info("Found unexpected meter {}", m.getId().getName()));
+
+                fail(message);
             }
             assertThat(meterMatches.size()).isEqualTo(0);
 

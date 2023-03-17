@@ -832,7 +832,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
         assertThat(attributes.get("db.operation")).isEqualTo(methodName);
         assertThat(attributes.get("net.peer.name")).isEqualTo("localhost");
-        assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(DiagnosticsProvider.RESOURCE_PROVIDER_NAME);
 
         assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
         assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
@@ -1054,7 +1053,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                     ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT
                 )));
         assertThat(attributes.get("db.statement")).isEqualTo(methodName);
-        assertThat(attributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo("Microsoft.DocumentDB");
 
         //verifying diagnostics as events
         if (forceThresholdViolation) {
@@ -1298,7 +1296,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             clientTelemetryConfig.enableTransportLevelTracing();
         }
 
-        DiagnosticsProvider tracerProvider = new DiagnosticsProvider(mockTracer, clientTelemetryConfig);
+        clientTelemetryConfig.tracer(mockTracer);
+
+        DiagnosticsProvider tracerProvider = new DiagnosticsProvider(clientTelemetryConfig);
         ReflectionUtils.setClientTelemetryConfig(client, clientTelemetryConfig);
         ReflectionUtils.setDiagnosticsProvider(client, tracerProvider);
 

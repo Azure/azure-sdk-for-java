@@ -139,6 +139,7 @@ public final class ClientTelemetryMetrics {
             diagnosticsContext.getContainerName(),
             diagnosticsContext.getDatabaseName(),
             diagnosticsContext.getOperationType(),
+            diagnosticsContext.isPointOperation(),
             diagnosticsContext.getResourceType(),
             diagnosticsContext.getConsistencyLevel(),
             diagnosticsContext.getOperationId(),
@@ -157,6 +158,7 @@ public final class ClientTelemetryMetrics {
         String containerId,
         String databaseId,
         String operationType,
+        boolean isPointOperation,
         String resourceType,
         ConsistencyLevel consistencyLevel,
         String operationId,
@@ -172,8 +174,6 @@ public final class ClientTelemetryMetrics {
 
         Tag clientCorrelationTag = clientAccessor.getClientCorrelationTag(client);
         String accountTagValue = clientAccessor.getAccountTagValue(client);
-
-        boolean isPointOperation = maxItemCount == null || maxItemCount < 0;
 
         EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(client);
         EnumSet<MetricCategory> metricCategories = clientAccessor.getMetricCategories(client);

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -1311,6 +1312,7 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config);
             boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config);
             boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config);
+            Tracer getOrCreateTracer(CosmosClientTelemetryConfig config);
         }
     }
 

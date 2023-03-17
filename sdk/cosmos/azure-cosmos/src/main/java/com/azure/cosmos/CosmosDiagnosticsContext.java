@@ -146,6 +146,14 @@ public final class CosmosDiagnosticsContext {
         return this.operationTypeString;
     }
 
+    /**
+     * A flag indicating whether the operation is a point operation or not.
+     * @return a flag indicating whether the operation is a point operation or not.
+     */
+    public boolean isPointOperation() {
+        return this.operationType.isPointOperation();
+    }
+
     OperationType getOperationTypeInternal() {
         return this.operationType;
     }

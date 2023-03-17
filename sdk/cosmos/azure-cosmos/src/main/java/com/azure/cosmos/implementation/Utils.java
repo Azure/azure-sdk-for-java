@@ -724,6 +724,10 @@ public class Utils {
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
+        } else {
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
+                cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+            pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
         }
     }
 

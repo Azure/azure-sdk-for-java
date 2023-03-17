@@ -6,7 +6,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
@@ -53,9 +52,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -94,7 +91,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final DiagnosticsProvider diagnosticsProvider;
     private final boolean contentResponseOnWriteEnabled;
-    private static final Tracer TRACER;
     private final ApiType apiType;
     private final String clientCorrelationId;
     private final Tag clientCorrelationTag;
@@ -106,16 +102,6 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
-
-    static {
-        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
-        Iterator<?> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            TRACER = serviceLoader.iterator().next();
-        } else {
-            TRACER = null;
-        }
-    }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -245,9 +231,7 @@ public final class CosmosAsyncClient implements Closeable {
             );
         }
 
-        this.diagnosticsProvider = new DiagnosticsProvider(
-            TRACER,
-            effectiveTelemetryConfig);
+        this.diagnosticsProvider = new DiagnosticsProvider(effectiveTelemetryConfig);
     }
 
     AsyncDocumentClient getContextClient() {

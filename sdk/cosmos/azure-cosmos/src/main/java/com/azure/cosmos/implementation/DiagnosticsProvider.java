@@ -52,7 +52,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -91,26 +90,25 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     public DiagnosticsProvider(
-        Tracer tracer,
         CosmosClientTelemetryConfig clientTelemetryConfig) {
 
         checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' must not be null.");
 
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
+        Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
 
-        if (tracer != null) {
-            checkNotNull(diagnosticHandlers, "Argument 'diagnosticHandlers' must not be null.");
-            this.tracer = tracer;
+        if (tracerCandidate.isEnabled()) {
+            this.tracer = tracerCandidate;
         } else {
             if (!this.diagnosticHandlers.isEmpty()) {
-                this.tracer = NoOpTracer.INSTANCE;
+                this.tracer = EnabledNoOpTracer.INSTANCE;
             } else {
-                this.tracer = null;
+                this.tracer = tracerCandidate;
             }
         }
 
-        if (this.tracer != null) {
+        if (this.tracer.isEnabled()) {
             if (clientTelemetryConfigAccessor.isLegacyTracingEnabled(clientTelemetryConfig)) {
                 this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
             } else {
@@ -127,11 +125,11 @@ public final class DiagnosticsProvider {
     }
 
     public boolean isEnabled() {
-        return this.tracer != null;
+        return this.tracer.isEnabled();
     }
 
     public boolean isRealTracer() {
-        return this.tracer != null && this.tracer != NoOpTracer.INSTANCE;
+        return this.tracer.isEnabled() && this.tracer != EnabledNoOpTracer.INSTANCE;
     }
 
     /**
@@ -757,7 +755,6 @@ public final class DiagnosticsProvider {
 
         private StartSpanOptions startSpanOptions(String methodName, String databaseId, String endpoint) {
             StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
-                .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
                 .setAttribute(DB_TYPE, DB_TYPE_VALUE)
                 .setAttribute(LEGACY_DB_URL, endpoint)
                 .setAttribute(LEGACY_DB_STATEMENT, methodName);
@@ -1022,11 +1019,10 @@ public final class DiagnosticsProvider {
         private StartSpanOptions startSpanOptions(String spanName, CosmosDiagnosticsContext cosmosCtx) {
             StartSpanOptions spanOptions;
 
-            if (tracer instanceof NoOpTracer) {
+            if (tracer instanceof EnabledNoOpTracer) {
                 spanOptions = new StartSpanOptions(SpanKind.CLIENT);
             } else {
                 spanOptions = new StartSpanOptions(SpanKind.CLIENT)
-                    .setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME)
                     .setAttribute("db.system", "cosmosdb")
                     .setAttribute("db.operation", spanName)
                     .setAttribute("net.peer.name", cosmosCtx.getAccountName())
@@ -1071,7 +1067,7 @@ public final class DiagnosticsProvider {
                 }
             }
 
-            if (tracer instanceof NoOpTracer) {
+            if (tracer instanceof EnabledNoOpTracer) {
                 tracer.end(errorMessage, finalError, context);
                 return;
             }
@@ -1288,10 +1284,10 @@ public final class DiagnosticsProvider {
         return prettifiedCallstack;
     }
 
-    private static final class NoOpTracer implements Tracer {
-        public static final Tracer INSTANCE = new NoOpTracer();
+    private static final class EnabledNoOpTracer implements Tracer {
+        public static final Tracer INSTANCE = new EnabledNoOpTracer();
 
-        private NoOpTracer() {
+        private EnabledNoOpTracer() {
         }
 
         @Override

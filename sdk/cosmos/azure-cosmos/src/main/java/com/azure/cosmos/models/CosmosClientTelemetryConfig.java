@@ -3,15 +3,17 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TracingOptions;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -71,6 +73,8 @@ public final class CosmosClientTelemetryConfig {
     private Boolean effectiveIsClientTelemetryEnabled = null;
     private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
     private CosmosDiagnosticsThresholds diagnosticsThresholds = new CosmosDiagnosticsThresholds();
+    private Tracer tracer;
+    private TracingOptions tracingOptions;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -84,6 +88,8 @@ public final class CosmosClientTelemetryConfig {
         this.proxy = this.getProxyOptions();
         this.customDiagnosticHandlers = new HashSet<>();
         this.diagnosticHandlers = new CopyOnWriteArrayList<>();
+        this.tracer = null;
+        this.tracingOptions = null;
     }
 
     /**
@@ -194,6 +200,32 @@ public final class CosmosClientTelemetryConfig {
         checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
         this.diagnosticsThresholds = thresholds;
 
+        return this;
+    }
+
+    /**
+     * Sets the Tracer to trace Cosmos DB operations and requests. If not specified the tracer will be
+     * created via a TracerProvider from the class path - if any exists. This means if a TracerProvider is available
+     * for example because the applicationinsights-agent java-agent is on the class path, a tracer will be created
+     * automatically.
+     *
+     * @param tracer The Tracer instance.
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig tracer(Tracer tracer) {
+        this.tracer = tracer;
+        return this;
+    }
+
+    /**
+     * Sets {@link TracingOptions} that are applied to each tracing reported by the client.
+     * Use tracing options to enable and disable tracing or pass implementation-specific configuration.
+     *
+     * @param tracingOptions instance of {@link TracingOptions} to set.
+     * @return The updated {@link ClientOptions} object.
+     */
+    public CosmosClientTelemetryConfig tracingOptions(TracingOptions tracingOptions) {
+        this.tracingOptions = tracingOptions;
         return this;
     }
 
@@ -399,6 +431,18 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
+    Tracer getOrCreateTracer() {
+        if (this.tracer != null) {
+            return this.tracer;
+        }
+
+        return TracerProvider.getDefaultProvider().createTracer(
+            "azure-cosmos",
+            HttpConstants.Versions.getSdkVersion(),
+            DiagnosticsProvider.RESOURCE_PROVIDER_NAME,
+            tracingOptions);
+    }
+
     private static class JsonProxyOptionsConfig {
         @JsonProperty
         private String host;
@@ -580,6 +624,11 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config) {
                     return config.isTransportLevelTracingEnabled;
+                }
+
+                @Override
+                public Tracer getOrCreateTracer(CosmosClientTelemetryConfig config) {
+                    return config.getOrCreateTracer();
                 }
             });
     }
