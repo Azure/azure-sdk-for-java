@@ -1,12 +1,6 @@
 {
     "main": "dist/src/index.js",
     "dependencies": {
-      "@azure-tools/cadl-java": "0.4.2",
-      "@azure-tools/cadl-autorest": "0.26.0",
-      "@azure-tools/cadl-azure-core": "0.26.0",
-      "@cadl-lang/compiler": "0.40.0",
-      "@cadl-lang/eslint-config-cadl": "0.5.0",
-      "@cadl-lang/eslint-plugin": "0.40.0",
-      "@cadl-lang/library-linter": "0.40.0"
+      "@azure-tools/typespec-java": "0.5.0"
     }
 }

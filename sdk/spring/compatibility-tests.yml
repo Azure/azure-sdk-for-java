@@ -22,7 +22,7 @@ stages:
               GenerateVMJobs: true
           PreGenerationSteps:
             - script: |
-                pip install termcolor
+                python -m pip install termcolor
               displayName: 'python module install'
             - script: |
                 python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py

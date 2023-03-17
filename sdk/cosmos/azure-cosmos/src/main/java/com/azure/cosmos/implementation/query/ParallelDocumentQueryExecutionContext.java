@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -38,6 +37,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -403,8 +403,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         UUID correlatedActivityId,
         String activityId,
         Supplier<String> operationContextTextProvider) {
-        List<ClientSideRequestStatistics> requestStatistics =
-            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+        Set<ClientSideRequestStatistics> requestStatistics =
+            BridgeInternal.getClientSideRequestStatisticsSet(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

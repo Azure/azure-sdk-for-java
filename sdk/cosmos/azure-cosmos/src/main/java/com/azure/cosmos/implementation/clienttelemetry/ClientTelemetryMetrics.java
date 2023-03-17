@@ -432,7 +432,7 @@ public final class ClientTelemetryMetrics {
             }
 
             for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-                List<ClientSideRequestStatistics> clientSideRequestStatistics =
+                Set<ClientSideRequestStatistics> clientSideRequestStatistics =
                     diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
 
                 if (clientSideRequestStatistics != null) {

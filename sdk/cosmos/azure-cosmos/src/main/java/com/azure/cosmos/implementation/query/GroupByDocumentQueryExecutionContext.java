@@ -19,8 +19,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -76,14 +78,14 @@ public final class GroupByDocumentQueryExecutionContext implements
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
-                List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
+                Set<ClientSideRequestStatistics> diagnosticsList = new HashSet<>();
                 ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
                 for (FeedResponse<Document> page : superList) {
                     List<Document> results = page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
-                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsSet(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
@@ -111,7 +113,7 @@ public final class GroupByDocumentQueryExecutionContext implements
 
                 FeedResponse<Document> response = createFeedResponseFromGroupingTable(0,
                                                                                new ConcurrentHashMap<>(),
-                                                                               groupByResults, new ArrayList<>());
+                                                                               groupByResults, new HashSet<>());
                 return Mono.just(response);
             });
     }
@@ -120,7 +122,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         double requestCharge,
         ConcurrentMap<String, QueryMetrics> queryMetrics,
         List<Document> groupByResults,
-        List<ClientSideRequestStatistics> diagnosticsList) {
+        Set<ClientSideRequestStatistics> diagnosticsList) {
 
         if (this.groupingTable == null) {
             throw new IllegalStateException("No grouping table defined.");

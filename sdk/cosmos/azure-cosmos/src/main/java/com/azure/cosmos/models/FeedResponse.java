@@ -54,7 +54,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     // TODO: probably have to add two booleans
     FeedResponse(List<T> results, RxDocumentServiceResponse response) {
         this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
-        this.cosmosDiagnostics =response.getCosmosDiagnostics();
+        this.cosmosDiagnostics = response.getCosmosDiagnostics();
         if (this.cosmosDiagnostics != null) {
             BridgeInternal.setFeedResponseDiagnostics(this.cosmosDiagnostics, queryMetricsMap);
         }

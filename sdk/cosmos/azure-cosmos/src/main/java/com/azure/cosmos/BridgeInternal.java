@@ -54,9 +54,9 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -141,7 +141,7 @@ public final class BridgeInternal {
             BridgeInternal
                 .addClientSideDiagnosticsToFeed(
                     response.getCosmosDiagnostics(),
-                    Collections.singletonList(requestStatistics));
+                    Collections.singleton(requestStatistics));
         }
 
         FeedResponseDiagnostics feedResponseDiagnosticsFromCosmosDiagnostics = diagnostics
@@ -150,7 +150,7 @@ public final class BridgeInternal {
         if (feedResponseDiagnosticsFromCosmosDiagnostics != null) {
             BridgeInternal.addClientSideDiagnosticsToFeed(
                 response.getCosmosDiagnostics(),
-                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatisticsList());
+                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatisticsSet());
         }
 
         return response;
@@ -232,11 +232,11 @@ public final class BridgeInternal {
             requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
             if (requestStatistics != null) {
                 BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                              Collections.singletonList(requestStatistics));
+                                                              Collections.singleton(requestStatistics));
             }
             BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
                                                           cosmosDiagnostics.getFeedResponseDiagnostics()
-                                                              .getClientSideRequestStatisticsList());
+                                                              .getClientSideRequestStatisticsSet());
         }
 
         return feedResponseWithQueryMetrics;
@@ -244,7 +244,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap, null));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -255,11 +255,8 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                                   ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
-        List<ClientSideRequestStatistics> requestStatistics = cosmosDiagnostics.getClientSideRequestStatistics();
-        if (requestStatistics != null) {
-            feedDiagnostics.addClientSideRequestStatistics(requestStatistics);
-        }
+
+        FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(queryMetricsMap, cosmosDiagnostics.getClientSideRequestStatistics());
         cosmosDiagnostics.setFeedResponseDiagnostics(feedDiagnostics);
     }
 
@@ -270,7 +267,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
-                         List<ClientSideRequestStatistics> requestStatistics) {
+                         Set<ClientSideRequestStatistics> requestStatistics) {
         cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 
@@ -571,19 +568,19 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ClientSideRequestStatistics> getClientSideRequestStatisticsList(CosmosDiagnostics cosmosDiagnostics) {
+    public static Set<ClientSideRequestStatistics> getClientSideRequestStatisticsSet(CosmosDiagnostics cosmosDiagnostics) {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
-        List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
+        Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet = new HashSet<>();
 
         if (cosmosDiagnostics != null) {
-            clientSideRequestStatisticsList
-                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
+            clientSideRequestStatisticsSet
+                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsSet());
             if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
+                clientSideRequestStatisticsSet.add(cosmosDiagnostics.clientSideRequestStatistics());
             }
         }
-        return clientSideRequestStatisticsList;
+        return clientSideRequestStatisticsSet;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

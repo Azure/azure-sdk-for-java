@@ -243,8 +243,8 @@ public class RxDocumentClientImplTest {
                 assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
                 assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
 
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
+                assertThat(BridgeInternal.getClientSideRequestStatisticsSet(feedResponse.getCosmosDiagnostics())).isNotNull();
+                assertThat(BridgeInternal.getClientSideRequestStatisticsSet(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
                 assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
 
                 List<InternalObjectNode> readManyResults = feedResponse.getResults();

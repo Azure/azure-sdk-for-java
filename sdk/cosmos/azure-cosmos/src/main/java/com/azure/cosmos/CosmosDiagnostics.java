@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -156,10 +157,10 @@ public final class CosmosDiagnostics {
                 }
             }
 
-            List<ClientSideRequestStatistics> clientStatisticList =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
-            if (clientStatisticList != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticList) {
+            Set<ClientSideRequestStatistics> clientStatisticSet =
+                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
+            if (clientStatisticSet != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticSet) {
                     Set<String> temp = clientStatistics.getContactedRegionNames();
                     if (temp != null && temp.size() > 0) {
                         aggregatedRegionsContacted.addAll(temp);
@@ -199,10 +200,10 @@ public final class CosmosDiagnostics {
         if (this.feedResponseDiagnostics != null) {
             int totalResponsePayloadSizeInBytes = 0;
 
-            List<ClientSideRequestStatistics> clientStatisticList =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
-            if (clientStatisticList != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticList) {
+            Set<ClientSideRequestStatistics> clientStatisticSet =
+                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
+            if (clientStatisticSet != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticSet) {
                     totalResponsePayloadSizeInBytes += clientStatistics.getMaxResponsePayloadSizeInBytes();
                 }
             }
@@ -217,12 +218,12 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics;
     }
 
-    List<ClientSideRequestStatistics> getClientSideRequestStatistics() {
+    Set<ClientSideRequestStatistics> getClientSideRequestStatistics() {
         if (this.feedResponseDiagnostics != null) {
-            return this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
+            return this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
         }
 
-        return ImmutableList.of(this.clientSideRequestStatistics);
+        return ImmutableSet.of(this.clientSideRequestStatistics);
     }
 
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
@@ -284,7 +285,7 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public List<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
+                public Set<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
                     if (cosmosDiagnostics == null) {
                         return null;
                     }
