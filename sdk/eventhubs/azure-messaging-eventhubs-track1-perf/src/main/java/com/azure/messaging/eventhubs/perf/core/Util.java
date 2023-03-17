@@ -11,7 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Util {
 
-    public static Mono<Void> preLoadEvents(EventHubClient client, String partitionId, byte[] eventDataBytes, int totalMessagesToSend) {
+    public static Mono<Void> preLoadEvents(EventHubClient client, String partitionId, byte[] eventDataBytes,
+                                           int totalMessagesToSend) {
         final AtomicLong eventsToSend = new AtomicLong(totalMessagesToSend);
         final AtomicLong totalEvents = new AtomicLong(0);
 
@@ -23,14 +24,16 @@ public class Util {
                     return Flux.fromArray(partitionIds)
                         .map(partId -> Mono.fromFuture(client.getPartitionRuntimeInformation(partId))
                             .map(partitionRuntimeInformation -> {
-                                totalEvents.addAndGet(partitionRuntimeInformation.getLastEnqueuedSequenceNumber() - partitionRuntimeInformation.getBeginSequenceNumber());
+                                totalEvents.addAndGet(partitionRuntimeInformation.getLastEnqueuedSequenceNumber()
+                                    - partitionRuntimeInformation.getBeginSequenceNumber());
                                 return Mono.empty();
                             })).then();
                 }).then();
         } else {
             partitionMono = Mono.fromFuture(client.getPartitionRuntimeInformation(partitionId))
                 .map(partitionProperties -> {
-                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginSequenceNumber());
+                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber()
+                        - partitionProperties.getBeginSequenceNumber());
                     return Mono.empty();
                 }).then();
         }

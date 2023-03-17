@@ -1,16 +1,17 @@
-package com.azure.messaging.eventhubs.perf.core;
+package com.azure.messaging.eventhubs.perf;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.eventhubs.perf.Main;
 import com.azure.messaging.eventhubs.perf.SampleEventProcessorFactory;
 import com.azure.messaging.eventhubs.perf.SamplePartitionProcessor;
+import com.azure.messaging.eventhubs.perf.core.EventHubsPerfStressOptions;
+import com.azure.messaging.eventhubs.perf.core.Util;
 import com.azure.perf.test.core.EventPerfTest;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventprocessorhost.*;
+import com.microsoft.azure.eventprocessorhost.EventProcessorHost;
+import com.microsoft.azure.eventprocessorhost.EventProcessorOptions;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -41,8 +42,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
     protected String eventHubName;
     protected byte[] eventDataBytes;
     protected EventHubClient eventHubClient;
-
-
+    private final EventProcessorOptions eventProcessorOptions;
 
     /**
      * Creates an instance of performance test.
@@ -58,7 +58,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new RuntimeException("Storage Connection String cannot be null.");
         }
-        
+
         eventhubsConnectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
         eventHubName = "";
 
@@ -70,7 +70,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
 
-        eventDataBytes = Util.generateString(100).getBytes(StandardCharsets.UTF_8);
+        eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
 
         StorageCredentials storageCredentials = null;
         try {
@@ -109,6 +109,9 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
                 .setExecutor(scheduler);
 
         eventProcessorHost = builder.build();
+        eventProcessorOptions = new EventProcessorOptions();
+        eventProcessorOptions.setPrefetchCount(options.getPrefetch());
+        eventProcessorOptions.setMaxBatchSize(options.getBatchSize());
 
         try {
             eventHubClient = EventHubClient
@@ -129,11 +132,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
                     return Mono.empty();
                 })))
             .then(Mono.defer(() -> {
-                EventProcessor.eventPerfTest = this;
-                EventProcessorOptions options = new EventProcessorOptions();
-                options.setPrefetchCount(7999);
-                options.setMaxBatchSize(7998);
-                eventProcessorHost.registerEventProcessor(EventProcessor.class, options);
+                eventProcessorHost.registerEventProcessorFactory(processorFactory, eventProcessorOptions);
                 return Mono.empty();
             }));
     }
@@ -142,7 +141,6 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
     public Mono<Void> cleanupAsync() {
         return super.cleanupAsync().then(Mono.defer(() -> {
             eventProcessorHost.unregisterEventProcessor();
-            System.out.println("Cleanup: unregister event processor.");
             scheduler.shutdown();
             return Mono.empty();
         }));
@@ -151,50 +149,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubClient, options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null , eventDataBytes, options.getEvents())));
-    }
-
-
-    public static class EventProcessor implements IEventProcessor {
-        public static EventPerfTest<EventHubsPerfStressOptions> eventPerfTest;
-        private int checkpointBatchingCount = 0;
-
-        // OnOpen is called when a new event processor instance is created by the host. In a real implementation, this
-        // is the place to do initialization so that events can be processed when they arrive, such as opening a database
-        // connection.
-        @Override
-        public void onOpen(PartitionContext context) throws Exception {
-            System.out.println("SAMPLE: Partition " + context.getPartitionId() + " is opening");
-        }
-
-        // OnClose is called when an event processor instance is being shut down. The reason argument indicates whether the shut down
-        // is because another host has stolen the lease for this partition or due to error or host shutdown. In a real implementation,
-        // this is the place to do cleanup for resources that were opened in onOpen.
-        @Override
-        public void onClose(PartitionContext context, CloseReason reason) throws Exception {
-            System.out.println("SAMPLE: Partition " + context.getPartitionId() + " is closing for reason " + reason.toString());
-        }
-
-        // onError is called when an error occurs in EventProcessorHost code that is tied to this partition, such as a receiver failure.
-        // It is NOT called for exceptions thrown out of onOpen/onClose/onEvents. EventProcessorHost is responsible for recovering from
-        // the error, if possible, or shutting the event processor down if not, in which case there will be a call to onClose. The
-        // notification provided to onError is primarily informational.
-        @Override
-        public void onError(PartitionContext context, Throwable error) {
-            System.out.println("SAMPLE: Partition " + context.getPartitionId() + " onError: " + error.toString());
-        }
-
-        // onEvents is called when events are received on this partition of the Event Hub. The maximum number of events in a batch
-        // can be controlled via EventProcessorOptions. Also, if the "invoke processor after receive timeout" option is set to true,
-        // this method will be called with null when a receive timeout occurs.
-        @Override
-        public void onEvents(PartitionContext context, Iterable<EventData> events) throws Exception {
-            int eventCount = 0;
-            for (EventData data : events)
-            {
-                eventPerfTest.eventRaised();
-            }
-//            System.out.println("SAMPLE: Partition " + context.getPartitionId() + " batch size was " + eventCount + " for host " + context.getOwner());
-        }
+            .then(Mono.defer(() -> Util.preLoadEvents(eventHubClient, options.getPartitionId() != null
+                ? String.valueOf(options.getPartitionId()) : null , eventDataBytes, options.getEvents())));
     }
 }

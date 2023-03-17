@@ -1,13 +1,20 @@
-package com.azure.messaging.eventhubs.perf.core;
+package com.azure.messaging.eventhubs.perf;
 
-import com.microsoft.azure.eventhubs.*;
+import com.azure.messaging.eventhubs.perf.core.EventHubsPerfStressOptions;
+import com.azure.messaging.eventhubs.perf.core.ServiceBatchTest;
+import com.azure.messaging.eventhubs.perf.core.Util;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventHubsPerfStressOptions> {
     private PartitionReceiver receiver;
+    protected byte[] eventDataBytes;
 
     /**
      * Instantiates instance of the Service Test.
@@ -23,13 +30,15 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
         } catch (EventHubException e) {
             throw new RuntimeException("Unable to create PartitionReceiver.", e);
         }
+        eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
 
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(Mono.defer(() -> preLoadEvents(eventHubClient, options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null , options.getEvents())));
+            .then(Mono.defer(() -> Util.preLoadEvents(eventHubClient, options.getPartitionId() != null
+                ? String.valueOf(options.getPartitionId()) : null , eventDataBytes, options.getEvents())));
     }
 
     @Override
