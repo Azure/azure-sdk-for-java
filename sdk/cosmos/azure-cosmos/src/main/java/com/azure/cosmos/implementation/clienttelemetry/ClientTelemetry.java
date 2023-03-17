@@ -311,6 +311,14 @@ public class ClientTelemetry {
                                 logger.error("Client telemetry request did not succeeded, status code {}, request body {}",
                                     response.statusCode(),
                                     new String(tempBuffer, StandardCharsets.UTF_8));
+
+                                response.bodyAsString().doOnSuccess(responsePayload -> {
+                                    logger.error("Client telemetry request did not succeeded, status code {}, request body {}, response body {}",
+                                        response.statusCode(),
+                                        new String(tempBuffer, StandardCharsets.UTF_8),
+                                        responsePayload);
+                                }).subscribe();
+
                             }
                             this.clearDataForNextRun();
                             return this.sendClientTelemetry();
