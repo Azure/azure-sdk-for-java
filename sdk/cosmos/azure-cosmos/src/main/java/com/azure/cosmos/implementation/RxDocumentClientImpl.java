@@ -89,9 +89,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -2286,7 +2288,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
+                                Set<ClientSideRequestStatistics> aggregateRequestStatistics = new HashSet<>();
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2300,7 +2302,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsSet(page.getCosmosDiagnostics()));
                                 }
                                 CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
                                 BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
@@ -2535,7 +2537,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 CosmosItemResponse<T> cosmosItemResponse =
                     ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
                 FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Arrays.asList(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Collections.singleton(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
                 return Mono.just(feedResponse);
             });
     }

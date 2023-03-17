@@ -62,6 +62,7 @@ import java.time.Duration;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
@@ -668,7 +669,7 @@ public class ImplementationBridgeHelpers {
         public interface CosmosDiagnosticsAccessor {
             FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
-            List<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics);
+            Set<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics);
             int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
             int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
         }

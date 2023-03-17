@@ -636,7 +636,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         FeedResponseDiagnostics feedResponseDiagnostics =
             cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
-        if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0) {
+        if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsSet().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("Query Plan Statistics")
@@ -649,7 +649,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             counter = 1;
             for (ClientSideRequestStatistics clientSideStatistics :
-                feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
+                feedResponseDiagnostics.getClientSideRequestStatisticsSet()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
                     && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
                     Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange "

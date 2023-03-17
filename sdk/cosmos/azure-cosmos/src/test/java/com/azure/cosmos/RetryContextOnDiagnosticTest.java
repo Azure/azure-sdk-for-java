@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GoneException;
@@ -63,6 +64,7 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -333,11 +335,15 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            retryContext =
-                feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getClientSideRequestStatisticsList().get(0).getRetryContext();
-            assertThat(retryContext.getRetryCount()).isEqualTo(2);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatisticsSet()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 0).findFirst();
+
+            assertThat(first.isPresent()).isTrue();
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -420,13 +426,18 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            retryContext =
-                feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getClientSideRequestStatisticsList().get(0).getRetryContext();
-            assertThat(retryContext.getRetryCount()).isEqualTo(4);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(1)[0]).isEqualTo(429);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(2)[0]).isEqualTo(410);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(3)[0]).isEqualTo(429);
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatisticsSet()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 4
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(1)[0] == 429
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(2)[0] == 410
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(3)[0] == 429)
+                .findFirst();
+
+            assertThat(first.isPresent()).isTrue();
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
@@ -554,11 +565,17 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            retryContext =
-                feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getClientSideRequestStatisticsList().get(0).getRetryContext();
-            assertThat(retryContext.getRetryCount()).isEqualTo(2);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(404);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(1002);
+
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatisticsSet()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 404
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[1] == 1002)
+                .findFirst();
+
+            assertThat(first.isPresent()).isTrue();
 
         } finally {
             safeCloseSyncClient(cosmosClient);
@@ -687,10 +704,16 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .iterableByPage()
                 .iterator();
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            retryContext =
-                feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getClientSideRequestStatisticsList().get(0).getRetryContext();
-            assertThat(retryContext.getRetryCount()).isEqualTo(2);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
+
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatisticsSet()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
+                .findFirst();
+
+            assertThat(first.isPresent()).isTrue();
 
         } finally {
             safeCloseSyncClient(cosmosClient);
@@ -778,10 +801,15 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .iterableByPage()
                 .iterator();
             feedResponse = iterator.next();
-            retryContext =
-                feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getClientSideRequestStatisticsList().get(0).getRetryContext();
-            assertThat(retryContext.getRetryCount()).isEqualTo(2);
-            assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
+            Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
+                .getFeedResponseDiagnostics()
+                .getClientSideRequestStatisticsSet()
+                .stream()
+                .filter(context -> context.getRetryContext().getRetryCount() == 2
+                    && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
+                .findFirst();
+
+            assertThat(first.isPresent()).isTrue();
             System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
         } finally {
             safeCloseSyncClient(cosmosClient);

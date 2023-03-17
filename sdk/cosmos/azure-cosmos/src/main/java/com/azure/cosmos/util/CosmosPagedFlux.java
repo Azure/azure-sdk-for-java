@@ -483,7 +483,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
         int queryDiagnosticsCounter = 1;
         for (ClientSideRequestStatistics clientSideRequestStatistics :
-            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics)) {
+            BridgeInternal.getClientSideRequestStatisticsSet(cosmosDiagnostics)) {
             attributes = new HashMap<>();
             //adding Supplemental StoreResponse
             int counter = 1;

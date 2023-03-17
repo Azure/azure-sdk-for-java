@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,7 +62,7 @@ public class OrderByDocumentQueryExecutionContext
     private final OrderbyRowComparer<Document> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet;
     private Flux<OrderByRowResult<Document>> orderByObservable;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -81,7 +82,7 @@ public class OrderByDocumentQueryExecutionContext
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
-        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        this.clientSideRequestStatisticsSet = ConcurrentHashMap.newKeySet();
         targetRangeToOrderByContinuationTokenMap = new ConcurrentHashMap<>();
     }
 
@@ -195,7 +196,7 @@ public class OrderByDocumentQueryExecutionContext
                 documentProducers,
                 queryMetricMap,
                 targetRangeToOrderByContinuationTokenMap,
-                clientSideRequestStatisticsList);
+            clientSideRequestStatisticsSet);
     }
 
     private void initializeWithTokenAndFilter(Map<FeedRangeEpkImpl, OrderByContinuationToken> rangeToTokenMapping,
@@ -567,7 +568,7 @@ public class OrderByDocumentQueryExecutionContext
         private final int maxPageSize;
         private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
         private final Function<OrderByRowResult<Document>, String> orderByContinuationTokenCallback;
-        private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+        private final Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet;
         private volatile FeedResponse<OrderByRowResult<Document>> previousPage;
 
         public ItemToPageTransformer(
@@ -575,13 +576,13 @@ public class OrderByDocumentQueryExecutionContext
             int maxPageSize,
             ConcurrentMap<String, QueryMetrics> queryMetricsMap,
             Function<OrderByRowResult<Document>, String> orderByContinuationTokenCallback,
-            List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+            Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet) {
             this.tracker = tracker;
             this.maxPageSize = maxPageSize > 0 ? maxPageSize : DEFAULT_PAGE_SIZE;
             this.queryMetricMap = queryMetricsMap;
             this.orderByContinuationTokenCallback = orderByContinuationTokenCallback;
             this.previousPage = null;
-            this.clientSideRequestStatisticsList = clientSideRequestStatisticsList;
+            this.clientSideRequestStatisticsSet = clientSideRequestStatisticsSet;
         }
 
         private static Map<String, String> headerResponse(
@@ -687,7 +688,7 @@ public class OrderByDocumentQueryExecutionContext
                         false,
                         false, feedOfOrderByRowResults.getCosmosDiagnostics());
                     BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                        clientSideRequestStatisticsSet);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
@@ -700,7 +701,7 @@ public class OrderByDocumentQueryExecutionContext
                             false,
                             null);
                     BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                        clientSideRequestStatisticsSet);
                     return Flux.just(frp);
                     }));
         }
@@ -743,7 +744,7 @@ public class OrderByDocumentQueryExecutionContext
                 maxPageSize,
                 this.queryMetricMap,
                 this::getContinuationToken,
-                this.clientSideRequestStatisticsList));
+                this.clientSideRequestStatisticsSet));
     }
 
     @Override

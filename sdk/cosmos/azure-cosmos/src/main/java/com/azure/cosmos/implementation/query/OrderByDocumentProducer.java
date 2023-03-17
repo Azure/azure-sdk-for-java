@@ -20,10 +20,9 @@ import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,7 +61,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
-            List<ClientSideRequestStatistics> clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+            Set<ClientSideRequestStatistics> clientSideRequestStatisticsList = ConcurrentHashMap.newKeySet();
             return OrderByUtils.orderedMerge(consumeComparer, tracker, documentProducers, queryMetricsMap,
                     targetRangeToOrderByContinuationTokenMap, clientSideRequestStatisticsList)
                     .map(orderByQueryResult -> resultPageFrom(tracker, orderByQueryResult));

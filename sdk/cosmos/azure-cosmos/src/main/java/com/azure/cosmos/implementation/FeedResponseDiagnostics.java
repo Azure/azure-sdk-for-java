@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -29,11 +29,15 @@ public class FeedResponseDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
-    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet;
 
-    public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+    public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap, Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet) {
         this.queryMetricsMap = queryMetricsMap;
-        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        if (clientSideRequestStatisticsSet == null) {
+            this.clientSideRequestStatisticsSet = ConcurrentHashMap.newKeySet();
+        } else {
+            this.clientSideRequestStatisticsSet = Collections.synchronizedSet(new HashSet<>(clientSideRequestStatisticsSet));
+        }
     }
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
@@ -41,8 +45,8 @@ public class FeedResponseDiagnostics {
             this.queryMetricsMap = new ConcurrentHashMap<>(toBeCloned.queryMetricsMap);
         }
 
-        this.clientSideRequestStatisticsList = Collections.synchronizedList(
-            new ArrayList<>(toBeCloned.clientSideRequestStatisticsList));
+        this.clientSideRequestStatisticsSet = Collections.synchronizedSet(
+            new HashSet<>(toBeCloned.clientSideRequestStatisticsSet));
 
         if (diagnosticsContext != null) {
             this.diagnosticsContext = new QueryInfo.QueryPlanDiagnosticsContext(
@@ -102,7 +106,7 @@ public class FeedResponseDiagnostics {
         }
         try {
             stringBuilder
-                .append(mapper.writeValueAsString(clientSideRequestStatisticsList));
+                .append(mapper.writeValueAsString(clientSideRequestStatisticsSet));
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while parsing diagnostics ", e);
         }
@@ -119,16 +123,16 @@ public class FeedResponseDiagnostics {
     }
 
     /**
-     * Getter for property 'clientSideRequestStatisticsList'.
+     * Getter for property 'clientSideRequestStatisticsSet'.
      *
-     * @return Value for property 'clientSideRequestStatisticsList'.
+     * @return Value for property 'clientSideRequestStatisticsSet'.
      */
-    public List<ClientSideRequestStatistics> getClientSideRequestStatisticsList() {
-        return clientSideRequestStatisticsList;
+    public Set<ClientSideRequestStatistics> getClientSideRequestStatisticsSet() {
+        return clientSideRequestStatisticsSet;
     }
 
-    public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
-        clientSideRequestStatisticsList.addAll(requestStatistics);
+    public void addClientSideRequestStatistics(Set<ClientSideRequestStatistics> requestStatistics) {
+        clientSideRequestStatisticsSet.addAll(requestStatistics);
     }
 
 }

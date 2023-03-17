@@ -24,6 +24,7 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ class OrderByUtils {
                                                                                      List<DocumentProducer<Document>> documentProducers,
                                                                                      Map<String, QueryMetrics> queryMetricsMap,
                                                                                      Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
-                                                                                     List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+                                                                                     Set<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         @SuppressWarnings("unchecked")
         Flux<OrderByRowResult<Document>>[] fluxes = documentProducers
                 .subList(0, documentProducers.size())
@@ -52,7 +53,7 @@ class OrderByUtils {
                                                                                                  Map<String, QueryMetrics> queryMetricsMap,
                                                                                                  Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
                                                                                                  List<SortOrder> sortOrders,
-                                                                                                 List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+                                                                                                 Set<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
                 .produceAsync()
                    .transformDeferred(new OrderByUtils.PageToItemTransformer(tracker, queryMetricsMap,
@@ -66,12 +67,12 @@ class OrderByUtils {
         private final Map<String, QueryMetrics> queryMetricsMap;
         private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
         private final List<SortOrder> sortOrders;
-        private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+        private final Set<ClientSideRequestStatistics> clientSideRequestStatisticsList;
 
         public PageToItemTransformer(
             RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
             Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
-            List<SortOrder> sortOrders, List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+            List<SortOrder> sortOrders, Set<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
             this.tracker = tracker;
             this.queryMetricsMap = queryMetricsMap;
             this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
@@ -83,7 +84,7 @@ class OrderByUtils {
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
                 clientSideRequestStatisticsList.addAll(
-                    BridgeInternal.getClientSideRequestStatisticsList(documentProducerFeedResponse
+                    BridgeInternal.getClientSideRequestStatisticsSet(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
                 QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
                                                   BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));

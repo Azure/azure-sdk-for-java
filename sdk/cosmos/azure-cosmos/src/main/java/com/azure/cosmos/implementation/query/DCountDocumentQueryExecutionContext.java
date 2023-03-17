@@ -13,11 +13,11 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -66,11 +66,11 @@ public class DCountDocumentQueryExecutionContext
                    .map(superList -> {
                        double requestCharge = 0;
                        Map<String, String> headers = new HashMap<>();
-                       List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
+                       Set<ClientSideRequestStatistics> diagnosticsList = new HashSet<>();
 
                        for (FeedResponse<Document> page : superList) {
                            diagnosticsList.addAll(BridgeInternal
-                                                      .getClientSideRequestStatisticsList(page
+                                                      .getClientSideRequestStatisticsSet(page
                                                                                               .getCosmosDiagnostics()));
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();

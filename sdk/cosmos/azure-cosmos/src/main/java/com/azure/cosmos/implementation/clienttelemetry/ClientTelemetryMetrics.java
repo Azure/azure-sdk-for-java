@@ -402,7 +402,7 @@ public final class ClientTelemetryMetrics {
                 latencyMeter.record(latency);
             }
 
-            List<ClientSideRequestStatistics> clientSideRequestStatistics =
+            Set<ClientSideRequestStatistics> clientSideRequestStatistics =
                 diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
 
             if (clientSideRequestStatistics != null) {
