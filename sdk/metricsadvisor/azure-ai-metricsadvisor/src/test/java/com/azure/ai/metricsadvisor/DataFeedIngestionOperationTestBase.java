@@ -3,9 +3,9 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;

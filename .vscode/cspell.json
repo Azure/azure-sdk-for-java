@@ -637,6 +637,14 @@
       ]
     },
     {
+      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "words": [
+        "Pfast",
+        "Pdirect",
+	"Pmulti"
+      ]
+    },
+    {
       "filename": "**/sdk/remoterendering/TestResources/**",
       "words": [
         "Phong"

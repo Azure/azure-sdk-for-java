@@ -17,7 +17,8 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/      -
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
+      - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-spring-data-cosmos/
       - sdk/cosmos/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
@@ -52,6 +53,7 @@ pr:
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
@@ -97,6 +99,10 @@ parameters:
   displayName: 'azure-cosmos-spark_3-3_2-12'
   type: boolean
   default: true
+- name: release_azurecosmostest
+  displayName: 'azure-cosmos-test'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
@@ -138,6 +144,10 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark33 }}
+      - name: azure-cosmos-test
+        groupId: com.azure
+        safeName: azurecosmostest
+        releaseInBatch: ${{ parameters.release_azurecosmostest }}
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure

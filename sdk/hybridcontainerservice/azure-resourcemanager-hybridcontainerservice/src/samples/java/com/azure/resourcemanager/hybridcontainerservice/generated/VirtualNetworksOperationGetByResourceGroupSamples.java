@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation GetByResourceGroup. */
 public final class VirtualNetworksOperationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetVirtualNetwork.json
      */
     /**
      * Sample code: GetVirtualNetwork.
@@ -20,6 +18,7 @@ public final class VirtualNetworksOperationGetByResourceGroupSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .virtualNetworksOperations()
-            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE);
     }
 }

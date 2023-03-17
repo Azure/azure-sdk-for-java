@@ -218,7 +218,7 @@ public final class KeyVaultBackupClient {
         context = enableSyncRestProxy(context);
 
         try {
-            FullBackupResponse backupOperationResponse = clientImpl.fullBackupSyncWithResponse(vaultUrl, sasTokenParameter,
+            FullBackupResponse backupOperationResponse = clientImpl.fullBackupWithResponse(vaultUrl, sasTokenParameter,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),
@@ -260,7 +260,7 @@ public final class KeyVaultBackupClient {
                 final String jobId = keyVaultBackupOperation.getOperationId();
                 Context contextToUse = enableSyncRestProxy(context);
 
-                Response<FullBackupOperation> backupOperationResponse = clientImpl.fullBackupStatusSyncWithResponse(vaultUrl, jobId,
+                Response<FullBackupOperation> backupOperationResponse = clientImpl.fullBackupStatusWithResponse(vaultUrl, jobId,
                     contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return processBackupOperationResponse(new SimpleResponse<>(backupOperationResponse,
                             (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
@@ -385,7 +385,7 @@ public final class KeyVaultBackupClient {
         context = enableSyncRestProxy(context);
 
         try {
-            FullRestoreOperationResponse restoreOperationResponse = clientImpl.fullRestoreOperationSyncWithResponse(vaultUrl, restoreOperationParameters,
+            FullRestoreOperationResponse restoreOperationResponse = clientImpl.fullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
                 restoreOperationResponse.getStatusCode(),
@@ -428,7 +428,7 @@ public final class KeyVaultBackupClient {
                 final String jobId = keyVaultRestoreOperation.getOperationId();
                 Context contextToUse = enableSyncRestProxy(context);
 
-                Response<RestoreOperation> response = clientImpl.restoreStatusSyncWithResponse(vaultUrl, jobId,
+                Response<RestoreOperation> response = clientImpl.restoreStatusWithResponse(vaultUrl, jobId,
                     contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return processRestoreOperationResponse(new SimpleResponse<>(response,
                             (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())));
@@ -559,7 +559,7 @@ public final class KeyVaultBackupClient {
         context = enableSyncRestProxy(context);
 
         try {
-            SelectiveKeyRestoreOperationResponse restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationSyncWithResponse(vaultUrl, keyName,
+            SelectiveKeyRestoreOperationResponse restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(vaultUrl, keyName,
                     selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
                         KEYVAULT_TRACING_NAMESPACE_VALUE));
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
@@ -601,7 +601,7 @@ public final class KeyVaultBackupClient {
                 }
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
                 Context contextToUse = enableSyncRestProxy(context);
-                Response<RestoreOperation> response = clientImpl.restoreStatusSyncWithResponse(vaultUrl, jobId,
+                Response<RestoreOperation> response = clientImpl.restoreStatusWithResponse(vaultUrl, jobId,
                     contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return processSelectiveKeyRestoreOperationResponse(new SimpleResponse<>(response,
                         (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(response.getValue())));

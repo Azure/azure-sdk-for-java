@@ -18,23 +18,20 @@ public class Plan {
     private String name;
 
     /*
-     * The publisher of the 3rd Party Artifact that is being bought. E.g.
-     * NewRelic
+     * The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
      */
     @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
-     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product
-     * maps to the OfferID specified for the artifact at the time of Data
-     * Market onboarding.
+     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the
+     * artifact at the time of Data Market onboarding.
      */
     @JsonProperty(value = "product", required = true)
     private String product;
 
     /*
-     * A publisher provided promotion code as provisioned in Data Market for
-     * the said product/artifact.
+     * A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
      */
     @JsonProperty(value = "promotionCode")
     private String promotionCode;
@@ -44,6 +41,10 @@ public class Plan {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of Plan class. */
+    public Plan() {
+    }
 
     /**
      * Get the name property: A user defined name of the 3rd Party Artifact that is being procured.

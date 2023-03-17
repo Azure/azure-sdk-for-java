@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -32,8 +32,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -220,8 +220,8 @@ public final class MetricsAdvisorClientBuilder implements
         if (pipeline == null) {
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-        final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl advisorRestAPIOpenAPIV2 =
-            new AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder()
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
+            new MetricsAdvisorImplBuilder()
                 .endpoint(endpoint)
                 .pipeline(pipeline)
                 .buildClient();
@@ -267,7 +267,7 @@ public final class MetricsAdvisorClientBuilder implements
         if (clientOptions != null) {
             tracingOptions = clientOptions.getTracingOptions();
         }
-        
+
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE, tracingOptions);
 

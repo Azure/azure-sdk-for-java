@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Accounts Delete. */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Accounts_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_Delete.json
      */
     /**
      * Sample code: Accounts_Delete.
@@ -17,6 +15,6 @@ public final class AccountsDeleteSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().delete("myRG", "account1", Context.NONE);
+        manager.accounts().delete("myRG", "account1", com.azure.core.util.Context.NONE);
     }
 }

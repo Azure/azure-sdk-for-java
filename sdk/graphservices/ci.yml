@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/graphservices/ci.yml
+      - sdk/graphservices/azure-resourcemanager-graphservices/
+    exclude:
+      - sdk/graphservices/pom.xml
+      - sdk/graphservices/azure-resourcemanager-graphservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/graphservices/ci.yml
+      - sdk/graphservices/azure-resourcemanager-graphservices/
+    exclude:
+      - sdk/graphservices/pom.xml
+      - sdk/graphservices/azure-resourcemanager-graphservices/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagergraphservices
+    displayName: azure-resourcemanager-graphservices
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: graphservices
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-graphservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagergraphservices
+        releaseInBatch: ${{ parameters.release_azureresourcemanagergraphservices }}
