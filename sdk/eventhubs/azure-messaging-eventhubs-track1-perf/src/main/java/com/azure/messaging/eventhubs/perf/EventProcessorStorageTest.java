@@ -60,7 +60,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
         }
 
         eventhubsConnectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
-        eventHubName = "";
+        eventHubName = System.getenv("EVENTHUB_NAME");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
@@ -72,7 +72,7 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
 
         eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
 
-        StorageCredentials storageCredentials = null;
+        StorageCredentials storageCredentials;
         try {
             storageCredentials = StorageCredentials.tryParseCredentials(connectionString);
         } catch (InvalidKeyException | StorageException e) {

@@ -5,9 +5,12 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+
 public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     private EventHubConsumerClient eventHubConsumerClient;
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
+    private byte[] eventDataBytes;
 
     /**
      * Instantiates instance of the Service Test.
@@ -20,13 +23,15 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
         if(options.getPartitionId() != null) {
             throw new IllegalStateException("Partition Id not required/supported for this test case.");
         }
+        eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
 
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(Mono.defer(() -> preLoadEvents(eventHubProducerAsyncClient, options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null , options.getEvents())));
+            .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient, options.getPartitionId() != null
+                ? String.valueOf(options.getPartitionId()) : null , options.getEvents(), eventDataBytes)));
     }
 
     @Override

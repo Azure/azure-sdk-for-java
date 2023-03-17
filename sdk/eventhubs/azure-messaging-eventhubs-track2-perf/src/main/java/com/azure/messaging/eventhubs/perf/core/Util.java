@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
-class Util {
+public class Util {
 
     public static Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend, byte[] eventDatabytes) {
         final CreateBatchOptions options = partitionId != null

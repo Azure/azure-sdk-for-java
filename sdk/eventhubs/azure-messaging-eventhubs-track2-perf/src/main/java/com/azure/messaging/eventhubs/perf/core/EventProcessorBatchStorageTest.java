@@ -8,11 +8,11 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.perf.test.core.EventPerfTest;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +27,7 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
     protected String connectionString;
     protected String eventhubsConnectionString;
     protected BlobContainerAsyncClient containerAsyncClient;
+    protected BlobContainerClient containerClient;
     protected EventHubClientBuilder eventHubClientBuilder;
     protected EventHubProducerAsyncClient eventHubProducerAsyncClient;
     protected EventHubProducerClient eventHubProducerClient;
@@ -50,7 +51,7 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
         }
 
         eventhubsConnectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
-        eventHubName = "";
+        eventHubName = System.getenv("EVENTHUB_NAME");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
@@ -64,11 +65,18 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
             .containerName(CONTAINER_NAME)
             .buildAsyncClient();
 
-        containerAsyncClient.createIfNotExists().block();
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .connectionString(connectionString)
+            .containerName(CONTAINER_NAME);
+
+        containerClient = builder.buildClient();
+        containerAsyncClient = builder.buildAsyncClient();
+        containerClient.createIfNotExists();
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(containerAsyncClient);
 
-        Consumer<ErrorContext> errorProcessor = errorContext -> {System.out.println("err + " + errorContext.getThrowable().getMessage());};
+        Consumer<ErrorContext> errorProcessor = errorContext ->
+            System.out.println("err + " + errorContext.getThrowable().getMessage());
 
         Map<String, EventPosition> initalPositionMap = new HashMap<>();
         for (int i = 0; i < 32; i++) {
@@ -79,7 +87,7 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
         eventHubProducerAsyncClient = eventHubClientBuilder.buildAsyncProducerClient();
         eventHubProducerClient = eventHubClientBuilder.buildProducerClient();
 
-        eventDataBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
+        eventDataBytes = generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
 
         eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(eventhubsConnectionString, eventHubName)
@@ -91,7 +99,7 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
                 for (EventData eventData : eventBatchContext.getEvents()) {
                     super.eventRaised();
                 }
-            }, options.getCount())
+            }, options.getBatchSize())
             .initialPartitionEventPosition(initalPositionMap)
             .prefetchCount(options.getPrefetch())
             .buildEventProcessorClient();
@@ -110,7 +118,6 @@ public class EventProcessorBatchStorageTest extends EventPerfTest<EventHubsPerfO
     public Mono<Void> cleanupAsync() {
         return super.cleanupAsync().then(Mono.defer(() -> {
             eventProcessorClient.stop();
-            System.out.println("Began cleanup");
             return Mono.empty();
         }));
     }

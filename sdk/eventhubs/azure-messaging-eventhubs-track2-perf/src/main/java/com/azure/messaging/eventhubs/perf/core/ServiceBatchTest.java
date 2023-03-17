@@ -28,9 +28,6 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
     protected EventHubClientBuilder eventHubClientBuilder;
     protected EventHubProducerAsyncClient eventHubProducerAsyncClient;
     protected EventHubProducerClient eventHubProducerClient;
-    protected final List<EventData> events;
-    protected byte[] eventDataBytes;
-
 
     /**
      * Instantiates instance of the Service Test.
@@ -49,20 +46,9 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
-
         eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
         eventHubProducerAsyncClient = eventHubClientBuilder.buildAsyncProducerClient();
         eventHubProducerClient = eventHubClientBuilder.buildProducerClient();
-
-        eventDataBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
-
-        final ArrayList<EventData> eventsList = new ArrayList<>();
-        for (int number = 0; number < options.getCount(); number++) {
-            final EventData eventData = new EventData(eventDataBytes);
-            eventData.getProperties().put("index", number);
-            eventsList.add(eventData);
-        }
-        this.events = Collections.unmodifiableList(eventsList);
     }
 
     @Override
@@ -77,63 +63,5 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
             eventHubProducerClient.close();
             return 1;
         }).then();
-    }
-
-    Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
-        final CreateBatchOptions options = partitionId != null
-            ? new CreateBatchOptions().setPartitionId(partitionId)
-            : new CreateBatchOptions();
-
-        final AtomicLong eventsToSend = new AtomicLong(totalMessagesToSend);
-        final AtomicLong totalEvents = new AtomicLong(0);
-
-        Mono<Void> partitionMono;
-        if (CoreUtils.isNullOrEmpty(partitionId)) {
-            partitionMono = client.getPartitionIds()
-                .flatMap(partId -> client.getPartitionProperties(partId))
-                .map(partitionProperties -> {
-                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
-                    return Mono.empty();
-                }).then();
-        } else {
-            partitionMono = client.getPartitionProperties(partitionId)
-                .map(partitionProperties -> {
-                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
-                    return Mono.empty();
-                }).then();
-        }
-        return partitionMono.then(Mono.defer(() -> {
-            if (totalEvents.get() < totalMessagesToSend) {
-                eventsToSend.set(totalMessagesToSend - totalEvents.get());
-                return client.createBatch(options)
-                    .flatMap(batch -> {
-                        EventData event = createEvent();
-                        while (batch.tryAdd(event)) {
-                            eventsToSend.getAndDecrement();
-                        }
-                        return client.send(batch);
-                    }).repeat(() -> eventsToSend.get() > 0).then()
-                    .doFinally(signal -> System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
-            } else {
-                return Mono.empty();
-            }
-        }));
-    }
-
-    protected EventData createEvent() {
-        EventData eventData = new EventData(eventDataBytes);
-        return eventData;
-    }
-
-    protected String generateString(int targetLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-            .limit(targetLength)
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
-        return generatedString;
     }
 }

@@ -8,12 +8,14 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     private EventHubConsumerClient eventHubConsumerClient;
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
+    private byte[] eventDataBytes;
 
     /**
      * Instantiates instance of the Service Test.
@@ -26,13 +28,15 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
         if(options.getPartitionId() == null) {
             throw new IllegalStateException("Specify target partition id.");
         }
+        eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
 
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(Mono.defer(() -> preLoadEvents(eventHubProducerAsyncClient, String.valueOf(options.getPartitionId()), options.getEvents())));
+            .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient,
+                String.valueOf(options.getPartitionId()), options.getEvents(), eventDataBytes)));
     }
 
     @Override

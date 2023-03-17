@@ -8,9 +8,8 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.perf.core.EventHubsPerfOptions;
 import com.azure.messaging.eventhubs.perf.core.ServiceBatchTest;
+import com.azure.messaging.eventhubs.perf.core.Util;
 import reactor.core.publisher.Mono;
-
-import java.util.Random;
 
 /**
  * Runs the Send Events Batch Performance Test for EventHubs.
@@ -65,7 +64,7 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     }
 
     private void addEventsToBatch(EventDataBatch eventDataBatch) {
-        EventData eventData = new EventData(generateString(options.getMessageSize()));
+        EventData eventData = new EventData(Util.generateString(options.getMessageSize()));
         for (int i = 0; i < options.getEvents(); i++) {
             if (!eventDataBatch.tryAdd(eventData)) {
                 throw new IllegalStateException(String.format(
