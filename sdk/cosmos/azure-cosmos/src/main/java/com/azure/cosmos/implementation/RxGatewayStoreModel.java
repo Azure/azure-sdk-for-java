@@ -485,9 +485,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
             policyInstance.onBeforeSendRequest(request);
             return invokeAsyncInternal(request).single();
         }, policyInstance);
-
-//        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-//        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
     }
 
     @Override

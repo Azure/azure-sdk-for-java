@@ -8,36 +8,19 @@ import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
-    public Boolean shouldThrow503OnTimeout = false;
 
     public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
-        if (request.getResourceType() == ResourceType.Document && request.getOperationType() == OperationType.QueryPlan) {
-            return HttpTimeoutPolicyControlPlaneHotPath.instanceShouldThrow503OnTimeout;
-        }
 
-        if (request.getResourceType() == ResourceType.PartitionKeyRange) {
+        if (OperationType.QueryPlan.equals(request.getOperationType()) ||
+            request.isAddressRefresh() ||
+            request.getResourceType() == ResourceType.PartitionKeyRange) {
             return HttpTimeoutPolicyControlPlaneHotPath.instance;
         }
 
-        if (!isMetaData(request) && request.isReadOnlyRequest()) {
-            return HttpTimeoutPolicyDefault.instanceShouldThrow503OnTimeout;
-        }
-
-        if (isMetaData(request) && request.isReadOnlyRequest()) {
-            return HttpTimeoutPolicyDefault.instanceShouldThrow503OnTimeout;
-        }
-
         return HttpTimeoutPolicyDefault.instance;
-    }
-
-    private static Boolean isMetaData(RxDocumentServiceRequest request) {
-        return (request.getOperationType() != OperationType.ExecuteJavaScript &&
-            request.getResourceType() == ResourceType.StoredProcedure) ||
-            request.getResourceType() != ResourceType.Document;
     }
 
     public abstract Duration maximumRetryTimeLimit();

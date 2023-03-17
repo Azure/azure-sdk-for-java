@@ -7,7 +7,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,11 +14,9 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_
 
 public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
 
-    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneHotPath(false);
-    public static HttpTimeoutPolicy instanceShouldThrow503OnTimeout = new HttpTimeoutPolicyControlPlaneHotPath(true);
+    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneHotPath();
 
-    public HttpTimeoutPolicyControlPlaneHotPath(Boolean shouldThrow503OnTimeout) {
-        this.shouldThrow503OnTimeout = shouldThrow503OnTimeout;
+    public HttpTimeoutPolicyControlPlaneHotPath() {
     }
 
     @Override

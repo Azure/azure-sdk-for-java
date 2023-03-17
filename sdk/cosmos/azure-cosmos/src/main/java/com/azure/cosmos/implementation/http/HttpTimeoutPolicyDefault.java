@@ -9,17 +9,14 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
 
-    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyDefault(false);
-    public static HttpTimeoutPolicy instanceShouldThrow503OnTimeout = new HttpTimeoutPolicyDefault(true);
+    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyDefault();
 
-    public HttpTimeoutPolicyDefault(Boolean shouldThrow503OnTimeout) {
-        this.shouldThrow503OnTimeout = shouldThrow503OnTimeout;
+    public HttpTimeoutPolicyDefault() {
     }
 
     @Override
