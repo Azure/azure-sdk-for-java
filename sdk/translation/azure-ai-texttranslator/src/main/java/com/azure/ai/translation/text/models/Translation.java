@@ -27,7 +27,7 @@ public final class Translation {
      * An object giving the translated text in the script specified by the toScript parameter.
      */
     @JsonProperty(value = "transliteration")
-    private Transliteration transliteration;
+    private TransliteratedText transliteration;
 
     /*
      * Alignment information.
@@ -79,7 +79,7 @@ public final class Translation {
      *
      * @return the transliteration value.
      */
-    public Transliteration getTransliteration() {
+    public TransliteratedText getTransliteration() {
         return this.transliteration;
     }
 

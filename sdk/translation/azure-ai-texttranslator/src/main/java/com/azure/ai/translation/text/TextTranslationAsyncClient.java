@@ -225,8 +225,8 @@ public final class TextTranslationAsyncClient {
      *                 to: String (Required)
      *                 text: String (Required)
      *                 transliteration (Optional): {
-     *                     script: String (Required)
      *                     text: String (Required)
+     *                     script: String (Required)
      *                 }
      *                 alignment (Optional): {
      *                     proj: String (Required)
