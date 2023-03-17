@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.azure.spring</groupId>
 	<artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-	<version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+	<version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
 	<name>Azure Spring Cloud App Configuration Config</name>
 	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 	<properties>
