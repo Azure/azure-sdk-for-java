@@ -36,9 +36,9 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
         StepVerifier.create(asyncClient.listSettings())
             .assertNext(listSettingsResult -> {
                 assertNotNull(listSettingsResult);
-                assertTrue(listSettingsResult.getValue().size() > 0);
+                assertTrue(listSettingsResult.getSettings().size() > 0);
 
-                for (KeyVaultSetting setting : listSettingsResult.getValue()) {
+                for (KeyVaultSetting setting : listSettingsResult.getSettings()) {
                     assertNotNull(setting);
                     assertNotNull(setting.getName());
                     assertNotNull(setting.getType());

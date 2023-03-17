@@ -11,16 +11,16 @@ import java.util.List;
  * A result model containing the list of {@link KeyVaultSetting settings} for a given account.
  */
 @Immutable
-public class KeyVaultListSettingsResult {
-    private final List<KeyVaultSetting> value;
+public final class KeyVaultListSettingsResult {
+    private final List<KeyVaultSetting> settings;
 
     /**
      * Creates an instance of {@link KeyVaultListSettingsResult} class.
      *
-     * @param value The list of {@link KeyVaultSetting settings} for the account.
+     * @param settings The list of {@link KeyVaultSetting settings} for the account.
      */
-    public KeyVaultListSettingsResult(List<KeyVaultSetting> value) {
-        this.value = value;
+    public KeyVaultListSettingsResult(List<KeyVaultSetting> settings) {
+        this.settings = settings;
     }
 
     /**
@@ -28,7 +28,7 @@ public class KeyVaultListSettingsResult {
      *
      * @return The list of {@link KeyVaultSetting settings} for the account.
      */
-    public List<KeyVaultSetting> getValue() {
-        return this.value;
+    public List<KeyVaultSetting> getSettings() {
+        return this.settings;
     }
 }
