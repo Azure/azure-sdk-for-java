@@ -38,9 +38,6 @@ Various documentation is available to help you get started
 
 ## Examples
 
-```java com.azure.ai.translation.text.readme
-```
-
 ## Troubleshooting
 
 ## Next steps
