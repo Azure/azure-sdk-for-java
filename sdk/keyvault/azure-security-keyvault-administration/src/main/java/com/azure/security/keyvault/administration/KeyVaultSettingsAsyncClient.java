@@ -15,7 +15,7 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCo
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
-import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
+import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import reactor.core.publisher.Mono;
@@ -179,15 +179,15 @@ public final class KeyVaultSettingsAsyncClient {
     }
 
     /**
-     * List the account's settings.
+     * Get the account's settings.
      *
-     * @return A {@link Mono} containing a {@link KeyVaultListSettingsResult result object} wrapping the list of
+     * @return A {@link Mono} containing a {@link KeyVaultGetSettingsResult result object} wrapping the list of
      * {@link KeyVaultSetting account settings}.
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultListSettingsResult> listSettings() {
+    public Mono<KeyVaultGetSettingsResult> getSettings() {
         try {
             return this.implClient.getSettingsAsync(vaultUrl)
                 .doOnRequest(ignored -> logger.verbose("Listing account settings"))
@@ -200,7 +200,7 @@ public final class KeyVaultSettingsAsyncClient {
                     settingsListResult.getSettings().forEach(setting ->
                         keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
-                    return new KeyVaultListSettingsResult(keyVaultSettings);
+                    return new KeyVaultGetSettingsResult(keyVaultSettings);
                 });
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -208,15 +208,15 @@ public final class KeyVaultSettingsAsyncClient {
     }
 
     /**
-     * List the account's settings.
+     * Get the account's settings.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link KeyVaultListSettingsResult result object} wrapping the list of {@link KeyVaultSetting account settings}.
+     * {@link KeyVaultGetSettingsResult result object} wrapping the list of {@link KeyVaultSetting account settings}.
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultListSettingsResult>> listSettingsWithResponse() {
+    public Mono<Response<KeyVaultGetSettingsResult>> getSettingsWithResponse() {
         try {
             return this.implClient.getSettingsWithResponseAsync(vaultUrl)
                 .doOnRequest(ignored -> logger.verbose("Listing account settings"))
@@ -229,7 +229,7 @@ public final class KeyVaultSettingsAsyncClient {
                     response.getValue().getSettings().forEach(setting ->
                         keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
-                    return new SimpleResponse<>(response, new KeyVaultListSettingsResult(keyVaultSettings));
+                    return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
                 });
         } catch (RuntimeException e) {
             return monoError(logger, e);

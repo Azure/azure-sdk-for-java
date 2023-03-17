@@ -36,7 +36,7 @@ public abstract class KeyVaultSettingsClientTestBase extends KeyVaultAdministrat
     }
 
     @Test
-    public abstract void listSettings(HttpClient httpClient);
+    public abstract void getSettings(HttpClient httpClient);
 
     @Test
     public abstract void getSetting(HttpClient httpClient);

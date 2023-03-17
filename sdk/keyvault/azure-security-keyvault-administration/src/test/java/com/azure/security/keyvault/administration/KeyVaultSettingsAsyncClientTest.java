@@ -30,15 +30,15 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void listSettings(HttpClient httpClient) {
+    public void getSettings(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        StepVerifier.create(asyncClient.listSettings())
-            .assertNext(listSettingsResult -> {
-                assertNotNull(listSettingsResult);
-                assertTrue(listSettingsResult.getSettings().size() > 0);
+        StepVerifier.create(asyncClient.getSettings())
+            .assertNext(getSettingsResult -> {
+                assertNotNull(getSettingsResult);
+                assertTrue(getSettingsResult.getSettings().size() > 0);
 
-                for (KeyVaultSetting setting : listSettingsResult.getSettings()) {
+                for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
                     assertNotNull(setting);
                     assertNotNull(setting.getName());
                     assertNotNull(setting.getType());
