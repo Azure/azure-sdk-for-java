@@ -34,6 +34,8 @@ import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.security.auth.x500.X500Principal;
@@ -54,26 +56,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class ManagedHsmTests extends KeyVaultManagementTest {
 
     @BeforeAll
+    // TODO remove once core-management is released
     public static void setup() {
         AzureEnvironment.AZURE.getEndpoints().put("managedHsm", ".managedhsm.azure.net");
     }
 
     @Test
     public void canOperateManagedHsmAndKeys() throws Exception {
-        ManagedHsm managedHsm = getManagedHsm();
+        String mhsmName = generateRandomResourceName("mhsm", 10);
+
+        ManagedHsm managedHsm = createManagedHsm(mhsmName);
 
         try {
             // Provisioning state.
-            ProvisioningState provisioningState = managedHsm.state();
+            ProvisioningState provisioningState = managedHsm.provisioningState();
             Assertions.assertEquals(ProvisioningState.SUCCEEDED, provisioningState);
             activateManagedHsm(managedHsm);
 
             managedHsm.refresh();
-            provisioningState = managedHsm.state();
+            provisioningState = managedHsm.provisioningState();
             Assertions.assertEquals(ProvisioningState.ACTIVATED, provisioningState);
 
             KeyVaultAccessControlAsyncClient accessControlAsyncClient =
@@ -85,6 +91,8 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             // listByResourceGroups
             PagedIterable<ManagedHsm> hsms = keyVaultManager.managedHsms()
                 .listByResourceGroup(rgName);
+            Assertions.assertTrue(hsms.stream().anyMatch(mhsm -> mhsm.name().equals(mhsmName)));
+
             // getByResourceGroup
             ManagedHsm hsm = keyVaultManager.managedHsms()
                 .getByResourceGroup(rgName, managedHsm.name());
@@ -165,20 +173,26 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
 
         // 1. generate ssl certificates
         JsonWebKey key1  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
-
         JsonWebKey key2  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
-
         JsonWebKey key3  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
 
         // 2. download security domain
-        downloadScurityDomain(managedHsm, key1, key2, key3);
+        downloadSecurityDomain(managedHsm, key1, key2, key3);
 
         // 3. poll download status
-        pollUntilSuccess(managedHsm);
+        pollDownlaodStatusUntilSuccess(managedHsm);
     }
 
-    private void downloadScurityDomain(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3) throws IOException {
-        HttpRequest request = createActivateRequest(managedHsm, key1, key2, key3);
+    private void downloadSecurityDomain(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3) throws IOException {
+        String url = String.format("%ssecuritydomain/download?api-version=7.2", managedHsm.hsmUri());
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url);
+        request.setHeader("Content-Type", "application/json charset=utf-8");
+        Map<String, Object> body = new HashMap<>();
+        body.put("certificates", Arrays.asList(key1, key2, key3));
+        body.put("required", 2);
+
+        request.setBody(BinaryData.fromObject(body));
+
         HttpResponse response = keyVaultManager.httpPipeline().send(request).block();
         if (response.getStatusCode() != 202) {
             throw new RuntimeException("Failed to activate managed hsm");
@@ -186,57 +200,46 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         Map<String, Object> responseBody = SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(response.getBodyAsString().block(), Map.class, SerializerEncoding.JSON);
         String securityDomainDownloadToken = (String) responseBody.get("value");
         Assertions.assertNotNull(securityDomainDownloadToken);
-        System.out.println(securityDomainDownloadToken);
     }
 
-    private void pollUntilSuccess(ManagedHsm managedHsm) {
+    private void pollDownlaodStatusUntilSuccess(ManagedHsm managedHsm) {
         String url = String.format("%ssecuritydomain/download/pending?api-version=7.2", managedHsm.hsmUri());
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Content-Type", "application/json charset=utf-8");
         keyVaultManager.httpPipeline().send(request)
-            .map(httpResponse -> {
-                if (httpResponse.getStatusCode() == 200) {
-                    try {
-                        Map<String, Object> body = (Map<String, Object>) Mono.just(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(httpResponse.getBodyAsBinaryData().toBytes(), Map.class, SerializerEncoding.JSON));
-                        String status = (String) body.get("status");
-                        if (status == null) {
-                            return Mono.error(new NullPointerException("status null"));
-                        }
-                        if (status.equals("Failed")) {
-                            return Mono.error(new RuntimeException(String.format("Download security domain failed, message:%s", body.get("status_details"))));
-                        }
-                        return Mono.just(status);
-                    } catch (IOException e) {
-                        return Mono.error(e);
-                    }
-                } else {
+            .flatMap(httpResponse -> {
+                if (httpResponse.getStatusCode() != 200) {
                     return Mono.error(new RuntimeException("Failed to poll security domain status"));
                 }
+                return httpResponse.getBodyAsString();
             })
-            .repeat()
-            .delayElements(Duration.ofSeconds(30))
-            .takeUntil(status -> status.equals("Success"))
-            .blockLast();
-    }
-
-    private HttpRequest createActivateRequest(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3) {
-        String url = String.format("%ssecuritydomain/download?api-version=7.2", managedHsm.hsmUri());
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url);
-        request.setHeader("Content-Type", "application/json charset=utf-8");
-        Map<String, Object> body = new HashMap<>();
-        Map<String, Object> certificateInfoObject = new HashMap<>();
-        certificateInfoObject.put("certificates", Arrays.asList(key1, key2, key3));
-        certificateInfoObject.put("required", 2);
-        body.put("certificates", Arrays.asList(key1, key2, key3));
-
-        request.setBody(BinaryData.fromObject(body));
-        return request;
+            .map(bodyString -> {
+                try {
+                    Map<String, Object> body = SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(bodyString, Map.class, SerializerEncoding.JSON);
+                    String status = (String) body.get("status");
+                    if (status == null) {
+                        return Mono.error(new NullPointerException("status null"));
+                    }
+                    if (status.equals("Failed")) {
+                        return Mono.error(new RuntimeException(String.format("Download security domain failed, message:%s", body.get("status_details"))));
+                    }
+                    if (status.equals("Success")) {
+                        return Mono.just(status);
+                    }
+                    return Mono.empty();
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+            })
+            .repeatWhenEmpty(longFlux -> Flux.interval(Duration.ofSeconds(30)))
+            .block();
     }
 
     /*
      * create or get managed hsm instance
      */
-    private ManagedHsm getManagedHsm() {
+    private ManagedHsm createManagedHsm(String mhsmName) {
         String objectId = authorizationManager
             .servicePrincipals()
             .getByNameAsync(clientIdFromFile())
@@ -248,7 +251,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             .getManagedHsms()
             .createOrUpdate(
                 rgName,
-                generateRandomResourceName("mhsm", 10),
+                mhsmName,
                 new ManagedHsmInner()
                     .withLocation(Region.US_EAST2.name())
                     .withSku(
@@ -279,7 +282,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         private String n;
         private String e;
 
-        public static JsonWebKey fromRsa(KeyPair generateKeyPair) throws Exception{
+        public static JsonWebKey fromRsa(KeyPair generateKeyPair) throws Exception {
             X509V3CertificateGenerator x509Generator = new X509V3CertificateGenerator();
             x509Generator.setPublicKey(generateKeyPair.getPublic());
             x509Generator.setSerialNumber(BigInteger.valueOf(1));

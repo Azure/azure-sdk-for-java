@@ -48,7 +48,7 @@ public interface ManagedHsm
     MhsmNetworkRuleSet networkRuleSet();
 
     /** @return provisioning state */
-    ProvisioningState state();
+    ProvisioningState provisioningState();
 
     /** @return the Key Vault key API entry point */
     Keys keys();

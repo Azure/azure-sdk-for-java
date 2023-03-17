@@ -134,7 +134,7 @@ class ManagedHsmImpl
     }
 
     @Override
-    public ProvisioningState state() {
+    public ProvisioningState provisioningState() {
         if (innerModel().properties() == null) {
             return null;
         }
