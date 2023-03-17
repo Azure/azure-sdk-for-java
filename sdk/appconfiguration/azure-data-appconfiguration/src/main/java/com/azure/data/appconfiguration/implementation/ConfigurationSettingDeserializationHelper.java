@@ -207,9 +207,11 @@ public final class ConfigurationSettingDeserializationHelper {
             }
         }
 
+        final Object isEnabled = map.get(ENABLED);
         // Use the map to get all properties
         FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
-            new FeatureFlagConfigurationSetting((String) map.get(ID), (boolean) map.get(ENABLED))
+            new FeatureFlagConfigurationSetting((String) map.get(ID),
+                isEnabled == null ? false : (boolean) isEnabled)
                 .setDisplayName((String) map.get(DISPLAY_NAME))
                 .setDescription((String) map.get(DESCRIPTION));
 
