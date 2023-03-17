@@ -297,7 +297,7 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-                Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+                Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
