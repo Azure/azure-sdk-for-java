@@ -43,7 +43,6 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
-$SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples/")
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
