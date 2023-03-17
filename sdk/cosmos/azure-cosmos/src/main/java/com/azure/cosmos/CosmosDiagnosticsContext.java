@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
@@ -485,7 +486,8 @@ public final class CosmosDiagnosticsContext {
                     diagnosticStrings.add(clientSideDiagnostics.toString());
                 }
             }
-            ctxNode.putPOJO("diagnostics", diagnosticStrings);
+            ArrayNode diagnosticsNode = ctxNode.putArray("diagnostics");
+            diagnosticStrings.forEach(d -> diagnosticsNode.add(d));
         }
 
         try {
