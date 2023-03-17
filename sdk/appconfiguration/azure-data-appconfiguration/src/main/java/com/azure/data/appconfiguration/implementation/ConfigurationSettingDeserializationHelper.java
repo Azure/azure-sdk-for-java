@@ -215,7 +215,6 @@ public final class ConfigurationSettingDeserializationHelper {
                 .setDescription((String) map.get(DESCRIPTION));
 
         // conditional arrays
-        token = parser.nextToken();
         if (token == JsonToken.FIELD_NAME && CONDITIONS.equals(parser.getCurrentName())) {
             parser.nextToken(); // get object start
             token = parser.nextToken(); // get field name
