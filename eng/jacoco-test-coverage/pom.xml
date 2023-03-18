@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>4.0.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -58,17 +58,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.1.12</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.2.5</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-chat</artifactId>
-      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-containers-containerregistry</artifactId>
-      <version>1.0.13</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -193,17 +193,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-      <version>1.1.4</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -223,7 +223,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-iot-deviceupdate</artifactId>
-      <version>1.0.5</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -243,7 +243,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.14.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+      <version>4.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -268,7 +268,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -283,12 +283,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-query</artifactId>
-      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.5.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -318,17 +318,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.20.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -338,7 +338,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.20.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -348,22 +348,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.14.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.6.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.16.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -600,7 +600,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.2.11</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
