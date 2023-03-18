@@ -565,7 +565,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 lenientFormat("failed to establish connection to %s due to %s", this.remoteAddress, reason),
                 cause instanceof Exception ? (Exception) cause : new IOException(reason, cause),
                 ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
-                requestArgs.replicaPath()
+                requestArgs.replicaPath(),
+                HttpConstants.SubStatusCodes.UNKNOWN
             );
 
             BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());

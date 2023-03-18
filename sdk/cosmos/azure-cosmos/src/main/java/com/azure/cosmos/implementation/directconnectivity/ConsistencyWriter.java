@@ -256,7 +256,8 @@ public class ConsistencyWriter {
 
                     if (!v) {
                         logger.warn("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
-                        return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet));
+                        return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
+                            HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                     }
 
                     return Mono.just(request);
@@ -288,7 +289,7 @@ public class ConsistencyWriter {
                 if (lsn.v == -1 || globalCommittedLsn.v == -1) {
                     logger.error("ConsistencyWriter: lsn {} or GlobalCommittedLsn {} is not set for global strong request",
                         lsn, globalCommittedLsn);
-                    throw new GoneException(RMResources.Gone);
+                    throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
                 request.requestContext.globalStrongWriteResponse = response;
@@ -315,7 +316,8 @@ public class ConsistencyWriter {
                                 logger.error("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}",
                                     request.requestContext.globalCommittedSelectedLSN);
                                 // RxJava1 doesn't allow throwing checked exception
-                                return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet));
+                                return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
+                                    HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                             }
 
                             return Mono.just(request.requestContext.globalStrongWriteResponse);

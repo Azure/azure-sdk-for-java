@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -737,7 +738,8 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosException createServiceUnavailableException(Exception innerException) {
-        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null,
+            HttpConstants.SubStatusCodes.UNKNOWN);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

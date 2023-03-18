@@ -270,7 +270,8 @@ public class ConsistencyReader {
         return responsesObs.flatMap(
                 responses -> {
             if (responses.size() == 0) {
-                        return Mono.error(new GoneException(RMResources.Gone));
+                        return Mono.error(new GoneException(RMResources.Gone,
+                            HttpConstants.SubStatusCodes.NO_VALID_STORE_RESPONSE));
             }
 
             try {
