@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
+import com.azure.cosmos.implementation.{HttpConstants, ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -263,7 +263,7 @@ class TransientIOErrorsRetryingIteratorITest
           idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) < maxRetryCountPerIOOperation) {
 
       //scalastyle:off null
-      throw new ServiceUnavailableException("Dummy 503", null, null)
+      throw new ServiceUnavailableException("Dummy 503", null, null, HttpConstants.SubStatusCodes.UNKNOWN)
       //scalastyle:on null
     } else {
       func()
@@ -288,7 +288,7 @@ class TransientIOErrorsRetryingIteratorITest
         idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
 
       //scalastyle:off null
-      throw new ServiceUnavailableException("Dummy 503", null, null)
+      throw new ServiceUnavailableException("Dummy 503", null, null, HttpConstants.SubStatusCodes.UNKNOWN)
       //scalastyle:on null
     } else {
       func()
