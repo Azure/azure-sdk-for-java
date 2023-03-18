@@ -31,6 +31,15 @@
 - Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
   It simplifies stack traces and improves debugging experience.
 
+## 5.2.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 ## 5.2.4 (2023-02-16)
 
 ### Other Changes
