@@ -177,6 +177,7 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/schemaregistry/azure-data-schemaregistry/**",
+    "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
