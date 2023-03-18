@@ -18,6 +18,7 @@ import com.azure.security.keyvault.administration.implementation.models.Settings
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
+import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +79,14 @@ public final class KeyVaultSettingsClient {
                 "'setting'"));
 
         try {
+            String settingValue = null;
+
+            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+                settingValue = Boolean.toString(setting.asBoolean());
+            }
+
             return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-                implClient.updateSetting(vaultUrl, setting.getName(), setting.getValue().toString()));
+                implClient.updateSetting(vaultUrl, setting.getName(), settingValue));
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -118,9 +125,14 @@ public final class KeyVaultSettingsClient {
                 "'setting'"));
 
         try {
+            String settingValue = null;
+
+            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+                settingValue = Boolean.toString(setting.asBoolean());
+            }
+
             Response<Setting> response =
-                implClient.updateSettingWithResponse(vaultUrl, setting.getName(), setting.getValue().toString(),
-                    context);
+                implClient.updateSettingWithResponse(vaultUrl, setting.getName(), settingValue, context);
 
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
