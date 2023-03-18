@@ -17,7 +17,7 @@
 * GA of `subpartition` functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 * Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 * Enable `handleLatestVersionChanges` in ChangeFeedProcessor - See [33972](https://github.com/Azure/azure-sdk-for-java/pull/33972)
-* Added Merge support. For customers who want to use ChangeFeedProcessor with merge support, please onboard to new API `handleLatestVersionChanges`
+* Added Merge support. NOTE: to use Change Feed Processor with merge support, onboard to the new API `handleLatestVersionChanges()` in `ChangeFeedProcessorBuilder`.
 
 #### Bugs Fixed
 * Fixed `readMany` API to take in hierarchical partition keys - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
