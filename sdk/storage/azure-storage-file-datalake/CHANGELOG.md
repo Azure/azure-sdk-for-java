@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-blob` from `12.21.0` to version `12.22.0-beta.1`.
+- Upgraded `azure-storage-blob` from `12.21.0` to version `12.21.1`.
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
