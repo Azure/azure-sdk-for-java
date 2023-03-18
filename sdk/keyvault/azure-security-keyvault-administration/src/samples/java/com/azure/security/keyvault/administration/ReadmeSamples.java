@@ -450,7 +450,7 @@ public class ReadmeSamples {
     /**
      * Code sample for updating a {@link KeyVaultSetting setting}.
      */
-    public void updateSetting(){
+    public void updateSetting() {
         // BEGIN: readme-sample-updateSetting
         String settingName = "<setting-to-update>";
         KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
@@ -463,7 +463,7 @@ public class ReadmeSamples {
     /**
      * Code sample for retrieving a {@link KeyVaultSetting setting}.
      */
-    public void getSetting(){
+    public void getSetting() {
         // BEGIN: readme-sample-getSetting
         String settingName = "<setting-to-get>";
         KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
@@ -476,7 +476,7 @@ public class ReadmeSamples {
     /**
      * Code sample for retrieving an account's {@link KeyVaultSetting settings}.
      */
-    public void getSettings(){
+    public void getSettings() {
         // BEGIN: readme-sample-getSettings
         KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
 
@@ -489,7 +489,7 @@ public class ReadmeSamples {
     /**
      * Code sample for updating a {@link KeyVaultSetting setting} asynchronously.
      */
-    public void updateSettingAsync(){
+    public void updateSettingAsync() {
         // BEGIN: readme-sample-updateSettingAsync
         String settingName = "<setting-to-update>";
         KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
@@ -504,7 +504,7 @@ public class ReadmeSamples {
     /**
      * Code sample for retrieving a {@link KeyVaultSetting setting} asynchronously.
      */
-    public void getSettingAsync(){
+    public void getSettingAsync() {
         // BEGIN: readme-sample-getSettingAsync
         String settingName = "<setting-to-get>";
 
@@ -518,7 +518,7 @@ public class ReadmeSamples {
     /**
      * Code sample for retrieving an account's {@link KeyVaultSetting settings} asynchronously.
      */
-    public void getSettingsAsync(){
+    public void getSettingsAsync() {
         // BEGIN: readme-sample-getSettingsAsync
         keyVaultSettingsAsyncClient.getSettings()
             .subscribe(settingsResult ->
