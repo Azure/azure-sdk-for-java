@@ -498,8 +498,7 @@ List all the settings for a Key Vault account.
 KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
 
 for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
-    System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
-        setting.getValue().toString());
+    System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(), setting.asBoolean());
 }
 ```
 

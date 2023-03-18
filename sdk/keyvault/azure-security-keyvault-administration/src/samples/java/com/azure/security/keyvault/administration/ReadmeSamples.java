@@ -481,8 +481,7 @@ public class ReadmeSamples {
         KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
 
         for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
-            System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
-                setting.getValue().toString());
+            System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(), setting.asBoolean());
         }
         // END: readme-sample-getSettings
     }

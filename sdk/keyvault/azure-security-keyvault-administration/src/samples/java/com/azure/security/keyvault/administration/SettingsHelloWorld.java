@@ -43,7 +43,7 @@ public class SettingsHelloWorld {
             settings.add(setting);
 
             System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
-                setting.getValue().toString());
+                setting.asBoolean());
         }
 
         /* If you want to get only a specific setting and its value instead, you can do the following. */
@@ -51,7 +51,7 @@ public class SettingsHelloWorld {
         KeyVaultSetting retrievedSetting = keyVaultSettingsClient.getSetting(settingName);
 
         System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", retrievedSetting.getName(),
-            retrievedSetting.getValue().toString());
+            retrievedSetting.asBoolean());
 
         /* Now let's update the settings to hold a new value. Currently, only boolean values are supported. */
         KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
