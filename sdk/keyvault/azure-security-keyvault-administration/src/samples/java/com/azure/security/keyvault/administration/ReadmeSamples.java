@@ -11,6 +11,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
@@ -18,6 +19,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.time.Duration;
 
@@ -43,6 +45,18 @@ public class ReadmeSamples {
             .buildClient();
     private final KeyVaultBackupAsyncClient keyVaultBackupAsyncClient =
         new KeyVaultBackupClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+    private final KeyVaultSettingsClient keyVaultSettingsClient =
+        new KeyVaultSettingsClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+    private final KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient =
+        new KeyVaultSettingsClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -431,5 +445,87 @@ public class ReadmeSamples {
             System.out.println(e.getMessage());
         }
         // END: readme-sample-troubleshooting
+    }
+
+    /**
+     * Code sample for updating a {@link KeyVaultSetting setting}.
+     */
+    public void updateSetting(){
+        // BEGIN: readme-sample-updateSetting
+        String settingName = "<setting-to-update>";
+        KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+        KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting(settingToUpdate);
+
+        System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), updatedSetting.asBoolean());
+        // END: readme-sample-updateSetting
+    }
+
+    /**
+     * Code sample for retrieving a {@link KeyVaultSetting setting}.
+     */
+    public void getSetting(){
+        // BEGIN: readme-sample-getSetting
+        String settingName = "<setting-to-get>";
+        KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
+
+        System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+            setting.asBoolean());
+        // END: readme-sample-getSetting
+    }
+
+    /**
+     * Code sample for retrieving an account's {@link KeyVaultSetting settings}.
+     */
+    public void getSettings(){
+        // BEGIN: readme-sample-getSettings
+        KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
+
+        for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
+            System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+                setting.getValue().toString());
+        }
+        // END: readme-sample-getSettings
+    }
+
+    /**
+     * Code sample for updating a {@link KeyVaultSetting setting} asynchronously.
+     */
+    public void updateSettingAsync(){
+        // BEGIN: readme-sample-updateSettingAsync
+        String settingName = "<setting-to-update>";
+        KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+
+        keyVaultSettingsAsyncClient.updateSetting(settingToUpdate)
+            .subscribe(updatedSetting ->
+                System.out.printf("Updated setting with name '%s' and value '%s'.%n", updatedSetting.getName(),
+                    updatedSetting.asBoolean()));
+        // END: readme-sample-updateSettingAsync
+    }
+
+    /**
+     * Code sample for retrieving a {@link KeyVaultSetting setting} asynchronously.
+     */
+    public void getSettingAsync(){
+        // BEGIN: readme-sample-getSettingAsync
+        String settingName = "<setting-to-get>";
+
+        keyVaultSettingsAsyncClient.getSetting(settingName)
+            .subscribe(setting ->
+                System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+                    setting.asBoolean()));
+        // END: readme-sample-getSettingAsync
+    }
+
+    /**
+     * Code sample for retrieving an account's {@link KeyVaultSetting settings} asynchronously.
+     */
+    public void getSettingsAsync(){
+        // BEGIN: readme-sample-getSettingsAsync
+        keyVaultSettingsAsyncClient.getSettings()
+            .subscribe(settingsResult ->
+                settingsResult.getSettings().forEach(setting ->
+                    System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+                        setting.asBoolean())));
+        // END: readme-sample-getSettingsAsync
     }
 }

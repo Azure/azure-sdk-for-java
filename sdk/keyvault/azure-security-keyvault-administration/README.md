@@ -80,10 +80,22 @@ KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use `KeyVaultBackupAsyncClient`  instead of `KeyVaultBackupClient` and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `KeyVaultBackupAsyncClient`  instead of `KeyVaultBackupClient` and call `buildAsyncClient()`.
+
+#### Create a settings client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-managed-hsm-url** with the URL for your key vault, you can create the `KeyVaultSettingsClient`:
+
+```java readme-sample-createBackupClient
+KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
+    .vaultUrl("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+> NOTE: For using an asynchronous client use `KeyVaultSettingsAsyncClient`  instead of `KeyVaultSettingsClient` and call `buildAsyncClient()`.
 
 ## Key concepts
-### Key Vault Access Control client:
+### Key Vault Access Control client
 The Key Vault Access Control client performs the interactions with the Azure Key Vault service for getting, setting, deleting, and listing role assignments, as well as listing role definitions. Asynchronous (`KeyVaultAccessControlAsyncClient`) and synchronous (`KeyVaultAccessControlClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a role assignment, you can interact with the primary resource types in Key Vault.
 
 ### Role Definition
@@ -104,6 +116,9 @@ A backup operation represents a long-running operation for a full key backup.
 
 ### Restore Operation
 A restore operation represents a long-running operation for both a full key and selective key restore.
+
+### Key Vault Settings client
+The Key Vault Access Control client allows manipulation of an Azure Key Vault account's settings, with operations such as: getting, updating, and listing. Asynchronous (`KeyVaultSettingsAsyncClient`) and synchronous (`KeyVaultSettingsClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Access control operations
 ### Examples
@@ -466,6 +481,89 @@ keyVaultBackupAsyncClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)
     .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
     .flatMap(AsyncPollResponse::getFinalResult)
     .subscribe(unused -> System.out.printf("Key restored successfully.%n"));
+```
+
+## Settings operations
+### Examples
+#### Sync API
+The following sections provide several code snippets covering some of the most common Azure Key Vault Settings client tasks, including:
+- [Listing settings](#get-all-settings)
+- [Retrieving a setting](#retrieve-a-specific-setting)
+- [Updating a setting](#update-a-specific-setting)
+
+##### Get all settings
+List all the settings for a Key Vault account.
+
+```java readme-sample-getSettings
+KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
+
+for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
+    System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+        setting.getValue().toString());
+}
+```
+
+##### Retrieve a specific setting
+Retrieve a specific setting.
+
+```java readme-sample-getSetting
+String settingName = "<setting-to-get>";
+KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
+
+System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+    setting.asBoolean());
+```
+
+##### Update a specific setting
+Update a specific setting.
+```java readme-sample-updateSetting
+String settingName = "<setting-to-update>";
+KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting(settingToUpdate);
+
+System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), updatedSetting.asBoolean());
+```
+
+#### Async API
+The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Settings client tasks, including:
+- [Listing settings](#get-all-settings-asynchronously)
+- [Retrieving a setting](#retrieve-a-specific-setting-asynchronously)
+- [Updating a setting](#update-a-specific-setting-asynchronously)
+
+##### Get all settings asynchronously
+List all the settings for a Key Vault account.
+
+```java readme-sample-getSettingsAsync
+keyVaultSettingsAsyncClient.getSettings()
+    .subscribe(settingsResult ->
+        settingsResult.getSettings().forEach(setting ->
+            System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+                setting.asBoolean())));
+```
+
+##### Retrieve a specific setting asynchronously
+Retrieve a specific setting.
+
+```java readme-sample-getSettingAsync
+String settingName = "<setting-to-get>";
+
+keyVaultSettingsAsyncClient.getSetting(settingName)
+    .subscribe(setting ->
+        System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+            setting.asBoolean()));
+```
+
+##### Update a specific setting asynchronously
+Update a specific setting.
+
+```java readme-sample-updateSettingAsync
+String settingName = "<setting-to-update>";
+KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+
+keyVaultSettingsAsyncClient.updateSetting(settingToUpdate)
+    .subscribe(updatedSetting ->
+        System.out.printf("Updated setting with name '%s' and value '%s'.%n", updatedSetting.getName(),
+            updatedSetting.asBoolean()));
 ```
 
 ## Troubleshooting

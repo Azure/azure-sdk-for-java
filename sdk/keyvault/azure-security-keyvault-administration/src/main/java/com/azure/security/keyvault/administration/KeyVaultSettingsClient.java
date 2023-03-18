@@ -16,6 +16,7 @@ import com.azure.security.keyvault.administration.implementation.models.KeyVault
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.util.ArrayList;
@@ -51,6 +52,12 @@ public final class KeyVaultSettingsClient {
     /**
      * Updates a given {@link KeyVaultSetting account setting}.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the updated
+     * {@link KeyVaultRoleDefinition setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSetting#KeyVaultSetting -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSetting#KeyVaultSetting -->
+     *
      * @param setting The {@link KeyVaultSetting account setting} to update.
      *
      * @return The updated {@link KeyVaultSetting account setting}.
@@ -74,6 +81,12 @@ public final class KeyVaultSettingsClient {
 
     /**
      * Updates a given {@link KeyVaultSetting account setting}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the {@link Response HTTP response}
+     * and the updated {@link KeyVaultSetting setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context -->
      *
      * @param setting The {@link KeyVaultSetting account setting} to update.
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
@@ -105,6 +118,12 @@ public final class KeyVaultSettingsClient {
     /**
      * Get the value of a specific account setting.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.getSetting#String -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.getSetting#String -->
+     *
      * @param name The name of setting to retrieve the value of.
      *
      * @return The {@link KeyVaultSetting account setting}.
@@ -123,6 +142,12 @@ public final class KeyVaultSettingsClient {
 
     /**
      * Get the value of a specific account setting.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingWithResponse#String-Context -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingWithResponse#String-Context -->
      *
      * @param name The name of setting to retrieve the value of.
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
@@ -148,6 +173,12 @@ public final class KeyVaultSettingsClient {
     /**
      * Get the account's settings.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves all the {@link KeyVaultSetting settings} for an account. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition settings}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettings -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettings -->
+     *
      * @return A {@link KeyVaultGetSettingsResult result object} wrapping the list of
      * {@link KeyVaultSetting account settings}.
      *
@@ -170,6 +201,12 @@ public final class KeyVaultSettingsClient {
 
     /**
      * Get the account's settings.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves all {@link KeyVaultSetting settings for an account}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting settings}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingsWithResponse#Context -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingsWithResponse#Context -->
      *
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      *

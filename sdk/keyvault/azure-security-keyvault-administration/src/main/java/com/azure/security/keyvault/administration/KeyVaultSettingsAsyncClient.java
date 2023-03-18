@@ -15,6 +15,7 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultSetting
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import reactor.core.publisher.Mono;
@@ -55,6 +56,12 @@ public final class KeyVaultSettingsAsyncClient {
     /**
      * Updates a given {@link KeyVaultSetting account setting}.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the updated
+     * {@link KeyVaultRoleDefinition setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSetting#KeyVaultSetting -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSetting#KeyVaultSetting -->
+     *
      * @param setting The {@link KeyVaultSetting account setting} to update.
      *
      * @return A {@link Mono} containing the updated {@link KeyVaultSetting account setting}.
@@ -82,6 +89,12 @@ public final class KeyVaultSettingsAsyncClient {
 
     /**
      * Updates a given {@link KeyVaultSetting account setting}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the {@link Response HTTP response}
+     * and the updated {@link KeyVaultSetting setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSettingWithResponse#KeyVaultSetting -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSettingWithResponse#KeyVaultSetting -->
      *
      * @param setting The {@link KeyVaultSetting account setting} to update.
      *
@@ -112,6 +125,12 @@ public final class KeyVaultSettingsAsyncClient {
     /**
      * Get the value of a specific account setting.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSetting#String -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSetting#String -->
+     *
      * @param name The name of setting to retrieve the value of.
      *
      * @return A {@link Mono} containing the {@link KeyVaultSetting account setting}.
@@ -135,6 +154,12 @@ public final class KeyVaultSettingsAsyncClient {
 
     /**
      * Get the value of a specific account setting.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting setting}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingWithResponse#String -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingWithResponse#String -->
      *
      * @param name The name of setting to retrieve the value of.
      *
@@ -160,6 +185,12 @@ public final class KeyVaultSettingsAsyncClient {
 
     /**
      * Get the account's settings.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves all the {@link KeyVaultSetting settings} for an account. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition settings}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettings -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettings -->
      *
      * @return A {@link Mono} containing a {@link KeyVaultGetSettingsResult result object} wrapping the list of
      * {@link KeyVaultSetting account settings}.
@@ -190,6 +221,12 @@ public final class KeyVaultSettingsAsyncClient {
 
     /**
      * Get the account's settings.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves all {@link KeyVaultSetting settings for an account}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting settings}.</p>
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingsWithResponse -->
+     * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingsWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
      * {@link KeyVaultGetSettingsResult result object} wrapping the list of {@link KeyVaultSetting account settings}.
