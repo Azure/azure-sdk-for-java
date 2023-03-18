@@ -473,21 +473,14 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {
-            List<String> diagnosticStrings = new ArrayList<>();
-            for (CosmosDiagnostics d: this.diagnostics) {
-                FeedResponseDiagnostics feedDiagnostics = d.getFeedResponseDiagnostics();
-                if (feedDiagnostics != null) {
-                    diagnosticStrings.add(feedDiagnostics.toString());
-                }
-
-                ClientSideRequestStatistics clientSideDiagnostics =
-                    d.getClientSideRequestStatisticsRaw();
-                if (clientSideDiagnostics != null) {
-                    diagnosticStrings.add(clientSideDiagnostics.toString());
-                }
-            }
             ArrayNode diagnosticsNode = ctxNode.putArray("diagnostics");
-            diagnosticStrings.forEach(d -> diagnosticsNode.add(d));
+            for (CosmosDiagnostics d: this.diagnostics) {
+
+                ObjectNode childNode = mapper.createObjectNode();
+                d.fillCosmosDiagnostics(childNode, null);
+
+                diagnosticsNode.add(childNode);
+            }
         }
 
         try {
