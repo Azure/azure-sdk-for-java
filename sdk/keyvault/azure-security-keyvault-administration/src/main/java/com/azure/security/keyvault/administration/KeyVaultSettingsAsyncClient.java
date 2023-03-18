@@ -60,6 +60,14 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the updated
      * {@link KeyVaultRoleDefinition setting}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSetting#KeyVaultSetting -->
+     * <pre>
+     * KeyVaultSetting settingToUpdate = new KeyVaultSetting&#40;settingName, true&#41;;
+     *
+     * keyVaultSettingsAsyncClient.updateSetting&#40;settingToUpdate&#41;
+     *     .subscribe&#40;updatedSetting -&gt;
+     *         System.out.printf&#40;&quot;Updated setting '%s' to '%s'.%n&quot;, updatedSetting.getName&#40;&#41;,
+     *             updatedSetting.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSetting#KeyVaultSetting -->
      *
      * @param setting The {@link KeyVaultSetting account setting} to update.
@@ -94,6 +102,14 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Updates a given {@link KeyVaultSetting setting}. Prints out the details of the {@link Response HTTP response}
      * and the updated {@link KeyVaultSetting setting}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSettingWithResponse#KeyVaultSetting -->
+     * <pre>
+     * KeyVaultSetting mySettingToUpdate = new KeyVaultSetting&#40;settingName, true&#41;;
+     *
+     * keyVaultSettingsAsyncClient.updateSettingWithResponse&#40;mySettingToUpdate&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Updated setting '%s' to '%s'.%n&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.updateSettingWithResponse#KeyVaultSetting -->
      *
      * @param setting The {@link KeyVaultSetting account setting} to update.
@@ -129,6 +145,11 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the retrieved
      * {@link KeyVaultRoleDefinition setting}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSetting#String -->
+     * <pre>
+     * keyVaultSettingsAsyncClient.getSetting&#40;settingName&#41;
+     *     .subscribe&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Retrieved setting '%s' with value '%s'.%n&quot;, setting.getName&#40;&#41;, setting.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSetting#String -->
      *
      * @param name The name of setting to retrieve the value of.
@@ -159,6 +180,12 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Retrieves a specific {@link KeyVaultSetting setting}. Prints out the details of the
      * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting setting}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingWithResponse#String -->
+     * <pre>
+     * keyVaultSettingsAsyncClient.getSettingWithResponse&#40;settingName&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved setting '%s' with value '%s'.%n&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingWithResponse#String -->
      *
      * @param name The name of setting to retrieve the value of.
@@ -190,6 +217,12 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Retrieves all the {@link KeyVaultSetting settings} for an account. Prints out the details of the retrieved
      * {@link KeyVaultRoleDefinition settings}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettings -->
+     * <pre>
+     * keyVaultSettingsAsyncClient.getSettings&#40;&#41;.subscribe&#40;getSettingsResult -&gt;
+     *     getSettingsResult.getSettings&#40;&#41;.forEach&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Retrieved setting with name '%s' and value %s'.%n&quot;, setting.getName&#40;&#41;,
+     *             setting.asBoolean&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettings -->
      *
      * @return A {@link Mono} containing a {@link KeyVaultGetSettingsResult result object} wrapping the list of
@@ -226,6 +259,19 @@ public final class KeyVaultSettingsAsyncClient {
      * <p>Retrieves all {@link KeyVaultSetting settings for an account}. Prints out the details of the
      * {@link Response HTTP response} and the retrieved {@link KeyVaultSetting settings}.</p>
      * <!-- src_embed com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingsWithResponse -->
+     * <pre>
+     * keyVaultSettingsAsyncClient.getSettingsWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     *         KeyVaultGetSettingsResult getSettingsResult = response.getValue&#40;&#41;;
+     *         List&lt;KeyVaultSetting&gt; settings = getSettingsResult.getSettings&#40;&#41;;
+     *
+     *         settings.forEach&#40;setting -&gt;
+     *             System.out.printf&#40;&quot;Retrieved setting with name '%s' and value %s'.%n&quot;, setting.getName&#40;&#41;,
+     *                 setting.asBoolean&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.security.keyvault.administration.keyVaultSettingsAsyncClient.getSettingsWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
