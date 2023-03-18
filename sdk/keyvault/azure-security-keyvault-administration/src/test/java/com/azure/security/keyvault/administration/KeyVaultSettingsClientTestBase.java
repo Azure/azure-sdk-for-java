@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
+import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -48,6 +49,9 @@ public abstract class KeyVaultSettingsClientTestBase extends KeyVaultAdministrat
                                     KeyVaultSetting keyVaultSetting2) {
         assertEquals(keyVaultSetting1.getName(), keyVaultSetting2.getName());
         assertEquals(keyVaultSetting1.getType(), keyVaultSetting2.getType());
-        assertEquals(keyVaultSetting1.getValue().toString(), keyVaultSetting2.getValue().toString());
+
+        if (keyVaultSetting1.getType() == KeyVaultSettingType.BOOLEAN) {
+            assertEquals(keyVaultSetting1.asBoolean(), keyVaultSetting2.asBoolean());
+        }
     }
 }

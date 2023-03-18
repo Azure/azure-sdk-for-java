@@ -69,7 +69,13 @@ public final class KeyVaultSettingsAsyncClient {
                 "'setting'"));
 
         try {
-            return implClient.updateSettingAsync(vaultUrl, setting.getName(), setting.getValue().toString())
+            String settingValue = null;
+
+            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+                settingValue = Boolean.toString(setting.asBoolean());
+            }
+
+            return implClient.updateSettingAsync(vaultUrl, setting.getName(), settingValue)
                 .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
                 .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
                 .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
@@ -98,7 +104,13 @@ public final class KeyVaultSettingsAsyncClient {
                 "'setting'"));
 
         try {
-            return implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), setting.getValue().toString())
+            String settingValue = null;
+
+            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+                settingValue = Boolean.toString(setting.asBoolean());
+            }
+
+            return implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), settingValue)
                 .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
                 .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
                 .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))

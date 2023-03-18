@@ -44,15 +44,6 @@ public final class KeyVaultSetting {
     }
 
     /**
-     * Gets the value of the {@link KeyVaultSetting} as an {@link Object}.
-     *
-     * @return The value of the {@link KeyVaultSetting} as an {@link Object}.
-     */
-    public Object getValue() {
-        return this.value;
-    }
-
-    /**
      * Get the value of the {@link KeyVaultSetting} as a {@code boolean}.
      *
      * @return The value of the {@link KeyVaultSetting} as a {@code boolean}.
