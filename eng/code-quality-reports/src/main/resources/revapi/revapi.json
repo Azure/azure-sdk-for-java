@@ -430,31 +430,26 @@
         },
         {
           "code": "java.field.addedStaticField",
-          "old" : null,
           "new" : "field com.azure.storage.blob.BlobServiceVersion.V2021_12_02",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         },
         {
           "code": "java.field.addedStaticField",
-          "old" : null,
           "new" : "field com.azure.storage.blob.models.AccessTier.COLD",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         },
         {
           "code": "java.method.added",
-          "old" : null,
           "new" : "method java.time.OffsetDateTime com.azure.storage.blob.models.BlobDownloadHeaders::getCreationTime()",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         },
         {
           "code": "java.method.added",
-          "old" : null,
           "new" : "method com.azure.storage.blob.models.BlobDownloadHeaders com.azure.storage.blob.models.BlobDownloadHeaders::setCreationTime(java.time.OffsetDateTime)",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         },
         {
           "code": "java.method.added",
-          "old" : null,
           "new" : "method void com.azure.storage.blob.models.BlockBlobItem::<init>(java.lang.String, java.time.OffsetDateTime, byte[], java.lang.Boolean, java.lang.String, java.lang.String, java.lang.String)",
           "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         }
