@@ -168,7 +168,7 @@ public class FaultInjectionRuleProcessor {
                 // TODO: add handling for gateway mode
 
                 // Direct connection mode, populate physical addresses
-                boolean primaryAddressesOnly = this.isWriteOnlyEndpoint(rule.getCondition());
+                boolean primaryAddressesOnly = this.isWriteOnly(rule.getCondition());
                 return BackoffRetryUtility.executeRetry(
                         () -> this.resolvePhysicalAddresses(
                             regionEndpoints,
@@ -227,7 +227,7 @@ public class FaultInjectionRuleProcessor {
                 return this.resolvePhysicalAddresses(
                         regionEndpoints,
                         rule.getCondition().getEndpoints(),
-                        this.isWriteOnlyEndpoint(rule.getCondition()),
+                        this.isWriteOnly(rule.getCondition()),
                         documentCollection)
                     .map(physicalAddresses -> {
                         List<URI> effectiveAddresses =
@@ -259,7 +259,7 @@ public class FaultInjectionRuleProcessor {
      * @return the region service endpoints.
      */
     private List<URI> getRegionEndpoints(FaultInjectionCondition condition) {
-        boolean isWriteOnlyEndpoints = this.isWriteOnlyEndpoint(condition);
+        boolean isWriteOnlyEndpoints = this.isWriteOnly(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
             return Arrays.asList(
@@ -363,7 +363,7 @@ public class FaultInjectionRuleProcessor {
             .collectList();
     }
 
-    private boolean isWriteOnlyEndpoint(FaultInjectionCondition condition) {
+    private boolean isWriteOnly(FaultInjectionCondition condition) {
         return condition.getOperationType() != null
             && this.getEffectiveOperationType(condition.getOperationType()).isWriteOperation();
     }

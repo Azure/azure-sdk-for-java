@@ -127,8 +127,6 @@ public class FaultInjectionConditionInternal {
     }
 
     static class PrimaryAddressValidator implements IFaultInjectionConditionValidator {
-        PrimaryAddressValidator() {}
-
         @Override
         public boolean isApplicable(RxDocumentServiceRequest request) {
             return request.requestContext.storePhysicalAddressUri.isPrimary();
