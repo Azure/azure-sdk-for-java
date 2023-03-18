@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
 
-    public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
+    final public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
 
         if (OperationType.QueryPlan.equals(request.getOperationType()) ||
             request.isAddressRefresh() ||

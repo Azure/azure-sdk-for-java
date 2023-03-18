@@ -14,7 +14,7 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_
 
 public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
 
-    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneHotPath();
+    final public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneHotPath();
 
     public HttpTimeoutPolicyControlPlaneHotPath() {
     }

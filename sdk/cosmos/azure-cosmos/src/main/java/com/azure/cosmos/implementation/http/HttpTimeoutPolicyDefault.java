@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
 
-    public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyDefault();
+    final public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyDefault();
 
     public HttpTimeoutPolicyDefault() {
     }

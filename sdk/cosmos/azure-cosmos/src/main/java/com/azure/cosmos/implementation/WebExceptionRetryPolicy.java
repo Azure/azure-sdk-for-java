@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
+import java.time.Duration;;
 
 public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
@@ -43,7 +43,7 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
-        if (isOutOfRetries || (!timeoutPolicy.isSafeToRetry(httpMethod) && !WebExceptionUtility.isWebExceptionRetriable(exception))) {
+        if (!timeoutPolicy.isSafeToRetry(httpMethod) && !WebExceptionUtility.isWebExceptionRetriable(exception)) {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
