@@ -739,7 +739,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
             Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
-                .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
+                .thenReturn(Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
 
