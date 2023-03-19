@@ -889,7 +889,8 @@ public class HttpTransportClient extends TransportClient {
                                                 RMResources.Gone),
                                         response.headers(),
                                         request.uri(),
-                                        (nSubStatus == 0) ? HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410 : null);
+                                        (nSubStatus == 0) ? HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
+                                            : HttpConstants.SubStatusCodes.UNKNOWN);
                                 goneExceptionFromService.setIsBasedOn410ResponseFromService();
 
                                 goneExceptionFromService.getResponseHeaders().put(
@@ -942,7 +943,8 @@ public class HttpTransportClient extends TransportClient {
                         case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
                             int subStatusCode = getSubStatusCodeFromHeader(response);
                             exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri(),
-                                (subStatusCode == 0) ? HttpConstants.SubStatusCodes.SERVER_GENERATED_503 : null);
+                                (subStatusCode == 0) ? HttpConstants.SubStatusCodes.SERVER_GENERATED_503
+                                    : HttpConstants.SubStatusCodes.UNKNOWN);
                             break;
 
                         case HttpConstants.StatusCodes.REQUEST_TIMEOUT:

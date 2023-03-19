@@ -46,6 +46,10 @@ public class ServiceUnavailableException extends CosmosException {
         this(message, null, headers, requestUriString, subStatusCode);
     }
 
+    ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, headers, requestUriString, HttpConstants.SubStatusCodes.UNKNOWN);
+    }
+
     /**
      * Instantiates a new Service unavailable exception.
      *
