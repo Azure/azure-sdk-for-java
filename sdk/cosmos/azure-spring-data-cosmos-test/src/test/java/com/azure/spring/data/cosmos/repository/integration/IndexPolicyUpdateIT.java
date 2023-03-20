@@ -60,6 +60,7 @@ public class IndexPolicyUpdateIT {
     @Test
     public void testIndexPolicyDoesntUpdateOnRepoInitialization() {
         // set index policy from entity annotation
+        collectionManager.deleteContainer(defaultIndexPolicyEntityInformation);
         new SimpleCosmosRepository<>(defaultIndexPolicyEntityInformation, template);
 
         // get original index policy
@@ -81,6 +82,7 @@ public class IndexPolicyUpdateIT {
         // apply new index policy
         CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(defaultIndexPolicyEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
+        Mockito.doReturn(false).when(spyEntityInformation).getIndexingPolicyOverwritePolicy(Mockito.any());
         new SimpleCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy
@@ -98,6 +100,7 @@ public class IndexPolicyUpdateIT {
     @Test
     public void testIndexPolicyUpdatesOnRepoInitialization() {
         // set index policy from entity annotation
+        collectionManager.deleteContainer(indexPolicyOverwriteEntityInformation);
         new SimpleCosmosRepository<>(indexPolicyOverwriteEntityInformation, template);
 
         // get original index policy
@@ -111,15 +114,13 @@ public class IndexPolicyUpdateIT {
 
         // set new index policy
         IndexingPolicy newIndexPolicy = new IndexingPolicy();
-        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
-            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
-        accessor.setOverwritePolicy(newIndexPolicy, true);
         newIndexPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
         newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
 
         // apply new index policy
         CosmosEntityInformation<IndexPolicyOverwriteEntity, String> spyEntityInformation = Mockito.spy(indexPolicyOverwriteEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
+        Mockito.doReturn(true).when(spyEntityInformation).getIndexingPolicyOverwritePolicy(Mockito.any());
         new SimpleCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy

@@ -34,7 +34,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos.util;
 
     // exporting implementation packages specifically for cosmos encryption
-    exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.spring.data.cosmos;
+    exports com.azure.cosmos.implementation to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.batch to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.feedranges to com.azure.cosmos.encryption;

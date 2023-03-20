@@ -11,6 +11,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.domain.CompositeIndexEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -88,7 +89,7 @@ public class CompositeIndexIT {
 
 
     @Test
-    public void canUpdateCompositeIndex() {
+    public void canNotUpdateCompositeIndex() {
         // initialize policy on entity
         new SimpleCosmosRepository<>(information, template);
 
@@ -100,9 +101,6 @@ public class CompositeIndexIT {
         innerList.add(new CompositePath().setPath("/fieldFour"));
         newCompositeIndex.add(innerList);
         newIndexPolicy.setCompositeIndexes(newCompositeIndex);
-        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
-            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
-        accessor.setOverwritePolicy(newIndexPolicy, true);
 
         // apply new index policy
         CosmosEntityInformation<CompositeIndexEntity, String> spyEntityInformation = Mockito.spy(information);
@@ -114,15 +112,19 @@ public class CompositeIndexIT {
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
 
         // assert
-        assertThat(indexes.size()).isEqualTo(1);
+        assertThat(indexes.size()).isEqualTo(2);
         assertThat(indexes.get(0).get(0).getPath()).isEqualTo("/fieldOne");
         assertThat(indexes.get(0).get(0).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
-        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldFour");
+        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldTwo");
         assertThat(indexes.get(0).get(1).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
+        assertThat(indexes.get(1).get(0).getPath()).isEqualTo("/fieldThree");
+        assertThat(indexes.get(1).get(0).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
+        assertThat(indexes.get(1).get(1).getPath()).isEqualTo("/fieldFour");
+        assertThat(indexes.get(1).get(1).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
     }
 
     @Test
-    public void canUpdateCompositeIndexReactive() {
+    public void canNotUpdateCompositeIndexReactive() {
         // initialize policy on entity
         new SimpleReactiveCosmosRepository<>(information, reactiveTemplate);
 
@@ -134,9 +136,6 @@ public class CompositeIndexIT {
         innerList.add(new CompositePath().setPath("/fieldFour"));
         newCompositeIndex.add(innerList);
         newIndexPolicy.setCompositeIndexes(newCompositeIndex);
-        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
-            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
-        accessor.setOverwritePolicy(newIndexPolicy, true);
 
         // apply new index policy
         CosmosEntityInformation<CompositeIndexEntity, String> spyEntityInformation = Mockito.spy(information);
@@ -148,11 +147,15 @@ public class CompositeIndexIT {
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
 
         // assert
-        assertThat(indexes.size()).isEqualTo(1);
+        assertThat(indexes.size()).isEqualTo(2);
         assertThat(indexes.get(0).get(0).getPath()).isEqualTo("/fieldOne");
         assertThat(indexes.get(0).get(0).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
-        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldFour");
+        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldTwo");
         assertThat(indexes.get(0).get(1).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
+        assertThat(indexes.get(1).get(0).getPath()).isEqualTo("/fieldThree");
+        assertThat(indexes.get(1).get(0).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
+        assertThat(indexes.get(1).get(1).getPath()).isEqualTo("/fieldFour");
+        assertThat(indexes.get(1).get(1).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
     }
 
 }

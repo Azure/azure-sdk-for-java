@@ -39,9 +39,6 @@ public final class IndexingPolicy {
     public IndexingPolicy() {
         this.jsonSerializable = new JsonSerializable();
 
-        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
-            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
-        accessor.setOverwritePolicy(this, false);
         this.setAutomatic(true);
         this.setIndexingMode(IndexingMode.CONSISTENT);
     }
@@ -296,37 +293,4 @@ public final class IndexingPolicy {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.IndexingPolicyHelper.setIndexingPolicyAccessor(
-            new ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor() {
-
-                /**
-                 * Gets whether the policy defined in the portal should be overwritten.
-                 *
-                 * @return the overwritePolicy
-                 */
-                @Override
-                public Boolean isOverwritePolicy(IndexingPolicy indexingPolicy) {
-                    return indexingPolicy.jsonSerializable.getBoolean(Constants.Properties.OVERWRITE_POLICY);
-                }
-
-                /**
-                 * Sets whether the policy defined in portal should be overwritten.
-                 *
-                 * @param overwritePolicy the overwritePolicy
-                 * @return the Indexing Policy.
-                 */
-                @Override
-                public IndexingPolicy setOverwritePolicy(IndexingPolicy indexingPolicy, boolean overwritePolicy) {
-                    indexingPolicy.jsonSerializable.set(Constants.Properties.OVERWRITE_POLICY, overwritePolicy);
-                    return indexingPolicy;
-                }
-            });
-    }
-
-    static { initialize(); }
 }
