@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.implementation.cloud.core;
+package com.azure.spring.cloud.core.implementation;
 
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
