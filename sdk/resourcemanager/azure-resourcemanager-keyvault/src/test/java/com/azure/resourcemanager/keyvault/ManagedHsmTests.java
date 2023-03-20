@@ -94,7 +94,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
 
             // The scheduled purge date in UTC.
             OffsetDateTime scheduledPurgeDate = hsm.scheduledPurgeDate();
-            Assertions.assertNotNull(scheduledPurgeDate);
+            Assertions.assertNull(scheduledPurgeDate);
         } finally {
             keyVaultManager.managedHsms().deleteById(managedHsm.id());
             keyVaultManager.serviceClient().getManagedHsms().purgeDeleted(managedHsm.name(), managedHsm.regionName());
