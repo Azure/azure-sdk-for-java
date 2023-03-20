@@ -1,2 +1,2 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar= \
-com.azure.spring.implementation.messaging.eventhubs.SpringMessagingAzureEventHubsRuntimeHints
+com.azure.spring.messaging.eventhubs.implementation.SpringMessagingAzureEventHubsRuntimeHints
