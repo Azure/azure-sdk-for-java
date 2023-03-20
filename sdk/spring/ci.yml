@@ -83,10 +83,6 @@ parameters:
   displayName: 'spring-cloud-azure-actuator-autoconfigure'
   type: boolean
   default: true
-- name: release_springcloudazurenativereachability
-  displayName: 'spring-cloud-azure-native-reachability'
-  type: boolean
-  default: false
 - name: release_springcloudazurestarter
   displayName: 'spring-cloud-azure-starter'
   type: boolean
@@ -290,12 +286,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureactuatorautoconfigure }}
-      - name: spring-cloud-azure-native-reachability
-        groupId: com.azure.spring
-        safeName: springcloudazurenativereachability
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurenativereachability }}
       - name: spring-cloud-azure-starter
         groupId: com.azure.spring
         safeName: springcloudazurestarter
