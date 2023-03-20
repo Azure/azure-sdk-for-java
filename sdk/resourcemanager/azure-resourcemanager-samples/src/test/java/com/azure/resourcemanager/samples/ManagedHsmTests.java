@@ -320,7 +320,7 @@ public class ManagedHsmTests extends SamplesTestBase {
         }
 
         private static String base64Encode(byte[] digest) throws Exception{
-            return new String(Base64.getEncoder().encode(digest), "ascii").strip().replaceAll("\\+", "-").replaceAll("/", "_");
+            return new String(Base64.getEncoder().encode(digest), "ascii").trim().replaceAll("\\+", "-").replaceAll("/", "_");
         }
 
         public Collection<String> getX5c() {
