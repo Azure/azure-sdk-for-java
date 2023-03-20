@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 /** Samples for ResourceProvider SapAvailabilityZoneDetails. */
 public final class ResourceProviderSapAvailabilityZoneDetailsSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPAvailabilityZoneDetails_northeurope.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPAvailabilityZoneDetails_northeurope.json
      */
     /**
      * Sample code: SAPAvailabilityZoneDetails_northeurope.
@@ -22,7 +22,7 @@ public final class ResourceProviderSapAvailabilityZoneDetailsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPAvailabilityZoneDetails_eastus.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPAvailabilityZoneDetails_eastus.json
      */
     /**
      * Sample code: SAPAvailabilityZoneDetails_eastus.

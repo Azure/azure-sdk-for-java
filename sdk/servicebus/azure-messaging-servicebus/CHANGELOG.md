@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 7.13.3 (2023-03-07)
+
+### Bugs Fixed
+- Removed delay in acquiring new link after timeout exception in `ServiceBusSessionManager`. ([#32455](https://github.com/Azure/azure-sdk-for-java/issues/32455))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded `azure-core-amqp` from `2.8.2` to `2.8.3`.
+- Upgraded `azure-identity` from `1.8.0` to `1.8.1`.
+- 
 ## 7.13.2 (2023-02-20)
 
 ### Bugs Fixed

@@ -17,10 +17,10 @@ public final class VirtualNetworksPropertiesInfraVnetProfile {
     private VirtualNetworksPropertiesInfraVnetProfileHci hci;
 
     /*
-     * Infra network profile for KubeVirt platform
+     * Infra network profile for the NetworkCloud platform
      */
-    @JsonProperty(value = "kubevirt")
-    private VirtualNetworksPropertiesInfraVnetProfileKubevirt kubevirt;
+    @JsonProperty(value = "networkCloud")
+    private VirtualNetworksPropertiesInfraVnetProfileNetworkCloud networkCloud;
 
     /*
      * Infra network profile for VMware platform
@@ -53,23 +53,23 @@ public final class VirtualNetworksPropertiesInfraVnetProfile {
     }
 
     /**
-     * Get the kubevirt property: Infra network profile for KubeVirt platform.
+     * Get the networkCloud property: Infra network profile for the NetworkCloud platform.
      *
-     * @return the kubevirt value.
+     * @return the networkCloud value.
      */
-    public VirtualNetworksPropertiesInfraVnetProfileKubevirt kubevirt() {
-        return this.kubevirt;
+    public VirtualNetworksPropertiesInfraVnetProfileNetworkCloud networkCloud() {
+        return this.networkCloud;
     }
 
     /**
-     * Set the kubevirt property: Infra network profile for KubeVirt platform.
+     * Set the networkCloud property: Infra network profile for the NetworkCloud platform.
      *
-     * @param kubevirt the kubevirt value to set.
+     * @param networkCloud the networkCloud value to set.
      * @return the VirtualNetworksPropertiesInfraVnetProfile object itself.
      */
-    public VirtualNetworksPropertiesInfraVnetProfile withKubevirt(
-        VirtualNetworksPropertiesInfraVnetProfileKubevirt kubevirt) {
-        this.kubevirt = kubevirt;
+    public VirtualNetworksPropertiesInfraVnetProfile withNetworkCloud(
+        VirtualNetworksPropertiesInfraVnetProfileNetworkCloud networkCloud) {
+        this.networkCloud = networkCloud;
         return this;
     }
 
@@ -103,8 +103,8 @@ public final class VirtualNetworksPropertiesInfraVnetProfile {
         if (hci() != null) {
             hci().validate();
         }
-        if (kubevirt() != null) {
-            kubevirt().validate();
+        if (networkCloud() != null) {
+            networkCloud().validate();
         }
         if (vmware() != null) {
             vmware().validate();

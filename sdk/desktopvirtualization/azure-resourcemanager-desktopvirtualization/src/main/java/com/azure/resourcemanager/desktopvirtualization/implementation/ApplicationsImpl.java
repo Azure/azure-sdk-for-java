@@ -28,15 +28,6 @@ public final class ApplicationsImpl implements Applications {
         this.serviceManager = serviceManager;
     }
 
-    public Application get(String resourceGroupName, String applicationGroupName, String applicationName) {
-        ApplicationInner inner = this.serviceClient().get(resourceGroupName, applicationGroupName, applicationName);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> getWithResponse(
         String resourceGroupName, String applicationGroupName, String applicationName, Context context) {
         Response<ApplicationInner> inner =
@@ -52,8 +43,13 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public void delete(String resourceGroupName, String applicationGroupName, String applicationName) {
-        this.serviceClient().delete(resourceGroupName, applicationGroupName, applicationName);
+    public Application get(String resourceGroupName, String applicationGroupName, String applicationName) {
+        ApplicationInner inner = this.serviceClient().get(resourceGroupName, applicationGroupName, applicationName);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -63,14 +59,26 @@ public final class ApplicationsImpl implements Applications {
             .deleteWithResponse(resourceGroupName, applicationGroupName, applicationName, context);
     }
 
+    public void delete(String resourceGroupName, String applicationGroupName, String applicationName) {
+        this.serviceClient().delete(resourceGroupName, applicationGroupName, applicationName);
+    }
+
     public PagedIterable<Application> list(String resourceGroupName, String applicationGroupName) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list(resourceGroupName, applicationGroupName);
         return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Application> list(String resourceGroupName, String applicationGroupName, Context context) {
+    public PagedIterable<Application> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         PagedIterable<ApplicationInner> inner =
-            this.serviceClient().list(resourceGroupName, applicationGroupName, context);
+            this
+                .serviceClient()
+                .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 

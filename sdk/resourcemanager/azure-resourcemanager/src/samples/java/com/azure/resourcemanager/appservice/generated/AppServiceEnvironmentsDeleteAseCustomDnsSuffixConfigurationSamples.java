@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments DeleteAseCustomDnsSuffixConfiguration. */
 public final class AppServiceEnvironmentsDeleteAseCustomDnsSuffixConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteAseCustomDnsSuffixConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteAseCustomDnsSuffixConfiguration.json
      */
     /**
      * Sample code: Delete ASE custom DNS suffix configuration.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsDeleteAseCustomDnsSuffixConfigurationSa
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .deleteAseCustomDnsSuffixConfigurationWithResponse("test-rg", "test-ase", Context.NONE);
+            .deleteAseCustomDnsSuffixConfigurationWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

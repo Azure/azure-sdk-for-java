@@ -19,6 +19,10 @@ public final class VolumePatch extends Resource {
     @JsonProperty(value = "properties")
     private VolumePatchProperties innerProperties;
 
+    /** Creates an instance of VolumePatch class. */
+    public VolumePatch() {
+    }
+
     /**
      * Get the innerProperties property: Patchable volume properties.
      *
@@ -126,7 +130,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
@@ -136,7 +140,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkWatchers Delete. */
 public final class NetworkWatchersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherDelete.json
      */
     /**
      * Sample code: Delete network watcher.
@@ -17,6 +15,11 @@ public final class NetworkWatchersDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteNetworkWatcher(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().delete("rg1", "nw1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .delete("rg1", "nw1", com.azure.core.util.Context.NONE);
     }
 }

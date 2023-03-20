@@ -35,6 +35,10 @@ public final class DnsRecord {
     @JsonProperty(value = "ttl", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ttl;
 
+    /** Creates an instance of DnsRecord class. */
+    public DnsRecord() {
+    }
+
     /**
      * Get the type property: Type of the DNS record. Example: TXT.
      *

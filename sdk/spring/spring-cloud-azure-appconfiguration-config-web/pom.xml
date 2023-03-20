@@ -11,7 +11,7 @@
 	<groupId>com.azure.spring</groupId>
 	<artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
 	<version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
-	<name>Azure Spring Cloud App Configuration Config Web</name>
+	<name>Spring Cloud Azure App Configuration Config Web</name>
 	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
 	<properties>
@@ -29,12 +29,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+			<version>2.7.9</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+			<version>2.7.9</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+			<version>2.7.9</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -61,8 +61,8 @@
 					<rules>
 						<bannedDependencies>
 							<includes>
-								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-								<include>org.springframework.boot:spring-boot-starter-web:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.9]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-web:[2.7.9]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
 								<include>org.springframework.cloud:spring-cloud-bus:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
 							</includes>
 						</bannedDependencies>

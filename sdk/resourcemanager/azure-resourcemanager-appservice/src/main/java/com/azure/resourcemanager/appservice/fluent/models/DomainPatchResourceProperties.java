@@ -63,8 +63,7 @@ public final class DomainPatchResourceProperties {
     private List<String> nameServers;
 
     /*
-     * <code>true</code> if domain privacy is enabled for this domain;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "privacy")
     private Boolean privacy;
@@ -88,16 +87,14 @@ public final class DomainPatchResourceProperties {
     private OffsetDateTime lastRenewedTime;
 
     /*
-     * <code>true</code> if the domain should be automatically renewed;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
 
     /*
-     * <code>true</code> if Azure can assign this domain to App Service apps;
-     * otherwise, <code>false</code>. This value will be <code>true</code> if
-     * domain registration status is active and
+     * <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value
+     * will be <code>true</code> if domain registration status is active and
      * it is hosted on name servers Azure has programmatic access to.
      */
     @JsonProperty(value = "readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
@@ -144,6 +141,10 @@ public final class DomainPatchResourceProperties {
      */
     @JsonProperty(value = "authCode")
     private String authCode;
+
+    /** Creates an instance of DomainPatchResourceProperties class. */
+    public DomainPatchResourceProperties() {
+    }
 
     /**
      * Get the contactAdmin property: Administrative contact.

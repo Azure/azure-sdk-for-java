@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementGroupNetworkManagerConnections Get. */
 public final class ManagementGroupNetworkManagerConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerConnectionManagementGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerConnectionManagementGroupGet.json
      */
     /**
      * Sample code: Get Management Group Network Manager Connection.
@@ -23,6 +21,6 @@ public final class ManagementGroupNetworkManagerConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getManagementGroupNetworkManagerConnections()
-            .getWithResponse("managementGroupA", "TestNMConnection", Context.NONE);
+            .getWithResponse("managementGroupA", "TestNMConnection", com.azure.core.util.Context.NONE);
     }
 }

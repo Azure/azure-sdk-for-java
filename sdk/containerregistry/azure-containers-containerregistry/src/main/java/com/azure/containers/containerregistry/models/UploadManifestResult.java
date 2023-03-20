@@ -3,17 +3,22 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
+
 /**
  * The result from uploading a manifest.
  */
 public final class UploadManifestResult {
+    static {
+        ConstructorAccessors.setUploadManifestResultAccessor(UploadManifestResult::new);
+    }
     private final String digest;
 
     /**
      * Initializes upload manifest result object.
      * @param digest The digest associated with the manifest.
      */
-    public UploadManifestResult(String digest) {
+    private UploadManifestResult(String digest) {
         this.digest = digest;
     }
 

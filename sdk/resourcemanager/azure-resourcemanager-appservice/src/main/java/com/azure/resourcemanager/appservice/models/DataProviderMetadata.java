@@ -23,6 +23,10 @@ public final class DataProviderMetadata {
     @JsonProperty(value = "propertyBag", access = JsonProperty.Access.WRITE_ONLY)
     private List<KeyValuePairStringObject> propertyBag;
 
+    /** Creates an instance of DataProviderMetadata class. */
+    public DataProviderMetadata() {
+    }
+
     /**
      * Get the providerName property: The providerName property.
      *

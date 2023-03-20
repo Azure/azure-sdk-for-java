@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetVirtualMachine. */
 public final class WorkloadNetworksGetVirtualMachineSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getVirtualMachineWithResponse("group1", "cloud1", "vm1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getVirtualMachineWithResponse("group1", "cloud1", "vm1", com.azure.core.util.Context.NONE);
     }
 }

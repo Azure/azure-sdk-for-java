@@ -2,13 +2,15 @@
 
 ## 2.25.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
+- Fixed a bug that `listAvailablePrivateIPAddresses` in `Subnet` throws NPE when user has no permission.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
 
 ## 2.24.0 (2023-02-17)
 

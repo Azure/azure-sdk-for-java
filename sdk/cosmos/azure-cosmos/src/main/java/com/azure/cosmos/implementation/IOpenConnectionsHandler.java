@@ -6,8 +6,9 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
 import java.util.List;
 
 public interface IOpenConnectionsHandler {
-    Flux<OpenConnectionResponse> openConnections(List<Uri> addresses);
+    Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses);
 }

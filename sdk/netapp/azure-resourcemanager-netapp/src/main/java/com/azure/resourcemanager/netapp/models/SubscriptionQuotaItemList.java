@@ -18,6 +18,10 @@ public final class SubscriptionQuotaItemList {
     @JsonProperty(value = "value")
     private List<SubscriptionQuotaItemInner> value;
 
+    /** Creates an instance of SubscriptionQuotaItemList class. */
+    public SubscriptionQuotaItemList() {
+    }
+
     /**
      * Get the value property: A list of SubscriptionQuotaItems.
      *

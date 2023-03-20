@@ -15,21 +15,8 @@ public interface OperationsStatusClient {
     /**
      * Gets the status of operation.
      *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner get(String location, String operationId);
-
-    /**
-     * Gets the status of operation.
-     *
-     * @param location The region the operation is in.
-     * @param operationId The operation's unique identifier.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,4 +25,17 @@ public interface OperationsStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * Gets the status of operation.
+     *
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusInner get(String location, String operationId);
 }

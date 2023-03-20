@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListWebApps. */
 public final class AppServiceEnvironmentsListWebAppsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListWebApps.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListWebApps.json
      */
     /**
      * Sample code: Get all apps in an App Service Environment.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsListWebAppsSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listWebApps("test-rg", "test-ase", null, Context.NONE);
+            .listWebApps("test-rg", "test-ase", null, com.azure.core.util.Context.NONE);
     }
 }

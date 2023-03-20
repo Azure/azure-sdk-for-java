@@ -37,15 +37,6 @@ public final class AccountBackupsImpl implements AccountBackups {
         return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
-    public Backup get(String resourceGroupName, String accountName, String backupName) {
-        BackupInner inner = this.serviceClient().get(resourceGroupName, accountName, backupName);
-        if (inner != null) {
-            return new BackupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Backup> getWithResponse(
         String resourceGroupName, String accountName, String backupName, Context context) {
         Response<BackupInner> inner =
@@ -56,6 +47,15 @@ public final class AccountBackupsImpl implements AccountBackups {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Backup get(String resourceGroupName, String accountName, String backupName) {
+        BackupInner inner = this.serviceClient().get(resourceGroupName, accountName, backupName);
+        if (inner != null) {
+            return new BackupImpl(inner, this.manager());
         } else {
             return null;
         }

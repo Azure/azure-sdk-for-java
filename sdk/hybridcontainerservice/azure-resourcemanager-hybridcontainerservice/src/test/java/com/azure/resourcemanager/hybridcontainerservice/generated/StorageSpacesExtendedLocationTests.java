@@ -7,25 +7,23 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesExtendedLocation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesExtendedLocationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesExtendedLocation model =
             BinaryData
-                .fromString("{\"type\":\"wutwbdsre\",\"name\":\"drhneuyow\"}")
+                .fromString("{\"type\":\"elwuipi\",\"name\":\"jzkzi\"}")
                 .toObject(StorageSpacesExtendedLocation.class);
-        Assertions.assertEquals("wutwbdsre", model.type());
-        Assertions.assertEquals("drhneuyow", model.name());
+        Assertions.assertEquals("elwuipi", model.type());
+        Assertions.assertEquals("jzkzi", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        StorageSpacesExtendedLocation model =
-            new StorageSpacesExtendedLocation().withType("wutwbdsre").withName("drhneuyow");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        StorageSpacesExtendedLocation model = new StorageSpacesExtendedLocation().withType("elwuipi").withName("jzkzi");
         model = BinaryData.fromObject(model).toObject(StorageSpacesExtendedLocation.class);
-        Assertions.assertEquals("wutwbdsre", model.type());
-        Assertions.assertEquals("drhneuyow", model.name());
+        Assertions.assertEquals("elwuipi", model.type());
+        Assertions.assertEquals("jzkzi", model.name());
     }
 }

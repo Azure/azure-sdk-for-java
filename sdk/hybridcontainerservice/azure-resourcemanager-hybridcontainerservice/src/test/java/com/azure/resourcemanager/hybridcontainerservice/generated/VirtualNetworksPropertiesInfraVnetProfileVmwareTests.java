@@ -7,23 +7,22 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileVmware;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksPropertiesInfraVnetProfileVmwareTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfileVmware model =
             BinaryData
-                .fromString("{\"segmentName\":\"waezkojvd\"}")
+                .fromString("{\"segmentName\":\"gwol\"}")
                 .toObject(VirtualNetworksPropertiesInfraVnetProfileVmware.class);
-        Assertions.assertEquals("waezkojvd", model.segmentName());
+        Assertions.assertEquals("gwol", model.segmentName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfileVmware model =
-            new VirtualNetworksPropertiesInfraVnetProfileVmware().withSegmentName("waezkojvd");
+            new VirtualNetworksPropertiesInfraVnetProfileVmware().withSegmentName("gwol");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPropertiesInfraVnetProfileVmware.class);
-        Assertions.assertEquals("waezkojvd", model.segmentName());
+        Assertions.assertEquals("gwol", model.segmentName());
     }
 }

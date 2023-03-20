@@ -138,33 +138,30 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
     public static ManifestWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Boolean deleteEnabled = null;
-                    Boolean writeEnabled = null;
-                    Boolean listEnabled = null;
-                    Boolean readEnabled = null;
+                    ManifestWriteableProperties deserializedManifestWriteableProperties =
+                            new ManifestWriteableProperties();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("deleteEnabled".equals(fieldName)) {
-                            deleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedManifestWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("writeEnabled".equals(fieldName)) {
-                            writeEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedManifestWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("listEnabled".equals(fieldName)) {
-                            listEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedManifestWriteableProperties.listEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("readEnabled".equals(fieldName)) {
-                            readEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedManifestWriteableProperties.readEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    ManifestWriteableProperties deserializedValue = new ManifestWriteableProperties();
-                    deserializedValue.deleteEnabled = deleteEnabled;
-                    deserializedValue.writeEnabled = writeEnabled;
-                    deserializedValue.listEnabled = listEnabled;
-                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedValue;
+                    return deserializedManifestWriteableProperties;
                 });
     }
 }

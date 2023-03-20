@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.SendMessage;
 
 /** Samples for UserSessions SendMessage. */
 public final class UserSessionsSendMessageSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_SendMessage_Post.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/UserSession_SendMessage_Post.json
      */
     /**
      * Sample code: UserSession_SendMessage_Post.
@@ -27,6 +26,6 @@ public final class UserSessionsSendMessageSamples {
                 "sessionHost1.microsoft.com",
                 "1",
                 new SendMessage().withMessageTitle("title").withMessageBody("body"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

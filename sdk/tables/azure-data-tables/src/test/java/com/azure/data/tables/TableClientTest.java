@@ -3,12 +3,15 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
@@ -29,6 +32,8 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -56,6 +61,13 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
+
+    protected HttpClient buildAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
@@ -95,6 +107,7 @@ public class TableClientTest extends TableClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableClient tableClient2 =
@@ -1131,5 +1144,30 @@ public class TableClientTest extends TableClientTestBase {
             assertEquals(expiryTime, accessPolicy.getExpiresOn());
             assertEquals(permissions, accessPolicy.getPermissions());
         }
+    }
+
+    @Test
+    public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
+        Assertions.assertDoesNotThrow(() -> {
+            TableEntity entity = new TableEntity("", "");
+            tableClient.createEntity(entity);
+        });
+    }
+
+    @Test
+    public void allowListEntitiesWithEmptyPrimaryKey() {
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity);
+        ListEntitiesOptions options = new ListEntitiesOptions();
+        options.setFilter("PartitionKey eq '' and RowKey eq ''");
+        PagedIterable<TableEntity> response = tableClient.listEntities(options, Duration.ofSeconds(10), null);
+        ArrayList<TableEntity> responseArray = new ArrayList<TableEntity>();
+        for (TableEntity responseEntity : response) {
+            responseArray.add(responseEntity);
+        }
+        assertEquals(1, responseArray.size());
+        assertEquals(entityName, responseArray.get(0).getProperty("Name"));
     }
 }

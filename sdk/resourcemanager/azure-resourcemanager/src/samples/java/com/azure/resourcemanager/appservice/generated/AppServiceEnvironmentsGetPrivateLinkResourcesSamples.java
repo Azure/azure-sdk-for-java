@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetPrivateLinkResources. */
 public final class AppServiceEnvironmentsGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetPrivateLinkResources.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetPrivateLinkResources.json
      */
     /**
      * Sample code: Gets the private link resources.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsGetPrivateLinkResourcesSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getPrivateLinkResourcesWithResponse("test-rg", "test-ase", Context.NONE);
+            .getPrivateLinkResourcesWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

@@ -47,6 +47,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+graphservicesprod:
+  service: graphservices
 hybridaks:
   service: hybridcontainerservice
 keyvault:

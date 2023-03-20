@@ -17,6 +17,15 @@ public final class AzureHybridBenefitType extends ExpandableStringEnum<AzureHybr
     public static final AzureHybridBenefitType NONE = fromString("None");
 
     /**
+     * Creates a new instance of AzureHybridBenefitType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureHybridBenefitType() {
+    }
+
+    /**
      * Creates or finds a AzureHybridBenefitType from its string representation.
      *
      * @param name a name to look for.

@@ -25,6 +25,10 @@ public final class PrivateEndpointConnectionCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PrivateEndpointConnectionCollection class. */
+    public PrivateEndpointConnectionCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

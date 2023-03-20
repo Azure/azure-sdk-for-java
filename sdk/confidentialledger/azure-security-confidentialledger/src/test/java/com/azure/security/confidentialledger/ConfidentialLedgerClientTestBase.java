@@ -14,7 +14,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
@@ -41,72 +40,59 @@ class ConfidentialLedgerClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        try {
-            ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
-                .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-            if (getTestMode() == TestMode.PLAYBACK) {
-                confidentialLedgerCertificateClientBuilder
-                        .httpClient(interceptorManager.getPlaybackClient())
-                        .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-            } else if (getTestMode() == TestMode.RECORD) {
-                confidentialLedgerCertificateClientBuilder
-                        .addPolicy(interceptorManager.getRecordPolicy())
-                        .credential(new DefaultAzureCredentialBuilder().build());
-            } else if (getTestMode() == TestMode.LIVE) {
-                confidentialLedgerCertificateClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
-            }
-            confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder
-                    .buildClient();
-            
-            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "java-sdk-test");
+        ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
+            .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
-            confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
-                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-            if (getTestMode() == TestMode.PLAYBACK) {
-                confidentialLedgerClientBuilder
-                        .httpClient(interceptorManager.getPlaybackClient())
-                        .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-            } else if (getTestMode() == TestMode.RECORD) {
-                confidentialLedgerClientBuilder
-                        .addPolicy(interceptorManager.getRecordPolicy())
-                        .credential(new DefaultAzureCredentialBuilder().build());
-            } else if (getTestMode() == TestMode.LIVE) {
-                confidentialLedgerClientBuilder.credential(new AzureCliCredentialBuilder().build());
-            }
-        } catch (Exception ex) {
-            System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
+        if (getTestMode() == TestMode.PLAYBACK) {
+            confidentialLedgerCertificateClientBuilder
+                .httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            confidentialLedgerCertificateClientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            confidentialLedgerCertificateClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "emily-java-sdk-tests");
+        confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder.buildClient();
+
+        String ledgerName = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "java-sdk-live-tests-ledger");
+
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
-                .getLedgerIdentityWithResponse(ledgerId, null);
+            .getLedgerIdentityWithResponse(ledgerName, null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
-
         JsonNode jsonNode = null;
         try {
             jsonNode = mapper.readTree(identityResponse.toBytes());
         } catch (IOException ex) {
-            System.out.println("Caught exception " + ex);
-            Assertions.assertTrue(false);
+            System.out.println("Caught IO exception " + ex);
+            Assertions.fail();
         }
-        String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+
+        String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
         reactor.netty.http.client.HttpClient reactorClient = null;
 
         try {
-            final SslContext sslContext = SslContextBuilder.forClient().trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
-            reactorClient = reactor.netty.http.client.HttpClient.create();
-            reactorClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            SslContext sslContext = SslContextBuilder.forClient()
+                .trustManager(new ByteArrayInputStream(
+                    ledgerTlsCertificate.getBytes(StandardCharsets.UTF_8)))
+                .build();
+            reactorClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         } catch (SSLException ex) {
-            System.out.println("Caught exception " + ex);
-            Assertions.assertTrue(false);
+            System.out.println("Caught SSL exception " + ex);
+            Assertions.fail();
         }
 
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+
+        confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
+            .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://java-sdk-live-tests-ledger.confidential-ledger.azure.com"))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerClientBuilder
@@ -122,7 +108,6 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(httpClient);
         }
-        
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
     }
 

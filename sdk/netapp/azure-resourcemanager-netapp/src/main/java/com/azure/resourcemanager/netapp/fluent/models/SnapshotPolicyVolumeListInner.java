@@ -17,6 +17,10 @@ public final class SnapshotPolicyVolumeListInner {
     @JsonProperty(value = "value")
     private List<VolumeInner> value;
 
+    /** Creates an instance of SnapshotPolicyVolumeListInner class. */
+    public SnapshotPolicyVolumeListInner() {
+    }
+
     /**
      * Get the value property: List of volumes.
      *

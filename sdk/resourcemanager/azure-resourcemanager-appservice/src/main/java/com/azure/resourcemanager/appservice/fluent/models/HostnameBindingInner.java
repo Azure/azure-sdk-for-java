@@ -21,6 +21,10 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private HostnameBindingProperties innerProperties;
 
+    /** Creates an instance of HostnameBindingInner class. */
+    public HostnameBindingInner() {
+    }
+
     /**
      * Get the innerProperties property: HostNameBinding resource specific properties.
      *
