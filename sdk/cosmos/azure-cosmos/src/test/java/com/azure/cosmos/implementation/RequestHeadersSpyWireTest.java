@@ -314,7 +314,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         client.clearCapturedRequests();
 
         client.executeBatchRequest(documentCollectionLink, serverBatchRequest, requestOptions, false).block();
-        
+
         for (HttpRequest httpRequest : client.getCapturedRequests()) {
             Map<String, String> headers = httpRequest.headers().toMap();
             if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {

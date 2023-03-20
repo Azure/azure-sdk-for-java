@@ -82,6 +82,7 @@ public final class CosmosBatchRequestOptions {
      * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
      *
      * @param priorityLevel priority level of the request
+     * @return the TransactionalBatchRequestOptions.
      */
     public CosmosBatchRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
         this.priorityLevel = priorityLevel;
