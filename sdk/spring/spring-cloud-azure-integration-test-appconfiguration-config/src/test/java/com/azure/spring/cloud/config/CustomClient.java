@@ -8,6 +8,8 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
+import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 
 public class CustomClient implements ConfigurationClientCustomizer, SecretClientCustomizer {
     

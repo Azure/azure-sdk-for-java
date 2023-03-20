@@ -5,40 +5,28 @@ package com.azure.spring.cloud.feature.manager.targeting;
 import java.util.List;
 
 /**
- * Context for evaluating the `Microsoft.TargetingFilter`.
+ * Interface for the Targeting Context used in evaluating the `Microsoft.TargetingFilter`.
  */
-public final class TargetingContext implements ITargetingContext {
-
-    private String userId;
-
-    private List<String> groups;
+public interface TargetingContext {
 
     /**
      * @return the userId
      */
-    public String getUserId() {
-        return userId;
-    }
+    String getUserId();
 
     /**
      * @param userId the userId to set
      */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    void setUserId(String userId);
 
     /**
      * @return the groups
      */
-    public List<String> getGroups() {
-        return groups;
-    }
+    List<String> getGroups();
 
     /**
      * @param groups the groups to set
      */
-    public void setGroups(List<String> groups) {
-        this.groups = groups;
-    }
+    void setGroups(List<String> groups);
 
 }
