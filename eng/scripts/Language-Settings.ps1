@@ -289,7 +289,8 @@ $PackageExclusions = @{
   "azure-ai-personalizer" = "No java docs in this package.";
   "azure-sdk-build-tool" = "Do not release docs for this package.";
   "azure-applicationinsights-query" = "Cannot find namespaces in javadoc package.";
-  "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources."
+  "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources.";
+  "azure-resourcemanager-storagemover" = "Attempts to azure-sdk-build-tool and fails";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -440,7 +441,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
   Set-Content -Path $hostConfigurationPath -Value ($configuration | ConvertTo-Json) | Out-Null
 
   docker run -v "${workingDirectory}:${containerWorkingDirectory}" `
-    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath $DocValidationImageId 2>&1 `
+    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath -t $DocValidationImageId 2>&1 `
     | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages
     | Out-Host
 
