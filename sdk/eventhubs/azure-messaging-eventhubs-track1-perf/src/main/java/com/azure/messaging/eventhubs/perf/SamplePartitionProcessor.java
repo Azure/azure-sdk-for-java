@@ -135,4 +135,13 @@ public class SamplePartitionProcessor implements IEventProcessor {
             counter = currentCounters.poll();
         }
     }
+
+    /**
+     * Gets the event counters opened while processing this partition.
+     *
+     * @return the event counters opened while processing this partition.
+     */
+    List<EventsCounter> getCounters() {
+        return allCounters;
+    }
 }

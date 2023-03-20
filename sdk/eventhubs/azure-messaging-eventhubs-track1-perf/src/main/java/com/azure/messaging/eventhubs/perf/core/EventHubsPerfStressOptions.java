@@ -9,7 +9,7 @@ import com.beust.jcommander.Parameter;
 public class EventHubsPerfStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "-bs", "--batchsize" }, description = "Size of the batch (in bytes)")
-    private Integer batchSize = null;
+    private int batchSize = 100;
 
     @Parameter(names = { "-ms", "--messagesize" }, description = "Size of the individual message (in bytes)")
     private int messageSize = 100;
