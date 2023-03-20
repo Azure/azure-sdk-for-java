@@ -5,9 +5,12 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
@@ -16,13 +19,16 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentClassifiersImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.MiscellaneousImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentClassifierRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifiersBuildClassifierHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsBuildModelHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsComposeModelHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsCopyModelToHeaders;
@@ -50,16 +56,20 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getAuthorizeCopyRequest;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getBuildDocumentClassifierRequest;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getBuildDocumentModelRequest;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getComposeDocumentModelRequest;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getInnerCopyAuthorization;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocTypes;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getBuildDocumentModelOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getComposeModelOptions;
@@ -90,7 +100,7 @@ public final class DocumentModelAdministrationClient {
     private final FormRecognizerClientImpl formRecognizerClientImpl;
     private final DocumentModelsImpl documentModelsImpl;
     private final MiscellaneousImpl miscellaneousImpl;
-
+    private final DocumentClassifiersImpl documentClassifiersImpl;
     private final DocumentAnalysisAudience audience;
 
     /**
@@ -105,6 +115,7 @@ public final class DocumentModelAdministrationClient {
         this.formRecognizerClientImpl = formRecognizerClientImpl;
         this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
         this.miscellaneousImpl = formRecognizerClientImpl.getMiscellaneous();
+        this.documentClassifiersImpl = formRecognizerClientImpl.getDocumentClassifiers();
         this.audience = audience;
     }
 
@@ -258,6 +269,143 @@ public final class DocumentModelAdministrationClient {
             buildModelPollingOperation(finalContext),
             getCancellationIsNotSupported(),
             buildModelFetchingOperation(finalContext));
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     * <p>Models are built using documents that are of the following content
+     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
+     * Other type of content is ignored.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     * <pre>
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String modelId = &quot;custom-model-id&quot;;
+     * String prefix = &quot;Invoice&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     *
+     * DocumentModelDetails documentModelDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
+     *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
+     *         new BuildDocumentModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
+     *             .setDescription&#40;&quot;model desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;,
+     *         Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
+     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     *
+     * @param docTypes explain doctypes.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code docTypes} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifier(
+        Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        return beginBuildClassifier(docTypes, null, Context.NONE);
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     * <p>Models are built using documents that are of the following content
+     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
+     * Other type of content is ignored.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     * <pre>
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String modelId = &quot;custom-model-id&quot;;
+     * String prefix = &quot;Invoice&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     *
+     * DocumentModelDetails documentModelDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
+     *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
+     *         new BuildDocumentModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
+     *             .setDescription&#40;&quot;model desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;,
+     *         Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
+     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     *
+     * @param docTypes explain doctypes.
+     * @param buildClassifierOptions The configurable {@link BuildClassifierOptions options} to pass when
+     * building a custom document analysis model.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code docTypes} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifier(
+        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildClassifierOptions buildClassifierOptions, Context context) {
+        return beginBuildClassifierSync(docTypes, buildClassifierOptions, context);
+    }
+
+    SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifierSync(
+        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildClassifierOptions options, Context context) {
+
+        BuildClassifierOptions finalBuildClassifierOptions = options == null ? new BuildClassifierOptions() : options;
+        String classifierId = finalBuildClassifierOptions.getClassifierId();
+        if (classifierId == null) {
+            classifierId = Utility.generateRandomModelID();
+        }
+        String finalId = classifierId;
+        context = enableSyncRestProxy(getTracingContext(context));
+        Context finalContext = context;
+
+        return SyncPoller.createPoller(
+            DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildClassifierActivationOperation(
+                finalId,
+                docTypes,
+                finalBuildClassifierOptions,
+                finalContext).apply(cxt)),
+            buildModelPollingOperation(finalContext),
+            getCancellationIsNotSupported(),
+            classifierFetchingOperation(finalContext));
     }
 
     /**
@@ -1032,6 +1180,228 @@ public final class DocumentModelAdministrationClient {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
+    /**
+     * List information for each document classifier on the Form Recognizer account that were built successfully.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentClassifiers -->
+     * <pre>
+     * documentModelAdministrationClient.listDocumentClassifiers&#40;&#41;
+     *     .forEach&#40;documentModel -&gt;
+     *         System.out.printf&#40;&quot;Classifier ID: %s, Classifier description: %s, Created on: %s.%n&quot;,
+     *             documentModel.getClassifierId&#40;&#41;,
+     *             documentModel.getDescription&#40;&#41;,
+     *             documentModel.getCreatedOn&#40;&#41;&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentClassifiers -->
+     *
+     * @return {@link PagedIterable} of {@link DocumentClassifierDetails document classifiers} on the Form Recognizer account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DocumentClassifierDetails> listDocumentClassifiers() {
+        return listDocumentClassifiers(Context.NONE);
+    }
+
+    /**
+     * List information for each document classifier on the Form Recognizer account that were built successfully with a Http
+     * response and a specified {@link Context}.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentClassifiers#Context -->
+     * <pre>
+     * documentModelAdministrationClient.listDocumentClassifiers&#40;Context.NONE&#41;
+     *     .forEach&#40;documentModel -&gt;
+     *         System.out.printf&#40;&quot;Classifier ID: %s, Classifier description: %s, Created on: %s.%n&quot;,
+     *             documentModel.getClassifierId&#40;&#41;,
+     *             documentModel.getDescription&#40;&#41;,
+     *             documentModel.getCreatedOn&#40;&#41;&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentClassifiers#Context -->
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return {@link PagedIterable} of {@link DocumentClassifierDetails document classifiers} on the Form Recognizer account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DocumentClassifierDetails> listDocumentClassifiers(Context context) {
+        return listDocumentClassifiersSync(context);
+    }
+
+    PagedIterable<DocumentClassifierDetails> listDocumentClassifiersSync(Context context) {
+        context = enableSyncRestProxy(getTracingContext(context));
+        Context finalContext = context;
+        return new PagedIterable<>(() -> listFirstPageClassifiers(finalContext),
+            continuationToken -> listNextPageClassifiers(continuationToken, finalContext));
+    }
+
+    private PagedResponse<DocumentClassifierDetails> listFirstPageClassifiers(Context context) {
+        try {
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> res =
+                documentClassifiersImpl.listClassifiersSinglePage(context);
+            return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().stream().map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
+                res.getContinuationToken(),
+                null);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+        }
+    }
+
+    private PagedResponse<DocumentClassifierDetails> listNextPageClassifiers(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        try {
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails>
+                res = documentClassifiersImpl.listClassifiersNextSinglePage(nextPageLink, context);
+            return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().stream().map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
+                res.getContinuationToken(),
+                null);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+        }
+    }
+
+    /**
+     * Get detailed information for a document classifier by its ID.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentClassifier#string -->
+     * <pre>
+     * String classifierId = &quot;&#123;classifierId&#125;&quot;;
+     * DocumentClassifierDetails documentClassifierDetails
+     *     = documentModelAdministrationClient.getDocumentClassifier&#40;classifierId&#41;;
+     * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
+     * documentClassifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Blob File list Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobFileListSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentClassifier#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     *
+     * @return The detailed information for the specified document classifier ID.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentClassifierDetails getDocumentClassifier(String classifierId) {
+        return getDocumentClassifierWithResponse(classifierId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get detailed information for a document classifier by its ID.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-Context -->
+     * <pre>
+     * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
+     * Response&lt;DocumentClassifierDetails&gt; response
+     *     = documentModelAdministrationClient.getDocumentClassifierWithResponse&#40;modelId, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * DocumentClassifierDetails documentClassifierDetails = response.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifierDetails.getClassifierId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifierDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifierDetails.getCreatedOn&#40;&#41;&#41;;
+     * documentClassifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Blob File list Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobFileListSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-Context -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The detailed information for the specified document classifier ID.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DocumentClassifierDetails> getDocumentClassifierWithResponse(String classifierId, Context context) {
+        if (CoreUtils.isNullOrEmpty(classifierId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                + " be null or empty"));
+        }
+        try {
+            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails>
+                response =
+                documentClassifiersImpl.getClassifierWithResponse(classifierId, enableSyncRestProxy(getTracingContext(context)));
+
+            return new SimpleResponse<>(response, Transforms.toDocumentClassifierDetails(response.getValue()));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+        }
+    }
+
+    /**
+     * Deletes the specified document classifier.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentClassifier#string -->
+     * <pre>
+     * String classifierId = &quot;&#123;classifierId&#125;&quot;;
+     * documentModelAdministrationClient.deleteDocumentClassifier&#40;classifierId&#41;;
+     * System.out.printf&#40;&quot;Classifier ID: %s is deleted.%n&quot;, classifierId&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentClassifier#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDocumentClassifier(String classifierId) {
+        deleteDocumentClassifierWithResponse(classifierId, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified document classifier.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentClassifierWithResponse#string-Context -->
+     * <pre>
+     * String classifierId = &quot;&#123;classifierId&#125;&quot;;
+     * Response&lt;Void&gt; response
+     *     = documentModelAdministrationClient.deleteDocumentClassifierWithResponse&#40;classifierId, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier ID: %s is deleted.%n&quot;, classifierId&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentClassifierWithResponse#string-Context -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+
+     * @return A {@link Response} containing status code and HTTP headers.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDocumentClassifierWithResponse(String classifierId, Context context) {
+        if (CoreUtils.isNullOrEmpty(classifierId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                + " be null or empty"));
+        }
+        try {
+            return
+                documentClassifiersImpl.deleteClassifierWithResponse(classifierId, enableSyncRestProxy(getTracingContext(context)));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+        }
+    }
+
     private Function<PollingContext<OperationResult>, OperationResult> buildModelActivationOperation(
         String blobContainerUrl, DocumentModelBuildMode buildMode, String modelId, String prefix,
         BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
@@ -1143,6 +1513,86 @@ public final class DocumentModelAdministrationClient {
                 return Transforms.toDocumentOperationResult(
                             response.getDeserializedHeaders().getOperationLocation());
             }  catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+            }
+        };
+    }
+
+    private Function<PollingContext<OperationResult>, OperationResult> buildClassifierActivationOperation(
+        String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes,
+        BuildClassifierOptions buildClassifierOptions, Context context) {
+        return (pollingContext) -> {
+            try {
+                Objects.requireNonNull(docTypes, "'docTypes' cannot be null.");
+                BuildDocumentClassifierRequest buildDocumentModelRequest =
+                    getBuildDocumentClassifierRequest(classifierId, buildClassifierOptions.getDescription(), toInnerDocTypes(docTypes));
+
+                ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>
+                    response = documentClassifiersImpl.buildClassifierWithResponse(buildDocumentModelRequest, context);
+                return Transforms.toDocumentOperationResult(
+                    response.getDeserializedHeaders().getOperationLocation());
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+            }
+        };
+    }
+    private Function<PollingContext<OperationResult>, PollResponse<OperationResult>>
+        buildClassifierPollingOperation(Context context) {
+        return (pollingContext) -> {
+            try {
+                PollResponse<OperationResult> operationResultPollResponse =
+                    pollingContext.getLatestResponse();
+                String modelId = operationResultPollResponse.getValue().getOperationId();
+                Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails>
+                    modelSimpleResponse = miscellaneousImpl.getOperationWithResponse(modelId, context);
+                return processBuildingModelResponse(modelSimpleResponse.getValue(), operationResultPollResponse);
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
+            }
+        };
+    }
+    private PollResponse<OperationResult> processBuildingClassifierResponse(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails getOperationResponse,
+        PollResponse<OperationResult> trainingModelOperationResponse) {
+        LongRunningOperationStatus status;
+        switch (getOperationResponse.getStatus()) {
+            case NOT_STARTED:
+            case RUNNING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case SUCCEEDED:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                throw LOGGER.logExceptionAsError(
+                    Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
+            case CANCELED:
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    getOperationResponse.getStatus().toString(), true);
+                break;
+        }
+        return new PollResponse<>(status,
+            trainingModelOperationResponse.getValue());
+    }
+
+    // private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
+    // getCancellationIsNotSupported() {
+    //     return (pollingContext, activationResponse) -> {
+    //         throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+    //     };
+    // }
+
+    private Function<PollingContext<OperationResult>, DocumentClassifierDetails>
+        classifierFetchingOperation(Context context) {
+        return (pollingContext) -> {
+            try {
+                final String classifierId = pollingContext.getLatestResponse().getValue().getOperationId();
+                return
+                    Transforms.toDocumentClassifierDetails(documentClassifiersImpl.getClassifierWithResponse(
+                        classifierId,
+                        context).getValue());
+            } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };

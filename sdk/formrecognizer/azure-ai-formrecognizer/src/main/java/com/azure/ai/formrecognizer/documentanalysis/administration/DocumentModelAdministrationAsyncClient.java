@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersi
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
@@ -17,6 +18,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentClassifiersImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.MiscellaneousImpl;
@@ -50,6 +52,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getAuthorizeCopyRequest;
@@ -84,6 +87,7 @@ public final class DocumentModelAdministrationAsyncClient {
     private final FormRecognizerClientImpl formRecognizerClientImpl;
     private final DocumentModelsImpl documentModelsImpl;
     private final MiscellaneousImpl miscellaneousImpl;
+    private final DocumentClassifiersImpl documentClassifiersImpl;
 
     private final DocumentAnalysisServiceVersion serviceVersion;
     private final DocumentAnalysisAudience audience;
@@ -103,6 +107,7 @@ public final class DocumentModelAdministrationAsyncClient {
         this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
         this.miscellaneousImpl = formRecognizerClientImpl.getMiscellaneous();
         this.serviceVersion = serviceVersion;
+        this.documentClassifiersImpl = formRecognizerClientImpl.getDocumentClassifiers();
         this.audience = audience;
     }
 
@@ -868,6 +873,206 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
+    /**
+     * Deletes the specified document classifier.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string -->
+     * <pre>
+     * String classifierId = &quot;&#123;classifierId&#125;&quot;;
+     * documentModelAdministrationAsyncClient.deleteDocumentClassifier&#40;classifierId&#41;
+     *     .subscribe&#40;ignored -&gt; System.out.printf&#40;&quot;Classifier ID: %s is deleted%n&quot;, classifierId&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @return An empty Mono.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDocumentClassifier(String classifierId) {
+        return deleteDocumentModelWithResponse(classifierId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified document classifier.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string -->
+     * <pre>
+     * String classifierId = &quot;&#123;classifierId&#125;&quot;;
+     * documentModelAdministrationAsyncClient.deleteDocumentClassifierWithResponse&#40;classifierId&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Classifier ID: %s is deleted.%n&quot;, classifierId&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @return A {@link Response} containing the status code and HTTP headers.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDocumentClassifierWithResponse(String classifierId) {
+        try {
+            return withContext(context -> deleteDocumentModelWithResponse(classifierId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteDocumentClassifierWithResponse(String classifierId, Context context) {
+        if (CoreUtils.isNullOrEmpty(classifierId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                + " be null or empty"));
+        }
+        return documentClassifiersImpl.deleteClassifierWithResponseAsync(classifierId, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * List information for each document classifier on the Form Recognizer account that were built successfully.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers -->
+     * <pre>
+     * documentModelAdministrationAsyncClient.listDocumentClassifiers&#40;&#41;
+     *     .subscribe&#40;documentModelInfo -&gt;
+     *         System.out.printf&#40;&quot;Classifier ID: %s, Classifier description: %s, Created on: %s.%n&quot;,
+     *             documentModelInfo.getClassifierId&#40;&#41;,
+     *             documentModelInfo.getDescription&#40;&#41;,
+     *             documentModelInfo.getCreatedOn&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers -->
+     *
+     * @return {@link PagedFlux} of {@link DocumentClassifierDetails document classifiers} on the Form Recognizer account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DocumentClassifierDetails> listDocumentClassifiers() {
+        try {
+            return new PagedFlux<>(() -> withContext(this::listFirstPageClassifiers),
+                continuationToken -> withContext(context -> listNextPageClassifiers(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    private Mono<PagedResponse<DocumentClassifierDetails>> listFirstPageClassifiers(Context context) {
+        return documentClassifiersImpl.listClassifiersSinglePageAsync(context)
+            .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
+            .doOnSuccess(response -> logger.info("Listed all models"))
+            .doOnError(error -> logger.warning("Failed to list all models information", error))
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().stream()
+                    .map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails))
+                    .collect(Collectors.toList()),
+                res.getContinuationToken(),
+                null));
+    }
+
+    private Mono<PagedResponse<DocumentClassifierDetails>> listNextPageClassifiers(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return documentClassifiersImpl.listClassifiersNextSinglePageAsync(nextPageLink, context)
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error))
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().stream()
+                    .map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails))
+                    .collect(Collectors.toList()),
+                res.getContinuationToken(),
+                null));
+    }
+
+    /**
+     * Get detailed information for a document classifier by its ID.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * documentModelAdministrationAsyncClient.getDocumentClassifier&#40;modelId&#41;.subscribe&#40;documentClassifier -&gt; &#123;
+     *     System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, documentClassifier.getClassifierId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Classifier Description: %s%n&quot;, documentClassifier.getDescription&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Classifier Created on: %s%n&quot;, documentClassifier.getCreatedOn&#40;&#41;&#41;;
+     *     documentClassifier.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, documentTypeDetails.getAzureBlobSource&#40;&#41;
+     *             .getContainerUrl&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Blob File list Source container Url: %s&quot;, documentTypeDetails.
+     *             getAzureBlobFileListSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @return The detailed information for the specified document classifier ID.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentClassifierDetails> getDocumentClassifier(String classifierId) {
+        return getDocumentClassifierWithResponse(classifierId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get detailed information for a specified model ID with Http response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentModelWithResponse#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * documentModelAdministrationAsyncClient.getDocumentModelWithResponse&#40;modelId&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     DocumentModelDetails documentModelDetails = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     *     documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *         documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *             System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
+     *             System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentModelWithResponse#string -->
+     *
+     * @param classifierId The unique document classifier identifier.
+     * @return A {@link Response} containing the requested {@link DocumentClassifierDetails model}.
+     * @throws IllegalArgumentException If {@code classifierId} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DocumentClassifierDetails>> getDocumentClassifierWithResponse(String classifierId) {
+        try {
+            return withContext(context -> getDocumentClassifierWithResponse(classifierId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<DocumentClassifierDetails>> getDocumentClassifierWithResponse(String classifierId, Context context) {
+        if (CoreUtils.isNullOrEmpty(classifierId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                + " be null or empty"));
+        }
+        return documentClassifiersImpl.getClassifierWithResponseAsync(classifierId, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new SimpleResponse<>(response, Transforms.toDocumentClassifierDetails(response.getValue())));
+    }
     private Function<PollingContext<OperationResult>, Mono<DocumentModelDetails>>
         fetchModelResultOperation(Context context) {
         return (pollingContext) -> {

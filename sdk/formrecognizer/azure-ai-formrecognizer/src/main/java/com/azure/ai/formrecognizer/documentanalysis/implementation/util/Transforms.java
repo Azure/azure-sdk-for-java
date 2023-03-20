@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
@@ -22,7 +23,10 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListSource;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentClassifierRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
@@ -250,6 +254,15 @@ public class Transforms {
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
         return buildDocumentModelRequest;
+    }
+
+    public static BuildDocumentClassifierRequest getBuildDocumentClassifierRequest(String classifierId,
+                                                                                   String description, Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        BuildDocumentClassifierRequest buildDocumentClassifierRequest = new BuildDocumentClassifierRequest()
+            .setClassifierId(classifierId)
+            .setDescription(description)
+            .setDocTypes(docTypes);
+        return buildDocumentClassifierRequest;
     }
 
     /**
@@ -713,5 +726,34 @@ public class Transforms {
                 return documentWord;
             })
             .collect(Collectors.toList());
+    }
+
+    public static Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> toInnerDocTypes(Map<String, com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails> tags) {
+        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails>
+            innerTags = new HashMap<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails>();
+        tags.forEach((key, classifierDocumentTypeDetails) -> {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
+                = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
+            if (classifierDocumentTypeDetails.getAzureBlobFileListSource() != null) {
+                innerClassifyDocTypeDetails.setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl()).setFileList(classifierDocumentTypeDetails.getAzureBlobFileListSource()
+                    .getFileList()));
+            } else {
+                innerClassifyDocTypeDetails.setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl()).setPrefix(classifierDocumentTypeDetails.getAzureBlobSource().getPrefix()));
+            }
+            innerTags.put(key, innerClassifyDocTypeDetails);
+        });
+        return innerTags;
+    }
+
+    public static DocumentClassifierDetails toDocumentClassifierDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails inner) {
+        DocumentClassifierDetails classifierDetails = new DocumentClassifierDetails();
+        DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());
+        DocumentClassifierDetailsHelper.setDescription(classifierDetails, inner.getDescription());
+        DocumentClassifierDetailsHelper.setDocTypes(classifierDetails, inner.getDocTypes());
+        DocumentClassifierDetailsHelper.setApiVersion(classifierDetails, inner.getApiVersion());
+        DocumentClassifierDetailsHelper.setCreatedOn(classifierDetails, inner.getCreatedDateTime());
+        DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
+
+        return classifierDetails;
     }
 }

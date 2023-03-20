@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
@@ -422,4 +423,87 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listOperations
     }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentClassifier(String)}
+     */
+    public void deleteClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string
+        String classifierId = "{classifierId}";
+        documentModelAdministrationAsyncClient.deleteDocumentClassifier(classifierId)
+            .subscribe(ignored -> System.out.printf("Classifier ID: %s is deleted%n", classifierId));
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentClassifierWithResponse(String)}
+     */
+    public void deleteClassifierWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+        String classifierId = "{classifierId}";
+        documentModelAdministrationAsyncClient.deleteDocumentClassifierWithResponse(classifierId)
+            .subscribe(response -> {
+                System.out.printf("Response Status Code: %d.", response.getStatusCode());
+                System.out.printf("Classifier ID: %s is deleted.%n", classifierId);
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#listDocumentClassifiers()}
+     */
+    public void listClassifiers() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers
+        documentModelAdministrationAsyncClient.listDocumentClassifiers()
+            .subscribe(documentModelInfo ->
+                System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
+                    documentModelInfo.getClassifierId(),
+                    documentModelInfo.getDescription(),
+                    documentModelInfo.getCreatedOn()));
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentClassifier(String)}
+     */
+    public void getDocumentClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string
+        String modelId = "{model_id}";
+        documentModelAdministrationAsyncClient.getDocumentClassifier(modelId).subscribe(documentClassifier -> {
+            System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
+            System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
+            System.out.printf("Classifier Created on: %s%n", documentClassifier.getCreatedOn());
+            documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
+                System.out.printf("Blob Source container Url: %s", documentTypeDetails.getAzureBlobSource()
+                    .getContainerUrl());
+                System.out.printf("Blob File list Source container Url: %s", documentTypeDetails.
+                    getAzureBlobFileListSource().getContainerUrl());
+            });
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentClassifierWithResponse(String)}
+     */
+    public void getClassifierWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
+        String modelId = "{model_id}";
+        documentModelAdministrationAsyncClient.getDocumentClassifierWithResponse(modelId).subscribe(response -> {
+            System.out.printf("Response Status Code: %d.", response.getStatusCode());
+            DocumentClassifierDetails documentClassifierDetails = response.getValue();
+            System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
+            System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
+            System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
+            documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+                System.out.printf("Blob Source container Url: %s", documentTypeDetails.
+                    getAzureBlobSource().getContainerUrl());
+                System.out.printf("Blob File list Source container Url: %s", documentTypeDetails.
+                    getAzureBlobFileListSource().getContainerUrl());
+            });
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
+    }
+
+
 }
