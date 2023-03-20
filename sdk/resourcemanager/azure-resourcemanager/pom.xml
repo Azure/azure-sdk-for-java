@@ -224,24 +224,6 @@
       <version>0.1.55</version> <!-- {x-version-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.68</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.2.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
   <profiles>
     <profile>
