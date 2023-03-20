@@ -18,6 +18,10 @@ public final class SqlContainerListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlContainerGetResultsInner> value;
 
+    /** Creates an instance of SqlContainerListResult class. */
+    public SqlContainerListResult() {
+    }
+
     /**
      * Get the value property: List of containers and their properties.
      *

@@ -1,6 +1,20 @@
 # Release History
 
-## 2.23.0-beta.1 (Unreleased)
+## 2.25.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed a bug that `DiagnosticSetting` initialization failed, when category group exists in `LogSettings`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
 
 ### Breaking Changes
 

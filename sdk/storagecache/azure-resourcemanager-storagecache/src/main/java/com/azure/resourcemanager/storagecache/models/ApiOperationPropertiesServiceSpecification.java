@@ -23,6 +23,10 @@ public final class ApiOperationPropertiesServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
 
+    /** Creates an instance of ApiOperationPropertiesServiceSpecification class. */
+    public ApiOperationPropertiesServiceSpecification() {
+    }
+
     /**
      * Get the metricSpecifications property: Details about operations related to metrics.
      *

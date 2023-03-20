@@ -12,11 +12,10 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobResourceInner model =
             BinaryData
                 .fromString(
@@ -34,8 +33,8 @@ public final class JobResourceInnerTests {
         Assertions.assertEquals("xagkvtmelmqkrh", model.etag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobResourceInner model =
             new JobResourceInner()
                 .withLocation("hvljuahaquh")

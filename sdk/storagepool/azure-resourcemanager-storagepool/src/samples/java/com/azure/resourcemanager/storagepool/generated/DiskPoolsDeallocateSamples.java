@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Deallocate. */
 public final class DiskPoolsDeallocateSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiskPoolsDeallocateSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deallocateDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().deallocate("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().deallocate("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

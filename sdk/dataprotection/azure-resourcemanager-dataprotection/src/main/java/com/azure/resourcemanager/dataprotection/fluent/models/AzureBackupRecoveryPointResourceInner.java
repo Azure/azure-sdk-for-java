@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPoint;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureBackupRecoveryPointResource Azure backup recoveryPoint resource. */
+/**
+ * AzureBackupRecoveryPointResource
+ *
+ * <p>Azure backup recoveryPoint resource.
+ */
 @Fluent
 public final class AzureBackupRecoveryPointResourceInner extends DppResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryPointResourceInner.class);
-
     /*
-     * AzureBackupRecoveryPoint AzureBackupRecoveryPointResource properties
+     * AzureBackupRecoveryPoint
+     *
+     * AzureBackupRecoveryPointResource properties
      */
     @JsonProperty(value = "properties")
     private AzureBackupRecoveryPoint properties;
 
+    /** Creates an instance of AzureBackupRecoveryPointResourceInner class. */
+    public AzureBackupRecoveryPointResourceInner() {
+    }
+
     /**
-     * Get the properties property: AzureBackupRecoveryPoint AzureBackupRecoveryPointResource properties.
+     * Get the properties property: AzureBackupRecoveryPoint
+     *
+     * <p>AzureBackupRecoveryPointResource properties.
      *
      * @return the properties value.
      */
@@ -32,7 +40,9 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     }
 
     /**
-     * Set the properties property: AzureBackupRecoveryPoint AzureBackupRecoveryPointResource properties.
+     * Set the properties property: AzureBackupRecoveryPoint
+     *
+     * <p>AzureBackupRecoveryPointResource properties.
      *
      * @param properties the properties value to set.
      * @return the AzureBackupRecoveryPointResourceInner object itself.

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.fluent.AccessPoliciesClient;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyListResponseInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyResourceInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccessPoliciesClient. */
 public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(AccessPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AccessPoliciesService service;
 
@@ -60,7 +57,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
-    private interface AccessPoliciesService {
+    public interface AccessPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
@@ -154,7 +151,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(
@@ -221,7 +219,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(
@@ -285,7 +284,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyResourceInner> createOrUpdateAsync(
@@ -294,14 +294,34 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         String accessPolicyName,
         AccessPolicyCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, parameters)
-            .flatMap(
-                (Response<AccessPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update an access policy in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param accessPolicyName Name of the access policy.
+     * @param parameters Parameters for creating an access policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessPolicyResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String accessPolicyName,
+        AccessPolicyCreateOrUpdateParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, environmentName, accessPolicyName, parameters, context)
+            .block();
     }
 
     /**
@@ -323,33 +343,9 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         String environmentName,
         String accessPolicyName,
         AccessPolicyCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, accessPolicyName, parameters).block();
-    }
-
-    /**
-     * Create or update an access policy in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param accessPolicyName Name of the access policy.
-     * @param parameters Parameters for creating an access policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, environmentName, accessPolicyName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, environmentName, accessPolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -363,7 +359,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy with the specified name in the specified environment.
+     * @return the access policy with the specified name in the specified environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(
@@ -421,7 +418,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy with the specified name in the specified environment.
+     * @return the access policy with the specified name in the specified environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(
@@ -475,20 +473,34 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy with the specified name in the specified environment.
+     * @return the access policy with the specified name in the specified environment on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyResourceInner> getAsync(
         String resourceGroupName, String environmentName, String accessPolicyName) {
         return getWithResponseAsync(resourceGroupName, environmentName, accessPolicyName)
-            .flatMap(
-                (Response<AccessPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the access policy with the specified name in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access policy with the specified name in the specified environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessPolicyResourceInner> getWithResponse(
+        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
     }
 
     /**
@@ -506,27 +518,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyResourceInner get(String resourceGroupName, String environmentName, String accessPolicyName) {
-        return getAsync(resourceGroupName, environmentName, accessPolicyName).block();
-    }
-
-    /**
-     * Gets the access policy with the specified name in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access policy with the specified name in the specified environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
+        return getWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -541,7 +533,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(
@@ -612,7 +605,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(
@@ -680,7 +674,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
+     * @return an access policy is used to grant users and applications access to the environment on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyResourceInner> updateAsync(
@@ -690,14 +685,35 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
         return updateWithResponseAsync(
                 resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters)
-            .flatMap(
-                (Response<AccessPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the access policy with the specified name in the specified subscription, resource group, and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
+     *     environment.
+     * @param accessPolicyUpdateParameters Request object that contains the updated information for the access policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access policy is used to grant users and applications access to the environment along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessPolicyResourceInner> updateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String accessPolicyName,
+        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(
+                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters, context)
+            .block();
     }
 
     /**
@@ -720,34 +736,9 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         String environmentName,
         String accessPolicyName,
         AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
-        return updateAsync(resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters).block();
-    }
-
-    /**
-     * Updates the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
-     * @param accessPolicyUpdateParameters Request object that contains the updated information for the access policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters, context)
-            .block();
+        return updateWithResponse(
+                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -761,7 +752,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -819,7 +810,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -873,12 +864,32 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String accessPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, accessPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
     }
 
     /**
@@ -895,27 +906,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String accessPolicyName) {
-        deleteAsync(resourceGroupName, environmentName, accessPolicyName).block();
-    }
-
-    /**
-     * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
+        deleteWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE);
     }
 
     /**
@@ -927,7 +918,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List access policies operation.
+     * @return the response of the List access policies operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -978,7 +970,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List access policies operation.
+     * @return the response of the List access policies operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -1025,20 +1018,31 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List access policies operation.
+     * @return the response of the List access policies operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyListResponseInner> listByEnvironmentAsync(
         String resourceGroupName, String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
-            .flatMap(
-                (Response<AccessPolicyListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists all the available access policies associated with the environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List access policies operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, Context context) {
+        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
@@ -1054,24 +1058,6 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyListResponseInner listByEnvironment(String resourceGroupName, String environmentName) {
-        return listByEnvironmentAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Lists all the available access policies associated with the environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List access policies operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+        return listByEnvironmentWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 }

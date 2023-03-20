@@ -59,6 +59,18 @@ public final class ViewProperties {
     private OffsetDateTime modifiedOn;
 
     /*
+     * Date range of the current view.
+     */
+    @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
+    private String dateRange;
+
+    /*
+     * Currency of the current view.
+     */
+    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
+    private String currency;
+
+    /*
      * Query body configuration. Required.
      */
     @JsonProperty(value = "query")
@@ -180,6 +192,24 @@ public final class ViewProperties {
      */
     public OffsetDateTime modifiedOn() {
         return this.modifiedOn;
+    }
+
+    /**
+     * Get the dateRange property: Date range of the current view.
+     *
+     * @return the dateRange value.
+     */
+    public String dateRange() {
+        return this.dateRange;
+    }
+
+    /**
+     * Get the currency property: Currency of the current view.
+     *
+     * @return the currency value.
+     */
+    public String currency() {
+        return this.currency;
     }
 
     /**
@@ -367,25 +397,48 @@ public final class ViewProperties {
     }
 
     /**
-     * Get the dataset property: Has definition for data in this report config.
+     * Get the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    public ReportConfigDataset dataset() {
-        return this.innerQuery() == null ? null : this.innerQuery().dataset();
+    public ReportConfigDataset dataSet() {
+        return this.innerQuery() == null ? null : this.innerQuery().dataSet();
     }
 
     /**
-     * Set the dataset property: Has definition for data in this report config.
+     * Set the dataSet property: Has definition for data in this report config.
      *
-     * @param dataset the dataset value to set.
+     * @param dataSet the dataSet value to set.
      * @return the ViewProperties object itself.
      */
-    public ViewProperties withDataset(ReportConfigDataset dataset) {
+    public ViewProperties withDataSet(ReportConfigDataset dataSet) {
         if (this.innerQuery() == null) {
             this.innerQuery = new ReportConfigDefinition();
         }
-        this.innerQuery().withDataset(dataset);
+        this.innerQuery().withDataSet(dataSet);
+        return this;
+    }
+
+    /**
+     * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    public Boolean includeMonetaryCommitment() {
+        return this.innerQuery() == null ? null : this.innerQuery().includeMonetaryCommitment();
+    }
+
+    /**
+     * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
+     * @return the ViewProperties object itself.
+     */
+    public ViewProperties withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        if (this.innerQuery() == null) {
+            this.innerQuery = new ReportConfigDefinition();
+        }
+        this.innerQuery().withIncludeMonetaryCommitment(includeMonetaryCommitment);
         return this;
     }
 

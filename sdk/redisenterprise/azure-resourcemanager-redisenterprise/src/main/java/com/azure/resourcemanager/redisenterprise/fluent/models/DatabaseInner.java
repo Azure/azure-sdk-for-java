@@ -6,6 +6,7 @@ package com.azure.resourcemanager.redisenterprise.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
@@ -21,18 +22,41 @@ import java.util.List;
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
-     * RedisEnterprise database properties Other properties of the database.
+     * RedisEnterprise database properties
+     *
+     * Other properties of the database.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of DatabaseInner class. */
+    public DatabaseInner() {
+    }
+
     /**
-     * Get the innerProperties property: RedisEnterprise database properties Other properties of the database.
+     * Get the innerProperties property: RedisEnterprise database properties
+     *
+     * <p>Other properties of the database.
      *
      * @return the innerProperties value.
      */
     private DatabaseProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

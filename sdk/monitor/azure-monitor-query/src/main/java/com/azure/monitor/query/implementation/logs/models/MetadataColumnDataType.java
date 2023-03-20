@@ -41,6 +41,14 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
     public static final MetadataColumnDataType TIMESPAN = fromString("timespan");
 
     /**
+     * Creates a new instance of MetadataColumnDataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetadataColumnDataType() {}
+
+    /**
      * Creates or finds a MetadataColumnDataType from its string representation.
      *
      * @param name a name to look for.

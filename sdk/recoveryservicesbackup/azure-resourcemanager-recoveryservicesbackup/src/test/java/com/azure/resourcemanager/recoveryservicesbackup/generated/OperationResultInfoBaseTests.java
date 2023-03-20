@@ -6,19 +6,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationResultInfoBase;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultInfoBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationResultInfoBase model =
             BinaryData
                 .fromString("{\"objectType\":\"OperationResultInfoBase\"}")
                 .toObject(OperationResultInfoBase.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationResultInfoBase model = new OperationResultInfoBase();
         model = BinaryData.fromObject(model).toObject(OperationResultInfoBase.class);
     }

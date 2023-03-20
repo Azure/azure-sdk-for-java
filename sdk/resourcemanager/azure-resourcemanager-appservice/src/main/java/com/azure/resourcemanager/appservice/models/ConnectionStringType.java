@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ConnectionStringType. */
+/** Type of database. */
 public enum ConnectionStringType {
     /** Enum value MySql. */
     MY_SQL("MySql"),
@@ -57,6 +57,9 @@ public enum ConnectionStringType {
      */
     @JsonCreator
     public static ConnectionStringType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConnectionStringType[] items = ConnectionStringType.values();
         for (ConnectionStringType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,6 +69,7 @@ public enum ConnectionStringType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

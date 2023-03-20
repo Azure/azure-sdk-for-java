@@ -5,24 +5,23 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
-import com.azure.resourcemanager.dataprotection.models.DppTrackedResource;
+import com.azure.resourcemanager.dataprotection.models.DppBaseTrackedResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ResourceGuardResource model. */
 @Fluent
-public final class ResourceGuardResourceInner extends DppTrackedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardResourceInner.class);
-
+public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
     /*
      * ResourceGuardResource properties
      */
     @JsonProperty(value = "properties")
     private ResourceGuard properties;
+
+    /** Creates an instance of ResourceGuardResourceInner class. */
+    public ResourceGuardResourceInner() {
+    }
 
     /**
      * Get the properties property: ResourceGuardResource properties.
@@ -48,13 +47,6 @@ public final class ResourceGuardResourceInner extends DppTrackedResource {
     @Override
     public ResourceGuardResourceInner withEtag(String etag) {
         super.withEtag(etag);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceGuardResourceInner withIdentity(DppIdentityDetails identity) {
-        super.withIdentity(identity);
         return this;
     }
 

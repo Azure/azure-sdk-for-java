@@ -18,7 +18,7 @@ public final class ActiveDirectory {
     private String activeDirectoryId;
 
     /*
-     * Username of Active Directory domain administrator
+     * A domain user account with permission to create machine accounts
      */
     @JsonProperty(value = "username")
     private String username;
@@ -150,6 +150,17 @@ public final class ActiveDirectory {
     @JsonProperty(value = "ldapSearchScope")
     private LdapSearchScopeOpt ldapSearchScope;
 
+    /*
+     * Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4
+     * addresses can be passed.
+     */
+    @JsonProperty(value = "preferredServersForLdapClient")
+    private String preferredServersForLdapClient;
+
+    /** Creates an instance of ActiveDirectory class. */
+    public ActiveDirectory() {
+    }
+
     /**
      * Get the activeDirectoryId property: Id of the Active Directory.
      *
@@ -171,7 +182,7 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Get the username property: Username of Active Directory domain administrator.
+     * Get the username property: A domain user account with permission to create machine accounts.
      *
      * @return the username value.
      */
@@ -180,7 +191,7 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Set the username property: Username of Active Directory domain administrator.
+     * Set the username property: A domain user account with permission to create machine accounts.
      *
      * @param username the username value to set.
      * @return the ActiveDirectory object itself.
@@ -591,6 +602,28 @@ public final class ActiveDirectory {
      */
     public ActiveDirectory withLdapSearchScope(LdapSearchScopeOpt ldapSearchScope) {
         this.ldapSearchScope = ldapSearchScope;
+        return this;
+    }
+
+    /**
+     * Get the preferredServersForLdapClient property: Comma separated list of IPv4 addresses of preferred servers for
+     * LDAP client. At most two comma separated IPv4 addresses can be passed.
+     *
+     * @return the preferredServersForLdapClient value.
+     */
+    public String preferredServersForLdapClient() {
+        return this.preferredServersForLdapClient;
+    }
+
+    /**
+     * Set the preferredServersForLdapClient property: Comma separated list of IPv4 addresses of preferred servers for
+     * LDAP client. At most two comma separated IPv4 addresses can be passed.
+     *
+     * @param preferredServersForLdapClient the preferredServersForLdapClient value to set.
+     * @return the ActiveDirectory object itself.
+     */
+    public ActiveDirectory withPreferredServersForLdapClient(String preferredServersForLdapClient) {
+        this.preferredServersForLdapClient = preferredServersForLdapClient;
         return this;
     }
 

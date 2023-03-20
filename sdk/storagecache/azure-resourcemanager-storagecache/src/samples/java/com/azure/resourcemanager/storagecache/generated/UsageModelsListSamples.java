@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UsageModels List. */
 public final class UsageModelsListSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/UsageModels_List.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/UsageModels_List.json
      */
     /**
      * Sample code: UsageModels_List.
@@ -17,6 +15,6 @@ public final class UsageModelsListSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void usageModelsList(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.usageModels().list(Context.NONE);
+        manager.usageModels().list(com.azure.core.util.Context.NONE);
     }
 }

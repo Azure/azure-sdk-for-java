@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AdhocBackupTriggerOption Adhoc backup trigger option. */
+/**
+ * AdhocBackupTriggerOption
+ *
+ * <p>Adhoc backup trigger option.
+ */
 @Fluent
 public final class AdhocBackupTriggerOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdhocBackupTriggerOption.class);
-
     /*
      * The retentionTagOverride property.
      */
     @JsonProperty(value = "retentionTagOverride")
     private String retentionTagOverride;
+
+    /** Creates an instance of AdhocBackupTriggerOption class. */
+    public AdhocBackupTriggerOption() {
+    }
 
     /**
      * Get the retentionTagOverride property: The retentionTagOverride property.

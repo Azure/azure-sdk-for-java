@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Location information. */
 @Immutable
 public final class LocationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);
-
     /*
      * The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
@@ -50,6 +46,10 @@ public final class LocationInner {
      */
     @JsonProperty(value = "longitude", access = JsonProperty.Access.WRITE_ONLY)
     private String longitude;
+
+    /** Creates an instance of LocationInner class. */
+    public LocationInner() {
+    }
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,

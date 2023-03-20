@@ -41,6 +41,15 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
     public static final IntegrationRuntimeState ACCESS_DENIED = fromString("AccessDenied");
 
     /**
+     * Creates a new instance of IntegrationRuntimeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeState() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeState from its string representation.
      *
      * @param name a name to look for.

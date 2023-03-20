@@ -53,7 +53,9 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames/>
+     <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
   </properties>
 
   <developers>
@@ -67,13 +69,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.38.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -103,7 +105,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -118,7 +120,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.google.code.gson:gson:[2.9.1]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.10]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

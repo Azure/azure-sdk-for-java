@@ -19,6 +19,8 @@ import java.util.List;
  * <ol>
  * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via
  * environment variables and use it to authenticate.</li>
+ * <li>{@link WorkloadIdentityCredential} - If the app is deployed on Kubernetes with environment variables
+ * set by the workload identity webhook, DefaultAzureCredential will authenticate the configured identity.</li>
  * <li>{@link ManagedIdentityCredential} - If the application deploys to an Azure host with Managed Identity enabled,
  * the DefaultAzureCredential will authenticate with that account.</li>
  * <li>{@link IntelliJCredential} - If you've authenticated via
@@ -98,12 +100,7 @@ import java.util.List;
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
     /**
-     * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
-     * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
-     * ClientSecretCredential.
-     *
-     * If these environment variables are not available, then this will use the Shared MSAL
-     * token cache.
+     * Creates default DefaultAzureCredential instance to use.
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */

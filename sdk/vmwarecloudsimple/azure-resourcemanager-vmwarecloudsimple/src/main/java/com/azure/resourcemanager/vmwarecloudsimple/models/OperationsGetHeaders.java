@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationsGetHeaders model. */
 @Fluent
 public final class OperationsGetHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsGetHeaders.class);
-
     /*
      * The Retry-After property.
      */
@@ -25,6 +23,20 @@ public final class OperationsGetHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of OperationsGetHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public OperationsGetHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.

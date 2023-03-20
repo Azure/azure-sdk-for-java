@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.NameInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupManagementUsageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupManagementUsageInner model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class BackupManagementUsageInnerTests {
         Assertions.assertEquals("yxolniwp", model.name().localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupManagementUsageInner model =
             new BackupManagementUsageInner()
                 .withUnit(UsagesUnit.COUNT)

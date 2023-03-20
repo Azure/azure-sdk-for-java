@@ -6,17 +6,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
-import org.junit.jupiter.api.Test;
 
 public final class RestoreRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RestoreRequest model =
             BinaryData.fromString("{\"objectType\":\"RestoreRequest\"}").toObject(RestoreRequest.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RestoreRequest model = new RestoreRequest();
         model = BinaryData.fromObject(model).toObject(RestoreRequest.class);
     }

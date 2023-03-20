@@ -104,14 +104,6 @@ public interface DomainResource {
     DomainPropertiesVerificationRecords verificationRecords();
 
     /**
-     * Gets the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    Map<String, String> validSenderUsernames();
-
-    /**
      * Gets the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
      *
      * @return the userEngagementTracking value.
@@ -194,7 +186,6 @@ public interface DomainResource {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithDomainManagement,
-                DefinitionStages.WithValidSenderUsernames,
                 DefinitionStages.WithUserEngagementTracking {
             /**
              * Executes the create request.
@@ -231,18 +222,6 @@ public interface DomainResource {
              */
             WithCreate withDomainManagement(DomainManagement domainManagement);
         }
-        /** The stage of the DomainResource definition allowing to specify validSenderUsernames. */
-        interface WithValidSenderUsernames {
-            /**
-             * Specifies the validSenderUsernames property: Collection of valid sender usernames. This is a key-value
-             * pair where key=username and value=display name..
-             *
-             * @param validSenderUsernames Collection of valid sender usernames. This is a key-value pair where
-             *     key=username and value=display name.
-             * @return the next definition stage.
-             */
-            WithCreate withValidSenderUsernames(Map<String, String> validSenderUsernames);
-        }
         /** The stage of the DomainResource definition allowing to specify userEngagementTracking. */
         interface WithUserEngagementTracking {
             /**
@@ -263,8 +242,7 @@ public interface DomainResource {
     DomainResource.Update update();
 
     /** The template for DomainResource update. */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithValidSenderUsernames, UpdateStages.WithUserEngagementTracking {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithUserEngagementTracking {
         /**
          * Executes the update request.
          *
@@ -292,18 +270,6 @@ public interface DomainResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the DomainResource update allowing to specify validSenderUsernames. */
-        interface WithValidSenderUsernames {
-            /**
-             * Specifies the validSenderUsernames property: Collection of valid sender usernames. This is a key-value
-             * pair where key=username and value=display name..
-             *
-             * @param validSenderUsernames Collection of valid sender usernames. This is a key-value pair where
-             *     key=username and value=display name.
-             * @return the next definition stage.
-             */
-            Update withValidSenderUsernames(Map<String, String> validSenderUsernames);
         }
         /** The stage of the DomainResource update allowing to specify userEngagementTracking. */
         interface WithUserEngagementTracking {

@@ -67,6 +67,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         this.lease = lease;
         this.itemType = itemType;
         this.changeFeedMode = changeFeedMode;
+        this.lastServerContinuationToken = this.lease.getContinuationToken();
 
         this.options = PartitionProcessorHelper.createChangeFeedRequestOptionsForChangeFeedState(
                 settings.getStartState(),

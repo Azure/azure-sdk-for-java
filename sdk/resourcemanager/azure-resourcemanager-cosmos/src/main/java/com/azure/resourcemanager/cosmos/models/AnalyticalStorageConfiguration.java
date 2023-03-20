@@ -16,6 +16,10 @@ public final class AnalyticalStorageConfiguration {
     @JsonProperty(value = "schemaType")
     private AnalyticalStorageSchemaType schemaType;
 
+    /** Creates an instance of AnalyticalStorageConfiguration class. */
+    public AnalyticalStorageConfiguration() {
+    }
+
     /**
      * Get the schemaType property: Describes the types of schema for analytical storage.
      *

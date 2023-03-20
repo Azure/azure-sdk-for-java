@@ -25,6 +25,10 @@ public final class Workflow extends WorkflowResource {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
+    /** Creates an instance of Workflow class. */
+    public Workflow() {
+    }
+
     /**
      * Get the innerProperties property: The workflow properties.
      *

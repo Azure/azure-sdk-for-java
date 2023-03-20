@@ -22,6 +22,9 @@ public final class InputError {
     @JsonProperty(value = "error", required = true)
     private Error error;
 
+    /** Creates an instance of InputError class. */
+    public InputError() {}
+
     /**
      * Get the id property: The ID of the input.
      *

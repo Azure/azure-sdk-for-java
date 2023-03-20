@@ -8,23 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDuration;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RetentionDurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RetentionDuration model =
-            BinaryData.fromString("{\"count\":1568742845,\"durationType\":\"Days\"}").toObject(RetentionDuration.class);
-        Assertions.assertEquals(1568742845, model.count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+            BinaryData
+                .fromString("{\"count\":1393109773,\"durationType\":\"Years\"}")
+                .toObject(RetentionDuration.class);
+        Assertions.assertEquals(1393109773, model.count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.durationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RetentionDuration model =
-            new RetentionDuration().withCount(1568742845).withDurationType(RetentionDurationType.DAYS);
+            new RetentionDuration().withCount(1393109773).withDurationType(RetentionDurationType.YEARS);
         model = BinaryData.fromObject(model).toObject(RetentionDuration.class);
-        Assertions.assertEquals(1568742845, model.count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+        Assertions.assertEquals(1393109773, model.count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.durationType());
     }
 }

@@ -20,6 +20,15 @@ public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAcco
     public static final DatabaseAccountKind PARSE = fromString("Parse");
 
     /**
+     * Creates a new instance of DatabaseAccountKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseAccountKind() {
+    }
+
+    /**
      * Creates or finds a DatabaseAccountKind from its string representation.
      *
      * @param name a name to look for.

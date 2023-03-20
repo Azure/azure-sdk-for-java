@@ -12,22 +12,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CacheActiveDirectorySettings {
     /*
-     * Primary DNS IP address used to resolve the Active Directory domain
-     * controller's fully qualified domain name.
+     * Primary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
     @JsonProperty(value = "primaryDnsIpAddress", required = true)
     private String primaryDnsIpAddress;
 
     /*
-     * Secondary DNS IP address used to resolve the Active Directory domain
-     * controller's fully qualified domain name.
+     * Secondary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
     @JsonProperty(value = "secondaryDnsIpAddress")
     private String secondaryDnsIpAddress;
 
     /*
-     * The fully qualified domain name of the Active Directory domain
-     * controller.
+     * The fully qualified domain name of the Active Directory domain controller.
      */
     @JsonProperty(value = "domainName", required = true)
     private String domainName;
@@ -39,9 +36,8 @@ public final class CacheActiveDirectorySettings {
     private String domainNetBiosName;
 
     /*
-     * The NetBIOS name to assign to the HPC Cache when it joins the Active
-     * Directory domain as a server. Length must 1-15 characters from the class
-     * [-0-9a-zA-Z].
+     * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must
+     * 1-15 characters from the class [-0-9a-zA-Z].
      */
     @JsonProperty(value = "cacheNetBiosName", required = true)
     private String cacheNetBiosName;
@@ -53,11 +49,14 @@ public final class CacheActiveDirectorySettings {
     private DomainJoinedType domainJoined;
 
     /*
-     * Active Directory admin credentials used to join the HPC Cache to a
-     * domain.
+     * Active Directory admin credentials used to join the HPC Cache to a domain.
      */
     @JsonProperty(value = "credentials")
     private CacheActiveDirectorySettingsCredentials credentials;
+
+    /** Creates an instance of CacheActiveDirectorySettings class. */
+    public CacheActiveDirectorySettings() {
+    }
 
     /**
      * Get the primaryDnsIpAddress property: Primary DNS IP address used to resolve the Active Directory domain

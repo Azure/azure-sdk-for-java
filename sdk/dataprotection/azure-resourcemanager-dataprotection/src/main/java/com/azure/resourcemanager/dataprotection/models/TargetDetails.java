@@ -6,17 +6,13 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class encapsulating target details, used where the destination is not a datasource. */
 @Fluent
 public final class TargetDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetDetails.class);
-
     /*
-     * Restore operation may create multiple files inside location pointed by
-     * Url
+     * Restore operation may create multiple files inside location pointed by Url
      * Below will be the common prefix for all of them
      */
     @JsonProperty(value = "filePrefix", required = true)
@@ -31,11 +27,22 @@ public final class TargetDetails {
     private RestoreTargetLocationType restoreTargetLocationType;
 
     /*
-     * Url denoting the restore destination. It can point to container / file
-     * share etc
+     * Url denoting the restore destination. It can point to container / file share etc
      */
     @JsonProperty(value = "url", required = true)
     private String url;
+
+    /*
+     * Full ARM Id denoting the restore destination. It is the ARM Id pointing to container / file share
+     * This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states
+     */
+    @JsonProperty(value = "targetResourceArmId")
+    private String targetResourceArmId;
+
+    /** Creates an instance of TargetDetails class. */
+    public TargetDetails() {
+    }
 
     /**
      * Get the filePrefix property: Restore operation may create multiple files inside location pointed by Url Below
@@ -102,26 +109,52 @@ public final class TargetDetails {
     }
 
     /**
+     * Get the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
+     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
+     *
+     * @return the targetResourceArmId value.
+     */
+    public String targetResourceArmId() {
+        return this.targetResourceArmId;
+    }
+
+    /**
+     * Set the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
+     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
+     *
+     * @param targetResourceArmId the targetResourceArmId value to set.
+     * @return the TargetDetails object itself.
+     */
+    public TargetDetails withTargetResourceArmId(String targetResourceArmId) {
+        this.targetResourceArmId = targetResourceArmId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filePrefix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
         }
         if (restoreTargetLocationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreTargetLocationType in model TargetDetails"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property url in model TargetDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetDetails.class);
 }

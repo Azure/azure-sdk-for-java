@@ -20,6 +20,15 @@ public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
     public static final RecoveryMode WORKLOAD_RECOVERY = fromString("WorkloadRecovery");
 
     /**
+     * Creates a new instance of RecoveryMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryMode() {
+    }
+
+    /**
      * Creates or finds a RecoveryMode from its string representation.
      *
      * @param name a name to look for.

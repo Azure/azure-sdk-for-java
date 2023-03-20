@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.ResourceSkuInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List Disk Pool skus operation response. */
 @Fluent
 public final class ResourceSkuListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuListResult.class);
-
     /*
      * The list of StoragePool resource skus.
      */
@@ -27,6 +23,10 @@ public final class ResourceSkuListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ResourceSkuListResult class. */
+    public ResourceSkuListResult() {
+    }
 
     /**
      * Get the value property: The list of StoragePool resource skus.

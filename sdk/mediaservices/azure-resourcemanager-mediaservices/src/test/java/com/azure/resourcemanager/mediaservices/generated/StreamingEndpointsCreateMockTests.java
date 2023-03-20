@@ -37,7 +37,7 @@ public final class StreamingEndpointsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"tkcudfbsfarfsiow\",\"scaleUnits\":1864601179,\"availabilitySetName\":\"xnq\",\"accessControl\":{},\"maxCacheAge\":3359638448641780645,\"customHostNames\":[\"qyki\",\"mdksaoa\",\"cluqvo\"],\"hostName\":\"ycjimryvwgcwwpbm\",\"cdnEnabled\":false,\"cdnProvider\":\"sydsxwefohe\",\"cdnProfile\":\"vopwndyqleallk\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Starting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"syzfhotlhikcyych\",\"crossDomainPolicy\":\"sjlpjrtwszhv\"},\"freeTrialEndTime\":\"2021-09-06T01:44:02Z\",\"created\":\"2021-03-26T17:24:30Z\",\"lastModified\":\"2021-07-19T03:46:29Z\"},\"sku\":{\"name\":\"mhwrb\",\"capacity\":691294611},\"location\":\"yflubhvjglroc\",\"tags\":{\"hmem\":\"lw\",\"memczjkmmyk\":\"ooclutnp\",\"rye\":\"ujxsglhsr\",\"rfih\":\"ylmbkzudni\"},\"id\":\"tjewlpxuzzj\",\"name\":\"nrefqyh\",\"type\":\"otoihiqa\"}";
+            "{\"properties\":{\"description\":\"uygdhgaqipirp\",\"scaleUnits\":779964189,\"availabilitySetName\":\"qofu\",\"accessControl\":{},\"maxCacheAge\":5746310488025921747,\"customHostNames\":[\"whc\"],\"hostName\":\"pibkephuu\",\"cdnEnabled\":false,\"cdnProvider\":\"t\",\"cdnProfile\":\"oyin\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Starting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"cvcrrp\",\"crossDomainPolicy\":\"ttbst\"},\"freeTrialEndTime\":\"2021-10-12T17:16:27Z\",\"created\":\"2021-03-11T12:48:52Z\",\"lastModified\":\"2021-09-27T05:41:57Z\"},\"sku\":{\"name\":\"fkoxmlghktuidvr\",\"capacity\":1891751992},\"location\":\"lpdwwexymzvlazi\",\"tags\":{\"ziven\":\"pwvqsgnyyu\",\"vpkpatlb\":\"rpmey\",\"gsksrfhf\":\"jp\"},\"id\":\"olmk\",\"name\":\"bnxwc\",\"type\":\"ommpvfqaw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,40 +68,38 @@ public final class StreamingEndpointsCreateMockTests {
         StreamingEndpoint response =
             manager
                 .streamingEndpoints()
-                .define("pmkmlmvevfx")
-                .withRegion("upgahxkum")
-                .withExistingMediaservice("bcrymodizrx", "lobdxna")
-                .withTags(mapOf("dmmcpugmehqep", "caac", "hbzehewho", "u", "qnbldxe", "hnl", "orim", "clgsc"))
-                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(267572624))
-                .withDescription("jhbzxliohrdddtf")
-                .withScaleUnits(1812415709)
-                .withAvailabilitySetName("ba")
+                .define("rzdcgdzbenribcaw")
+                .withRegion("yvk")
+                .withExistingMediaservice("q", "jxcx")
+                .withTags(mapOf("tod", "rocxnehvs"))
+                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(2000870713))
+                .withDescription("qd")
+                .withScaleUnits(1373265486)
+                .withAvailabilitySetName("wflj")
                 .withAccessControl(new StreamingEndpointAccessControl())
-                .withMaxCacheAge(5076219594353318386L)
-                .withCustomHostNames(Arrays.asList("yknapqofyuicdh", "bd", "bwwg", "d"))
+                .withMaxCacheAge(1040471271589317610L)
+                .withCustomHostNames(Arrays.asList("mzwcjjncqt", "z"))
                 .withCdnEnabled(false)
-                .withCdnProvider("ffplfmuvapckcc")
-                .withCdnProfile("vwe")
+                .withCdnProvider("bxn")
+                .withCdnProfile("ebwgga")
                 .withCrossSiteAccessPolicies(
-                    new CrossSiteAccessPolicies()
-                        .withClientAccessPolicy("aimmoiroqb")
-                        .withCrossDomainPolicy("hbragapyyr"))
+                    new CrossSiteAccessPolicies().withClientAccessPolicy("x").withCrossDomainPolicy("qzasunwqrjzfrgqh"))
                 .withAutoStart(true)
                 .create();
 
-        Assertions.assertEquals("yflubhvjglroc", response.location());
-        Assertions.assertEquals("lw", response.tags().get("hmem"));
-        Assertions.assertEquals(691294611, response.sku().capacity());
-        Assertions.assertEquals("tkcudfbsfarfsiow", response.description());
-        Assertions.assertEquals(1864601179, response.scaleUnits());
-        Assertions.assertEquals("xnq", response.availabilitySetName());
-        Assertions.assertEquals(3359638448641780645L, response.maxCacheAge());
-        Assertions.assertEquals("qyki", response.customHostNames().get(0));
+        Assertions.assertEquals("lpdwwexymzvlazi", response.location());
+        Assertions.assertEquals("pwvqsgnyyu", response.tags().get("ziven"));
+        Assertions.assertEquals(1891751992, response.sku().capacity());
+        Assertions.assertEquals("uygdhgaqipirp", response.description());
+        Assertions.assertEquals(779964189, response.scaleUnits());
+        Assertions.assertEquals("qofu", response.availabilitySetName());
+        Assertions.assertEquals(5746310488025921747L, response.maxCacheAge());
+        Assertions.assertEquals("whc", response.customHostNames().get(0));
         Assertions.assertEquals(false, response.cdnEnabled());
-        Assertions.assertEquals("sydsxwefohe", response.cdnProvider());
-        Assertions.assertEquals("vopwndyqleallk", response.cdnProfile());
-        Assertions.assertEquals("syzfhotlhikcyych", response.crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("sjlpjrtwszhv", response.crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("t", response.cdnProvider());
+        Assertions.assertEquals("oyin", response.cdnProfile());
+        Assertions.assertEquals("cvcrrp", response.crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("ttbst", response.crossSiteAccessPolicies().crossDomainPolicy());
     }
 
     @SuppressWarnings("unchecked")

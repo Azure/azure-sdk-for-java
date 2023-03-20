@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GlobalParameters Get. */
 public final class GlobalParametersGetSamples {
     /*
@@ -19,6 +17,6 @@ public final class GlobalParametersGetSamples {
     public static void globalParametersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .globalParameters()
-            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE);
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -1199,10 +1199,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     *
      * @return A reactive response containing the information of the created resource.
+     * @deprecated See {@link #flush(long, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<PathInfo> flush(long position) {
         return flush(position, false);
     }
@@ -1547,7 +1548,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
         .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response))));
     }
 
     /**

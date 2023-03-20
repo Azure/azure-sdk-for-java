@@ -17,6 +17,9 @@ public final class PiiResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<PIIResultWithDetectedLanguage> documents;
 
+    /** Creates an instance of PiiResult class. */
+    public PiiResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

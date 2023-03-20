@@ -7,8 +7,9 @@ import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
-import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneHandler;
+import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
+import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import org.mockito.Mockito;
@@ -168,6 +169,57 @@ public class PartitionControllerImplTests {
 
         verify(leaseManager, Mockito.never()).delete(lease);
         verify(leaseManager, times(1)).updateProperties(lease);
+    }
+
+    @Test(groups = "unit")
+    public void handleNonPartitionGoneException() throws InterruptedException {
+        LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
+        when(leaseContainer.getOwnedLeases()).thenReturn(Flux.empty());
+
+        LeaseManager leaseManager = Mockito.mock(LeaseManager.class);
+        PartitionSupervisorFactory partitionSupervisorFactory = Mockito.mock(PartitionSupervisorFactory.class);
+        PartitionSynchronizer synchronizer = Mockito.mock(PartitionSynchronizer.class);
+        Scheduler scheduler = Schedulers.boundedElastic();
+
+        PartitionControllerImpl partitionController =
+            new PartitionControllerImpl(
+                leaseContainer,
+                leaseManager,
+                partitionSupervisorFactory,
+                synchronizer,
+                scheduler);
+
+        ServiceItemLeaseV1 lease =
+            new ServiceItemLeaseV1()
+                .withLeaseToken("AA-CC")
+                .withFeedRange(new FeedRangeEpkImpl(new Range<>("AA", "CC", true, false)));
+        lease.setId("TestLease-" + UUID.randomUUID());
+
+        this.setDefaultLeaseManagerBehavior(leaseManager, Arrays.asList(lease));
+
+        PartitionSupervisor partitionSupervisor = Mockito.mock(PartitionSupervisor.class);
+        when(partitionSupervisorFactory.create(lease)).thenReturn(partitionSupervisor);
+        doNothing().when(partitionSupervisor).shutdown();
+
+        when(partitionSupervisor.run(Mockito.any()))
+            .thenReturn(Mono.error(new TaskCancelledException()))
+            .thenReturn(Mono.empty()); // second time return successfully
+
+        StepVerifier.create(partitionController.initialize()).verifyComplete();
+        StepVerifier.create(partitionController.addOrUpdateLease(lease))
+            .expectNext(lease)
+            .verifyComplete();
+
+        // addOrUpdateLease for childLease1 and childLease2 are executed async
+        // add some waiting time here so that we can capture all the calls
+        Thread.sleep(500);
+
+        verify(leaseManager, times(1)).acquire(lease);
+        verify(partitionSupervisorFactory, times(1)).create(lease);
+        verify(leaseManager, times(1)).release(lease); // the lease will be removed
+
+        verify(leaseManager, Mockito.never()).delete(lease);
+        verify(leaseManager, times(0)).updateProperties(lease);
     }
 
     private void setDefaultLeaseManagerBehavior(LeaseManager leaseManager, List<ServiceItemLeaseV1> leases) {

@@ -17,6 +17,15 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
     public static final RunQueryOrder DESC = fromString("DESC");
 
     /**
+     * Creates a new instance of RunQueryOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunQueryOrder() {
+    }
+
+    /**
      * Creates or finds a RunQueryOrder from its string representation.
      *
      * @param name a name to look for.

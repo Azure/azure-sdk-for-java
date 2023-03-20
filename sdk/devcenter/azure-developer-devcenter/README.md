@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-developer-devcenter</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,21 +39,18 @@ Various documentation is available to help you get started
 ## Examples
 ### Dev Box Scenarios
 ```java com.azure.developer.devcenter.readme.devboxes
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
 DevBoxesClient devBoxClient =
                 new DevBoxesClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
@@ -89,8 +86,7 @@ devBoxDeleteResponse.waitForCompletion();
 ```java com.azure.developer.devcenter.readme.environments
 EnvironmentsClient environmentsClient =
                 new EnvironmentsClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
@@ -110,14 +106,6 @@ BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCat
 SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
         environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
 environmentCreateResponse.waitForCompletion();
-
-
-// Fetch the deployment artifacts:
-PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment("myProject", "me", "TestEnvironment", null);
-for (BinaryData p: artifactListResponse) {
-    System.out.println(p);
-}
-
 
 // Delete the environment when we're finished:
 SyncPoller<BinaryData, Void> environmentDeleteResponse =

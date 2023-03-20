@@ -13,15 +13,15 @@ public final class FormatTests {
     public void testDeserialize() throws Exception {
         Format model =
             BinaryData
-                .fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"xkmcwaekrrjre\"}")
+                .fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"cvlerchpqbmfpjba\"}")
                 .toObject(Format.class);
-        Assertions.assertEquals("xkmcwaekrrjre", model.filenamePattern());
+        Assertions.assertEquals("cvlerchpqbmfpjba", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Format model = new Format().withFilenamePattern("xkmcwaekrrjre");
+        Format model = new Format().withFilenamePattern("cvlerchpqbmfpjba");
         model = BinaryData.fromObject(model).toObject(Format.class);
-        Assertions.assertEquals("xkmcwaekrrjre", model.filenamePattern());
+        Assertions.assertEquals("cvlerchpqbmfpjba", model.filenamePattern());
     }
 }

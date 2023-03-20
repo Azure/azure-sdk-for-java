@@ -6,16 +6,15 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequest;
-import org.junit.jupiter.api.Test;
 
 public final class IlrRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IlrRequest model = BinaryData.fromString("{\"objectType\":\"IlrRequest\"}").toObject(IlrRequest.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IlrRequest model = new IlrRequest();
         model = BinaryData.fromObject(model).toObject(IlrRequest.class);
     }

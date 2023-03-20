@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The ResourceModelWithAllowedPropertySetPlan model. */
 @Fluent
 public final class ResourceModelWithAllowedPropertySetPlan extends Plan {
+    /** Creates an instance of ResourceModelWithAllowedPropertySetPlan class. */
+    public ResourceModelWithAllowedPropertySetPlan() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ResourceModelWithAllowedPropertySetPlan withName(String name) {

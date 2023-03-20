@@ -15,6 +15,14 @@ public final class RoleDefinitionType extends ExpandableStringEnum<RoleDefinitio
             fromString("Microsoft.Authorization/roleDefinitions");
 
     /**
+     * Creates a new instance of RoleDefinitionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoleDefinitionType() {}
+
+    /**
      * Creates or finds a RoleDefinitionType from its string representation.
      *
      * @param name a name to look for.

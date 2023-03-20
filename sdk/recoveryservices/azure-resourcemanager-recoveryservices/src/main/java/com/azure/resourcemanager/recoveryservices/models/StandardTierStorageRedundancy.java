@@ -20,6 +20,15 @@ public final class StandardTierStorageRedundancy extends ExpandableStringEnum<St
     public static final StandardTierStorageRedundancy ZONE_REDUNDANT = fromString("ZoneRedundant");
 
     /**
+     * Creates a new instance of StandardTierStorageRedundancy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StandardTierStorageRedundancy() {
+    }
+
+    /**
      * Creates or finds a StandardTierStorageRedundancy from its string representation.
      *
      * @param name a name to look for.

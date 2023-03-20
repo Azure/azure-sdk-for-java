@@ -1,6 +1,31 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-03-07)
+
+- First stable release of Azure Load Testing client library for Java
+
+### Breaking Changes
+
+- Reintroduce two client builders - `LoadTestAdministrationClientBuilder` and `LoadTestRunClientBuilder`
+- Rename `metricname` parameter to `metricName` in `LoadTestRunClient.listMetrics`
+- Rename `LoadTestRunClient.listMetricDefinitionsWithResponse` to `LoadTestRunClient.getMetricDefinitionsWithResponse`
+- Rename `LoadTestRunClient.listMetricNamespacesWithResponse` to `LoadTestRunClient.getMetricNamespacesWithResponse`
+
+### Other Changes
+
+- Updated samples and test cases
+
+## 1.0.0-beta.2 (2023-01-22)
 
 - Second preview release of Azure Load Testing client library for Java.
 

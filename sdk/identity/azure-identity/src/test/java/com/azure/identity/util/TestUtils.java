@@ -4,6 +4,9 @@
 package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
 import com.azure.identity.implementation.MsalToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -12,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +25,8 @@ import java.util.concurrent.CompletableFuture;
  * Utilities for identity tests.
  */
 public final class TestUtils {
+    private static final ConfigurationSource EMPTY_SOURCE = source -> Collections.emptyMap();
+
     /**
      * Creates a mock {@link IAuthenticationResult} instance.
      * @param accessToken the access token to return
@@ -133,6 +139,17 @@ public final class TestUtils {
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn, Duration tokenRefreshOffset) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2).minus(tokenRefreshOffset)));
+    }
+
+    /**
+     * Creates a {@link Configuration} with the specified {@link ConfigurationSource} as the only source of
+     * configurations.
+     *
+     * @param configurationSource The configuration source.
+     * @return A configuration used for testing.
+     */
+    public static Configuration createTestConfiguration(ConfigurationSource configurationSource) {
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSource).build();
     }
 
     private TestUtils() {

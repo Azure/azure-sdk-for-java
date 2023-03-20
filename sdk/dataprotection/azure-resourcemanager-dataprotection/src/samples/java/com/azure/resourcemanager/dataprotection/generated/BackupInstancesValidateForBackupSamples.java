@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
@@ -17,7 +16,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 /** Samples for BackupInstances ValidateForBackup. */
 public final class BackupInstancesValidateForBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ValidateForBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/ValidateForBackup.json
      */
     /**
      * Sample code: Validate For Backup.
@@ -28,8 +27,8 @@ public final class BackupInstancesValidateForBackupSamples {
         manager
             .backupInstances()
             .validateForBackup(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 new ValidateForBackupRequest()
                     .withBackupInstance(
                         new BackupInstance()
@@ -65,6 +64,6 @@ public final class BackupInstancesValidateForBackupSamples {
                                             .withUri("https://samplevault.vault.azure.net/secrets/credentials")
                                             .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
                             .withObjectType("BackupInstance")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

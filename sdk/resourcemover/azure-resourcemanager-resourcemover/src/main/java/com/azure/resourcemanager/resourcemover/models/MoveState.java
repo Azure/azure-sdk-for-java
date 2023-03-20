@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MoveState. */
+/** Defines the MoveResource states. */
 public final class MoveState extends ExpandableStringEnum<MoveState> {
     /** Static value AssignmentPending for MoveState. */
     public static final MoveState ASSIGNMENT_PENDING = fromString("AssignmentPending");
@@ -56,6 +56,15 @@ public final class MoveState extends ExpandableStringEnum<MoveState> {
     public static final MoveState RESOURCE_MOVE_COMPLETED = fromString("ResourceMoveCompleted");
 
     /**
+     * Creates a new instance of MoveState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MoveState() {
+    }
+
+    /**
      * Creates or finds a MoveState from its string representation.
      *
      * @param name a name to look for.
@@ -66,7 +75,11 @@ public final class MoveState extends ExpandableStringEnum<MoveState> {
         return fromString(name, MoveState.class);
     }
 
-    /** @return known MoveState values. */
+    /**
+     * Gets known MoveState values.
+     *
+     * @return known MoveState values.
+     */
     public static Collection<MoveState> values() {
         return values(MoveState.class);
     }

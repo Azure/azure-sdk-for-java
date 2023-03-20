@@ -56,11 +56,10 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionIntentsService {
+    public interface ProtectionIntentsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}"
-                + "/backupPreValidateProtection")
+            "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupPreValidateProtection")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PreValidateEnableBackupResponseInner>> validate(
@@ -74,8 +73,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionIntentResourceInner>> get(
@@ -91,8 +89,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionIntentResourceInner>> createOrUpdate(
@@ -109,8 +106,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(

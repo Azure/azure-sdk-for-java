@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CpkInfo;
@@ -50,20 +51,25 @@ import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -385,6 +391,74 @@ public class BlobClientBase {
                 return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
                     requestConditions, properties, contextFinal));
             }).block();
+    }
+
+    /**
+     * Opens a seekable byte channel in read-only mode to download the blob.
+     *
+     * @param options {@link BlobSeekableByteChannelReadOptions}
+     * @param context {@link Context}
+     * @return A <code>SeekableByteChannel</code> that represents the channel to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public Response<BlobSeekableByteChannelReadResult> openSeekableByteChannelRead(
+        BlobSeekableByteChannelReadOptions options, Context context) {
+        context = context == null ? Context.NONE : context;
+        options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
+        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
+            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+        long initialPosition = options.getInitialPosition() == null ? 0 : options.getInitialPosition();
+
+        ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
+        BlobProperties properties;
+        BlobDownloadResponse response;
+        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
+            response = this.downloadStreamWithResponse(dstStream,
+                new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
+                options.getRequestConditions(), false, null, context);
+            properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+
+        initialRange.limit(initialRange.position());
+        initialRange.rewind();
+
+        BlobClientBase behaviorClient = this;
+        BlobRequestConditions requestConditions = options.getRequestConditions();
+        switch (consistentReadControl) {
+            case NONE:
+                break;
+            case ETAG:
+                requestConditions = requestConditions != null ? requestConditions : new BlobRequestConditions();
+                // If etag locking but no explicitly specified etag, use the etag from prefetch
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(properties.getETag());
+                }
+                break;
+            case VERSION_ID:
+                if (properties.getVersionId() == null) {
+                    throw LOGGER.logExceptionAsError(
+                        new UnsupportedOperationException(
+                            "Version ID locking unsupported. Versioning is not supported on this account."));
+                } else {
+                    // If version locking but no explicitly specified version, use the latest version from prefetch
+                    if (getVersionId() == null) {
+                        behaviorClient = this.getVersionClient(properties.getVersionId());
+                    }
+                }
+                break;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Concurrency control type " + consistentReadControl + " not supported."));
+        }
+
+        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
+            behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
+
+        SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
+        return new SimpleResponse<>(response, new BlobSeekableByteChannelReadResult(channel, properties));
     }
 
     /**

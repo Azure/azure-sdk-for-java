@@ -35,6 +35,15 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
     public static final PolicyType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
+     * Creates a new instance of PolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyType() {
+    }
+
+    /**
      * Creates or finds a PolicyType from its string representation.
      *
      * @param name a name to look for.

@@ -19,6 +19,10 @@ public final class WebJobInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private WebJobProperties innerProperties;
 
+    /** Creates an instance of WebJobInner class. */
+    public WebJobInner() {
+    }
+
     /**
      * Get the innerProperties property: WebJob resource specific properties.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools ListOutboundNetworkDependenciesEndpoints. */
 public final class DiskPoolsListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -20,6 +18,7 @@ public final class DiskPoolsListOutboundNetworkDependenciesEndpointsSamples {
         com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
         manager
             .diskPools()
-            .listOutboundNetworkDependenciesEndpoints("Sample-WestUSResourceGroup", "SampleAse", Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints(
+                "Sample-WestUSResourceGroup", "SampleAse", com.azure.core.util.Context.NONE);
     }
 }

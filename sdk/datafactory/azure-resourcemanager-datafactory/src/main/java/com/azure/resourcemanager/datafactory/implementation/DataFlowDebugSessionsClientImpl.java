@@ -339,7 +339,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
-        return beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
     }
 
     /**
@@ -358,7 +358,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(
             String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context) {
-        return beginCreateAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
     }
 
     /**
@@ -1120,7 +1120,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
-        return beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
     }
 
     /**
@@ -1140,7 +1140,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(
             String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context) {
-        return beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
     }
 
     /**

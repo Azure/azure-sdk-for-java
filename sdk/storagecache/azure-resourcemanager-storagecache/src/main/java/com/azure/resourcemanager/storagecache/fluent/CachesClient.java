@@ -20,57 +20,57 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in CachesClient. */
 public interface CachesClient {
     /**
-     * Returns all Caches the user has access to under a subscription.
+     * Returns all caches the user has access to under a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
+     * @return result of the request to list caches as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CacheInner> list();
 
     /**
-     * Returns all Caches the user has access to under a subscription.
+     * Returns all caches the user has access to under a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
+     * @return result of the request to list caches as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CacheInner> list(Context context);
 
     /**
-     * Returns all Caches the user has access to under a resource group.
+     * Returns all caches the user has access to under a resource group.
      *
-     * @param resourceGroupName Target resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
+     * @return result of the request to list caches as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CacheInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Returns all Caches the user has access to under a resource group.
+     * Returns all caches the user has access to under a resource group.
      *
-     * @param resourceGroupName Target resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Caches as paginated response with {@link PagedIterable}.
+     * @return result of the request to list caches as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CacheInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Schedules a Cache for deletion.
+     * Schedules a cache for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,10 +81,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName);
 
     /**
-     * Schedules a Cache for deletion.
+     * Schedules a cache for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,10 +96,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Schedules a Cache for deletion.
+     * Schedules a cache for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,10 +109,10 @@ public interface CachesClient {
     void delete(String resourceGroupName, String cacheName);
 
     /**
-     * Schedules a Cache for deletion.
+     * Schedules a cache for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,153 +123,170 @@ public interface CachesClient {
     void delete(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Returns a Cache.
+     * Returns a cache.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CacheInner getByResourceGroup(String resourceGroupName, String cacheName);
-
-    /**
-     * Returns a Cache.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance along with {@link Response}.
+     * @return a cache instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CacheInner> getByResourceGroupWithResponse(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Create or update a Cache.
+     * Returns a cache.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new Cache. If read-only properties are
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cache instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CacheInner getByResourceGroup(String resourceGroupName, String cacheName);
+
+    /**
+     * Create or update a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      *     included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Cache instance.
+     * @return the {@link SyncPoller} for polling of a cache instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, CacheInner cache);
 
     /**
-     * Create or update a Cache.
+     * Create or update a cache.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new Cache. If read-only properties are
+     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      *     included, they must match the existing values of those properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Cache instance.
+     * @return the {@link SyncPoller} for polling of a cache instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, CacheInner cache, Context context);
 
     /**
-     * Create or update a Cache.
+     * Create or update a cache.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new Cache. If read-only properties are
+     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      *     included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return a cache instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CacheInner createOrUpdate(String resourceGroupName, String cacheName, CacheInner cache);
 
     /**
-     * Create or update a Cache.
+     * Create or update a cache.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CacheInner createOrUpdate(String resourceGroupName, String cacheName);
-
-    /**
-     * Create or update a Cache.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the new Cache. If read-only properties are
+     * @param cache Object containing the user-selectable properties of the new cache. If read-only properties are
      *     included, they must match the existing values of those properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return a cache instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CacheInner createOrUpdate(String resourceGroupName, String cacheName, CacheInner cache, Context context);
 
     /**
-     * Update a Cache instance.
+     * Update a cache instance.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance.
+     * @return the {@link SyncPoller} for polling of a cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CacheInner update(String resourceGroupName, String cacheName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String cacheName);
 
     /**
-     * Update a Cache instance.
+     * Update a cache instance.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param cache Object containing the user-selectable properties of the Cache. If read-only properties are included,
+     * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
      *     they must match the existing values of those properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Cache instance along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of a cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CacheInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(
         String resourceGroupName, String cacheName, CacheInner cache, Context context);
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Update a cache instance.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cache instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CacheInner update(String resourceGroupName, String cacheName);
+
+    /**
+     * Update a cache instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param cache Object containing the user-selectable properties of the cache. If read-only properties are included,
+     *     they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cache instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CacheInner update(String resourceGroupName, String cacheName, CacheInner cache, Context context);
+
+    /**
+     * Tells a cache to write generate debug info for support to process.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -280,10 +297,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginDebugInfo(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Tells a cache to write generate debug info for support to process.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,10 +312,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginDebugInfo(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Tells a cache to write generate debug info for support to process.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -308,10 +325,10 @@ public interface CachesClient {
     void debugInfo(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Tells a cache to write generate debug info for support to process.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,11 +339,11 @@ public interface CachesClient {
     void debugInfo(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -337,11 +354,11 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,11 +370,11 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -367,11 +384,11 @@ public interface CachesClient {
     void flush(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,10 +399,10 @@ public interface CachesClient {
     void flush(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -396,10 +413,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,10 +428,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,10 +441,10 @@ public interface CachesClient {
     void start(String resourceGroupName, String cacheName);
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,10 +455,10 @@ public interface CachesClient {
     void start(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -452,10 +469,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName);
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,10 +484,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -480,10 +497,10 @@ public interface CachesClient {
     void stop(String resourceGroupName, String cacheName);
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,24 +513,22 @@ public interface CachesClient {
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param primingjob Object containing the definition of a priming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(
-        String resourceGroupName, String cacheName, PrimingJob primingjob);
+    SyncPoller<PollResult<Void>, Void> beginStartPrimingJob(String resourceGroupName, String cacheName);
 
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingjob Object containing the definition of a priming job.
      * @param context The context to associate with this operation.
@@ -529,22 +544,8 @@ public interface CachesClient {
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param primingjob Object containing the definition of a priming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob);
-
-    /**
-     * Create a priming job. This operation is only allowed when the cache is healthy.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -556,8 +557,8 @@ public interface CachesClient {
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingjob Object containing the definition of a priming job.
      * @param context The context to associate with this operation.
@@ -571,24 +572,22 @@ public interface CachesClient {
     /**
      * Schedule a priming job for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+    SyncPoller<PollResult<Void>, Void> beginStopPrimingJob(String resourceGroupName, String cacheName);
 
     /**
      * Schedule a priming job for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -604,22 +603,8 @@ public interface CachesClient {
     /**
      * Schedule a priming job for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
-
-    /**
-     * Schedule a priming job for deletion.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -631,8 +616,8 @@ public interface CachesClient {
     /**
      * Schedule a priming job for deletion.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -647,24 +632,22 @@ public interface CachesClient {
     /**
      * Schedule a priming job to be paused.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+    SyncPoller<PollResult<Void>, Void> beginPausePrimingJob(String resourceGroupName, String cacheName);
 
     /**
      * Schedule a priming job to be paused.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -680,22 +663,8 @@ public interface CachesClient {
     /**
      * Schedule a priming job to be paused.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
-
-    /**
-     * Schedule a priming job to be paused.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -707,8 +676,8 @@ public interface CachesClient {
     /**
      * Schedule a priming job to be paused.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -723,24 +692,22 @@ public interface CachesClient {
     /**
      * Resumes a paused priming job.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+    SyncPoller<PollResult<Void>, Void> beginResumePrimingJob(String resourceGroupName, String cacheName);
 
     /**
      * Resumes a paused priming job.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -756,22 +723,8 @@ public interface CachesClient {
     /**
      * Resumes a paused priming job.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param primingJobId Object containing the priming job ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
-
-    /**
-     * Resumes a paused priming job.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -783,8 +736,8 @@ public interface CachesClient {
     /**
      * Resumes a paused priming job.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
@@ -797,10 +750,10 @@ public interface CachesClient {
         String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -811,10 +764,10 @@ public interface CachesClient {
     SyncPoller<PollResult<Void>, Void> beginUpgradeFirmware(String resourceGroupName, String cacheName);
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,10 +780,10 @@ public interface CachesClient {
         String resourceGroupName, String cacheName, Context context);
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -840,10 +793,10 @@ public interface CachesClient {
     void upgradeFirmware(String resourceGroupName, String cacheName);
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -856,24 +809,22 @@ public interface CachesClient {
     /**
      * Update cache space allocation.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
-     * @param spaceAllocation List containing storage target cache space percentage allocations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(
-        String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation);
+    SyncPoller<PollResult<Void>, Void> beginSpaceAllocation(String resourceGroupName, String cacheName);
 
     /**
      * Update cache space allocation.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param spaceAllocation List containing storage target cache space percentage allocations.
      * @param context The context to associate with this operation.
@@ -892,23 +843,8 @@ public interface CachesClient {
     /**
      * Update cache space allocation.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
-     * @param spaceAllocation List containing storage target cache space percentage allocations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void spaceAllocation(
-        String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation);
-
-    /**
-     * Update cache space allocation.
-     *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -920,8 +856,8 @@ public interface CachesClient {
     /**
      * Update cache space allocation.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param spaceAllocation List containing storage target cache space percentage allocations.
      * @param context The context to associate with this operation.

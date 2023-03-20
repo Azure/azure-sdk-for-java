@@ -60,17 +60,22 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     ChangeFeedState.merge(states).toString
   }
 
+  def extractCollectionRid(continuation: String): String = {
+    val state = ChangeFeedState.fromString(continuation)
+    state.getContainerRid
+  }
+
   def validateCollectionRidOfChangeFeedState
   (
     continuation: String,
     expectedCollectionRid: String,
     ignoreOffsetWhenInvalid: Boolean
   ): Boolean = {
-    val state = ChangeFeedState.fromString(continuation)
-    val isOffsetValid = state.getContainerRid.equalsIgnoreCase(expectedCollectionRid)
+    val extractedRid = extractCollectionRid(continuation)
+    val isOffsetValid = extractedRid.equalsIgnoreCase(expectedCollectionRid)
     if (!isOffsetValid) {
       val message = s"The provided change feed continuation state is for a different container. Offset's " +
-        s"container: ${state.getContainerRid}, Current container: $expectedCollectionRid, " +
+        s"container: ${extractedRid}, Current container: $expectedCollectionRid, " +
         s"Continuation: $continuation"
 
       if (!ignoreOffsetWhenInvalid) {
@@ -269,6 +274,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val continuations = tokens
       .map(token => {
         val pkRangeId = token._1
+
         val lsn: Long = token._2
 
         val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {

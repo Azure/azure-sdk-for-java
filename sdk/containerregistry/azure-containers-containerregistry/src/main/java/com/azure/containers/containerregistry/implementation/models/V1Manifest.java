@@ -5,7 +5,10 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** Returns the requested V1 manifest file. */
@@ -14,37 +17,31 @@ public final class V1Manifest extends Manifest {
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture")
     private String architecture;
 
     /*
      * Image name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Image tag
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * List of layer information
      */
-    @JsonProperty(value = "fsLayers")
     private List<FsLayer> fsLayers;
 
     /*
      * Image history
      */
-    @JsonProperty(value = "history")
     private List<History> history;
 
     /*
      * Image signature
      */
-    @JsonProperty(value = "signatures")
     private List<ImageSignature> signatures;
 
     /** Creates an instance of V1Manifest class. */
@@ -175,5 +172,61 @@ public final class V1Manifest extends Manifest {
     public V1Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("schemaVersion", getSchemaVersion());
+        jsonWriter.writeStringField("architecture", this.architecture);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeArrayField("fsLayers", this.fsLayers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("history", this.history, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("signatures", this.signatures, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of V1Manifest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of V1Manifest if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IOException If an error occurs while reading the V1Manifest.
+     */
+    public static V1Manifest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    V1Manifest deserializedV1Manifest = new V1Manifest();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedV1Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                        } else if ("architecture".equals(fieldName)) {
+                            deserializedV1Manifest.architecture = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedV1Manifest.name = reader.getString();
+                        } else if ("tag".equals(fieldName)) {
+                            deserializedV1Manifest.tag = reader.getString();
+                        } else if ("fsLayers".equals(fieldName)) {
+                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                            deserializedV1Manifest.fsLayers = fsLayers;
+                        } else if ("history".equals(fieldName)) {
+                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
+                            deserializedV1Manifest.history = history;
+                        } else if ("signatures".equals(fieldName)) {
+                            List<ImageSignature> signatures =
+                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                            deserializedV1Manifest.signatures = signatures;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedV1Manifest;
+                });
     }
 }

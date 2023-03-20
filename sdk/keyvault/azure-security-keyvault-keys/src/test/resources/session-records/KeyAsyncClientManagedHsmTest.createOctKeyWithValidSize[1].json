@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey75092d6/create?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey9815016/create?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "435",
+      "content-length" : "436",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
+      "x-ms-server-latency" : "204",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "186",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northcentralus",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "northus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5828effa-6211-11ed-a9a4-0022488d29c2",
-      "Body" : "{\"attributes\":{\"created\":1668206215,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1668206215},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://vicolinakeyvaulthsm.managedhsm.azure.net/keys/testoctkey75092d6/2cb2da1935f1425a994d1b91da0e6c95\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
+      "x-ms-request-id" : "3323a518-c3d4-11ed-925f-0022488d0014",
+      "Body" : "{\"attributes\":{\"created\":1678955167,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1678955167},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/testoctkey9815016/f7a387c24e8c008b17b088e65f75ba34\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testoctkey75092d6" ]
+  "variables" : [ "testoctkey9815016" ]
 }

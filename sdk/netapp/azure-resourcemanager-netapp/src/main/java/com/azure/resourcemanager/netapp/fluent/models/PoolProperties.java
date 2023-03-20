@@ -78,6 +78,10 @@ public final class PoolProperties {
     @JsonProperty(value = "encryptionType")
     private EncryptionType encryptionType;
 
+    /** Creates an instance of PoolProperties class. */
+    public PoolProperties() {
+    }
+
     /**
      * Get the poolId property: poolId
      *

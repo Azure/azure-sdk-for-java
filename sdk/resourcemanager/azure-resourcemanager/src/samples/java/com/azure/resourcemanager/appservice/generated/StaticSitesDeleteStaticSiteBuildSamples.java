@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DeleteStaticSiteBuild. */
 public final class StaticSitesDeleteStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteStaticSiteBuild.json
      */
     /**
      * Sample code: Delete a static site build.
@@ -22,6 +20,6 @@ public final class StaticSitesDeleteStaticSiteBuildSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .deleteStaticSiteBuild("rg", "testStaticSite0", "12", Context.NONE);
+            .deleteStaticSiteBuild("rg", "testStaticSite0", "12", com.azure.core.util.Context.NONE);
     }
 }

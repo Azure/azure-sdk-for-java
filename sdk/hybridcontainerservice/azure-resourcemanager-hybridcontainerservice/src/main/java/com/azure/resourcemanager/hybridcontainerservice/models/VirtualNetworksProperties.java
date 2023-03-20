@@ -38,19 +38,19 @@ public final class VirtualNetworksProperties {
     /*
      * Address of the DNS servers associated with the network
      */
-    @JsonProperty(value = "dnsServers", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * Address of the Gateway associated with the network
      */
-    @JsonProperty(value = "gateway", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "gateway")
     private String gateway;
 
     /*
      * IP Address Prefix of the network
      */
-    @JsonProperty(value = "ipAddressPrefix", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ipAddressPrefix")
     private String ipAddressPrefix;
 
     /*
@@ -154,6 +154,17 @@ public final class VirtualNetworksProperties {
     }
 
     /**
+     * Set the dnsServers property: Address of the DNS servers associated with the network.
+     *
+     * @param dnsServers the dnsServers value to set.
+     * @return the VirtualNetworksProperties object itself.
+     */
+    public VirtualNetworksProperties withDnsServers(List<String> dnsServers) {
+        this.dnsServers = dnsServers;
+        return this;
+    }
+
+    /**
      * Get the gateway property: Address of the Gateway associated with the network.
      *
      * @return the gateway value.
@@ -163,12 +174,34 @@ public final class VirtualNetworksProperties {
     }
 
     /**
+     * Set the gateway property: Address of the Gateway associated with the network.
+     *
+     * @param gateway the gateway value to set.
+     * @return the VirtualNetworksProperties object itself.
+     */
+    public VirtualNetworksProperties withGateway(String gateway) {
+        this.gateway = gateway;
+        return this;
+    }
+
+    /**
      * Get the ipAddressPrefix property: IP Address Prefix of the network.
      *
      * @return the ipAddressPrefix value.
      */
     public String ipAddressPrefix() {
         return this.ipAddressPrefix;
+    }
+
+    /**
+     * Set the ipAddressPrefix property: IP Address Prefix of the network.
+     *
+     * @param ipAddressPrefix the ipAddressPrefix value to set.
+     * @return the VirtualNetworksProperties object itself.
+     */
+    public VirtualNetworksProperties withIpAddressPrefix(String ipAddressPrefix) {
+        this.ipAddressPrefix = ipAddressPrefix;
+        return this;
     }
 
     /**

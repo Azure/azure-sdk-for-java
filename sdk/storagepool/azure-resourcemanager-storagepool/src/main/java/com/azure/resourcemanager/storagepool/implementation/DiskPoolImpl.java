@@ -121,6 +121,10 @@ public final class DiskPoolImpl implements DiskPool, DiskPool.Definition, DiskPo
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DiskPoolInner innerModel() {
         return this.innerObject;
     }

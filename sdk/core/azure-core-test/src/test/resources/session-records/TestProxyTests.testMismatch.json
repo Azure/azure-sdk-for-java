@@ -1,0 +1,20 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://REDACTED/",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "User-Agent": "Java/17.0.4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "11"
+      },
+      "ResponseBody": "aGVsbG8gd29ybGQ="
+    }
+  ],
+  "Variables": {}
+}

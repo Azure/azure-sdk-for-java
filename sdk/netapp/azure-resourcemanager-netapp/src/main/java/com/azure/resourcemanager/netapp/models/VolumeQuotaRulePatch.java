@@ -6,16 +6,49 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRulesProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Patchable Quota Rule of a Volume. */
 @Fluent
 public final class VolumeQuotaRulePatch {
     /*
+     * Resource tags
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
      * Volume Quota Rule Properties
      */
     @JsonProperty(value = "properties")
     private VolumeQuotaRulesProperties innerProperties;
+
+    /** Creates an instance of VolumeQuotaRulePatch class. */
+    public VolumeQuotaRulePatch() {
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the VolumeQuotaRulePatch object itself.
+     */
+    public VolumeQuotaRulePatch withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: Volume Quota Rule Properties.

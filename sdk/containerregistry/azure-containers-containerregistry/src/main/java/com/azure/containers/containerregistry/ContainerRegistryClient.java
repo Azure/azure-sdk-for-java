@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
@@ -19,8 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -34,7 +34,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -50,7 +49,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -62,7 +60,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRegistryClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClient.class);
     private final ContainerRegistriesImpl registriesImplClient;
     private final HttpPipeline httpPipeline;
     private final String endpoint;
@@ -71,12 +69,8 @@ public final class ContainerRegistryClient {
     ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
-        this.registriesImplClient = registryImplClient.getContainerRegistries();
+        this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
+            .getContainerRegistries();
         this.apiVersion = version;
     }
 
@@ -127,30 +121,28 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames(Context context) {
-        return new PagedIterable<String>(
+        return new PagedIterable<>(
             (pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
             (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
     }
 
     private PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
         if (pageSize != null && pageSize < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
 
         try {
-            return this.registriesImplClient.getRepositoriesSinglePage(null,
-                pageSize, enableSync(getTracingContext(context)));
+            return this.registriesImplClient.getRepositoriesSinglePage(null, pageSize, enableSync(context));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
     private PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
         try {
-            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink,
-                enableSync(getTracingContext(context)));
+            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink, enableSync(context));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -194,20 +186,17 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' cannot be null."));
-        }
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
 
         if (repositoryName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));
         }
 
         try {
             return UtilsImpl.deleteResponseToSuccess(
-                this.registriesImplClient.deleteRepositoryWithResponse(repositoryName,
-                    enableSync(getTracingContext(context))));
+                this.registriesImplClient.deleteRepositoryWithResponse(repositoryName, enableSync(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 

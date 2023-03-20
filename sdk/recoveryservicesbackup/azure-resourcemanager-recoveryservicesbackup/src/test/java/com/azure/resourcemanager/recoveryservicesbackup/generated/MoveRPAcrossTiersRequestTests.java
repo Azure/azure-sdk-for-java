@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MoveRPAcrossTiersRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MoveRPAcrossTiersRequest model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class MoveRPAcrossTiersRequestTests {
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MoveRPAcrossTiersRequest model =
             new MoveRPAcrossTiersRequest()
                 .withObjectType("gitvg")

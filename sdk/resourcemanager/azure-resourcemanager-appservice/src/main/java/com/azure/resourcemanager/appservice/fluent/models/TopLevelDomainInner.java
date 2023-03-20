@@ -17,6 +17,10 @@ public final class TopLevelDomainInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private TopLevelDomainProperties innerProperties;
 
+    /** Creates an instance of TopLevelDomainInner class. */
+    public TopLevelDomainInner() {
+    }
+
     /**
      * Get the innerProperties property: TopLevelDomain resource specific properties.
      *

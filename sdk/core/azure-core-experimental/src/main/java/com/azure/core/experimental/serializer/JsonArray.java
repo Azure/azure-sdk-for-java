@@ -30,6 +30,8 @@ public interface JsonArray extends JsonNode {
     JsonArray clear();
 
     /**
+     * A {@link Stream} that iterates all elements in the array.
+     *
      * @return {@link Stream} for all elements in the array.
      */
     Stream<JsonNode> elements();
@@ -73,6 +75,8 @@ public interface JsonArray extends JsonNode {
     JsonNode set(int index, JsonNode jsonNode);
 
     /**
+     * Gets the size of the array.
+     *
      * @return The size of the array.
      */
     int size();

@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AbstractSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AgeResolution;
@@ -26,12 +27,13 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
 import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareDocumentType;
@@ -337,10 +339,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizePiiEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -429,10 +427,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeLinkedEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -576,10 +570,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -864,10 +854,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS);
     }
 
-    void recognizeCategorizedEntityDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
     void recognizeCategorizedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, "en");
     }
@@ -911,10 +897,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
-    }
-
-    void recognizeBatchPiiEntityDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getDuplicateTextDocumentInputs());
     }
 
     void recognizePiiEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
@@ -979,10 +961,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS));
     }
 
-    void recognizeBatchLinkedEntityDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
     // Key Phrases runner
     void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS.get(1));
@@ -1011,7 +989,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getTextDocumentInputs(KEY_PHRASE_INPUTS));
     }
 
-    void extractBatchKeyPhrasesDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void duplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
     }
 
@@ -1044,10 +1022,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS));
     }
 
-    void analyzeBatchSentimentDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
     void analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner(BiConsumer<List<String>, AnalyzeSentimentOptions> testRunner) {
         testRunner.accept(SENTIMENT_INPUTS,
             new AnalyzeSentimentOptions().setIncludeStatistics(true).setIncludeOpinionMining(true));
@@ -1077,7 +1051,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(asList(new DetectLanguageInput("", DETECT_LANGUAGE_INPUTS.get(0))));
     }
 
-    void textAnalyticsInputEmptyIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void emptyDocumentIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
     }
 
@@ -1222,27 +1196,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                     new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
                     new AnalyzeSentimentAction())
-                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
-                    new ExtractSummaryAction())
-            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
-
-//                .setRecognizeCustomEntitiesActions(
-//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME).setActionName(CUSTOM_ACTION_NAME),
-//                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
-//                .setSingleCategoryClassifyActions(
-//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)
-//                        .setActionName(CUSTOM_ACTION_NAME),
-//                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
-//                .setMultiCategoryClassifyActions(
-//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)
-//                        .setActionName(CUSTOM_ACTION_NAME),
-//                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-//                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME))
         );
     }
 
@@ -1448,8 +1401,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME));
     }
 
-    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
-                                     Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
+    void extractSummaryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+        Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
                 .setExtractSummaryActions(
@@ -1458,48 +1411,66 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         .setOrderBy(summarySentencesOrder)));
     }
 
-    void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner, Integer maxSentenceCount) {
+    void extractSummaryRunner(BiConsumer<List<String>, ExtractSummaryOptions> testRunner,
+        Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
+        testRunner.accept(SUMMARY_INPUTS,
+            new ExtractSummaryOptions()
+                .setMaxSentenceCount(maxSentenceCount)
+                .setOrderBy(summarySentencesOrder));
+    }
+
+    void extractSummaryMaxOverloadRunner(BiConsumer<List<TextDocumentInput>, ExtractSummaryOptions> testRunner,
+        Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
+        testRunner.accept(TestUtils.getTextDocumentInputs(SUMMARY_INPUTS),
+            new ExtractSummaryOptions()
+                .setMaxSentenceCount(maxSentenceCount)
+                .setOrderBy(summarySentencesOrder));
+    }
+
+
+    void abstractSummaryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+        Integer sentenceCount) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
                 .setAbstractSummaryActions(
-                    new AbstractSummaryAction().setMaxSentenceCount(maxSentenceCount)));
+                    new AbstractSummaryAction().setSentenceCount(sentenceCount)));
+    }
+
+    void abstractSummaryRunner(BiConsumer<List<String>, AbstractSummaryOptions> testRunner,
+        Integer sentenceCount) {
+        testRunner.accept(SUMMARY_INPUTS, new AbstractSummaryOptions().setSentenceCount(sentenceCount));
+    }
+
+    void abstractSummaryMaxOverloadRunner(BiConsumer<List<TextDocumentInput>, AbstractSummaryOptions> testRunner,
+        Integer sentenceCount) {
+        testRunner.accept(TestUtils.getTextDocumentInputs(SUMMARY_INPUTS),
+            new AbstractSummaryOptions().setSentenceCount(sentenceCount));
     }
 
     // Dynamic classification
-    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             asList(
                 new TextDocumentInput("0", DYNAMIC_CLASSIFICATION.get(0)),
                 new TextDocumentInput("1", DYNAMIC_CLASSIFICATION.get(1))),
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true));
     }
 
-    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassificationOptions> testRunner) {
+    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             DYNAMIC_CLASSIFICATION,
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true));
-    }
-
-    void dynamicClassificationDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
-    void dynamicClassificationWarningRunner(Consumer<String> testRunner) {
-        testRunner.accept(TOO_LONG_INPUT);
     }
 
     void dynamicClassificationBatchWarningRunner(
-        BiConsumer<List<TextDocumentInput>, DynamicClassificationOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
         testRunner.accept(
             getWarningsTextDocumentInputs(),
-            new DynamicClassificationOptions()
-                .setCategories("Health", "Politics", "Music", "Sports")
+            new DynamicClassifyOptions()
                 .setClassificationType(ClassificationType.MULTI)
                 .setIncludeStatistics(true)
         );
@@ -1515,11 +1486,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
-    TextAnalyticsClientBuilder getTextAnalyticsAsyncClientBuilder(HttpClient httpClient,
+    TextAnalyticsClientBuilder getTextAnalyticsClientBuilder(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         if (getTestMode() == TestMode.RECORD) {

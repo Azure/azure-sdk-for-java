@@ -2,24 +2,33 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneHandler;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneMergeHandler;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneSplitHandler;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -27,21 +36,29 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Implementation for the partition synchronizer.
  */
 class PartitionSynchronizerImpl implements PartitionSynchronizer {
+    private static final Comparator<Range<String>> MIN_RANGE_COMPARATOR = new Range.MinComparator<>();
+    private static final Comparator<Range<String>> MAX_RANGE_COMPARATOR = new Range.MaxComparator<>();
+
     private final Logger logger = LoggerFactory.getLogger(PartitionSynchronizerImpl.class);
     private final ChangeFeedContextClient documentClient;
-    private final CosmosAsyncContainer collectionSelfLink;
+    private final String collectionSelfLink;
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
     private final int degreeOfParallelism;
     private final int maxBatchSize;
 
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
+    private final ChangeFeedMode changeFeedMode;
+
     public PartitionSynchronizerImpl(
-            ChangeFeedContextClient documentClient,
-            CosmosAsyncContainer collectionSelfLink,
-            LeaseContainer leaseContainer,
-            LeaseManager leaseManager,
-            int degreeOfParallelism,
-            int maxBatchSize) {
+        ChangeFeedContextClient documentClient,
+        String collectionSelfLink,
+        LeaseContainer leaseContainer,
+        LeaseManager leaseManager,
+        int degreeOfParallelism,
+        int maxBatchSize,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
+        ChangeFeedMode changeFeedMode) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
@@ -49,6 +66,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         this.leaseManager = leaseManager;
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.changeFeedMode = changeFeedMode;
     }
 
     @Override
@@ -59,6 +78,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     logger.error("Create lease failed", throwable);
                     return Mono.empty();
                 });
+    }
+
+    @Override
+    public Mono<Void> createMissingLeases(List<Lease> pkRangeIdVersionLeases) {
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
+            .flatMap(pkRangeList -> this.createLeases(pkRangeList, pkRangeIdVersionLeases).then())
+            .doOnError(throwable -> logger.error("Create missing leases from pkRangeIdVersion leases failed", throwable));
     }
 
     @Override
@@ -136,5 +162,91 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
                                 }, this.degreeOfParallelism);
             });
+    }
+
+    /***
+     * Create the missing epk version leases based on the pkRangeId version leases.
+     *
+     * NOTE: This method should only be used during bootstrap stage. It is split safe, but not merge safe.
+     *
+     * @param partitionKeyRanges a list of all partition key ranges.
+     * @param pkRangeIdVersionLeases a list of pkRangeId version leases
+     *
+     * @return a deferred computation of this call.
+     */
+    private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges, List<Lease> pkRangeIdVersionLeases) {
+        return this.leaseContainer.getAllLeases()
+            .collectList()
+            .flatMapMany(existingEpkVersionLeases -> {
+                Map<String, Lease> pkRangeIdVersionLeaseMap =
+                    pkRangeIdVersionLeases.stream().collect(Collectors.toMap(lease -> lease.getLeaseToken(), lease -> lease));
+
+                return Flux.fromIterable(partitionKeyRanges)
+                    .flatMap(partitionKeyRange -> {
+                        boolean anyEpkVersionLeaseMatch = existingEpkVersionLeases.stream().anyMatch(lease -> {
+                            Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
+                            return MIN_RANGE_COMPARATOR.compare(epkRange, partitionKeyRange.toRange()) <= 0
+                                && MAX_RANGE_COMPARATOR.compare(epkRange, partitionKeyRange.toRange()) >= 0;
+                        });
+
+                        if (anyEpkVersionLeaseMatch) {
+                            // epk version lease has already been created for the pkRange, skip
+                            return Mono.empty();
+                        } else {
+                            // The epk version lease does not exist, create one from pkRangeId version lease
+                            List<String> possibleMatchingPkRangeId = new ArrayList<>();
+                            possibleMatchingPkRangeId.add(partitionKeyRange.getId());
+                            if (partitionKeyRange.getParents() != null) {
+                                possibleMatchingPkRangeId.addAll(partitionKeyRange.getParents());
+                            }
+
+                            List<Lease> matchedPkRangeIdVersionLeases = new ArrayList<>();
+                            for (String pkRangeId : possibleMatchingPkRangeId) {
+                                if (pkRangeIdVersionLeaseMap.containsKey(pkRangeId)) {
+                                    matchedPkRangeIdVersionLeases.add(pkRangeIdVersionLeaseMap.get(pkRangeId));
+                                }
+                            }
+
+                            if (matchedPkRangeIdVersionLeases.size() == 0) {
+                                return Mono.error(new IllegalStateException("Can not find pkRangeId version lease"));
+                            } else if (matchedPkRangeIdVersionLeases.size() == 1) {
+                                return Mono.just(Pair.of(partitionKeyRange, matchedPkRangeIdVersionLeases.get(0)));
+                            } else {
+                                return Mono.error(
+                                    new IllegalStateException(
+                                        "A merge has happened, creating epk version lease from pkRangeId version lease is not supported"));
+                            }
+                        }
+                    })
+                    .flatMap(pair -> {
+                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pair.getLeft().toRange());
+                        String leaseContinuationToken = this.getLeaseContinuationToken(
+                            feedRangeEpk,
+                            pair.getRight().getContinuationToken());
+                        return leaseManager.createLeaseIfNotExist(feedRangeEpk, leaseContinuationToken);
+                    }, this.degreeOfParallelism);
+            });
+    }
+
+    private String getLeaseContinuationToken(
+        FeedRangeEpkImpl feedRangeEpk,
+        String etag) {
+        FeedRangeContinuation feedRangeContinuation = FeedRangeContinuation.create(
+            this.collectionSelfLink,
+            feedRangeEpk,
+            feedRangeEpk.getRange());
+        feedRangeContinuation.replaceContinuation(etag);
+
+        ChangeFeedState changeFeedState =  new ChangeFeedStateV1(
+            this.collectionSelfLink,
+            feedRangeEpk,
+            this.changeFeedMode,
+            PartitionProcessorHelper.getStartFromSettings(
+                feedRangeEpk,
+                this.changeFeedProcessorOptions,
+                this.changeFeedMode),
+            feedRangeContinuation);
+
+        return changeFeedState.toString();
     }
 }

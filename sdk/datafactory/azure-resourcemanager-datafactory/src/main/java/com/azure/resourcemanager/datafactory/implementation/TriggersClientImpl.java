@@ -1275,7 +1275,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName) {
-        return beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        return this.beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
     }
 
     /**
@@ -1293,7 +1293,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        return this.beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
     }
 
     /**
@@ -1706,7 +1706,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName) {
-        return beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        return this.beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
     }
 
     /**
@@ -1724,7 +1724,9 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        return this
+            .beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1963,7 +1965,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName) {
-        return beginStartAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
     }
 
     /**
@@ -1981,7 +1983,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginStartAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
     }
 
     /**
@@ -2214,7 +2216,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName) {
-        return beginStopAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
     }
 
     /**
@@ -2232,7 +2234,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginStopAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
     }
 
     /**

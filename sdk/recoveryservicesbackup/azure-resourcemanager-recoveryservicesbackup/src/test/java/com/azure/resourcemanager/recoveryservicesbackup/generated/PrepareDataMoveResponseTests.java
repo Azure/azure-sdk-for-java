@@ -9,29 +9,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRe
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrepareDataMoveResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrepareDataMoveResponse model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"ropions\",\"sourceVaultProperties\":{\"jinnix\":\"wpng\"}}")
+                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"iqxf\",\"sourceVaultProperties\":{\"kpqhjpenuygbq\":\"qttv\"}}")
                 .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("ropions", model.correlationId());
-        Assertions.assertEquals("wpng", model.sourceVaultProperties().get("jinnix"));
+        Assertions.assertEquals("iqxf", model.correlationId());
+        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrepareDataMoveResponse model =
             new PrepareDataMoveResponse()
-                .withCorrelationId("ropions")
-                .withSourceVaultProperties(mapOf("jinnix", "wpng"));
+                .withCorrelationId("iqxf")
+                .withSourceVaultProperties(mapOf("kpqhjpenuygbq", "qttv"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("ropions", model.correlationId());
-        Assertions.assertEquals("wpng", model.sourceVaultProperties().get("jinnix"));
+        Assertions.assertEquals("iqxf", model.correlationId());
+        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
     }
 
     @SuppressWarnings("unchecked")

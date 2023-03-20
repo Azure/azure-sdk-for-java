@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Put subscription creation result properties. */
 @Fluent
 public final class PutAliasResponseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutAliasResponseProperties.class);
-
     /*
      * Newly created subscription Id.
      */
@@ -25,6 +21,10 @@ public final class PutAliasResponseProperties {
      */
     @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of PutAliasResponseProperties class. */
+    public PutAliasResponseProperties() {
+    }
 
     /**
      * Get the subscriptionId property: Newly created subscription Id.

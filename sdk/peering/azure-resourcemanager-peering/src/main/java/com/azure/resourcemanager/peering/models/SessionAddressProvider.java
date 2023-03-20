@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionAddressProvider. */
+/** The field indicating if Microsoft provides session ip addresses. */
 public final class SessionAddressProvider extends ExpandableStringEnum<SessionAddressProvider> {
     /** Static value Microsoft for SessionAddressProvider. */
     public static final SessionAddressProvider MICROSOFT = fromString("Microsoft");
 
     /** Static value Peer for SessionAddressProvider. */
     public static final SessionAddressProvider PEER = fromString("Peer");
+
+    /**
+     * Creates a new instance of SessionAddressProvider value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionAddressProvider() {
+    }
 
     /**
      * Creates or finds a SessionAddressProvider from its string representation.
@@ -27,7 +36,11 @@ public final class SessionAddressProvider extends ExpandableStringEnum<SessionAd
         return fromString(name, SessionAddressProvider.class);
     }
 
-    /** @return known SessionAddressProvider values. */
+    /**
+     * Gets known SessionAddressProvider values.
+     *
+     * @return known SessionAddressProvider values.
+     */
     public static Collection<SessionAddressProvider> values() {
         return values(SessionAddressProvider.class);
     }

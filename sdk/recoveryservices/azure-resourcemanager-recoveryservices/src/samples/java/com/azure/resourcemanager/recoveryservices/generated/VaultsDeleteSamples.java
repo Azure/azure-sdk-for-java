@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults Delete. */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/DeleteVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/DeleteVault.json
      */
     /**
      * Sample code: Delete Recovery Services Vault.
@@ -21,6 +19,6 @@ public final class VaultsDeleteSamples {
         manager
             .vaults()
             .deleteByResourceGroupWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", Context.NONE);
+                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

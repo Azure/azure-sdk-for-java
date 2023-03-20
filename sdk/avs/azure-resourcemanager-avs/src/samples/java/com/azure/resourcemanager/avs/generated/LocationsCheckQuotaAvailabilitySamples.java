@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Locations CheckQuotaAvailability. */
 public final class LocationsCheckQuotaAvailabilitySamples {
     /*
@@ -17,6 +15,6 @@ public final class LocationsCheckQuotaAvailabilitySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void locationsCheckQuotaAvailability(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.locations().checkQuotaAvailabilityWithResponse("eastus", Context.NONE);
+        manager.locations().checkQuotaAvailabilityWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }

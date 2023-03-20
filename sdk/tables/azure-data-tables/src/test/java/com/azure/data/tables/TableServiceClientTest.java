@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
@@ -61,6 +62,13 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     private TableServiceClient serviceClient;
 
+    protected HttpClient buildAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
     @Override
     protected void beforeTest() {
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -96,6 +104,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableServiceClient tableServiceClient =

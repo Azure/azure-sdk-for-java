@@ -22,6 +22,8 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
@@ -32,6 +34,17 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreated
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiAddedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiRemovedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCertificateAuthorityCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCertificateAuthorityDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCertificateAuthorityUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductUpdatedEventData;
@@ -48,6 +61,9 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEv
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
+import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageDeletedEventData;
@@ -247,6 +263,19 @@ public final class SystemEventNames {
             "Microsoft.Communication.ChatThreadWithUserDeleted";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event.
+     */
+    public static final String COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED =
+            "Microsoft.Communication.EmailDeliveryReportReceived";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.EmailEngagementTrackingReportReceived event.
+     */
+    public static final String COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED =
+            "Microsoft.Communication.EmailEngagementTrackingReportReceived";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
      */
     public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED =
@@ -281,6 +310,63 @@ public final class SystemEventNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiUpdated event. */
     public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded event. */
+    public static final String API_MANAGEMENT_GATEWAY_API_ADDED = "Microsoft.ApiManagement.GatewayAPIAdded";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIRemoved event. */
+    public static final String API_MANAGEMENT_GATEWAY_API_REMOVED = "Microsoft.ApiManagement.GatewayAPIRemoved";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityCreated
+     * event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_CREATED =
+            "Microsoft.ApiManagement.GatewayCertificateAuthorityCreated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted
+     * event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_DELETED =
+            "Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated
+     * event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_UPDATED =
+            "Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayCreated event. */
+    public static final String API_MANAGEMENT_GATEWAY_CREATED = "Microsoft.ApiManagement.GatewayCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayDeleted event. */
+    public static final String API_MANAGEMENT_GATEWAY_DELETED = "Microsoft.ApiManagement.GatewayDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ApiManagement.GatewayHostnameConfigurationCreated event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_CREATED =
+            "Microsoft.ApiManagement.GatewayHostnameConfigurationCreated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_DELETED =
+            "Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED =
+            "Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated event. */
+    public static final String API_MANAGEMENT_GATEWAY_UPDATED = "Microsoft.ApiManagement.GatewayUpdated";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductCreated event. */
     public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
@@ -333,6 +419,15 @@ public final class SystemEventNames {
      */
     public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
             "Microsoft.ContainerService.NewKubernetesVersionAvailable";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted event. */
+    public static final String DATA_BOX_COPY_COMPLETED = "Microsoft.DataBox.CopyCompleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyStarted event. */
+    public static final String DATA_BOX_COPY_STARTED = "Microsoft.DataBox.CopyStarted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event. */
+    public static final String DATA_BOX_ORDER_COMPLETED = "Microsoft.DataBox.OrderCompleted";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
@@ -817,6 +912,10 @@ public final class SystemEventNames {
                             COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
                             AcsChatThreadPropertiesUpdatedPerUserEventData.class);
                     put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
+                    put(COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED, AcsEmailDeliveryReportReceivedEventData.class);
+                    put(
+                            COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
+                            AcsEmailEngagementTrackingReportReceivedEventData.class);
                     put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
                     put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
@@ -827,6 +926,29 @@ public final class SystemEventNames {
                     put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
                     put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
                     put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
+                    put(API_MANAGEMENT_GATEWAY_API_ADDED, ApiManagementGatewayApiAddedEventData.class);
+                    put(API_MANAGEMENT_GATEWAY_API_REMOVED, ApiManagementGatewayApiRemovedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_CREATED,
+                            ApiManagementGatewayCertificateAuthorityCreatedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_DELETED,
+                            ApiManagementGatewayCertificateAuthorityDeletedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_UPDATED,
+                            ApiManagementGatewayCertificateAuthorityUpdatedEventData.class);
+                    put(API_MANAGEMENT_GATEWAY_CREATED, ApiManagementGatewayCreatedEventData.class);
+                    put(API_MANAGEMENT_GATEWAY_DELETED, ApiManagementGatewayDeletedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_CREATED,
+                            ApiManagementGatewayHostnameConfigurationCreatedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_DELETED,
+                            ApiManagementGatewayHostnameConfigurationDeletedEventData.class);
+                    put(
+                            API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED,
+                            ApiManagementGatewayHostnameConfigurationUpdatedEventData.class);
+                    put(API_MANAGEMENT_GATEWAY_UPDATED, ApiManagementGatewayUpdatedEventData.class);
                     put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
                     put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);
                     put(API_MANAGEMENT_PRODUCT_UPDATED, ApiManagementProductUpdatedEventData.class);
@@ -845,6 +967,9 @@ public final class SystemEventNames {
                     put(
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
+                    put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
+                    put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
+                    put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);

@@ -29,6 +29,10 @@ public final class AzureSku {
     @JsonProperty(value = "tier", required = true)
     private AzureSkuTier tier;
 
+    /** Creates an instance of AzureSku class. */
+    public AzureSku() {
+    }
+
     /**
      * Get the name property: SKU name.
      *

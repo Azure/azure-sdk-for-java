@@ -7,37 +7,36 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientScriptForConnect;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientScriptForConnectTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClientScriptForConnect model =
             BinaryData
                 .fromString(
-                    "{\"scriptContent\":\"trczzydmxzjijp\",\"scriptExtension\":\"aurkihcirlde\",\"osType\":\"rdcoxnbkkj\",\"url\":\"urnnqbnqbpiz\",\"scriptNameSuffix\":\"ltgrdogypxrxv\"}")
+                    "{\"scriptContent\":\"qnrmvvfko\",\"scriptExtension\":\"lghktuidvrm\",\"osType\":\"lpdwwexymzvlazi\",\"url\":\"hpwvqsgnyyuu\",\"scriptNameSuffix\":\"vensrpm\"}")
                 .toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("trczzydmxzjijp", model.scriptContent());
-        Assertions.assertEquals("aurkihcirlde", model.scriptExtension());
-        Assertions.assertEquals("rdcoxnbkkj", model.osType());
-        Assertions.assertEquals("urnnqbnqbpiz", model.url());
-        Assertions.assertEquals("ltgrdogypxrxv", model.scriptNameSuffix());
+        Assertions.assertEquals("qnrmvvfko", model.scriptContent());
+        Assertions.assertEquals("lghktuidvrm", model.scriptExtension());
+        Assertions.assertEquals("lpdwwexymzvlazi", model.osType());
+        Assertions.assertEquals("hpwvqsgnyyuu", model.url());
+        Assertions.assertEquals("vensrpm", model.scriptNameSuffix());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClientScriptForConnect model =
             new ClientScriptForConnect()
-                .withScriptContent("trczzydmxzjijp")
-                .withScriptExtension("aurkihcirlde")
-                .withOsType("rdcoxnbkkj")
-                .withUrl("urnnqbnqbpiz")
-                .withScriptNameSuffix("ltgrdogypxrxv");
+                .withScriptContent("qnrmvvfko")
+                .withScriptExtension("lghktuidvrm")
+                .withOsType("lpdwwexymzvlazi")
+                .withUrl("hpwvqsgnyyuu")
+                .withScriptNameSuffix("vensrpm");
         model = BinaryData.fromObject(model).toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("trczzydmxzjijp", model.scriptContent());
-        Assertions.assertEquals("aurkihcirlde", model.scriptExtension());
-        Assertions.assertEquals("rdcoxnbkkj", model.osType());
-        Assertions.assertEquals("urnnqbnqbpiz", model.url());
-        Assertions.assertEquals("ltgrdogypxrxv", model.scriptNameSuffix());
+        Assertions.assertEquals("qnrmvvfko", model.scriptContent());
+        Assertions.assertEquals("lghktuidvrm", model.scriptExtension());
+        Assertions.assertEquals("lpdwwexymzvlazi", model.osType());
+        Assertions.assertEquals("hpwvqsgnyyuu", model.url());
+        Assertions.assertEquals("vensrpm", model.scriptNameSuffix());
     }
 }

@@ -22,6 +22,10 @@ public final class ValidateResponseError {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ValidateResponseError class. */
+    public ValidateResponseError() {
+    }
+
     /**
      * Get the code property: Validation error code.
      *

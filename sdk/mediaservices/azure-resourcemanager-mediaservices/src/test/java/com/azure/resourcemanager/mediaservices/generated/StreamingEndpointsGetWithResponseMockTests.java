@@ -31,7 +31,7 @@ public final class StreamingEndpointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"lvyjtcvuwkas\",\"scaleUnits\":995011489,\"availabilitySetName\":\"esfuught\",\"accessControl\":{},\"maxCacheAge\":2167381976519679602,\"customHostNames\":[\"gtuhxuicbu\",\"wmrswnjlxuzrh\"],\"hostName\":\"usxjbaqehg\",\"cdnEnabled\":true,\"cdnProvider\":\"zjqatucoig\",\"cdnProfile\":\"xncnwfe\",\"provisioningState\":\"nwgfmxjgcgbjbgd\",\"resourceState\":\"Starting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"y\",\"crossDomainPolicy\":\"aquflqbctqha\"},\"freeTrialEndTime\":\"2021-06-19T04:47:09Z\",\"created\":\"2021-09-20T20:27:03Z\",\"lastModified\":\"2021-08-07T06:35:11Z\"},\"sku\":{\"name\":\"qy\",\"capacity\":1179923211},\"location\":\"zi\",\"tags\":{\"eg\":\"xdfzantkw\",\"uooqjagmdit\":\"amlbnseqacjjvpil\",\"kjbsah\":\"ueio\",\"oebn\":\"tdtpdelqacslmo\"},\"id\":\"xofvcjk\",\"name\":\"dirazf\",\"type\":\"xejw\"}";
+            "{\"properties\":{\"description\":\"ufypiv\",\"scaleUnits\":1886525962,\"availabilitySetName\":\"bjpmcubk\",\"accessControl\":{},\"maxCacheAge\":9135623978527949819,\"customHostNames\":[\"v\",\"havpmhbrbqgvg\"],\"hostName\":\"pbbttefjoknss\",\"cdnEnabled\":true,\"cdnProvider\":\"edikdfrdbiq\",\"cdnProfile\":\"jgeihfqlggwfi\",\"provisioningState\":\"cxmjpbyephmg\",\"resourceState\":\"Stopping\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"rc\",\"crossDomainPolicy\":\"fqip\"},\"freeTrialEndTime\":\"2020-12-22T02:20:11Z\",\"created\":\"2021-09-18T18:40:03Z\",\"lastModified\":\"2021-04-01T06:59Z\"},\"sku\":{\"name\":\"cabvnuil\",\"capacity\":637099772},\"location\":\"aswlp\",\"tags\":{\"xwtoaukhfkvc\":\"mrmfjl\"},\"id\":\"sizmoae\",\"name\":\"sx\",\"type\":\"wuived\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,21 +62,21 @@ public final class StreamingEndpointsGetWithResponseMockTests {
         StreamingEndpoint response =
             manager
                 .streamingEndpoints()
-                .getWithResponse("tjxtxr", "cq", "jvidttge", com.azure.core.util.Context.NONE)
+                .getWithResponse("wphqlkccuzgygqw", "hoi", "lwgniiprglvawu", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("zi", response.location());
-        Assertions.assertEquals("xdfzantkw", response.tags().get("eg"));
-        Assertions.assertEquals(1179923211, response.sku().capacity());
-        Assertions.assertEquals("lvyjtcvuwkas", response.description());
-        Assertions.assertEquals(995011489, response.scaleUnits());
-        Assertions.assertEquals("esfuught", response.availabilitySetName());
-        Assertions.assertEquals(2167381976519679602L, response.maxCacheAge());
-        Assertions.assertEquals("gtuhxuicbu", response.customHostNames().get(0));
+        Assertions.assertEquals("aswlp", response.location());
+        Assertions.assertEquals("mrmfjl", response.tags().get("xwtoaukhfkvc"));
+        Assertions.assertEquals(637099772, response.sku().capacity());
+        Assertions.assertEquals("ufypiv", response.description());
+        Assertions.assertEquals(1886525962, response.scaleUnits());
+        Assertions.assertEquals("bjpmcubk", response.availabilitySetName());
+        Assertions.assertEquals(9135623978527949819L, response.maxCacheAge());
+        Assertions.assertEquals("v", response.customHostNames().get(0));
         Assertions.assertEquals(true, response.cdnEnabled());
-        Assertions.assertEquals("zjqatucoig", response.cdnProvider());
-        Assertions.assertEquals("xncnwfe", response.cdnProfile());
-        Assertions.assertEquals("y", response.crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("aquflqbctqha", response.crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("edikdfrdbiq", response.cdnProvider());
+        Assertions.assertEquals("jgeihfqlggwfi", response.cdnProfile());
+        Assertions.assertEquals("rc", response.crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("fqip", response.crossSiteAccessPolicies().crossDomainPolicy());
     }
 }

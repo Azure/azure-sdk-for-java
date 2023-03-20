@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The ChainedTokenCredential is a convenience credential that allows users to chain together a set of TokenCredential
@@ -142,5 +143,16 @@ public class ChainedTokenCredential implements TokenCredential {
                 : ""));
         }
         throw last;
+    }
+
+    WorkloadIdentityCredential getWorkloadIdentityCredentialIfPresent() {
+        List<TokenCredential> tokenCredentials = this.credentials
+            .stream().filter(tokenCredential -> tokenCredential instanceof WorkloadIdentityCredential)
+            .collect(Collectors.toList());
+        if (tokenCredentials.size() == 1) {
+            return (WorkloadIdentityCredential) tokenCredentials.get(0);
+        } else {
+            return null;
+        }
     }
 }

@@ -29,6 +29,15 @@ public final class ServiceStatus extends ExpandableStringEnum<ServiceStatus> {
     public static final ServiceStatus STOPPED = fromString("Stopped");
 
     /**
+     * Creates a new instance of ServiceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceStatus() {
+    }
+
+    /**
      * Creates or finds a ServiceStatus from its string representation.
      *
      * @param name a name to look for.

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +23,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
-    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 10;
+    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
     private final TransportClient transportClient;
     private final Semaphore openConnectionsSemaphore;
 
@@ -31,11 +32,11 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         checkNotNull(transportClient, "Argument 'transportClient' can not be null");
 
         this.transportClient = transportClient;
-        this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt());
+        this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt() * 10);
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(List<Uri> addresses) {
+    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
         if (logger.isDebugEnabled()) {
@@ -48,7 +49,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                 .flatMap(addressUri -> {
                     try {
                         if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
-                            return this.transportClient.openConnection(addressUri)
+                            return this.transportClient.openConnection(serviceEndpoint, addressUri)
                                     .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                     .doOnNext(response -> {
                                         if (logger.isDebugEnabled()) {

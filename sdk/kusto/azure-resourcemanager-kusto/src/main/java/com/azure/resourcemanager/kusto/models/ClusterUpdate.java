@@ -47,6 +47,10 @@ public final class ClusterUpdate extends ProxyResource {
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
+    /** Creates an instance of ClusterUpdate class. */
+    public ClusterUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -349,6 +353,20 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public LanguageExtensionsList languageExtensions() {
         return this.innerProperties() == null ? null : this.innerProperties().languageExtensions();
+    }
+
+    /**
+     * Set the languageExtensions property: List of the cluster's language extensions.
+     *
+     * @param languageExtensions the languageExtensions value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withLanguageExtensions(languageExtensions);
+        return this;
     }
 
     /**

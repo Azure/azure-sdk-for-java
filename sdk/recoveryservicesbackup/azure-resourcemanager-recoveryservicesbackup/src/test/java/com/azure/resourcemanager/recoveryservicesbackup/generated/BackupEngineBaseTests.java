@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngineExten
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupEngineBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupEngineBase model =
             BinaryData
                 .fromString(
@@ -41,8 +40,8 @@ public final class BackupEngineBaseTests {
         Assertions.assertEquals(188406178, model.extendedInfo().azureProtectedInstances());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupEngineBase model =
             new BackupEngineBase()
                 .withFriendlyName("oenwashr")

@@ -7,29 +7,30 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Describes an error condition for the Azure Cognitive Search API. */
 @Immutable
-public final class SearchError {
+public final class SearchError implements JsonSerializable<SearchError> {
     /*
      * One of a server-defined set of error codes.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * A human-readable representation of the error.
      */
-    @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String message;
+    private final String message;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
 
     /**
@@ -37,9 +38,7 @@ public final class SearchError {
      *
      * @param message the message value to set.
      */
-    @JsonCreator
-    public SearchError(
-            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+    public SearchError(String message) {
         this.message = message;
     }
 
@@ -68,5 +67,62 @@ public final class SearchError {
      */
     public List<SearchError> getDetails() {
         return this.details;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchError if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchError.
+     */
+    public static SearchError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean messageFound = false;
+                    String message = null;
+                    String code = null;
+                    List<SearchError> details = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("message".equals(fieldName)) {
+                            message = reader.getString();
+                            messageFound = true;
+                        } else if ("code".equals(fieldName)) {
+                            code = reader.getString();
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.readArray(reader1 -> SearchError.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (messageFound) {
+                        SearchError deserializedValue = new SearchError(message);
+                        deserializedValue.code = code;
+                        deserializedValue.details = details;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!messageFound) {
+                        missingProperties.add("message");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

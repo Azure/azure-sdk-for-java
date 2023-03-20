@@ -26,6 +26,15 @@ public final class RehydrationStatus extends ExpandableStringEnum<RehydrationSta
     public static final RehydrationStatus FAILED = fromString("FAILED");
 
     /**
+     * Creates a new instance of RehydrationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RehydrationStatus() {
+    }
+
+    /**
      * Creates or finds a RehydrationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class RehydrationStatus extends ExpandableStringEnum<RehydrationSta
         return fromString(name, RehydrationStatus.class);
     }
 
-    /** @return known RehydrationStatus values. */
+    /**
+     * Gets known RehydrationStatus values.
+     *
+     * @return known RehydrationStatus values.
+     */
     public static Collection<RehydrationStatus> values() {
         return values(RehydrationStatus.class);
     }

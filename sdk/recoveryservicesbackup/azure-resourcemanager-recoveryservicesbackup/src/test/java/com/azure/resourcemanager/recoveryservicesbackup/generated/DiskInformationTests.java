@@ -7,22 +7,21 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DiskInformation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiskInformationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiskInformation model =
-            BinaryData.fromString("{\"lun\":40795931,\"name\":\"bdb\"}").toObject(DiskInformation.class);
-        Assertions.assertEquals(40795931, model.lun());
-        Assertions.assertEquals("bdb", model.name());
+            BinaryData.fromString("{\"lun\":695098311,\"name\":\"pjwogqqno\"}").toObject(DiskInformation.class);
+        Assertions.assertEquals(695098311, model.lun());
+        Assertions.assertEquals("pjwogqqno", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        DiskInformation model = new DiskInformation().withLun(40795931).withName("bdb");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DiskInformation model = new DiskInformation().withLun(695098311).withName("pjwogqqno");
         model = BinaryData.fromObject(model).toObject(DiskInformation.class);
-        Assertions.assertEquals(40795931, model.lun());
-        Assertions.assertEquals("bdb", model.name());
+        Assertions.assertEquals(695098311, model.lun());
+        Assertions.assertEquals("pjwogqqno", model.name());
     }
 }

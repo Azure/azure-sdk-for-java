@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerIns
 import com.azure.resourcemanager.workloads.models.OperationStatusResult;
 import com.azure.resourcemanager.workloads.models.SapApplicationServerInstance;
 import com.azure.resourcemanager.workloads.models.SapApplicationServerInstances;
+import com.azure.resourcemanager.workloads.models.StopRequest;
 
 public final class SapApplicationServerInstancesImpl implements SapApplicationServerInstances {
     private static final ClientLogger LOGGER = new ClientLogger(SapApplicationServerInstancesImpl.class);
@@ -30,17 +31,6 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         this.serviceManager = serviceManager;
     }
 
-    public SapApplicationServerInstance get(
-        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName) {
-        SapApplicationServerInstanceInner inner =
-            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
-        if (inner != null) {
-            return new SapApplicationServerInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SapApplicationServerInstance> getWithResponse(
         String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, Context context) {
         Response<SapApplicationServerInstanceInner> inner =
@@ -53,6 +43,17 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SapApplicationServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SapApplicationServerInstance get(
+        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName) {
+        SapApplicationServerInstanceInner inner =
+            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
+        if (inner != null) {
+            return new SapApplicationServerInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -91,6 +92,58 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         PagedIterable<SapApplicationServerInstanceInner> inner =
             this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
         return Utils.mapPage(inner, inner1 -> new SapApplicationServerInstanceImpl(inner1, this.manager()));
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName, Context context) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .startInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String applicationInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName,
+        String sapVirtualInstanceName,
+        String applicationInstanceName,
+        StopRequest body,
+        Context context) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .stopInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SapApplicationServerInstance getById(String id) {

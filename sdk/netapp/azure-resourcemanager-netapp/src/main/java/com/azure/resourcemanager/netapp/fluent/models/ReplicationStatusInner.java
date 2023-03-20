@@ -42,6 +42,10 @@ public final class ReplicationStatusInner {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
+    /** Creates an instance of ReplicationStatusInner class. */
+    public ReplicationStatusInner() {
+    }
+
     /**
      * Get the healthy property: Replication health check.
      *

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
@@ -63,14 +62,14 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
         manager
             .resourceProviders()
             .bmsPrepareDataMove(
-                "sqwjhqkbiwetpozy",
-                "yqiq",
+                "dfkbnrzorpdltbq",
+                "tqjfgxxsaet",
                 new PrepareDataMoveRequest()
-                    .withTargetResourceId("hgf")
-                    .withTargetRegion("etzlexbsfledynoj")
+                    .withTargetResourceId("zdgvpyigdaqqilz")
+                    .withTargetRegion("cduwjoedx")
                     .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                    .withSourceContainerArmIds(Arrays.asList("wfbzkkdt", "hqsycljselp", "pbafvafhlbylc", "bevxrhyzd"))
+                    .withSourceContainerArmIds(Arrays.asList("aifpaurwwgil", "jqqacdmkx", "xdcvjwcy"))
                     .withIgnoreMoved(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

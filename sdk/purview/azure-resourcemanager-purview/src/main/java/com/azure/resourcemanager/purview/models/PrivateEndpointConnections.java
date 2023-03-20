@@ -11,19 +11,23 @@ import com.azure.core.util.Context;
 /** Resource collection API of PrivateEndpointConnections. */
 public interface PrivateEndpointConnections {
     /**
-     * Get private endpoint connections for account.
+     * Gets private endpoint connections.
+     *
+     * <p>Get private endpoint connections for account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connections for account.
+     * @return private endpoint connections for account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByAccount(String resourceGroupName, String accountName);
 
     /**
-     * Get private endpoint connections for account.
+     * Gets private endpoint connections.
+     *
+     * <p>Get private endpoint connections for account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -32,13 +36,32 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connections for account.
+     * @return private endpoint connections for account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByAccount(
         String resourceGroupName, String accountName, String skipToken, Context context);
 
     /**
-     * Get a private endpoint connection.
+     * Gets private endpoint connection information.
+     *
+     * <p>Get a private endpoint connection.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection along with {@link Response}.
+     */
+    Response<PrivateEndpointConnection> getWithResponse(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Gets private endpoint connection information.
+     *
+     * <p>Get a private endpoint connection.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -51,22 +74,9 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection get(String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
-     * Get a private endpoint connection.
+     * Deletes private endpoint connection.
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
-
-    /**
-     * Delete a private endpoint connection.
+     * <p>Delete a private endpoint connection.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -78,7 +88,9 @@ public interface PrivateEndpointConnections {
     void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
-     * Delete a private endpoint connection.
+     * Deletes private endpoint connection.
+     *
+     * <p>Delete a private endpoint connection.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -91,30 +103,36 @@ public interface PrivateEndpointConnections {
     void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Get a private endpoint connection.
+     * Gets private endpoint connection information.
+     *
+     * <p>Get a private endpoint connection.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response}.
      */
     PrivateEndpointConnection getById(String id);
 
     /**
-     * Get a private endpoint connection.
+     * Gets private endpoint connection information.
+     *
+     * <p>Get a private endpoint connection.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a private endpoint connection.
+     * Deletes private endpoint connection.
+     *
+     * <p>Delete a private endpoint connection.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +142,9 @@ public interface PrivateEndpointConnections {
     void deleteById(String id);
 
     /**
-     * Delete a private endpoint connection.
+     * Deletes private endpoint connection.
+     *
+     * <p>Delete a private endpoint connection.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -236,7 +236,11 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public Map<String, String> tags() {
-        return Collections.unmodifiableMap(innerModel().tags());
+        if (innerModel() == null || innerModel().tags() == null) {
+            return Collections.emptyMap();
+        } else {
+            return Collections.unmodifiableMap(innerModel().tags());
+        }
     }
 
     @Override

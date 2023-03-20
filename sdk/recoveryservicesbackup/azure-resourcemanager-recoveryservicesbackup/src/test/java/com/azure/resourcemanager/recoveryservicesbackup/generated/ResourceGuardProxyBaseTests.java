@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardOper
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBase;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceGuardProxyBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceGuardProxyBase model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class ResourceGuardProxyBaseTests {
         Assertions.assertEquals("hxjbdhqxvc", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceGuardProxyBase model =
             new ResourceGuardProxyBase()
                 .withResourceGuardResourceId("xfrdd")

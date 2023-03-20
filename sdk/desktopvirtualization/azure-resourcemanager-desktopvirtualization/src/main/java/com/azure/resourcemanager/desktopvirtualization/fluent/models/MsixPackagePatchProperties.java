@@ -28,6 +28,10 @@ public final class MsixPackagePatchProperties {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of MsixPackagePatchProperties class. */
+    public MsixPackagePatchProperties() {
+    }
+
     /**
      * Get the isActive property: Set a version of the package to be active across hostpool.
      *

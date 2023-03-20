@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryFo
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryForServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientDiscoveryForPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClientDiscoveryForProperties model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class ClientDiscoveryForPropertiesTests {
             .assertEquals("zcxtbzsgfyccsn", model.serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClientDiscoveryForProperties model =
             new ClientDiscoveryForProperties()
                 .withServiceSpecification(

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NatGateways GetByResourceGroup. */
 public final class NatGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NatGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NatGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway.
@@ -22,6 +20,6 @@ public final class NatGatewaysGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getNatGateways()
-            .getByResourceGroupWithResponse("rg1", "test-natGateway", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-natGateway", null, com.azure.core.util.Context.NONE);
     }
 }

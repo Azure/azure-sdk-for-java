@@ -21,6 +21,15 @@ public final class SmbNonBrowsable extends ExpandableStringEnum<SmbNonBrowsable>
     public static final SmbNonBrowsable ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of SmbNonBrowsable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SmbNonBrowsable() {
+    }
+
+    /**
      * Creates or finds a SmbNonBrowsable from its string representation.
      *
      * @param name a name to look for.

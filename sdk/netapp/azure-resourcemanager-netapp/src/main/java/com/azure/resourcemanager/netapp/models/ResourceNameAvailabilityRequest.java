@@ -29,6 +29,10 @@ public final class ResourceNameAvailabilityRequest {
     @JsonProperty(value = "resourceGroup", required = true)
     private String resourceGroup;
 
+    /** Creates an instance of ResourceNameAvailabilityRequest class. */
+    public ResourceNameAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: Resource name to verify.
      *

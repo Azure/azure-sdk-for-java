@@ -322,6 +322,54 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     }
 
     /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasUri();
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasUri(Object sasUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasUri(sasUri);
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public SecretBase sasToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasToken();
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasToken(SecretBase sasToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasToken(sasToken);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

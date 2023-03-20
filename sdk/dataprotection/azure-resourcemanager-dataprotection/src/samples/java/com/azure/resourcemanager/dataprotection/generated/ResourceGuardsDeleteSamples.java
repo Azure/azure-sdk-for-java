@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards Delete. */
 public final class ResourceGuardsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
      */
     /**
      * Sample code: Delete ResourceGuard.
@@ -17,6 +15,9 @@ public final class ResourceGuardsDeleteSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.resourceGuards().deleteWithResponse("SampleResourceGroup", "swaggerExample", Context.NONE);
+        manager
+            .resourceGuards()
+            .deleteByResourceGroupWithResponse(
+                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

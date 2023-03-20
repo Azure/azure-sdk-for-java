@@ -5,12 +5,14 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMetricsProvider;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import reactor.core.publisher.Mono;
 
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.REACTOR_PARENT_TRACE_CONTEXT_KEY;
 
 class EventHubsProducerInstrumentation {
@@ -36,7 +38,7 @@ class EventHubsProducerInstrumentation {
                         tracer.endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLinks(spanName, batch, Context.NONE)));
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startPublishSpanWithLinks(spanName, batch, Context.NONE)));
         } else {
             return publisher
                 .doOnEach(signal -> {
@@ -51,14 +53,15 @@ class EventHubsProducerInstrumentation {
         return tracer;
     }
 
-    private Context startSpanWithLinks(String name, EventDataBatch batch, Context context) {
-        Context spanBuilder = tracer.getBuilder(name, context);
+    private Context startPublishSpanWithLinks(String spanName, EventDataBatch batch, Context context) {
+        StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, EventHubsTracer.OperationName.PUBLISH);
         if (batch != null) {
+            startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batch.getCount());
             for (EventData event : batch.getEvents()) {
-                tracer.addLink(event.getProperties(), null, spanBuilder, event.getContext());
+                startOptions.addLink(tracer.createLink(event.getProperties(), null, event.getContext()));
             }
         }
 
-        return tracer.startSpan(name, spanBuilder, ProcessKind.SEND);
+        return tracer.startSpan(spanName, startOptions, context);
     }
 }

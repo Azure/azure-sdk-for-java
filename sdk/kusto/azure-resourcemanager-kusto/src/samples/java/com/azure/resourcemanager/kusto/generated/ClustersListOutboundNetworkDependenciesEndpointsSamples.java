@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters ListOutboundNetworkDependenciesEndpoints. */
 public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoOutboundNetworkDependenciesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoOutboundNetworkDependenciesList.json
      */
     /**
      * Sample code: Get Kusto cluster outbound network dependencies.
@@ -18,6 +16,8 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
      */
     public static void getKustoClusterOutboundNetworkDependencies(
         com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().listOutboundNetworkDependenciesEndpoints("kustorptest", "kustoCluster", Context.NONE);
+        manager
+            .clusters()
+            .listOutboundNetworkDependenciesEndpoints("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
     }
 }

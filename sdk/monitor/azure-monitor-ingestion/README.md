@@ -1,6 +1,7 @@
 # Azure Monitor Ingestion client library for Java
 
-The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor][azure_monitor_overview].
+The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor][azure_monitor_overview] using 
+the [Logs Ingestion API][ingestion_overview].
 
 This library allows you to send data from virtually any source to supported built-in tables or to custom tables 
 that you create in Log Analytics workspace. You can even extend the schema of built-in tables with custom columns.
@@ -21,7 +22,7 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,7 +40,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.4</version>
+    <version>1.8.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -85,7 +86,8 @@ The DCR must understand the structure of the input data and the structure of the
 it can use a transformation to convert the source data to match the target table. You may also use the transform to
 filter source data and perform any other calculations or conversions.
 
-For more details, refer to [Data collection rules in Azure Monitor](https://docs.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview).
+For more details, see [Data collection rules in Azure Monitor][data_collection_rule]. For information on how to retrieve 
+a DCR ID, see [this tutorial][data_collection_rule_tutorial].
 
 ### Log Analytics Workspace Tables
 
@@ -106,6 +108,7 @@ client library.
 
 - [Upload custom logs](#upload-custom-logs)
 - [Upload custom logs with max concurrency](#upload-custom-logs-with-max-concurrency)
+- [Upload custom logs with error handling](#upload-custom-logs-with-error-handling)
 
 ### Upload custom logs
 
@@ -118,8 +121,8 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 
 List<Object> logs = getLogs();
-UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs);
-System.out.println("Logs upload result status " + result.getStatus());
+client.upload("<data-collection-rule-id>", "<stream-name>", logs);
+System.out.println("Logs uploaded successfully");
 ```
 
 ### Upload custom logs with max concurrency
@@ -137,24 +140,40 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 
 List<Object> logs = getLogs();
-UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
+LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
         .setMaxConcurrency(3);
-UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
         Context.NONE);
-System.out.println("Logs upload result status " + result.getStatus());
+System.out.println("Logs uploaded successfully");
 ```
 
-### Handle logs ingestion response
+### Upload custom logs with error handling
 
-The `upload` API returns `UploadLogsResult`. The hierarchy of the response is:
-```
-UploadLogsResult
-|--- status (UploadLogsStatus enum with values - success, partial failure or failure)
-|--- errors (list of `UploadLogsError` objects)
-    |--- responseError (ResponseError)
-        |--- code 
-        |--- message
-    |--- failedLogs (list of logs objects - the logs that failed to upload)
+When uploading large collection of logs, the client splits the input into multiple smaller service requests. The upload 
+method provides an option to handle individual service errors through an error handler as shown in the example below. 
+This error handler include the exception details and the list of all logs that failed to upload. If an error handler is 
+not provided, the upload method will throw an aggregate exception that includes all the service errors.
+
+```java readme-sample-uploadLogs-error-handler
+DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+LogsIngestionClient client = new LogsIngestionClientBuilder()
+        .endpoint("<data-collection-endpoint")
+        .credential(tokenCredential)
+        .buildClient();
+
+List<Object> logs = getLogs();
+
+LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
+        .setLogsUploadErrorConsumer(uploadLogsError -> {
+            System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
+            System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
+
+            // throw the exception here to abort uploading remaining logs
+            // throw uploadLogsError.getResponseException();
+        });
+client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
+        Context.NONE);
 ```
 ## Troubleshooting
 
@@ -191,10 +210,11 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [coc_contact]: mailto:opencode@microsoft.com
 [data_collection_endpoint]: https://docs.microsoft.com//azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://docs.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
+[data_collection_rule_tutorial]: https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#collect-information-from-the-dcr
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
+[ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [log_analytics_workspace]: https://docs.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
 [logging]: https://docs.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
-
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-ingestion%2FREADME.png)

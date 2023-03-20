@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards GetDefaultDeleteProtectedItemRequestsObject. */
 public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
@@ -21,6 +19,6 @@ public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectSamp
         manager
             .resourceGuards()
             .getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", Context.NONE);
+                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }

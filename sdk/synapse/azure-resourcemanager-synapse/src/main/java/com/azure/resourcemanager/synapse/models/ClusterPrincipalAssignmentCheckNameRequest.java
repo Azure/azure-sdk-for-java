@@ -18,8 +18,7 @@ public final class ClusterPrincipalAssignmentCheckNameRequest {
     private String name;
 
     /*
-     * The type of resource,
-     * Microsoft.Synapse/workspaces/kustoPools/principalAssignments.
+     * The type of resource, Microsoft.Synapse/workspaces/kustoPools/principalAssignments.
      */
     @JsonProperty(value = "type", required = true)
     private String type = "Microsoft.Synapse/workspaces/kustoPools/principalAssignments";

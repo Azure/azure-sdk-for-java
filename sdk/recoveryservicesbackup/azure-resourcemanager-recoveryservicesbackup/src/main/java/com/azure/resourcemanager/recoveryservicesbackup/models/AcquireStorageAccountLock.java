@@ -17,6 +17,15 @@ public final class AcquireStorageAccountLock extends ExpandableStringEnum<Acquir
     public static final AcquireStorageAccountLock NOT_ACQUIRE = fromString("NotAcquire");
 
     /**
+     * Creates a new instance of AcquireStorageAccountLock value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AcquireStorageAccountLock() {
+    }
+
+    /**
      * Creates or finds a AcquireStorageAccountLock from its string representation.
      *
      * @param name a name to look for.

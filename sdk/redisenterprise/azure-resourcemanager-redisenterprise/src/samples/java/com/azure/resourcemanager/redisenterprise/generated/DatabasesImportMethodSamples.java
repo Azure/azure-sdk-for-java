@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import java.util.Arrays;
 
 /** Samples for Databases ImportMethod. */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesImport.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesImport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesImport.
@@ -32,6 +31,6 @@ public final class DatabasesImportMethodSamples {
                             .asList(
                                 "https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters",
                                 "https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,8 +5,7 @@ package com.azure.monitor.ingestion;
 
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -27,14 +26,13 @@ public class CustomSerializerSample {
 
         ObjectSerializer customSerializer = new CustomLogSerializer();
 
-        UploadLogsOptions options = new UploadLogsOptions()
+        LogsUploadOptions options = new LogsUploadOptions()
             .setObjectSerializer(customSerializer);
 
-        UploadLogsResult result = client.upload("<data-collection-rule-id>",
+        client.upload("<data-collection-rule-id>",
             "<stream-name>",
             dataList,
             options);
-        System.out.println(result.getStatus());
     }
 
     private static List<Object> getLogs() {

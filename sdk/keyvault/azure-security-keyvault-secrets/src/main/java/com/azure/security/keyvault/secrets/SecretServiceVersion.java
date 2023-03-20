@@ -27,7 +27,12 @@ public enum SecretServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 7.3}.
      */
-    V7_3("7.3");
+    V7_3("7.3"),
+
+    /**
+     * Service version {@code 7.4}.
+     */
+    V7_4("7.4");
 
     private final String version;
 
@@ -49,6 +54,6 @@ public enum SecretServiceVersion implements ServiceVersion {
      * @return the latest {@link SecretServiceVersion}
      */
     public static SecretServiceVersion getLatest() {
-        return V7_3;
+        return V7_4;
     }
 }

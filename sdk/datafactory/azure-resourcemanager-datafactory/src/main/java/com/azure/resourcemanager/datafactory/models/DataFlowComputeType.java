@@ -20,6 +20,15 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
     public static final DataFlowComputeType COMPUTE_OPTIMIZED = fromString("ComputeOptimized");
 
     /**
+     * Creates a new instance of DataFlowComputeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFlowComputeType() {
+    }
+
+    /**
      * Creates or finds a DataFlowComputeType from its string representation.
      *
      * @param name a name to look for.
