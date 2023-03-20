@@ -20,19 +20,19 @@ public final class PatchModelTests {
         PatchModel model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"xzko\"],\"appliedScopeProperties\":{\"tenantId\":\"uko\",\"managementGroupId\":\"yaxuconuqszfkb\",\"subscriptionId\":\"pewr\",\"resourceGroupId\":\"mwvvjektcxsenhw\",\"displayName\":\"s\"},\"instanceFlexibility\":\"Off\",\"name\":\"pwvlqdq\",\"renew\":true,\"renewProperties\":{},\"reviewDateTime\":\"2021-02-23T11:21:53Z\"}}")
+                    "{\"properties\":{\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"bxzpuzycisp\",\"qzahmgkbrp\",\"y\"],\"appliedScopeProperties\":{\"tenantId\":\"bnuqqkpik\",\"managementGroupId\":\"rgvtqag\",\"subscriptionId\":\"uynhijg\",\"resourceGroupId\":\"ebf\",\"displayName\":\"arbu\"},\"instanceFlexibility\":\"Off\",\"name\":\"pnazzm\",\"renew\":false,\"renewProperties\":{},\"reviewDateTime\":\"2021-05-19T03:18:32Z\"}}")
                 .toObject(PatchModel.class);
         Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
-        Assertions.assertEquals("xzko", model.appliedScopes().get(0));
-        Assertions.assertEquals("uko", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("yaxuconuqszfkb", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("pewr", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("s", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals("bxzpuzycisp", model.appliedScopes().get(0));
+        Assertions.assertEquals("bnuqqkpik", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("rgvtqag", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("uynhijg", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("ebf", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("arbu", model.appliedScopeProperties().displayName());
         Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
-        Assertions.assertEquals("pwvlqdq", model.name());
-        Assertions.assertEquals(true, model.renew());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T11:21:53Z"), model.reviewDateTime());
+        Assertions.assertEquals("pnazzm", model.name());
+        Assertions.assertEquals(false, model.renew());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T03:18:32Z"), model.reviewDateTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,30 +40,30 @@ public final class PatchModelTests {
         PatchModel model =
             new PatchModel()
                 .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
-                .withAppliedScopes(Arrays.asList("xzko"))
+                .withAppliedScopes(Arrays.asList("bxzpuzycisp", "qzahmgkbrp", "y"))
                 .withAppliedScopeProperties(
                     new AppliedScopeProperties()
-                        .withTenantId("uko")
-                        .withManagementGroupId("yaxuconuqszfkb")
-                        .withSubscriptionId("pewr")
-                        .withResourceGroupId("mwvvjektcxsenhw")
-                        .withDisplayName("s"))
+                        .withTenantId("bnuqqkpik")
+                        .withManagementGroupId("rgvtqag")
+                        .withSubscriptionId("uynhijg")
+                        .withResourceGroupId("ebf")
+                        .withDisplayName("arbu"))
                 .withInstanceFlexibility(InstanceFlexibility.OFF)
-                .withName("pwvlqdq")
-                .withRenew(true)
+                .withName("pnazzm")
+                .withRenew(false)
                 .withRenewProperties(new PatchPropertiesRenewProperties())
-                .withReviewDateTime(OffsetDateTime.parse("2021-02-23T11:21:53Z"));
+                .withReviewDateTime(OffsetDateTime.parse("2021-05-19T03:18:32Z"));
         model = BinaryData.fromObject(model).toObject(PatchModel.class);
         Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
-        Assertions.assertEquals("xzko", model.appliedScopes().get(0));
-        Assertions.assertEquals("uko", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("yaxuconuqszfkb", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("pewr", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("s", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals("bxzpuzycisp", model.appliedScopes().get(0));
+        Assertions.assertEquals("bnuqqkpik", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("rgvtqag", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("uynhijg", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("ebf", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("arbu", model.appliedScopeProperties().displayName());
         Assertions.assertEquals(InstanceFlexibility.OFF, model.instanceFlexibility());
-        Assertions.assertEquals("pwvlqdq", model.name());
-        Assertions.assertEquals(true, model.renew());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T11:21:53Z"), model.reviewDateTime());
+        Assertions.assertEquals("pnazzm", model.name());
+        Assertions.assertEquals(false, model.renew());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T03:18:32Z"), model.reviewDateTime());
     }
 }
