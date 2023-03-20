@@ -2,6 +2,8 @@
 
 ## 5.0.0-beta.2 (Unreleased)
 
+Note: This library is deprecated, and all the reachability metadata have been incorporated into each Spring Cloud Azure library's source code directly.
+
 ### Features Added
 
 ### Breaking Changes
