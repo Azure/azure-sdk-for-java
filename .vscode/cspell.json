@@ -932,7 +932,9 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev"
+        "Pdev",
+        "Pnative",
+        "Djava"
       ]
     },
     {
