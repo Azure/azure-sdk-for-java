@@ -8,16 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The platform where the assessed resource resides. */
+/** The status of the health report. */
 public final class Source extends ExpandableStringEnum<Source> {
+    /** Static value Aws for Source. */
+    public static final Source AWS = fromString("Aws");
+
+    /** Static value Gcp for Source. */
+    public static final Source GCP = fromString("Gcp");
+
     /** Static value Azure for Source. */
     public static final Source AZURE = fromString("Azure");
 
-    /** Static value OnPremise for Source. */
-    public static final Source ON_PREMISE = fromString("OnPremise");
-
-    /** Static value OnPremiseSql for Source. */
-    public static final Source ON_PREMISE_SQL = fromString("OnPremiseSql");
+    /**
+     * Creates a new instance of Source value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Source() {
+    }
 
     /**
      * Creates or finds a Source from its string representation.
