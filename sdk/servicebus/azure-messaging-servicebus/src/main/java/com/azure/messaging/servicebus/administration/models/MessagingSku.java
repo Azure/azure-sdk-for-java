@@ -4,38 +4,47 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The SKU for the messaging entity. */
-public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
-    /** Static value Basic for MessagingSku. */
-    public static final MessagingSku BASIC = fromString("Basic");
+/** Defines values for MessagingSku. */
+public enum MessagingSku {
+    /** Enum value Basic. */
+    BASIC("Basic"),
 
-    /** Static value Standard for MessagingSku. */
-    public static final MessagingSku STANDARD = fromString("Standard");
+    /** Enum value Standard. */
+    STANDARD("Standard"),
 
-    /** Static value Premium for MessagingSku. */
-    public static final MessagingSku PREMIUM = fromString("Premium");
+    /** Enum value Premium. */
+    PREMIUM("Premium");
 
-    /**
-     * Creates or finds a MessagingSku from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding MessagingSku.
-     */
-    @JsonCreator
-    public static MessagingSku fromString(String name) {
-        return fromString(name, MessagingSku.class);
+    /** The actual serialized value for a MessagingSku instance. */
+    private final String value;
+
+    MessagingSku(String value) {
+        this.value = value;
     }
 
     /**
-     * Gets known MessagingSku values.
+     * Parses a serialized value to a MessagingSku instance.
      *
-     * @return known MessagingSku values.
+     * @param value the serialized value to parse.
+     * @return the parsed MessagingSku object, or null if unable to parse.
      */
-    public static Collection<MessagingSku> values() {
-        return values(MessagingSku.class);
+    @JsonCreator
+    public static MessagingSku fromString(String value) {
+        MessagingSku[] items = MessagingSku.values();
+        for (MessagingSku item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

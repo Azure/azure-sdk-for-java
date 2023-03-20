@@ -4,38 +4,47 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Access rights of an authorization. */
-public final class AccessRights extends ExpandableStringEnum<AccessRights> {
-    /** Static value Manage for AccessRights. */
-    public static final AccessRights MANAGE = fromString("Manage");
+/** Defines values for AccessRights. */
+public enum AccessRights {
+    /** Enum value Manage. */
+    MANAGE("Manage"),
 
-    /** Static value Send for AccessRights. */
-    public static final AccessRights SEND = fromString("Send");
+    /** Enum value Send. */
+    SEND("Send"),
 
-    /** Static value Listen for AccessRights. */
-    public static final AccessRights LISTEN = fromString("Listen");
+    /** Enum value Listen. */
+    LISTEN("Listen");
 
-    /**
-     * Creates or finds a AccessRights from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding AccessRights.
-     */
-    @JsonCreator
-    public static AccessRights fromString(String name) {
-        return fromString(name, AccessRights.class);
+    /** The actual serialized value for a AccessRights instance. */
+    private final String value;
+
+    AccessRights(String value) {
+        this.value = value;
     }
 
     /**
-     * Gets known AccessRights values.
+     * Parses a serialized value to a AccessRights instance.
      *
-     * @return known AccessRights values.
+     * @param value the serialized value to parse.
+     * @return the parsed AccessRights object, or null if unable to parse.
      */
-    public static Collection<AccessRights> values() {
-        return values(AccessRights.class);
+    @JsonCreator
+    public static AccessRights fromString(String value) {
+        AccessRights[] items = AccessRights.values();
+        for (AccessRights item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
