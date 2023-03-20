@@ -3,6 +3,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.*;
 import org.testng.annotations.AfterClass;
@@ -10,8 +13,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
     private static final String DOCUMENT_ID = UUID.randomUUID().toString();
+    private static final String STORED_PROC_ID = UUID.randomUUID().toString();
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -34,6 +42,10 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
     public String getDocumentLink() {
         return TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), DOCUMENT_ID);
+    }
+
+    public String getStoredProcLink() {
+        return TestUtils.getStoredProcedureNameLink(createdDatabase.getId(), createdCollection.getId(), STORED_PROC_ID);
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -228,7 +240,85 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         for(HttpRequest httpRequest : client.getCapturedRequests()) {
             Map<String, String> headers = httpRequest.headers().toMap();
             if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
-                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(Integer.toString(priorityLevel.getPriorityValue()));
+                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
+            }
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryWithPriorityLevel() {
+        PriorityLevel priorityLevel = PriorityLevel.Low;
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setPriorityLevel(priorityLevel);
+        String query = "Select * from r";
+
+        String collectionLink = getDocumentCollectionLink();
+
+        client.clearCapturedRequests();
+
+        client.queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class).blockLast();
+
+        for(HttpRequest httpRequest : client.getCapturedRequests()) {
+            Map<String, String> headers = httpRequest.headers().toMap();
+            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
+                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
+            }
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void executeStoredProcedureWithPriorityLevel() {
+        PriorityLevel priorityLevel = PriorityLevel.Low;
+        CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions = new CosmosStoredProcedureRequestOptions();
+        cosmosStoredProcedureRequestOptions.setPriorityLevel(priorityLevel);
+
+        String documentCollectionLink = getStoredProcLink();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosStoredProcedureRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+
+        client.clearCapturedRequests();
+        client.executeStoredProcedure(documentCollectionLink, requestOptions, new ArrayList<Object>() {}).block();
+
+        for (HttpRequest httpRequest : client.getCapturedRequests()) {
+            Map<String, String> headers = httpRequest.headers().toMap();
+            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
+                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
+            }
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void executeBatchWithPriorityLevel() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        PriorityLevel priorityLevel = PriorityLevel.Low;
+        CosmosBatchRequestOptions cosmosBatchRequestOptions = new CosmosBatchRequestOptions();
+        cosmosBatchRequestOptions.setPriorityLevel(priorityLevel);
+
+        String documentCollectionLink = getDocumentCollectionLink();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosBatchRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+
+        ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
+            DOCUMENT_ID, new PartitionKey(DOCUMENT_ID), new RequestOptions(), new Document());
+        List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
+        itemBatchOperations.add(itemBatchOperation);
+
+        Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
+            PartitionKey.class,
+            List.class);
+        method.setAccessible(true);
+
+        SinglePartitionKeyServerBatchRequest serverBatchRequest =
+            (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(DOCUMENT_ID),
+                itemBatchOperations);
+
+        client.clearCapturedRequests();
+
+        client.executeBatchRequest(documentCollectionLink, serverBatchRequest, requestOptions, false).block();
+        
+        for (HttpRequest httpRequest : client.getCapturedRequests()) {
+            Map<String, String> headers = httpRequest.headers().toMap();
+            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
+                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
             }
         }
     }
@@ -257,6 +347,12 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.createDocument(getCollectionLink(createdCollection),
             getDocumentDefinition(), null, false).block();
+
+        StoredProcedure storedProcedure = new StoredProcedure();
+        storedProcedure.setId(STORED_PROC_ID);
+        storedProcedure.setBody("function() {var x = 10;}");
+
+        client.createStoredProcedure(getCollectionLink(createdCollection), storedProcedure, null).block();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -15,6 +15,7 @@ public final class CosmosStoredProcedureRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private boolean scriptLoggingEnabled;
+    private PriorityLevel priorityLevel;
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
@@ -142,6 +143,34 @@ public final class CosmosStoredProcedureRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the priority level of the request.
+     *
+     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
+     * low priority requests are throttled before high priority requests start getting throttled.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * @return enum representing priority level
+     */
+    public PriorityLevel getPriorityLevel() {
+        return priorityLevel;
+    }
+
+    /**
+     * Sets the priority level of the request.
+     *
+     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
+     * low priority requests are throttled before high priority requests start getting throttled.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * @param priorityLevel priority level of the request
+     */
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
@@ -150,6 +179,7 @@ public final class CosmosStoredProcedureRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setScriptLoggingEnabled(scriptLoggingEnabled);
+        requestOptions.setPriorityLevel(priorityLevel);
         return requestOptions;
     }
 }

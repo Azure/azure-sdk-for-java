@@ -15,6 +15,7 @@ public class TestUtils {
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";
     private static final String DOCUMENTS_PATH_SEGMENT = "docs";
     private static final String USERS_PATH_SEGMENT = "users";
+    private static final String STORED_PROCEDURES_PATH_SEGMENT = "sprocs";
 
     public static String getDatabaseLink(Database database, boolean isNameBased) {
         if (isNameBased) {
@@ -40,6 +41,10 @@ public class TestUtils {
     public static String getUserNameLink(String databaseId, String userId) {
 
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
+    }
+    public static String getStoredProcedureNameLink(String databaseId, String collectionId, String storedProcedureId) {
+
+        return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" + collectionId + "/" + STORED_PROCEDURES_PATH_SEGMENT + "/" + storedProcedureId;
     }
 
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {

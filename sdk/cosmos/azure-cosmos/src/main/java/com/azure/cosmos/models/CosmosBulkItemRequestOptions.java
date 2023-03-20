@@ -15,6 +15,7 @@ public final class CosmosBulkItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
+    private PriorityLevel priorityLevel;
 
     /**
      * Constructor
@@ -103,11 +104,42 @@ public final class CosmosBulkItemRequestOptions {
         return this.contentResponseOnWriteEnabled;
     }
 
+    /**
+     * Gets the priority level of the request.
+     *
+     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
+     * low priority requests are throttled before high priority requests start getting throttled.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * @return enum representing priority level
+     */
+    public PriorityLevel getPriorityLevel() {
+        return this.priorityLevel;
+    }
+
+    /**
+     * Sets the priority level of the request.
+     *
+     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
+     * low priority requests are throttled before high priority requests start getting throttled.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * @param priorityLevel priority level of the request
+     * @return the CosmosBulkItemRequestOptions.
+     */
+    public CosmosBulkItemRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
+        requestOptions.setPriorityLevel(this.priorityLevel);
         return requestOptions;
     }
 }

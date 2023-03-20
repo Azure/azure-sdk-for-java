@@ -303,12 +303,26 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Gets the priority level for the request.
+     *
+     * @return the priority level for the request.
+     */
     public PriorityLevel getPriorityLevel() {
         return this.priorityLevel;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Sets the priority level of the request.
+     *
+     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
+     * low priority requests are throttled before high priority requests start getting throttled.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * @param priorityLevel priority level of the request
+     * @return the CosmosItemRequestOptions.
+     */
     public CosmosItemRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
         this.priorityLevel = priorityLevel;
         return this;

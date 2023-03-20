@@ -29,7 +29,6 @@ public enum PriorityLevel {
      * Gets the numerical value of priority level
      * @return priority numerical value.
      */
-    @Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getPriorityValue() {
         return this.priorityValue;
     }

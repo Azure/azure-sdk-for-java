@@ -1370,7 +1370,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getPriorityLevel() != null) {
-            headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, Integer.toString(options.getPriorityLevel().getPriorityValue()));
+            headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, options.getPriorityLevel().name());
         }
 
         return headers;

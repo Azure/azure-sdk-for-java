@@ -254,7 +254,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (cosmosQueryRequestOptions.getPriorityLevel() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, Integer.toString(cosmosQueryRequestOptions.getPriorityLevel().getPriorityValue()));
+            requestHeaders.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, cosmosQueryRequestOptions.getPriorityLevel().name());
         }
 
         return requestHeaders;
