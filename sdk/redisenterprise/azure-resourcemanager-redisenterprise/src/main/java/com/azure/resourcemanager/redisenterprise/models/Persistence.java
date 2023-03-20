@@ -7,7 +7,11 @@ package com.azure.resourcemanager.redisenterprise.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Persistence settings Persistence-related configuration for the RedisEnterprise database. */
+/**
+ * Persistence settings
+ *
+ * <p>Persistence-related configuration for the RedisEnterprise database.
+ */
 @Fluent
 public final class Persistence {
     /*
@@ -33,6 +37,10 @@ public final class Persistence {
      */
     @JsonProperty(value = "rdbFrequency")
     private RdbFrequency rdbFrequency;
+
+    /** Creates an instance of Persistence class. */
+    public Persistence() {
+    }
 
     /**
      * Get the aofEnabled property: Sets whether AOF is enabled.

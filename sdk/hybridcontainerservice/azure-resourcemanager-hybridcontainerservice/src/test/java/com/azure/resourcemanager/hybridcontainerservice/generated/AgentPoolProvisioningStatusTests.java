@@ -9,44 +9,43 @@ import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisio
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatusProvisioningStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolProvisioningStatusTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolProvisioningStatus model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Failed\",\"status\":{\"errorMessage\":\"oujmkcjhwqytj\",\"provisioningStatus\":{\"operationId\":\"wj\",\"phase\":\"gdrjervnaenqpe\",\"status\":\"ndoygmifthnzdnd\"},\"readyReplicas\":962281735,\"replicas\":843221186}}")
+                    "{\"provisioningState\":\"Canceled\",\"status\":{\"errorMessage\":\"ttouwaboekqvkel\",\"provisioningStatus\":{\"operationId\":\"bxwyjsflhhcaa\",\"phase\":\"jixisxyawjoyaqcs\",\"status\":\"jpkiidzyexznelix\"},\"readyReplicas\":705550222,\"replicas\":2120108327}}")
                 .toObject(AgentPoolProvisioningStatus.class);
-        Assertions.assertEquals("oujmkcjhwqytj", model.status().errorMessage());
-        Assertions.assertEquals("wj", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("gdrjervnaenqpe", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.status().provisioningStatus().status());
-        Assertions.assertEquals(962281735, model.status().readyReplicas());
-        Assertions.assertEquals(843221186, model.status().replicas());
+        Assertions.assertEquals("ttouwaboekqvkel", model.status().errorMessage());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.status().provisioningStatus().operationId());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.status().provisioningStatus().phase());
+        Assertions.assertEquals("jpkiidzyexznelix", model.status().provisioningStatus().status());
+        Assertions.assertEquals(705550222, model.status().readyReplicas());
+        Assertions.assertEquals(2120108327, model.status().replicas());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolProvisioningStatus model =
             new AgentPoolProvisioningStatus()
                 .withStatus(
                     new AgentPoolProvisioningStatusStatus()
-                        .withErrorMessage("oujmkcjhwqytj")
+                        .withErrorMessage("ttouwaboekqvkel")
                         .withProvisioningStatus(
                             new AgentPoolProvisioningStatusStatusProvisioningStatus()
-                                .withOperationId("wj")
-                                .withPhase("gdrjervnaenqpe")
-                                .withStatus("ndoygmifthnzdnd"))
-                        .withReadyReplicas(962281735)
-                        .withReplicas(843221186));
+                                .withOperationId("bxwyjsflhhcaa")
+                                .withPhase("jixisxyawjoyaqcs")
+                                .withStatus("jpkiidzyexznelix"))
+                        .withReadyReplicas(705550222)
+                        .withReplicas(2120108327));
         model = BinaryData.fromObject(model).toObject(AgentPoolProvisioningStatus.class);
-        Assertions.assertEquals("oujmkcjhwqytj", model.status().errorMessage());
-        Assertions.assertEquals("wj", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("gdrjervnaenqpe", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.status().provisioningStatus().status());
-        Assertions.assertEquals(962281735, model.status().readyReplicas());
-        Assertions.assertEquals(843221186, model.status().replicas());
+        Assertions.assertEquals("ttouwaboekqvkel", model.status().errorMessage());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.status().provisioningStatus().operationId());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.status().provisioningStatus().phase());
+        Assertions.assertEquals("jpkiidzyexznelix", model.status().provisioningStatus().status());
+        Assertions.assertEquals(705550222, model.status().readyReplicas());
+        Assertions.assertEquals(2120108327, model.status().replicas());
     }
 }

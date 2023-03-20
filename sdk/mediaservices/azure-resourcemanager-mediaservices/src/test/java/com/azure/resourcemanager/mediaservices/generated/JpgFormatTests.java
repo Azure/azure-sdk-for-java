@@ -13,15 +13,15 @@ public final class JpgFormatTests {
     public void testDeserialize() throws Exception {
         JpgFormat model =
             BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.JpgFormat\",\"filenamePattern\":\"jglikkxwslolb\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.JpgFormat\",\"filenamePattern\":\"xsspuunnoxyhk\"}")
                 .toObject(JpgFormat.class);
-        Assertions.assertEquals("jglikkxwslolb", model.filenamePattern());
+        Assertions.assertEquals("xsspuunnoxyhk", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JpgFormat model = new JpgFormat().withFilenamePattern("jglikkxwslolb");
+        JpgFormat model = new JpgFormat().withFilenamePattern("xsspuunnoxyhk");
         model = BinaryData.fromObject(model).toObject(JpgFormat.class);
-        Assertions.assertEquals("jglikkxwslolb", model.filenamePattern());
+        Assertions.assertEquals("xsspuunnoxyhk", model.filenamePattern());
     }
 }

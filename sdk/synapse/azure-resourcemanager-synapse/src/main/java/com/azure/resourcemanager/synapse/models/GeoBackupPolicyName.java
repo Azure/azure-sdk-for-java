@@ -14,6 +14,15 @@ public final class GeoBackupPolicyName extends ExpandableStringEnum<GeoBackupPol
     public static final GeoBackupPolicyName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of GeoBackupPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GeoBackupPolicyName() {
+    }
+
+    /**
      * Creates or finds a GeoBackupPolicyName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class GeoBackupPolicyName extends ExpandableStringEnum<GeoBackupPol
         return fromString(name, GeoBackupPolicyName.class);
     }
 
-    /** @return known GeoBackupPolicyName values. */
+    /**
+     * Gets known GeoBackupPolicyName values.
+     *
+     * @return known GeoBackupPolicyName values.
+     */
     public static Collection<GeoBackupPolicyName> values() {
         return values(GeoBackupPolicyName.class);
     }

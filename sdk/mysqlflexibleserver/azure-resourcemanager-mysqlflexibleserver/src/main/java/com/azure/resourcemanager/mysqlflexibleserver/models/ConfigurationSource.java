@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationSource. */
+/** Source of the configuration. */
 public final class ConfigurationSource extends ExpandableStringEnum<ConfigurationSource> {
     /** Static value system-default for ConfigurationSource. */
     public static final ConfigurationSource SYSTEM_DEFAULT = fromString("system-default");
 
     /** Static value user-override for ConfigurationSource. */
     public static final ConfigurationSource USER_OVERRIDE = fromString("user-override");
+
+    /**
+     * Creates a new instance of ConfigurationSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationSource() {
+    }
 
     /**
      * Creates or finds a ConfigurationSource from its string representation.
@@ -27,7 +36,11 @@ public final class ConfigurationSource extends ExpandableStringEnum<Configuratio
         return fromString(name, ConfigurationSource.class);
     }
 
-    /** @return known ConfigurationSource values. */
+    /**
+     * Gets known ConfigurationSource values.
+     *
+     * @return known ConfigurationSource values.
+     */
     public static Collection<ConfigurationSource> values() {
         return values(ConfigurationSource.class);
     }

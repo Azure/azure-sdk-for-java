@@ -21,7 +21,7 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      */
     private QueueServiceVersion serviceVersion;
     /**
-     * How queue message body is represented in HTTP requests and responses.
+     * How queue message body is represented in HTTP requests and responses. All Supported types are: NONE, BASE64.
      */
     private QueueMessageEncoding messageEncoding;
     /**

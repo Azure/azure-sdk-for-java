@@ -24,13 +24,13 @@ public final class IntegrationRuntimeCredentialsImpl implements IntegrationRunti
         this.serviceManager = serviceManager;
     }
 
-    public void sync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        this.serviceClient().sync(resourceGroupName, workspaceName, integrationRuntimeName);
-    }
-
     public Response<Void> syncWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return this.serviceClient().syncWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    }
+
+    public void sync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        this.serviceClient().sync(resourceGroupName, workspaceName, integrationRuntimeName);
     }
 
     private IntegrationRuntimeCredentialsClient serviceClient() {

@@ -151,7 +151,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(String syncToken, String endpoint, String apiVersion) {
+    public AzureAppConfigurationImpl(String syncToken, String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -170,7 +170,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint, String apiVersion) {
+    public AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), syncToken, endpoint, apiVersion);
     }
 
@@ -183,7 +183,7 @@ public final class AzureAppConfigurationImpl {
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    AzureAppConfigurationImpl(
+    public AzureAppConfigurationImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String syncToken,
@@ -445,7 +445,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("After") String after,
                 @QueryParam("$Select") String select,
-                @QueryParam("Status") SnapshotStatus status,
+                @QueryParam("Status") String status,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -459,7 +459,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("After") String after,
                 @QueryParam("$Select") String select,
-                @QueryParam("Status") SnapshotStatus status,
+                @QueryParam("Status") String status,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1212,7 +1212,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1265,7 +1266,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1318,7 +1320,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1346,7 +1349,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1376,7 +1380,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1426,7 +1431,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1478,7 +1484,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1506,7 +1513,8 @@ public final class AzureAppConfigurationImpl {
      *     token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
+     *     valid when used with 'key' and 'label' filters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2448,12 +2456,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Snapshot>> getSnapshotsSinglePageAsync(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
                         ? null
                         : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String statusConverted =
+                (status == null)
+                        ? null
+                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                         context ->
                                 service.getSnapshots(
@@ -2463,7 +2475,7 @@ public final class AzureAppConfigurationImpl {
                                         this.getApiVersion(),
                                         after,
                                         selectConverted,
-                                        status,
+                                        statusConverted,
                                         accept,
                                         context))
                 .map(
@@ -2493,12 +2505,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Snapshot>> getSnapshotsSinglePageAsync(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status, Context context) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
                         ? null
                         : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String statusConverted =
+                (status == null)
+                        ? null
+                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.getSnapshots(
                         this.getEndpoint(),
                         name,
@@ -2506,7 +2522,7 @@ public final class AzureAppConfigurationImpl {
                         this.getApiVersion(),
                         after,
                         selectConverted,
-                        status,
+                        statusConverted,
                         accept,
                         context)
                 .map(
@@ -2535,7 +2551,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Snapshot> getSnapshotsAsync(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status),
                 nextLink -> getSnapshotsNextSinglePageAsync(nextLink));
@@ -2557,7 +2573,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Snapshot> getSnapshotsAsync(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status, Context context) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status, context),
                 nextLink -> getSnapshotsNextSinglePageAsync(nextLink, context));
@@ -2578,12 +2594,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsSinglePage(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
                         ? null
                         : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String statusConverted =
+                (status == null)
+                        ? null
+                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res =
                 service.getSnapshotsSync(
                         this.getEndpoint(),
@@ -2592,7 +2612,7 @@ public final class AzureAppConfigurationImpl {
                         this.getApiVersion(),
                         after,
                         selectConverted,
-                        status,
+                        statusConverted,
                         accept,
                         Context.NONE);
         return new PagedResponseBase<>(
@@ -2620,12 +2640,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsSinglePage(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status, Context context) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
                         ? null
                         : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String statusConverted =
+                (status == null)
+                        ? null
+                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res =
                 service.getSnapshotsSync(
                         this.getEndpoint(),
@@ -2634,7 +2658,7 @@ public final class AzureAppConfigurationImpl {
                         this.getApiVersion(),
                         after,
                         selectConverted,
-                        status,
+                        statusConverted,
                         accept,
                         context);
         return new PagedResponseBase<>(
@@ -2661,7 +2685,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
                 nextLink -> getSnapshotsNextSinglePage(nextLink));
@@ -2683,7 +2707,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(
-            String name, String after, List<SnapshotFields> select, SnapshotStatus status, Context context) {
+            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, context),
                 nextLink -> getSnapshotsNextSinglePage(nextLink, context));
@@ -3061,7 +3085,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
@@ -3092,7 +3116,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
@@ -3122,7 +3146,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
@@ -3142,7 +3166,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
@@ -3163,7 +3187,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
@@ -3193,7 +3217,7 @@ public final class AzureAppConfigurationImpl {
     /**
      * Updates the state of a key-value snapshot.
      *
-     * @param name The name of the key-value snapshot to delete.
+     * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value

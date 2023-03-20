@@ -23,6 +23,10 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     @JsonProperty(value = "repetitionIndexes")
     private List<RepetitionIndex> repetitionIndexes;
 
+    /** Creates an instance of WorkflowRunActionRepetitionProperties class. */
+    public WorkflowRunActionRepetitionProperties() {
+    }
+
     /**
      * Get the repetitionIndexes property: The repetition indexes.
      *

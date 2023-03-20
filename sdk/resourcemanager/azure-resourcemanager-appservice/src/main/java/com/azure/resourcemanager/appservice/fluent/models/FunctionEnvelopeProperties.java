@@ -91,6 +91,10 @@ public final class FunctionEnvelopeProperties {
     @JsonProperty(value = "isDisabled")
     private Boolean isDisabled;
 
+    /** Creates an instance of FunctionEnvelopeProperties class. */
+    public FunctionEnvelopeProperties() {
+    }
+
     /**
      * Get the functionAppId property: Function App ID.
      *

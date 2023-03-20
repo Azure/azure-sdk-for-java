@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -39,6 +40,7 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -77,8 +79,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
-
-    private String testName;
+    private List<Closeable> toClose = new ArrayList<>();
+    protected String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -102,8 +104,18 @@ public abstract class IntegrationTestBase extends TestBase {
 
         testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
-
+        toClose = new ArrayList<>();
         beforeTest();
+    }
+
+    protected <T extends Closeable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
     }
 
     // These are overridden because we don't use the Interceptor Manager.
@@ -112,6 +124,9 @@ public abstract class IntegrationTestBase extends TestBase {
     public void teardownTest(TestInfo testInfo) {
         System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
         afterTest();
+
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -337,6 +352,14 @@ public abstract class IntegrationTestBase extends TestBase {
                 logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
+    }
+
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        dispose(toClose.toArray(new Closeable[0]));
+        toClose.clear();
     }
 
     private void skipIfNotRecordMode() {

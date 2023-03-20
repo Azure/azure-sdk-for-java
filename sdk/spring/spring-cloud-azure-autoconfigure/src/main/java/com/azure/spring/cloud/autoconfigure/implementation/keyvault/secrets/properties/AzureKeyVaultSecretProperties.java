@@ -25,7 +25,13 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties imple
     private SecretServiceVersion serviceVersion;
 
     /**
-     * Azure Key Vault property sources.
+     * List of Azure Key Vault property sources.
+     * For instance, '
+     * property-sources[0].name=key-vault-property-source-1,
+     * property-sources[0].endpoint={ENDPOINT_1},
+     * property-sources[1].name=key-vault-property-source-2,
+     * property-sources[1].endpoint={ENDPOINT_2}
+     * '.
      */
     private final List<AzureKeyVaultPropertySourceProperties> propertySources = new ArrayList<>();
     /**

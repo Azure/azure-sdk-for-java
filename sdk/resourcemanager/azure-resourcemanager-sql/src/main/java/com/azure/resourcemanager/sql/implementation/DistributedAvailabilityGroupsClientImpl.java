@@ -68,7 +68,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DistributedAvailabilityGroupsService {
+    public interface DistributedAvailabilityGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

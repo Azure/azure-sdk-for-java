@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BgpServiceCommunities List. */
 public final class BgpServiceCommunitiesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceCommunityList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceCommunityList.json
      */
     /**
      * Sample code: ServiceCommunityList.
@@ -17,6 +15,6 @@ public final class BgpServiceCommunitiesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void serviceCommunityList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getBgpServiceCommunities().list(Context.NONE);
+        azure.networks().manager().serviceClient().getBgpServiceCommunities().list(com.azure.core.util.Context.NONE);
     }
 }

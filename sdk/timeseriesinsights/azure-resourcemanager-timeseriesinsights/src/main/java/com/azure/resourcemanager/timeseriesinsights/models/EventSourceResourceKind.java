@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSourceResourceKind. */
+/** The kind of the event source. */
 public final class EventSourceResourceKind extends ExpandableStringEnum<EventSourceResourceKind> {
     /** Static value Microsoft.EventHub for EventSourceResourceKind. */
     public static final EventSourceResourceKind MICROSOFT_EVENT_HUB = fromString("Microsoft.EventHub");
 
     /** Static value Microsoft.IoTHub for EventSourceResourceKind. */
     public static final EventSourceResourceKind MICROSOFT_IO_THUB = fromString("Microsoft.IoTHub");
+
+    /**
+     * Creates a new instance of EventSourceResourceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSourceResourceKind() {
+    }
 
     /**
      * Creates or finds a EventSourceResourceKind from its string representation.
@@ -27,7 +36,11 @@ public final class EventSourceResourceKind extends ExpandableStringEnum<EventSou
         return fromString(name, EventSourceResourceKind.class);
     }
 
-    /** @return known EventSourceResourceKind values. */
+    /**
+     * Gets known EventSourceResourceKind values.
+     *
+     * @return known EventSourceResourceKind values.
+     */
     public static Collection<EventSourceResourceKind> values() {
         return values(EventSourceResourceKind.class);
     }

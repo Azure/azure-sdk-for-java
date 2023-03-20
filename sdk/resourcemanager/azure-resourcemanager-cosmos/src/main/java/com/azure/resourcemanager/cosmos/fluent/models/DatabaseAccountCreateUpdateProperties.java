@@ -18,6 +18,7 @@ import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
+import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
@@ -205,6 +206,13 @@ public final class DatabaseAccountCreateUpdateProperties {
      */
     @JsonProperty(value = "enablePartitionMerge")
     private Boolean enablePartitionMerge;
+
+    /*
+     * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which
+     * only work with Tls 1.2.
+     */
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersion minimalTlsVersion;
 
     /** Creates an instance of DatabaseAccountCreateUpdateProperties class. */
     public DatabaseAccountCreateUpdateProperties() {
@@ -805,6 +813,28 @@ public final class DatabaseAccountCreateUpdateProperties {
      */
     public DatabaseAccountCreateUpdateProperties withEnablePartitionMerge(Boolean enablePartitionMerge) {
         this.enablePartitionMerge = enablePartitionMerge;
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountCreateUpdateProperties object itself.
+     */
+    public DatabaseAccountCreateUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
         return this;
     }
 

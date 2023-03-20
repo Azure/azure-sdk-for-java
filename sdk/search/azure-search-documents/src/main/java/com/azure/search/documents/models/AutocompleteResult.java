@@ -7,35 +7,34 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The result of Autocomplete query. */
 @Immutable
-public final class AutocompleteResult {
+public final class AutocompleteResult implements JsonSerializable<AutocompleteResult> {
     /*
      * A value indicating the percentage of the index that was considered by the autocomplete request, or null if
      * minimumCoverage was not specified in the request.
      */
-    @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
     /*
      * The list of returned Autocompleted items.
      */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<AutocompleteItem> results;
+    private final List<AutocompleteItem> results;
 
     /**
      * Creates an instance of AutocompleteResult class.
      *
      * @param results the results value to set.
      */
-    @JsonCreator
-    public AutocompleteResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<AutocompleteItem> results) {
+    public AutocompleteResult(List<AutocompleteItem> results) {
         this.results = results;
     }
 
@@ -56,5 +55,57 @@ public final class AutocompleteResult {
      */
     public List<AutocompleteItem> getResults() {
         return this.results;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("@search.coverage", this.coverage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutocompleteResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutocompleteResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutocompleteResult.
+     */
+    public static AutocompleteResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean resultsFound = false;
+                    List<AutocompleteItem> results = null;
+                    Double coverage = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            results = reader.readArray(reader1 -> AutocompleteItem.fromJson(reader1));
+                            resultsFound = true;
+                        } else if ("@search.coverage".equals(fieldName)) {
+                            coverage = reader.getNullable(JsonReader::getDouble);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (resultsFound) {
+                        AutocompleteResult deserializedValue = new AutocompleteResult(results);
+                        deserializedValue.coverage = coverage;
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!resultsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

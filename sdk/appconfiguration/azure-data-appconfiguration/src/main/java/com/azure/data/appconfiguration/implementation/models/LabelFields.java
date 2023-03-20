@@ -14,6 +14,14 @@ public final class LabelFields extends ExpandableStringEnum<LabelFields> {
     public static final LabelFields NAME = fromString("name");
 
     /**
+     * Creates a new instance of LabelFields value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LabelFields() {}
+
+    /**
      * Creates or finds a LabelFields from its string representation.
      *
      * @param name a name to look for.

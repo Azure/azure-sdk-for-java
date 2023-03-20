@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 
 /** Samples for Domains CheckAvailability. */
 public final class DomainsCheckAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/CheckDomainAvailability.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check domain availability.
@@ -23,6 +22,7 @@ public final class DomainsCheckAvailabilitySamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .checkAvailabilityWithResponse(new NameIdentifierInner().withName("abcd.com"), Context.NONE);
+            .checkAvailabilityWithResponse(
+                new NameIdentifierInner().withName("abcd.com"), com.azure.core.util.Context.NONE);
     }
 }

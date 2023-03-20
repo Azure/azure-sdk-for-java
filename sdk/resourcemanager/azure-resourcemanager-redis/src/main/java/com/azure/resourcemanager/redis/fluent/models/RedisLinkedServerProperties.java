@@ -17,6 +17,10 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of RedisLinkedServerProperties class. */
+    public RedisLinkedServerProperties() {
+    }
+
     /**
      * Get the provisioningState property: Terminal state of the link between primary and secondary redis cache.
      *

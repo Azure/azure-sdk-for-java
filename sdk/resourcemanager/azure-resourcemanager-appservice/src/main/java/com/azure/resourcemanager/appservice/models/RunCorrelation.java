@@ -23,6 +23,10 @@ public class RunCorrelation {
     @JsonProperty(value = "clientKeywords")
     private List<String> clientKeywords;
 
+    /** Creates an instance of RunCorrelation class. */
+    public RunCorrelation() {
+    }
+
     /**
      * Get the clientTrackingId property: The client tracking identifier.
      *

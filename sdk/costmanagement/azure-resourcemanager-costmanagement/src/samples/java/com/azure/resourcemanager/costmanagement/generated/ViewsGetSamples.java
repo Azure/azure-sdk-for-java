@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Views Get. */
 public final class ViewsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateView.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateView.json
      */
     /**
      * Sample code: PrivateView.

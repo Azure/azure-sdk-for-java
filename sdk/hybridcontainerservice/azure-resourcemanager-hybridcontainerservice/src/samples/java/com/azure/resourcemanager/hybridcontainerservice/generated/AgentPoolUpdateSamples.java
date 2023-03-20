@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPool;
 
 /** Samples for AgentPool Update. */
 public final class AgentPoolUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateAgentPool.json
      */
     /**
      * Sample code: UpdateAgentPool.
@@ -23,7 +22,10 @@ public final class AgentPoolUpdateSamples {
             manager
                 .agentPools()
                 .getWithResponse(
-                    "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", Context.NONE)
+                    "test-arcappliance-resgrp",
+                    "test-hybridakscluster",
+                    "test-hybridaksnodepool",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withCount(3).apply();
     }

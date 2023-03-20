@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflowruns/41b1feae-1f90-4b35-835f-037f39d8ef67/cancel?api-version=2022-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "88fe7dd6-0457-4196-98e1-33d88078af74",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1ed1afa5-3e3d-4083-bb06-17cdbf8ae580",
+      "Date" : "Fri, 03 Feb 2023 10:11:16 GMT",
+      "x-ms-client-request-id" : "88fe7dd6-0457-4196-98e1-33d88078af74",
+      "x-ms-correlation-request-id" : "d1bb8a8d-7487-450a-b526-28d618b66ffb"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

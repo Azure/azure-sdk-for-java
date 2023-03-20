@@ -59,7 +59,7 @@ public final class ManagedInstanceOperationsClientImpl implements ManagedInstanc
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceOperationsService {
+    public interface ManagedInstanceOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

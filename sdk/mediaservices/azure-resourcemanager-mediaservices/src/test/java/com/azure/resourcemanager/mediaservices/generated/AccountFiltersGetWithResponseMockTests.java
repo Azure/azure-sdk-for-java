@@ -31,7 +31,7 @@ public final class AccountFiltersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":250519210827189161,\"endTimestamp\":519159111280944741,\"presentationWindowDuration\":3199735123585887935,\"liveBackoffDuration\":220010498251729274,\"timescale\":7036583010545466260,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1209052818},\"tracks\":[]},\"id\":\"bajlka\",\"name\":\"nwxyiop\",\"type\":\"dkqqfkuvscxkd\"}";
+            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":7567497502089497349,\"endTimestamp\":7881434475533629073,\"presentationWindowDuration\":3668993683436233870,\"liveBackoffDuration\":1553799518740160274,\"timescale\":7535831096316891684,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":841583452},\"tracks\":[]},\"id\":\"zpbgtgkylkdg\",\"name\":\"rjeuut\",\"type\":\"wxezwzhok\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class AccountFiltersGetWithResponseMockTests {
         AccountFilter response =
             manager
                 .accountFilters()
-                .getWithResponse("ctxtgzukxi", "mmqtgqqqxhr", "xrxc", com.azure.core.util.Context.NONE)
+                .getWithResponse("yvycytdclxgcckn", "nwm", "tmvpdvjdhtt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(250519210827189161L, response.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(519159111280944741L, response.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(3199735123585887935L, response.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(220010498251729274L, response.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(7036583010545466260L, response.presentationTimeRange().timescale());
+        Assertions.assertEquals(7567497502089497349L, response.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(7881434475533629073L, response.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(3668993683436233870L, response.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(1553799518740160274L, response.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(7535831096316891684L, response.presentationTimeRange().timescale());
         Assertions.assertEquals(false, response.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(1209052818, response.firstQuality().bitrate());
+        Assertions.assertEquals(841583452, response.firstQuality().bitrate());
     }
 }

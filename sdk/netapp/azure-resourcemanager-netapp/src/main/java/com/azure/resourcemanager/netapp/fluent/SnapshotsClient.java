@@ -21,7 +21,7 @@ public interface SnapshotsClient {
      *
      * <p>List all snapshots associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -38,7 +38,7 @@ public interface SnapshotsClient {
      *
      * <p>List all snapshots associated with the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -57,26 +57,7 @@ public interface SnapshotsClient {
      *
      * <p>Get details of the specified snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
-
-    /**
-     * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -97,11 +78,30 @@ public interface SnapshotsClient {
         Context context);
 
     /**
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified snapshot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
+
+    /**
      * Create a snapshot
      *
      * <p>Create the specified snapshot within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -126,7 +126,7 @@ public interface SnapshotsClient {
      *
      * <p>Create the specified snapshot within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -153,7 +153,7 @@ public interface SnapshotsClient {
      *
      * <p>Create the specified snapshot within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -178,7 +178,7 @@ public interface SnapshotsClient {
      *
      * <p>Create the specified snapshot within the given volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -205,7 +205,7 @@ public interface SnapshotsClient {
      *
      * <p>Patch a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -230,7 +230,7 @@ public interface SnapshotsClient {
      *
      * <p>Patch a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -257,7 +257,7 @@ public interface SnapshotsClient {
      *
      * <p>Patch a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -282,7 +282,7 @@ public interface SnapshotsClient {
      *
      * <p>Patch a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -309,7 +309,7 @@ public interface SnapshotsClient {
      *
      * <p>Delete snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -328,7 +328,7 @@ public interface SnapshotsClient {
      *
      * <p>Delete snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -353,7 +353,7 @@ public interface SnapshotsClient {
      *
      * <p>Delete snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -370,7 +370,7 @@ public interface SnapshotsClient {
      *
      * <p>Delete snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -394,7 +394,7 @@ public interface SnapshotsClient {
      *
      * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -419,7 +419,7 @@ public interface SnapshotsClient {
      *
      * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -446,7 +446,7 @@ public interface SnapshotsClient {
      *
      * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -470,7 +470,7 @@ public interface SnapshotsClient {
      *
      * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.

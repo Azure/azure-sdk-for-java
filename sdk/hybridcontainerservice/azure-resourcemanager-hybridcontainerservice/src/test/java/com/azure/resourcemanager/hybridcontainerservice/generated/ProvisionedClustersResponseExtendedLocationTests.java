@@ -7,11 +7,10 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersResponseExtendedLocation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersResponseExtendedLocationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersResponseExtendedLocation model =
             BinaryData
                 .fromString("{\"type\":\"jugwdkcglhsl\",\"name\":\"jdyggdtji\"}")
@@ -20,8 +19,8 @@ public final class ProvisionedClustersResponseExtendedLocationTests {
         Assertions.assertEquals("jdyggdtji", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersResponseExtendedLocation model =
             new ProvisionedClustersResponseExtendedLocation().withType("jugwdkcglhsl").withName("jdyggdtji");
         model = BinaryData.fromObject(model).toObject(ProvisionedClustersResponseExtendedLocation.class);

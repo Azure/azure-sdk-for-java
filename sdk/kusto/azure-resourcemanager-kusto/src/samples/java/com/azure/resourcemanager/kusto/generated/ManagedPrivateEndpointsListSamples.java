@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedPrivateEndpoints List. */
 public final class ManagedPrivateEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoManagedPrivateEndpointsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoManagedPrivateEndpointsList.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsList.
@@ -17,6 +15,6 @@ public final class ManagedPrivateEndpointsListSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoManagedPrivateEndpointsList(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.managedPrivateEndpoints().list("kustorptest", "kustoCluster", Context.NONE);
+        manager.managedPrivateEndpoints().list("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
     }
 }

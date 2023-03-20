@@ -25,12 +25,20 @@ public final class CreateSnapshotHeaders {
     private String syncToken;
 
     /*
+     * The Operation-Location property.
+     */
+    @JsonProperty(value = "Operation-Location")
+    private String operationLocation;
+
+    /*
      * The Link property.
      */
     @JsonProperty(value = "Link")
     private String link;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
+
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -41,6 +49,7 @@ public final class CreateSnapshotHeaders {
     public CreateSnapshotHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
         this.link = rawHeaders.getValue(HttpHeaderName.LINK);
     }
 
@@ -81,6 +90,26 @@ public final class CreateSnapshotHeaders {
      */
     public CreateSnapshotHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
+        return this;
+    }
+
+    /**
+     * Get the operationLocation property: The Operation-Location property.
+     *
+     * @return the operationLocation value.
+     */
+    public String getOperationLocation() {
+        return this.operationLocation;
+    }
+
+    /**
+     * Set the operationLocation property: The Operation-Location property.
+     *
+     * @param operationLocation the operationLocation value to set.
+     * @return the CreateSnapshotHeaders object itself.
+     */
+    public CreateSnapshotHeaders setOperationLocation(String operationLocation) {
+        this.operationLocation = operationLocation;
         return this;
     }
 

@@ -104,18 +104,18 @@ public class ThroughputControlStore {
         this.cancellationTokenMap = new ConcurrentHashMap<>();
     }
 
-    public void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group cannot be null");
 
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
         this.containerMap.compute(containerNameLink, (key, throughputControlContainerProperties) -> {
             if (throughputControlContainerProperties == null) {
-                throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
+                throughputControlContainerProperties = new ContainerThroughputControlGroupProperties(containerNameLink);
             }
 
             int groupSizeBefore = throughputControlContainerProperties.getThroughputControlGroupSet().size();
             Pair<Integer, Boolean> stateAfterEnabling =
-                throughputControlContainerProperties.enableThroughputControlGroup(group);
+                throughputControlContainerProperties.enableThroughputControlGroup(group, throughputQueryMono);
 
             int groupSizeAfter = stateAfterEnabling.getLeft();
             boolean wasGroupConfigUpdated = stateAfterEnabling.getRight();
@@ -252,7 +252,8 @@ public class ThroughputControlStore {
                             this.connectionMode,
                             throughputControlContainerProperties.getThroughputControlGroupSet(),
                             this.partitionKeyRangeCache,
-                            parentToken);
+                            parentToken,
+                            throughputControlContainerProperties.getThroughputQueryMono());
 
                     return containerController.init();
                 });

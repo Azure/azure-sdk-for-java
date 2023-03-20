@@ -38,6 +38,15 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
     public static final ProtocolType ALL = fromString("All");
 
     /**
+     * Creates a new instance of ProtocolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtocolType() {
+    }
+
+    /**
      * Creates or finds a ProtocolType from its string representation.
      *
      * @param name a name to look for.

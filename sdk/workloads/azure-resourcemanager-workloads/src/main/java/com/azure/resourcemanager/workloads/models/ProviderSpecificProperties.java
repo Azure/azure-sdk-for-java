@@ -26,6 +26,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ProviderSpecificProperties {
+    /** Creates an instance of ProviderSpecificProperties class. */
+    public ProviderSpecificProperties() {
+    }
+
     /**
      * Validates the instance.
      *

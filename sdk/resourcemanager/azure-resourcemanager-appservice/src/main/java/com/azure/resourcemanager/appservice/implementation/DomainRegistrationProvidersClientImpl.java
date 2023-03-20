@@ -57,7 +57,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface DomainRegistrationProvidersService {
+    public interface DomainRegistrationProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.DomainRegistration/operations")
         @ExpectedResponses({200})
@@ -80,7 +80,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -114,7 +116,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -148,7 +152,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -162,7 +168,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -179,7 +187,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -192,7 +202,9 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -209,7 +221,8 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,7 +258,8 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

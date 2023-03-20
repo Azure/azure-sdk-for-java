@@ -15,29 +15,29 @@ public final class MediaServiceOperationStatusInnerTests {
         MediaServiceOperationStatusInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"azyxoegukg\",\"id\":\"piu\",\"startTime\":\"2021-06-28T11:14:38Z\",\"endTime\":\"2021-08-14T19:48:52Z\",\"status\":\"vqzntypmrbpizcdr\"}")
+                    "{\"name\":\"deyeamdphagalpbu\",\"id\":\"gipwhonowkg\",\"startTime\":\"2021-01-01T20:18:45Z\",\"endTime\":\"2021-11-21T08:10:20Z\",\"status\":\"kix\"}")
                 .toObject(MediaServiceOperationStatusInner.class);
-        Assertions.assertEquals("azyxoegukg", model.name());
-        Assertions.assertEquals("piu", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T11:14:38Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T19:48:52Z"), model.endTime());
-        Assertions.assertEquals("vqzntypmrbpizcdr", model.status());
+        Assertions.assertEquals("deyeamdphagalpbu", model.name());
+        Assertions.assertEquals("gipwhonowkg", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T20:18:45Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T08:10:20Z"), model.endTime());
+        Assertions.assertEquals("kix", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MediaServiceOperationStatusInner model =
             new MediaServiceOperationStatusInner()
-                .withName("azyxoegukg")
-                .withId("piu")
-                .withStartTime(OffsetDateTime.parse("2021-06-28T11:14:38Z"))
-                .withEndTime(OffsetDateTime.parse("2021-08-14T19:48:52Z"))
-                .withStatus("vqzntypmrbpizcdr");
+                .withName("deyeamdphagalpbu")
+                .withId("gipwhonowkg")
+                .withStartTime(OffsetDateTime.parse("2021-01-01T20:18:45Z"))
+                .withEndTime(OffsetDateTime.parse("2021-11-21T08:10:20Z"))
+                .withStatus("kix");
         model = BinaryData.fromObject(model).toObject(MediaServiceOperationStatusInner.class);
-        Assertions.assertEquals("azyxoegukg", model.name());
-        Assertions.assertEquals("piu", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T11:14:38Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T19:48:52Z"), model.endTime());
-        Assertions.assertEquals("vqzntypmrbpizcdr", model.status());
+        Assertions.assertEquals("deyeamdphagalpbu", model.name());
+        Assertions.assertEquals("gipwhonowkg", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T20:18:45Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T08:10:20Z"), model.endTime());
+        Assertions.assertEquals("kix", model.status());
     }
 }

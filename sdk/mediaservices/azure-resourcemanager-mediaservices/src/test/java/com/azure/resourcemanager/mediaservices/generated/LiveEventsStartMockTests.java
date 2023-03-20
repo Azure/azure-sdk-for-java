@@ -56,6 +56,6 @@ public final class LiveEventsStartMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.liveEvents().start("xuzvoamktcqi", "smgbzahgxqdl", "rtltla", com.azure.core.util.Context.NONE);
+        manager.liveEvents().start("hvtrrmhwrbfdpyf", "ubhvj", "lrocuyzlwh", com.azure.core.util.Context.NONE);
     }
 }

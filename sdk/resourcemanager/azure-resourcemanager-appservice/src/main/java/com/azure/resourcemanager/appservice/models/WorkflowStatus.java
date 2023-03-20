@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkflowStatus. */
+/** The workflow status. */
 public final class WorkflowStatus extends ExpandableStringEnum<WorkflowStatus> {
     /** Static value NotSpecified for WorkflowStatus. */
     public static final WorkflowStatus NOT_SPECIFIED = fromString("NotSpecified");
@@ -48,6 +48,15 @@ public final class WorkflowStatus extends ExpandableStringEnum<WorkflowStatus> {
 
     /** Static value Ignored for WorkflowStatus. */
     public static final WorkflowStatus IGNORED = fromString("Ignored");
+
+    /**
+     * Creates a new instance of WorkflowStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkflowStatus() {
+    }
 
     /**
      * Creates or finds a WorkflowStatus from its string representation.

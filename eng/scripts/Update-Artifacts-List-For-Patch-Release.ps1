@@ -2,14 +2,13 @@ param(
   # $(Build.SourcesDirectory) - root of the repository
   [Parameter(Mandatory=$true)][string]$SourcesDirectory,
   # The yml file whose artifacts and additionalModules lists will be updated
-  [Parameter(Mandatory=$true)][string]$YmlToUpdate,
-  # The project list to be built for patch release
-  [Parameter(Mandatory=$true)][array] $ProjectList
+  [Parameter(Mandatory=$true)][string]$YmlToUpdate
 )
 
 $StartTime = $(get-date)
 . "${PSScriptRoot}/../common/scripts/common.ps1"
 . "${PSScriptRoot}/../common/scripts/Helpers/PSModule-Helpers.ps1"
+. "${PSScriptRoot}/../scripts/patchhelpers.ps1"
 
 # Verify that the yml file to update exists
 # !Test-Path doesn't work to negate as powershell thinks that !Test-Path is a cmdlet name
@@ -74,12 +73,36 @@ foreach ($ymlFile in $ymlFiles) {
     }
 }
 
+$ArtifactInfos = @{}
+
+Write-Host "Loading libraries from text file."
+
+foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client.txt") {
+    if (($line) -and !($line.StartsWith("#"))) {
+        $libraryId = $line.split(" ")[0]
+        $groupId, $artifactId = $libraryId.split(":")
+        $ArtifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId
+    }
+}
+
+UpdateDependencies -ArtifactInfos $ArtifactInfos
+
+$AllDependenciesWithVersion = CreateForwardLookingVersions -ArtifactInfos $ArtifactInfos
+
+FindAllArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
+
+$ArtifactsToPatch = $ArtifactInfos.Keys | Where-Object { $null -ne $ArtifactInfos[$_].FutureReleasePatchVersion } | ForEach-Object { $ArtifactInfos[$_].ArtifactId }
+
+Write-Host "Searching for libraries in dictionaries:"
+
 $newArtifacts = @()
 $newAdditionalMods = @()
 # This is the list of service directories for the input ProjectList. This is necessary
 # to compute the AdditionalBuildOptions
 $serviceDirsForProjectList = @()
-foreach ($project in $ProjectList) {
+foreach ($artifactToPatch in $ArtifactsToPatch) {
+    $project = $ArtifactInfos[$artifactToPatch].GroupId + ":" + $artifactToPatch
+
     if ($artifactsDict.Contains($project)) {
         Write-Host "Found $project in dictionary"
         $newArtifacts += $artifactsDict[$project]

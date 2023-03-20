@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/6c2e3305-6995-4785-8203-5a9bbe2ea3f9?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/703f68fe-9b17-43e3-8602-9d48898cadb2?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
@@ -11,18 +11,18 @@
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-server-latency" : "47",
+      "x-ms-server-latency" : "29",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northcentralus",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "f55e9340-61f5-11ed-bbe3-0022488d29c2",
-      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/6c2e3305-6995-4785-8203-5a9bbe2ea3f9\",\"name\":\"6c2e3305-6995-4785-8203-5a9bbe2ea3f9\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"6c2e3305-6995-4785-8203-5a9bbe2ea3f9\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
+      "x-ms-request-id" : "242a6ce2-c3d2-11ed-9dd8-0022488d0014",
+      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/703f68fe-9b17-43e3-8602-9d48898cadb2\",\"name\":\"703f68fe-9b17-43e3-8602-9d48898cadb2\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"703f68fe-9b17-43e3-8602-9d48898cadb2\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "6c2e3305-6995-4785-8203-5a9bbe2ea3f9" ]
+  "variables" : [ "703f68fe-9b17-43e3-8602-9d48898cadb2" ]
 }

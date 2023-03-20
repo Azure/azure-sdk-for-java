@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Action. */
+/** The action of IP ACL rule. */
 public final class Action extends ExpandableStringEnum<Action> {
     /** Static value Allow for Action. */
     public static final Action ALLOW = fromString("Allow");
+
+    /**
+     * Creates a new instance of Action value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Action() {
+    }
 
     /**
      * Creates or finds a Action from its string representation.
@@ -24,7 +33,11 @@ public final class Action extends ExpandableStringEnum<Action> {
         return fromString(name, Action.class);
     }
 
-    /** @return known Action values. */
+    /**
+     * Gets known Action values.
+     *
+     * @return known Action values.
+     */
     public static Collection<Action> values() {
         return values(Action.class);
     }

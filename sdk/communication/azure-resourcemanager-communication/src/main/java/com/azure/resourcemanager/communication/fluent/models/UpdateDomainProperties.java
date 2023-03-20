@@ -6,46 +6,19 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.communication.models.UserEngagementTracking;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** A class that describes the updatable properties of a Domains resource. */
 @Fluent
 public final class UpdateDomainProperties {
-    /*
-     * Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
-     */
-    @JsonProperty(value = "validSenderUsernames")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> validSenderUsernames;
-
     /*
      * Describes whether user engagement tracking is enabled or disabled.
      */
     @JsonProperty(value = "userEngagementTracking")
     private UserEngagementTracking userEngagementTracking;
 
-    /**
-     * Get the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    public Map<String, String> validSenderUsernames() {
-        return this.validSenderUsernames;
-    }
-
-    /**
-     * Set the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @param validSenderUsernames the validSenderUsernames value to set.
-     * @return the UpdateDomainProperties object itself.
-     */
-    public UpdateDomainProperties withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        this.validSenderUsernames = validSenderUsernames;
-        return this;
+    /** Creates an instance of UpdateDomainProperties class. */
+    public UpdateDomainProperties() {
     }
 
     /**

@@ -40,32 +40,33 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <graalvm.enable>true</graalvm.enable>
+    <graalvm.disable>false</graalvm.disable>
+    <nativeImage.buildArgs>--initialize-at-build-time=com.azure.data.appconfiguration.TestHelper</nativeImage.buildArgs>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.5</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,13 +96,13 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -139,24 +140,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>native</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
 </project>

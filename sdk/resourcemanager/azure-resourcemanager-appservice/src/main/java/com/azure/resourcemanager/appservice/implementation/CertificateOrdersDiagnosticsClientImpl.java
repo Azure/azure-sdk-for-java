@@ -58,11 +58,10 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface CertificateOrdersDiagnosticsService {
+    public interface CertificateOrdersDiagnosticsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listAppServiceCertificateOrderDetectorResponse(
@@ -76,9 +75,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors"
-                + "/{detectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors/{detectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getAppServiceCertificateOrderDetectorResponse(
@@ -106,7 +103,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -165,7 +164,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -222,7 +223,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -241,7 +244,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -262,7 +267,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -279,7 +286,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     *
+     * <p>Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -297,7 +306,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     *
+     * <p>Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -363,7 +374,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     *
+     * <p>Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -428,41 +441,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
-     * @param detectorName The detector name which needs to be run.
-     * @param startTime The start time for detector response.
-     * @param endTime The end time for the detector response.
-     * @param timeGrain The time grain for the detector response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseAsync(
-        String resourceGroupName,
-        String certificateOrderName,
-        String detectorName,
-        OffsetDateTime startTime,
-        OffsetDateTime endTime,
-        String timeGrain) {
-        return getAppServiceCertificateOrderDetectorResponseWithResponseAsync(
-                resourceGroupName, certificateOrderName, detectorName, startTime, endTime, timeGrain)
-            .flatMap(
-                (Response<DetectorResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * <p>Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -480,40 +461,13 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
         final String timeGrain = null;
         return getAppServiceCertificateOrderDetectorResponseWithResponseAsync(
                 resourceGroupName, certificateOrderName, detectorName, startTime, endTime, timeGrain)
-            .flatMap(
-                (Response<DetectorResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
-     * @param detectorName The detector name which needs to be run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectorResponseInner getAppServiceCertificateOrderDetectorResponse(
-        String resourceGroupName, String certificateOrderName, String detectorName) {
-        final OffsetDateTime startTime = null;
-        final OffsetDateTime endTime = null;
-        final String timeGrain = null;
-        return getAppServiceCertificateOrderDetectorResponseAsync(
-                resourceGroupName, certificateOrderName, detectorName, startTime, endTime, timeGrain)
-            .block();
-    }
-
-    /**
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     * <p>Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
@@ -542,9 +496,34 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
+     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     *
+     * <p>Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName The certificate order name for which the response is needed.
+     * @param detectorName The detector name which needs to be run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing Response from Detector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DetectorResponseInner getAppServiceCertificateOrderDetectorResponse(
+        String resourceGroupName, String certificateOrderName, String detectorName) {
+        final OffsetDateTime startTime = null;
+        final OffsetDateTime endTime = null;
+        final String timeGrain = null;
+        return getAppServiceCertificateOrderDetectorResponseWithResponse(
+                resourceGroupName, certificateOrderName, detectorName, startTime, endTime, timeGrain, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,7 +564,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

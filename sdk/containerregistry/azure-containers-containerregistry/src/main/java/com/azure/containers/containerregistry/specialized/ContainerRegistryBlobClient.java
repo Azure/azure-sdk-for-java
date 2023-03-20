@@ -4,22 +4,18 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadResponse;
-import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkResponse;
-import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
-import com.azure.containers.containerregistry.models.DownloadBlobResult;
-import com.azure.containers.containerregistry.models.DownloadManifestOptions;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadHeaders;
+import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkHeaders;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
-import com.azure.containers.containerregistry.models.OciManifest;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
 import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
@@ -29,7 +25,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -37,14 +35,35 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
+import java.security.MessageDigest;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Function;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOWNLOAD_BLOB_SPAN_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.UPLOAD_BLOB_SPAN_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentTypeString;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -55,23 +74,22 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.tr
  * @see ContainerRegistryBlobClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryBlobClientBuilder.class)
-public class ContainerRegistryBlobClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryBlobClient.class);
+public final class ContainerRegistryBlobClient {
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClient.class);
+
     private final ContainerRegistryBlobsImpl blobsImpl;
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
     private final String repositoryName;
+    private final Tracer tracer;
 
-    ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
+    ContainerRegistryBlobClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
-        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
         this.blobsImpl = registryImplClient.getContainerRegistryBlobs();
         this.registriesImpl = registryImplClient.getContainerRegistries();
+        this.tracer = tracer;
     }
 
     /**
@@ -80,7 +98,7 @@ public class ContainerRegistryBlobClient {
      * @return The name of the repository
      */
     public String getRepositoryName() {
-        return this.repositoryName;
+        return repositoryName;
     }
 
     /**
@@ -89,274 +107,269 @@ public class ContainerRegistryBlobClient {
      * @return The registry endpoint including the authority.
      */
     public String getEndpoint() {
-        return this.endpoint;
+        return endpoint;
     }
 
     /**
-     * Upload the Oci manifest to the repository.
-     * The upload is done as a single operation.
+     * Upload the OCI manifest to the repository.
+     *
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadManifest -->
+     * <pre>
+     * blobClient.uploadManifest&#40;manifest, &quot;v1&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadManifest -->
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param manifest The OciManifest that needs to be updated.
-     * @return operation result.
+     * @param manifest The {@link OciImageManifest} that needs to be updated.
+     * @param tag Tag to apply on uploaded manifest. If {@code null} is passed, no tags will be applied.
+     * @return upload result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(OciManifest manifest) {
-        if (manifest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'manifest' can't be null."));
-        }
-        return this.uploadManifest(new UploadManifestOptions(manifest));
+    public UploadManifestResult uploadManifest(OciImageManifest manifest, String tag) {
+        Objects.requireNonNull(manifest, "'manifest' cannot be null.");
+        return uploadManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
     }
 
     /**
      * Uploads a manifest to the repository.
-     * The client currently only supports uploading OciManifests to the repository.
-     * And this operation makes the assumption that the data provided is a valid OCI manifest.
-     * <p>
-     * Also, the data is read into memory and then an upload operation is performed as a single operation.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <p><strong>Code Samples:</strong></p>
      *
-     * @param options The options for the upload manifest operation.
-     * @return The operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(UploadManifestOptions options) {
-        return this.uploadManifestWithResponse(options, Context.NONE).getValue();
-    }
-
-    /**
-     * Uploads a manifest to the repository.
-     * The client currently only supports uploading OciManifests to the repository.
-     * And this operation makes the assumption that the data provided is a valid OCI manifest.
-     * <p>
-     * Also, the data is read into memory and then an upload operation is performed as a single operation.
+     * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifest -->
+     * <pre>
+     * UploadManifestOptions options = new UploadManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;;
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * Response&lt;UploadManifestResult&gt; response = blobClient.uploadManifestWithResponse&#40;options, Context.NONE&#41;;
+     * System.out.println&#40;&quot;Manifest uploaded, digest - &quot; + response.getValue&#40;&#41;.getDigest&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadCustomManifest -->
      *
      * @param options The options for the upload manifest operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The rest response containing the operation result.
+     * @return The rest response containing the upload result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
-        if (options == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
-        }
-
-        BinaryData data = options.getManifest().toReplayableBinaryData();
-        String tagOrDigest = options.getTag() != null ? options.getTag() : UtilsImpl.computeDigest(data.toByteBuffer());
-        try {
-            ContainerRegistriesCreateManifestResponse
-                response = this.registriesImpl.createManifestWithResponse(
-                repositoryName,
-                tagOrDigest,
-                data,
-                data.getLength(),
-                UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
-                enableSync(getTracingContext(context)));
-
-            return new ResponseBase<ContainerRegistriesCreateManifestHeaders, UploadManifestResult>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                new UploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
-                response.getDeserializedHeaders());
-        } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getMediaType(), context);
     }
 
     /**
-     * Uploads a blob to the repository.
-     * The client currently uploads the entire blob\layer as a single unit.
-     * <p>
-     * Also, the blob is read into memory and then an upload operation is performed as a single operation.
-     * We currently do not support breaking the layer into multiple chunks and uploading them one at a time
+     * Uploads a blob to the repository in chunks of 4MB.
+     * Use this method to upload relatively small content that fits into memory. For large content use
+     * {@link ContainerRegistryBlobClient#uploadBlob(ReadableByteChannel, Context)} overload.
      *
-     * @param data The blob\image content that needs to be uploaded.
-     * @return The operation result.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadBlob -->
+     * <pre>
+     * BinaryData configContent = BinaryData.fromObject&#40;Collections.singletonMap&#40;&quot;hello&quot;, &quot;world&quot;&#41;&#41;;
+     *
+     * UploadBlobResult uploadResult = blobClient.uploadBlob&#40;configContent&#41;;
+     * System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadBlob -->
+     *
+     * @param data The blob content. The content may be loaded into memory depending on how {@link BinaryData} is created.
+     * @return The upload response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
+     * @throws NullPointerException thrown if the {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(BinaryData data) {
-        return this.uploadBlobWithResponse(data, Context.NONE).getValue();
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        InputStream stream = data.toStream();
+        try {
+            return uploadBlob(Channels.newChannel(stream), Context.NONE);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                LOGGER.warning("Failed to close the stream", e);
+            }
+        }
     }
 
     /**
-     * Uploads a blob to the repository.
-     * The client currently uploads the entire blob\layer as a single unit.
-     * <p>
-     * Also, the blob is read into memory and then an upload operation is performed as a single operation.
-     * We currently do not support breaking the layer into multiple chunks and uploading them one at a time
-     * The service does support this via range header.
+     * Uploads a blob to the repository in chunks of 4MB.
      *
-     * @param data The blob\image content that needs to be uploaded.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadStream -->
+     * <pre>
+     * try &#40;FileInputStream content = new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;&#41; &#123;
+     *     UploadBlobResult uploadResult = blobClient.uploadBlob&#40;content.getChannel&#40;&#41;, Context.NONE&#41;;
+     *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
+     *         uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadStream -->
+     *
+     * @param stream The blob content.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The rest response containing the operation result.
+     * @return The upload response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
+     * @throws NullPointerException thrown if the {@code stream} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
-        if (data == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'data' can't be null."));
-        }
-        context = enableSync(getTracingContext(context));
-
-        String digest = UtilsImpl.computeDigest(data.toByteBuffer());
-        try {
-            ContainerRegistryBlobsStartUploadResponse
-                startUploadResponse = this.blobsImpl.startUploadWithResponse(repositoryName, context);
-
-            ContainerRegistryBlobsUploadChunkResponse
-                uploadChunkResponse = this.blobsImpl.uploadChunkWithResponse(
-                trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), data, data.getLength(),
-                context);
-            ContainerRegistryBlobsCompleteUploadResponse
-                completeUploadResponse = this.blobsImpl.completeUploadWithResponse(digest,
-                trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (BinaryData) null, 0L,
-                context);
-
-            return new ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, UploadBlobResult>(
-                completeUploadResponse.getRequest(),
-                completeUploadResponse.getStatusCode(),
-                completeUploadResponse.getHeaders(),
-                new UploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
-                completeUploadResponse.getDeserializedHeaders());
-        } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
-        }
+    public UploadBlobResult uploadBlob(ReadableByteChannel stream, Context context) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), enableSync(context));
     }
 
     /**
-     * Download the manifest associated with the given tag or digest.
-     * We currently only support downloading OCI manifests.
+     * Download the manifest identified by the given tag or digest.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <p><strong>Code Samples:</strong></p>
      *
-     * @param options Options for the operation.
-     * @return The manifest associated with the given tag or digest.
+     * Download manifest with tag:
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestTag -->
+     * <pre>
+     * DownloadManifestResult latestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
+     * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getMediaType&#40;&#41;&#41;
+     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *     OciImageManifest manifest = latestResult.asOciManifest&#40;&#41;;
+     * &#125; else &#123;
+     *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getMediaType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestTag -->
+     *
+     * Download manifest with digest:
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestDigest -->
+     * <pre>
+     * DownloadManifestResult digestResult = blobClient.downloadManifest&#40;
+     *     &quot;sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestDigest -->
+     *
+     * @param tagOrDigest Manifest tag or digest.
+     * @return The manifest identified by the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadManifestResult downloadManifest(DownloadManifestOptions options) {
-        return this.downloadManifestWithResponse(options, Context.NONE).getValue();
+    public DownloadManifestResult downloadManifest(String tagOrDigest) {
+        return downloadManifestWithResponse(tagOrDigest, null, Context.NONE).getValue();
     }
 
     /**
-     * Download the manifest associated with the given tag or digest.
-     * We currently only support downloading OCI manifests.
+     * Download the manifest of custom type identified by the given tag or digest.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <p><strong>Code Samples:</strong></p>
      *
-     * @param options Options for the operation.
+     * <!-- src_embed com.azure.containers.containerregistry.downloadCustomManifest -->
+     * <pre>
+     * ManifestMediaType dockerListType = ManifestMediaType
+     *     .fromString&#40;&quot;application&#47;vnd.docker.distribution.manifest.list.v2+json&quot;&#41;;
+     * ManifestMediaType ociIndexType = ManifestMediaType
+     *     .fromString&#40;&quot;application&#47;vnd.oci.image.index.v1+json&quot;&#41;;
+     *
+     * Response&lt;DownloadManifestResult&gt; response = blobClient.downloadManifestWithResponse&#40;
+     *     &quot;latest&quot;,
+     *     Arrays.asList&#40;dockerListType, ociIndexType&#41;,
+     *     Context.NONE&#41;;
+     * if &#40;dockerListType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *     &#47;&#47; DockerManifestList manifestList = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;DockerManifestList.class&#41;;
+     *     System.out.println&#40;&quot;Got docker manifest list&quot;&#41;;
+     * &#125; else if &#40;ociIndexType.equals&#40;response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;&#41; &#123;
+     *     &#47;&#47; OciIndex ociIndex = downloadResult.getValue&#40;&#41;.getContent&#40;&#41;.toObject&#40;OciIndex.class&#41;;
+     *     System.out.println&#40;&quot;Got OCI index&quot;&#41;;
+     * &#125; else &#123;
+     *     throw new IllegalArgumentException&#40;&quot;Got unexpected manifest type: &quot; + response.getValue&#40;&#41;.getMediaType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadCustomManifest -->
+     *
+     * @param tagOrDigest Manifest reference which can be tag or digest.
+     * @param mediaTypes List of {@link  ManifestMediaType} to request.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The response for the manifest associated with the given tag or digest.
+     * @return The response for the manifest identified by the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadManifestResult> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
-        if (options == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
-        }
+    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, Collection<ManifestMediaType> mediaTypes, Context context) {
+        Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
 
-        String tagOrDigest = options.getTag() != null ? options.getTag() : options.getDigest();
-        Response<ManifestWrapper> response;
+        String requestMediaTypes = getContentTypeString(mediaTypes);
+
         try {
-            response =
-                this.registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
+            Response<BinaryData> response =
+                registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
+                    requestMediaTypes, enableSync(context));
+            return toDownloadManifestResponse(tagOrDigest, response);
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
-        }
-        String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
-        ManifestWrapper wrapper = response.getValue();
-
-        // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-        // the contents returned by the service.
-        if (Objects.equals(digest, tagOrDigest) || Objects.equals(response.getValue().getTag(), tagOrDigest)) {
-            OciManifest ociManifest = new OciManifest()
-                .setAnnotations(wrapper.getAnnotations())
-                .setConfig(wrapper.getConfig())
-                .setLayers(wrapper.getLayers())
-                .setSchemaVersion(wrapper.getSchemaVersion());
-
-            return new SimpleResponse<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                new DownloadManifestResult(digest, ociManifest, BinaryData.fromObject(ociManifest)));
-        } else {
-            throw logger.logExceptionAsError(
-                new ServiceResponseException("The digest in the response does not match the expected digest."));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
     /**
-     * Download the blob associated with the given digest.
+     * Download the blob identified by  the given digest.
+     *
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadStream -->
+     * <pre>
+     * Path file = Files.createTempFile&#40;digest, &quot;.tmp&quot;&#41;;
+     * SeekableByteChannel channel = Files.newByteChannel&#40;file, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE&#41;;
+     * blobClient.downloadStream&#40;digest, channel&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadStream -->
      *
      * @param digest The digest for the given image layer.
-     * @return The image associated with the given digest.
+     * @param channel The channel to write content to.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadBlobResult downloadBlob(String digest) {
-        return this.downloadBlobWithResponse(digest, Context.NONE).getValue();
+    public void downloadStream(String digest, WritableByteChannel channel) {
+        downloadStream(digest, channel, Context.NONE);
     }
 
     /**
-     * Download the blob\layer associated with the given digest.
+     * Download the blob identified by the given digest.
      *
      * @param digest The digest for the given image layer.
+     * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The image associated with the given digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
-        if (digest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));
-        }
-        Response<BinaryData> streamResponse;
-        try {
-            streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
-        } catch (HttpResponseException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse(),
-                exception));
-        }
-        String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
-
-        BinaryData binaryData = streamResponse.getValue();
-
-        // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-        // the contents returned by the service.
-        if (Objects.equals(resDigest, digest)) {
-
-            return new SimpleResponse<>(
-                streamResponse.getRequest(),
-                streamResponse.getStatusCode(),
-                streamResponse.getHeaders(),
-                new DownloadBlobResult(resDigest, binaryData));
-        } else {
-            throw logger.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
-        }
+    public void downloadStream(String digest, WritableByteChannel channel, Context context) {
+        runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> {
+            downloadBlobInternal(digest, channel, span);
+            return null;
+        }, context);
     }
 
     /**
-     * Delete the image associated with the given digest
+     * Delete the image identified by the given digest
+     *
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * <!-- src_embed readme-sample-deleteBlob -->
+     * <pre>
+     * DownloadManifestResult manifestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
+     *
+     * OciImageManifest manifest = manifestResult.asOciManifest&#40;&#41;;
+     * for &#40;OciDescriptor layer : manifest.getLayers&#40;&#41;&#41; &#123;
+     *     blobClient.deleteBlob&#40;layer.getDigest&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end readme-sample-deleteBlob -->
      *
      * @param digest The digest for the given image layer.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -364,11 +377,11 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBlob(String digest) {
-        this.deleteBlobWithResponse(digest, Context.NONE).getValue();
+        deleteBlobWithResponse(digest, Context.NONE).getValue();
     }
 
     /**
-     * Delete the image associated with the given digest
+     * Delete the image identified by the given digest
      *
      * @param digest The digest for the given image layer.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -378,31 +391,36 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
-        try {
-            if (digest == null) {
-                throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));
-            }
+        Objects.requireNonNull(digest, "'digest' cannot be null.");
 
+        context = enableSync(context);
+        try {
             Response<BinaryData> streamResponse =
-                this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(getTracingContext(context)));
+                blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(context));
             return deleteResponseToSuccess(streamResponse);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
                 HttpResponse response = ex.getResponse();
                 // In case of 404, we still convert it to success i.e. no-op.
-                return new SimpleResponse<Void>(response.getRequest(), 202,
+                return new SimpleResponse<>(response.getRequest(), 202,
                     response.getHeaders(), null);
             } else {
-                throw logger.logExceptionAsError(ex);
+                throw LOGGER.logExceptionAsError(ex);
             }
         }
     }
 
     /**
-     * Delete the manifest associated with the given digest.
-     * We currently only support downloading OCI manifests.
+     * Delete the manifest identified by the given digest.
      *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * <!-- src_embed readme-sample-deleteManifest -->
+     * <pre>
+     * DownloadManifestResult manifestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
+     * blobClient.deleteManifest&#40;manifestResult.getDigest&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-deleteManifest -->
      *
      * @param digest The digest of the manifest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -410,14 +428,11 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteManifest(String digest) {
-        this.deleteManifestWithResponse(digest, Context.NONE).getValue();
+        deleteManifestWithResponse(digest, Context.NONE).getValue();
     }
 
     /**
-     * Delete the manifest associated with the given digest.
-     * We currently only support downloading OCI manifests.
-     *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * Delete the manifest identified by the given digest.
      *
      * @param digest The digest of the manifest.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -427,13 +442,141 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteManifestWithResponse(String digest, Context context) {
+        context = enableSync(context);
         try {
-            Response<Void> response = this.registriesImpl.deleteManifestWithResponse(repositoryName, digest,
-                enableSync(getTracingContext(context)));
+            Response<Void> response = registriesImpl.deleteManifestWithResponse(repositoryName, digest,
+                enableSync(context));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
+
+    private UploadBlobResult uploadBlobInternal(ReadableByteChannel stream, Context context) {
+        MessageDigest sha256 = createSha256();
+        byte[] buffer = new byte[CHUNK_SIZE];
+
+        try {
+            ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadResponse =
+                blobsImpl.startUploadWithResponse(repositoryName, context);
+            String location = getLocation(startUploadResponse);
+
+            BinaryData chunk;
+            long streamLength = 0L;
+            while (true) {
+                chunk = readChunk(stream, sha256, buffer);
+                if (chunk == null) {
+                    break;
+                }
+
+                streamLength += chunk.getLength();
+                if (chunk.getLength() < CHUNK_SIZE) {
+                    break;
+                }
+
+                ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkResponse =
+                    blobsImpl.uploadChunkWithResponse(location, chunk, chunk.getLength(), context);
+                location = getLocation(uploadChunkResponse);
+            }
+
+            String digest = "sha256:" + bytesToHexString(sha256.digest());
+
+            ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadResponse =
+                blobsImpl.completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
+
+            return ConstructorAccessors.createUploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest(), streamLength);
+        } catch (AcrErrorsException ex) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(ex));
+        }
+    }
+
+    private BinaryData readChunk(ReadableByteChannel stream, MessageDigest sha256, byte[] buffer) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+        while (byteBuffer.position() < CHUNK_SIZE) {
+            try {
+                if (stream.read(byteBuffer) < 0) {
+                    break;
+                }
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+        if (byteBuffer.position() == 0) {
+            return null;
+        }
+
+        byteBuffer.flip();
+        sha256.update(byteBuffer.asReadOnlyBuffer());
+        return BinaryData.fromByteBuffer(byteBuffer);
+    }
+
+    private Response<UploadManifestResult> uploadManifestWithResponse(BinaryData manifestData, String tagOrDigest, ManifestMediaType manifestMediaType, Context context) {
+        BinaryData data = manifestData.toReplayableBinaryData();
+        if (tagOrDigest == null) {
+            tagOrDigest = computeDigest(data.toByteBuffer());
+        }
+
+        try {
+            ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
+                .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
+                    manifestMediaType.toString(), enableSync(context));
+
+            return new ResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                ConstructorAccessors.createUploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
+                response.getDeserializedHeaders());
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
+
+    private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
+        Objects.requireNonNull(digest, "'digest' cannot be null.");
+
+        context = enableSync(context);
+        MessageDigest sha256 = createSha256();
+        try {
+            Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
+            validateResponseHeaderDigest(digest, firstChunk.getHeaders());
+
+            long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+            for (long p = firstChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            }
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+
+        validateDigest(sha256, digest);
+    }
+
+    private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
+        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+
+        ByteBuffer buffer = response.getValue().toByteBuffer();
+        sha256.update(buffer.asReadOnlyBuffer());
+        try {
+            channel.write(buffer);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+
+        return response;
+    }
+
+    private <T> T runWithTracing(String spanName, Function<Context, T> operation, Context context) {
+        Context span = tracer.start(spanName, context);
+        Exception exception = null;
+        try {
+            return operation.apply(span);
+        } catch (RuntimeException ex) {
+            exception = ex;
+            throw ex;
+        } finally {
+            tracer.end(null, exception, span);
         }
     }
 }

@@ -18,6 +18,15 @@ public final class ApplicationGatewayRequestRoutingRuleType
     public static final ApplicationGatewayRequestRoutingRuleType PATH_BASED_ROUTING = fromString("PathBasedRouting");
 
     /**
+     * Creates a new instance of ApplicationGatewayRequestRoutingRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayRequestRoutingRuleType() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayRequestRoutingRuleType from its string representation.
      *
      * @param name a name to look for.

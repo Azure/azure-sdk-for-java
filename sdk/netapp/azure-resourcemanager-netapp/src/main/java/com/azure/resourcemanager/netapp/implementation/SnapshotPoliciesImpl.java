@@ -39,15 +39,6 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         return Utils.mapPage(inner, inner1 -> new SnapshotPolicyImpl(inner1, this.manager()));
     }
 
-    public SnapshotPolicy get(String resourceGroupName, String accountName, String snapshotPolicyName) {
-        SnapshotPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, snapshotPolicyName);
-        if (inner != null) {
-            return new SnapshotPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SnapshotPolicy> getWithResponse(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
         Response<SnapshotPolicyInner> inner =
@@ -63,23 +54,21 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
     }
 
+    public SnapshotPolicy get(String resourceGroupName, String accountName, String snapshotPolicyName) {
+        SnapshotPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, snapshotPolicyName);
+        if (inner != null) {
+            return new SnapshotPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String accountName, String snapshotPolicyName) {
         this.serviceClient().delete(resourceGroupName, accountName, snapshotPolicyName);
     }
 
     public void delete(String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, snapshotPolicyName, context);
-    }
-
-    public SnapshotPolicyVolumeList listVolumes(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
-        SnapshotPolicyVolumeListInner inner =
-            this.serviceClient().listVolumes(resourceGroupName, accountName, snapshotPolicyName);
-        if (inner != null) {
-            return new SnapshotPolicyVolumeListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SnapshotPolicyVolumeList> listVolumesWithResponse(
@@ -92,6 +81,17 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SnapshotPolicyVolumeListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SnapshotPolicyVolumeList listVolumes(
+        String resourceGroupName, String accountName, String snapshotPolicyName) {
+        SnapshotPolicyVolumeListInner inner =
+            this.serviceClient().listVolumes(resourceGroupName, accountName, snapshotPolicyName);
+        if (inner != null) {
+            return new SnapshotPolicyVolumeListImpl(inner, this.manager());
         } else {
             return null;
         }

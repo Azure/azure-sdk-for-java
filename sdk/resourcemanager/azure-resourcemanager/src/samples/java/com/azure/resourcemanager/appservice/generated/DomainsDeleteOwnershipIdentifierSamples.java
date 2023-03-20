@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains DeleteOwnershipIdentifier. */
 public final class DomainsDeleteOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/DeleteAppServiceDomainOwnershipIdentifier.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/DeleteAppServiceDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: Delete App Service Domain Ownership Identifier.
@@ -22,6 +20,7 @@ public final class DomainsDeleteOwnershipIdentifierSamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .deleteOwnershipIdentifierWithResponse("testrg123", "example.com", "ownershipIdentifier", Context.NONE);
+            .deleteOwnershipIdentifierWithResponse(
+                "testrg123", "example.com", "ownershipIdentifier", com.azure.core.util.Context.NONE);
     }
 }

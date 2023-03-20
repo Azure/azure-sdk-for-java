@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpMethod;
@@ -161,6 +162,11 @@ public class ClientTelemetry {
 
     public ClientTelemetryInfo getClientTelemetryInfo() {
         return clientTelemetryInfo;
+    }
+
+    @JsonIgnore
+    public CosmosClientTelemetryConfig getClientTelemetryConfig() {
+        return clientTelemetryConfig;
     }
 
     public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
@@ -299,7 +305,7 @@ public class ClientTelemetry {
                         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
                             Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
-                            if (response.statusCode() != HttpConstants.StatusCodes.OK) {
+                            if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
                                 logger.error("Client telemetry request did not succeeded, status code {}",
                                     response.statusCode());
                             }

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SiteSealRequest {
     /*
-     * If <code>true</code> use the light color theme for site seal; otherwise,
-     * use the default color theme.
+     * If <code>true</code> use the light color theme for site seal; otherwise, use the default color theme.
      */
     @JsonProperty(value = "lightTheme")
     private Boolean lightTheme;
@@ -22,6 +21,10 @@ public final class SiteSealRequest {
      */
     @JsonProperty(value = "locale")
     private String locale;
+
+    /** Creates an instance of SiteSealRequest class. */
+    public SiteSealRequest() {
+    }
 
     /**
      * Get the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise,

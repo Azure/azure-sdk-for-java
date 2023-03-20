@@ -43,6 +43,10 @@ public final class FollowerDatabaseDefinitionInner {
     @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseShareOrigin databaseShareOrigin;
 
+    /** Creates an instance of FollowerDatabaseDefinitionInner class. */
+    public FollowerDatabaseDefinitionInner() {
+    }
+
     /**
      * Get the clusterResourceId property: Resource id of the cluster that follows a database owned by this cluster.
      *

@@ -6,11 +6,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.fluent.models.PrivateLinkResourceProperties;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class PrivateLinkResourcePropertiesTests {
                 .toObject(PrivateLinkResourceProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceProperties model = new PrivateLinkResourceProperties();
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);
     }

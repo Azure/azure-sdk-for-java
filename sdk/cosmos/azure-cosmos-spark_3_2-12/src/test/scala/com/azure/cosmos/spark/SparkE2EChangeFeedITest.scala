@@ -700,7 +700,7 @@ class SparkE2EChangeFeedITest
       .to(cosmosClientCacheItems => {
 
         databaseResourceId = cosmosClientCacheItems.head.get
-          .client
+          .cosmosClient
           .getDatabase(cosmosDatabase)
           .read()
           .block()
@@ -708,7 +708,7 @@ class SparkE2EChangeFeedITest
           .getResourceId
 
         val container = cosmosClientCacheItems.head.get
-          .client
+          .cosmosClient
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)
 
@@ -728,7 +728,7 @@ class SparkE2EChangeFeedITest
             filteredCompositeContinuations should have size 1
 
             val quotedToken = filteredCompositeContinuations.head.getToken
-            val lsn: Long = quotedToken.substring(1, quotedToken.length - 1).toLong
+            val lsn: Long =  Math.max(0, quotedToken.substring(1, quotedToken.length - 1).toLong)
 
             tokenMap += (pkRangeId -> lsn)
           })

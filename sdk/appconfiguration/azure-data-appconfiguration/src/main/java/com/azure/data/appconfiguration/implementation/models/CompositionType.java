@@ -21,6 +21,14 @@ public final class CompositionType extends ExpandableStringEnum<CompositionType>
     public static final CompositionType GROUP_BY_KEY = fromString("group_by_key");
 
     /**
+     * Creates a new instance of CompositionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompositionType() {}
+
+    /**
      * Creates or finds a CompositionType from its string representation.
      *
      * @param name a name to look for.

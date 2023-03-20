@@ -5,13 +5,10 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.models.DataStringComparisonBehavior;
 import com.azure.resourcemanager.timeseriesinsights.models.ProvisioningState;
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetKeyProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,102 +19,25 @@ import java.util.Map;
  * joined with events as they are read from event sources. The metadata that makes up the reference data set is uploaded
  * or modified through the Time Series Insights data plane APIs.
  */
-@JsonFlatten
 @Fluent
-public class ReferenceDataSetResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetResourceInner.class);
-
+public final class ReferenceDataSetResourceInner extends Resource {
     /*
-     * The list of key properties for the reference data set.
+     * Properties of the reference data set.
      */
-    @JsonProperty(value = "properties.keyProperties")
-    private List<ReferenceDataSetKeyProperty> keyProperties;
+    @JsonProperty(value = "properties")
+    private ReferenceDataSetResourceProperties innerProperties;
 
-    /*
-     * The reference data set key comparison behavior can be set using this
-     * property. By default, the value is 'Ordinal' - which means case
-     * sensitive key comparison will be performed while joining reference data
-     * with events or while adding new reference data. When 'OrdinalIgnoreCase'
-     * is set, case insensitive comparison will be used.
-     */
-    @JsonProperty(value = "properties.dataStringComparisonBehavior")
-    private DataStringComparisonBehavior dataStringComparisonBehavior;
-
-    /*
-     * Provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The time the resource was created.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /**
-     * Get the keyProperties property: The list of key properties for the reference data set.
-     *
-     * @return the keyProperties value.
-     */
-    public List<ReferenceDataSetKeyProperty> keyProperties() {
-        return this.keyProperties;
+    /** Creates an instance of ReferenceDataSetResourceInner class. */
+    public ReferenceDataSetResourceInner() {
     }
 
     /**
-     * Set the keyProperties property: The list of key properties for the reference data set.
+     * Get the innerProperties property: Properties of the reference data set.
      *
-     * @param keyProperties the keyProperties value to set.
-     * @return the ReferenceDataSetResourceInner object itself.
+     * @return the innerProperties value.
      */
-    public ReferenceDataSetResourceInner withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties) {
-        this.keyProperties = keyProperties;
-        return this;
-    }
-
-    /**
-     * Get the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
-     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
-     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
-     * case insensitive comparison will be used.
-     *
-     * @return the dataStringComparisonBehavior value.
-     */
-    public DataStringComparisonBehavior dataStringComparisonBehavior() {
-        return this.dataStringComparisonBehavior;
-    }
-
-    /**
-     * Set the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
-     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
-     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
-     * case insensitive comparison will be used.
-     *
-     * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
-     * @return the ReferenceDataSetResourceInner object itself.
-     */
-    public ReferenceDataSetResourceInner withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
-        this.dataStringComparisonBehavior = dataStringComparisonBehavior;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the creationTime property: The time the resource was created.
-     *
-     * @return the creationTime value.
-     */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
+    private ReferenceDataSetResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -135,13 +55,84 @@ public class ReferenceDataSetResourceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Get the keyProperties property: The list of key properties for the reference data set.
+     *
+     * @return the keyProperties value.
+     */
+    public List<ReferenceDataSetKeyProperty> keyProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyProperties();
+    }
+
+    /**
+     * Set the keyProperties property: The list of key properties for the reference data set.
+     *
+     * @param keyProperties the keyProperties value to set.
+     * @return the ReferenceDataSetResourceInner object itself.
+     */
+    public ReferenceDataSetResourceInner withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetResourceProperties();
+        }
+        this.innerProperties().withKeyProperties(keyProperties);
+        return this;
+    }
+
+    /**
+     * Get the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
+     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
+     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
+     * case insensitive comparison will be used.
+     *
+     * @return the dataStringComparisonBehavior value.
+     */
+    public DataStringComparisonBehavior dataStringComparisonBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataStringComparisonBehavior();
+    }
+
+    /**
+     * Set the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
+     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
+     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
+     * case insensitive comparison will be used.
+     *
+     * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
+     * @return the ReferenceDataSetResourceInner object itself.
+     */
+    public ReferenceDataSetResourceInner withDataStringComparisonBehavior(
+        DataStringComparisonBehavior dataStringComparisonBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetResourceProperties();
+        }
+        this.innerProperties().withDataStringComparisonBehavior(dataStringComparisonBehavior);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyProperties() != null) {
-            keyProperties().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

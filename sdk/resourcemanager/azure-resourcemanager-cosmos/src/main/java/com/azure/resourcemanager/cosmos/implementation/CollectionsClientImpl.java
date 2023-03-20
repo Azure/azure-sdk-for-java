@@ -59,7 +59,7 @@ public final class CollectionsClientImpl implements CollectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CollectionsService {
+    public interface CollectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"

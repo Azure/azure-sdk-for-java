@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources MigrateSqlDatabaseToAutoscale. */
 public final class SqlResourcesMigrateSqlDatabaseToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseMigrateToAutoscale.
@@ -22,6 +20,6 @@ public final class SqlResourcesMigrateSqlDatabaseToAutoscaleSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .migrateSqlDatabaseToAutoscale("rg1", "ddb1", "databaseName", Context.NONE);
+            .migrateSqlDatabaseToAutoscale("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

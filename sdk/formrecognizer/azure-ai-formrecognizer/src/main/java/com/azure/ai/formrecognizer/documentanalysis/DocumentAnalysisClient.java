@@ -4,10 +4,11 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsAnalyzeDocumentHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
@@ -29,6 +30,8 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -61,16 +64,16 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
     private static final ClientLogger LOGGER = new ClientLogger(DocumentAnalysisClient.class);
-    private final FormRecognizerClientImpl service;
+    private final DocumentModelsImpl documentModelsImpl;
 
     /**
      * Create a {@link DocumentAnalysisClient client} that sends requests to the Document Analysis service's endpoint.
      * Each service call goes through the {@link DocumentAnalysisClientBuilder#pipeline http pipeline}.
      *
-     * @param service The proxy service used to perform REST calls.
+     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
      */
-    DocumentAnalysisClient(FormRecognizerClientImpl service) {
-        this.service = service;
+    DocumentAnalysisClient(FormRecognizerClientImpl formRecognizerClientImpl) {
+        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
     }
     /**
      * Analyzes data from documents with optical character recognition (OCR) and semantic values from a given document
@@ -260,6 +263,9 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, AnalyzeResult>
@@ -269,6 +275,11 @@ public final class DocumentAnalysisClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
+        }
+
+        if (document.getLength() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                + " be null"));
         }
 
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
@@ -299,23 +310,27 @@ public final class DocumentAnalysisClient {
                 .getDeserializedHeaders().getOperationLocation());
     }
 
-    private ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
-        BinaryData document, String documentUrl, Context context) {
+    private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
+                                                                                     BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
-                return service.analyzeDocumentWithResponse(modelId,
+                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
                     null,
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
+                    Collections.emptyList(),
+                    Collections.emptyList(),
                     document,
                     document.getLength(),
                     context);
             } else {
-                return service.analyzeDocumentWithResponse(modelId,
+                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
+                    Collections.emptyList(),
+                    Collections.emptyList(),
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }
@@ -339,7 +354,7 @@ public final class DocumentAnalysisClient {
             final String resultId = operationResultPollResponse.getValue().getOperationId();
             Response<AnalyzeResultOperation> modelResponse;
             try {
-                modelResponse = service.getAnalyzeDocumentResultWithResponse(modelId, resultId, finalContext);
+                modelResponse = documentModelsImpl.getAnalyzeResultWithResponse(modelId, resultId, finalContext);
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
             }
@@ -376,7 +391,7 @@ public final class DocumentAnalysisClient {
         return pollingContext -> {
             final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
             try {
-                return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultWithResponse(
+                return Transforms.toAnalyzeResultOperation(documentModelsImpl.getAnalyzeResultWithResponse(
                         modelId,
                         resultId,
                         finalContext)

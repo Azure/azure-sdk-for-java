@@ -3,11 +3,14 @@
 
 module com.azure.containers.containerregistry {
     requires transitive com.azure.core;
+    requires transitive com.azure.json;
+
     exports com.azure.containers.containerregistry;
     exports com.azure.containers.containerregistry.models;
+    exports com.azure.containers.containerregistry.specialized;
 
     opens com.azure.containers.containerregistry.implementation to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.containers.containerregistry.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 
-    opens com.azure.containers.containerregistry.models to com.fasterxml.jackson.databind;
+    opens com.azure.containers.containerregistry.models to com.fasterxml.jackson.databind, com.azure.core;
 }

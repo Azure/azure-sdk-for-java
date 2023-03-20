@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetOperations.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void getOperations(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

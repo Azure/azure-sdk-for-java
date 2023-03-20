@@ -21,8 +21,7 @@ public final class EnvironmentsCustomEnvironmentActionTests extends DevCenterCli
                         "{\"actionId\":\"someCustomActionId\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"}}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                environmentsClient.beginCustomEnvironmentAction(
-                        "myProject", "me", "{environmentName}", body, requestOptions);
+                environmentsClient.beginCustomEnvironmentAction("myProject", "me", "mydevenv", body, requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }

@@ -14,23 +14,23 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString("{\"status\":\"Pending\",\"description\":\"zrvqdr\",\"actionsRequired\":\"hjybigehoqfbo\"}")
+                .fromString("{\"status\":\"Rejected\",\"description\":\"cpecfvmmcoofs\",\"actionsRequired\":\"zevgb\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("zrvqdr", model.description());
-        Assertions.assertEquals("hjybigehoqfbo", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("cpecfvmmcoofs", model.description());
+        Assertions.assertEquals("zevgb", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                .withDescription("zrvqdr")
-                .withActionsRequired("hjybigehoqfbo");
+                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                .withDescription("cpecfvmmcoofs")
+                .withActionsRequired("zevgb");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("zrvqdr", model.description());
-        Assertions.assertEquals("hjybigehoqfbo", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("cpecfvmmcoofs", model.description());
+        Assertions.assertEquals("zevgb", model.actionsRequired());
     }
 }

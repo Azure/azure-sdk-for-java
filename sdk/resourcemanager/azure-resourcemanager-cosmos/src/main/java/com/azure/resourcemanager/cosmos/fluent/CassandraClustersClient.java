@@ -131,19 +131,6 @@ public interface CassandraClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterResourceInner getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Get the properties of a managed Cassandra cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,6 +140,19 @@ public interface CassandraClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Get the properties of a managed Cassandra cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a managed Cassandra cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterResourceInner getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Deletes a managed Cassandra cluster.
@@ -814,19 +814,6 @@ public interface CassandraClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraClusterPublicStatusInner status(String resourceGroupName, String clusterName);
-
-    /**
-     * Gets the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -837,4 +824,17 @@ public interface CassandraClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CassandraClusterPublicStatusInner> statusWithResponse(
         String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Gets the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CassandraClusterPublicStatusInner status(String resourceGroupName, String clusterName);
 }

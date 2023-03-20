@@ -2,56 +2,87 @@
 	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"ledgerName": {
+		"BaseName": {
 			"type": "string",
 			"metadata": {
-				"description": "Ledger Name"
-			},
-			"minLength": 3,
-			"maxLength": 24
-		},
-		"principalId": {
-			"type": "string",
-			"metadata": {
-				"description": "Oid of the user"
+				"description": "Name of the test ledger"
 			}
 		},
 		"location": {
 			"type": "string",
-			"defaultValue": "[resourceGroup().location]",
+			"defaultValue": "eastus",
 			"metadata": {
-				"description": "Location for all resources."
+				"description": "Location of the test ledger"
+			}
+		},
+		"tenantId": {
+			"type": "string",
+			"metadata": {
+				"description": "Tenant ID for the test application"
+			}
+		},
+		"testApplicationId": {
+			"type": "string",
+			"metadata": {
+				"description": "Application client ID for the test application"
+			}
+		},
+		"testApplicationOid": {
+			"type": "string",
+			"metadata": {
+				"description": "Application object ID for the test application"
+			}
+		},
+		"testApplicationSecret": {
+			"type": "string",
+			"metadata": {
+				"description": "Application secret for the test application"
 			}
 		}
 	},
 	"functions": [],
 	"variables": {},
-	"resources": [{
-		"name": "[parameters('ledgerName')]",
-		"type": "Microsoft.ConfidentialLedger/ledgers",
-		"ledgerUri": "[concat('https://', parameters('ledgerName'), '.confidential-ledger.azure.com')]",
-		"apiVersion": "2020-12-01-preview",
-		"location": "[parameters('location')]",
-		"properties": {
-			"ledgerType": "Public",
-			"aadBasedSecurityPrincipals": [{
-				"principalId": "[parameters('principalId')]",
-				"ledgerRoleName": "Administrator"
-			}]
+	"resources": [
+		{
+			"name": "[parameters('BaseName')]",
+			"type": "Microsoft.ConfidentialLedger/ledgers",
+			"apiVersion": "2020-12-01-preview",
+			"location": "[parameters('location')]",
+			"properties": {
+				"ledgerType": "Public",
+				"aadBasedSecurityPrincipals": [
+					{
+						"principalId": "[parameters('TestApplicationId')]",
+						"ledgerRoleName": "Administrator"
+					}
+				]
+			}
 		}
-	}],
-    "outputs": {
-        "LEDGER_NAME": {
+	],
+	"outputs": {
+		"AZURE_TENANT_ID": {
             "type": "string",
-            "value": "[parameters('ledgerName')]"
+            "value": "[parameters('tenantId')]"
         },
+        "AZURE_CLIENT_ID": {
+            "type": "string",
+            "value": "[parameters('testApplicationId')]"
+        },
+        "AZURE_CLIENT_SECRET": {
+            "type": "string",
+            "value": "[parameters('testApplicationSecret')]"
+        },
+		"LEDGER_NAME": {
+			"type": "string",
+			"value": "[parameters('BaseName')]"
+		},
 		"LEDGER_URI": {
 			"type": "string",
-			"value": "[resources[0]('ledgerUri')]"
+			"value": "[concat('https://', parameters('BaseName'), '.confidential-ledger.azure.com')]"
 		},
 		"USER_AAD": {
 			"type": "string",
-			"value": "[parameters('principalId')]"
+			"value": "[parameters('testApplicationOid')]"
 		}
-    }
+	}
 }

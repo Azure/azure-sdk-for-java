@@ -18,6 +18,10 @@ public final class RestorableDatabaseAccountsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableDatabaseAccountGetResultInner> value;
 
+    /** Creates an instance of RestorableDatabaseAccountsListResult class. */
+    public RestorableDatabaseAccountsListResult() {
+    }
+
     /**
      * Get the value property: List of restorable database accounts and their properties.
      *

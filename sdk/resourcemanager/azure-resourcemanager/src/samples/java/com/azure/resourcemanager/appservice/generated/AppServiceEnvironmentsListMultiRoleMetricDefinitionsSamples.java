@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListMultiRoleMetricDefinitions. */
 public final class AppServiceEnvironmentsListMultiRoleMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListMultiRoleMetricDefinitions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListMultiRoleMetricDefinitions.json
      */
     /**
      * Sample code: Get metric definitions for a multi-role pool of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListMultiRoleMetricDefinitionsSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listMultiRoleMetricDefinitions("test-rg", "test-ase", Context.NONE);
+            .listMultiRoleMetricDefinitions("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

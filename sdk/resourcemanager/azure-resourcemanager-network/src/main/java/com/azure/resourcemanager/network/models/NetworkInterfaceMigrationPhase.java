@@ -26,6 +26,15 @@ public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<N
     public static final NetworkInterfaceMigrationPhase COMMITTED = fromString("Committed");
 
     /**
+     * Creates a new instance of NetworkInterfaceMigrationPhase value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkInterfaceMigrationPhase() {
+    }
+
+    /**
      * Creates or finds a NetworkInterfaceMigrationPhase from its string representation.
      *
      * @param name a name to look for.

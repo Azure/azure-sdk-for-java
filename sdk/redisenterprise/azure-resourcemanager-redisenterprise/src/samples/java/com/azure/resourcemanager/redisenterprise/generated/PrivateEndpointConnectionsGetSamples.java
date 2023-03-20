@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterpriseGetPrivateEndpointConnection.
@@ -18,6 +16,8 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void redisEnterpriseGetPrivateEndpointConnection(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.privateEndpointConnections().getWithResponse("rg1", "cache1", "pectest01", Context.NONE);
+        manager
+            .privateEndpointConnections()
+            .getWithResponse("rg1", "cache1", "pectest01", com.azure.core.util.Context.NONE);
     }
 }

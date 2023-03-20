@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRunActionRepetitionsRequestHistories List. */
 public final class WorkflowRunActionRepetitionsRequestHistoriesListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
      */
     /**
      * Sample code: List repetition request history.
@@ -29,6 +27,6 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesListSamples {
                 "08586776228332053161046300351",
                 "HTTP_Webhook",
                 "000001",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

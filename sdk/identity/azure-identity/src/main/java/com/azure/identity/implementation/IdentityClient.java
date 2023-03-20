@@ -218,7 +218,8 @@ public class IdentityClient extends IdentityClientBase {
                     ConfidentialClientApplication.Builder applicationBuilder =
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl);
+                            .authority(authorityUrl)
+                            .instanceDiscovery(options.getInstanceDiscovery());
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
@@ -313,6 +314,47 @@ public class IdentityClient extends IdentityClientBase {
 
         try {
             AccessToken token = getTokenFromAzureCLIAuthentication(azCommand);
+            return Mono.just(token);
+        } catch (RuntimeException e) {
+            return Mono.error(e instanceof CredentialUnavailableException
+                ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
+                : LOGGER.logExceptionAsError(e));
+        }
+
+    }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Developer CLI.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
+
+        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
+        List<String> scopes = request.getScopes();
+
+        // It's really unlikely that the request comes with no scope, but we want to
+        // validate it as we are adding `--scope` arg to the azd command.
+        if (scopes.size() == 0) {
+            return Mono.error(LOGGER.logExceptionAsError(new IllegalArgumentException("Missing scope in request")));
+        }
+
+        // At least one scope is appended to the azd command.
+        // If there are more than one scope, we add `--scope` before each.
+        azdCommand.append(String.join(" --scope ", scopes));
+
+        try {
+            String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+            if (!CoreUtils.isNullOrEmpty(tenant)) {
+                azdCommand.append(" --tenant-id ").append(tenant);
+            }
+        } catch (ClientAuthenticationException e) {
+            return Mono.error(e);
+        }
+
+        try {
+            AccessToken token = getTokenFromAzureDeveloperCLIAuthentication(azdCommand);
             return Mono.just(token);
         } catch (RuntimeException e) {
             return Mono.error(e instanceof CredentialUnavailableException
@@ -450,6 +492,10 @@ public class IdentityClient extends IdentityClientBase {
                     builder.clientCredential(ClientCredentialFactory
                         .createFromClientAssertion(clientAssertionSupplier.get()));
                 }
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+                    builder.claims(customClaimRequest);
+                }
                 return confidentialClient.acquireToken(builder.build());
             }
         )).map(MsalToken::new);
@@ -556,6 +602,11 @@ public class IdentityClient extends IdentityClientBase {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest
+                        .formatAsClaimsRequest(request.getClaims());
+                    parametersBuilder.claims(customClaimRequest);
+                }
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -848,7 +899,7 @@ public class IdentityClient extends IdentityClientBase {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    private Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
+    public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
             .flatMap(assertionToken -> Mono.fromCallable(() -> {
@@ -1207,24 +1258,6 @@ public class IdentityClient extends IdentityClientBase {
         CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
         completableFuture.completeExceptionally(e);
         return completableFuture;
-    }
-
-    /**
-     * Get the configured tenant id.
-     *
-     * @return the tenant id.
-     */
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    /**
-     * Get the configured client id.
-     *
-     * @return the client id.
-     */
-    public String getClientId() {
-        return clientId;
     }
 
     /**

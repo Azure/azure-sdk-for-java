@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetPrivateLinkResourcesSlot. */
 public final class WebAppsGetPrivateLinkResourcesSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateLinkResourcesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSitePrivateLinkResourcesSlot.json
      */
     /**
      * Sample code: Get private link resources of a site.
@@ -22,6 +20,6 @@ public final class WebAppsGetPrivateLinkResourcesSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getPrivateLinkResourcesSlotWithResponse("rg", "testSite", "stage", Context.NONE);
+            .getPrivateLinkResourcesSlotWithResponse("rg", "testSite", "stage", com.azure.core.util.Context.NONE);
     }
 }

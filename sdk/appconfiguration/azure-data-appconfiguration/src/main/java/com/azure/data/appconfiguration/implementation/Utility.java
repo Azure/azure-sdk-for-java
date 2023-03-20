@@ -14,35 +14,50 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
+/**
+ * App Configuration Utility methods, use internally.
+ */
 public class Utility {
-    public static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    public static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
+
+    static final String ID = "id";
+    static final String DESCRIPTION = "description";
+    static final String DISPLAY_NAME = "display_name";
+    static final String ENABLED = "enabled";
+    static final String CONDITIONS = "conditions";
+    static final String CLIENT_FILTERS = "client_filters";
+    static final String NAME = "name";
+    static final String PARAMETERS = "parameters";
+    static final String URI = "uri";
+
+    /**
+     * Represents any value in Etag.
+     */
+    public static final String ETAG_ANY = "*";
 
     public static ConfigurationSettingSnapshot toConfigurationSettingSnapshot(Snapshot snapshot) {
         return new ConfigurationSettingSnapshot(toSnapshotFilters(snapshot.getFilters()))
-            .setTags(snapshot.getTags())
-            .setCompositionType(com.azure.data.appconfiguration.models.CompositionType.fromString(snapshot.getCompositionType().toString()))
-            .setRetentionPeriod(Duration.ofSeconds(snapshot.getRetentionPeriod()));
+                   .setTags(snapshot.getTags())
+                   .setCompositionType(com.azure.data.appconfiguration.models.CompositionType.fromString(snapshot.getCompositionType().toString()))
+                   .setRetentionPeriod(Duration.ofSeconds(snapshot.getRetentionPeriod()));
     }
 
     public static Snapshot toSnapshot(ConfigurationSettingSnapshot configurationSettingSnapshot) {
         return new Snapshot().setFilters(toKeyValueFilter(configurationSettingSnapshot.getFilters()))
-            .setCompositionType(CompositionType.fromString(configurationSettingSnapshot.getCompositionType().toString()))
-            .setTags(configurationSettingSnapshot.getTags())
-            .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod().getSeconds());
+                   .setCompositionType(CompositionType.fromString(configurationSettingSnapshot.getCompositionType().toString()))
+                   .setTags(configurationSettingSnapshot.getTags())
+                   .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod().getSeconds());
     }
-
 
     public static IterableStream<SnapshotSettingFilter> toSnapshotFilters(Iterable<KeyValueFilter> filters) {
         List<SnapshotSettingFilter> result = new ArrayList<>();
@@ -65,7 +80,9 @@ public class Utility {
         return result;
     }
 
-
+    /*
+     * Translate public ConfigurationSetting to KeyValue autorest generated class.
+     */
     public static KeyValue toKeyValue(ConfigurationSetting setting) {
         return new KeyValue()
                    .setKey(setting.getKey())
@@ -78,69 +95,34 @@ public class Utility {
                    .setTags(setting.getTags());
     }
 
-    public static ConfigurationSetting toConfigurationSetting(KeyValue keyValue) {
-
-        final String contentType = keyValue.getContentType();
-        final String key = keyValue.getKey();
-        final String value = keyValue.getValue();
-        final String label = keyValue.getLabel();
-        final String etag = keyValue.getEtag();
-        final Map<String, String> tags = keyValue.getTags();
-        final ConfigurationSetting setting = new ConfigurationSetting()
-                                                 .setKey(key)
-                                                 .setValue(value)
-                                                 .setLabel(label)
-                                                 .setContentType(contentType)
-                                                 .setETag(etag)
-                                                 .setTags(tags);
-        ConfigurationSettingHelper.setLastModified(setting, keyValue.getLastModified());
-        ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked());
-
-//        return String.format("{\"id\":\"%s\"," +
-//                                 "\"description\":\"%s\"," +
-//                                 "\"display_name\":\"%s\","
-//                                 + "\"enabled\":%s,"
-//                                 + "\"conditions\":{\"client_filters\":"
-//                                 + "[" +
-//                                        "{\"name\":\"Microsoft.Percentage\"," +
-//                                        "\"parameters\":{\"Value\":\"30\"}}" +
-//                                   "]"
-//                                 + "}}",
-//            id, description, displayName, isEnabled);
-//
-//        if (key != null && key.startsWith(FeatureFlagConfigurationSetting.KEY_PREFIX)
-//                && FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
-//
-//            return readFeatureFlagConfigurationSetting(node, baseSetting);
-//        } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
-//            return readSecretReferenceConfigurationSetting(node, baseSetting);
-//        }
-
-
-
-
-        return setting;
-    }
-
+    // Translate generated List<KeyValueFields> to public-explored SettingFields[].
     public static SettingFields[] toSettingFieldsArray(List<KeyValueFields> kvFieldsList) {
-        return kvFieldsList.stream()
-                   .map(keyValueFields -> toSettingFields(keyValueFields))
-                   .collect(Collectors.toList())
-                   .toArray(new SettingFields[kvFieldsList.size()]);
+        int size = kvFieldsList.size();
+        SettingFields[] fields = new SettingFields[size];
+        for (int i = 0; i < size; i++) {
+            fields[i] = toSettingFields(kvFieldsList.get(i));
+        }
+        return fields;
     }
 
-    public static List<KeyValueFields> toKeyValueFieldsList(SettingFields[] settingFieldsArray) {
-        return Arrays.stream(settingFieldsArray)
-                   .map(settingFields -> toKeyValueFields(settingFields))
-                   .collect(Collectors.toList());
-    }
-
-    public static KeyValueFields toKeyValueFields(SettingFields settingFields) {
-        return settingFields == null ? null : KeyValueFields.fromString(settingFields.toString());
-    }
-
+    // Translate generated KeyValueFields to public-explored SettingFields.
     public static SettingFields toSettingFields(KeyValueFields keyValueFields) {
         return keyValueFields == null ? null : SettingFields.fromString(keyValueFields.toString());
+    }
+
+    // Translate public-explored SettingFields[] to generated List<KeyValueFields>.
+    public static List<KeyValueFields> toKeyValueFieldsList(SettingFields[] settingFieldsArray) {
+        int size = settingFieldsArray.length;
+        List<KeyValueFields> keyValueFields = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            keyValueFields.add(toKeyValueFields(settingFieldsArray[i]));
+        }
+        return keyValueFields;
+    }
+
+    // Translate public-explored SettingFields to generated KeyValueFields.
+    public static KeyValueFields toKeyValueFields(SettingFields settingFields) {
+        return settingFields == null ? null : KeyValueFields.fromString(settingFields.toString());
     }
 
     /*
@@ -153,17 +135,16 @@ public class Utility {
         return (etag == null || "*".equals(etag)) ? etag : "\"" + etag + "\"";
     }
 
-    public static String getIfMatchETag(boolean ifUnchanged, ConfigurationSetting setting) {
-        return ifUnchanged ? getETagValue(setting.getETag()) : null;
+    /*
+     * Get HTTP header value, if-match or if-none-match.. Used to perform an operation only if the targeted resource's
+     * etag matches the value provided.
+     */
+    public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
+        return isEtagRequired ? getETagValue(setting.getETag()) : null;
     }
 
     public static String getIfMatchETagSnapshot(boolean ifUnchanged, ConfigurationSettingSnapshot snapshot) {
         return ifUnchanged ? getETagValue(snapshot.getETag()) : null;
-    }
-
-
-    public static String getIfNoneMatchETag(boolean onlyIfChanged, ConfigurationSetting setting) {
-        return onlyIfChanged ? getETagValue(setting.getETag()) : null;
     }
 
     public static String getIfNoneMatchETagSnapshot(boolean onlyIfChanged, ConfigurationSettingSnapshot snapshot) {
@@ -180,8 +161,30 @@ public class Utility {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null.");
         }
     }
+    /*
+     * Asynchronously validate that setting and key is not null. The key is used in the service URL,
+     *  so it cannot be null.
+     */
+    public static Mono<ConfigurationSetting> validateSettingAsync(ConfigurationSetting setting) {
+        if (setting == null) {
+            return Mono.error(new NullPointerException("Configuration setting cannot be null"));
+        }
+        if (setting.getKey() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter 'key' is required and cannot be null."));
+        }
+        return Mono.just(setting);
+    }
 
+    /**
+     * Enable the sync stack rest proxy.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
     public static Context enableSyncRestProxy(Context context) {
+        context = context == null ? Context.NONE : context;
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
