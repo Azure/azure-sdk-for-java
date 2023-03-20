@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for HostnameType. */
+/** Type of the hostname. */
 public enum HostnameType {
     /** Enum value Verified. */
     VERIFIED("Verified"),
@@ -30,6 +30,9 @@ public enum HostnameType {
      */
     @JsonCreator
     public static HostnameType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         HostnameType[] items = HostnameType.values();
         for (HostnameType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum HostnameType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

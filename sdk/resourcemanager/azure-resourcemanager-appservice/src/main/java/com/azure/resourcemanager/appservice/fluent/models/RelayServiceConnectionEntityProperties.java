@@ -52,6 +52,10 @@ public final class RelayServiceConnectionEntityProperties {
     @JsonProperty(value = "biztalkUri")
     private String biztalkUri;
 
+    /** Creates an instance of RelayServiceConnectionEntityProperties class. */
+    public RelayServiceConnectionEntityProperties() {
+    }
+
     /**
      * Get the entityName property: The entityName property.
      *

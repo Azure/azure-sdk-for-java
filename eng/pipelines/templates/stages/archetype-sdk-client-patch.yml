@@ -99,7 +99,7 @@ stages:
             SkipCheckoutNone: true
 
         - script: |
-            pip install markdown2 BeautifulSoup4
+            python -m pip install markdown2 BeautifulSoup4
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
         # Save the Package Properties

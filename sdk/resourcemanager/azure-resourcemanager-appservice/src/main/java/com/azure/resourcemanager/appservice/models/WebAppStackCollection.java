@@ -25,6 +25,10 @@ public final class WebAppStackCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WebAppStackCollection class. */
+    public WebAppStackCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

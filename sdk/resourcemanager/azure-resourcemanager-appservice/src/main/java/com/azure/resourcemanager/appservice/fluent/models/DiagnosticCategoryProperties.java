@@ -16,6 +16,10 @@ public final class DiagnosticCategoryProperties {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of DiagnosticCategoryProperties class. */
+    public DiagnosticCategoryProperties() {
+    }
+
     /**
      * Get the description property: Description of the diagnostic category.
      *

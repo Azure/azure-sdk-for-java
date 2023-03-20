@@ -61,12 +61,10 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface WorkflowRunActionScopeRepetitionsService {
+    public interface WorkflowRunActionScopeRepetitionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}"
-                + "/actions/{actionName}/scopeRepetitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/scopeRepetitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionRepetitionDefinitionCollection>> list(
@@ -83,9 +81,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}"
-                + "/actions/{actionName}/scopeRepetitions/{repetitionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/scopeRepetitions/{repetitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> get(
@@ -523,39 +519,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         String actionName,
         String repetitionName) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName)
-            .flatMap(
-                (Response<WorkflowRunActionRepetitionDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a workflow run action scoped repetition.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action scoped repetition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName) {
-        return getAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -587,9 +551,36 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     }
 
     /**
+     * Get a workflow run action scoped repetition.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run action scoped repetition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowRunActionRepetitionDefinitionInner get(
+        String resourceGroupName,
+        String name,
+        String workflowName,
+        String runName,
+        String actionName,
+        String repetitionName) {
+        return getWithResponse(resourceGroupName, name, workflowName, runName, actionName, repetitionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -625,7 +616,8 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

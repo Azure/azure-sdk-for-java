@@ -7,11 +7,10 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.ControlPlaneEndpointProfileControlPlaneEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ControlPlaneEndpointProfileControlPlaneEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ControlPlaneEndpointProfileControlPlaneEndpoint model =
             BinaryData
                 .fromString("{\"hostIP\":\"ghmewuam\",\"port\":\"hrzayvvtpgvdf\"}")
@@ -20,8 +19,8 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpointTests {
         Assertions.assertEquals("hrzayvvtpgvdf", model.port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ControlPlaneEndpointProfileControlPlaneEndpoint model =
             new ControlPlaneEndpointProfileControlPlaneEndpoint().withHostIp("ghmewuam").withPort("hrzayvvtpgvdf");
         model = BinaryData.fromObject(model).toObject(ControlPlaneEndpointProfileControlPlaneEndpoint.class);

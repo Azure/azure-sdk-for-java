@@ -17,6 +17,10 @@ public final class PoolChangeRequest {
     @JsonProperty(value = "newPoolResourceId", required = true)
     private String newPoolResourceId;
 
+    /** Creates an instance of PoolChangeRequest class. */
+    public PoolChangeRequest() {
+    }
+
     /**
      * Get the newPoolResourceId property: Resource id of the pool to move volume to.
      *

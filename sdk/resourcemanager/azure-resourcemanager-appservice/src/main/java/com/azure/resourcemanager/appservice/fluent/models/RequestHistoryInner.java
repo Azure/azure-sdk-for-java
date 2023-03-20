@@ -19,6 +19,10 @@ public final class RequestHistoryInner extends WorkflowResource {
     @JsonProperty(value = "properties")
     private RequestHistoryProperties properties;
 
+    /** Creates an instance of RequestHistoryInner class. */
+    public RequestHistoryInner() {
+    }
+
     /**
      * Get the properties property: The request history properties.
      *

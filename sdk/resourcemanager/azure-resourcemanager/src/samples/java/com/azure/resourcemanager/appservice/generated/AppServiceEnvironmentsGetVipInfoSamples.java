@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetVipInfo. */
 public final class AppServiceEnvironmentsGetVipInfoSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetVipInfo.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetVipInfo.json
      */
     /**
      * Sample code: Get IP addresses assigned to an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsGetVipInfoSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getVipInfoWithResponse("test-rg", "test-ase", Context.NONE);
+            .getVipInfoWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"klbb\",\"resource\":\"plwzbhvgyugu\",\"operation\":\"vmkfssxqu\",\"description\":\"fpl\"}")
+                    "{\"provider\":\"fj\",\"resource\":\"njbkcnxdhbttkph\",\"operation\":\"pnvjtoqnermclf\",\"description\":\"phoxus\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("klbb", model.provider());
-        Assertions.assertEquals("plwzbhvgyugu", model.resource());
-        Assertions.assertEquals("vmkfssxqu", model.operation());
-        Assertions.assertEquals("fpl", model.description());
+        Assertions.assertEquals("fj", model.provider());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.resource());
+        Assertions.assertEquals("pnvjtoqnermclf", model.operation());
+        Assertions.assertEquals("phoxus", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("klbb")
-                .withResource("plwzbhvgyugu")
-                .withOperation("vmkfssxqu")
-                .withDescription("fpl");
+                .withProvider("fj")
+                .withResource("njbkcnxdhbttkph")
+                .withOperation("pnvjtoqnermclf")
+                .withDescription("phoxus");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("klbb", model.provider());
-        Assertions.assertEquals("plwzbhvgyugu", model.resource());
-        Assertions.assertEquals("vmkfssxqu", model.operation());
-        Assertions.assertEquals("fpl", model.description());
+        Assertions.assertEquals("fj", model.provider());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.resource());
+        Assertions.assertEquals("pnvjtoqnermclf", model.operation());
+        Assertions.assertEquals("phoxus", model.description());
     }
 }

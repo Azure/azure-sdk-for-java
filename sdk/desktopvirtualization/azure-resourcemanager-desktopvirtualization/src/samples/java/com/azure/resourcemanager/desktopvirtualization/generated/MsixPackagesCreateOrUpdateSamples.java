@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for MsixPackages CreateOrUpdate. */
 public final class MsixPackagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/MsixPackage_Create.json
      */
     /**
      * Sample code: MSIXPackage_Create.

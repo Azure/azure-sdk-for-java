@@ -37,6 +37,10 @@ public final class FunctionAppStackProperties {
     @JsonProperty(value = "preferredOs", access = JsonProperty.Access.WRITE_ONLY)
     private StackPreferredOs preferredOs;
 
+    /** Creates an instance of FunctionAppStackProperties class. */
+    public FunctionAppStackProperties() {
+    }
+
     /**
      * Get the displayText property: Function App stack (display only).
      *

@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfoPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -83,15 +83,13 @@ public final class HostPoolPatchProperties {
     private String ssoadfsAuthority;
 
     /*
-     * ClientId for the registered Relying Party used to issue WVD SSO
-     * certificates.
+     * ClientId for the registered Relying Party used to issue WVD SSO certificates.
      */
     @JsonProperty(value = "ssoClientId")
     private String ssoClientId;
 
     /*
-     * Path to Azure KeyVault storing the secret used for communication to
-     * ADFS.
+     * Path to Azure KeyVault storing the secret used for communication to ADFS.
      */
     @JsonProperty(value = "ssoClientSecretKeyVaultPath")
     private String ssoClientSecretKeyVaultPath;
@@ -103,8 +101,7 @@ public final class HostPoolPatchProperties {
     private SsoSecretType ssoSecretType;
 
     /*
-     * The type of preferred application group type, default to Desktop
-     * Application Group
+     * The type of preferred application group type, default to Desktop Application Group
      */
     @JsonProperty(value = "preferredAppGroupType")
     private PreferredAppGroupType preferredAppGroupType;
@@ -116,10 +113,14 @@ public final class HostPoolPatchProperties {
     private Boolean startVMOnConnect;
 
     /*
-     * Enabled to allow this resource to be access from the public network
+     * The session host configuration for updating agent, monitoring agent, and stack component.
      */
-    @JsonProperty(value = "publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "agentUpdate")
+    private AgentUpdatePatchProperties agentUpdate;
+
+    /** Creates an instance of HostPoolPatchProperties class. */
+    public HostPoolPatchProperties() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of HostPool.
@@ -447,22 +448,24 @@ public final class HostPoolPatchProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @return the publicNetworkAccess value.
+     * @return the agentUpdate value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+    public AgentUpdatePatchProperties agentUpdate() {
+        return this.agentUpdate;
     }
 
     /**
-     * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolPatchProperties object itself.
      */
-    public HostPoolPatchProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+    public HostPoolPatchProperties withAgentUpdate(AgentUpdatePatchProperties agentUpdate) {
+        this.agentUpdate = agentUpdate;
         return this;
     }
 
@@ -474,6 +477,9 @@ public final class HostPoolPatchProperties {
     public void validate() {
         if (registrationInfo() != null) {
             registrationInfo().validate();
+        }
+        if (agentUpdate() != null) {
+            agentUpdate().validate();
         }
     }
 }

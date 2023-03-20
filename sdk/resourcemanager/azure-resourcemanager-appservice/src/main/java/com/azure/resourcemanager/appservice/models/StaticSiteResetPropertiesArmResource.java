@@ -17,6 +17,10 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
     @JsonProperty(value = "properties")
     private StaticSiteResetPropertiesArmResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteResetPropertiesArmResource class. */
+    public StaticSiteResetPropertiesArmResource() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteResetPropertiesARMResource resource specific properties.
      *

@@ -23,6 +23,9 @@ public final class MetricDimensionList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> value;
 
+    /** Creates an instance of MetricDimensionList class. */
+    public MetricDimensionList() {}
+
     /**
      * Get the nextLink property: The @nextLink property.
      *

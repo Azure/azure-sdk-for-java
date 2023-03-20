@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServicePlans GetByResourceGroup. */
 public final class AppServicePlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetAppServicePlan.json
      */
     /**
      * Sample code: Get App Service plan.
@@ -22,6 +20,6 @@ public final class AppServicePlansGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAppServicePlans()
-            .getByResourceGroupWithResponse("testrg123", "testsf6141", Context.NONE);
+            .getByResourceGroupWithResponse("testrg123", "testsf6141", com.azure.core.util.Context.NONE);
     }
 }

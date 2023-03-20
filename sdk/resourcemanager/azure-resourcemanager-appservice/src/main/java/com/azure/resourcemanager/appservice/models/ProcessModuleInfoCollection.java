@@ -25,6 +25,10 @@ public final class ProcessModuleInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ProcessModuleInfoCollection class. */
+    public ProcessModuleInfoCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

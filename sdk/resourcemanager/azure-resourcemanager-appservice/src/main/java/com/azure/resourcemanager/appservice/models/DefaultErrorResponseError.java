@@ -17,6 +17,10 @@ public final class DefaultErrorResponseError extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private String innererror;
 
+    /** Creates an instance of DefaultErrorResponseError class. */
+    public DefaultErrorResponseError() {
+    }
+
     /**
      * Get the innererror property: More information to debug error.
      *

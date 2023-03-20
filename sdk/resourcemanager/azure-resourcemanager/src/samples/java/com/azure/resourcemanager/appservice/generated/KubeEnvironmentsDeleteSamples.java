@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KubeEnvironments Delete. */
 public final class KubeEnvironmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_Delete.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/KubeEnvironments_Delete.json
      */
     /**
      * Sample code: Delete kube environment by name.
@@ -22,6 +20,6 @@ public final class KubeEnvironmentsDeleteSamples {
             .manager()
             .serviceClient()
             .getKubeEnvironments()
-            .delete("examplerg", "examplekenv", Context.NONE);
+            .delete("examplerg", "examplekenv", com.azure.core.util.Context.NONE);
     }
 }

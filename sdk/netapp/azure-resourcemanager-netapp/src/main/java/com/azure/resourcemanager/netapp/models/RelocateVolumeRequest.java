@@ -16,6 +16,10 @@ public final class RelocateVolumeRequest {
     @JsonProperty(value = "creationToken")
     private String creationToken;
 
+    /** Creates an instance of RelocateVolumeRequest class. */
+    public RelocateVolumeRequest() {
+    }
+
     /**
      * Get the creationToken property: New creation token for the volume that controls the mount point name.
      *

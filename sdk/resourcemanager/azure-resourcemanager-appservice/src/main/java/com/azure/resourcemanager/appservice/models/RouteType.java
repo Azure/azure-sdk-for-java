@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouteType. */
+/**
+ * The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by
+ * RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static route set on the app only
+ *
+ * <p>These values will be used for syncing an app's routes with those from a Virtual Network.
+ */
 public final class RouteType extends ExpandableStringEnum<RouteType> {
     /** Static value DEFAULT for RouteType. */
     public static final RouteType DEFAULT = fromString("DEFAULT");
@@ -18,6 +23,15 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
 
     /** Static value STATIC for RouteType. */
     public static final RouteType STATIC = fromString("STATIC");
+
+    /**
+     * Creates a new instance of RouteType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteType() {
+    }
 
     /**
      * Creates or finds a RouteType from its string representation.

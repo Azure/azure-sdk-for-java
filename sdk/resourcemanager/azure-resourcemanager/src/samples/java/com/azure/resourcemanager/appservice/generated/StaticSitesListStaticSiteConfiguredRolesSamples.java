@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites ListStaticSiteConfiguredRoles. */
 public final class StaticSitesListStaticSiteConfiguredRolesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteConfiguredRoles.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListStaticSiteConfiguredRoles.json
      */
     /**
      * Sample code: Lists the configured roles for a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesListStaticSiteConfiguredRolesSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .listStaticSiteConfiguredRolesWithResponse("rg", "testStaticSite0", Context.NONE);
+            .listStaticSiteConfiguredRolesWithResponse("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

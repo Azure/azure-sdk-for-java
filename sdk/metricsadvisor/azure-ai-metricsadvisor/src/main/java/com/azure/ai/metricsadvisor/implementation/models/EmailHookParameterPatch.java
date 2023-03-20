@@ -17,6 +17,9 @@ public final class EmailHookParameterPatch {
     @JsonProperty(value = "toList")
     private List<String> toList;
 
+    /** Creates an instance of EmailHookParameterPatch class. */
+    public EmailHookParameterPatch() {}
+
     /**
      * Get the toList property: Email TO: list.
      *

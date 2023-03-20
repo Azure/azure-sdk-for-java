@@ -15,104 +15,82 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersResponseListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersResponseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"identity\":{\"principalId\":\"fssxqukkfplg\",\"tenantId\":\"sxnkjzkdeslpvlo\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":false,\"addonProfiles\":{},\"kubernetesVersion\":\"dwzbaiue\",\"nodeResourceGroup\":\"umnyqu\",\"agentPoolProfiles\":[],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"smtxpsieb\",\"name\":\"hvpesapskrdqm\"},\"location\":\"jjdhtld\",\"tags\":{\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"},{\"identity\":{\"principalId\":\"rmclfplphoxu\",\"tenantId\":\"rpabg\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":true,\"addonProfiles\":{},\"kubernetesVersion\":\"ugxywpmueef\",\"nodeResourceGroup\":\"fqkquj\",\"agentPoolProfiles\":[],\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"type\":\"ocqxtccmg\",\"name\":\"dxyt\"},\"location\":\"moyrxvwfudwpz\",\"tags\":{\"hckfrlhrx\":\"hdzhlrqj\",\"ca\":\"bkyvp\",\"b\":\"uzbpzkafku\",\"ehhseyvjusrts\":\"rnwb\"},\"id\":\"hspkdeemao\",\"name\":\"mx\",\"type\":\"gkvtmelmqkrhah\"},{\"identity\":{\"principalId\":\"uahaquhcdhmd\",\"tenantId\":\"laexqp\",\"type\":\"None\"},\"properties\":{\"enableRbac\":true,\"addonProfiles\":{},\"kubernetesVersion\":\"gvxp\",\"nodeResourceGroup\":\"mzlfmisgwb\",\"agentPoolProfiles\":[],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"liourqhak\",\"name\":\"hashsfwxosow\"},\"location\":\"xcug\",\"tags\":{\"wfvovbv\":\"ooxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"},\"id\":\"qwgxhniskx\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"}],\"nextLink\":\"wzbtdhxu\"}")
+                    "{\"value\":[{\"identity\":{\"principalId\":\"rp\",\"tenantId\":\"epcyvahfnlj\",\"type\":\"None\"},\"properties\":{\"enableRbac\":false,\"addonProfiles\":{},\"kubernetesVersion\":\"gidokgjljyoxgvcl\",\"nodeResourceGroup\":\"sncghkjeszz\",\"agentPoolProfiles\":[],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"fsm\",\"name\":\"eh\"},\"location\":\"pvecxgodeb\",\"tags\":{\"ukgri\":\"krbm\"},\"id\":\"flz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"},{\"identity\":{\"principalId\":\"hibnuqqkpika\",\"tenantId\":\"gvtqagnbuynh\",\"type\":\"SystemAssigned\"},\"properties\":{\"enableRbac\":false,\"addonProfiles\":{},\"kubernetesVersion\":\"arbu\",\"nodeResourceGroup\":\"vpnazzm\",\"agentPoolProfiles\":[],\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"type\":\"hrbnlankxmyskpbh\",\"name\":\"btkcxywnytnrsyn\"},\"location\":\"qidybyx\",\"tags\":{\"xdbabphlwr\":\"clha\",\"cocmnyyaztt\":\"lfktsths\",\"edckzywbiexzfey\":\"twwrqp\",\"ujwb\":\"eaxib\"},\"id\":\"qwalmuzyoxaepd\",\"name\":\"zjancuxr\",\"type\":\"d\"}],\"nextLink\":\"avxbniwdjswztsdb\"}")
                 .toObject(ProvisionedClustersResponseListResult.class);
-        Assertions.assertEquals("jjdhtld", model.value().get(0).location());
-        Assertions.assertEquals("zxuutkncwscwsvl", model.value().get(0).tags().get("otogtwrupqs"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("pvecxgodeb", model.value().get(0).location());
+        Assertions.assertEquals("krbm", model.value().get(0).tags().get("ukgri"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(false, model.value().get(0).properties().enableRbac());
-        Assertions.assertEquals("dwzbaiue", model.value().get(0).properties().kubernetesVersion());
-        Assertions.assertEquals("umnyqu", model.value().get(0).properties().nodeResourceGroup());
-        Assertions.assertEquals("smtxpsieb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("hvpesapskrdqm", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("wzbtdhxu", model.nextLink());
+        Assertions.assertEquals("gidokgjljyoxgvcl", model.value().get(0).properties().kubernetesVersion());
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).properties().nodeResourceGroup());
+        Assertions.assertEquals("fsm", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("eh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersResponseListResult model =
             new ProvisionedClustersResponseListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new ProvisionedClustersResponseInner()
-                                .withLocation("jjdhtld")
+                                .withLocation("pvecxgodeb")
+                                .withTags(mapOf("ukgri", "krbm"))
+                                .withIdentity(new ProvisionedClusterIdentity().withType(ResourceIdentityType.NONE))
+                                .withProperties(
+                                    new ProvisionedClustersResponseProperties()
+                                        .withEnableRbac(false)
+                                        .withAddonProfiles(mapOf())
+                                        .withKubernetesVersion("gidokgjljyoxgvcl")
+                                        .withNodeResourceGroup("sncghkjeszz")
+                                        .withAgentPoolProfiles(Arrays.asList()))
+                                .withExtendedLocation(
+                                    new ProvisionedClustersResponseExtendedLocation().withType("fsm").withName("eh")),
+                            new ProvisionedClustersResponseInner()
+                                .withLocation("qidybyx")
                                 .withTags(
-                                    mapOf("otogtwrupqs", "zxuutkncwscwsvl", "cykvceo", "vnm", "vnotyfjfcnj", "eil"))
+                                    mapOf(
+                                        "xdbabphlwr",
+                                        "clha",
+                                        "cocmnyyaztt",
+                                        "lfktsths",
+                                        "edckzywbiexzfey",
+                                        "twwrqp",
+                                        "ujwb",
+                                        "eaxib"))
                                 .withIdentity(
                                     new ProvisionedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                                 .withProperties(
                                     new ProvisionedClustersResponseProperties()
                                         .withEnableRbac(false)
                                         .withAddonProfiles(mapOf())
-                                        .withKubernetesVersion("dwzbaiue")
-                                        .withNodeResourceGroup("umnyqu")
+                                        .withKubernetesVersion("arbu")
+                                        .withNodeResourceGroup("vpnazzm")
                                         .withAgentPoolProfiles(Arrays.asList()))
                                 .withExtendedLocation(
                                     new ProvisionedClustersResponseExtendedLocation()
-                                        .withType("smtxpsieb")
-                                        .withName("hvpesapskrdqm")),
-                            new ProvisionedClustersResponseInner()
-                                .withLocation("moyrxvwfudwpz")
-                                .withTags(
-                                    mapOf(
-                                        "hckfrlhrx",
-                                        "hdzhlrqj",
-                                        "ca",
-                                        "bkyvp",
-                                        "b",
-                                        "uzbpzkafku",
-                                        "ehhseyvjusrts",
-                                        "rnwb"))
-                                .withIdentity(
-                                    new ProvisionedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                                .withProperties(
-                                    new ProvisionedClustersResponseProperties()
-                                        .withEnableRbac(true)
-                                        .withAddonProfiles(mapOf())
-                                        .withKubernetesVersion("ugxywpmueef")
-                                        .withNodeResourceGroup("fqkquj")
-                                        .withAgentPoolProfiles(Arrays.asList()))
-                                .withExtendedLocation(
-                                    new ProvisionedClustersResponseExtendedLocation()
-                                        .withType("ocqxtccmg")
-                                        .withName("dxyt")),
-                            new ProvisionedClustersResponseInner()
-                                .withLocation("xcug")
-                                .withTags(
-                                    mapOf(
-                                        "wfvovbv", "ooxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"))
-                                .withIdentity(new ProvisionedClusterIdentity().withType(ResourceIdentityType.NONE))
-                                .withProperties(
-                                    new ProvisionedClustersResponseProperties()
-                                        .withEnableRbac(true)
-                                        .withAddonProfiles(mapOf())
-                                        .withKubernetesVersion("gvxp")
-                                        .withNodeResourceGroup("mzlfmisgwb")
-                                        .withAgentPoolProfiles(Arrays.asList()))
-                                .withExtendedLocation(
-                                    new ProvisionedClustersResponseExtendedLocation()
-                                        .withType("liourqhak")
-                                        .withName("hashsfwxosow"))))
-                .withNextLink("wzbtdhxu");
+                                        .withType("hrbnlankxmyskpbh")
+                                        .withName("btkcxywnytnrsyn"))))
+                .withNextLink("avxbniwdjswztsdb");
         model = BinaryData.fromObject(model).toObject(ProvisionedClustersResponseListResult.class);
-        Assertions.assertEquals("jjdhtld", model.value().get(0).location());
-        Assertions.assertEquals("zxuutkncwscwsvl", model.value().get(0).tags().get("otogtwrupqs"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("pvecxgodeb", model.value().get(0).location());
+        Assertions.assertEquals("krbm", model.value().get(0).tags().get("ukgri"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(false, model.value().get(0).properties().enableRbac());
-        Assertions.assertEquals("dwzbaiue", model.value().get(0).properties().kubernetesVersion());
-        Assertions.assertEquals("umnyqu", model.value().get(0).properties().nodeResourceGroup());
-        Assertions.assertEquals("smtxpsieb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("hvpesapskrdqm", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("wzbtdhxu", model.nextLink());
+        Assertions.assertEquals("gidokgjljyoxgvcl", model.value().get(0).properties().kubernetesVersion());
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).properties().nodeResourceGroup());
+        Assertions.assertEquals("fsm", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("eh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

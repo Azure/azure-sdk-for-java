@@ -7,7 +7,7 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResourceIdentityType. */
+/** The identity type. */
 public enum ResourceIdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned");
@@ -27,6 +27,9 @@ public enum ResourceIdentityType {
      */
     @JsonCreator
     public static ResourceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceIdentityType[] items = ResourceIdentityType.values();
         for (ResourceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ResourceIdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

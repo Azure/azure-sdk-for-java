@@ -8,20 +8,36 @@ package com.azure.core.test.models;
  */
 public class TestProxySanitizer {
     private final TestProxySanitizerType testProxySanitizerType;
-    private final String regexKey;
+    private final String regex;
     private final String redactedValue;
-
+    private final String key;
     private String groupForReplace;
 
     /**
-     * Creates an instance of TestProxySanitizer
-     * @param regexKey the regex or the json key to lookup for redaction
+     * Creates an instance of TestProxySanitizer with regex
+     * @param regex the regex to apply for redaction
      * @param redactedValue the replacement text for the regex matched content
      * @param testProxySanitizerType the type of sanitizer
      */
-    public TestProxySanitizer(String regexKey, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+    public TestProxySanitizer(String regex, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
         this.testProxySanitizerType = testProxySanitizerType;
-        this.regexKey = regexKey;
+        this.regex = regex;
+        this.redactedValue = redactedValue;
+        this.key = null;
+    }
+
+    /**
+     * Creates an instance of TestProxySanitizer for a key with specified regex pattern
+     *
+     * @param key the body json key ("$..apiKey", "$..resourceId") or header key("Location") to apply regex to
+     * @param regex the regex to apply for redaction
+     * @param redactedValue the replacement text for the regex matched content
+     * @param testProxySanitizerType the type of sanitizer
+     */
+    public TestProxySanitizer(String key, String regex, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+        this.testProxySanitizerType = testProxySanitizerType;
+        this.key = key;
+        this.regex = regex;
         this.redactedValue = redactedValue;
     }
 
@@ -34,11 +50,11 @@ public class TestProxySanitizer {
     }
 
     /**
-     * Get the regex key to lookup for redaction
-     * @return the regex key to lookup for redaction
+     * Get the regex to apply for redaction
+     * @return the regex to apply for redaction
      */
     public String getRegex() {
-        return regexKey;
+        return regex;
     }
 
     /**
@@ -66,5 +82,13 @@ public class TestProxySanitizer {
     public TestProxySanitizer setGroupForReplace(String groupForReplace) {
         this.groupForReplace = groupForReplace;
         return this;
+    }
+
+    /**
+     * Get the header or body json key that is being redacted.
+     * @return the header or body json key being redacted.
+     */
+    public String getKey() {
+        return key;
     }
 }

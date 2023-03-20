@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListMultiRoleUsages. */
 public final class AppServiceEnvironmentsListMultiRoleUsagesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListMultiRoleUsages.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListMultiRoleUsages.json
      */
     /**
      * Sample code: Get usage metrics for a multi-role pool of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListMultiRoleUsagesSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listMultiRoleUsages("test-rg", "test-ase", Context.NONE);
+            .listMultiRoleUsages("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

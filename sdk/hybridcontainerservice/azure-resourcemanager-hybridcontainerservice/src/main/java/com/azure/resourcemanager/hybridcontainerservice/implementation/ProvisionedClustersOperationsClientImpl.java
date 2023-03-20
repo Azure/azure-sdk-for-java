@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClustersOperationsClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersResponseInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusters;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersPatch;
@@ -70,18 +72,18 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridContainerServi")
-    private interface ProvisionedClustersOperationsService {
+    public interface ProvisionedClustersOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProvisionedClustersResponseInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -89,14 +91,14 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ProvisionedClusters provisionedClusters,
             @HeaderParam("Accept") String accept,
@@ -105,14 +107,14 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -120,14 +122,14 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ProvisionedClustersPatch provisionedClusters,
             @HeaderParam("Accept") String accept,
@@ -159,6 +161,37 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/upgradeProfiles/default")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProvisionedClusterUpgradeProfileInner>> getUpgradeProfile(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}"
+                + "/upgradeNodeImageVersionForEntireCluster")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionForEntireCluster(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -185,7 +218,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,7 +226,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProvisionedClustersResponseInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName) {
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -210,10 +243,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -224,7 +255,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -237,7 +268,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -246,7 +277,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProvisionedClustersResponseInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -263,10 +294,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -275,7 +304,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -287,7 +316,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,8 +324,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProvisionedClustersResponseInner> getByResourceGroupAsync(
-        String resourceGroupName, String provisionedClustersName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, provisionedClustersName)
+        String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -306,7 +335,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,8 +344,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProvisionedClustersResponseInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, provisionedClustersName, context).block();
+        String resourceGroupName, String resourceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -325,16 +354,15 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Hybrid AKS provisioned cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProvisionedClustersResponseInner getByResourceGroup(
-        String resourceGroupName, String provisionedClustersName) {
-        return getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, Context.NONE).getValue();
+    public ProvisionedClustersResponseInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -343,7 +371,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,7 +381,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClusters provisionedClusters) {
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -370,10 +398,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (provisionedClusters == null) {
             return Mono
@@ -390,7 +416,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             this.client.getApiVersion(),
                             provisionedClusters,
                             accept,
@@ -404,7 +430,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,10 +441,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClusters provisionedClusters,
-        Context context) {
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -435,10 +458,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (provisionedClusters == null) {
             return Mono
@@ -453,7 +474,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 this.client.getApiVersion(),
                 provisionedClusters,
                 accept,
@@ -466,7 +487,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -476,9 +497,9 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner>
         beginCreateOrUpdateAsync(
-            String resourceGroupName, String provisionedClustersName, ProvisionedClusters provisionedClusters) {
+            String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, provisionedClustersName, provisionedClusters);
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, provisionedClusters);
         return this
             .client
             .<ProvisionedClustersResponseInner, ProvisionedClustersResponseInner>getLroResult(
@@ -495,7 +516,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,13 +527,10 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner>
         beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String provisionedClustersName,
-            ProvisionedClusters provisionedClusters,
-            Context context) {
+            String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, provisionedClusters, context);
         return this
             .client
             .<ProvisionedClustersResponseInner, ProvisionedClustersResponseInner>getLroResult(
@@ -529,7 +547,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -538,10 +556,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner>
-        beginCreateOrUpdate(
-            String resourceGroupName, String provisionedClustersName, ProvisionedClusters provisionedClusters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters)
-            .getSyncPoller();
+        beginCreateOrUpdate(String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters).getSyncPoller();
     }
 
     /**
@@ -550,7 +566,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -561,11 +577,9 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner>
         beginCreateOrUpdate(
-            String resourceGroupName,
-            String provisionedClustersName,
-            ProvisionedClusters provisionedClusters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context)
+            String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters, context)
             .getSyncPoller();
     }
 
@@ -575,7 +589,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -584,8 +598,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProvisionedClustersResponseInner> createOrUpdateAsync(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClusters provisionedClusters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters)
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -596,7 +610,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -606,11 +620,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProvisionedClustersResponseInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClusters provisionedClusters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context)
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -621,7 +632,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,8 +641,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProvisionedClustersResponseInner createOrUpdate(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClusters provisionedClusters) {
-        return createOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters).block();
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters).block();
     }
 
     /**
@@ -640,7 +651,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Creates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,11 +661,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProvisionedClustersResponseInner createOrUpdate(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClusters provisionedClusters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context).block();
+        String resourceGroupName, String resourceName, ProvisionedClusters provisionedClusters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, provisionedClusters, context).block();
     }
 
     /**
@@ -663,14 +671,14 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String provisionedClustersName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -687,10 +695,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -701,7 +707,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -714,7 +720,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -723,7 +729,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -740,10 +746,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -752,7 +756,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -764,15 +768,15 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String provisionedClustersName) {
-        return deleteWithResponseAsync(resourceGroupName, provisionedClustersName).flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -781,7 +785,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -789,9 +793,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, provisionedClustersName, context).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -800,14 +803,14 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String provisionedClustersName) {
-        deleteWithResponse(resourceGroupName, provisionedClustersName, Context.NONE);
+    public void delete(String resourceGroupName, String resourceName) {
+        deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -816,7 +819,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -826,7 +829,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClustersPatch provisionedClusters) {
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -843,10 +846,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (provisionedClusters == null) {
             return Mono
@@ -863,7 +864,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             this.client.getApiVersion(),
                             provisionedClusters,
                             accept,
@@ -877,7 +878,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,10 +889,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClustersPatch provisionedClusters,
-        Context context) {
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -908,10 +906,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (provisionedClusters == null) {
             return Mono
@@ -926,7 +922,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 this.client.getApiVersion(),
                 provisionedClusters,
                 accept,
@@ -939,7 +935,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -948,9 +944,9 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner> beginUpdateAsync(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClustersPatch provisionedClusters) {
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, provisionedClustersName, provisionedClusters);
+            updateWithResponseAsync(resourceGroupName, resourceName, provisionedClusters);
         return this
             .client
             .<ProvisionedClustersResponseInner, ProvisionedClustersResponseInner>getLroResult(
@@ -967,7 +963,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,13 +973,10 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner> beginUpdateAsync(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClustersPatch provisionedClusters,
-        Context context) {
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context);
+            updateWithResponseAsync(resourceGroupName, resourceName, provisionedClusters, context);
         return this
             .client
             .<ProvisionedClustersResponseInner, ProvisionedClustersResponseInner>getLroResult(
@@ -1000,7 +993,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1009,8 +1002,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner> beginUpdate(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClustersPatch provisionedClusters) {
-        return beginUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters).getSyncPoller();
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters) {
+        return this.beginUpdateAsync(resourceGroupName, resourceName, provisionedClusters).getSyncPoller();
     }
 
     /**
@@ -1019,7 +1012,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1029,12 +1022,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisionedClustersResponseInner>, ProvisionedClustersResponseInner> beginUpdate(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClustersPatch provisionedClusters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context)
-            .getSyncPoller();
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, resourceName, provisionedClusters, context).getSyncPoller();
     }
 
     /**
@@ -1043,7 +1032,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1052,8 +1041,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProvisionedClustersResponseInner> updateAsync(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClustersPatch provisionedClusters) {
-        return beginUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters)
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters) {
+        return beginUpdateAsync(resourceGroupName, resourceName, provisionedClusters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1064,7 +1053,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1074,11 +1063,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProvisionedClustersResponseInner> updateAsync(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClustersPatch provisionedClusters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context)
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, provisionedClusters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1089,7 +1075,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1098,8 +1084,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProvisionedClustersResponseInner update(
-        String resourceGroupName, String provisionedClustersName, ProvisionedClustersPatch provisionedClusters) {
-        return updateAsync(resourceGroupName, provisionedClustersName, provisionedClusters).block();
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters) {
+        return updateAsync(resourceGroupName, resourceName, provisionedClusters).block();
     }
 
     /**
@@ -1108,7 +1094,7 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      * <p>Updates the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param provisionedClusters The provisionedClusters resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1118,11 +1104,8 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProvisionedClustersResponseInner update(
-        String resourceGroupName,
-        String provisionedClustersName,
-        ProvisionedClustersPatch provisionedClusters,
-        Context context) {
-        return updateAsync(resourceGroupName, provisionedClustersName, provisionedClusters, context).block();
+        String resourceGroupName, String resourceName, ProvisionedClustersPatch provisionedClusters, Context context) {
+        return updateAsync(resourceGroupName, resourceName, provisionedClusters, context).block();
     }
 
     /**
@@ -1458,6 +1441,409 @@ public final class ProvisionedClustersOperationsClientImpl implements Provisione
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProvisionedClustersResponseInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ProvisionedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getUpgradeProfile(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            resourceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ProvisionedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getUpgradeProfile(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                resourceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ProvisionedClusterUpgradeProfileInner> getUpgradeProfileAsync(
+        String resourceGroupName, String resourceName) {
+        return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProvisionedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProvisionedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName) {
+        return getUpgradeProfileWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionForEntireClusterWithResponseAsync(
+        String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .upgradeNodeImageVersionForEntireCluster(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionForEntireClusterWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .upgradeNodeImageVersionForEntireCluster(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeNodeImageVersionForEntireClusterAsync(
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            upgradeNodeImageVersionForEntireClusterWithResponseAsync(resourceGroupName, resourceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeNodeImageVersionForEntireClusterAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            upgradeNodeImageVersionForEntireClusterWithResponseAsync(resourceGroupName, resourceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeNodeImageVersionForEntireCluster(
+        String resourceGroupName, String resourceName) {
+        return this.beginUpgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeNodeImageVersionForEntireCluster(
+        String resourceGroupName, String resourceName, Context context) {
+        return this
+            .beginUpgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeNodeImageVersionForEntireClusterAsync(String resourceGroupName, String resourceName) {
+        return beginUpgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeNodeImageVersionForEntireClusterAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginUpgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeNodeImageVersionForEntireCluster(String resourceGroupName, String resourceName) {
+        upgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName).block();
+    }
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeNodeImageVersionForEntireCluster(
+        String resourceGroupName, String resourceName, Context context) {
+        upgradeNodeImageVersionForEntireClusterAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**

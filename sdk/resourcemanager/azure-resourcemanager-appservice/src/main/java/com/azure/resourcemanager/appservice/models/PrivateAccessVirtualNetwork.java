@@ -30,12 +30,15 @@ public final class PrivateAccessVirtualNetwork {
     private String resourceId;
 
     /*
-     * A List of subnets that access is allowed to on this Virtual Network. An
-     * empty array (but not null) is interpreted to mean that all subnets are
-     * allowed within this Virtual Network.
+     * A List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is
+     * interpreted to mean that all subnets are allowed within this Virtual Network.
      */
     @JsonProperty(value = "subnets")
     private List<PrivateAccessSubnet> subnets;
+
+    /** Creates an instance of PrivateAccessVirtualNetwork class. */
+    public PrivateAccessVirtualNetwork() {
+    }
 
     /**
      * Get the name property: The name of the Virtual Network.
