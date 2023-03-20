@@ -14,10 +14,12 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuFamily;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
 import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
+import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -85,6 +87,14 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             // Rules governing the accessibility of the key vault from specific network locations.
             MhsmNetworkRuleSet ruleSet = hsm.networkRuleSet();
             Assertions.assertNotNull(ruleSet);
+
+            // Whether data plane traffic coming from public networks is allowed while private endpoint is enabled
+            PublicNetworkAccess publicNetworkAccess = hsm.publicNetworkAccess();
+            Assertions.assertEquals(PublicNetworkAccess.ENABLED, publicNetworkAccess);
+
+            // The scheduled purge date in UTC.
+            OffsetDateTime scheduledPurgeDate = hsm.scheduledPurgeDate();
+            Assertions.assertNotNull(scheduledPurgeDate);
         } finally {
             keyVaultManager.managedHsms().deleteById(managedHsm.id());
             keyVaultManager.serviceClient().getManagedHsms().purgeDeleted(managedHsm.name(), managedHsm.regionName());

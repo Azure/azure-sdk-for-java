@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -21,11 +20,8 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
-import com.azure.resourcemanager.keyvault.models.CreateMode;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Keys;
 import com.azure.resourcemanager.keyvault.models.ManagedHsm;
@@ -33,14 +29,8 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuFamily;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
-import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
-import com.azure.resourcemanager.keyvault.models.ProvisioningState;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
-import com.azure.resourcemanager.test.utils.TestDelayProvider;
-import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient;
 import com.azure.security.keyvault.administration.KeyVaultAccessControlClientBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -114,7 +104,7 @@ public class ManagedHsmTests extends SamplesTestBase {
     }
 
     @BeforeAll
-    // TODO remove once core-management is released
+    // TODO(xiaofei) remove once core-management is released
     public static void setup() {
         AzureEnvironment.AZURE.getEndpoints().put("managedHsm", ".managedhsm.azure.net");
     }
@@ -308,18 +298,18 @@ public class ManagedHsmTests extends SamplesTestBase {
             jsonWebKey.x5t = base64Encode(MessageDigest.getInstance("SHA1").digest(x509Certificate.getEncoded()));
             jsonWebKey.x5tS256 = base64Encode(MessageDigest.getInstance("SHA256").digest(x509Certificate.getEncoded()));
             jsonWebKey.keyOps = Arrays.asList("encrypt", "verify", "wrapKey");
-            RSAPrivateCrtKey privateKey = (RSAPrivateCrtKey)generateKeyPair.getPrivate();
+            RSAPrivateCrtKey privateKey = (RSAPrivateCrtKey) generateKeyPair.getPrivate();
 
             jsonWebKey.n = base64Encode(privateKey.getModulus().toByteArray());
             jsonWebKey.e = base64Encode(privateKey.getPublicExponent().toByteArray());
             return jsonWebKey;
         }
 
-        private static String base64X5c(byte[] publicBytes) throws Exception{
+        private static String base64X5c(byte[] publicBytes) throws Exception {
             return new String(Base64.getEncoder().encode(publicBytes), "ascii");
         }
 
-        private static String base64Encode(byte[] digest) throws Exception{
+        private static String base64Encode(byte[] digest) throws Exception {
             return new String(Base64.getEncoder().encode(digest), "ascii").trim().replaceAll("\\+", "-").replaceAll("/", "_");
         }
 

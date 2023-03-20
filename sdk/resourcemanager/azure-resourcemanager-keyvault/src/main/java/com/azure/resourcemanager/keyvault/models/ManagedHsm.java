@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure Managed HSM. */
@@ -46,4 +47,10 @@ public interface ManagedHsm
 
     /** @return the Key Vault key API entry point */
     Keys keys();
+
+    /** @return the scheduled purge date in UTC */
+    OffsetDateTime scheduledPurgeDate();
+
+    /** @return whether data plane traffic coming from public networks is allowed while private endpoint is enabled */
+    PublicNetworkAccess publicNetworkAccess();
 }

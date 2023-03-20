@@ -17,6 +17,7 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -26,6 +27,7 @@ import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +53,11 @@ class ManagedHsmImpl
         }
     }
 
+    /**
+     * (Internal use only)
+     * We haven't supported creating {@link ManagedHsm} in convenience layer yet. This is for implementing necessary abstract class contract.
+     * @return {@link Mono} of the created {@link ManagedHsm} instance
+     */
     @Override
     public Mono<ManagedHsm> createResourceAsync() {
         return manager().serviceClient().getManagedHsms().createOrUpdateAsync(resourceGroupName(), name(), innerModel())
@@ -126,6 +133,22 @@ class ManagedHsmImpl
     @Override
     public Keys keys() {
         return new KeysImpl(keyClient, mhsmHttpPipeline);
+    }
+
+    @Override
+    public OffsetDateTime scheduledPurgeDate() {
+        if (innerModel().properties() == null) {
+            return null;
+        }
+        return innerModel().properties().scheduledPurgeDate();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        if (innerModel().properties() == null) {
+            return null;
+        }
+        return innerModel().properties().publicNetworkAccess();
     }
 
     @Override
