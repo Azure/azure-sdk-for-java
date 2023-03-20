@@ -1,0 +1,2 @@
+org.springframework.aot.hint.RuntimeHintsRegistrar= \
+com.azure.spring.cloud.service.implementation.SpringCloudAzureServiceRuntimeHints
