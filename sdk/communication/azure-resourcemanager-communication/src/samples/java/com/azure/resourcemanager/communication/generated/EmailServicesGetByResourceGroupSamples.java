@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EmailServices GetByResourceGroup. */
 public final class EmailServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/get.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/emailServices/get.json
      */
     /**
      * Sample code: Get EmailService resource.
@@ -19,6 +17,7 @@ public final class EmailServicesGetByResourceGroupSamples {
     public static void getEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
         manager
             .emailServices()
-            .getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE);
     }
 }
