@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetSlotSiteDeploymentStatusSlot. */
 public final class WebAppsGetSlotSiteDeploymentStatusSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSiteDeploymentStatusSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSiteDeploymentStatusSlot.json
      */
     /**
      * Sample code: Get Deployment Status Slot.
@@ -23,6 +21,6 @@ public final class WebAppsGetSlotSiteDeploymentStatusSlotSamples {
             .serviceClient()
             .getWebApps()
             .getSlotSiteDeploymentStatusSlot(
-                "rg", "testSite", "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", Context.NONE);
+                "rg", "testSite", "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", com.azure.core.util.Context.NONE);
     }
 }

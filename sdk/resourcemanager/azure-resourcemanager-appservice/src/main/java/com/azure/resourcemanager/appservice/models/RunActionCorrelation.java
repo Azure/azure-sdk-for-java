@@ -17,6 +17,10 @@ public final class RunActionCorrelation extends RunCorrelation {
     @JsonProperty(value = "actionTrackingId")
     private String actionTrackingId;
 
+    /** Creates an instance of RunActionCorrelation class. */
+    public RunActionCorrelation() {
+    }
+
     /**
      * Get the actionTrackingId property: The action tracking identifier.
      *

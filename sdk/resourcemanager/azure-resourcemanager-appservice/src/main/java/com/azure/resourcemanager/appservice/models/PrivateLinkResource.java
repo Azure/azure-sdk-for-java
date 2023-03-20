@@ -35,6 +35,10 @@ public final class PrivateLinkResource {
     @JsonProperty(value = "properties", required = true)
     private PrivateLinkResourceProperties properties;
 
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
+
     /**
      * Get the id property: The id property.
      *

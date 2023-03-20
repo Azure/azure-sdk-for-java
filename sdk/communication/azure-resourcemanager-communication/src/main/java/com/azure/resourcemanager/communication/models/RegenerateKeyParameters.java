@@ -16,6 +16,10 @@ public final class RegenerateKeyParameters {
     @JsonProperty(value = "keyType")
     private KeyType keyType;
 
+    /** Creates an instance of RegenerateKeyParameters class. */
+    public RegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyType property: The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
      *

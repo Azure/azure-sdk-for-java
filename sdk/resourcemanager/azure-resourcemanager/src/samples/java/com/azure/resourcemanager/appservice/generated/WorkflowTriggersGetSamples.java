@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggers Get. */
 public final class WorkflowTriggersGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggers_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggers_Get.json
      */
     /**
      * Sample code: Get a workflow trigger.
@@ -22,6 +20,7 @@ public final class WorkflowTriggersGetSamples {
             .manager()
             .serviceClient()
             .getWorkflowTriggers()
-            .getWithResponse("test-resource-group", "test-name", "test-workflow", "manual", Context.NONE);
+            .getWithResponse(
+                "test-resource-group", "test-name", "test-workflow", "manual", com.azure.core.util.Context.NONE);
     }
 }

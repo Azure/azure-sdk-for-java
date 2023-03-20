@@ -48,6 +48,10 @@ public final class WorkflowTriggerCallbackUrlInner {
     @JsonProperty(value = "queries")
     private WorkflowTriggerListCallbackUrlQueries queries;
 
+    /** Creates an instance of WorkflowTriggerCallbackUrlInner class. */
+    public WorkflowTriggerCallbackUrlInner() {
+    }
+
     /**
      * Get the value property: Gets the workflow trigger callback URL.
      *

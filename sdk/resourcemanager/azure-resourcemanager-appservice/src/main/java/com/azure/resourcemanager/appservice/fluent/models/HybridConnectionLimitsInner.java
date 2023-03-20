@@ -17,6 +17,10 @@ public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private HybridConnectionLimitsProperties innerProperties;
 
+    /** Creates an instance of HybridConnectionLimitsInner class. */
+    public HybridConnectionLimitsInner() {
+    }
+
     /**
      * Get the innerProperties property: HybridConnectionLimits resource specific properties.
      *

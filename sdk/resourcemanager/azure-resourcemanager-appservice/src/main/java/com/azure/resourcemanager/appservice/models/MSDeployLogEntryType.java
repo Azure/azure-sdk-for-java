@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MSDeployLogEntryType. */
+/** Log entry type. */
 public enum MSDeployLogEntryType {
     /** Enum value Message. */
     MESSAGE("Message"),
@@ -33,6 +33,9 @@ public enum MSDeployLogEntryType {
      */
     @JsonCreator
     public static MSDeployLogEntryType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MSDeployLogEntryType[] items = MSDeployLogEntryType.values();
         for (MSDeployLogEntryType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum MSDeployLogEntryType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -17,8 +17,7 @@ public final class ReissueCertificateOrderRequestProperties {
     private Integer keySize;
 
     /*
-     * Delay in hours to revoke existing certificate after the new certificate
-     * is issued.
+     * Delay in hours to revoke existing certificate after the new certificate is issued.
      */
     @JsonProperty(value = "delayExistingRevokeInHours")
     private Integer delayExistingRevokeInHours;
@@ -30,11 +29,14 @@ public final class ReissueCertificateOrderRequestProperties {
     private String csr;
 
     /*
-     * Should we change the ASC type (from managed private key to external
-     * private key and vice versa).
+     * Should we change the ASC type (from managed private key to external private key and vice versa).
      */
     @JsonProperty(value = "isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
+
+    /** Creates an instance of ReissueCertificateOrderRequestProperties class. */
+    public ReissueCertificateOrderRequestProperties() {
+    }
 
     /**
      * Get the keySize property: Certificate Key Size.

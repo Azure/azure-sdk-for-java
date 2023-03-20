@@ -88,12 +88,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.1.11</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.0-beta.15</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.1.0-beta.16</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -183,7 +183,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.42.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.43.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -293,12 +293,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -308,12 +308,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -590,7 +590,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.33.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.34.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>

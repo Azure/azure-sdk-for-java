@@ -42,6 +42,10 @@ public final class MSDeployStatusProperties {
     @JsonProperty(value = "complete", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean complete;
 
+    /** Creates an instance of MSDeployStatusProperties class. */
+    public MSDeployStatusProperties() {
+    }
+
     /**
      * Get the deployer property: Username of deployer.
      *

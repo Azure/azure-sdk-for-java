@@ -23,6 +23,10 @@ public final class FlowEndpoints {
     @JsonProperty(value = "accessEndpointIpAddresses")
     private List<IpAddress> accessEndpointIpAddresses;
 
+    /** Creates an instance of FlowEndpoints class. */
+    public FlowEndpoints() {
+    }
+
     /**
      * Get the outgoingIpAddresses property: The outgoing ip address.
      *

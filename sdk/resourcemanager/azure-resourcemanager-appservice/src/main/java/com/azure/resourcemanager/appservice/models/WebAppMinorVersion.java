@@ -28,6 +28,10 @@ public final class WebAppMinorVersion {
     @JsonProperty(value = "stackSettings", access = JsonProperty.Access.WRITE_ONLY)
     private WebAppRuntimes stackSettings;
 
+    /** Creates an instance of WebAppMinorVersion class. */
+    public WebAppMinorVersion() {
+    }
+
     /**
      * Get the displayText property: Web App stack minor version (display only).
      *

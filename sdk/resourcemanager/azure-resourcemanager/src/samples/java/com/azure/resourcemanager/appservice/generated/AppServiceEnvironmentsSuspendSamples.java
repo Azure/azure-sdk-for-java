@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments Suspend. */
 public final class AppServiceEnvironmentsSuspendSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_Suspend.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_Suspend.json
      */
     /**
      * Sample code: Suspend an App Service Environment.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsSuspendSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .suspend("test-rg", "test-ase", Context.NONE);
+            .suspend("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

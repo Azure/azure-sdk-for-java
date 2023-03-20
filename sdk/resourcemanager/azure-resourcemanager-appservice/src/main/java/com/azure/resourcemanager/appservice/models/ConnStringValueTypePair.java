@@ -23,6 +23,10 @@ public final class ConnStringValueTypePair {
     @JsonProperty(value = "type", required = true)
     private ConnectionStringType type;
 
+    /** Creates an instance of ConnStringValueTypePair class. */
+    public ConnStringValueTypePair() {
+    }
+
     /**
      * Get the value property: Value of pair.
      *

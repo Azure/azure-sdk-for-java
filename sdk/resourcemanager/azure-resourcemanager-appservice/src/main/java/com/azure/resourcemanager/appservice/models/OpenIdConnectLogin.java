@@ -23,6 +23,10 @@ public final class OpenIdConnectLogin {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
+    /** Creates an instance of OpenIdConnectLogin class. */
+    public OpenIdConnectLogin() {
+    }
+
     /**
      * Get the nameClaimType property: The name of the claim that contains the users name.
      *
