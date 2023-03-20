@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments Upgrade. */
 public final class AppServiceEnvironmentsUpgradeSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_Upgrade.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_Upgrade.json
      */
     /**
      * Sample code: Initiate an upgrade on an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsUpgradeSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .upgrade("rg", "SampleHostingEnvironment", Context.NONE);
+            .upgrade("rg", "SampleHostingEnvironment", com.azure.core.util.Context.NONE);
     }
 }

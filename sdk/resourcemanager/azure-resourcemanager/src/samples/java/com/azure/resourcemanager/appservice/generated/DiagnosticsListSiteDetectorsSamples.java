@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics ListSiteDetectors. */
 public final class DiagnosticsListSiteDetectorsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDetectors.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectors.json
      */
     /**
      * Sample code: List App Detectors.
@@ -22,11 +20,12 @@ public final class DiagnosticsListSiteDetectorsSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .listSiteDetectors("Sample-WestUSResourceGroup", "SampleApp", "availability", Context.NONE);
+            .listSiteDetectors(
+                "Sample-WestUSResourceGroup", "SampleApp", "availability", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectorsSlot.json
      */
     /**
      * Sample code: List App Slot Detectors.
@@ -39,6 +38,7 @@ public final class DiagnosticsListSiteDetectorsSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .listSiteDetectors("Sample-WestUSResourceGroup", "SampleApp", "availability", Context.NONE);
+            .listSiteDetectors(
+                "Sample-WestUSResourceGroup", "SampleApp", "availability", com.azure.core.util.Context.NONE);
     }
 }

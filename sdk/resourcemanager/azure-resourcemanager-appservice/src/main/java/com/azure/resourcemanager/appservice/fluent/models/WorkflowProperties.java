@@ -106,6 +106,10 @@ public final class WorkflowProperties {
     @JsonProperty(value = "kind")
     private Kind kind;
 
+    /** Creates an instance of WorkflowProperties class. */
+    public WorkflowProperties() {
+    }
+
     /**
      * Get the provisioningState property: Gets the provisioning state.
      *

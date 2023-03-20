@@ -17,6 +17,10 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MigrateMySqlRequestProperties innerProperties;
 
+    /** Creates an instance of MigrateMySqlRequest class. */
+    public MigrateMySqlRequest() {
+    }
+
     /**
      * Get the innerProperties property: MigrateMySqlRequest resource specific properties.
      *

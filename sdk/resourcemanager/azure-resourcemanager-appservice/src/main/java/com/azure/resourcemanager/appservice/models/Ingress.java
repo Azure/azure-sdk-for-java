@@ -42,11 +42,15 @@ public final class Ingress {
     private List<TrafficWeight> traffic;
 
     /*
-     * Bool indicating if HTTP connections to is allowed. If set to false HTTP
-     * connections are automatically redirected to HTTPS connections
+     * Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected
+     * to HTTPS connections
      */
     @JsonProperty(value = "allowInsecure")
     private Boolean allowInsecure;
+
+    /** Creates an instance of Ingress class. */
+    public Ingress() {
+    }
 
     /**
      * Get the fqdn property: Hostname.

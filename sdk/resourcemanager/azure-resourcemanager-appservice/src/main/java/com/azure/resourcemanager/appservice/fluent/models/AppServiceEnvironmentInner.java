@@ -38,8 +38,7 @@ public final class AppServiceEnvironmentInner {
     private VirtualNetworkProfile virtualNetwork;
 
     /*
-     * Specifies which endpoints to serve internally in the Virtual Network for
-     * the App Service Environment.
+     * Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
      */
     @JsonProperty(value = "internalLoadBalancingMode")
     private LoadBalancingMode internalLoadBalancingMode;
@@ -81,17 +80,15 @@ public final class AppServiceEnvironmentInner {
     private Integer frontEndScaleFactor;
 
     /*
-     * <code>true</code> if the App Service Environment is suspended;
-     * otherwise, <code>false</code>. The environment can be suspended, e.g.
-     * when the management endpoint is no longer available
+     * <code>true</code> if the App Service Environment is suspended; otherwise, <code>false</code>. The environment
+     * can be suspended, e.g. when the management endpoint is no longer available
      * (most likely because NSG blocked the incoming traffic).
      */
     @JsonProperty(value = "suspended", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean suspended;
 
     /*
-     * Custom settings for changing the behavior of the App Service
-     * Environment.
+     * Custom settings for changing the behavior of the App Service Environment.
      */
     @JsonProperty(value = "clusterSettings")
     private List<NameValuePair> clusterSettings;
@@ -143,6 +140,10 @@ public final class AppServiceEnvironmentInner {
      */
     @JsonProperty(value = "upgradeAvailability", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeAvailability upgradeAvailability;
+
+    /** Creates an instance of AppServiceEnvironmentInner class. */
+    public AppServiceEnvironmentInner() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.

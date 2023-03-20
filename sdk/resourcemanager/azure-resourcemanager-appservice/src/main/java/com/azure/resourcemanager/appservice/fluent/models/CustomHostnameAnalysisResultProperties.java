@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class CustomHostnameAnalysisResultProperties {
     /*
-     * <code>true</code> if hostname is already verified; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if hostname is already verified; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isHostnameAlreadyVerified", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHostnameAlreadyVerified;
@@ -33,22 +32,19 @@ public final class CustomHostnameAnalysisResultProperties {
     private ErrorEntity customDomainVerificationFailureInfo;
 
     /*
-     * <code>true</code> if there is a conflict on a scale unit; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if there is a conflict on a scale unit; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "hasConflictOnScaleUnit", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictOnScaleUnit;
 
     /*
-     * <code>true</code> if there is a conflict across subscriptions;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if there is a conflict across subscriptions; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "hasConflictAcrossSubscription", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictAcrossSubscription;
 
     /*
-     * Name of the conflicting app on scale unit if it's within the same
-     * subscription.
+     * Name of the conflicting app on scale unit if it's within the same subscription.
      */
     @JsonProperty(value = "conflictingAppResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String conflictingAppResourceId;
@@ -82,6 +78,10 @@ public final class CustomHostnameAnalysisResultProperties {
      */
     @JsonProperty(value = "alternateTxtRecords")
     private List<String> alternateTxtRecords;
+
+    /** Creates an instance of CustomHostnameAnalysisResultProperties class. */
+    public CustomHostnameAnalysisResultProperties() {
+    }
 
     /**
      * Get the isHostnameAlreadyVerified property: &lt;code&gt;true&lt;/code&gt; if hostname is already verified;
