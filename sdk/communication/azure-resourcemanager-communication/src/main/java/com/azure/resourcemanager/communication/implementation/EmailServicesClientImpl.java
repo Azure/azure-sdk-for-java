@@ -67,11 +67,10 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CommunicationService")
-    private interface EmailServicesService {
+    public interface EmailServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EmailServiceResourceInner>> getByResourceGroup(
@@ -85,8 +84,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -101,8 +99,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -116,8 +113,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -143,8 +139,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EmailServiceResourceList>> listByResourceGroup(
@@ -312,23 +307,6 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the EmailService and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EmailServiceResourceInner getByResourceGroup(String resourceGroupName, String emailServiceName) {
-        return getByResourceGroupAsync(resourceGroupName, emailServiceName).block();
-    }
-
-    /**
-     * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -339,6 +317,23 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     public Response<EmailServiceResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String emailServiceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, emailServiceName, context).block();
+    }
+
+    /**
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the EmailService and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EmailServiceResourceInner getByResourceGroup(String resourceGroupName, String emailServiceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, emailServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -531,7 +526,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EmailServiceResourceInner>, EmailServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, parameters).getSyncPoller();
     }
 
     /**
@@ -551,7 +546,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EmailServiceResourceInner>, EmailServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -794,7 +789,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName) {
-        return beginDeleteAsync(resourceGroupName, emailServiceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, emailServiceName).getSyncPoller();
     }
 
     /**
@@ -813,7 +808,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String emailServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, emailServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, emailServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1078,7 +1073,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EmailServiceResourceInner>, EmailServiceResourceInner> beginUpdate(
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, emailServiceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, emailServiceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1098,7 +1093,7 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EmailServiceResourceInner>, EmailServiceResourceInner> beginUpdate(
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, emailServiceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, emailServiceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1618,20 +1613,6 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
      *
      * <p>Get a list of domains that are fully verified in Exchange Online.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains that are fully verified in Exchange Online.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listVerifiedExchangeOnlineDomains() {
-        return listVerifiedExchangeOnlineDomainsAsync().block();
-    }
-
-    /**
-     * List Verified Domains From Exchange Online
-     *
-     * <p>Get a list of domains that are fully verified in Exchange Online.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1641,6 +1622,20 @@ public final class EmailServicesClientImpl implements EmailServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
         return listVerifiedExchangeOnlineDomainsWithResponseAsync(context).block();
+    }
+
+    /**
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains that are fully verified in Exchange Online.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<String> listVerifiedExchangeOnlineDomains() {
+        return listVerifiedExchangeOnlineDomainsWithResponse(Context.NONE).getValue();
     }
 
     /**
