@@ -932,9 +932,7 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev",
-        "Pnative",
-        "Djava"
+        "Pdev"
       ]
     },
     {
@@ -988,7 +986,9 @@
         "VCAP",
         "xiada",
         "yiliu",
-        "usgovcloudapi"
+        "usgovcloudapi",
+        "Pnative",
+        "Djava"
       ]
     }
   ],
