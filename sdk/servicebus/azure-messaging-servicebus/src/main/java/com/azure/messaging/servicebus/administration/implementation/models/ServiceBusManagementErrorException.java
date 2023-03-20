@@ -26,7 +26,8 @@ public final class ServiceBusManagementErrorException extends HttpResponseExcept
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public ServiceBusManagementErrorException(String message, HttpResponse response, ServiceBusManagementError value) {
+    public ServiceBusManagementErrorException(
+            String message, HttpResponse response, ServiceBusManagementError value) {
         super(message, response, value);
     }
 

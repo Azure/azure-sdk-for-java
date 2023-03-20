@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The ServiceBusManagementError model. */
+/** The error response from Service Bus. */
 @JacksonXmlRootElement(localName = "ServiceBusManagementError")
 @Fluent
 public final class ServiceBusManagementError {
