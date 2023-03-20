@@ -3,6 +3,9 @@
 ## 4.7.0-beta.1 (Unreleased)
 Upgrade Spring Boot dependencies version to 2.7.9 and Spring Cloud dependencies version to 2021.0.5
 
+#### Features Added
+- The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+
 ### Spring Messaging Event Hubs
 This section includes changes in `spring-messaging-azure-eventhubs` module.
 
