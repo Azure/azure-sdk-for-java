@@ -23,6 +23,15 @@ public final class SignalRRequestType extends ExpandableStringEnum<SignalRReques
     public static final SignalRRequestType TRACE = fromString("Trace");
 
     /**
+     * Creates a new instance of SignalRRequestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignalRRequestType() {
+    }
+
+    /**
      * Creates or finds a SignalRRequestType from its string representation.
      *
      * @param name a name to look for.
