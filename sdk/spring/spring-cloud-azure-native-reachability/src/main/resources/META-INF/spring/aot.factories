@@ -1,4 +1,3 @@
 org.springframework.aot.hint.RuntimeHintsRegistrar= \
 com.azure.spring.implementation.cloud.autoconfigure.jdbc.PasswordlessHints,\
-com.azure.spring.implementation.cloud.core.SpringCloudAzureCoreRuntimeHints,\
-com.azure.spring.implementation.messaging.servicebus.SpringMessagingAzureServiceBusRuntimeHints
+com.azure.spring.implementation.cloud.core.SpringCloudAzureCoreRuntimeHints
