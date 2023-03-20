@@ -3,12 +3,9 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Enumeration specifying Priority Level of requests
  */
-@Beta(value = Beta.SinceVersion.V4_41_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum PriorityLevel {
     /**
      * High Priority level
