@@ -32,8 +32,8 @@ import java.util.List;
  *
  * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.InteractiveBrowserCredential},
- * using the {@link com.azure.identity.InteractiveBrowserCredentialBuilder} to configure it. By default, the credential
+ * <p>The following code sample demonstrates the creation of a {@link InteractiveBrowserCredential},
+ * using the {@link InteractiveBrowserCredentialBuilder} to configure it. By default, the credential
  * targets a localhost redirect URL, to override that behaviour a
  * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} can be optionally specified. Once this credential is
  * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'

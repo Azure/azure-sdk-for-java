@@ -35,10 +35,10 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>Sample: Construct UsernamePasswordCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.UsernamePasswordCredential},
- * using the {@link com.azure.identity.UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
+ * <p>The following code sample demonstrates the creation of a {@link UsernamePasswordCredential},
+ * using the {@link UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
  * {@code username} and {@code password} parameters are required to create
- * {@link com.azure.identity.UsernamePasswordCredential}. Once this credential is created, it may be passed into the
+ * {@link UsernamePasswordCredential}. Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
  * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->

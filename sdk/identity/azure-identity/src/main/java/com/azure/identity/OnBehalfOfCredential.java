@@ -26,8 +26,8 @@ import reactor.core.publisher.Mono;
  * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for an AAD application
  * on behalf of a user principal.</p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.OnBehalfOfCredential},
- * using the {@link com.azure.identity.OnBehalfOfCredentialBuilder} to configure it. The {@code tenantId},
+ * <p>The following code sample demonstrates the creation of a {@link OnBehalfOfCredential},
+ * using the {@link OnBehalfOfCredentialBuilder} to configure it. The {@code tenantId},
  * {@code clientId} and {@code clientSecret} parameters are required to create
  * {@link com.azure.identity.OnBehalfOfCredential}. The {@code userAssertion} can be optionally specified on the
  * {@link OnBehalfOfCredentialBuilder}. Once this credential is created, it may be passed into the

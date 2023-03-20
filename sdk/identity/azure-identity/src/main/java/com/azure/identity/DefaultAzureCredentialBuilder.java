@@ -176,7 +176,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>

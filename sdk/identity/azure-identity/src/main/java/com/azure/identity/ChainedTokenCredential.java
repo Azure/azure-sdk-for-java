@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  *
  * <p><strong>Sample: Construct a ChainedTokenCredential.</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ChainedTokenCredential},
- * using the {@link com.azure.identity.ChainedTokenCredentialBuilder} to configure it. The sample below
+ * <p>The following code sample demonstrates the creation of a {@link ChainedTokenCredential},
+ * using the {@link ChainedTokenCredentialBuilder} to configure it. The sample below
  * tries silent username+password login tried first, then interactive browser login as needed
  * (e.g. when 2FA is turned on in the directory). Once this credential is created, it may be passed into the builder
  * of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>

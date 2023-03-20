@@ -29,10 +29,10 @@ import java.util.function.Supplier;
  *
  * <p><strong>Sample: Construct a simple ClientAssertionCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientAssertionCredential},
- * using the {@link com.azure.identity.ClientAssertionCredentialBuilder} to configure it. The {@code tenantId},
+ * <p>The following code sample demonstrates the creation of a {@link ClientAssertionCredential},
+ * using the {@link ClientAssertionCredentialBuilder} to configure it. The {@code tenantId},
  * {@code clientId} and {@code certificate} parameters are required to create
- * {@link com.azure.identity.ClientAssertionCredential}. Once this credential is created, it may be passed into the
+ * {@link ClientAssertionCredential}. Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
  * <!-- src_embed com.azure.identity.credential.clientassertioncredential.construct -->
@@ -47,10 +47,10 @@ import java.util.function.Supplier;
  *
  * <p><strong>Sample: Construct a ClientAssertionCredential behind a proxy</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientAssertionCredential},
- * using the {@link com.azure.identity.ClientAssertionCredentialBuilder} to configure it. The {@code tenantId},
+ * <p>The following code sample demonstrates the creation of a {@link ClientAssertionCredential},
+ * using the {@link ClientAssertionCredentialBuilder} to configure it. The {@code tenantId},
  * {@code clientId} and {@code clientAssertion} parameters are required to create
- * {@link com.azure.identity.ClientAssertionCredential}. THe {@code proxyOptions} can be optionally configured to
+ * {@link ClientAssertionCredential}. THe {@code proxyOptions} can be optionally configured to
  * target a proxy. Once this credential is created, it may be passed into the builder of many of the Azure SDK for Java
  * client builders as the 'credential' parameter.</p>
  *
