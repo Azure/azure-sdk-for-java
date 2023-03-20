@@ -18,9 +18,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests transport handler.
+ * Tests transport unbinding behavior of the GlobalIOHandler.
  */
-public class TransportHandlerTest {
+public class GlobalIOHandlerTest {
     @Mock
     private Transport transport;
     @Mock
@@ -55,7 +55,7 @@ public class TransportHandlerTest {
 
         when(connection.getTransport()).thenReturn(transport);
 
-        final TransportHandler handler = new TransportHandler("name");
+        final GlobalIOHandler handler = new GlobalIOHandler("name");
 
         // Act
         handler.onTransportClosed(event);
@@ -70,7 +70,7 @@ public class TransportHandlerTest {
         when(event.getTransport()).thenReturn(transport);
         when(event.getConnection()).thenReturn(connection);
 
-        final TransportHandler handler = new TransportHandler("name");
+        final GlobalIOHandler handler = new GlobalIOHandler("name");
 
         // Act
         handler.onTransportClosed(event);
