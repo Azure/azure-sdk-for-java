@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/transliterate?language=gu&fromScript=latn&toScript=gujr&api-version=3.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
+      "x-ms-client-request-id" : "092c796a-4dc2-43c6-9e77-933d44089274",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-RequestId" : "TLIT.MW1P.99BF.0320T2312.56FC96",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
+      "X-Content-Type-Options" : "nosniff",
+      "X-Metered-Usage" : "21",
+      "retry-after" : "0",
+      "Content-Length" : "148",
+      "StatusCode" : "200",
+      "Body" : "[{\"text\":\"ગુજરાત\",\"script\":\"gujr\"},{\"text\":\"હેડમેન\",\"script\":\"gujr\"},{\"text\":\"હુક્કાબાર\",\"script\":\"gujr\"}]",
+      "Date" : "Mon, 20 Mar 2023 23:11:59 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

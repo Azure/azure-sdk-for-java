@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/translator/text/v3.0/translate?to=cs&api-version=3.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
+      "x-ms-client-request-id" : "3a623e03-d3f0-4184-863c-03b1ffaa625e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-RequestId" : "TRAN.MW1P.9A67.0320T2311.49DEED2",
+      "x-ms-region" : "West US 2",
+      "X-Content-Type-Options" : "nosniff",
+      "apim-request-id" : "ff3bae28-264f-41e3-9246-10a10aa45a32",
+      "X-Metered-Usage" : "25",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 23:11:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
+      "X-MT-System" : "Microsoft",
+      "Content-Length" : "108",
+      "Body" : "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":1.0},\"translations\":[{\"text\":\"Je krásné ráno\",\"to\":\"cs\"}]}]",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
