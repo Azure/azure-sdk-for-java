@@ -1,0 +1,2168 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/v1.0/servicePrincipals?$filter=displayName%20eq%20%27472eba61-f44d-44af-9b02-514042395229%27",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ffd1cc92-5f41-4740-9676-4489ca5b49f0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "a280e516-a613-441f-8080-533e1ef6e810",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:03:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"002\",\"RoleInstance\":\"SG1PEPF00001302\"}}",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a280e516-a613-441f-8080-533e1ef6e810",
+      "OData-Version" : "4.0",
+      "x-ms-resource-unit" : "1",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals\",\"value\":[]}",
+      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/v1.0/servicePrincipals?$filter=servicePrincipalNames/any%28c%3Ac%20eq%20%27472eba61-f44d-44af-9b02-514042395229%27%29",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f550c7a-9cbb-48a5-a049-28799e9074cb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "d0b60183-6260-410e-8f16-8208a9693ed3",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:03:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "x-ms-ags-diagnostic" : "{\"ServerInfo\":{\"DataCenter\":\"Southeast Asia\",\"Slice\":\"E\",\"Ring\":\"5\",\"ScaleUnit\":\"002\",\"RoleInstance\":\"SG1PEPF00002EB9\"}}",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d0b60183-6260-410e-8f16-8208a9693ed3",
+      "OData-Version" : "4.0",
+      "x-ms-resource-unit" : "1",
+      "Body" : "{\"@odata.context\":\"http://localhost:1234/v1.0/$metadata#servicePrincipals\",\"value\":[{\"id\":\"7e9e272a-48ab-469c-89a0-166601bad2d2\",\"deletedDateTime\":null,\"accountEnabled\":true,\"alternativeNames\":[],\"appDisplayName\":\"xiaofei-azuretest\",\"appDescription\":null,\"appId\":\"472eba61-f44d-44af-9b02-514042395229\",\"applicationTemplateId\":null,\"appOwnerOrganizationId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"createdDateTime\":\"2021-12-24T02:34:07Z\",\"description\":null,\"disabledByMicrosoftStatus\":null,\"displayName\":\"xiaofei-azuretest\",\"homepage\":null,\"loginUrl\":null,\"logoutUrl\":null,\"notes\":null,\"notificationEmailAddresses\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyThumbprint\":null,\"replyUrls\":[],\"servicePrincipalNames\":[\"472eba61-f44d-44af-9b02-514042395229\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADMyOrg\",\"tags\":[\"HideApp\",\"WindowsAzureActiveDirectoryIntegratedApp\"],\"tokenEncryptionKeyId\":null,\"samlSingleSignOnSettings\":null,\"addIns\":[],\"appRoles\":[{\"allowedMemberTypes\":[\"Application\"],\"description\":\"Graph\",\"displayName\":\"Graph\",\"id\":\"fdcb405b-618a-4b87-a0f9-7bd8005f46b1\",\"isEnabled\":true,\"origin\":\"Application\",\"value\":\"Microsoft.Graph\"}],\"info\":{\"logoUrl\":null,\"marketingUrl\":null,\"privacyStatementUrl\":null,\"supportUrl\":null,\"termsOfServiceUrl\":null},\"keyCredentials\":[],\"oauth2PermissionScopes\":[],\"passwordCredentials\":[],\"resourceSpecificApplicationPermissions\":[],\"verifiedPublisher\":{\"displayName\":null,\"verifiedPublisherId\":null,\"addedDateTime\":null}}]}",
+      "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a52c3172-8753-414c-a37c-40c1a1fd0143",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Mon, 20 Mar 2023 04:03:22 GMT",
+      "x-ms-correlation-request-id" : "0e2b4b8c-6e9b-4b28-a752-bc32b1146535",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040322Z:0e2b4b8c-6e9b-4b28-a752-bc32b1146535",
+      "Expires" : "-1",
+      "Content-Length" : "226",
+      "x-ms-request-id" : "0e2b4b8c-6e9b-4b28-a752-bc32b1146535",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988\",\"name\":\"javacsmrg17988\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1d4a17e1-d346-4d73-8a61-568ecef40f43",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "close",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "504",
+      "Date" : "Mon, 20 Mar 2023 04:03:45 GMT",
+      "x-ms-correlation-request-id" : "76e1958d-4ae3-4218-8b10-caf34f00fc30",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-failure-cause" : "service",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040346Z:76e1958d-4ae3-4218-8b10-caf34f00fc30",
+      "Expires" : "-1",
+      "Content-Length" : "146",
+      "x-ms-request-id" : "76e1958d-4ae3-4218-8b10-caf34f00fc30",
+      "Body" : "{\"error\":{\"code\":\"GatewayTimeout\",\"message\":\"The gateway did not receive a response from 'Microsoft.KeyVault' within the specified time period.\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1d4a17e1-d346-4d73-8a61-568ecef40f43",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:03:51 GMT",
+      "x-ms-correlation-request-id" : "02e15faf-2d68-4796-b49f-7c844dfc38a9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040351Z:02e15faf-2d68-4796-b49f-7c844dfc38a9",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-request-id" : "e82916c9-0588-490d-976d-cdd5a650100b",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "1d4a17e1-d346-4d73-8a61-568ecef40f43",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c879613-5562-446b-ab2f-6a46c80d5e47"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7705e2f8-c130-4de2-867b-146cc83f9854",
+      "Date" : "Mon, 20 Mar 2023 04:04:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040422Z:7705e2f8-c130-4de2-867b-146cc83f9854",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "2abeeb2e-dfa4-4fc6-8165-07462c1bb862",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "2c879613-5562-446b-ab2f-6a46c80d5e47",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dee75346-4e71-471f-8305-769e26be3578"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ad2d854b-69f5-424c-8628-3077b2e61986",
+      "Date" : "Mon, 20 Mar 2023 04:04:52 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040453Z:ad2d854b-69f5-424c-8628-3077b2e61986",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "24c6be90-44e2-4504-a529-833ecb642f2d",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "dee75346-4e71-471f-8305-769e26be3578",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8b672e3-9d10-46f0-96a2-d0c4cc9f778b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1291b8d8-e870-496f-9de6-ba519ff74ebb",
+      "Date" : "Mon, 20 Mar 2023 04:05:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040524Z:1291b8d8-e870-496f-9de6-ba519ff74ebb",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "1632abc2-98d8-4ac2-8a1f-fb60e84ebd75",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "a8b672e3-9d10-46f0-96a2-d0c4cc9f778b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdd6142d-d822-4589-9477-4e3e06a3caa4"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "76ea7e5d-47ef-4553-9eca-8d75f246f354",
+      "Date" : "Mon, 20 Mar 2023 04:05:54 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040554Z:76ea7e5d-47ef-4553-9eca-8d75f246f354",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "a68c3e3f-ba84-4867-917c-b7cf967cf949",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "fdd6142d-d822-4589-9477-4e3e06a3caa4",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ec29c432-b68a-49eb-b5d8-6269f72fcdd3"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d5a05039-23c9-44db-bad4-58055f68bc7a",
+      "Date" : "Mon, 20 Mar 2023 04:06:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040625Z:d5a05039-23c9-44db-bad4-58055f68bc7a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "584f9974-0e95-4170-ae95-5127e309eede",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "ec29c432-b68a-49eb-b5d8-6269f72fcdd3",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "587c9737-e05e-4d8b-9b7a-fa7c50c3a1d3"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b24d2048-9fab-47c8-9cb1-3e0c45d8cd71",
+      "Date" : "Mon, 20 Mar 2023 04:06:55 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040656Z:b24d2048-9fab-47c8-9cb1-3e0c45d8cd71",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "986f564f-f96c-4c5e-a7ea-cf1864a9c749",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "587c9737-e05e-4d8b-9b7a-fa7c50c3a1d3",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "42c0086a-88e7-4e16-94e3-097d180b7289"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2e60ee81-5f18-444f-ae7f-7cb075375ce2",
+      "Date" : "Mon, 20 Mar 2023 04:07:26 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040726Z:2e60ee81-5f18-444f-ae7f-7cb075375ce2",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "fe823942-fa75-4c58-9a59-66d327b7e59e",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "42c0086a-88e7-4e16-94e3-097d180b7289",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b1a82146-2ffb-4328-a2c5-be3565dfac33"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f879a910-9d3a-4123-976b-1b0a136a7549",
+      "Date" : "Mon, 20 Mar 2023 04:07:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040757Z:f879a910-9d3a-4123-976b-1b0a136a7549",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1050",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "609e8397-ef00-4010-b32a-ec49fb20c0bb",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Allocating hardware...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "b1a82146-2ffb-4328-a2c5-be3565dfac33",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "06bf46f1-756b-4a92-b546-c83b2c6db767"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7034e67d-c69c-4647-9e0c-e5734966d0d6",
+      "Date" : "Mon, 20 Mar 2023 04:08:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040829Z:7034e67d-c69c-4647-9e0c-e5734966d0d6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "f4b191ae-24cd-4f67-9ab7-16980586df5e",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "06bf46f1-756b-4a92-b546-c83b2c6db767",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6c2442de-6788-471c-91cd-17f44e21f48b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "297263a5-1322-4356-a5b7-17c45758befd",
+      "Date" : "Mon, 20 Mar 2023 04:08:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040859Z:297263a5-1322-4356-a5b7-17c45758befd",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "101f19f2-deef-41de-917d-d0440862e66b",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "6c2442de-6788-471c-91cd-17f44e21f48b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55e7a466-4aa2-487a-818d-146eaa9e451a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9ae6982f-bc9e-4e38-8474-9746f2d41b9d",
+      "Date" : "Mon, 20 Mar 2023 04:09:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T040930Z:9ae6982f-bc9e-4e38-8474-9746f2d41b9d",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "22c939f7-3e70-4259-8dc4-0843c3e1d9a0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "55e7a466-4aa2-487a-818d-146eaa9e451a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "574923db-33a1-432e-9104-248debec2ca1"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a01ab6d6-9f74-4230-9517-7ad1b7331f65",
+      "Date" : "Mon, 20 Mar 2023 04:10:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041001Z:a01ab6d6-9f74-4230-9517-7ad1b7331f65",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ebab0505-b3d7-4c11-b720-186cef525b93",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "574923db-33a1-432e-9104-248debec2ca1",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3feaacc8-0b15-45d3-8a01-e3588c34a600"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "314a0eef-43ca-45a1-b8eb-9ae356c2ae89",
+      "Date" : "Mon, 20 Mar 2023 04:10:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041032Z:314a0eef-43ca-45a1-b8eb-9ae356c2ae89",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "80d3d13a-44e1-4d34-a209-978ba67af1b0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "3feaacc8-0b15-45d3-8a01-e3588c34a600",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8142e5b4-973a-4557-87c1-ceb7d2548be9"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ff4c9878-742d-45fc-959a-106cfad95162",
+      "Date" : "Mon, 20 Mar 2023 04:11:02 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041102Z:ff4c9878-742d-45fc-959a-106cfad95162",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "d4ae836c-b3bb-4efa-87d7-a8dee5779445",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "8142e5b4-973a-4557-87c1-ceb7d2548be9",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "732cba32-c3ec-4249-9e4d-a47f31803818"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "da19c29e-1aff-430b-936e-7027e480b98c",
+      "Date" : "Mon, 20 Mar 2023 04:11:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041133Z:da19c29e-1aff-430b-936e-7027e480b98c",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "dc3c80a4-c7ac-4148-878a-22e45f7ff234",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "732cba32-c3ec-4249-9e4d-a47f31803818",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9d30c223-9925-48f2-8d1e-59d8ce93a186"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "efaf93c7-dd16-4666-8dd0-422d5c564bb2",
+      "Date" : "Mon, 20 Mar 2023 04:12:04 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041205Z:efaf93c7-dd16-4666-8dd0-422d5c564bb2",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "e56de81a-6c24-4f91-bb50-06f25d1e1fca",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "9d30c223-9925-48f2-8d1e-59d8ce93a186",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7bd67ef-8dad-44d8-b185-61b6270a60d5"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ec4fdf84-dfd2-4632-911a-4fb9c04589ae",
+      "Date" : "Mon, 20 Mar 2023 04:12:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041235Z:ec4fdf84-dfd2-4632-911a-4fb9c04589ae",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "b770aa40-4c8c-41eb-9f2c-c7c2dc190a64",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "e7bd67ef-8dad-44d8-b185-61b6270a60d5",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "430049b8-209b-4195-aa6f-142de1f29fa6"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11982",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1a81d2d4-29c1-47b8-9cd6-c4b483058274",
+      "Date" : "Mon, 20 Mar 2023 04:13:06 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041307Z:1a81d2d4-29c1-47b8-9cd6-c4b483058274",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "fe581efc-bc47-41ef-9c91-e2e0fb4f7b7a",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "430049b8-209b-4195-aa6f-142de1f29fa6",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4f091427-e258-4882-9ffe-cdc56bd1fb2a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11981",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d008cd8d-65e8-42f4-bada-aa96064cadc4",
+      "Date" : "Mon, 20 Mar 2023 04:13:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041337Z:d008cd8d-65e8-42f4-bada-aa96064cadc4",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "bcfec905-c568-4ce5-bc43-e78e058c9af8",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "4f091427-e258-4882-9ffe-cdc56bd1fb2a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f7b9542c-2b6f-49aa-85d1-383e8fc7fd62"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11980",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a77fe39f-fcb6-41fb-b7f8-38fde78ea80b",
+      "Date" : "Mon, 20 Mar 2023 04:14:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041408Z:a77fe39f-fcb6-41fb-b7f8-38fde78ea80b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "e7927e5d-9053-4793-a9bd-77c52805d75c",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "f7b9542c-2b6f-49aa-85d1-383e8fc7fd62",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "98d061e6-d4f8-4b78-83f9-94870672b047"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11979",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e4acf940-ae7c-4b91-981b-d7a9ce131119",
+      "Date" : "Mon, 20 Mar 2023 04:14:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041439Z:e4acf940-ae7c-4b91-981b-d7a9ce131119",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "7d1c8c72-5f7b-4124-a6fb-73e6347d4ef6",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "98d061e6-d4f8-4b78-83f9-94870672b047",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cc204952-c8f5-46d0-b1c3-0db37002f619"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11978",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "cc3348cc-fc49-44d0-a0df-9f68f04b9c1b",
+      "Date" : "Mon, 20 Mar 2023 04:15:08 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041509Z:cc3348cc-fc49-44d0-a0df-9f68f04b9c1b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "871f7a6a-60be-4223-8be8-d146b93e1e24",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "cc204952-c8f5-46d0-b1c3-0db37002f619",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fe2c9a13-ce44-4544-b4c3-15997a60c617"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11977",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f5ac83ff-e87a-448e-baad-b59edef2652b",
+      "Date" : "Mon, 20 Mar 2023 04:15:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041540Z:f5ac83ff-e87a-448e-baad-b59edef2652b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "6f69d6d0-e8c4-4c7c-a945-fcc53e932a76",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "fe2c9a13-ce44-4544-b4c3-15997a60c617",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "10f9b610-9730-47e1-8eee-ade8b9608eae"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11976",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "5b7b592f-de82-47b1-b6de-b66ef40993d2",
+      "Date" : "Mon, 20 Mar 2023 04:16:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041611Z:5b7b592f-de82-47b1-b6de-b66ef40993d2",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "3b7ee494-7905-4d0e-90ea-4e1a3f536822",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "10f9b610-9730-47e1-8eee-ade8b9608eae",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f19d53ae-f09a-48d0-b251-bd940b6c2bda"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11975",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a3c9a99b-81da-4d58-b438-18ae7daa4da0",
+      "Date" : "Mon, 20 Mar 2023 04:16:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041642Z:a3c9a99b-81da-4d58-b438-18ae7daa4da0",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ef277002-4fd4-4a5c-bef6-bc8eab22c0d7",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "f19d53ae-f09a-48d0-b251-bd940b6c2bda",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66bd1e52-175e-4fbd-ba69-204abb532d16"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11974",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "adee28fc-1e53-44df-8446-120fb3f999db",
+      "Date" : "Mon, 20 Mar 2023 04:17:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041712Z:adee28fc-1e53-44df-8446-120fb3f999db",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "36db2e5f-9444-4102-aca5-721fb83bdf2c",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "66bd1e52-175e-4fbd-ba69-204abb532d16",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "03f6dd84-7e00-4dca-8611-f1492199c8dc"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11973",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "bc9baa32-4b35-406c-9440-4287c7fd222d",
+      "Date" : "Mon, 20 Mar 2023 04:17:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041744Z:bc9baa32-4b35-406c-9440-4287c7fd222d",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "7497ebce-9ff2-45b5-9d34-fdc4e4810fe1",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "03f6dd84-7e00-4dca-8611-f1492199c8dc",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66a445fc-d98c-4a8b-b612-21d68609fd74"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11972",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d8ebcee0-6ebc-4986-b6a7-660f00320e9d",
+      "Date" : "Mon, 20 Mar 2023 04:18:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041814Z:d8ebcee0-6ebc-4986-b6a7-660f00320e9d",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ffb43d93-9a6c-4510-bf85-c71d1152b82c",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "66a445fc-d98c-4a8b-b612-21d68609fd74",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c55db09b-ca40-4ad6-9737-b5f4d474dbe6"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11971",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f7716aab-a7e6-434e-8f9a-1180815a70da",
+      "Date" : "Mon, 20 Mar 2023 04:18:45 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041846Z:f7716aab-a7e6-434e-8f9a-1180815a70da",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "e33d14de-d06c-430e-90fc-727eb7b4b932",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "c55db09b-ca40-4ad6-9737-b5f4d474dbe6",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "69b0c939-ea98-4c7d-9d85-44e5d3b4cf2b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11970",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "47b57a53-fc0a-436a-bcd5-d08525ba9af6",
+      "Date" : "Mon, 20 Mar 2023 04:19:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041917Z:47b57a53-fc0a-436a-bcd5-d08525ba9af6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "59bd478c-cb5d-43ce-a3ed-b37d8d3cf498",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "69b0c939-ea98-4c7d-9d85-44e5d3b4cf2b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "77ab7e54-01e8-4ec7-8050-7d4815664caf"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11969",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4c161675-c229-479b-b19d-650233d57a5b",
+      "Date" : "Mon, 20 Mar 2023 04:19:48 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T041948Z:4c161675-c229-479b-b19d-650233d57a5b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "b1f2c970-cf03-4611-a2d1-5b869cf6a095",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "77ab7e54-01e8-4ec7-8050-7d4815664caf",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c28c5339-3652-4cd8-be0b-6e99f195d3a4"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11968",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "09d16421-00c9-493e-86f8-4b5b7b02371a",
+      "Date" : "Mon, 20 Mar 2023 04:20:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042019Z:09d16421-00c9-493e-86f8-4b5b7b02371a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "976894b6-8cc2-49bf-a2a1-b3c86b51b9b8",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "c28c5339-3652-4cd8-be0b-6e99f195d3a4",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a7d09aae-3abc-42c6-9d89-364a4b1217d8"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11967",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "04ea9fe4-22dc-4b28-97f2-ca927f6b84e6",
+      "Date" : "Mon, 20 Mar 2023 04:20:49 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042050Z:04ea9fe4-22dc-4b28-97f2-ca927f6b84e6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "5ce94b88-fb53-4ac2-8f15-42118c41b34f",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "a7d09aae-3abc-42c6-9d89-364a4b1217d8",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "00188847-0274-495d-9ade-7a18482b948b"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11966",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "30ce8079-4ef2-4e62-8ac2-97894c220455",
+      "Date" : "Mon, 20 Mar 2023 04:21:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042120Z:30ce8079-4ef2-4e62-8ac2-97894c220455",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "7bd95999-8c23-49b1-9096-bd1fb841e6ed",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "00188847-0274-495d-9ade-7a18482b948b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b6e1313e-82f4-42ea-8a78-43bfcc57346a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11965",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "82feb3ae-96b5-440a-af1a-bdcee85a544a",
+      "Date" : "Mon, 20 Mar 2023 04:21:51 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042151Z:82feb3ae-96b5-440a-af1a-bdcee85a544a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "5c5743ed-2e67-4d5a-b6da-a211902c407b",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "b6e1313e-82f4-42ea-8a78-43bfcc57346a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c6f37108-54f0-45ae-be20-a366761e9932"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11964",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e166229c-5a43-4df9-ab5c-1756e4323b1b",
+      "Date" : "Mon, 20 Mar 2023 04:22:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042223Z:e166229c-5a43-4df9-ab5c-1756e4323b1b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "2c5e891f-92f2-4ef3-af21-95028b61fe13",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "c6f37108-54f0-45ae-be20-a366761e9932",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dee10049-72d2-4036-b862-cd806817af53"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "833ec8e6-499e-4f0a-9d0a-35a871863dd2",
+      "Date" : "Mon, 20 Mar 2023 04:22:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042253Z:833ec8e6-499e-4f0a-9d0a-35a871863dd2",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "06cdb75f-ce0b-420c-b245-039712ef4bce",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "dee10049-72d2-4036-b862-cd806817af53",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "983c15f5-b737-4f28-be74-38905c5c7db1"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11962",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "862e303c-097f-42b0-a07b-9d4af4d33d22",
+      "Date" : "Mon, 20 Mar 2023 04:23:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042324Z:862e303c-097f-42b0-a07b-9d4af4d33d22",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ba6aa290-fa25-42c6-8658-9708066baa10",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "983c15f5-b737-4f28-be74-38905c5c7db1",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "df3ffb35-1388-4d1d-9295-e66ee85f1918"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11961",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "fcb69c64-10af-4a2e-8145-647bd9efb93e",
+      "Date" : "Mon, 20 Mar 2023 04:23:54 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042355Z:fcb69c64-10af-4a2e-8145-647bd9efb93e",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1047",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "35b3a1bc-90ee-4701-b4b9-4c4fbb4511b8",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Provisioning\",\"statusMessage\":\"Resource creation in progress. Starting service...\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "df3ffb35-1388-4d1d-9295-e66ee85f1918",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1de9124e-e915-4969-979f-c2ebb6613a4f"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11960",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "0b553090-0113-46d9-a738-0af6dbcfbf1b",
+      "Date" : "Mon, 20 Mar 2023 04:24:25 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042426Z:0b553090-0113-46d9-a738-0af6dbcfbf1b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1042",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "0f7f485c-4716-498b-b8b3-4baa436b4bed",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Succeeded\",\"statusMessage\":\"The Managed HSM is provisioned and ready to use.\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "1de9124e-e915-4969-979f-c2ebb6613a4f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "68c1f51f-5e50-41fe-9f78-18675b132f6e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:24:26 GMT",
+      "x-ms-correlation-request-id" : "64fd3093-cb70-422c-95ad-b7ccfa351de5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042426Z:64fd3093-cb70-422c-95ad-b7ccfa351de5",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1042",
+      "x-ms-request-id" : "cb17862c-f0d5-4274-a4fd-14a26fda285b",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:24:26.487Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Succeeded\",\"statusMessage\":\"The Managed HSM is provisioned and ready to use.\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "68c1f51f-5e50-41fe-9f78-18675b132f6e",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6fc36b94-17cd-4e10-9f82-1560ca948e36",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11959",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:24:26 GMT",
+      "x-ms-correlation-request-id" : "88e5dedf-ba1f-4867-b985-49c900e4b9e0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042427Z:88e5dedf-ba1f-4867-b985-49c900e4b9e0",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1042",
+      "x-ms-request-id" : "82438e04-9f47-4c19-907e-bd607ca4f870",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Succeeded\",\"statusMessage\":\"The Managed HSM is provisioned and ready to use.\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "6fc36b94-17cd-4e10-9f82-1560ca948e36",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "95cda5e7-7fa8-4626-81ca-d6775042bf76",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11958",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:24:27 GMT",
+      "x-ms-correlation-request-id" : "e956d6b0-a80d-4b1f-b4ed-243930d57ab5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042428Z:e956d6b0-a80d-4b1f-b4ed-243930d57ab5",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1054",
+      "x-ms-request-id" : "32ae776e-f432-4839-afc2-73400de90e70",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "Body" : "{\"value\":[{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Succeeded\",\"statusMessage\":\"The Managed HSM is provisioned and ready to use.\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}]}",
+      "x-ms-client-request-id" : "95cda5e7-7fa8-4626-81ca-d6775042bf76",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b1a4eae1-bfe7-4f20-bf79-9c22704dbf10",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11957",
+      "StatusCode" : "200",
+      "Date" : "Mon, 20 Mar 2023 04:24:28 GMT",
+      "x-ms-correlation-request-id" : "b06b7a93-8f8b-49f4-990d-a217345af6cf",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042428Z:b06b7a93-8f8b-49f4-990d-a217345af6cf",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "1042",
+      "x-ms-request-id" : "824170e5-bf3c-4b78-9a4a-27a14b6e2723",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "Body" : "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360\",\"name\":\"mhsm35360\",\"type\":\"Microsoft.KeyVault/managedHSMs\",\"location\":\"eastus2\",\"tags\":{},\"systemData\":{\"createdBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"createdByType\":\"Application\",\"createdAt\":\"2023-03-20T04:03:26.182Z\",\"lastModifiedBy\":\"472eba61-f44d-44af-9b02-514042395229\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-03-20T04:03:47.695Z\"},\"properties\":{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"hsmUri\":\"https://mhsm35360.managedhsm.azure.net/\",\"initialAdminObjectIds\":[\"7e9e272a-48ab-469c-89a0-166601bad2d2\"],\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":7,\"enablePurgeProtection\":false,\"provisioningState\":\"Succeeded\",\"statusMessage\":\"The Managed HSM is provisioned and ready to use.\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[],\"virtualNetworkRules\":[]},\"publicNetworkAccess\":\"Enabled\"}}",
+      "x-ms-client-request-id" : "b1a4eae1-bfe7-4f20-bf79-9c22704dbf10",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3478ff30-1a72-45ac-aa8c-1a665577c2cf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 20 Mar 2023 04:24:33 GMT",
+      "x-ms-correlation-request-id" : "aacd8e0a-b8c4-4108-9915-bbc21b2253ab",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042433Z:aacd8e0a-b8c4-4108-9915-bbc21b2253ab",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "cacb2058-407d-47dc-ac75-adcd3fb6ebcc",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-client-request-id" : "3478ff30-1a72-45ac-aa8c-1a665577c2cf",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ad61a3e-ed40-4dae-88ab-8d70f37ee0af"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11956",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "51b8299b-d673-4ae9-98e4-6ae13fdf9125",
+      "Date" : "Mon, 20 Mar 2023 04:25:03 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042504Z:51b8299b-d673-4ae9-98e4-6ae13fdf9125",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "217548d1-5939-4fe3-ac05-e9f7fde006b2",
+      "x-ms-client-request-id" : "9ad61a3e-ed40-4dae-88ab-8d70f37ee0af",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3d329190-4763-4b71-8d63-167278621a3a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11955",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "bf4c771c-923d-4644-be19-69279a8a438e",
+      "Date" : "Mon, 20 Mar 2023 04:25:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042534Z:bf4c771c-923d-4644-be19-69279a8a438e",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "c804cf87-6fb9-4253-99dd-b2754f8953d0",
+      "x-ms-client-request-id" : "3d329190-4763-4b71-8d63-167278621a3a",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bf6e49f8-0757-4999-8d41-812a8caec4ba"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11954",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "041e3b38-01bc-4493-be19-fff93188d926",
+      "Date" : "Mon, 20 Mar 2023 04:26:04 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042604Z:041e3b38-01bc-4493-be19-fff93188d926",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "235c9d79-7c71-4da8-b5c4-e5eaa385948f",
+      "x-ms-client-request-id" : "bf6e49f8-0757-4999-8d41-812a8caec4ba",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fc9b235b-255b-4f1b-8687-bcfd2e7c3f12"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11953",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "8a429d70-2456-40c1-b8dd-11f187f8c423",
+      "Date" : "Mon, 20 Mar 2023 04:26:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042635Z:8a429d70-2456-40c1-b8dd-11f187f8c423",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "13ab9451-ee2b-412e-a9ea-ea7bcbaeaa00",
+      "x-ms-client-request-id" : "fc9b235b-255b-4f1b-8687-bcfd2e7c3f12",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eca2b872-5d8e-4ac6-b8f8-c0e8ed65c832"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11952",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "2487f932-46bd-437c-b29d-9b84aed7b9d4",
+      "Date" : "Mon, 20 Mar 2023 04:27:05 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042706Z:2487f932-46bd-437c-b29d-9b84aed7b9d4",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "dd7e3435-11dc-4844-ba17-36d913a4989a",
+      "x-ms-client-request-id" : "eca2b872-5d8e-4ac6-b8f8-c0e8ed65c832",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2277f99f-7a00-4edd-b5b7-ffa47fb9b3ef"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11951",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "561f8319-e877-4b81-b925-f06bf5760a1a",
+      "Date" : "Mon, 20 Mar 2023 04:27:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042736Z:561f8319-e877-4b81-b925-f06bf5760a1a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "9a808661-6eda-4af7-8f55-d4e1797bac54",
+      "x-ms-client-request-id" : "2277f99f-7a00-4edd-b5b7-ffa47fb9b3ef",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "837542d6-59b4-403c-9008-ff52220efa0d"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11950",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "02f16f20-10c6-4835-9d31-2c9d62a6d376",
+      "Date" : "Mon, 20 Mar 2023 04:28:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042807Z:02f16f20-10c6-4835-9d31-2c9d62a6d376",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "41dfa47a-4ebf-4277-944c-14f6159a0126",
+      "x-ms-client-request-id" : "837542d6-59b4-403c-9008-ff52220efa0d",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "50d682f0-a945-4881-992c-a17ba1a6dcdb"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11949",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "837d4481-925b-4af5-b1e8-07a1959b0954",
+      "Date" : "Mon, 20 Mar 2023 04:28:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042844Z:837d4481-925b-4af5-b1e8-07a1959b0954",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ca4c2451-f731-4655-b5d7-e01222bcd80e",
+      "x-ms-client-request-id" : "50d682f0-a945-4881-992c-a17ba1a6dcdb",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fde7652a-1859-4f57-8b84-9ed85fbb0807"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11948",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "e17c47f5-f1af-4806-83c6-94c9fd9785c9",
+      "Date" : "Mon, 20 Mar 2023 04:29:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042915Z:e17c47f5-f1af-4806-83c6-94c9fd9785c9",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "1b929eb5-a2b4-4dfc-bbcb-01b9ee05a6dc",
+      "x-ms-client-request-id" : "fde7652a-1859-4f57-8b84-9ed85fbb0807",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "341448a6-91d4-42a4-b130-4d50e3ce0c88"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11947",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "70cb7022-86d0-4b49-9b7f-5eefe1fb2146",
+      "Date" : "Mon, 20 Mar 2023 04:29:44 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T042945Z:70cb7022-86d0-4b49-9b7f-5eefe1fb2146",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "8922d65b-20f5-4424-a957-aaf8a61438da",
+      "x-ms-client-request-id" : "341448a6-91d4-42a4-b130-4d50e3ce0c88",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "28c54268-79f8-4649-b650-27e5779ecd21"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11946",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "3af3a955-3367-4f51-9463-3d4db6b77787",
+      "Date" : "Mon, 20 Mar 2023 04:30:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043016Z:3af3a955-3367-4f51-9463-3d4db6b77787",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "486e2e4e-559f-4642-8f5f-898d22dedb1d",
+      "x-ms-client-request-id" : "28c54268-79f8-4649-b650-27e5779ecd21",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34e36fd0-d564-4b9d-9e56-61844cb5ed30"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11945",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "084a3878-8a80-450c-82c4-84ede5e2ccde",
+      "Date" : "Mon, 20 Mar 2023 04:30:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043047Z:084a3878-8a80-450c-82c4-84ede5e2ccde",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "a2336477-bd97-4b93-adec-8d2636a55079",
+      "x-ms-client-request-id" : "34e36fd0-d564-4b9d-9e56-61844cb5ed30",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "adf9fb19-1c8b-4638-a69c-ed2ddb6b4eed"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11944",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "a840061b-c7ab-42a2-8d46-1383293667c8",
+      "Date" : "Mon, 20 Mar 2023 04:31:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043117Z:a840061b-c7ab-42a2-8d46-1383293667c8",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "a6e45ede-d225-4d47-9603-936ebe26f1a2",
+      "x-ms-client-request-id" : "adf9fb19-1c8b-4638-a69c-ed2ddb6b4eed",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56f790a3-3145-4b26-b9c9-59b5d0282067"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11943",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "aa4b04b6-befb-4de1-b1a6-db6e82eeefe5",
+      "Date" : "Mon, 20 Mar 2023 04:31:48 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043148Z:aa4b04b6-befb-4de1-b1a6-db6e82eeefe5",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "45a16b23-6571-4e3c-bca4-b43503dd714b",
+      "x-ms-client-request-id" : "56f790a3-3145-4b26-b9c9-59b5d0282067",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ce9895c9-8112-44f9-8259-8b8c305f2a18"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11942",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c441dbab-ac15-4f1c-85fb-00c460e8f136",
+      "Date" : "Mon, 20 Mar 2023 04:32:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043219Z:c441dbab-ac15-4f1c-85fb-00c460e8f136",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "94f68b82-a697-42e7-a9f7-33ce415e66a8",
+      "x-ms-client-request-id" : "ce9895c9-8112-44f9-8259-8b8c305f2a18"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/deletedManagedHSMs/mhsm35360/purge?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b39ea32-55a4-4450-a1df-43726bdc751c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 20 Mar 2023 04:32:22 GMT",
+      "x-ms-correlation-request-id" : "4f1c86ad-0215-4d5a-9cf0-d9b4c3e57cc6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043222Z:4f1c86ad-0215-4d5a-9cf0-d9b4c3e57cc6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "8bc85d4e-3de5-4f59-878e-97d8b9aa8b1c",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-client-request-id" : "7b39ea32-55a4-4450-a1df-43726bdc751c",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f4fbb07c-d18f-46de-ba17-a774d5db7187"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11941",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "f08aaa2e-7589-4911-9a83-c3fa47afa9bf",
+      "Date" : "Mon, 20 Mar 2023 04:32:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043253Z:f08aaa2e-7589-4911-9a83-c3fa47afa9bf",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "4550d1c4-b440-4371-86f8-7e57c849e39d",
+      "x-ms-client-request-id" : "f4fbb07c-d18f-46de-ba17-a774d5db7187",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c1c87a4e-54aa-42b1-8b63-e571d4db17f8"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11940",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "928593b7-7e88-487a-8137-cebe6b54dd64",
+      "Date" : "Mon, 20 Mar 2023 04:33:25 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043326Z:928593b7-7e88-487a-8137-cebe6b54dd64",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "a9f968ca-005c-4b8c-b30b-f050966efe69",
+      "x-ms-client-request-id" : "c1c87a4e-54aa-42b1-8b63-e571d4db17f8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d6cfd406-2e4f-49f1-992c-ab142ffccf52"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11939",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "3779ae3b-1df7-4ac6-b1e8-5e64be41cb21",
+      "Date" : "Mon, 20 Mar 2023 04:33:56 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043356Z:3779ae3b-1df7-4ac6-b1e8-5e64be41cb21",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "ce02c1ca-cbc0-41ae-8032-e7a5e7ab5ff5",
+      "x-ms-client-request-id" : "d6cfd406-2e4f-49f1-992c-ab142ffccf52",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "53ac7d9d-cc10-4119-904a-ac1cf47afd9c"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11938",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "2bc3fcaa-e8df-409c-be32-947b469622ac",
+      "Date" : "Mon, 20 Mar 2023 04:34:26 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043426Z:2bc3fcaa-e8df-409c-be32-947b469622ac",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "16a8ecd2-e2d0-4622-a85d-f4eb86caa571",
+      "x-ms-client-request-id" : "53ac7d9d-cc10-4119-904a-ac1cf47afd9c",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d8f0d591-8b0e-4a3b-b20a-8303dc3e44a2"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11937",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "cff77d92-2616-4881-8691-752db041e241",
+      "Date" : "Mon, 20 Mar 2023 04:34:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043457Z:cff77d92-2616-4881-8691-752db041e241",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "5c6beb09-6dc1-40a0-950c-1873ef55d0b3",
+      "x-ms-client-request-id" : "d8f0d591-8b0e-4a3b-b20a-8303dc3e44a2",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3d646a7b-104f-4223-b096-93e5ede2bc2e"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11936",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "0c3da50a-3516-4117-8289-ceca040c6859",
+      "Date" : "Mon, 20 Mar 2023 04:35:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043527Z:0c3da50a-3516-4117-8289-ceca040c6859",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "1e483e62-cef5-4f50-9c48-b3eb24d34e09",
+      "x-ms-client-request-id" : "3d646a7b-104f-4223-b096-93e5ede2bc2e",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "24ce2df9-145d-4c2e-b37c-5f8509511e92"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11935",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "f5b4e829-0cf8-4114-8d4e-8c05438a9229",
+      "Date" : "Mon, 20 Mar 2023 04:35:58 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043558Z:f5b4e829-0cf8-4114-8d4e-8c05438a9229",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "cb0f3705-f3bb-4b09-ab24-65222d628e7d",
+      "x-ms-client-request-id" : "24ce2df9-145d-4c2e-b37c-5f8509511e92",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3be1d563-03f5-49ce-afc5-59a4d9b311eb"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11934",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "45260fa1-0495-4b0c-ac22-1b00602195ca",
+      "Date" : "Mon, 20 Mar 2023 04:36:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043630Z:45260fa1-0495-4b0c-ac22-1b00602195ca",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "4901c432-f8ba-4523-a42f-46975767eba1",
+      "x-ms-client-request-id" : "3be1d563-03f5-49ce-afc5-59a4d9b311eb",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9976102e-3f30-4e2d-89c9-4a4980d72e4e"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11933",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "82b72e05-c244-4c39-bb10-a2c7c3e1be29",
+      "Date" : "Mon, 20 Mar 2023 04:37:01 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043701Z:82b72e05-c244-4c39-bb10-a2c7c3e1be29",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-keyvault-service-version" : "1.5.692.0",
+      "x-ms-request-id" : "c6daf142-8f34-444c-9b37-dcc45689c769",
+      "x-ms-client-request-id" : "9976102e-3f30-4e2d-89c9-4a4980d72e4e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "69bc3cfd-fece-413c-af92-5ada9fd2ed91",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Mon, 20 Mar 2023 04:37:07 GMT",
+      "x-ms-correlation-request-id" : "29f575e6-35c9-4b10-b33e-458ad6ec123f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230320T043708Z:29f575e6-35c9-4b10-b33e-458ad6ec123f",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "29f575e6-35c9-4b10-b33e-458ad6ec123f",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkcxNzk4OC1FQVNUVVMyIiwiam9iTG9jYXRpb24iOiJlYXN0dXMyIn0?api-version=2021-01-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javacsmrg17988", "java-keyvault-36903", "mhsm35360", "472eba61-f44d-44af-9b02-514042395229" ]
+}

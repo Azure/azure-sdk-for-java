@@ -11,14 +11,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
 import com.azure.resourcemanager.keyvault.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.keyvault.models.CreateMode;
 import com.azure.resourcemanager.keyvault.models.Keys;
 import com.azure.resourcemanager.keyvault.models.ManagedHsm;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
-import com.azure.resourcemanager.keyvault.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -118,27 +116,11 @@ class ManagedHsmImpl
     }
 
     @Override
-    public CreateMode createMode() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-        return innerModel().properties().createMode();
-    }
-
-    @Override
     public MhsmNetworkRuleSet networkRuleSet() {
         if (innerModel().properties() == null) {
             return null;
         }
         return innerModel().properties().networkAcls();
-    }
-
-    @Override
-    public ProvisioningState provisioningState() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-        return innerModel().properties().provisioningState();
     }
 
     @Override

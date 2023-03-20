@@ -35,20 +35,14 @@ public interface ManagedHsm
     /** @return whether the 'soft delete' functionality is enabled for this managed HSM */
     boolean isSoftDeleteEnabled();
 
-    /** @return softDelete data retention days. It accepts >=7 and <=90 */
+    /** @return softDelete data retention days. It accepts value between 7 and 90 (both included) */
     Integer softDeleteRetentionDays();
 
     /** @return whether protection against purge is enabled for this managed HSM */
     boolean isPurgeProtectionEnabled();
 
-    /** @return whether the resource is being created or is being recovered from a deleted resource */
-    CreateMode createMode();
-
     /** @return rules governing the accessibility of the key vault from specific network locations */
     MhsmNetworkRuleSet networkRuleSet();
-
-    /** @return provisioning state */
-    ProvisioningState provisioningState();
 
     /** @return the Key Vault key API entry point */
     Keys keys();

@@ -4,10 +4,12 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 
 /** Entry point for managed HSM management API. */
@@ -17,5 +19,6 @@ public interface ManagedHsms
     SupportsGettingByResourceGroup<ManagedHsm>,
     SupportsGettingById<ManagedHsm>,
     SupportsDeletingByResourceGroup,
-    SupportsDeletingById {
+    SupportsDeletingById,
+    HasManager<KeyVaultManager> {
 }
