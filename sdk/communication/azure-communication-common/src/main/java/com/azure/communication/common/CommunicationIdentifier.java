@@ -11,7 +11,7 @@ public abstract class CommunicationIdentifier {
 
     static final String PHONE_NUMBER_PREFIX = "4:";
 
-    static final String BOT_GLOBAL_PREFIX = "28:";
+    static final String BOT_PREFIX = "28:";
 
     static final String BOT_PUBLIC_CLOUD_PREFIX = "28:orgid:";
 
@@ -58,7 +58,7 @@ public abstract class CommunicationIdentifier {
         }
         final String[] segments = rawId.split(":");
         if (segments.length != 3) {
-            if (segments.length == 2 && rawId.startsWith(BOT_GLOBAL_PREFIX)) {
+            if (segments.length == 2 && rawId.startsWith(BOT_PREFIX)) {
                 return new MicrosoftBotIdentifier(segments[1], CommunicationCloudEnvironment.PUBLIC, true);
             }
             return new UnknownIdentifier(rawId);
