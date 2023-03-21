@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExternalSecuritySolutions Get. */
 public final class ExternalSecuritySolutionsGetSamples {
     /*
@@ -23,6 +21,6 @@ public final class ExternalSecuritySolutionsGetSamples {
                 "defaultresourcegroup-eus",
                 "centralus",
                 "aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

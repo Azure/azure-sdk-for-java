@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Alerts UpdateSubscriptionLevelStateToInProgress. */
 public final class AlertsUpdateSubscriptionLevelStateToInProgressSamples {
     /*
@@ -21,6 +19,8 @@ public final class AlertsUpdateSubscriptionLevelStateToInProgressSamples {
         manager
             .alerts()
             .updateSubscriptionLevelStateToInProgressWithResponse(
-                "westeurope", "2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a", Context.NONE);
+                "westeurope",
+                "2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a",
+                com.azure.core.util.Context.NONE);
     }
 }

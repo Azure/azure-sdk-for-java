@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MdeOnboardings Get. */
 public final class MdeOnboardingsGetSamples {
     /*
@@ -18,6 +16,6 @@ public final class MdeOnboardingsGetSamples {
      */
     public static void theDefaultConfigurationOrDataNeededToOnboardTheMachineToMDE(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.mdeOnboardings().getWithResponse(Context.NONE);
+        manager.mdeOnboardings().getWithResponse(com.azure.core.util.Context.NONE);
     }
 }
