@@ -235,7 +235,7 @@ public final class ContainerRegistryBlobClient {
      * DownloadManifestResult latestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
      *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
-     *     OciImageManifest manifest = latestResult.asOciManifest&#40;&#41;;
+     *     OciImageManifest manifest = latestResult.asOciImageManifest&#40;&#41;;
      * &#125; else &#123;
      *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
      * &#125;
@@ -347,7 +347,7 @@ public final class ContainerRegistryBlobClient {
      * <pre>
      * DownloadManifestResult manifestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
      *
-     * OciImageManifest manifest = manifestResult.asOciManifest&#40;&#41;;
+     * OciImageManifest manifest = manifestResult.asOciImageManifest&#40;&#41;;
      * for &#40;OciDescriptor layer : manifest.getLayers&#40;&#41;&#41; &#123;
      *     blobClient.deleteBlob&#40;layer.getDigest&#40;&#41;&#41;;
      * &#125;

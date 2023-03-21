@@ -491,12 +491,4 @@ public final class UtilsImpl {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
     }
-
-    public static String getContentTypeString(Collection<ManifestMediaType> mediaTypes) {
-        return CoreUtils.isNullOrEmpty(mediaTypes)
-            ? SUPPORTED_MANIFEST_TYPES
-            : mediaTypes.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
-    }
 }

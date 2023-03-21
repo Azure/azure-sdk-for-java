@@ -304,7 +304,7 @@ To download a full image, we need to download its manifest and then download ind
 ```java readme-sample-downloadImage
 DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-OciImageManifest manifest = manifestResult.asOciManifest();
+OciImageManifest manifest = manifestResult.asOciImageManifest();
 System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
 String configFileName = manifest.getConfig().getDigest() + ".json";
@@ -322,7 +322,7 @@ for (OciDescriptor layer : manifest.getLayers()) {
 ```java readme-sample-deleteBlob
 DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-OciImageManifest manifest = manifestResult.asOciManifest();
+OciImageManifest manifest = manifestResult.asOciImageManifest();
 for (OciDescriptor layer : manifest.getLayers()) {
     blobClient.deleteBlob(layer.getDigest());
 }

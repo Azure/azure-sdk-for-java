@@ -291,7 +291,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-deleteBlob
         DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-        OciImageManifest manifest = manifestResult.asOciManifest();
+        OciImageManifest manifest = manifestResult.asOciImageManifest();
         for (OciDescriptor layer : manifest.getLayers()) {
             blobClient.deleteBlob(layer.getDigest());
         }

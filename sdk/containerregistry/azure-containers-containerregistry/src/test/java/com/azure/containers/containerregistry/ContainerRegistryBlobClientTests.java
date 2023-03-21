@@ -173,7 +173,7 @@ public class ContainerRegistryBlobClientTests {
             () -> asyncClient.downloadManifest(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getContent().toBytes());
-        assertNotNull(result.asOciManifest());
+        assertNotNull(result.asOciImageManifest());
         assertEquals(ManifestMediaType.OCI_MANIFEST, result.getManifestMediaType());
     }
 
@@ -187,7 +187,7 @@ public class ContainerRegistryBlobClientTests {
             () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
-        assertNotNull(result.getValue().asOciManifest());
+        assertNotNull(result.getValue().asOciImageManifest());
         assertEquals(ManifestMediaType.DOCKER_MANIFEST, result.getValue().getManifestMediaType());
     }
 
@@ -203,7 +203,7 @@ public class ContainerRegistryBlobClientTests {
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
         assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getManifestMediaType());
 
-        assertThrows(IllegalStateException.class, () -> result.getValue().asOciManifest());
+        assertThrows(IllegalStateException.class, () -> result.getValue().asOciImageManifest());
     }
 
     @SyncAsyncTest

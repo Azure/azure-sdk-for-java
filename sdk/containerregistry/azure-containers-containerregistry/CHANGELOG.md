@@ -37,7 +37,7 @@
 - Manifest changes:
   - `DownloadManifestOptions` class was removed: `downloadManifest` and `downloadManifestWithResponse` methods
     (on `ContainerRegistryBlobAsyncClient` or `ContainerRegistryBlobClient`) now take tag or digest string value instead of `DownloadManifestOptions`
-  - `DownloadManifestResult.getManifestStream` and `getManifest` methods were renamed to `getContent` and `asOciManifest`.
+  - `DownloadManifestResult.getManifestStream` and `getManifest` methods were renamed to `getContent` and `asOciImageManifest`.
   - `OciBlobDescriptor` class was renamed to `OciDescriptor`, `getSize` and `setSize` methods on it were renamed to `getSizeInBytes` and `setSizeInBytes`
   - `OciManifest` class was renamed to `OciImageManifest`
   - `UploadManifestOptions(binaryData)` constructor was replaced with `UploadManifestOptions(BinaryData, ManifestMediaType)` one.
