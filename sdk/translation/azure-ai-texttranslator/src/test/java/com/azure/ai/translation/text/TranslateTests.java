@@ -251,7 +251,6 @@ public class TranslateTests extends TextTranslationClientBase{
         assertNotNull(response.get(0).getTranslations().get(0).getText()); 	
     }
     
-    /*
     @Test    
     public void TranslateWithToken() throws Exception {
         ArrayList<String> targetLanguages = new ArrayList<>();
@@ -264,5 +263,5 @@ public class TranslateTests extends TextTranslationClientBase{
                 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertEquals("cs",response.get(0).getDetectedLanguage().getLanguage());
-    } */
+    } 
 }

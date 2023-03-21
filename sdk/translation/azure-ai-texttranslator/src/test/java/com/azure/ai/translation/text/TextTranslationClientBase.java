@@ -9,6 +9,11 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class TextTranslationClientBase extends TestBase {    
     private final String defaultEndpoint = "fakeEndpoint";
     private final String defaultApiKey = "fakeApiKey";
@@ -55,14 +60,14 @@ public class TextTranslationClientBase extends TestBase {
 
     private String getRegion() {
     return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
-    }   
-    /*
+    }  
+	
     TextTranslationClient getTranslationClientWithToken() {
         TextTranslationClientBuilder textTranslationClientbuilder =
-                new TextTranslationClientBuilder()
-                        .endpoint(getEndpoint())
+                new TextTranslationClientBuilder()                        
                         .credential(getTokenCredential())
-                        .httpClient(HttpClient.createDefault())
+                        .region(getRegion())
+                        .endpoint(getEndpoint())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -72,20 +77,14 @@ public class TextTranslationClientBase extends TestBase {
         }
         return textTranslationClientbuilder.buildClient();
     }
+    
     private TokenCredential getTokenCredential()
     {
-        String issueTokenURL = String.format("https://%1$s.api.cognitive.microsoft.com/sts/v1.0/issueToken?/Subscription-Key=%2$s", getRegion(), getKey());
-        //URL issueTokenURL = new URL(tokenURL);
-        
-        HttpClient httpClient = HttpClient.createDefault();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, issueTokenURL);
-        HttpResponse response = httpClient.sendSync(httpRequest, Context.NONE);
-        if(response.getStatusCode() == 200)
-        {
-            response.getBody();
-        }
-        //TokenCredential token = 
-        //return token;
-        return null;
-    }    */
+        String issueTokenURL = String.format("https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken?", getRegion()); 
+        HttpClient httpClient = HttpClient.newHttpClient(); 
+        URI uri = new URI(issueTokenURL + "Subscription-Key=" + getKey()); 
+        HttpRequest request = HttpRequest.newBuilder().uri(uri) .POST(HttpRequest.BodyPublishers.noBody()) .build(); 
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString()); 
+        return new TokenCredential(response.body());        
+    }
 }
