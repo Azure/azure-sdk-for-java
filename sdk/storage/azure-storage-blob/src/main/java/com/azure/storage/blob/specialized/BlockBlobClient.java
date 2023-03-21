@@ -14,10 +14,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.*;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
@@ -82,6 +79,7 @@ public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
     private final BlockBlobAsyncClient asyncClient;
 
+    //TODO: these variables should bubble to BlobClientBase once all Storage clients support sync stack.
     /**
      * Backing REST client for the blob client.
      */
@@ -203,9 +201,9 @@ public final class BlockBlobClient extends BlobClientBase {
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
-        return new BlockBlobClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId(), asyncClient);
+        return new BlockBlobClient(azureBlobStorage.getHttpPipeline(), azureBlobStorage.getUrl(), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey, finalEncryptionScope, versionId,
+            asyncClient);
     }
 
     /**
@@ -224,9 +222,9 @@ public final class BlockBlobClient extends BlobClientBase {
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
-        return new BlockBlobClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId(), asyncClient);
+        return new BlockBlobClient(azureBlobStorage.getHttpPipeline(), azureBlobStorage.getUrl(), serviceVersion,
+            accountName, containerName, blobName, snapshot, finalCustomerProvidedKey, encryptionScope,
+            versionId, asyncClient);
     }
 
     /**
