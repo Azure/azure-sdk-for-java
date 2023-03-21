@@ -41,7 +41,7 @@ public class DownloadImageAsync {
         // BEGIN: readme-sample-downloadImageAsync
         blobClient
             .downloadManifest("latest")
-            .map(manifestResult -> manifestResult.asOciManifest())
+            .map(manifestResult -> manifestResult.asOciImageManifest())
             .doOnSuccess(manifest -> System.out.printf("Got manifest:\n%s\n", prettyPrint(manifest)))
             .flatMapMany(manifest -> {
                 String configFileName = manifest.getConfig().getDigest() + ".json";
@@ -128,7 +128,7 @@ public class DownloadImageAsync {
             .doOnNext(downloadResult -> {
                 if (ManifestMediaType.OCI_MANIFEST.equals(downloadResult.getManifestMediaType())
                     || ManifestMediaType.DOCKER_MANIFEST.equals(downloadResult.getManifestMediaType())) {
-                    OciImageManifest manifest = downloadResult.asOciManifest();
+                    OciImageManifest manifest = downloadResult.asOciImageManifest();
                     System.out.println("Got OCI manifest");
                 } else {
                     throw new IllegalArgumentException("Unexpected manifest type: " + downloadResult.getManifestMediaType());
@@ -151,7 +151,7 @@ public class DownloadImageAsync {
                 DownloadManifestResult manifestResult = response.getValue();
                 if (ManifestMediaType.OCI_MANIFEST.equals(manifestResult.getManifestMediaType())
                     || ManifestMediaType.DOCKER_MANIFEST.equals(manifestResult.getManifestMediaType())) {
-                    OciImageManifest manifest = manifestResult.asOciManifest();
+                    OciImageManifest manifest = manifestResult.asOciImageManifest();
                     System.out.println("Got OCI manifest");
                 } else {
                     throw new IllegalArgumentException("Unexpected manifest type: " + manifestResult.getManifestMediaType());

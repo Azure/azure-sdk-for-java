@@ -38,7 +38,7 @@ public class DownloadImage {
         // BEGIN: readme-sample-downloadImage
         DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
 
-        OciImageManifest manifest = manifestResult.asOciManifest();
+        OciImageManifest manifest = manifestResult.asOciImageManifest();
         System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
         String configFileName = manifest.getConfig().getDigest() + ".json";
@@ -100,7 +100,7 @@ public class DownloadImage {
         DownloadManifestResult latestResult = blobClient.downloadManifest("latest");
         if (ManifestMediaType.DOCKER_MANIFEST.equals(latestResult.getManifestMediaType())
             || ManifestMediaType.OCI_MANIFEST.equals(latestResult.getManifestMediaType())) {
-            OciImageManifest manifest = latestResult.asOciManifest();
+            OciImageManifest manifest = latestResult.asOciImageManifest();
         } else {
             throw new IllegalArgumentException("Unexpected manifest type: " + latestResult.getManifestMediaType());
         }

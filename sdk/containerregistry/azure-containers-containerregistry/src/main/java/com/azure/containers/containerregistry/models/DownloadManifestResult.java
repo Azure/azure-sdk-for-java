@@ -39,7 +39,7 @@ public final class DownloadManifestResult {
      * @return The {@link OciImageManifest} instance.
      * @throws IllegalStateException thrown when attempting to get {@link OciImageManifest} from incompatible media type.
      */
-    public OciImageManifest asOciManifest() {
+    public OciImageManifest asOciImageManifest() {
         if (ociManifest != null) {
             return ociManifest;
         }

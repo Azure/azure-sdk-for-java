@@ -242,7 +242,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *     .doOnNext&#40;downloadResult -&gt; &#123;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
-     *             OciImageManifest manifest = downloadResult.asOciManifest&#40;&#41;;
+     *             OciImageManifest manifest = downloadResult.asOciImageManifest&#40;&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
      *         &#125; else &#123;
      *             throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + downloadResult.getManifestMediaType&#40;&#41;&#41;;
@@ -276,7 +276,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *         DownloadManifestResult manifestResult = response.getValue&#40;&#41;;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
-     *             OciImageManifest manifest = manifestResult.asOciManifest&#40;&#41;;
+     *             OciImageManifest manifest = manifestResult.asOciImageManifest&#40;&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
      *         &#125; else &#123;
      *             throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + manifestResult.getManifestMediaType&#40;&#41;&#41;;

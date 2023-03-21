@@ -111,7 +111,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         DownloadManifestResult downloadManifestResult = client.downloadManifest(result.getDigest());
         assertEquals(result.getDigest(), downloadManifestResult.getDigest());
-        validateManifest(MANIFEST, downloadManifestResult.asOciManifest());
+        validateManifest(MANIFEST, downloadManifestResult.asOciImageManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -158,7 +158,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         DownloadManifestResult downloadManifestResult = client.downloadManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
-        validateManifest(MANIFEST, downloadManifestResult.asOciManifest());
+        validateManifest(MANIFEST, downloadManifestResult.asOciImageManifest());
 
         validateTag("oci-artifact", MANIFEST_DIGEST, tag, httpClient);
     }
@@ -199,7 +199,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                 }))
             .assertNext(downloadManifestResult -> {
                 assertEquals(MANIFEST_DIGEST, downloadManifestResult.getDigest());
-                validateManifest(MANIFEST, downloadManifestResult.asOciManifest());
+                validateManifest(MANIFEST, downloadManifestResult.asOciImageManifest());
             })
             .verifyComplete();
     }
@@ -353,12 +353,12 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         UploadManifestResult result = client.uploadManifest(MANIFEST, "latest");
         DownloadManifestResult downloadResult = client.downloadManifest(result.getDigest());
-        assertNotNull(downloadResult.asOciManifest());
-        validateManifest(MANIFEST, downloadResult.asOciManifest());
+        assertNotNull(downloadResult.asOciImageManifest());
+        validateManifest(MANIFEST, downloadResult.asOciImageManifest());
 
         downloadResult = client.downloadManifest("latest");
-        assertNotNull(downloadResult.asOciManifest());
-        validateManifest(MANIFEST, downloadResult.asOciManifest());
+        assertNotNull(downloadResult.asOciImageManifest());
+        validateManifest(MANIFEST, downloadResult.asOciImageManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -370,7 +370,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
                     .then(asyncClient.uploadManifest(MANIFEST, null))
                     .flatMap(result -> asyncClient.downloadManifest(result.getDigest())))
             .assertNext(downloadResult -> {
-                OciImageManifest returnedManifest = downloadResult.asOciManifest();
+                OciImageManifest returnedManifest = downloadResult.asOciImageManifest();
                 assertNotNull(returnedManifest);
                 validateManifest(MANIFEST, returnedManifest);
             })
@@ -386,7 +386,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
         assertNotNull(manifestResult.getValue());
         assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
 
-        assertThrows(IllegalStateException.class, () -> manifestResult.getValue().asOciManifest());
+        assertThrows(IllegalStateException.class, () -> manifestResult.getValue().asOciImageManifest());
 
         // does not throw
         ManifestList list = manifestResult.getValue().getContent().toObject(ManifestList.class);
@@ -417,7 +417,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
         // but service does the best effort to return what it supports
         assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
-        assertThrows(IllegalStateException.class, () -> manifestResult.asOciManifest());
+        assertThrows(IllegalStateException.class, () -> manifestResult.asOciImageManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
