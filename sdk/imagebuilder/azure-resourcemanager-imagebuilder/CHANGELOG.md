@@ -1,14 +1,85 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2023-03-21)
 
-### Features Added
+- Azure Resource Manager ImageBuilder client library for Java. This package contains Microsoft Azure SDK for ImageBuilder Management SDK. Azure Virtual Machine Image Builder Client. Package tag package-2022-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ImageTemplateIdentityUserAssignedIdentities` was removed
 
-### Other Changes
+### Features Added
+
+* `models.DistributeVersionerSource` was added
+
+* `models.TargetRegion` was added
+
+* `models.DistributeVersionerLatest` was added
+
+* `models.DistributeVersioner` was added
+
+* `models.Trigger` was added
+
+* `models.Triggers` was added
+
+* `models.Trigger$Update` was added
+
+* `models.ImageTemplatePropertiesOptimize` was added
+
+* `models.ImageTemplatePropertiesOptimizeVmBoot` was added
+
+* `models.ImageTemplateFileValidator` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.SourceImageTriggerProperties` was added
+
+* `models.TriggerCollection` was added
+
+* `models.TriggerStatus` was added
+
+* `models.Trigger$DefinitionStages` was added
+
+* `models.TriggerProperties` was added
+
+* `models.Trigger$Definition` was added
+
+* `models.Trigger$UpdateStages` was added
+
+* `models.VMBootOptimizationState` was added
+
+#### `ImageBuilderManager` was modified
+
+* `triggers()` was added
+
+#### `models.ImageTemplateVhdDistributor` was modified
+
+* `withUri(java.lang.String)` was added
+* `uri()` was added
+
+#### `models.ImageTemplateSharedImageDistributor` was modified
+
+* `withTargetRegions(java.util.List)` was added
+* `withVersioning(models.DistributeVersioner)` was added
+* `versioning()` was added
+* `targetRegions()` was added
+
+#### `models.ImageTemplateSharedImageVersionSource` was modified
+
+* `exactVersion()` was added
+
+#### `models.ImageTemplate` was modified
+
+* `optimize()` was added
+* `systemData()` was added
+
+#### `models.ImageTemplate$Definition` was modified
+
+* `withOptimize(models.ImageTemplatePropertiesOptimize)` was added
+
+#### `models.RunOutput` was modified
+
+* `systemData()` was added
 
 ## 1.0.0-beta.3 (2022-05-27)
 
