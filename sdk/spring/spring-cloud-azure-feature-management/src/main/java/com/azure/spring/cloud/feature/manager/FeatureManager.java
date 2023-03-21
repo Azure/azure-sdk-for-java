@@ -104,7 +104,6 @@ public class FeatureManager {
             filter.setFeatureName(feature);
 
             return featureFilter.evaluate(filter);
-
         } catch (NoSuchBeanDefinitionException e) {
             LOGGER.error("Was unable to find Filter {}. Does the class exist and set as an @Component?",
                 filter.getName());

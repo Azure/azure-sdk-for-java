@@ -275,8 +275,7 @@ class AppConfigurationRefreshUtil {
             }
 
             SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
-                .setLabelFilter(watchKey.getLabelFilterText(profiles));
-            
+                .setLabelFilter(watchKey.getLabelFilterText(profiles));            
             List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
 
             int watchedKeySize = 0;
