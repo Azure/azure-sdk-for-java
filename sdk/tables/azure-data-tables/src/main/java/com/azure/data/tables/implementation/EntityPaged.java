@@ -23,11 +23,9 @@ public class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
                 String nextPartitionKey, String nextRowKey) {
         if (nextPartitionKey == null) {
             this.continuationToken = null;
-        }
-        else if (nextRowKey == null) {
+        } else if (nextRowKey == null) {
             this.continuationToken = nextPartitionKey;
-        }
-        else {
+        } else {
             this.continuationToken = String.join(DELIMITER_CONTINUATION_TOKEN, nextPartitionKey, nextRowKey);
         }
 
