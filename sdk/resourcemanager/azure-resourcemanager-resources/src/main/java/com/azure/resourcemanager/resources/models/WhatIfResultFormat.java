@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for WhatIfResultFormat. */
+/** The format of the What-If results. */
 public enum WhatIfResultFormat {
     /** Enum value ResourceIdOnly. */
     RESOURCE_ID_ONLY("ResourceIdOnly"),
@@ -30,6 +30,9 @@ public enum WhatIfResultFormat {
      */
     @JsonCreator
     public static WhatIfResultFormat fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         WhatIfResultFormat[] items = WhatIfResultFormat.values();
         for (WhatIfResultFormat item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum WhatIfResultFormat {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

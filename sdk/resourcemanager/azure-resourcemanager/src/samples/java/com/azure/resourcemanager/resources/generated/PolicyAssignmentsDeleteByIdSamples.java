@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyAssignments DeleteById. */
 public final class PolicyAssignmentsDeleteByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyAssignmentById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/deletePolicyAssignmentById.json
      */
     /**
      * Sample code: Delete a policy assignment by ID.
@@ -24,6 +22,6 @@ public final class PolicyAssignmentsDeleteByIdSamples {
             .getPolicyAssignments()
             .deleteByIdWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
