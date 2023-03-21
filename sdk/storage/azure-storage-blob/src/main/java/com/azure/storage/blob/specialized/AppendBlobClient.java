@@ -13,6 +13,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -64,6 +65,11 @@ public final class AppendBlobClient extends BlobClientBase {
      * Indicates the maximum number of blocks allowed in an append blob.
      */
     public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
+
+
+    protected static final int MAX_APPEND_BLOCK_BYTES_OLD_VERSION = 4 * Constants.MB;
+
+    protected static final int MAX_APPEND_BLOCK_BYTES_NEW_VERSION = 100 * Constants.MB;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -388,7 +394,16 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
+        Flux<ByteBuffer> fbb;
+
+        // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
+        // support up to 4MB
+        if (appendBlobAsyncClient.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
+            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_OLD_VERSION, true);
+        } else {
+            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_NEW_VERSION, true);
+        }
+
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
             appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
