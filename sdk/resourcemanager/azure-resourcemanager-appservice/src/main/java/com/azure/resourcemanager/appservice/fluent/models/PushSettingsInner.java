@@ -17,6 +17,10 @@ public final class PushSettingsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PushSettingsProperties innerProperties;
 
+    /** Creates an instance of PushSettingsInner class. */
+    public PushSettingsInner() {
+    }
+
     /**
      * Get the innerProperties property: PushSettings resource specific properties.
      *

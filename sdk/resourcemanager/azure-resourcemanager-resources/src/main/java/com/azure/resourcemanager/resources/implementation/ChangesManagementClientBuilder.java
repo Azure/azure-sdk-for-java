@@ -18,8 +18,7 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {ChangesManagementClientImpl.class})
 public final class ChangesManagementClientBuilder {
     /*
-     * The Azure subscription ID. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000)
+     * The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
      */
     private String subscriptionId;
 
@@ -120,24 +119,26 @@ public final class ChangesManagementClientBuilder {
      * @return an instance of ChangesManagementClientImpl.
      */
     public ChangesManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         ChangesManagementClientImpl client =
             new ChangesManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                subscriptionId,
+                localEndpoint);
         return client;
     }
 }

@@ -67,8 +67,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     public interface SignalRCustomDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customDomains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainList>> list(
@@ -82,8 +81,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customDomains/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainInner>> get(
@@ -98,8 +96,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customDomains/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customDomains/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customDomains/{name}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -672,7 +668,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String name, CustomDomainInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, name, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -692,7 +688,9 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String name, CustomDomainInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, name, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, name, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -942,7 +940,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name) {
-        return beginDeleteAsync(resourceGroupName, resourceName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, name).getSyncPoller();
     }
 
     /**
@@ -961,7 +959,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, name, context).getSyncPoller();
     }
 
     /**

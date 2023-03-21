@@ -17,6 +17,15 @@ public final class InformationProtectionPolicyName extends ExpandableStringEnum<
     public static final InformationProtectionPolicyName CUSTOM = fromString("custom");
 
     /**
+     * Creates a new instance of InformationProtectionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InformationProtectionPolicyName() {
+    }
+
+    /**
      * Creates or finds a InformationProtectionPolicyName from its string representation.
      *
      * @param name a name to look for.

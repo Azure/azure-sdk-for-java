@@ -11,11 +11,10 @@ import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedIdentity model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class ManagedIdentityTests {
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedIdentity model =
             new ManagedIdentity()
                 .withType(ManagedIdentityType.USER_ASSIGNED)

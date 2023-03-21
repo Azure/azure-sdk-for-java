@@ -60,6 +60,10 @@ public final class UsageProperties {
     @JsonProperty(value = "siteMode", access = JsonProperty.Access.WRITE_ONLY)
     private String siteMode;
 
+    /** Creates an instance of UsageProperties class. */
+    public UsageProperties() {
+    }
+
     /**
      * Get the displayName property: Friendly name shown in the UI.
      *

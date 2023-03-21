@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Connectors Get. */
 public final class ConnectorsGetSamples {
     /*
@@ -18,6 +16,6 @@ public final class ConnectorsGetSamples {
      */
     public static void detailsOfASpecificCloudAccountConnector(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.connectors().getWithResponse("aws_dev1", Context.NONE);
+        manager.connectors().getWithResponse("aws_dev1", com.azure.core.util.Context.NONE);
     }
 }

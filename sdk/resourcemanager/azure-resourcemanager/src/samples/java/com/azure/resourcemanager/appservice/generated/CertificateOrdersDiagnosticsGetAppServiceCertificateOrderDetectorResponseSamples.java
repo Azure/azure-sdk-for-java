@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CertificateOrdersDiagnostics GetAppServiceCertificateOrderDetectorResponse. */
 public final class CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
      */
     /**
      * Sample code: Get app service certificate order detector response.
@@ -30,6 +28,6 @@ public final class CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDete
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

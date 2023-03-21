@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.orbital.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.ContactInner;
 import com.azure.resourcemanager.orbital.models.Contact;
@@ -35,8 +36,8 @@ public final class ContactImpl implements Contact, Contact.Definition {
         return this.innerModel().type();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ContactsPropertiesProvisioningState provisioningState() {
@@ -171,11 +172,6 @@ public final class ContactImpl implements Contact, Contact.Definition {
         return this;
     }
 
-    public ContactImpl withProvisioningState(ContactsPropertiesProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
-        return this;
-    }
-
     public ContactImpl withReservationStartTime(OffsetDateTime reservationStartTime) {
         this.innerModel().withReservationStartTime(reservationStartTime);
         return this;
@@ -193,6 +189,11 @@ public final class ContactImpl implements Contact, Contact.Definition {
 
     public ContactImpl withContactProfile(ContactsPropertiesContactProfile contactProfile) {
         this.innerModel().withContactProfile(contactProfile);
+        return this;
+    }
+
+    public ContactImpl withProvisioningState(ContactsPropertiesProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
         return this;
     }
 }

@@ -34,6 +34,10 @@ public final class CertificateOrderContact {
     @JsonProperty(value = "phone")
     private String phone;
 
+    /** Creates an instance of CertificateOrderContact class. */
+    public CertificateOrderContact() {
+    }
+
     /**
      * Get the email property: The email property.
      *

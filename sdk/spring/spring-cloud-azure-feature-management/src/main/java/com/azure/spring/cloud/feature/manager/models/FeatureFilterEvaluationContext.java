@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager.models;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
 
 /**
  * Context passed into Feature Filters used for evaluation.
@@ -15,7 +16,7 @@ public final class FeatureFilterEvaluationContext {
     private String name;
 
     @JsonProperty("parameters")
-    private LinkedHashMap<String, Object> parameters;
+    private Map<String, Object> parameters;
 
     private String featureName;
 
@@ -36,14 +37,14 @@ public final class FeatureFilterEvaluationContext {
     /**
      * @return the parameters
      */
-    public LinkedHashMap<String, Object> getParameters() {
+    public Map<String, Object> getParameters() {
         return parameters;
     }
 
     /**
      * @param parameters the parameters to set
      */
-    public void setParameters(LinkedHashMap<String, Object> parameters) {
+    public void setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
     }
 

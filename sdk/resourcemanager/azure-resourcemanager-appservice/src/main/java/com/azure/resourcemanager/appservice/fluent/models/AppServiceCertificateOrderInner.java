@@ -32,6 +32,10 @@ public final class AppServiceCertificateOrderInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of AppServiceCertificateOrderInner class. */
+    public AppServiceCertificateOrderInner() {
+    }
+
     /**
      * Get the innerProperties property: AppServiceCertificateOrder resource specific properties.
      *

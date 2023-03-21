@@ -32,6 +32,10 @@ public final class HostKeysInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> systemKeys;
 
+    /** Creates an instance of HostKeysInner class. */
+    public HostKeysInner() {
+    }
+
     /**
      * Get the masterKey property: Secret key.
      *

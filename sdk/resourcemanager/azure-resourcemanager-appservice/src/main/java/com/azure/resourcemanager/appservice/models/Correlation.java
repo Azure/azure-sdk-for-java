@@ -16,6 +16,10 @@ public final class Correlation {
     @JsonProperty(value = "clientTrackingId")
     private String clientTrackingId;
 
+    /** Creates an instance of Correlation class. */
+    public Correlation() {
+    }
+
     /**
      * Get the clientTrackingId property: The client tracking id.
      *

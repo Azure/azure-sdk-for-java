@@ -30,11 +30,14 @@ public final class AliasPath {
     private AliasPattern pattern;
 
     /*
-     * The metadata of the alias path. If missing, fall back to the default
-     * metadata of the alias.
+     * The metadata of the alias path. If missing, fall back to the default metadata of the alias.
      */
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private AliasPathMetadata metadata;
+
+    /** Creates an instance of AliasPath class. */
+    public AliasPath() {
+    }
 
     /**
      * Get the path property: The path of an alias.

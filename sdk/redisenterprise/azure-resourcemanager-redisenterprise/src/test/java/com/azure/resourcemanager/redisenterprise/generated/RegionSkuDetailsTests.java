@@ -7,9 +7,9 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.RegionSkuDetailInner;
 import com.azure.resourcemanager.redisenterprise.models.LocationInfo;
-import com.azure.resourcemanager.redisenterprise.models.Name;
 import com.azure.resourcemanager.redisenterprise.models.RegionSkuDetails;
 import com.azure.resourcemanager.redisenterprise.models.SkuDetail;
+import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -23,7 +23,7 @@ public final class RegionSkuDetailsTests {
                 .toObject(RegionSkuDetails.class);
         Assertions.assertEquals("dnfyhxdeoejzicwi", model.value().get(0).resourceType());
         Assertions.assertEquals("ttgzfbis", model.value().get(0).locationInfo().location());
-        Assertions.assertEquals(Name.ENTERPRISE_E20, model.value().get(0).skuDetails().name());
+        Assertions.assertEquals(SkuName.ENTERPRISE_E20, model.value().get(0).skuDetails().name());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,10 +37,10 @@ public final class RegionSkuDetailsTests {
                                 .withResourceType("dnfyhxdeoejzicwi")
                                 .withLocationInfo(
                                     new LocationInfo().withLocation("ttgzfbis").withCapabilities(Arrays.asList()))
-                                .withSkuDetails(new SkuDetail().withName(Name.ENTERPRISE_E20))));
+                                .withSkuDetails(new SkuDetail().withName(SkuName.ENTERPRISE_E20))));
         model = BinaryData.fromObject(model).toObject(RegionSkuDetails.class);
         Assertions.assertEquals("dnfyhxdeoejzicwi", model.value().get(0).resourceType());
         Assertions.assertEquals("ttgzfbis", model.value().get(0).locationInfo().location());
-        Assertions.assertEquals(Name.ENTERPRISE_E20, model.value().get(0).skuDetails().name());
+        Assertions.assertEquals(SkuName.ENTERPRISE_E20, model.value().get(0).skuDetails().name());
     }
 }
