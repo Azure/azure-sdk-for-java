@@ -129,6 +129,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         LOGGER.debug("PropertySource context.");
                         setupMonitoring(configStore, client, sources, newState);
 
+
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
