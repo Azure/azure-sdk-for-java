@@ -22,7 +22,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 // MAGIC /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.ThroughputControl -- replace database-v4 with source database name - ThroughputControl table will be created there
 // MAGIC USING cosmos.oltp
-// MAGIC OPTIONS(spark.cosmos.database = 'database-v4') -- replace database-v4 with the name of your source database
+// MAGIC OPTIONS(spark.cosmos.database = 'database-v4') -- replace database-v4 with the name of your source database. Do NOT change the value partitionKeyPath = '/groupId' below - it must be /groupId for Throughput control feature to work.
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
 // MAGIC 
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.customer_v2 -- replace database-v4 with the name of your source database, and customer_v2 with what you want to name your target container - it will be created here
