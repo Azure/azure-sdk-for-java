@@ -156,7 +156,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobRequestConditions appendBlobRequestConditions) {
-            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
+            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES_OLD_VERSION);
             this.client = client;
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
