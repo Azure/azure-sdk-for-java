@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
@@ -12,6 +13,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesOptimize;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParameters;
@@ -56,6 +58,10 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this.innerModel().identity();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ImageTemplateSource source() {
         return this.innerModel().source();
     }
@@ -67,6 +73,10 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ImageTemplatePropertiesOptimize optimize() {
+        return this.innerModel().optimize();
     }
 
     public ImageTemplatePropertiesValidate validation() {
@@ -269,6 +279,11 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
 
     public ImageTemplateImpl withCustomize(List<ImageTemplateCustomizer> customize) {
         this.innerModel().withCustomize(customize);
+        return this;
+    }
+
+    public ImageTemplateImpl withOptimize(ImageTemplatePropertiesOptimize optimize) {
+        this.innerModel().withOptimize(optimize);
         return this;
     }
 

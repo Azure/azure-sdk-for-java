@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.imagebuilder.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ResourceIdentityType;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for VirtualMachineImageTemplates Update. */
 public final class VirtualMachineImageTemplatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/UpdateImageTemplateToRemoveIdentities.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/UpdateImageTemplateToRemoveIdentities.json
      */
     /**
      * Sample code: Remove identities for an Image Template.
@@ -26,13 +25,13 @@ public final class VirtualMachineImageTemplatesUpdateSamples {
         ImageTemplate resource =
             manager
                 .virtualMachineImageTemplates()
-                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.NONE)).apply();
     }
 
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/UpdateImageTemplateTags.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/UpdateImageTemplateTags.json
      */
     /**
      * Sample code: Update the tags for an Image Template.
@@ -44,7 +43,7 @@ public final class VirtualMachineImageTemplatesUpdateSamples {
         ImageTemplate resource =
             manager
                 .virtualMachineImageTemplates()
-                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("new-tag", "new-value")).apply();
     }
