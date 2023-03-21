@@ -82,7 +82,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
         if (StringUtils.hasText(this.keyFilter)) {
-            keyFilter = FEATURE_FLAG_PREFIX + this.keyFilter + "*";
+            keyFilter = FEATURE_FLAG_PREFIX + this.keyFilter;
         }
 
         settingSelector.setKeyFilter(keyFilter);
