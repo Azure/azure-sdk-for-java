@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomAssessmentAutomations Delete. */
 public final class CustomAssessmentAutomationsDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class CustomAssessmentAutomationsDeleteSamples {
     public static void deleteACustomAssessmentAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .customAssessmentAutomations()
-            .deleteByResourceGroupWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "TestResourceGroup", "MyCustomAssessmentAutomation", com.azure.core.util.Context.NONE);
     }
 }

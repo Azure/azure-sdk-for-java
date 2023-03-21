@@ -20,6 +20,15 @@ public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentS
     public static final AssessmentStatusCode NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
+     * Creates a new instance of AssessmentStatusCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssessmentStatusCode() {
+    }
+
+    /**
      * Creates or finds a AssessmentStatusCode from its string representation.
      *
      * @param name a name to look for.

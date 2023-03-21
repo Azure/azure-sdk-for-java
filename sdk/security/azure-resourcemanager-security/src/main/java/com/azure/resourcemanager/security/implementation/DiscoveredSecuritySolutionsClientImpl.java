@@ -71,8 +71,7 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}"
-                + "/discoveredSecuritySolutions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/discoveredSecuritySolutions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiscoveredSecuritySolutionList>> listByHomeRegion(
@@ -85,8 +84,7 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/discoveredSecuritySolutions/{discoveredSecuritySolutionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/discoveredSecuritySolutions/{discoveredSecuritySolutionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiscoveredSecuritySolutionInner>> get(

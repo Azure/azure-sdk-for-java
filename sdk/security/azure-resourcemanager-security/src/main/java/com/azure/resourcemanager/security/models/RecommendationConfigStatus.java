@@ -17,6 +17,15 @@ public final class RecommendationConfigStatus extends ExpandableStringEnum<Recom
     public static final RecommendationConfigStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of RecommendationConfigStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendationConfigStatus() {
+    }
+
+    /**
      * Creates or finds a RecommendationConfigStatus from its string representation.
      *
      * @param name a name to look for.
