@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed `Dynamic Classification` feature.
 
 ### Bugs Fixed
 
