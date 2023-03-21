@@ -207,7 +207,7 @@ class BlobSeekableByteChannelTests extends APISpec {
 
         and: "channel WriteBehavior has appropriate values"
         def writeBehavior = channel.getWriteBehavior() as StorageSeekableByteChannelBlockBlobWriteBehavior
-        writeBehavior.getWriteMode() == StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.valueOf(writeMode.toString())
+        writeBehavior.getWriteMode().toString().equalsIgnoreCase(writeMode.toString())
         writeBehavior.getHeaders() == headers
         writeBehavior.getMetadata() == metadata
         writeBehavior.getTags() == tags

@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share.options;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -17,17 +20,37 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     /**
      * Mode to open the channel for writing.
      */
-    public enum WriteMode {
+    public static final class WriteMode extends ExpandableStringEnum<WriteMode> {
         /**
          * Opens channel to an existing file for writing.
          */
-        WRITE,
+        public static final WriteMode WRITE = fromString("Write");
 
         /**
          * Creates a new file for writing and opens the channel. If the file already exists, it will be overwritten.
          * Requires a value be set with {@link ShareFileSeekableByteChannelWriteOptions#setFileSize(Long)}.
          */
-        OVERWRITE
+        public static final WriteMode OVERWRITE = fromString("Overwrite");
+
+        /**
+         * Creates or finds a AccessTier from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding AccessTier.
+         */
+        @JsonCreator
+        public static WriteMode fromString(String name) {
+            return fromString(name, WriteMode.class);
+        }
+
+        /**
+         * Gets known WriteMode values.
+         *
+         * @return known WriteMode values.
+         */
+        public static Collection<WriteMode> values() {
+            return values(WriteMode.class);
+        }
     }
 
     private final WriteMode channelMode;
