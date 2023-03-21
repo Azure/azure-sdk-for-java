@@ -9,6 +9,7 @@ import com.azure.resourcemanager.orbital.models.OperationResultErrorProperties;
 import com.azure.resourcemanager.orbital.models.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Operation Result Entity. */
 @Fluent
@@ -50,6 +51,18 @@ public final class OperationResultInner {
     private Double percentComplete;
 
     /*
+     * A list of results when the operation returns multiple results.
+     */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    private List<Object> value;
+
+    /*
+     * The URL to get the next set of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /*
      * Operation result properties.
      */
     @JsonProperty(value = "properties")
@@ -60,6 +73,10 @@ public final class OperationResultInner {
      */
     @JsonProperty(value = "error")
     private OperationResultErrorProperties error;
+
+    /** Creates an instance of OperationResultInner class. */
+    public OperationResultInner() {
+    }
 
     /**
      * Get the id property: ID of the resource.
@@ -113,6 +130,24 @@ public final class OperationResultInner {
      */
     public Double percentComplete() {
         return this.percentComplete;
+    }
+
+    /**
+     * Get the value property: A list of results when the operation returns multiple results.
+     *
+     * @return the value value.
+     */
+    public List<Object> value() {
+        return this.value;
+    }
+
+    /**
+     * Get the nextLink property: The URL to get the next set of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

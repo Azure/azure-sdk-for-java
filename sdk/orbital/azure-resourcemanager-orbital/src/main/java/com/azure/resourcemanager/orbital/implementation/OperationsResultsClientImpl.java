@@ -55,11 +55,10 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureOrbitalOperatio")
-    private interface OperationsResultsService {
+    public interface OperationsResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/locations/{location}/operationResults"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/locations/{location}/operationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> get(
@@ -222,7 +221,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
         String location, String operationId) {
-        return beginGetAsync(location, operationId).getSyncPoller();
+        return this.beginGetAsync(location, operationId).getSyncPoller();
     }
 
     /**
@@ -239,7 +238,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
         String location, String operationId, Context context) {
-        return beginGetAsync(location, operationId, context).getSyncPoller();
+        return this.beginGetAsync(location, operationId, context).getSyncPoller();
     }
 
     /**
