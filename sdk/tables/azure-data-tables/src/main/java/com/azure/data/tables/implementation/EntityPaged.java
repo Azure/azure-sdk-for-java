@@ -21,9 +21,13 @@ public class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
 
     public EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList,
                 String nextPartitionKey, String nextRowKey) {
-        if (nextPartitionKey == null || nextRowKey == null) {
+        if (nextPartitionKey == null) {
             this.continuationToken = null;
-        } else {
+        }
+        else if (nextRowKey == null) {
+            this.continuationToken = nextPartitionKey;
+        }
+        else {
             this.continuationToken = String.join(DELIMITER_CONTINUATION_TOKEN, nextPartitionKey, nextRowKey);
         }
 
