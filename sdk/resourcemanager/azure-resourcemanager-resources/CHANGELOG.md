@@ -2,6 +2,10 @@
 
 ## 2.25.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Updated class `Identity` to final class.
+
 ### Other Changes
 
 #### Dependency Updates
