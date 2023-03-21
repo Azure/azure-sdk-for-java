@@ -3,53 +3,28 @@
 
 package com.azure.monitor.ingestion.implementation;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPOutputStream;
 
 public final class Utils {
-    private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
     public static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
     public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String GZIP = "gzip";
-    private Utils() {
-    }
 
-    /**
-     * Method to map the exception to {@link ResponseError}.
-     * @param ex the {@link HttpResponseException}.
-     * @return the mapped {@link ResponseError}.
-     */
-    public static ResponseError mapToResponseError(HttpResponseException ex) {
-        ResponseError responseError = null;
-        // with DPG clients, the error object is just a LinkedHashMap and should map to the standard error
-        // response structure
-        // https://github.com/Azure/azure-rest-api-specs/blob/main/specification/common-types/data-plane/v1/types.json#L46
-        if (ex.getValue() instanceof LinkedHashMap<?, ?>) {
-            @SuppressWarnings("unchecked")
-            LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) ex.getValue();
-            if (errorMap.containsKey("error")) {
-                Object error = errorMap.get("error");
-                if (error instanceof LinkedHashMap<?, ?>) {
-                    @SuppressWarnings("unchecked")
-                    LinkedHashMap<String, String> errorDetails = (LinkedHashMap<String, String>) error;
-                    if (errorDetails.containsKey("code") && errorDetails.containsKey("message")) {
-                        responseError = new ResponseError(errorDetails.get("code"), errorDetails.get("message"));
-                    }
-                }
-            }
-        }
-        return responseError;
+    private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
+    // similarly to Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE, just puts a limit depending on logical processors count.
+    private static final int MAX_CONCURRENCY = 10 * Runtime.getRuntime().availableProcessors();
+
+    private Utils() {
     }
 
     /**
@@ -79,24 +54,25 @@ public final class Utils {
 
     /**
      * Creates cached (that supports scaling) thread pool with shutdown hook to do best-effort graceful termination within timeout.
-     * @param timeoutSec Timeout in seconds to wait for tasks to complete or terminate.
+     *
      * @return {@link ExecutorService} instance.
      */
-    public static ExecutorService getThreadPoolWithShutDownHook(int timeoutSec) {
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-        registerShutdownHook(threadPool, timeoutSec);
-        return threadPool;
+    public static ExecutorService createThreadPool() {
+
+        return new ThreadPoolExecutor(0, MAX_CONCURRENCY,
+            60L, TimeUnit.SECONDS, new SynchronousQueue<>());
     }
 
     /**
-     * Registers {@link ExecutorService} shutdown. First, stops accepting new tasks, then awaits their completion for
+     * Registers {@link ExecutorService} shutdown hook which will be called when JVM terminates.
+     * First, stops accepting new tasks, then awaits their completion for
      * half of timeout, cancels remaining tasks and waits another half of timeout for them to get cancelled.
      *
      * @param threadPool Thread pool to shut down.
-     * @param timeoutSec Timeout in seconds to wait for tasks to complete or terminate.
+     * @param timeoutSec Timeout in seconds to wait for tasks to complete or terminate after JVM starting to shut down.
      * @return hook thread instance that can be used to unregister hook.
      */
-    static Thread registerShutdownHook(ExecutorService threadPool, int timeoutSec) {
+    public static Thread registerShutdownHook(ExecutorService threadPool, int timeoutSec) {
         // based on https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html
         long halfTimeoutNanos = TimeUnit.SECONDS.toNanos(timeoutSec) / 2;
         Thread hook = new Thread(() -> {

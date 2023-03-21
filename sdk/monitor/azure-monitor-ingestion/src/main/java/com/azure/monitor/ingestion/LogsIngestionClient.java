@@ -34,9 +34,10 @@ import java.util.stream.Stream;
 
 import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
+import static com.azure.monitor.ingestion.implementation.Utils.createThreadPool;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
-import static com.azure.monitor.ingestion.implementation.Utils.getThreadPoolWithShutDownHook;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
+import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -52,18 +53,20 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
-public final class LogsIngestionClient {
+public final class LogsIngestionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
-    private static final Runnable DO_NOTHING = () -> { };
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final Context ENABLE_SYNC_CONTEXT = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     private final IngestionUsingDataCollectionRulesClient client;
 
     // dynamic thread pool that scales up and down on demand.
-    private static final ExecutorService THREAD_POOL = getThreadPoolWithShutDownHook(5);
+    private final ExecutorService threadPool;
+    private final Thread shutdownHook;
 
     LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
         this.client = client;
+        this.threadPool = createThreadPool();
+        this.shutdownHook = registerShutdownHook(this.threadPool, 5);
     }
 
     /**
@@ -182,7 +185,7 @@ public final class LogsIngestionClient {
         }
 
         try {
-            return THREAD_POOL.submit(() -> responseStream).get();
+            return threadPool.submit(() -> responseStream).get();
         } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -260,4 +263,9 @@ public final class LogsIngestionClient {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
+    @Override
+    public void close() {
+        threadPool.shutdown();
+        Runtime.getRuntime().removeShutdownHook(shutdownHook);
+    }
 }
