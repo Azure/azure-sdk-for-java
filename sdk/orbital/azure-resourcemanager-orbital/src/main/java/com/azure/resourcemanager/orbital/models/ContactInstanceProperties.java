@@ -65,6 +65,10 @@ public class ContactInstanceProperties {
     @JsonProperty(value = "endElevationDegrees", access = JsonProperty.Access.WRITE_ONLY)
     private Float endElevationDegrees;
 
+    /** Creates an instance of ContactInstanceProperties class. */
+    public ContactInstanceProperties() {
+    }
+
     /**
      * Get the maximumElevationDegrees property: Maximum elevation of the antenna during the contact in decimal degrees.
      *

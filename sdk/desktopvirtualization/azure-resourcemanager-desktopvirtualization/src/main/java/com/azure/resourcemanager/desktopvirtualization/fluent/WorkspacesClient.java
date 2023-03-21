@@ -47,19 +47,6 @@ public interface WorkspacesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName);
-
-    /**
-     * Get a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,6 +56,19 @@ public interface WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkspaceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Get a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
      * Create or update a workspace.
@@ -105,20 +105,6 @@ public interface WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspace Object containing Workspace definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Workspace definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner workspace);
-
-    /**
-     * Create or update a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param workspace Object containing Workspace definitions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,6 +114,20 @@ public interface WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkspaceInner> createOrUpdateWithResponse(
         String resourceGroupName, String workspaceName, WorkspaceInner workspace, Context context);
+
+    /**
+     * Create or update a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param workspace Object containing Workspace definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Workspace definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner workspace);
 
     /**
      * Remove a workspace.
@@ -160,18 +160,6 @@ public interface WorkspacesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName);
-
-    /**
-     * Remove a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,6 +168,18 @@ public interface WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Remove a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName);
 
     /**
      * Update a workspace.
@@ -201,20 +201,6 @@ public interface WorkspacesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param workspace Object containing Workspace definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Workspace definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName, WorkspacePatch workspace);
-
-    /**
-     * Update a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,19 +208,6 @@ public interface WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName);
-
-    /**
-     * Update a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Workspace definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner update(String resourceGroupName, String workspaceName);
 
     /**
      * Update a workspace.
@@ -251,6 +224,35 @@ public interface WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkspaceInner> updateWithResponse(
         String resourceGroupName, String workspaceName, WorkspacePatch workspace, Context context);
+
+    /**
+     * Update a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Workspace definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspaceInner update(String resourceGroupName, String workspaceName);
+
+    /**
+     * List workspaces.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspaceList as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WorkspaceInner> listByResourceGroupAsync(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip);
 
     /**
      * List workspaces.
@@ -280,6 +282,9 @@ public interface WorkspacesClient {
      * List workspaces.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -287,7 +292,8 @@ public interface WorkspacesClient {
      * @return workspaceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<WorkspaceInner> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List workspaces in subscription.

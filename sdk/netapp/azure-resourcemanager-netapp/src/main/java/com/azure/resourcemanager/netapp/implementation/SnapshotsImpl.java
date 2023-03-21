@@ -42,17 +42,6 @@ public final class SnapshotsImpl implements Snapshots {
         return Utils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
     }
 
-    public Snapshot get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
-        SnapshotInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, snapshotName);
-        if (inner != null) {
-            return new SnapshotImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Snapshot> getWithResponse(
         String resourceGroupName,
         String accountName,
@@ -70,6 +59,17 @@ public final class SnapshotsImpl implements Snapshots {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SnapshotImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Snapshot get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
+        SnapshotInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, snapshotName);
+        if (inner != null) {
+            return new SnapshotImpl(inner, this.manager());
         } else {
             return null;
         }

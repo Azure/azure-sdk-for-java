@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public final class PolicySetDefinitionProperties {
     /*
-     * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, Custom, and Static.
+     * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
     @JsonProperty(value = "policyType")
     private PolicyType policyType;
@@ -38,15 +37,14 @@ public final class PolicySetDefinitionProperties {
     private String description;
 
     /*
-     * The policy set definition metadata.  Metadata is an open ended object
-     * and is typically a collection of key value pairs.
+     * The policy set definition metadata.  Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
-     * The policy set definition parameters that can be used in policy
-     * definition references.
+     * The policy set definition parameters that can be used in policy definition references.
      */
     @JsonProperty(value = "parameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -59,11 +57,14 @@ public final class PolicySetDefinitionProperties {
     private List<PolicyDefinitionReference> policyDefinitions;
 
     /*
-     * The metadata describing groups of policy definition references within
-     * the policy set definition.
+     * The metadata describing groups of policy definition references within the policy set definition.
      */
     @JsonProperty(value = "policyDefinitionGroups")
     private List<PolicyDefinitionGroup> policyDefinitionGroups;
+
+    /** Creates an instance of PolicySetDefinitionProperties class. */
+    public PolicySetDefinitionProperties() {
+    }
 
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,

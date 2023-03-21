@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetAseCustomDnsSuffixConfiguration. */
 public final class AppServiceEnvironmentsGetAseCustomDnsSuffixConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetAseCustomDnsSuffixConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetAseCustomDnsSuffixConfiguration.json
      */
     /**
      * Sample code: Get ASE custom DNS suffix configuration.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsGetAseCustomDnsSuffixConfigurationSampl
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getAseCustomDnsSuffixConfigurationWithResponse("test-rg", "test-ase", Context.NONE);
+            .getAseCustomDnsSuffixConfigurationWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

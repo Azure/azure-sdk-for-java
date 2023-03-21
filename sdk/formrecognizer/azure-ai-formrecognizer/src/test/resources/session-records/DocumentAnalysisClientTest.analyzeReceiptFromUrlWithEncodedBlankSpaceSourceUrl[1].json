@@ -1,23 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "02f55962-af00-4640-8ad8-693bec8488ee",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7e3531cf-1947-411d-8965-5b3299478f75",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "221",
-      "x-envoy-upstream-service-time" : "159",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "476",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9662c069-d53c-4247-9757-dea830c9f55f",
+      "apim-request-id" : "67e87d2b-b1e7-4787-8283-b94dde966392",
       "retry-after" : "0",
+      "Content-Length" : "221",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
-      "Date" : "Fri, 19 Aug 2022 22:35:46 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "Date" : "Tue, 14 Mar 2023 18:21:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "ms-azure-ai-errorcode" : "InvalidRequest"
     },
     "Exception" : null
   } ],

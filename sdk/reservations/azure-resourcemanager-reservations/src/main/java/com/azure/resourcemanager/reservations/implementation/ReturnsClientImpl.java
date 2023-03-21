@@ -26,7 +26,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.reservations.fluent.ReturnsClient;
-import com.azure.resourcemanager.reservations.fluent.models.RefundResponseInner;
+import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResponseInner;
 import com.azure.resourcemanager.reservations.models.RefundRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -59,7 +59,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
     public interface ReturnsService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/return")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> post(
             @HostParam("$host") String endpoint,
@@ -80,8 +80,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return details of a reservation order being returned along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String reservationOrderId, RefundRequest body) {
@@ -120,8 +120,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return details of a reservation order being returned along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(
@@ -157,20 +157,19 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link PollerFlux} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RefundResponseInner>, RefundResponseInner> beginPostAsync(
+    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPostAsync(
         String reservationOrderId, RefundRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(reservationOrderId, body);
         return this
             .client
-            .<RefundResponseInner, RefundResponseInner>getLroResult(
+            .<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                RefundResponseInner.class,
-                RefundResponseInner.class,
+                ReservationOrderResponseInner.class,
+                ReservationOrderResponseInner.class,
                 this.client.getContext());
     }
 
@@ -185,18 +184,21 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link PollerFlux} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RefundResponseInner>, RefundResponseInner> beginPostAsync(
+    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPostAsync(
         String reservationOrderId, RefundRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(reservationOrderId, body, context);
         return this
             .client
-            .<RefundResponseInner, RefundResponseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RefundResponseInner.class, RefundResponseInner.class, context);
+            .<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ReservationOrderResponseInner.class,
+                ReservationOrderResponseInner.class,
+                context);
     }
 
     /**
@@ -209,11 +211,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RefundResponseInner>, RefundResponseInner> beginPost(
+    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
         String reservationOrderId, RefundRequest body) {
         return this.beginPostAsync(reservationOrderId, body).getSyncPoller();
     }
@@ -229,11 +230,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RefundResponseInner>, RefundResponseInner> beginPost(
+    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
         String reservationOrderId, RefundRequest body, Context context) {
         return this.beginPostAsync(reservationOrderId, body, context).getSyncPoller();
     }
@@ -248,11 +248,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation on successful completion of
-     *     {@link Mono}.
+     * @return details of a reservation order being returned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RefundResponseInner> postAsync(String reservationOrderId, RefundRequest body) {
+    private Mono<ReservationOrderResponseInner> postAsync(String reservationOrderId, RefundRequest body) {
         return beginPostAsync(reservationOrderId, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -267,11 +266,11 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation on successful completion of
-     *     {@link Mono}.
+     * @return details of a reservation order being returned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RefundResponseInner> postAsync(String reservationOrderId, RefundRequest body, Context context) {
+    private Mono<ReservationOrderResponseInner> postAsync(
+        String reservationOrderId, RefundRequest body, Context context) {
         return beginPostAsync(reservationOrderId, body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -285,10 +284,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RefundResponseInner post(String reservationOrderId, RefundRequest body) {
+    public ReservationOrderResponseInner post(String reservationOrderId, RefundRequest body) {
         return postAsync(reservationOrderId, body).block();
     }
 
@@ -303,10 +302,10 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RefundResponseInner post(String reservationOrderId, RefundRequest body, Context context) {
+    public ReservationOrderResponseInner post(String reservationOrderId, RefundRequest body, Context context) {
         return postAsync(reservationOrderId, body, context).block();
     }
 }

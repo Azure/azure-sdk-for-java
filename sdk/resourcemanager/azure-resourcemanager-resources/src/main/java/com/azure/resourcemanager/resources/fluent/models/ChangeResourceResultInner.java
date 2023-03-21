@@ -18,6 +18,10 @@ public final class ChangeResourceResultInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ChangeProperties properties;
 
+    /** Creates an instance of ChangeResourceResultInner class. */
+    public ChangeResourceResultInner() {
+    }
+
     /**
      * Get the properties property: The properties of a change.
      *

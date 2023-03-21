@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityContacts Delete. */
 public final class SecurityContactsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class SecurityContactsDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deletesASecurityContactData(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityContacts().deleteWithResponse("default", Context.NONE);
+        manager.securityContacts().deleteWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

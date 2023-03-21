@@ -77,7 +77,11 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
 
     @Override
     public long getHitCount() {
-        return this.hitCount.get() > this.hitLimit ? this.hitLimit : this.hitCount.get();
+        if (this.hitLimit == null) {
+            return this.hitCount.get();
+        }
+
+        return Math.min(this.hitLimit, this.hitCount.get());
     }
 
     @Override

@@ -98,6 +98,12 @@ public final class DocumentField {
     private AddressValue valueAddress;
 
     /*
+     * Boolean value.
+     */
+    @JsonProperty(value = "valueBoolean")
+    private Boolean valueBoolean;
+
+    /*
      * Field content.
      */
     @JsonProperty(value = "content")
@@ -401,6 +407,26 @@ public final class DocumentField {
      */
     public DocumentField setValueAddress(AddressValue valueAddress) {
         this.valueAddress = valueAddress;
+        return this;
+    }
+
+    /**
+     * Get the valueBoolean property: Boolean value.
+     *
+     * @return the valueBoolean value.
+     */
+    public Boolean isValueBoolean() {
+        return this.valueBoolean;
+    }
+
+    /**
+     * Set the valueBoolean property: Boolean value.
+     *
+     * @param valueBoolean the valueBoolean value to set.
+     * @return the DocumentField object itself.
+     */
+    public DocumentField setValueBoolean(Boolean valueBoolean) {
+        this.valueBoolean = valueBoolean;
         return this;
     }
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectors ListByResourceGroup. */
 public final class SecurityConnectorsListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class SecurityConnectorsListByResourceGroupSamples {
      */
     public static void listAllSecurityConnectorsOfASpecifiedResourceGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityConnectors().listByResourceGroup("exampleResourceGroup", Context.NONE);
+        manager.securityConnectors().listByResourceGroup("exampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

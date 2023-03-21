@@ -34,6 +34,10 @@ public final class CommunicationServiceKeysInner {
     @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
+    /** Creates an instance of CommunicationServiceKeysInner class. */
+    public CommunicationServiceKeysInner() {
+    }
+
     /**
      * Get the primaryKey property: The primary access key.
      *

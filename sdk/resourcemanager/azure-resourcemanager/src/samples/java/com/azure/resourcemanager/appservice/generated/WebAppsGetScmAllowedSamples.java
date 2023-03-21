@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetScmAllowed. */
 public final class WebAppsGetScmAllowedSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetPublishingCredentialsPolicy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetPublishingCredentialsPolicy.json
      */
     /**
      * Sample code: Get SCM Allowed.
@@ -22,6 +20,6 @@ public final class WebAppsGetScmAllowedSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getScmAllowedWithResponse("rg", "testSite", Context.NONE);
+            .getScmAllowedWithResponse("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

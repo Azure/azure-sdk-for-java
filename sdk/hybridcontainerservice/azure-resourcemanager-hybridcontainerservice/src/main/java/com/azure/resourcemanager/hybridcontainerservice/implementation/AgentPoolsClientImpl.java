@@ -60,19 +60,18 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridContainerServi")
-    private interface AgentPoolsService {
+    public interface AgentPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools"
-                + "/{agentPoolName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -81,15 +80,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools"
-                + "/{agentPoolName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AgentPoolInner agentPool,
@@ -99,15 +97,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools"
-                + "/{agentPoolName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -116,15 +113,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools"
-                + "/{agentPoolName}")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolInner>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("agentPoolName") String agentPoolName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AgentPoolInner agentPool,
@@ -134,14 +130,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}/agentPools")
+                + "/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/agentPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolListResultInner>> listByProvisionedCluster(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("provisionedClustersName") String provisionedClustersName,
+            @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -153,7 +149,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -163,7 +159,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName) {
+        String resourceGroupName, String resourceName, String agentPoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -180,10 +176,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -197,7 +191,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             agentPoolName,
                             this.client.getApiVersion(),
                             accept,
@@ -211,7 +205,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +216,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -239,10 +233,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -254,7 +246,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 agentPoolName,
                 this.client.getApiVersion(),
                 accept,
@@ -267,7 +259,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,9 +267,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the agent pool in the Hybrid AKS provisioned cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> getAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        return getWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName)
+    private Mono<AgentPoolInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -287,7 +278,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,8 +288,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolInner> getWithResponse(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
-        return getWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName, context).block();
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
+        return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
     }
 
     /**
@@ -307,7 +298,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,8 +306,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the agent pool in the Hybrid AKS provisioned cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner get(String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        return getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, Context.NONE).getValue();
+    public AgentPoolInner get(String resourceGroupName, String resourceName, String agentPoolName) {
+        return getWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE).getValue();
     }
 
     /**
@@ -325,7 +316,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -335,7 +326,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -352,10 +343,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -374,7 +363,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             agentPoolName,
                             this.client.getApiVersion(),
                             agentPool,
@@ -389,7 +378,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -401,7 +390,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
@@ -421,10 +410,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -441,7 +428,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 agentPoolName,
                 this.client.getApiVersion(),
                 agentPool,
@@ -455,7 +442,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,9 +452,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool);
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, agentPool);
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
@@ -484,7 +471,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -496,14 +483,13 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, provisionedClustersName, agentPoolName, agentPool, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, agentPool, context);
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
@@ -516,7 +502,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,9 +512,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool)
-            .getSyncPoller();
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool).getSyncPoller();
     }
 
     /**
@@ -537,7 +522,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -549,11 +534,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool, context)
             .getSyncPoller();
     }
 
@@ -563,7 +549,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -573,8 +559,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool)
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -585,7 +571,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -597,11 +583,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> createOrUpdateAsync(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -612,7 +598,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -622,8 +608,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner createOrUpdate(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
-        return createOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool).block();
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool).block();
     }
 
     /**
@@ -632,7 +618,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Creates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -644,12 +630,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner createOrUpdate(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, agentPool, context).block();
     }
 
     /**
@@ -658,7 +643,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -667,7 +652,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName) {
+        String resourceGroupName, String resourceName, String agentPoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -684,10 +669,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -701,7 +684,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             agentPoolName,
                             this.client.getApiVersion(),
                             accept,
@@ -715,7 +698,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,7 +708,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -742,10 +725,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -757,7 +738,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 agentPoolName,
                 this.client.getApiVersion(),
                 accept,
@@ -770,7 +751,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -778,9 +759,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        return deleteWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -789,7 +769,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,8 +779,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName, context).block();
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName, context).block();
     }
 
     /**
@@ -809,15 +789,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Deletes the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        deleteWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, Context.NONE);
+    public void delete(String resourceGroupName, String resourceName, String agentPoolName) {
+        deleteWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE);
     }
 
     /**
@@ -826,7 +806,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Updates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,7 +816,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> updateWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -853,10 +833,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -875,7 +853,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             agentPoolName,
                             this.client.getApiVersion(),
                             agentPool,
@@ -890,7 +868,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Updates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -902,7 +880,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> updateWithResponseAsync(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
@@ -922,10 +900,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
@@ -942,7 +918,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 agentPoolName,
                 this.client.getApiVersion(),
                 agentPool,
@@ -956,7 +932,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Updates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -966,8 +942,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> updateAsync(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
-        return updateWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool)
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
+        return updateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, agentPool)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -977,7 +953,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Updates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @param context The context to associate with this operation.
@@ -989,12 +965,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolInner> updateWithResponse(
         String resourceGroupName,
-        String provisionedClustersName,
+        String resourceName,
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, provisionedClustersName, agentPoolName, agentPool, context)
-            .block();
+        return updateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, agentPool, context).block();
     }
 
     /**
@@ -1003,7 +978,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Updates the agent pool in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param agentPoolName Parameter for the name of the agent pool in the provisioned cluster.
      * @param agentPool The agentPool resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1013,9 +988,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner update(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, AgentPoolInner agentPool) {
-        return updateWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, agentPool, Context.NONE)
-            .getValue();
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner agentPool) {
+        return updateWithResponse(resourceGroupName, resourceName, agentPoolName, agentPool, Context.NONE).getValue();
     }
 
     /**
@@ -1024,7 +998,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1033,7 +1007,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolListResultInner>> listByProvisionedClusterWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName) {
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1050,10 +1024,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1064,7 +1036,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            provisionedClustersName,
+                            resourceName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -1077,7 +1049,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1087,7 +1059,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolListResultInner>> listByProvisionedClusterWithResponseAsync(
-        String resourceGroupName, String provisionedClustersName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1104,10 +1076,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (provisionedClustersName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter provisionedClustersName is required and cannot be null."));
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1116,7 +1086,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                provisionedClustersName,
+                resourceName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -1128,7 +1098,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1136,8 +1106,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolListResultInner> listByProvisionedClusterAsync(
-        String resourceGroupName, String provisionedClustersName) {
-        return listByProvisionedClusterWithResponseAsync(resourceGroupName, provisionedClustersName)
+        String resourceGroupName, String resourceName) {
+        return listByProvisionedClusterWithResponseAsync(resourceGroupName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1147,7 +1117,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1156,8 +1126,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolListResultInner> listByProvisionedClusterWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
-        return listByProvisionedClusterWithResponseAsync(resourceGroupName, provisionedClustersName, context).block();
+        String resourceGroupName, String resourceName, Context context) {
+        return listByProvisionedClusterWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -1166,15 +1136,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * <p>Gets the agent pools in the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the agent pools in the Hybrid AKS provisioned cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolListResultInner listByProvisionedCluster(String resourceGroupName, String provisionedClustersName) {
-        return listByProvisionedClusterWithResponse(resourceGroupName, provisionedClustersName, Context.NONE)
-            .getValue();
+    public AgentPoolListResultInner listByProvisionedCluster(String resourceGroupName, String resourceName) {
+        return listByProvisionedClusterWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerApps GetByResourceGroup. */
 public final class ContainerAppsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetContainerApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetContainerApp.json
      */
     /**
      * Sample code: Get Container App.
@@ -22,6 +20,6 @@ public final class ContainerAppsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getContainerApps()
-            .getByResourceGroupWithResponse("rg", "testcontainerApp0", Context.NONE);
+            .getByResourceGroupWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
     }
 }

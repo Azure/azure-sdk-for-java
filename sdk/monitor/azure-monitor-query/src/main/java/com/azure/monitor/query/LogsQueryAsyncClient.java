@@ -429,7 +429,6 @@ public final class LogsQueryAsyncClient {
         }
         String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
-
         QueryBody queryBody = new QueryBody(query);
         if (timeInterval != null) {
             queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
@@ -463,10 +462,4 @@ public final class LogsQueryAsyncClient {
                 }
             });
     }
-
-
-
-
-
-
 }

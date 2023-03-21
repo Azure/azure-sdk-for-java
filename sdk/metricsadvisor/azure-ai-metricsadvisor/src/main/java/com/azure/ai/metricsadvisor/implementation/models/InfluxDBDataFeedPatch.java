@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The InfluxDBDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private InfluxDBParameterPatch dataSourceParameter;
+
+    /** Creates an instance of InfluxDBDataFeedPatch class. */
+    public InfluxDBDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -37,6 +42,153 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      */
     public InfluxDBDataFeedPatch setDataSourceParameter(InfluxDBParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setStatus(EntityStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InfluxDBDataFeedPatch setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

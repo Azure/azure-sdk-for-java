@@ -69,8 +69,7 @@ public final class TriggeredWebJobProperties {
     private Boolean usingSdk;
 
     /*
-     * Property to allow or block all public traffic. Allowed Values:
-     * 'Enabled', 'Disabled' or an empty string.
+     * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
@@ -87,6 +86,10 @@ public final class TriggeredWebJobProperties {
     @JsonProperty(value = "settings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
+
+    /** Creates an instance of TriggeredWebJobProperties class. */
+    public TriggeredWebJobProperties() {
+    }
 
     /**
      * Get the latestRun property: Latest job run information.

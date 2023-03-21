@@ -35,6 +35,10 @@ public final class VirtualNetworkProfile {
     @JsonProperty(value = "subnet")
     private String subnet;
 
+    /** Creates an instance of VirtualNetworkProfile class. */
+    public VirtualNetworkProfile() {
+    }
+
     /**
      * Get the id property: Resource id of the Virtual Network.
      *

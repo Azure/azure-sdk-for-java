@@ -62,9 +62,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
     public interface RegulatoryComplianceAssessmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
-                + "/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}"
-                + "/regulatoryComplianceAssessments")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceAssessmentList>> list(
@@ -79,9 +77,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
-                + "/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}"
-                + "/regulatoryComplianceAssessments/{regulatoryComplianceAssessmentName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments/{regulatoryComplianceAssessmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceAssessmentInner>> get(

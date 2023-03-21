@@ -24,20 +24,22 @@ public final class DatabaseBackupSetting {
     private String name;
 
     /*
-     * Contains a connection string name that is linked to the
-     * SiteConfig.ConnectionStrings.
+     * Contains a connection string name that is linked to the SiteConfig.ConnectionStrings.
      * This is used during restore with overwrite connection strings options.
      */
     @JsonProperty(value = "connectionStringName")
     private String connectionStringName;
 
     /*
-     * Contains a connection string to a database which is being backed up or
-     * restored. If the restore should happen to a new database, the database
-     * name inside is the new one.
+     * Contains a connection string to a database which is being backed up or restored. If the restore should happen to
+     * a new database, the database name inside is the new one.
      */
     @JsonProperty(value = "connectionString")
     private String connectionString;
+
+    /** Creates an instance of DatabaseBackupSetting class. */
+    public DatabaseBackupSetting() {
+    }
 
     /**
      * Get the databaseType property: Database type (e.g. SqlAzure / MySql).

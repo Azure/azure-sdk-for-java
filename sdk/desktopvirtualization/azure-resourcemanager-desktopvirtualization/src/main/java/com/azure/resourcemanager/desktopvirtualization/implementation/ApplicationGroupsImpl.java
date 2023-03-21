@@ -28,15 +28,6 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationGroup getByResourceGroup(String resourceGroupName, String applicationGroupName) {
-        ApplicationGroupInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, applicationGroupName);
-        if (inner != null) {
-            return new ApplicationGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationGroup> getByResourceGroupWithResponse(
         String resourceGroupName, String applicationGroupName, Context context) {
         Response<ApplicationGroupInner> inner =
@@ -52,12 +43,22 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String applicationGroupName) {
-        this.serviceClient().delete(resourceGroupName, applicationGroupName);
+    public ApplicationGroup getByResourceGroup(String resourceGroupName, String applicationGroupName) {
+        ApplicationGroupInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, applicationGroupName);
+        if (inner != null) {
+            return new ApplicationGroupImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String applicationGroupName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String applicationGroupName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, applicationGroupName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String applicationGroupName) {
+        this.serviceClient().delete(resourceGroupName, applicationGroupName);
     }
 
     public PagedIterable<ApplicationGroup> listByResourceGroup(String resourceGroupName) {
@@ -66,9 +67,16 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
     }
 
     public PagedIterable<ApplicationGroup> listByResourceGroup(
-        String resourceGroupName, String filter, Context context) {
+        String resourceGroupName,
+        String filter,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         PagedIterable<ApplicationGroupInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, context);
+            this
+                .serviceClient()
+                .listByResourceGroup(resourceGroupName, filter, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new ApplicationGroupImpl(inner1, this.manager()));
     }
 
@@ -142,7 +150,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationGroups'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, applicationGroupName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, applicationGroupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -163,7 +171,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationGroups'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, applicationGroupName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, applicationGroupName, context);
     }
 
     private ApplicationGroupsClient serviceClient() {

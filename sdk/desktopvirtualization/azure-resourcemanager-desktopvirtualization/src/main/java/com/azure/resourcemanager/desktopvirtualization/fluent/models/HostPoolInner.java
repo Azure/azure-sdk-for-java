@@ -7,12 +7,11 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySet;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
@@ -36,6 +35,10 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
      */
     @JsonProperty(value = "properties", required = true)
     private HostPoolPropertiesInner innerProperties = new HostPoolPropertiesInner();
+
+    /** Creates an instance of HostPoolInner class. */
+    public HostPoolInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -519,29 +522,6 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     }
 
     /**
-     * Get the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerProperties() == null ? null : this.innerProperties().migrationRequest();
-    }
-
-    /**
-     * Set the migrationRequest property: The registration info of HostPool.
-     *
-     * @param migrationRequest the migrationRequest value to set.
-     * @return the HostPoolInner object itself.
-     */
-    public HostPoolInner withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new HostPoolPropertiesInner();
-        }
-        this.innerProperties().withMigrationRequest(migrationRequest);
-        return this;
-    }
-
-    /**
      * Get the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
@@ -551,27 +531,27 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @return the publicNetworkAccess value.
+     * @return the agentUpdate value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    public AgentUpdateProperties agentUpdate() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentUpdate();
     }
 
     /**
-     * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolInner object itself.
      */
-    public HostPoolInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public HostPoolInner withAgentUpdate(AgentUpdateProperties agentUpdate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostPoolPropertiesInner();
         }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        this.innerProperties().withAgentUpdate(agentUpdate);
         return this;
     }
 

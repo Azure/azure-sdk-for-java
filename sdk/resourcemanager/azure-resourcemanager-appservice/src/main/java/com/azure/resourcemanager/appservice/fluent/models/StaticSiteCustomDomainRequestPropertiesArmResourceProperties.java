@@ -16,6 +16,10 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResourceProperties 
     @JsonProperty(value = "validationMethod")
     private String validationMethod;
 
+    /** Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResourceProperties class. */
+    public StaticSiteCustomDomainRequestPropertiesArmResourceProperties() {
+    }
+
     /**
      * Get the validationMethod property: Validation method for adding a custom domain.
      *

@@ -25,6 +25,10 @@ public final class BillingMeterCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of BillingMeterCollection class. */
+    public BillingMeterCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

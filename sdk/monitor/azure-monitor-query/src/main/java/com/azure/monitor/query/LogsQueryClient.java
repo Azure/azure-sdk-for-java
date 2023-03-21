@@ -400,5 +400,4 @@ public final class LogsQueryClient {
         return convertToLogQueryResult(queryResultsResponse);
     }
 
-
 }

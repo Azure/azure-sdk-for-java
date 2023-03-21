@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,10 +23,9 @@ public final class ChangeThresholdConditionPatch {
     private Integer shiftPoint;
 
     /*
-     * if the withinRange = true, detected data is abnormal when the value
-     * falls in the range, in this case anomalyDetectorDirection must be Both
-     * if the withinRange = false, detected data is abnormal when the value
-     * falls out of the range
+     * if the withinRange = true, detected data is abnormal when the value falls in the range, in this case
+     * anomalyDetectorDirection must be Both
+     * if the withinRange = false, detected data is abnormal when the value falls out of the range
      */
     @JsonProperty(value = "withinRange")
     private Boolean withinRange;
@@ -43,6 +41,9 @@ public final class ChangeThresholdConditionPatch {
      */
     @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
+
+    /** Creates an instance of ChangeThresholdConditionPatch class. */
+    public ChangeThresholdConditionPatch() {}
 
     /**
      * Get the changePercentage property: change percentage, value range : [0, +∞).

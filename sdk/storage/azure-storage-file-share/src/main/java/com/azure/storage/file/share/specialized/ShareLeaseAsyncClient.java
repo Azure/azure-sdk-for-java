@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import reactor.core.publisher.Mono;
@@ -61,13 +62,17 @@ public final class ShareLeaseAsyncClient {
     private volatile String leaseId;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot,
-        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion) {
+        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion,
+        boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareTokenIntent shareTokenIntent) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion)
+            .fileRequestIntent(shareTokenIntent)
+            .allowTrailingDot(allowTrailingDot)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
             .buildClient();
         this.accountName = accountName;
         this.shareName = shareName;
