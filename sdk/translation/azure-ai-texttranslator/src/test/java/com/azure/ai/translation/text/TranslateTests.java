@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TranslateTests extends TextTranslationClientBase{    
-    
-    @Test    
+public class TranslateTests extends TextTranslationClientBase{
+
+    @Test
     public void TranslateBasic() throws Exception {
         ArrayList<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
@@ -27,7 +27,7 @@ public class TranslateTests extends TextTranslationClientBase{
         content.add(new InputTextItem("Hola mundo"));
 
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content);
-        
+
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("cs", response.get(0).getTranslations().get(0).getTo());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
@@ -46,8 +46,8 @@ public class TranslateTests extends TextTranslationClientBase{
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("cs", response.get(0).getTranslations().get(0).getTo());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
-    } 
-    
+    }
+
     @Test
     public void TranslateWithNoTranslateTag() {
         ArrayList<String> targetLanguages = new ArrayList<>();
@@ -57,11 +57,11 @@ public class TranslateTests extends TextTranslationClientBase{
         content.add(new InputTextItem("<span class=notranslate>今天是怎么回事是</span>非常可怕的"));
 
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, "zh-chs", TextType.HTML, null, null, null, null, null, null, null, null, null);
-		
+
         assertEquals(1, response.get(0).getTranslations().size());
         assertTrue(response.get(0).getTranslations().get(0).getText().contains("今天是怎么回事是"));
     }
-	
+
     @Test
     public void TranslateWithDictionaryTag()
     {
@@ -88,7 +88,7 @@ public class TranslateTests extends TextTranslationClientBase{
         content.add(new InputTextItem("hudha akhtabar." ));
 
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, "ar", null, null, null, null, null, null, null, "Latn", "Latn", null);
-        
+
         assertNotNull(response.get(0).getSourceText().getText());
         assertEquals("zh-Hans", response.get(0).getTranslations().get(0).getTo());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
@@ -102,7 +102,7 @@ public class TranslateTests extends TextTranslationClientBase{
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("ap kaise ho" ));
-        
+
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, "hi", null, null, null, null, null, null, null, "Latn", "Latn", null);
 
         assertNotNull(response.get(0).getTranslations().get(0).getTransliteration().getScript());
@@ -163,7 +163,7 @@ public class TranslateTests extends TextTranslationClientBase{
     {
         ArrayList<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
-        
+
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("<html><body>This <b>is</b> a test.</body></html>"));
 
@@ -195,7 +195,7 @@ public class TranslateTests extends TextTranslationClientBase{
         assertEquals(1, response.get(0).getDetectedLanguage().getScore());
         assertTrue(response.get(0).getTranslations().get(0).getText().contains("***"));
     }
-    
+
     @Test
     public void TranslateWithAlignment()
     {
@@ -204,14 +204,14 @@ public class TranslateTests extends TextTranslationClientBase{
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("It is a beautiful morning"));
-        
+
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, null, null, null, null, null,true, null, null, null, null, null);
 
         assertEquals(1, response.size());
         assertEquals(1, response.get(0).getTranslations().size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals(1, response.get(0).getDetectedLanguage().getScore());
-        assertNotNull(response.get(0).getTranslations().get(0).getAlignment().getProj()); 
+        assertNotNull(response.get(0).getTranslations().get(0).getAlignment().getProj());
     }
 
     @Test
@@ -222,10 +222,10 @@ public class TranslateTests extends TextTranslationClientBase{
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("La réponse se trouve dans la traduction automatique. La meilleure technologie de traduction automatique ne peut pas toujours fournir des traductions adaptées à un site ou des utilisateurs comme un être humain. Il suffit de copier et coller un extrait de code n'importe où."));
-        
+
         List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, null, null, null, null, null,null, true, null, null, null, null);
 
-        assertEquals(1, response.size());        
+        assertEquals(1, response.size());
         assertEquals("fr", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals(1, response.get(0).getDetectedLanguage().getScore());
         assertEquals(1, response.get(0).getTranslations().size());
@@ -241,17 +241,17 @@ public class TranslateTests extends TextTranslationClientBase{
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("It is a beautiful morning"));
-        
+
         List<TranslatedTextItem> response = getTranslationClientWithCustomEndpoint().translate(targetLanguages, content);
 
-        assertEquals(1, response.size());        
+        assertEquals(1, response.size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals(1, response.get(0).getDetectedLanguage().getScore());
         assertEquals(1, response.get(0).getTranslations().size());
-        assertNotNull(response.get(0).getTranslations().get(0).getText()); 	
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
     }
-    
-    @Test    
+
+    @Test
     public void TranslateWithToken() throws Exception {
         ArrayList<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
@@ -260,8 +260,11 @@ public class TranslateTests extends TextTranslationClientBase{
         content.add(new InputTextItem("This is a test."));
 
         List<TranslatedTextItem> response = getTranslationClientWithToken().translate(targetLanguages, content);
-                
+
         assertNotNull(response.get(0).getTranslations().get(0).getText());
-        assertEquals("cs",response.get(0).getDetectedLanguage().getLanguage());
-    } 
+        assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
+        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getTranslations().size());
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
+    }
 }

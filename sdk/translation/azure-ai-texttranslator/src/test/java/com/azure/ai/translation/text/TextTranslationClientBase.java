@@ -2,37 +2,37 @@
 // Licensed under the MIT License.
 
 package com.azure.ai.translation.text;
+
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.*;
+import java.io.*;
 
-public class TextTranslationClientBase extends TestBase {    
+public class TextTranslationClientBase extends TestBase {
     private final String defaultEndpoint = "fakeEndpoint";
     private final String defaultApiKey = "fakeApiKey";
     private final String defaultRegion = "fakeRegion";
     private final String defaultCustomEndpoint = "fakeCustomEndpoint";
-       
+
 
     TextTranslationClient getTranslationClient() {
         return getClient(getEndpoint());
     }
-    
+
     TextTranslationClient getTranslationClientWithCustomEndpoint() {
         return getClient(getCustomEndpoint());
     }
-    
-    
+
+
     TextTranslationClient getClient(String endpoint) {
         TextTranslationClientBuilder textTranslationClientbuilder =
-                new TextTranslationClientBuilder()                        
+                new TextTranslationClientBuilder()
                         .credential(new AzureKeyCredential(getKey()))
                         .region(getRegion())
                         .endpoint(endpoint)
@@ -60,11 +60,13 @@ public class TextTranslationClientBase extends TestBase {
 
     private String getRegion() {
     return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
-    }  
-	
-    TextTranslationClient getTranslationClientWithToken() {
+    }
+
+    TextTranslationClient getTranslationClientWithToken()
+        throws MalformedURLException, IOException
+    {
         TextTranslationClientBuilder textTranslationClientbuilder =
-                new TextTranslationClientBuilder()                        
+                new TextTranslationClientBuilder()
                         .credential(getTokenCredential())
                         .region(getRegion())
                         .endpoint(getEndpoint())
@@ -77,14 +79,23 @@ public class TextTranslationClientBase extends TestBase {
         }
         return textTranslationClientbuilder.buildClient();
     }
-    
+
     private TokenCredential getTokenCredential()
+        throws MalformedURLException, IOException
     {
-        String issueTokenURL = String.format("https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken?", getRegion()); 
-        HttpClient httpClient = HttpClient.newHttpClient(); 
-        URI uri = new URI(issueTokenURL + "Subscription-Key=" + getKey()); 
-        HttpRequest request = HttpRequest.newBuilder().uri(uri) .POST(HttpRequest.BodyPublishers.noBody()) .build(); 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString()); 
-        return new TokenCredential(response.body());        
+        String issueTokenURL = String.format("https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken?", getRegion());
+        URL tokenService = new URL(issueTokenURL + "Subscription-Key=" + getKey());
+        HttpURLConnection connection = (HttpURLConnection) tokenService.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        OutputStreamWriter writers = new OutputStreamWriter(connection.getOutputStream());
+        writers.write("{}"); //body
+        writers.flush();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String tokenResponse = in.readLine();
+        in.close();
+
+        return new StaticTokenForTest(tokenResponse);
     }
 }
