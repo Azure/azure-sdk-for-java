@@ -49,6 +49,10 @@ public final class ContainerAppProperties {
     @JsonProperty(value = "template")
     private Template template;
 
+    /** Creates an instance of ContainerAppProperties class. */
+    public ContainerAppProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
      *

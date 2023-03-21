@@ -29,6 +29,10 @@ public final class RunOutputProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of RunOutputProperties class. */
+    public RunOutputProperties() {
+    }
+
     /**
      * Get the artifactId property: The resource id of the artifact.
      *

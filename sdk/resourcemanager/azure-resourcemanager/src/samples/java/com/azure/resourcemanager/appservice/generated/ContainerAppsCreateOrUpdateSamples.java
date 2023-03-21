@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appservice.models.Configuration;
 import com.azure.resourcemanager.appservice.models.Container;
@@ -21,7 +20,7 @@ import java.util.Map;
 /** Samples for ContainerApps CreateOrUpdate. */
 public final class ContainerAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateOrUpdateContainerApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateOrUpdateContainerApp.json
      */
     /**
      * Sample code: Create or Update Container App.
@@ -66,7 +65,7 @@ public final class ContainerAppsCreateOrUpdateSamples {
                                                             .withType("http")
                                                             .withMetadata(mapOf("concurrentRequests", "50"))))))
                             .withDapr(new Dapr().withEnabled(true).withAppPort(3000))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

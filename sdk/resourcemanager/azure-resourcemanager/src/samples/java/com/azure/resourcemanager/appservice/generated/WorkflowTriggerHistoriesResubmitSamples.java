@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggerHistories Resubmit. */
 public final class WorkflowTriggerHistoriesResubmitSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggerHistories_Resubmit.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggerHistories_Resubmit.json
      */
     /**
      * Sample code: Resubmit a workflow run based on the trigger history.
@@ -29,6 +27,6 @@ public final class WorkflowTriggerHistoriesResubmitSamples {
                 "testWorkflowName",
                 "testTriggerName",
                 "testHistoryName",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

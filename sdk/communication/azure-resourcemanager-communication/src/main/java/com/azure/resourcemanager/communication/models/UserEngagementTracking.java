@@ -17,6 +17,15 @@ public final class UserEngagementTracking extends ExpandableStringEnum<UserEngag
     public static final UserEngagementTracking ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of UserEngagementTracking value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UserEngagementTracking() {
+    }
+
+    /**
      * Creates or finds a UserEngagementTracking from its string representation.
      *
      * @param name a name to look for.

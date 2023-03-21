@@ -29,6 +29,15 @@ public final class VerificationStatus extends ExpandableStringEnum<VerificationS
     public static final VerificationStatus CANCELLATION_REQUESTED = fromString("CancellationRequested");
 
     /**
+     * Creates a new instance of VerificationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VerificationStatus() {
+    }
+
+    /**
      * Creates or finds a VerificationStatus from its string representation.
      *
      * @param name a name to look for.

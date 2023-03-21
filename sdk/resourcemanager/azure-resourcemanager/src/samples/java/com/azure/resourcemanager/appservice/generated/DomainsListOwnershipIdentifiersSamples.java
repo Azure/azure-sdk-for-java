@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains ListOwnershipIdentifiers. */
 public final class DomainsListOwnershipIdentifiersSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/ListDomainOwnershipIdentifiers.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/ListDomainOwnershipIdentifiers.json
      */
     /**
      * Sample code: List Domain Ownership Identifiers.
@@ -22,6 +20,6 @@ public final class DomainsListOwnershipIdentifiersSamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .listOwnershipIdentifiers("testrg123", "example.com", Context.NONE);
+            .listOwnershipIdentifiers("testrg123", "example.com", com.azure.core.util.Context.NONE);
     }
 }

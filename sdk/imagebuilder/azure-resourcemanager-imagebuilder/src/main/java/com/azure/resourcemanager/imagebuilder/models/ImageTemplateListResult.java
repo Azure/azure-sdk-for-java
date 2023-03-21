@@ -24,6 +24,10 @@ public final class ImageTemplateListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ImageTemplateListResult class. */
+    public ImageTemplateListResult() {
+    }
+
     /**
      * Get the value property: An array of image templates.
      *

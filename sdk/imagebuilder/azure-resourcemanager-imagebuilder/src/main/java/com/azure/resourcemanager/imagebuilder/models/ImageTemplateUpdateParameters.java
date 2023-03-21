@@ -25,6 +25,10 @@ public final class ImageTemplateUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ImageTemplateUpdateParameters class. */
+    public ImageTemplateUpdateParameters() {
+    }
+
     /**
      * Get the identity property: The identity of the image template, if configured.
      *

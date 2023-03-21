@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRuns Cancel. */
 public final class WorkflowRunsCancelSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRuns_Cancel.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRuns_Cancel.json
      */
     /**
      * Sample code: Cancel a workflow run.
@@ -23,6 +21,10 @@ public final class WorkflowRunsCancelSamples {
             .serviceClient()
             .getWorkflowRuns()
             .cancelWithResponse(
-                "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", Context.NONE);
+                "test-resource-group",
+                "test-name",
+                "test-workflow",
+                "08586676746934337772206998657CU22",
+                com.azure.core.util.Context.NONE);
     }
 }

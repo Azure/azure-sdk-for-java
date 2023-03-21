@@ -29,15 +29,13 @@ public final class RecommendationProperties {
     private UUID recommendationId;
 
     /*
-     * Full ARM resource ID string that this recommendation object is
-     * associated with.
+     * Full ARM resource ID string that this recommendation object is associated with.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * Name of a resource type this recommendation applies, e.g. Subscription,
-     * ServerFarm, Site.
+     * Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site.
      */
     @JsonProperty(value = "resourceScope")
     private ResourceScopeType resourceScope;
@@ -85,15 +83,13 @@ public final class RecommendationProperties {
     private String actionName;
 
     /*
-     * True if this recommendation is still valid (i.e. "actionable"). False if
-     * it is invalid.
+     * True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      */
     @JsonProperty(value = "enabled")
     private Integer enabled;
 
     /*
-     * The list of states of this recommendation. If it's null then it should
-     * be considered "Active".
+     * The list of states of this recommendation. If it's null then it should be considered "Active".
      */
     @JsonProperty(value = "states")
     private List<String> states;
@@ -111,8 +107,7 @@ public final class RecommendationProperties {
     private OffsetDateTime endTime;
 
     /*
-     * When to notify this recommendation next in UTC. Null means that this
-     * will never be notified anymore.
+     * When to notify this recommendation next in UTC. Null means that this will never be notified anymore.
      */
     @JsonProperty(value = "nextNotificationTime")
     private OffsetDateTime nextNotificationTime;
@@ -124,8 +119,8 @@ public final class RecommendationProperties {
     private OffsetDateTime notificationExpirationTime;
 
     /*
-     * Last timestamp in UTC this instance was actually notified. Null means
-     * that this recommendation hasn't been notified yet.
+     * Last timestamp in UTC this instance was actually notified. Null means that this recommendation hasn't been
+     * notified yet.
      */
     @JsonProperty(value = "notifiedTime")
     private OffsetDateTime notifiedTime;
@@ -159,6 +154,10 @@ public final class RecommendationProperties {
      */
     @JsonProperty(value = "forwardLink")
     private String forwardLink;
+
+    /** Creates an instance of RecommendationProperties class. */
+    public RecommendationProperties() {
+    }
 
     /**
      * Get the creationTime property: Timestamp when this instance was created.

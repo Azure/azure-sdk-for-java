@@ -23,66 +23,66 @@ public final class PurchaseRequestPropertiesTests {
         PurchaseRequestProperties model =
             BinaryData
                 .fromString(
-                    "{\"reservedResourceType\":\"SqlEdge\",\"billingScopeId\":\"wckbasyypnd\",\"term\":\"P3Y\",\"billingPlan\":\"Monthly\",\"quantity\":531743918,\"displayName\":\"phejkotynqgoulz\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[\"wyqkgfgibm\"],\"appliedScopeProperties\":{\"tenantId\":\"akeqs\",\"managementGroupId\":\"yb\",\"subscriptionId\":\"qedqytbciqfoufl\",\"resourceGroupId\":\"nkzsmodmglou\",\"displayName\":\"b\"},\"renew\":false,\"reservedResourceProperties\":{\"instanceFlexibility\":\"Off\"},\"reviewDateTime\":\"2021-12-01T15:01:53Z\"}")
+                    "{\"reservedResourceType\":\"SapHana\",\"billingScopeId\":\"kvwrwjfeu\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":1936335434,\"displayName\":\"tmrldhugjzzdatq\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"geablgphuticndvk\",\"ozwyiftyhxhuro\",\"ftyxolniw\"],\"appliedScopeProperties\":{\"tenantId\":\"ukjfkgiawxklr\",\"managementGroupId\":\"lwckbasyypnddhs\",\"subscriptionId\":\"bacphejko\",\"resourceGroupId\":\"nqgoulzndli\",\"displayName\":\"yqkgfg\"},\"renew\":true,\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"},\"reviewDateTime\":\"2021-09-02T02:02:12Z\"}")
                 .toObject(PurchaseRequestProperties.class);
-        Assertions.assertEquals(ReservedResourceType.SQL_EDGE, model.reservedResourceType());
-        Assertions.assertEquals("wckbasyypnd", model.billingScopeId());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.term());
-        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.billingPlan());
-        Assertions.assertEquals(531743918, model.quantity());
-        Assertions.assertEquals("phejkotynqgoulz", model.displayName());
-        Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
-        Assertions.assertEquals("wyqkgfgibm", model.appliedScopes().get(0));
-        Assertions.assertEquals("akeqs", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("yb", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("qedqytbciqfoufl", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("nkzsmodmglou", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("b", model.appliedScopeProperties().displayName());
-        Assertions.assertEquals(false, model.renew());
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.reservedResourceProperties().instanceFlexibility());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T15:01:53Z"), model.reviewDateTime());
+        Assertions.assertEquals(ReservedResourceType.SAP_HANA, model.reservedResourceType());
+        Assertions.assertEquals("kvwrwjfeu", model.billingScopeId());
+        Assertions.assertEquals(ReservationTerm.P5Y, model.term());
+        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.billingPlan());
+        Assertions.assertEquals(1936335434, model.quantity());
+        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
+        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
+        Assertions.assertEquals("geablgphuticndvk", model.appliedScopes().get(0));
+        Assertions.assertEquals("ukjfkgiawxklr", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("lwckbasyypnddhs", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("bacphejko", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("nqgoulzndli", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("yqkgfg", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals(true, model.renew());
+        Assertions.assertEquals(InstanceFlexibility.ON, model.reservedResourceProperties().instanceFlexibility());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T02:02:12Z"), model.reviewDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PurchaseRequestProperties model =
             new PurchaseRequestProperties()
-                .withReservedResourceType(ReservedResourceType.SQL_EDGE)
-                .withBillingScopeId("wckbasyypnd")
-                .withTerm(ReservationTerm.P3Y)
-                .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                .withQuantity(531743918)
-                .withDisplayName("phejkotynqgoulz")
-                .withAppliedScopeType(AppliedScopeType.SHARED)
-                .withAppliedScopes(Arrays.asList("wyqkgfgibm"))
+                .withReservedResourceType(ReservedResourceType.SAP_HANA)
+                .withBillingScopeId("kvwrwjfeu")
+                .withTerm(ReservationTerm.P5Y)
+                .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                .withQuantity(1936335434)
+                .withDisplayName("tmrldhugjzzdatq")
+                .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
+                .withAppliedScopes(Arrays.asList("geablgphuticndvk", "ozwyiftyhxhuro", "ftyxolniw"))
                 .withAppliedScopeProperties(
                     new AppliedScopeProperties()
-                        .withTenantId("akeqs")
-                        .withManagementGroupId("yb")
-                        .withSubscriptionId("qedqytbciqfoufl")
-                        .withResourceGroupId("nkzsmodmglou")
-                        .withDisplayName("b"))
-                .withRenew(false)
+                        .withTenantId("ukjfkgiawxklr")
+                        .withManagementGroupId("lwckbasyypnddhs")
+                        .withSubscriptionId("bacphejko")
+                        .withResourceGroupId("nqgoulzndli")
+                        .withDisplayName("yqkgfg"))
+                .withRenew(true)
                 .withReservedResourceProperties(
                     new PurchaseRequestPropertiesReservedResourceProperties()
-                        .withInstanceFlexibility(InstanceFlexibility.OFF))
-                .withReviewDateTime(OffsetDateTime.parse("2021-12-01T15:01:53Z"));
+                        .withInstanceFlexibility(InstanceFlexibility.ON))
+                .withReviewDateTime(OffsetDateTime.parse("2021-09-02T02:02:12Z"));
         model = BinaryData.fromObject(model).toObject(PurchaseRequestProperties.class);
-        Assertions.assertEquals(ReservedResourceType.SQL_EDGE, model.reservedResourceType());
-        Assertions.assertEquals("wckbasyypnd", model.billingScopeId());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.term());
-        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.billingPlan());
-        Assertions.assertEquals(531743918, model.quantity());
-        Assertions.assertEquals("phejkotynqgoulz", model.displayName());
-        Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
-        Assertions.assertEquals("wyqkgfgibm", model.appliedScopes().get(0));
-        Assertions.assertEquals("akeqs", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("yb", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("qedqytbciqfoufl", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("nkzsmodmglou", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("b", model.appliedScopeProperties().displayName());
-        Assertions.assertEquals(false, model.renew());
-        Assertions.assertEquals(InstanceFlexibility.OFF, model.reservedResourceProperties().instanceFlexibility());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T15:01:53Z"), model.reviewDateTime());
+        Assertions.assertEquals(ReservedResourceType.SAP_HANA, model.reservedResourceType());
+        Assertions.assertEquals("kvwrwjfeu", model.billingScopeId());
+        Assertions.assertEquals(ReservationTerm.P5Y, model.term());
+        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.billingPlan());
+        Assertions.assertEquals(1936335434, model.quantity());
+        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
+        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
+        Assertions.assertEquals("geablgphuticndvk", model.appliedScopes().get(0));
+        Assertions.assertEquals("ukjfkgiawxklr", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("lwckbasyypnddhs", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("bacphejko", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("nqgoulzndli", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("yqkgfg", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals(true, model.renew());
+        Assertions.assertEquals(InstanceFlexibility.ON, model.reservedResourceProperties().instanceFlexibility());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T02:02:12Z"), model.reviewDateTime());
     }
 }

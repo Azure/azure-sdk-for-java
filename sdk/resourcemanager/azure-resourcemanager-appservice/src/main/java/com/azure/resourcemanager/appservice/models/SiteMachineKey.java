@@ -34,6 +34,10 @@ public final class SiteMachineKey {
     @JsonProperty(value = "decryptionKey")
     private String decryptionKey;
 
+    /** Creates an instance of SiteMachineKey class. */
+    public SiteMachineKey() {
+    }
+
     /**
      * Get the validation property: MachineKey validation.
      *

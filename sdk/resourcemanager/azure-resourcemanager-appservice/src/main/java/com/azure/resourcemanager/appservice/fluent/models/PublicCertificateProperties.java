@@ -30,6 +30,10 @@ public final class PublicCertificateProperties {
     @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
+    /** Creates an instance of PublicCertificateProperties class. */
+    public PublicCertificateProperties() {
+    }
+
     /**
      * Get the blob property: Public Certificate byte array.
      *

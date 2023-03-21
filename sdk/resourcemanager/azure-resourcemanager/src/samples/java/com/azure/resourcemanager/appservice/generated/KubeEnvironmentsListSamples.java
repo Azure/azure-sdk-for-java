@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KubeEnvironments List. */
 public final class KubeEnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_ListBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/KubeEnvironments_ListBySubscription.json
      */
     /**
      * Sample code: List kube environments by subscription.
@@ -17,6 +15,6 @@ public final class KubeEnvironmentsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listKubeEnvironmentsBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getKubeEnvironments().list(Context.NONE);
+        azure.webApps().manager().serviceClient().getKubeEnvironments().list(com.azure.core.util.Context.NONE);
     }
 }

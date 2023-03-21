@@ -29,6 +29,10 @@ public final class PlatformImagePurchasePlan {
     @JsonProperty(value = "planPublisher", required = true)
     private String planPublisher;
 
+    /** Creates an instance of PlatformImagePurchasePlan class. */
+    public PlatformImagePurchasePlan() {
+    }
+
     /**
      * Get the planName property: Name of the purchase plan.
      *

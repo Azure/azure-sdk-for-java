@@ -17,6 +17,10 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SnapshotRestoreRequestProperties innerProperties;
 
+    /** Creates an instance of SnapshotRestoreRequest class. */
+    public SnapshotRestoreRequest() {
+    }
+
     /**
      * Get the innerProperties property: SnapshotRestoreRequest resource specific properties.
      *

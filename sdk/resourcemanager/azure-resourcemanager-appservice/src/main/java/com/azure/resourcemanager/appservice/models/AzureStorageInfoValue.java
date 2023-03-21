@@ -46,6 +46,10 @@ public final class AzureStorageInfoValue {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AzureStorageState state;
 
+    /** Creates an instance of AzureStorageInfoValue class. */
+    public AzureStorageInfoValue() {
+    }
+
     /**
      * Get the type property: Type of storage.
      *

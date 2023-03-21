@@ -64,13 +64,11 @@ public final class ReservationsAvailableScopesMockTests {
             manager
                 .reservations()
                 .availableScopes(
-                    "ujitcjedftww",
-                    "ezkojvdcp",
+                    "t",
+                    "udutnco",
                     new AvailableScopeRequest()
                         .withProperties(
-                            new AvailableScopeRequestProperties()
-                                .withScopes(
-                                    Arrays.asList("ouicybxarzgszu", "oxciqopidoamcio", "hkh", "zxkhnzbonlwnto"))),
+                            new AvailableScopeRequestProperties().withScopes(Arrays.asList("xqtvcofu", "f", "vkg"))),
                     com.azure.core.util.Context.NONE);
     }
 }
