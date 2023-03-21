@@ -233,6 +233,7 @@ public final class ConfigurationClientBuilder implements
             this.endpoint = credential.getBaseUri();
         } else {
             // valid setup of authentication.
+            LOGGER.info("Authentication is " + this.tokenCredential.getClass());
         }
 
         // Service version

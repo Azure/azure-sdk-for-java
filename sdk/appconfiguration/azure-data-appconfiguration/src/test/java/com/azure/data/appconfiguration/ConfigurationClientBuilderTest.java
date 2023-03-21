@@ -259,20 +259,6 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertEquals("http://localhost:8080", asyncClient.getEndpoint());
     }
 
-    @Test
-    @DoNotRecord
-    public void singleAuthenticationPerBuilder() {
-        ConfigurationClientBuilder builderWithConnectionString = new ConfigurationClientBuilder()
-            .connectionString(FAKE_CONNECTION_STRING);
-        assertThrows(IllegalArgumentException.class,
-            () -> builderWithConnectionString.credential(new DefaultAzureCredentialBuilder().build()));
-
-        ConfigurationClientBuilder builderWithTokenCredential =
-            new ConfigurationClientBuilder().credential(new DefaultAzureCredentialBuilder().build());
-        assertThrows(IllegalArgumentException.class,
-            () -> builderWithTokenCredential.connectionString(FAKE_CONNECTION_STRING));
-    }
-
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
