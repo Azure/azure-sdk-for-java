@@ -53,19 +53,19 @@
     }
   ],
   "outputs": {
-    "TEXT_TRANSLATION_API_KEY": {
+    "AZURE_TEXT_TRANSLATION_API_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName')), '2017-04-18').key1]"
     },
-    "TEXT_TRANSLATION_ENDPOINT": {
+    "AZURE_TEXT_TRANSLATION_ENDPOINT": {
       "type": "string",
       "value": "[variables('endpointValue')]"
     },
-    "TEXT_TRANSLATION_CUSTOM_ENDPOINT": {
+    "AZURE_TEXT_TRANSLATION_CUSTOM_ENDPOINT": {
       "type": "string",
       "value": "[variables('customEndpointValue')]"
     },
-    "TEXT_TRANSLATION_REGION": {
+    "AZURE_TEXT_TRANSLATION_REGION": {
       "type": "string",
       "value": "[variables('regionValue')]"
     }
