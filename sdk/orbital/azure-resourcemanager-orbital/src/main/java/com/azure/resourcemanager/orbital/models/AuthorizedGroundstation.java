@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 
@@ -14,14 +15,18 @@ public final class AuthorizedGroundstation {
     /*
      * Groundstation name.
      */
-    @JsonProperty(value = "groundStation")
+    @JsonProperty(value = "groundStation", required = true)
     private String groundStation;
 
     /*
      * Date of authorization expiration.
      */
-    @JsonProperty(value = "expirationDate")
+    @JsonProperty(value = "expirationDate", required = true)
     private LocalDate expirationDate;
+
+    /** Creates an instance of AuthorizedGroundstation class. */
+    public AuthorizedGroundstation() {
+    }
 
     /**
      * Get the groundStation property: Groundstation name.
@@ -69,5 +74,19 @@ public final class AuthorizedGroundstation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (groundStation() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property groundStation in model AuthorizedGroundstation"));
+        }
+        if (expirationDate() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property expirationDate in model AuthorizedGroundstation"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizedGroundstation.class);
 }

@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The reference to the spacecraft resource. */
 @Fluent
 public final class AvailableContactsSpacecraft extends ResourceReference {
+    /** Creates an instance of AvailableContactsSpacecraft class. */
+    public AvailableContactsSpacecraft() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AvailableContactsSpacecraft withId(String id) {
