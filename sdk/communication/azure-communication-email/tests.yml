@@ -1,11 +1,20 @@
 trigger: none
 
+parameters:
+  - name: runOnlyPPE
+    displayName: "Run only the PPE stage"
+    type: boolean
+    default: false
+
 stages:
     - template: /sdk/communication/communication-tests-template.yml
       parameters:
           PackageName: azure-communication-email
           SafeName: azurecommunicationemail
-          Clouds: 'Public,PPE,Int'
+          ${{ if eq(parameters.runOnlyPPE, true) }}:
+            Clouds: 'PPE'
+          ${{ if eq(parameters.runOnlyPPE, false) }}:
+            Clouds: 'Public,PPE,Int'
           CloudConfig:
             Public:
               SubscriptionConfigurations:
