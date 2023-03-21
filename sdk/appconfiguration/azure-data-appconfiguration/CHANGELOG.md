@@ -9,6 +9,7 @@
 ### Bugs Fixed
 - Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only 
   support single authentication per builder instance. 
+- Moved the validation of authentication to client builder's build method. 
   
 ### Other Changes
 

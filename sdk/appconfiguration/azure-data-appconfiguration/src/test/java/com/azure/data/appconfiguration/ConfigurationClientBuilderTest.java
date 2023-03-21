@@ -86,6 +86,25 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @Test
     @DoNotRecord
+    public void nullCredentials() {
+        assertThrows(NullPointerException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            builder.buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
+    public void multipleCredentialsExist() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            builder.connectionString(FAKE_CONNECTION_STRING)
+                .credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
     public void missingSecretKey() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();

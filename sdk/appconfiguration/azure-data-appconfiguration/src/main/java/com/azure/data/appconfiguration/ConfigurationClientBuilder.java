@@ -203,8 +203,38 @@ public final class ConfigurationClientBuilder implements
      * Builds an instance of ConfigurationClientImpl with the provided parameters.
      *
      * @return an instance of ConfigurationClientImpl.
+     * @throws NullPointerException If {@code connectionString} is null.
+     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
+     * authentication per builder instance.
      */
     private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        // validate the authentication setup
+        if (this.tokenCredential != null && this.connectionString != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Multiple forms of authentication found. "
+                + "TokenCredential should be null if using connection string, vice versa."));
+        } else if (this.tokenCredential == null) {
+            Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+            if (connectionString.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("'connectionString' cannot be an empty string."));
+            }
+
+            try {
+                this.credential = new ConfigurationClientCredentials(connectionString);
+            } catch (InvalidKeyException err) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The secret contained within the"
+                    + " connection string is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+            } catch (NoSuchAlgorithmException err) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
+            }
+            this.endpoint = credential.getBaseUri();
+        } else {
+            // valid setup of authentication.
+        }
+
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
@@ -335,37 +365,10 @@ public final class ConfigurationClientBuilder implements
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code connectionString} is null.
-     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
-     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
-     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
-     * authentication per builder instance.
      */
     @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        if (this.tokenCredential != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Multiple forms of authentication found. TokenCredential should be null if using connection string."));
-        }
-
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        if (connectionString.isEmpty()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' cannot be an empty string."));
-        }
-
-        try {
-            this.credential = new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException err) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
-                    + " algorithm.", err));
-        } catch (NoSuchAlgorithmException err) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
-        }
         this.connectionString = connectionString;
-        this.endpoint = credential.getBaseUri();
         return this;
     }
 
@@ -382,12 +385,6 @@ public final class ConfigurationClientBuilder implements
      */
     @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
-        // token credential can not be null value
-        Objects.requireNonNull(tokenCredential);
-        if (this.connectionString != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Multiple forms of authentication found. Connection String should be null if using TokenCredential."));
-        }
         this.tokenCredential = tokenCredential;
         return this;
     }
