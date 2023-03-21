@@ -42,6 +42,10 @@ public final class WhatIfPropertyChange {
     @JsonProperty(value = "children")
     private List<WhatIfPropertyChange> children;
 
+    /** Creates an instance of WhatIfPropertyChange class. */
+    public WhatIfPropertyChange() {
+    }
+
     /**
      * Get the path property: The path of the property.
      *

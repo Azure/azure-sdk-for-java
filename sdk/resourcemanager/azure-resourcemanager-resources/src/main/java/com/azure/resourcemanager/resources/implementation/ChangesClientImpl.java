@@ -54,11 +54,10 @@ public final class ChangesClientImpl implements ChangesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ChangesManagementCli")
-    private interface ChangesService {
+    public interface ChangesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChangeResourceListResult>> list(
@@ -76,8 +75,7 @@ public final class ChangesClientImpl implements ChangesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes/{changeResourceId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes/{changeResourceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChangeResourceResultInner>> get(
@@ -568,30 +566,6 @@ public final class ChangesClientImpl implements ChangesClient {
      * @param resourceType The name of the resource type.
      * @param resourceName The name of the resource.
      * @param changeResourceId The ID of the change resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return change Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangeResourceResultInner get(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId) {
-        return getAsync(resourceGroupName, resourceProviderNamespace, resourceType, resourceName, changeResourceId)
-            .block();
-    }
-
-    /**
-     * Obtains the specified change resource for the target resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The name of the resource provider namespace.
-     * @param resourceType The name of the resource type.
-     * @param resourceName The name of the resource.
-     * @param changeResourceId The ID of the change resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -612,9 +586,40 @@ public final class ChangesClientImpl implements ChangesClient {
     }
 
     /**
+     * Obtains the specified change resource for the target resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The name of the resource provider namespace.
+     * @param resourceType The name of the resource type.
+     * @param resourceName The name of the resource.
+     * @param changeResourceId The ID of the change resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return change Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChangeResourceResultInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String resourceType,
+        String resourceName,
+        String changeResourceId) {
+        return getWithResponse(
+                resourceGroupName,
+                resourceProviderNamespace,
+                resourceType,
+                resourceName,
+                changeResourceId,
+                Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -649,7 +654,8 @@ public final class ChangesClientImpl implements ChangesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

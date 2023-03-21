@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubscriptionFeatureRegistrations Get. */
 public final class SubscriptionFeatureRegistrationsGetSamples {
     /*
@@ -22,6 +20,7 @@ public final class SubscriptionFeatureRegistrationsGetSamples {
             .manager()
             .featureClient()
             .getSubscriptionFeatureRegistrations()
-            .getWithResponse("subscriptionFeatureRegistrationGroupTestRG", "testFeature", Context.NONE);
+            .getWithResponse(
+                "subscriptionFeatureRegistrationGroupTestRG", "testFeature", com.azure.core.util.Context.NONE);
     }
 }

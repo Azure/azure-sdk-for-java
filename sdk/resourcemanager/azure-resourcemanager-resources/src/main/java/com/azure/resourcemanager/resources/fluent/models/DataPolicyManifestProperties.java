@@ -27,8 +27,7 @@ public final class DataPolicyManifestProperties {
     private String policyMode;
 
     /*
-     * A value indicating whether policy mode is allowed only in built-in
-     * definitions.
+     * A value indicating whether policy mode is allowed only in built-in definitions.
      */
     @JsonProperty(value = "isBuiltInOnly")
     private Boolean isBuiltInOnly;
@@ -56,6 +55,10 @@ public final class DataPolicyManifestProperties {
      */
     @JsonProperty(value = "resourceFunctions")
     private DataManifestResourceFunctionsDefinition innerResourceFunctions;
+
+    /** Creates an instance of DataPolicyManifestProperties class. */
+    public DataPolicyManifestProperties() {
+    }
 
     /**
      * Get the namespaces property: The list of namespaces for the data policy manifest.
