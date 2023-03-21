@@ -38,7 +38,7 @@ public final class AlertTest extends AlertTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildClient();
+        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<AnomalyAlert> alertsIterable
             = client.listAlerts(ListAlertsInput.INSTANCE.alertConfigurationId, ListAlertsInput.INSTANCE.startTime,

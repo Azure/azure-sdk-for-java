@@ -568,7 +568,7 @@ public final class MetricsAdvisorClient {
     }
 
     private PagedResponse<MetricEnrichedSeriesData>
-    listMetricEnrichedSeriesDataInternal(String detectionConfigurationId,
+        listMetricEnrichedSeriesDataInternal(String detectionConfigurationId,
                                          List<DimensionKey> seriesKeys,
                                          OffsetDateTime startTime,
                                          OffsetDateTime endTime,
@@ -2208,8 +2208,7 @@ public final class MetricsAdvisorClient {
         String metricId,
         String dimensionName,
         ListMetricDimensionValuesOptions options, Context context) {
-        return listMetricDimensionValuesSync(metricId, dimensionName, options,
-            context == null ? Context.NONE : context);
+        return listMetricDimensionValuesSync(metricId, dimensionName, options, enableSync(context));
     }
 
     PagedIterable<String> listMetricDimensionValuesSync(final String metricId, final String dimensionName,

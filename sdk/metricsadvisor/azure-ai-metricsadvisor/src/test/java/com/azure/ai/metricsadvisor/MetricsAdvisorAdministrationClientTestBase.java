@@ -38,14 +38,14 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
     }
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
-                                                         MetricsAdvisorServiceVersion serviceVersion, boolean isAsync) {
+                                                         MetricsAdvisorServiceVersion serviceVersion, boolean isSync) {
         HttpClient httpClient1;
-        if (isAsync) {
-            httpClient1 = buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        } else {
+        if (isSync) {
             httpClient1 = buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        } else {
+            httpClient1 = buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         }
-        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1 , serviceVersion, true);
+        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1, serviceVersion, true);
     }
 
     static MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {

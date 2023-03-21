@@ -449,8 +449,8 @@ public final class MetricsAdvisorAdministrationClient {
                         : null)
                 .setFillMissingPointValue(
                     // For PATCH send 'fill-custom-value' over wire only for 'fill-custom-type'.
-                    dataFeedMissingDataPointFillSettings.getFillType() ==
-                        DataFeedMissingDataPointFillType.CUSTOM_VALUE
+                    dataFeedMissingDataPointFillSettings.getFillType()
+                        == DataFeedMissingDataPointFillType.CUSTOM_VALUE
                         ? dataFeedMissingDataPointFillSettings.getCustomFillValue()
                         : null)
                 .setViewMode(
@@ -1717,7 +1717,7 @@ public final class MetricsAdvisorAdministrationClient {
         PagedResponse<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response =
             service.getAnomalyDetectionConfigurationsByMetricSinglePage(
                 UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(), context);
-        return DetectionConfigurationTransforms.fromInnerPagedResponse(response) ;
+        return DetectionConfigurationTransforms.fromInnerPagedResponse(response);
     }
 
     private PagedResponse<AnomalyDetectionConfiguration> listAnomalyDetectionConfigsNextPageSync(
@@ -1728,7 +1728,7 @@ public final class MetricsAdvisorAdministrationClient {
         PagedResponse<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response =
             service.getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextPageLink, context);
 
-        return DetectionConfigurationTransforms.fromInnerPagedResponse(response) ;
+        return DetectionConfigurationTransforms.fromInnerPagedResponse(response);
     }
 
 

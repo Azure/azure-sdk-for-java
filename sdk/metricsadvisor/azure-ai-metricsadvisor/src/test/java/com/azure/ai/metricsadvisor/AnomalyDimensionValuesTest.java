@@ -34,7 +34,7 @@ public final class AnomalyDimensionValuesTest extends AnomalyDimensionValuesTest
     @Override
     public void listAnomalyDimensionValues(HttpClient httpClient,
                                            MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildClient();
+        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<String> dimensionValuesIterable = client.listAnomalyDimensionValues(
             ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,

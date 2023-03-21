@@ -47,7 +47,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             super.creatDatasourceCredentialRunner(expectedCredential ->
                 // Act & Assert
                 StepVerifier.create(client.createDataSourceCredential(expectedCredential))
@@ -75,7 +75,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             super.creatDatasourceCredentialRunner(expectedCredential ->
                 // Act & Assert
                 StepVerifier.create(client.createDataSourceCredential(expectedCredential))
@@ -103,7 +103,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             super.creatDatasourceCredentialRunner(expectedCredential ->
                 // Act & Assert
                 StepVerifier.create(client.createDataSourceCredential(expectedCredential))
@@ -131,7 +131,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             super.creatDatasourceCredentialRunner(expectedCredential ->
                 // Act & Assert
                 StepVerifier.create(client.createDataSourceCredential(expectedCredential))
@@ -157,7 +157,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
     void testListDataSourceCredentials(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         AtomicReference<List<String>> createdCredentialIdList = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
             super.listDatasourceCredentialRunner(inputCredentialList -> {
                 final List<String> ids =
