@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 /**
  * * Package contains the built-in Feature Filters, which implement
- * {@link com.azure.spring.cloud.feature.manager.models.IFeatureFilter}.
+ * {@link com.azure.spring.cloud.feature.manager.filters.FeatureFilter}.
  * 
  */
 package com.azure.spring.cloud.feature.manager.filters;

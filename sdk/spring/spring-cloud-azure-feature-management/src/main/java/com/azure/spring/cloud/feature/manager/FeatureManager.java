@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +13,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
+import com.azure.spring.cloud.feature.manager.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.models.FilterNotFoundException;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 import reactor.core.publisher.Mono;
 
@@ -51,9 +50,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -64,9 +63,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -101,10 +100,11 @@ public class FeatureManager {
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
         try {
-            Predicate<FeatureFilterEvaluationContext> featureFilter = (Predicate<FeatureFilterEvaluationContext>) context.getBean(filter.getName());
+            FeatureFilter featureFilter = (FeatureFilter) context.getBean(filter.getName());
             filter.setFeatureName(feature);
 
-            return featureFilter.test(filter);
+            return featureFilter.evaluate(filter);
+
         } catch (NoSuchBeanDefinitionException e) {
             LOGGER.error("Was unable to find Filter {}. Does the class exist and set as an @Component?",
                 filter.getName());

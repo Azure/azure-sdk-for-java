@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.models;
+package com.azure.spring.cloud.feature.manager.filters;
 
-import java.util.function.Predicate;
+import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 
 /**
  * A Filter for Feature Management that is attached to Features. The filter needs to have @Component set to be found by
  * feature management.
  */
-public interface IFeatureFilter extends Predicate<FeatureFilterEvaluationContext> {
+@FunctionalInterface
+public interface FeatureFilter {
 
     /**
      * Evaluates if the filter is on or off. Returning true results in Feature evaluation ending and returning true.

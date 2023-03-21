@@ -331,7 +331,7 @@ public class TargetingFilterTest {
         }
 
         @Override
-        public void configureTargetingContextAsync(TargetingContext context) {
+        public void configureTargetingContext(TargetingContext context) {
             context.setUserId(user);
             context.setGroups(groups);
         }
