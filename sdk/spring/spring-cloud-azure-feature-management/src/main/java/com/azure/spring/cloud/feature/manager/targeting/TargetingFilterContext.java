@@ -16,6 +16,7 @@ public final class TargetingFilterContext implements TargetingContext {
     /**
      * @return the userId
      */
+    @Override
     public String getUserId() {
         return userId;
     }
@@ -23,6 +24,7 @@ public final class TargetingFilterContext implements TargetingContext {
     /**
      * @param userId the userId to set
      */
+    @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -30,6 +32,7 @@ public final class TargetingFilterContext implements TargetingContext {
     /**
      * @return the groups
      */
+    @Override
     public List<String> getGroups() {
         return groups;
     }
@@ -37,6 +40,7 @@ public final class TargetingFilterContext implements TargetingContext {
     /**
      * @param groups the groups to set
      */
+    @Override
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }

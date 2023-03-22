@@ -19,7 +19,6 @@ import com.azure.spring.cloud.feature.manager.implementation.targeting.Audience;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.TargetingFilterSettings;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 import com.azure.spring.cloud.feature.manager.models.TargetingException;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterContext;
@@ -31,7 +30,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 /**
  * `Microsoft.TargetingFilter` enables evaluating a user/group/overall rollout of a feature.
  */
-public class TargetingFilter implements IFeatureFilter {
+public class TargetingFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
@@ -101,7 +100,7 @@ public class TargetingFilter implements IFeatureFilter {
 
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
-        contextAccessor.configureTargetingContextAsync(targetingContext);
+        contextAccessor.configureTargetingContext(targetingContext);
 
         if (validateTargetingContext(targetingContext)) {
             LOGGER.warn("No targeting context available for targeting evaluation.");

@@ -3,12 +3,11 @@
 package com.azure.spring.cloud.feature.manager.filters;
 
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 /**
  * A filter that always returns true
  */
-public final class AlwaysOnFilter implements IFeatureFilter {
+public final class AlwaysOnFilter implements FeatureFilter {
 
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
