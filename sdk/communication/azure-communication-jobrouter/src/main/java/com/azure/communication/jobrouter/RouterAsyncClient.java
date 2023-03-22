@@ -16,10 +16,12 @@ import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -497,6 +499,62 @@ public final class RouterAsyncClient {
                 ).map(result -> new SimpleResponse<Void>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), null
                 ));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Unassigns a job from a worker.
+     *
+     * @param unassignJobOptions Options object for unassign job operation.
+     * @return result as mentioned in {@link  com.azure.communication.jobrouter.models.UnassignJobResult}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnassignJobResult> unassignJob(UnassignJobOptions unassignJobOptions) {
+        try {
+            return withContext(context -> unassignJobWithResponse(unassignJobOptions, context)
+                .flatMap(
+                    (Response<UnassignJobResult> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Unassigns a job from the assigned worker.
+     *
+     * @param unassignJobOptions Options object for unassign job operation.
+     * @return result as mentioned in {@link  com.azure.communication.jobrouter.models.UnassignJobResult}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnassignJobResult>> unassignJobWithResponse(UnassignJobOptions unassignJobOptions) {
+        try {
+            return withContext(context -> unassignJobWithResponse(unassignJobOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<UnassignJobResult>> unassignJobWithResponse(UnassignJobOptions unassignJobOptions, Context context) {
+        try {
+            return jobRouter.unassignJobActionWithResponseAsync(
+                unassignJobOptions.getJobId(),
+                unassignJobOptions.getAssignmentId(),
+                context
+            );
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

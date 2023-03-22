@@ -15,10 +15,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobQueueLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
-
-    private RouterAdministrationClient routerAdminClient;
-
     @Override
     protected void beforeTest() {
         routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
@@ -37,18 +33,16 @@ public class JobQueueLiveTests extends JobRouterTestBase {
         // Setup
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
+        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
 
         // Action
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        queuesToDelete.add(queueId);
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
-
-        // Cleanup
-        routerAdminClient.deleteQueue(queueId);
-        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
     @Test
@@ -56,9 +50,11 @@ public class JobQueueLiveTests extends JobRouterTestBase {
         // Setup
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
+        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        queuesToDelete.add(queueId);
 
         Map<String, LabelValue> updatedQueueLabels = new HashMap<String, LabelValue>() {
             {
@@ -71,9 +67,5 @@ public class JobQueueLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(updatedQueueLabels.get("Label_1").getValue(), jobQueue.getLabels().get("Label_1"));
-
-        // Cleanup
-        routerAdminClient.deleteQueue(queueId);
-        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }

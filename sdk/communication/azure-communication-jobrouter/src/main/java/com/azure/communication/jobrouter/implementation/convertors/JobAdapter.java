@@ -28,6 +28,7 @@ public class JobAdapter {
         return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
+            .setQueueId(createJobOptions.getQueueId())
             .setLabels(labels)
             .setNotes(createJobOptions.getNotes())
             .setPriority(createJobOptions.getPriority())

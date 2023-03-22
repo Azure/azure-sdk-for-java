@@ -40,9 +40,11 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         // Setup
         String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
+        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        queuesToDelete.add(queueId);
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -92,13 +94,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
 
         // Action
         ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);
+        classificationPoliciesToDelete.add(classificationPolicyId);
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());
-
-        // Cleanup
-        routerAdminClient.deleteClassificationPolicy(classificationPolicyId);
-        routerAdminClient.deleteQueue(queueId);
-        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }

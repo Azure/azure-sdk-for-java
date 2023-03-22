@@ -15,6 +15,7 @@ import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -30,6 +31,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -41,6 +44,35 @@ import java.util.function.Function;
 
 class JobRouterTestBase extends TestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
+
+    protected List<String> jobsToDelete = new ArrayList<>();
+
+    protected List<String> workersToDelete = new ArrayList<>();
+
+    protected List<String> queuesToDelete = new ArrayList<>();
+
+    protected List<String> distributionPoliciesToDelete = new ArrayList<>();
+
+    protected List<String> exceptionPoliciesToDelete = new ArrayList<>();
+
+    protected List<String> classificationPoliciesToDelete = new ArrayList<>();
+
+    protected RouterClient routerClient;
+
+    protected RouterAdministrationClient routerAdminClient;
+
+    @BeforeEach
+    protected void clientSetup() {
+        routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient());
+
+        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient());
+    }
 
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
@@ -133,5 +165,36 @@ class JobRouterTestBase extends TestBase {
                 }
             );
         return routerClient.createJob(createJobOptions);
+    }
+
+    @AfterEach
+    protected void cleanup() {
+        for (String jobId : jobsToDelete) {
+            routerClient.cancelJob(jobId, JAVA_LIVE_TESTS, JAVA_LIVE_TESTS);
+            routerClient.deleteJob(jobId);
+        }
+
+        for (String workerId : workersToDelete) {
+            UpdateWorkerOptions updateWorkerOptions = new UpdateWorkerOptions(workerId)
+                .setAvailableForOffers(false);
+            routerClient.updateWorker(updateWorkerOptions);
+            routerClient.deleteWorker(workerId);
+        }
+
+        for (String queueId : queuesToDelete) {
+            routerAdminClient.deleteQueue(queueId);
+        }
+
+        for (String distributionPolicyId : distributionPoliciesToDelete) {
+            routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
+        }
+
+        for (String exceptionPolicyId : exceptionPoliciesToDelete) {
+            routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
+        }
+
+        for (String classificationPolicyId: classificationPoliciesToDelete) {
+            routerAdminClient.deleteClassificationPolicy(classificationPolicyId);
+        }
     }
 }

@@ -65,8 +65,5 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());
-
-        // Cleanup
-        routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
     }
 }

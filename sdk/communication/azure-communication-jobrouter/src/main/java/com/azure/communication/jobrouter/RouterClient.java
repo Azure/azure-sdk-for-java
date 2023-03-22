@@ -14,10 +14,12 @@ import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -301,6 +303,34 @@ public final class RouterClient {
     }
 
     /**
+     * Unassigns a job from assigned worker.
+     *
+     * @param unassignJobOptions Options object for close job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnassignJobResult unassignJob(UnassignJobOptions unassignJobOptions) {
+        return this.client.unassignJob(unassignJobOptions).block();
+    }
+
+    /**
+     * Unassigns a job from assigned worker.
+     *
+     * @param unassignJobOptions Options object for close job operation.
+     * @param context The context to associate with this operation.
+     * @return void.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UnassignJobResult> unassignJobWithResponse(UnassignJobOptions unassignJobOptions, Context context) {
+        return this.client.unassignJobWithResponse(unassignJobOptions, context).block();
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      *
      * @return a paged collection of jobs.
@@ -489,7 +519,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker updateWorkerOptions(UpdateWorkerOptions updateWorkerOptions) {
+    public RouterWorker updateWorker(UpdateWorkerOptions updateWorkerOptions) {
         return this.client.updateWorker(updateWorkerOptions).block();
     }
 
