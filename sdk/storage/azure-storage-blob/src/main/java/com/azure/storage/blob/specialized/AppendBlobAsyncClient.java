@@ -366,6 +366,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
@@ -391,6 +395,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

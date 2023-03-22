@@ -71,13 +71,13 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    protected static final int MAX_APPEND_BLOCK_BYTES_OLD_VERSION = 4 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_OLD_VERSION = 4 * Constants.MB;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      * For versions 2022-11-02 and above.
      */
-    protected static final int MAX_APPEND_BLOCK_BYTES_NEW_VERSION = 100 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_NEW_VERSION = 100 * Constants.MB;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -339,6 +339,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long -->
@@ -365,6 +369,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
