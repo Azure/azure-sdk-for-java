@@ -11,11 +11,10 @@ import com.azure.resourcemanager.webpubsub.models.OperationProperties;
 import com.azure.resourcemanager.webpubsub.models.ServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationInner model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class OperationInnerTests {
         Assertions.assertEquals("lhmwhfpmrqobm", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationInner model =
             new OperationInner()
                 .withName("rh")

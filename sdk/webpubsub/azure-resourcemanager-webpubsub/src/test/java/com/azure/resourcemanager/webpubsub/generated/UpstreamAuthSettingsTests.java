@@ -9,11 +9,10 @@ import com.azure.resourcemanager.webpubsub.models.ManagedIdentitySettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UpstreamAuthSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UpstreamAuthSettings model =
             BinaryData
                 .fromString("{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"fbjfdtwssotftpvj\"}}")
@@ -22,8 +21,8 @@ public final class UpstreamAuthSettingsTests {
         Assertions.assertEquals("fbjfdtwssotftpvj", model.managedIdentity().resource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UpstreamAuthSettings model =
             new UpstreamAuthSettings()
                 .withType(UpstreamAuthType.NONE)

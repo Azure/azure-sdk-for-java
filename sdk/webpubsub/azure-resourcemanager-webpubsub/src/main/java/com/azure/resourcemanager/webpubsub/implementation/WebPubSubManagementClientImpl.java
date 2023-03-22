@@ -251,7 +251,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-08-01-preview";
+        this.apiVersion = "2023-02-01";
         this.operations = new OperationsClientImpl(this);
         this.webPubSubs = new WebPubSubsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
