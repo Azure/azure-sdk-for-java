@@ -14,7 +14,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.*;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
@@ -63,7 +68,10 @@ import java.util.function.Supplier;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-import static com.azure.storage.common.implementation.StorageImplUtils.*;
+import static com.azure.storage.common.implementation.StorageImplUtils.enableSyncRestProxy;
+import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
+import static com.azure.storage.common.implementation.StorageImplUtils.tagsToString;
+import static com.azure.storage.common.implementation.StorageImplUtils.executeOperation;
 
 
 /**
@@ -1339,5 +1347,134 @@ public final class BlockBlobClient extends BlobClientBase {
             hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
             hd.getXMsVersionId());
         return new SimpleResponse<>(response, item);
+    }
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return asyncClient.getAccountUrl();
+    }
+
+    /**
+     * Gets the URL of the blob represented by this client.
+     *
+     * @return the URL.
+     */
+    public String getBlobUrl() {
+        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
+        if (this.isSnapshot()) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
+        }
+        if (this.getVersionId() != null) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", getVersionId());
+        }
+        return blobUrl;
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Gets a client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.getContainerClient -->
+     * <pre>
+     * BlobContainerClient containerClient = client.getContainerClient&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the container is &quot; + containerClient.getBlobContainerName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.getContainerClient -->
+     *
+     * @return {@link BlobContainerClient}
+     */
+    public BlobContainerClient getContainerClient() {
+        return getContainerClientBuilder().buildClient();
+    }
+
+    BlobContainerClientBuilder getContainerClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobContainerClientBuilder()
+            .endpoint(this.getBlobUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .customerProvidedKey(encryptionKey)
+            .encryptionScope(this.getEncryptionScope());
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} used to encrypt this blob's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCustomerProvidedKey() {
+        return customerProvidedKey;
+    }
+
+    /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
+    }
+
+    /**
+     * Gets the snapshotId for a blob resource
+     *
+     * @return A string that represents the snapshotId of the snapshot blob
+     */
+    public String getSnapshotId() {
+        return this.snapshot;
+    }
+
+    /**
+     * Gets the versionId for a blob resource
+     *
+     * @return A string that represents the versionId of the snapshot blob
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Determines if a blob is a snapshot
+     *
+     * @return A boolean that indicates if a blob is a snapshot
+     */
+    public boolean isSnapshot() {
+        return this.snapshot != null;
     }
 }
