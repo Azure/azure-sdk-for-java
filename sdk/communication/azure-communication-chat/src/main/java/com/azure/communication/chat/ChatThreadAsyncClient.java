@@ -149,6 +149,24 @@ public final class ChatThreadAsyncClient {
     }
 
     /**
+     * Updates a thread's retention policy.
+     *
+     * @param retentionPolicy The new retention policy.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateRetentionPolicyWithResponse(RetentionPolicy retentionPolicy) {
+        try {
+            Objects.requireNonNull(retentionPolicy, "'retention policy' cannot be null.");
+            return withContext(context -> updateRetentionPolicy(retentionPolicy, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Updates a thread's properties.
      *
      * @param topic The new topic.

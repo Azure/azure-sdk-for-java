@@ -112,6 +112,19 @@ public final class ChatThreadClient {
      * Updates a thread's topic.
      *
      * @param retentionPolicy The new retention policy.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateRetentionPolicy(RetentionPolicy retentionPolicy) {
+
+        this.client.updateRetentionPolicy(retentionPolicy).block();
+    }
+
+    /**
+     * Updates a thread's retention policy.
+     *
+     * @param retentionPolicy The new retention policy.
      * @param context The context to associate with this operation.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
