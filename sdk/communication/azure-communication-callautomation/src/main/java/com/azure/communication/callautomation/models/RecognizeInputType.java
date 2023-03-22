@@ -15,6 +15,13 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
     /** Static value choices for RecognizeInputTypeInternal. */
     public static final RecognizeInputType CHOICES = fromString("choices");
 
+    /** Static value choices for RecognizeInputTypeInternal. */
+    public static final RecognizeInputType SPEECH = fromString("speech");
+
+    /** Static value choices for RecognizeInputTypeInternal. */
+    public static final RecognizeInputType SPEECHORDTMF = fromString("speechordtmf");
+
+
     /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *

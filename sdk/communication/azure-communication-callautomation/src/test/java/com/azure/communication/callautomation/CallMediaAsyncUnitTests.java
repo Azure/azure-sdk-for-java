@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
@@ -207,6 +208,24 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
         recognizeOptions.setSpeechLanguage("en-US");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+    @Test
+    public void recognizeWithResponseTextSpeechOptions() {
+
+        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(RecognizeInputType.SPEECH, new CommunicationUserIdentifier("id"), Long.valueOf(500));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
+        recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize choice with text source."));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))

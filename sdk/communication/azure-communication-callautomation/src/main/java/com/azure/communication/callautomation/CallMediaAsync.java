@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.implementation.models.FileSourceIn
 import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
@@ -21,6 +22,7 @@ import com.azure.communication.callautomation.implementation.models.RecognizeOpt
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
@@ -206,6 +208,32 @@ public class CallMediaAsync {
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
                     .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
                     .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
+                    .setPlayPrompt(playSourceInternal)
+                    .setRecognizeOptions(recognizeOptionsInternal)
+                    .setOperationContext(recognizeOptions.getOperationContext());
+
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+            }  else if (recognizeOptions instanceof CallMediaRecognizeSpeechOptions) {
+                CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
+
+                SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeoutInMs());
+
+                RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+                    .setSpeechOptions(speechOptionsInternal)
+                    .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
+                    .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
+
+                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+                PlaySourceInternal playSourceInternal = null;
+                if (recognizeOptions.getPlayPrompt() != null) {
+                    PlaySource playSource = recognizeOptions.getPlayPrompt();
+                    playSourceInternal = translatePlaySourceToPlaySourceInternal(playSource);
+                }
+
+                RecognizeRequest recognizeRequest = new RecognizeRequest()
+                    .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
+                    .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
                     .setPlayPrompt(playSourceInternal)
                     .setRecognizeOptions(recognizeOptionsInternal)
                     .setOperationContext(recognizeOptions.getOperationContext());

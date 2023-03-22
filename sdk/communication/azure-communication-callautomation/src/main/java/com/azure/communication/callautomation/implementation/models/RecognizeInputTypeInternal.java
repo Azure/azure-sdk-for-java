@@ -13,6 +13,12 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
     /** Static value dtmf for RecognizeInputTypeInternal. */
     public static final RecognizeInputTypeInternal DTMF = fromString("dtmf");
 
+    /** Static value speech for RecognizeInputTypeInternal. */
+    public static final RecognizeInputTypeInternal SPEECH = fromString("speech");
+
+    /** Static value speechOrDtmf for RecognizeInputTypeInternal. */
+    public static final RecognizeInputTypeInternal SPEECH_OR_DTMF = fromString("speechOrDtmf");
+
     /** Static value choices for RecognizeInputTypeInternal. */
     public static final RecognizeInputTypeInternal CHOICES = fromString("choices");
 

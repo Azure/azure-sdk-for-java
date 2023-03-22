@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognitionType;
 import com.azure.communication.callautomation.models.CollectTonesResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.ChoiceResult;
+import com.azure.communication.callautomation.models.SpeechResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
 
@@ -31,6 +32,12 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
     private CollectTonesResult collectTonesResult;
 
     /*
+     * Defines the result for CallMediaRecognitionType = Speech or SpeechOrDtmf
+     */
+    @JsonProperty(value = "speechResult", access = JsonProperty.Access.WRITE_ONLY)
+    private SpeechResult speechResult;
+
+    /*
      * Defines the result for RecognizeChoice
      */
     @JsonProperty(value = "choiceResult", access = JsonProperty.Access.WRITE_ONLY)
@@ -47,7 +54,10 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
 
         } else if (this.recognitionType == CallMediaRecognitionType.CHOICES) {
             return Optional.ofNullable(this.collectChoiceResult);
+        } else if (this.recognitionType == CallMediaRecognitionType.SPEECH || this.recognitionType == CallMediaRecognitionType.SPEECHORDTMF) {
+            return Optional.ofNullable(this.speechResult);
         }
+
         return Optional.empty();
     }
 }

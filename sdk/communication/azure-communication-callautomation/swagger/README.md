@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/eb83f61948a31a69ba1e641c235f66edfc2f0425/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/87d4100e7d7df3ed3e16199dea3355e5b61bfa50/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -124,6 +124,15 @@ directive:
     from: StartCallRecordingRequest
     to: StartCallRecordingRequestInternal
 - rename-model:
+    from: ContinuousDtmfRecognitionOptions
+    to: ContinuousDtmfRecognitionOptionsInternal
+- rename-model:
+    from: SendDtmfOptions
+    to: SendDtmfOptionsInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
+- rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
 - rename-model:
@@ -138,6 +147,9 @@ directive:
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
+- rename-model:
+    from: SpeechOptions
+    to: SpeechOptionsInternal
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
@@ -162,6 +174,9 @@ directive:
 - rename-model:
     from: ChoiceResult
     to: ChoiceResultInternal
+- rename-model:
+    from: SpeechResult
+    to: SpeechResultInternal
 - rename-model:
     from: ExternalStorage
     to: ExternalStorageInternal
