@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * The result from downloading an OCI manifest from the registry.
  */
-public class DownloadManifestResult {
+public final class DownloadManifestResult {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadManifestResult.class);
     static {
         ConstructorAccessors.setDownloadManifestResultAccessor(DownloadManifestResult::new);
@@ -39,7 +39,7 @@ public class DownloadManifestResult {
      * @return The {@link OciImageManifest} instance.
      * @throws IllegalStateException thrown when attempting to get {@link OciImageManifest} from incompatible media type.
      */
-    public OciImageManifest asOciManifest() {
+    public OciImageManifest asOciImageManifest() {
         if (ociManifest != null) {
             return ociManifest;
         }
@@ -67,7 +67,7 @@ public class DownloadManifestResult {
      * Get manifest media type.
      * @return Instance of {@link ManifestMediaType}
      */
-    public ManifestMediaType getMediaType() {
+    public ManifestMediaType getManifestMediaType() {
         return mediaType;
     }
 }

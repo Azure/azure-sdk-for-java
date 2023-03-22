@@ -17,6 +17,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 
@@ -65,13 +66,15 @@ public final class ContainerRegistryClient {
     private final HttpPipeline httpPipeline;
     private final String endpoint;
     private final String apiVersion;
+    private final Tracer tracer;
 
-    ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version) {
+    ContainerRegistryClient(HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
             .getContainerRegistries();
         this.apiVersion = version;
+        this.tracer = tracer;
     }
 
     /**
@@ -218,7 +221,7 @@ public final class ContainerRegistryClient {
      * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
     public ContainerRepository getRepository(String repositoryName) {
-        return new ContainerRepository(repositoryName, httpPipeline, endpoint, apiVersion);
+        return new ContainerRepository(repositoryName, httpPipeline, endpoint, apiVersion, tracer);
     }
 
     /**

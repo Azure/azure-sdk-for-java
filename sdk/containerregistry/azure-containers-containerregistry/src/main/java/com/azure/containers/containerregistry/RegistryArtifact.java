@@ -7,6 +7,7 @@ import com.azure.containers.containerregistry.implementation.ArtifactManifestPro
 import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
+import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
@@ -17,6 +18,7 @@ import com.azure.containers.containerregistry.implementation.models.TagWriteable
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -28,15 +30,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.SUPPORTED_MANIFEST_TYPES;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.formatFullyQualifiedReference;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
 
 /**
  * This class provides a helper type that contains all the operations for artifacts in a given repository.
@@ -82,7 +88,8 @@ public final class RegistryArtifact {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
-        this.serviceClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
+        AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
+        this.serviceClient = registryImplClient.getContainerRegistries();
         this.fullyQualifiedReference = formatFullyQualifiedReference(endpoint, repositoryName, tagOrDigest);
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
@@ -641,6 +648,76 @@ public final class RegistryArtifact {
         return repositoryName;
     }
 
+
+    /**
+     * Download the manifest identified by the given tag or digest.
+     *
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * Download manifest with tag:
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestTag -->
+     * <pre>
+     * DownloadManifestResult latestResult = blobClient.downloadManifest&#40;&quot;latest&quot;&#41;;
+     * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
+     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
+     *     OciImageManifest manifest = latestResult.asOciImageManifest&#40;&#41;;
+     * &#125; else &#123;
+     *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestTag -->
+     *
+     * Download manifest with digest:
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestDigest -->
+     * <pre>
+     * DownloadManifestResult downloadManifestResult = blobClient.downloadManifest&#40;
+     *     &quot;sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestDigest -->
+     *
+     * @return The manifest identified by the given tag or digest.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DownloadManifestResult getManifest() {
+        return getManifestWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Download the manifest of custom type identified by the given tag or digest.
+     *
+     * <p><strong>Code Samples:</strong></p>
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestWithResponse -->
+     * <pre>
+     * Response&lt;DownloadManifestResult&gt; downloadResponse = blobClient.downloadManifestWithResponse&#40;&quot;latest&quot;,
+     *     Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Received manifest: digest - %s, response code: %s&#92;n&quot;, downloadResponse.getValue&#40;&#41;.getDigest&#40;&#41;,
+     *     downloadResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.downloadManifestWithResponse -->
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response for the manifest identified by the given tag or digest.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DownloadManifestResult> getManifestWithResponse(Context context) {
+        Objects.requireNonNull(tagOrDigest, "'tagOrDigest' cannot be null.");
+
+        try {
+            Response<BinaryData> response =
+                serviceClient.getManifestWithResponse(repositoryName, tagOrDigest,
+                    SUPPORTED_MANIFEST_TYPES, enableSync(context));
+            return toDownloadManifestResponse(tagOrDigest, response);
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
+        }
+    }
 
     private PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
         return new PagedIterable<>(

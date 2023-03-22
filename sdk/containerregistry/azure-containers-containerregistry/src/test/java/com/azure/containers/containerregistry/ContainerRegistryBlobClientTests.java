@@ -6,9 +6,6 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -23,7 +20,7 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.FluxUtil;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,13 +30,14 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
@@ -48,8 +46,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,7 +69,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ContainerRegistryBlobClientTests {
     private static final BinaryData SMALL_CONTENT = BinaryData.fromString("foobar");
     private static final String SMALL_CONTENT_SHA256 = "sha256:c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2";
-    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
+    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST + ",application/vnd.oci.image.index.v1+json"
+        + ",application/vnd.docker.distribution.manifest.list.v2+json";
     private static final BinaryData MANIFEST_DATA = BinaryData.fromObject(MANIFEST);
 
     private static final BinaryData OCI_INDEX = BinaryData.fromString("{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.index.v1+json\","
@@ -102,7 +99,7 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadBlobWrongDigestInHeaderSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         assertThrows(ServiceResponseException.class, () -> client.downloadStream("some-digest", Channels.newChannel(stream)));
@@ -110,8 +107,8 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadManigestWrongDigestInHeaderSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
-        assertThrows(ServiceResponseException.class, () -> client.downloadManifest("latest"));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
+        assertThrows(ServiceResponseException.class, () -> client.getArtifact("latest").getManifest());
     }
 
     @Test
@@ -119,7 +116,7 @@ public class ContainerRegistryBlobClientTests {
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         StepVerifier.create(asyncClient.downloadStream("some-digest")
-                .flatMap(response -> response.writeValueTo(Channels.newChannel(stream))))
+                .flatMap(response -> FluxUtil.writeToOutputStream(response.toFluxByteBuffer(), stream)))
             .expectError(ServiceResponseException.class)
             .verify();
     }
@@ -135,7 +132,7 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadBlobWrongResponseSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         assertThrows(ServiceResponseException.class, () -> client.downloadStream(SMALL_CONTENT_SHA256, Channels.newChannel(stream)));
@@ -143,8 +140,8 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadManifestWrongResponseSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
-        assertThrows(ServiceResponseException.class, () -> client.downloadManifest("latest"));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
+        assertThrows(ServiceResponseException.class, () -> client.getArtifact("latest").getManifest());
     }
 
     @Test
@@ -153,7 +150,7 @@ public class ContainerRegistryBlobClientTests {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         StepVerifier.create(asyncClient.downloadStream(SMALL_CONTENT_SHA256)
-                .flatMap(response -> response.writeValueTo(Channels.newChannel(stream))))
+                .flatMap(response -> FluxUtil.writeToOutputStream(response.toFluxByteBuffer(), stream)))
             .expectError(ServiceResponseException.class)
             .verify();
     }
@@ -168,52 +165,50 @@ public class ContainerRegistryBlobClientTests {
 
     @SyncAsyncTest
     public void downloadManifest() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
 
         DownloadManifestResult result = SyncAsyncExtension.execute(
-            () -> client.downloadManifest(MANIFEST_DIGEST),
+            () ->  client.getArtifact(MANIFEST_DIGEST).getManifest(),
             () -> asyncClient.downloadManifest(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getContent().toBytes());
-        assertNotNull(result.asOciManifest());
-        assertEquals(ManifestMediaType.OCI_MANIFEST, result.getMediaType());
+        assertNotNull(result.asOciImageManifest());
+        assertEquals(ManifestMediaType.OCI_MANIFEST, result.getManifestMediaType());
     }
 
     @SyncAsyncTest
     public void downloadManifestWithDockerType() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
 
-        Collection<ManifestMediaType> dockerType = Collections.singletonList(ManifestMediaType.DOCKER_MANIFEST);
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(MANIFEST_DIGEST, dockerType, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST, dockerType));
+            () -> client.getArtifact(MANIFEST_DIGEST).getManifestWithResponse(Context.NONE),
+            () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
-        assertNotNull(result.getValue().asOciManifest());
-        assertEquals(ManifestMediaType.DOCKER_MANIFEST, result.getValue().getMediaType());
+        assertNotNull(result.getValue().asOciImageManifest());
+        assertEquals(ManifestMediaType.DOCKER_MANIFEST, result.getValue().getManifestMediaType());
     }
 
     @SyncAsyncTest
     public void downloadManifestWithOciIndexType() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
+        ContainerRepository client = createSyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
 
-        Collection<ManifestMediaType> ociIndexType = Collections.singletonList(OCI_INDEX_MEDIA_TYPE);
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(OCI_INDEX_DIGEST, ociIndexType, Context.NONE),
-            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST, ociIndexType));
+            () -> client.getArtifact(OCI_INDEX_DIGEST).getManifestWithResponse(Context.NONE),
+            () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST));
 
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
-        assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getMediaType());
+        assertEquals(OCI_INDEX_MEDIA_TYPE, result.getValue().getManifestMediaType());
 
-        assertThrows(IllegalStateException.class, () -> result.getValue().asOciManifest());
+        assertThrows(IllegalStateException.class, () -> result.getValue().asOciImageManifest());
     }
 
     @SyncAsyncTest
     public void downloadBlobOneChunk() throws IOException {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -221,7 +216,7 @@ public class ContainerRegistryBlobClientTests {
         SyncAsyncExtension.execute(
             () -> client.downloadStream(SMALL_CONTENT_SHA256, Channels.newChannel(stream)),
             () -> asyncClient.downloadStream(SMALL_CONTENT_SHA256)
-                .flatMap(result -> result.writeValueTo(channel)));
+                .flatMap(result ->  FluxUtil.writeToOutputStream(result.toFluxByteBuffer(), stream)));
         stream.flush();
         assertArrayEquals(SMALL_CONTENT.toBytes(), stream.toByteArray());
     }
@@ -231,7 +226,7 @@ public class ContainerRegistryBlobClientTests {
         BinaryData content = getDataSync((int) (CHUNK_SIZE * 2.3), sha256);
         String expectedDigest = "sha256:" + bytesToHexString(sha256.digest());
 
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(content, expectedDigest));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(content, expectedDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(content, expectedDigest));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -239,7 +234,7 @@ public class ContainerRegistryBlobClientTests {
         SyncAsyncExtension.execute(
             () -> client.downloadStream(expectedDigest, Channels.newChannel(stream)),
             () -> asyncClient.downloadStream(expectedDigest)
-                .flatMap(result -> result.writeValueTo(channel)));
+                .flatMap(result -> FluxUtil.writeToWritableByteChannel(result.toFluxByteBuffer(), channel)));
         stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
     }
@@ -249,7 +244,7 @@ public class ContainerRegistryBlobClientTests {
         BinaryData content = getDataSync((int) (CHUNK_SIZE * 0.1), sha256);
 
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(content),
@@ -261,7 +256,7 @@ public class ContainerRegistryBlobClientTests {
         Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, CHUNK_SIZE / 10, sha256);
 
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
@@ -273,7 +268,7 @@ public class ContainerRegistryBlobClientTests {
         Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, (int) (CHUNK_SIZE * 1.5), sha256);
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
@@ -316,7 +311,7 @@ public class ContainerRegistryBlobClientTests {
             sink.error(new IllegalStateException("foo"));
         });
 
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(() -> "foo"));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(() -> "foo"));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(() -> "foo"));
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
@@ -351,7 +346,7 @@ public class ContainerRegistryBlobClientTests {
         try (ByteBufferBackedInputStream stream = new ByteBufferBackedInputStream(data)) {
             Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
-            ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+            ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
             ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
             SyncAsyncExtension.execute(
                 () -> client.uploadBlob(BinaryData.fromStream(stream)),
@@ -362,20 +357,19 @@ public class ContainerRegistryBlobClientTests {
     @Test
     public void downloadToFile() throws IOException, InterruptedException, ExecutionException {
         File output = File.createTempFile("temp", "in");
-
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
-        try (AsynchronousFileChannel outputChannel = AsynchronousFileChannel
-            .open(output.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.READ)) {
+        try (FileOutputStream outputStream = new FileOutputStream(output)) {
             StepVerifier.create(asyncClient.downloadStream(SMALL_CONTENT_SHA256)
-                    .flatMap(result -> result.writeValueToAsync(IOUtils.toAsynchronousByteChannel(outputChannel, 0))))
+                    .flatMap(result -> FluxUtil.writeToOutputStream(result.toFluxByteBuffer(), outputStream)))
                 .verifyComplete();
 
-            ByteBuffer result = ByteBuffer.wrap(SMALL_CONTENT.toBytes());
-            outputChannel.read(result, 0).get();
-
-            // make Java 8 happy
-            Buffer flip = result.flip();
-            assertArrayEquals(SMALL_CONTENT.toBytes(), (byte[]) flip.array());
+            outputStream.flush();
+            try (FileInputStream inputStream = new FileInputStream(output)) {
+                byte[] content = new byte[(Math.toIntExact(SMALL_CONTENT.getLength()))];
+                assertEquals(SMALL_CONTENT.getLength(), inputStream.read(content));
+                assertEquals(-1, inputStream.read());
+                assertArrayEquals(SMALL_CONTENT.toBytes(), content);
+            }
         }
     }
 
@@ -417,11 +411,7 @@ public class ContainerRegistryBlobClientTests {
     public static HttpClient createClientManifests(BinaryData content, String digest,
                                                    ManifestMediaType returnContentType) {
         return new MockHttpClient(request -> {
-            if (returnContentType == null) {
-                assertEquals(DEFAULT_MANIFEST_CONTENT_TYPE, request.getHeaders().getValue(HttpHeaderName.ACCEPT));
-            } else {
-                assertEquals(returnContentType.toString(), request.getHeaders().getValue(HttpHeaderName.ACCEPT));
-            }
+            assertEquals(DEFAULT_MANIFEST_CONTENT_TYPE, request.getHeaders().getValue(HttpHeaderName.ACCEPT));
             HttpHeaders headers = new HttpHeaders()
                 .add(UtilsImpl.DOCKER_DIGEST_HEADER_NAME, digest)
                 .add(HttpHeaderName.CONTENT_TYPE, returnContentType == null ? ManifestMediaType.OCI_MANIFEST.toString() : returnContentType.toString());
@@ -479,18 +469,18 @@ public class ContainerRegistryBlobClientTests {
         });
     }
 
-    private ContainerRegistryBlobClient createSyncClient(HttpClient httpClient) {
-        return new ContainerRegistryBlobClientBuilder()
+    private ContainerRepository createSyncClient(HttpClient httpClient) {
+        return new ContainerRegistryClientBuilder()
             .endpoint("https://endpoint.com")
-            .repository("foo")
             .httpClient(httpClient)
-            .buildClient();
+            .buildClient()
+            .getRepository("foo");
     }
 
     private ContainerRegistryBlobAsyncClient createAsyncClient(HttpClient httpClient) {
         return new ContainerRegistryBlobClientBuilder()
             .endpoint("https://endpoint.com")
-            .repository("foo")
+            .repositoryName("foo")
             .httpClient(httpClient)
             .buildAsyncClient();
     }

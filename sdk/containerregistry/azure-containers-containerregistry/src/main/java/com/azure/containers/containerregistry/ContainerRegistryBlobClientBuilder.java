@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.containers.containerregistry.specialized;
+package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -34,15 +33,15 @@ import java.util.Objects;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ContainerRegistryBlobClient ContainerRegistryBlobClients} and {@link ContainerRegistryBlobAsyncClient ContainerRegistryBlobAsyncClients}, call {@link
- * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * This class provides a fluent builder API to help aid the configuration and instantiation of and
+ * {@link ContainerRegistryBlobAsyncClient ContainerRegistryBlobAsyncClients}, call
+ * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
  * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
- * pipeline requires additional setup but allows for finer control on how the {@link ContainerRegistryBlobClient} and {@link
+ * pipeline requires additional setup but allows for finer control on how the {@link
  * ContainerRegistryBlobAsyncClient} is built.</p>
  * <p>The service does not directly support AAD credentials and as a result the clients internally depend on a policy that converts
  * the AAD credentials to the Azure Container Registry specific service credentials. In case you use your own pipeline, you
@@ -52,8 +51,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  */
 @ServiceClientBuilder(
     serviceClients = {
-        ContainerRegistryBlobAsyncClient.class,
-        ContainerRegistryBlobClient.class
+        ContainerRegistryBlobAsyncClient.class
     })
 public final class ContainerRegistryBlobClientBuilder implements
     ConfigurationTrait<ContainerRegistryBlobClientBuilder>,
@@ -102,7 +100,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * @param repositoryName The URL of the Container Registry instance.
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
-    public ContainerRegistryBlobClientBuilder repository(String repositoryName) {
+    public ContainerRegistryBlobClientBuilder repositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
     }
@@ -143,7 +141,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all settings other than {@link #endpoint(String) endpoint} are ignored
-     * to build {@link ContainerRegistryBlobClient} or {@link ContainerRegistryBlobAsyncClient}.<br>
+     * to build {@link ContainerRegistryBlobAsyncClient}.<br>
      * </p>
      *
      * This service takes dependency on an internal policy which converts Azure token credentials into Azure Container Registry specific service credentials.
@@ -349,29 +347,6 @@ public final class ContainerRegistryBlobClientBuilder implements
 
         ContainerRegistryBlobAsyncClient client = new ContainerRegistryBlobAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(), tracer);
         return client;
-    }
-
-    /**
-     * Creates a {@link ContainerRegistryBlobClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryBlobClient} is created.
-     * <p>
-     * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link ContainerRegistryBlobClient client}. All other builder settings are ignored.
-     *
-     * @return A {@link ContainerRegistryBlobClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
-     * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
-     */
-    public ContainerRegistryBlobClient buildClient() {
-        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
-
-        // Service version
-        ContainerRegistryServiceVersion serviceVersion = (version != null)
-            ? version
-            : ContainerRegistryServiceVersion.getLatest();
-
-        Tracer tracer = createTracer(clientOptions);
-        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(tracer), endpoint, serviceVersion.getVersion(), tracer);
     }
 
     private HttpPipeline getHttpPipeline(Tracer tracer) {

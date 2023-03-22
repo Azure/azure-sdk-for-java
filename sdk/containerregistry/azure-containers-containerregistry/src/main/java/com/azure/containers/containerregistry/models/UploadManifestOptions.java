@@ -67,7 +67,7 @@ public final class UploadManifestOptions {
      * Media type of the corresponding manifest.
      * @return instance of {@link ManifestMediaType}.
      */
-    public ManifestMediaType getMediaType() {
+    public ManifestMediaType getManifestMediaType() {
         return mediaType;
     }
 }

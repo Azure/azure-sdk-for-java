@@ -3,10 +3,10 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
+import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,7 +23,6 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 
 public class DownloadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -35,14 +34,14 @@ public class DownloadImageAsync {
     public static void main(String[] args) {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
         // BEGIN: readme-sample-downloadImageAsync
         blobClient
             .downloadManifest("latest")
-            .map(manifestResult -> manifestResult.asOciManifest())
+            .map(manifestResult -> manifestResult.asOciImageManifest())
             .doOnSuccess(manifest -> System.out.printf("Got manifest:\n%s\n", prettyPrint(manifest)))
             .flatMapMany(manifest -> {
                 String configFileName = manifest.getConfig().getDigest() + ".json";
@@ -50,7 +49,7 @@ public class DownloadImageAsync {
 
                 Mono<Void> downloadConfig = blobClient
                         .downloadStream(manifest.getConfig().getDigest())
-                        .flatMap(downloadResponse -> downloadResponse.writeValueTo(configChannel))
+                        .flatMap(downloadResponse -> FluxUtil.writeToWritableByteChannel(downloadResponse.toFluxByteBuffer(), configChannel))
                         .doOnSuccess(i -> System.out.printf("Got config: %s\n", configFileName))
                         .doFinally(i -> closeStream(configChannel));
 
@@ -58,7 +57,7 @@ public class DownloadImageAsync {
                     .flatMap(layer -> {
                         FileChannel layerChannel = createFileChannel(layer.getDigest());
                         return blobClient.downloadStream(layer.getDigest())
-                            .flatMap(downloadResponse -> downloadResponse.writeValueTo(layerChannel))
+                            .flatMap(downloadResponse -> FluxUtil.writeToWritableByteChannel(downloadResponse.toFluxByteBuffer(), layerChannel))
                             .doOnSuccess(i -> System.out.printf("Got layer: %s\n", layer.getDigest()))
                             .doFinally(i -> closeStream(layerChannel));
                     });
@@ -74,7 +73,7 @@ public class DownloadImageAsync {
     private static void downloadBlob() {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
         String digest = "sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311";
@@ -84,7 +83,8 @@ public class DownloadImageAsync {
             .downloadStream(digest)
             .flatMap(downloadResult ->
                 Mono.using(() -> new FileOutputStream(trimSha(digest)),
-                    fileStream -> downloadResult.writeValueTo(fileStream.getChannel()),
+                    fileStream -> FluxUtil.writeToWritableByteChannel(
+                        downloadResult.toFluxByteBuffer(), fileStream.getChannel()),
                     fileStream -> closeStream(fileStream)))
             .block();
         // END: com.azure.containers.containerregistry.downloadStreamAsyncFile
@@ -96,7 +96,7 @@ public class DownloadImageAsync {
             .flatMap(downloadResult ->
                 Mono.using(
                     () -> openSocket(),
-                    socket -> downloadResult.writeValueToAsync(socket),
+                    socket -> FluxUtil.writeToAsynchronousByteChannel(downloadResult.toFluxByteBuffer(), socket),
                     socket -> closeStream(socket)))
             .block();
         // END: com.azure.containers.containerregistry.downloadStreamAsyncSocket
@@ -119,55 +119,46 @@ public class DownloadImageAsync {
     private static void downloadManifest() {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
         // BEGIN: com.azure.containers.containerregistry.downloadManifestAsync
         blobClient.downloadManifest("latest")
             .doOnNext(downloadResult -> {
-                if (ManifestMediaType.OCI_MANIFEST.equals(downloadResult.getMediaType())
-                    || ManifestMediaType.DOCKER_MANIFEST.equals(downloadResult.getMediaType())) {
-                    OciImageManifest manifest = downloadResult.asOciManifest();
+                if (ManifestMediaType.OCI_MANIFEST.equals(downloadResult.getManifestMediaType())
+                    || ManifestMediaType.DOCKER_MANIFEST.equals(downloadResult.getManifestMediaType())) {
+                    OciImageManifest manifest = downloadResult.asOciImageManifest();
                     System.out.println("Got OCI manifest");
                 } else {
-                    throw new IllegalArgumentException("Unexpected manifest type: " + downloadResult.getMediaType());
+                    throw new IllegalArgumentException("Unexpected manifest type: " + downloadResult.getManifestMediaType());
                 }
             })
             .block();
         // END: com.azure.containers.containerregistry.downloadManifestAsync
     }
 
-    private static void downloadCustomManifestMediaType() {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+    private static void downloadManifestWithResponse() {
         ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
-            .credential(credential)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
             .buildAsyncClient();
 
-        // BEGIN: com.azure.containers.containerregistry.downloadCustomManifestAsync
-        ManifestMediaType dockerListType = ManifestMediaType
-            .fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        ManifestMediaType ociIndexType = ManifestMediaType
-            .fromString("application/vnd.oci.image.index.v1+json");
-
-        blobClient.downloadManifestWithResponse("latest", Arrays.asList(dockerListType, ociIndexType))
-            .doOnNext(downloadResult -> {
-                if (dockerListType.equals(downloadResult.getValue().getMediaType())) {
-                    // DockerManifestList manifestList =
-                    //     downloadResult.getValue().getContent().toObject(DockerManifestList.class);
-                    System.out.println("Got docker manifest list");
-                } else if (ociIndexType.equals(downloadResult.getValue().getMediaType())) {
-                    // OciIndex ociIndex = downloadResult.getValue().getContent().toObject(OciIndex.class);
-                    System.out.println("Got OCI index");
+        // BEGIN: com.azure.containers.containerregistry.downloadManifestWithResponseAsync
+        blobClient.downloadManifestWithResponse("latest")
+            .doOnNext(response -> {
+                DownloadManifestResult manifestResult = response.getValue();
+                if (ManifestMediaType.OCI_MANIFEST.equals(manifestResult.getManifestMediaType())
+                    || ManifestMediaType.DOCKER_MANIFEST.equals(manifestResult.getManifestMediaType())) {
+                    OciImageManifest manifest = manifestResult.asOciImageManifest();
+                    System.out.println("Got OCI manifest");
                 } else {
-                    throw new IllegalArgumentException("Got unexpected content type: "
-                        + downloadResult.getValue().getMediaType());
+                    throw new IllegalArgumentException("Unexpected manifest type: " + manifestResult.getManifestMediaType());
                 }
             })
             .block();
-        // END: com.azure.containers.containerregistry.downloadCustomManifestAsync
+        // END: com.azure.containers.containerregistry.downloadManifestWithResponseAsync
     }
 
     private static String prettyPrint(OciImageManifest manifest) {

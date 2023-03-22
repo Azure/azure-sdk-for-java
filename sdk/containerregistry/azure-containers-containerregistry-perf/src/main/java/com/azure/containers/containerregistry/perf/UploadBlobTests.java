@@ -25,7 +25,7 @@ public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
     @Override
     public void run() {
         RepeatingInputStream input = new RepeatingInputStream(options.getSize());
-        blobClient.uploadBlob(Channels.newChannel(input), Context.NONE);
+        repository.uploadBlob(Channels.newChannel(input), Context.NONE);
     }
 
     @Override
