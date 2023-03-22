@@ -80,7 +80,8 @@ public class StoreClient implements IStoreClient {
             false,
             useMultipleWriteLocations);
 
-        addressResolver.setOpenConnectionsHandler(transportClient.getOpenConnectionsHandler());
+        addressResolver.setOpenConnectionsHandler(this.transportClient.getOpenConnectionsHandler());
+        addressResolver.setOpenConnectionsExecutor(this.transportClient.getOpenConnectionsExecutor());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -137,8 +138,8 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode);
+    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
     }
 
     @Override

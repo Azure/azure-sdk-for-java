@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -98,6 +99,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
+        private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -234,6 +236,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withRntbdOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+            this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -252,21 +259,23 @@ public interface AsyncDocumentClient {
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                masterKeyOrResourceToken,
-                permissionFeed,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs,
-                cosmosAuthorizationTokenResolver,
-                credential,
-                tokenCredential,
-                sessionCapturingOverride,
-                transportClientSharing,
-                contentResponseOnWriteEnabled,
-                state,
-                apiType,
-                clientTelemetryConfig,
-                clientCorrelationId);
+                    masterKeyOrResourceToken,
+                    permissionFeed,
+                    connectionPolicy,
+                    desiredConsistencyLevel,
+                    configs,
+                    cosmosAuthorizationTokenResolver,
+                    credential,
+                    tokenCredential,
+                    sessionCapturingOverride,
+                    transportClientSharing,
+                    contentResponseOnWriteEnabled,
+                    state,
+                    apiType,
+                    clientTelemetryConfig,
+                    clientCorrelationId,
+                    proactiveOpenConnectionsProcessor
+            );
 
             client.init(state, null);
             return client;
@@ -1661,7 +1670,7 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
+    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow);
 
     /**
      * Warm up caches and open connections for containers specified by

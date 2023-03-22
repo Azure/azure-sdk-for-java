@@ -195,15 +195,14 @@ public class GlobalAddressResolverTest {
 
         Mockito
                 .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
-                .thenReturn(Flux.fromIterable(openConnectionResponses));
+                .thenReturn(Flux.just(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
         StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))
-                        .expectNext(response1)
-                        .expectNext(response2)
+                        .expectNext(Arrays.asList(response1, response2))
                         .verifyComplete();
         Mockito
                 .verify(collectionCache, Mockito.times(1))

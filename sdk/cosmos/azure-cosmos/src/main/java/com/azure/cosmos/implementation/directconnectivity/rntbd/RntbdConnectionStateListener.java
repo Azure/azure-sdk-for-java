@@ -7,15 +7,12 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -28,16 +25,18 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final RntbdOpenConnectionsHandler openConnectionsHandler) {
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final RntbdOpenConnectionsHandler openConnectionsHandler, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.rntbdOpenConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     // endregion
@@ -85,12 +84,15 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        this.rntbdOpenConnectionsHandler
-                .openConnection(
-                        this.endpoint.serviceEndpoint(),
-                        this.addressUris.stream().findFirst().get(),
-                        RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
-                )
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
+                this.rntbdOpenConnectionsHandler::openConnection,
+                this.endpoint.serviceEndpoint(),
+                this.addressUris.stream().findFirst().get(),
+                RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
+        );
+
+        this.proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisher()
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
     }

@@ -41,6 +41,7 @@ public final class DirectConnectionConfig {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean healthCheckTimeoutDetectionEnabled;
+    private int minChannelPoolSizePerEndpoint;
 
     /**
      * Constructor
@@ -56,6 +57,7 @@ public final class DirectConnectionConfig {
         this.ioThreadCountPerCoreFactor = DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR;
         this.ioThreadPriority = DEFAULT_IO_THREAD_PRIORITY;
         this.healthCheckTimeoutDetectionEnabled = Configs.isTcpHealthCheckTimeoutDetectionEnabled();
+        this.minChannelPoolSizePerEndpoint = Configs.getMinChannelPoolPerEndpointAsInt();
     }
 
     /**
@@ -310,6 +312,15 @@ public final class DirectConnectionConfig {
         return this.healthCheckTimeoutDetectionEnabled;
     }
 
+    int getMinChannelPoolSizePerEndpoint() {
+        return this.minChannelPoolSizePerEndpoint;
+    }
+
+    DirectConnectionConfig setMinChannelPoolSizePerEndpoint(int minChannelPoolSizePerEndpoint) {
+        this.minChannelPoolSizePerEndpoint = minChannelPoolSizePerEndpoint;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
@@ -322,6 +333,7 @@ public final class DirectConnectionConfig {
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", ioThreadPriority=" + ioThreadPriority +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + healthCheckTimeoutDetectionEnabled +
+            ", minChannelPoolSizePerEndpoint=" + minChannelPoolSizePerEndpoint +
             '}';
     }
 
@@ -364,6 +376,18 @@ public final class DirectConnectionConfig {
                 @Override
                 public boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig) {
                     return directConnectionConfig.isHealthCheckTimeoutDetectionEnabled();
+                }
+
+                @Override
+                public DirectConnectionConfig setMinChannelPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minChannelPoolSizePerEndpoint) {
+                    directConnectionConfig.setMinChannelPoolSizePerEndpoint(minChannelPoolSizePerEndpoint);
+
+                    return directConnectionConfig;
+                }
+
+                @Override
+                public int getMinChannelPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig) {
+                    return directConnectionConfig.getMinChannelPoolSizePerEndpoint();
                 }
             });
     }

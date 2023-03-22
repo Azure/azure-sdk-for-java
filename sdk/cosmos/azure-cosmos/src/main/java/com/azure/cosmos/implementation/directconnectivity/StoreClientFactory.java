@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -32,7 +33,9 @@ public class StoreClientFactory implements AutoCloseable {
         UserAgentContainer userAgent,
         boolean enableTransportClientSharing,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager) {
+        GlobalEndpointManager globalEndpointManager,
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -45,7 +48,9 @@ public class StoreClientFactory implements AutoCloseable {
                 diagnosticsClientConfig,
                 addressResolver,
                 clientTelemetry,
-                globalEndpointManager);
+                globalEndpointManager,
+                    proactiveOpenConnectionsProcessor
+                );
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
@@ -59,7 +64,9 @@ public class StoreClientFactory implements AutoCloseable {
                         configs.getSslContext(),
                         addressResolver,
                         clientTelemetry,
-                        globalEndpointManager);
+                        globalEndpointManager,
+                            proactiveOpenConnectionsProcessor
+                        );
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {

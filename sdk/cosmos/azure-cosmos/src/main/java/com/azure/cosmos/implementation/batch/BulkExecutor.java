@@ -174,7 +174,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         this.executorService.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
         this.executorService.setRemoveOnCancelPolicy(true);
         this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
-            this::onFlush,
+                () -> onFlush(),
             this.maxMicroBatchIntervalInMs,
             this.maxMicroBatchIntervalInMs,
             TimeUnit.MILLISECONDS);
@@ -380,7 +380,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                         })
                     .groupBy(Pair::getKey, Pair::getValue)
                     .flatMap(
-                        this::executePartitionedGroup,
+                            partitionedGroupFluxOfInputOperations -> executePartitionedGroup(partitionedGroupFluxOfInputOperations),
                         maxConcurrentCosmosPartitions)
                     .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
                     .doOnNext(requestAndResponse -> {
@@ -561,7 +561,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         ServerOperationBatchRequest serverOperationBatchRequest =
             BulkExecutorUtil.createBatchRequest(operations, pkRange);
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
-            serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
+            serverOperationBatchRequest.getBatchPendingOperations().forEach(t -> groupSink.next(t));
         }
 
         return Flux.just(serverOperationBatchRequest.getBatchRequest())

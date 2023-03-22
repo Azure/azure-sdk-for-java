@@ -23,7 +23,6 @@ import com.azure.cosmos.implementation.Longs;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.MutableVolatile;
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -45,6 +44,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -250,6 +250,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     public IOpenConnectionsHandler getOpenConnectionsHandler() {
         throw new NotImplementedException("openConnection is not supported in httpTransportClient");
+    }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getOpenConnectionsExecutor() {
+        throw new NotImplementedException("getOpenConnectionsExecutor is not supported in httpTransportClient");
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {

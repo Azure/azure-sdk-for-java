@@ -47,6 +47,7 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
+    private int minChannelPoolSizePerEndpoint;
 
     /**
      * Constructor.
@@ -93,6 +94,11 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+        this.minChannelPoolSizePerEndpoint =
+                ImplementationBridgeHelpers
+                        .DirectConnectionConfigHelper
+                        .getDirectConnectionConfigAccessor()
+                        .getMinChannelPoolSizePerEndpoint(directConnectionConfig);
     }
 
     private ConnectionPolicy() {
@@ -104,6 +110,7 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
+        this.minChannelPoolSizePerEndpoint = 1;
     }
 
     /**
@@ -564,6 +571,10 @@ public final class ConnectionPolicy {
         return this.tcpHealthCheckTimeoutDetectionEnabled;
     }
 
+    public int getMinChannelPoolSizePerEndpoint() {
+        return this.minChannelPoolSizePerEndpoint;
+    }
+
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
         return this;
@@ -599,6 +610,7 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
+            ", minChannelPoolSizePerEndpoint=" + minChannelPoolSizePerEndpoint +
             '}';
     }
 }

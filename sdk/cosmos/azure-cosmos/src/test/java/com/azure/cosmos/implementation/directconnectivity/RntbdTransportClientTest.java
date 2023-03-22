@@ -38,24 +38,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequest;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestEncoder;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestTimer;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
@@ -638,7 +621,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -1200,6 +1183,11 @@ public final class RntbdTransportClientTest {
             @Override
             public IOpenConnectionsHandler getOpenConnectionHandler() {
                 throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClientTest");
+            }
+
+            @Override
+            public ProactiveOpenConnectionsProcessor getRntbdOpenConnectionExecutor() {
+                throw new NotImplementedException("getRntbdOpenConnectionExecutor is not implemented for RntbdTransportClientTest");
             }
         }
 

@@ -24,7 +24,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public interface RntbdEndpoint extends AutoCloseable {
 
-    int MIN_CHANNELS_PER_ENDPOINT = 1;
+    int MIN_CHANNELS_PER_ENDPOINT = 8;
 
     // region Accessors
 
@@ -126,6 +126,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         Stream<RntbdEndpoint> list();
 
         IOpenConnectionsHandler getOpenConnectionHandler();
+
+        ProactiveOpenConnectionsProcessor getRntbdOpenConnectionExecutor();
     }
 
     final class Config {
@@ -303,6 +305,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public long timeoutDetectionOnWriteTimeLimitInNanos() {
             return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int getMinChannelPoolSizePerEndpoint() {
+            return this.options.getMinChannelPoolSizePerEndpoint();
         }
 
         @Override

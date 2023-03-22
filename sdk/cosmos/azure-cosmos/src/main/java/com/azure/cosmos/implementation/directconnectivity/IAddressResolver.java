@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,7 @@ public interface IAddressResolver {
      */
     Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode);
+    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow);
 
     /***
      * Set the open connection handler so SDK can proactively create connections based on need.
@@ -36,4 +37,6 @@ public interface IAddressResolver {
      * @param openConnectionHandler the {@link IOpenConnectionsHandler}.
      */
     void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler);
+
+    void setOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }

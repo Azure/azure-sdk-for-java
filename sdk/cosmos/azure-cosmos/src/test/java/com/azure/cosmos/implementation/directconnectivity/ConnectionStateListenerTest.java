@@ -17,11 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestR
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListenerMetrics;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
@@ -103,7 +99,8 @@ public class ConnectionStateListenerTest {
             new UserAgentContainer(),
             addressResolver,
             null,
-            null);
+            null,
+                null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -139,10 +136,11 @@ public class ConnectionStateListenerTest {
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
         RntbdOpenConnectionsHandler rntbdOpenConnectionsHandlerMock = Mockito.mock(RntbdOpenConnectionsHandler.class);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, rntbdOpenConnectionsHandlerMock);
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, rntbdOpenConnectionsHandlerMock, proactiveOpenConnectionsProcessorMock);
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();

@@ -17,11 +17,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
@@ -104,6 +100,7 @@ public class RntbdTransportClient extends TransportClient {
     private final GlobalEndpointManager globalEndpointManager;
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     // endregion
 
@@ -124,14 +121,17 @@ public class RntbdTransportClient extends TransportClient {
         final UserAgentContainer userAgent,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
-
+        final GlobalEndpointManager globalEndpointManager,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
-            globalEndpointManager);
+            globalEndpointManager,
+                proactiveOpenConnectionsProcessor
+        );
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -142,6 +142,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
+        this.proactiveOpenConnectionsProcessor = null;
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -150,7 +151,9 @@ public class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
+        final GlobalEndpointManager globalEndpointManager,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -159,12 +162,15 @@ public class RntbdTransportClient extends TransportClient {
             checkNotNull(sslContext, "expected non-null sslContext"),
             addressResolver,
             clientTelemetry,
-            this.serverErrorInjector);
+            this.serverErrorInjector,
+                proactiveOpenConnectionsProcessor
+            );
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
@@ -209,7 +215,12 @@ public class RntbdTransportClient extends TransportClient {
 
     @Override
     public IOpenConnectionsHandler getOpenConnectionsHandler() {
-        return null;
+        return this.endpointProvider.getOpenConnectionHandler();
+    }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getOpenConnectionsExecutor() {
+        return this.endpointProvider.getRntbdOpenConnectionExecutor();
     }
 
     /**
@@ -554,6 +565,9 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration timeoutDetectionOnWriteTimeLimit;
 
+        @JsonProperty
+        private final int minChannelPoolSizePerEndpoint;
+
 
         // endregion
 
@@ -596,6 +610,7 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionHighFrequencyTimeLimit = builder.timeoutDetectionHighFrequencyTimeLimit;
             this.timeoutDetectionOnWriteThreshold = builder.timeoutDetectionOnWriteThreshold;
             this.timeoutDetectionOnWriteTimeLimit = builder.timeoutDetectionOnWriteTimeLimit;
+            this.minChannelPoolSizePerEndpoint = builder.minChannelPoolSizePerEndpoint;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -637,6 +652,7 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteThreshold = 1;
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
+            this.minChannelPoolSizePerEndpoint = connectionPolicy.getMinChannelPoolSizePerEndpoint();
         }
 
         // endregion
@@ -767,6 +783,10 @@ public class RntbdTransportClient extends TransportClient {
 
         public Duration timeoutDetectionOnWriteTimeLimit() {
             return this.timeoutDetectionOnWriteTimeLimit;
+        }
+
+        public int getMinChannelPoolSizePerEndpoint() {
+            return this.minChannelPoolSizePerEndpoint;
         }
 
         // endregion
@@ -941,6 +961,7 @@ public class RntbdTransportClient extends TransportClient {
             private Duration timeoutDetectionHighFrequencyTimeLimit;
             private int timeoutDetectionOnWriteThreshold;
             private Duration timeoutDetectionOnWriteTimeLimit;
+            private int minChannelPoolSizePerEndpoint;
 
 
             // endregion
@@ -983,6 +1004,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.timeoutDetectionHighFrequencyTimeLimit = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyTimeLimit;
                 this.timeoutDetectionOnWriteThreshold = DEFAULT_OPTIONS.timeoutDetectionOnWriteThreshold;
                 this.timeoutDetectionOnWriteTimeLimit = DEFAULT_OPTIONS.timeoutDetectionOnWriteTimeLimit;
+                this.minChannelPoolSizePerEndpoint = connectionPolicy.getMinChannelPoolSizePerEndpoint();
             }
 
             // endregion

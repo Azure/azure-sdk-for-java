@@ -135,7 +135,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                null);
+                null,
+                null
+                );
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -174,7 +176,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null);
+                                                            null,
+                null
+                );
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -223,7 +227,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null);
+                                                            null,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -281,7 +287,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            openConnectionsHandler);
+                                                            openConnectionsHandler,
+                null
+                );
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -345,7 +353,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            openConnectionsHandler);
+                                                            openConnectionsHandler,
+                null
+                );
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -412,7 +422,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                openConnectionsHandler);
+                                                                openConnectionsHandler,
+                                                                null
+                );
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -525,7 +537,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null);
+                                                            null,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -576,7 +590,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null);
+                                                            null,
+                                                            null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -626,7 +642,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null);
+                                                            null,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -683,7 +701,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 ApiType.SQL,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                null);
+                                                                null,
+                                                                null
+                );
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
@@ -780,7 +800,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                null);
+                                                                null,
+                                                                null
+                );
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
@@ -895,7 +917,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                openConnectionsHandlerMock,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1027,7 +1051,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                openConnectionsHandlerMock,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1089,7 +1115,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                openConnectionsHandlerMock,
+                null
+                );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1159,7 +1187,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                openConnectionsHandlerMock,
+                null
+                );
 
         Method validateReplicaAddressesMethod = GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { AddressInformation[].class });
         validateReplicaAddressesMethod.setAccessible(true);
@@ -1221,7 +1251,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                openConnectionsHandlerMock,
+                null
+                );
 
         // connected status
         AddressInformation address1 = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);

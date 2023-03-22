@@ -485,7 +485,7 @@ public class CosmosAsyncContainer {
                     .setProactiveConnectionRegionsCount(1)
                     .build();
 
-            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE")
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE", false)
                                             .flatMap(openResult -> {
                                                 logger.info("OpenConnectionsAndInitCaches: {}", openResult);
                                                 return Mono.empty();
@@ -545,7 +545,7 @@ public class CosmosAsyncContainer {
                     .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                     .build();
 
-            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE")
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, "AGGRESSIVE", false)
                     .flatMap(
                         openResult -> {
                             logger.info("OpenConnectionsAndInitCaches: {}", String.format(
@@ -570,8 +570,8 @@ public class CosmosAsyncContainer {
      * no. of endpoints to which connections failed
      */
     private Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
-        CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode) {
-        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode)
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow)
                 .collectList()
                 .flatMap(openConnectionResponsesList -> {
                     // Generate a simple statistics string for open connections
@@ -598,7 +598,7 @@ public class CosmosAsyncContainer {
                 });
     }
 
-    Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(int numProactiveConnectionRegions, String openConnectionsConcurrencyMode) {
+    Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(int numProactiveConnectionRegions, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
 
         List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
         boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
@@ -624,12 +624,7 @@ public class CosmosAsyncContainer {
                             .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
                             .build();
 
-            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, openConnectionsConcurrencyMode)
-                    .flatMap(
-                            openResult -> {
-                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
-                                return Mono.empty();
-                            }));
+            return openConnectionsAndInitCachesInternal(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
         } else {
             logger.warn(
                     "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",

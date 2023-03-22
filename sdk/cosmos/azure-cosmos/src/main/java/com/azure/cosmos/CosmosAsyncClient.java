@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -108,6 +109,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private static final String AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
     private static final String DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
 
     static {
@@ -154,6 +156,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.apiType = builder.apiType();
         this.clientCorrelationId =  telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(20);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -182,6 +185,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
+                                        .withRntbdOpenConnectionsExecutor(this.proactiveOpenConnectionsProcessor)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
@@ -642,6 +646,8 @@ public final class CosmosAsyncClient implements Closeable {
                 openConnectionsAndInitCachesInternal(warmedUpContainerLinks)
                         .flatMap(tuples -> Mono.just(new ArrayList<>())), timeout);
 
+        System.out.println("No. of warmed up containers : " + warmedUpContainerLinks.size());
+
         openConnectionsInBackground(warmedUpContainerLinks);
     }
 
@@ -663,7 +669,8 @@ public final class CosmosAsyncClient implements Closeable {
                                     cosmosAsyncContainer
                                             .openConnectionsAndInitCachesInternal(
                                                     this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                                    AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE
+                                                    AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE,
+                                                    false
                                             )
                             ),
                             concurrency,
@@ -693,33 +700,22 @@ public final class CosmosAsyncClient implements Closeable {
         List<CosmosContainerIdentity> nonWarmedUpContainerIdentities = this.proactiveContainerInitConfig
                 .getCosmosContainerIdentities()
                 .stream()
-                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks.contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity)))
+                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
                 .collect(Collectors.toList());
 
         // redo warmup of remaining endpoints in case any are remaining
         List<CosmosContainerIdentity> warmedUpContainerIdenties = this.proactiveContainerInitConfig
                 .getCosmosContainerIdentities()
                 .stream()
-                .filter(cosmosContainerIdentity -> warmedUpContainerLinks.contains(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity)))
+                .filter(cosmosContainerIdentity -> warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
                 .collect(Collectors.toList());
 
-        Flux.mergeSequential(Flux.fromIterable(nonWarmedUpContainerIdentities), Flux.fromIterable(warmedUpContainerIdenties))
-                .flatMap(
-                        cosmosContainerIdentity -> Mono.just(this
-                                .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                                .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                        concurrency,
-                        prefetch
-                )
-                .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer
-                                .openConnectionsAndInitCachesInternal(
-                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE
-                                ),
-                        concurrency,
-                        prefetch
-                )
-                .collectList()
+        asyncDocumentClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE, true)
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
+
+        this.proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
     }
@@ -746,7 +742,7 @@ public final class CosmosAsyncClient implements Closeable {
 
             if (throwable instanceof CosmosException) {
                 throw (CosmosException) throwable;
-            } else {
+            } else if (!(throwable instanceof IllegalStateException)) {
                 throw Exceptions.propagate(throwable);
             }
         }

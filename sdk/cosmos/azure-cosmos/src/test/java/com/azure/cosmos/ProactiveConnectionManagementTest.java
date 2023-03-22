@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,6 +47,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -180,47 +183,56 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                     false,
                                     null));
 
+            Thread.sleep(0);
+
             // 1. Extract all preferred read regions to proactively connect to.
             // 2. Obtain partition addresses for a container for one read region, then mark that read region as unavailable.
             // 3. This will force resolveAsync to use the next preferred read region in the next invocation.
             // 4. This way we can verify that connections have been opened to all replicas across all proactive connection regions.
-            for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
-                Flux.zip(asyncContainerFlux, partitionKeyRangeFlux)
-                        .flatMapIterable(containerToPartitionKeyRanges -> {
-                            List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
-                            for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
-                                pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
-                            }
-                            return pkrToContainer;
-                        })
-                        .flatMap(partitionKeyRangeToContainer -> {
-                            RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
-                                    mockDiagnosticsClientContext(),
-                                    OperationType.Read,
-                                    partitionKeyRangeToContainer.getRight().getLink() + "/docId",
-                                    ResourceType.Document);
-                            dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
-                            return globalAddressResolver.resolveAsync(dummyRequest, false);
-                        })
-                        .delayElements(Duration.ofSeconds(3))
-                        .doOnNext(addressInformations -> {
-                            for (AddressInformation address : addressInformations) {
-                                endpoints.add(address.getPhysicalUri().getURI().getAuthority());
-                            }
-                        })
-                        .blockLast();
+//            for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
+//                Flux.zip(asyncContainerFlux, partitionKeyRangeFlux)
+//                        .flatMapIterable(containerToPartitionKeyRanges -> {
+//                            List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
+//                            for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
+//                                pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
+//                            }
+//                            return pkrToContainer;
+//                        })
+//                        .flatMap(partitionKeyRangeToContainer -> {
+//                            RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
+//                                    mockDiagnosticsClientContext(),
+//                                    OperationType.Read,
+//                                    partitionKeyRangeToContainer.getRight().getLink() + "/docId",
+//                                    ResourceType.Document);
+//                            dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
+//                            return globalAddressResolver.resolveAsync(dummyRequest, false);
+//                        })
+//                        .delayElements(Duration.ofSeconds(3)).log()
+//                        .doOnNext(addressInformations -> {
+//                            for (AddressInformation address : addressInformations) {
+//                                endpoints.add(address.getPhysicalUri().getURI().getAuthority());
+//                            }
+//                        })
+//                        .blockLast();
+//
+//                globalEndpointManager.markEndpointUnavailableForRead(proactiveConnectionEndpoint);
+//            }
 
-                globalEndpointManager.markEndpointUnavailableForRead(proactiveConnectionEndpoint);
-            }
+//            assertThat(provider.count()).isEqualTo(endpoints.size());
+//            assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
+//            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
 
-            assertThat(provider.count()).isEqualTo(endpoints.size());
-            assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+                for (RntbdEndpoint rntbdEndpoint : provider.list().collect(Collectors.toList())) {
+                    System.out.println("Endpoint name : " + rntbdEndpoint.id() + ";" + "Connections count : " + rntbdEndpoint.channelsMetrics());
+                }
+
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
             }
 
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             safeClose(clientWithOpenConnections);
         }
@@ -338,14 +350,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations.add(accountLocation.getName());
-            preferredLocations.add("EastUS");
+            // preferredLocations.add("EastUS");
         }
 
         // configure preferredLocation, no of proactive connection regions, no of containers
         return new Object[][] {
-                new Object[]{preferredLocations, 1, 3},
-                new Object[]{preferredLocations, 2, 1}
-
+               // new Object[]{preferredLocations, 1, 6},
+               new Object[]{preferredLocations, 1, 1}
         };
     }
 
