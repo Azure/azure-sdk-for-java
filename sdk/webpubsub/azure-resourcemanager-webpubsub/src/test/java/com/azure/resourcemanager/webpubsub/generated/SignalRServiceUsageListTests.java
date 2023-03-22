@@ -10,11 +10,10 @@ import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageList;
 import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageName;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRServiceUsageListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SignalRServiceUsageList model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class SignalRServiceUsageListTests {
         Assertions.assertEquals("gpbkwtmut", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SignalRServiceUsageList model =
             new SignalRServiceUsageList()
                 .withValue(

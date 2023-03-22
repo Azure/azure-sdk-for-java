@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubCustomCertificates List. */
 public final class WebPubSubCustomCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubCustomCertificates_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomCertificates_List.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_List.
@@ -17,6 +15,8 @@ public final class WebPubSubCustomCertificatesListSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubCustomCertificatesList(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubCustomCertificates().list("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubCustomCertificates()
+            .list("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }
