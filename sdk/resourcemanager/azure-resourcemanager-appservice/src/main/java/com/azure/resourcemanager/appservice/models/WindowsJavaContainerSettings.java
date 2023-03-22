@@ -24,22 +24,19 @@ public final class WindowsJavaContainerSettings {
     private String javaContainerVersion;
 
     /*
-     * <code>true</code> if the stack is in preview; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the stack is in preview; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
-     * <code>true</code> if the stack is deprecated; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the stack is deprecated; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isDeprecated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeprecated;
 
     /*
-     * <code>true</code> if the stack should be hidden; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the stack should be hidden; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
@@ -51,18 +48,20 @@ public final class WindowsJavaContainerSettings {
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * <code>true</code> if the stack version is auto-updated; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the stack version is auto-updated; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isAutoUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoUpdate;
 
     /*
-     * <code>true</code> if the minor version is early-access; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isEarlyAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEarlyAccess;
+
+    /** Creates an instance of WindowsJavaContainerSettings class. */
+    public WindowsJavaContainerSettings() {
+    }
 
     /**
      * Get the javaContainer property: Java container (runtime only).

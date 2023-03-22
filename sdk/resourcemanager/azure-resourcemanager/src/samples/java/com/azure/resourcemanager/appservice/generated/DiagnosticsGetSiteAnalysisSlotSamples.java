@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics GetSiteAnalysisSlot. */
 public final class DiagnosticsGetSiteAnalysisSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteAnalysisSlot.json
      */
     /**
      * Sample code: Get App Slot Analysis.
@@ -23,11 +21,16 @@ public final class DiagnosticsGetSiteAnalysisSlotSamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteAnalysisSlotWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", "staging", Context.NONE);
+                "Sample-WestUSResourceGroup",
+                "SampleApp",
+                "availability",
+                "appanalysis",
+                "staging",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteAnalysis.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteAnalysis.json
      */
     /**
      * Sample code: Get App Analysis.
@@ -41,6 +44,11 @@ public final class DiagnosticsGetSiteAnalysisSlotSamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteAnalysisSlotWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", "Production", Context.NONE);
+                "Sample-WestUSResourceGroup",
+                "SampleApp",
+                "availability",
+                "appanalysis",
+                "Production",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -23,6 +23,10 @@ public final class LinkNotificationHubParameters {
     @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
+    /** Creates an instance of LinkNotificationHubParameters class. */
+    public LinkNotificationHubParameters() {
+    }
+
     /**
      * Get the resourceId property: The resource ID of the notification hub.
      *

@@ -3,17 +3,13 @@
 
 package com.azure.communication.phonenumbers.siprouting;
 
-import com.azure.communication.phonenumbers.SipRoutingAsyncClient;
-import com.azure.communication.phonenumbers.SipRoutingClient;
-import com.azure.communication.phonenumbers.SipRoutingClientBuilder;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -97,8 +93,8 @@ public class ReadmeSamples {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: readme-sample-listTrunksAndRoutes
-        List<SipTrunk> trunks = sipRoutingClient.listTrunks();
-        List<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
+        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
+        PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }

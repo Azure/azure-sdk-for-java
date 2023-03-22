@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRuns Get. */
 public final class WorkflowRunsGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRuns_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRuns_Get.json
      */
     /**
      * Sample code: Get a run for a workflow.
@@ -23,6 +21,10 @@ public final class WorkflowRunsGetSamples {
             .serviceClient()
             .getWorkflowRuns()
             .getWithResponse(
-                "test-resource-group", "test-name", "test-workflow", "08586676746934337772206998657CU22", Context.NONE);
+                "test-resource-group",
+                "test-name",
+                "test-workflow",
+                "08586676746934337772206998657CU22",
+                com.azure.core.util.Context.NONE);
     }
 }

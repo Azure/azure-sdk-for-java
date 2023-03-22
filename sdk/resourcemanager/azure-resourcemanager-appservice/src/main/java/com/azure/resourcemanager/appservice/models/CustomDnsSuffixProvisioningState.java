@@ -36,6 +36,9 @@ public enum CustomDnsSuffixProvisioningState {
      */
     @JsonCreator
     public static CustomDnsSuffixProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CustomDnsSuffixProvisioningState[] items = CustomDnsSuffixProvisioningState.values();
         for (CustomDnsSuffixProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum CustomDnsSuffixProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

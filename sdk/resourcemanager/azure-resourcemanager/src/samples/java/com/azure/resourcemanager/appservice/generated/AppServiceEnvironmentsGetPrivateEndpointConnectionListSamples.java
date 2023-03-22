@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetPrivateEndpointConnectionList. */
 public final class AppServiceEnvironmentsGetPrivateEndpointConnectionListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetPrivateEndpointConnectionList.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetPrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Gets the list of private endpoints associated with a hosting environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsGetPrivateEndpointConnectionListSamples
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getPrivateEndpointConnectionList("test-rg", "test-ase", Context.NONE);
+            .getPrivateEndpointConnectionList("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

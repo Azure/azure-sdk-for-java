@@ -22,6 +22,10 @@ public final class JsonSchemaInner {
     @JsonProperty(value = "content")
     private String content;
 
+    /** Creates an instance of JsonSchemaInner class. */
+    public JsonSchemaInner() {
+    }
+
     /**
      * Get the title property: The JSON title.
      *

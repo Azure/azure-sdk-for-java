@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IssueType. */
+/** Represents the type of the Detector. */
 public enum IssueType {
     /** Enum value ServiceIncident. */
     SERVICE_INCIDENT("ServiceIncident"),
@@ -48,6 +48,9 @@ public enum IssueType {
      */
     @JsonCreator
     public static IssueType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IssueType[] items = IssueType.values();
         for (IssueType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,6 +60,7 @@ public enum IssueType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

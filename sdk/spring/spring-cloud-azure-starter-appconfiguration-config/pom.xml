@@ -13,7 +13,8 @@
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
   <version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;current} -->
-  <name>Azure Spring Cloud Starter App Configuration Config</name>
+  <name>Spring Cloud Azure Starter App Configuration Config</name>
+  <description>Spring Cloud Azure Starter App Configuration Config</description>
 
   <dependencies>
     <dependency>
