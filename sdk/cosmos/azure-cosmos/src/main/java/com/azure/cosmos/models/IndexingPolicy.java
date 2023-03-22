@@ -4,12 +4,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,15 +13,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
+
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
