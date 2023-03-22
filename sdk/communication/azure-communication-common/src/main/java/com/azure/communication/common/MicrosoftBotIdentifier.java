@@ -63,7 +63,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * @return True if the bot is global.
+     * @return True if the bot is tennantized. It is False if the bot is global and no resource account is configured.
      */
     public boolean isResourceAccountConfigured() {
         return this.isResourceAccountConfigured;
