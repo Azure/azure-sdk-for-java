@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/saas/ci.yml
+      - sdk/saas/azure-resourcemanager-saas/
+    exclude:
+      - sdk/saas/pom.xml
+      - sdk/saas/azure-resourcemanager-saas/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/saas/ci.yml
+      - sdk/saas/azure-resourcemanager-saas/
+    exclude:
+      - sdk/saas/pom.xml
+      - sdk/saas/azure-resourcemanager-saas/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersaas
+    displayName: azure-resourcemanager-saas
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: saas
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-saas
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersaas
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersaas }}
