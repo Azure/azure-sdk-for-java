@@ -4,13 +4,14 @@
 package com.azure.cosmos.implementation.throughputControl.controller.group;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlSimpleGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlGroupController;
+import com.azure.cosmos.implementation.throughputControl.controller.group.global.GlobalThroughputControlSimpleGroupController;
 import com.azure.cosmos.implementation.throughputControl.controller.group.local.LocalThroughputControlGroupController;
 
 public class ThroughputGroupControllerFactory {
@@ -35,6 +36,14 @@ public class ThroughputGroupControllerFactory {
             return new GlobalThroughputControlGroupController(
                 connectionMode,
                 (GlobalThroughputControlGroup) group,
+                maxContainerThroughput,
+                partitionKeyRangeCache,
+                targetCollectionRid,
+                parentToken);
+        } else if (group instanceof GlobalThroughputControlSimpleGroup) {
+            return new GlobalThroughputControlSimpleGroupController(
+                connectionMode,
+                (GlobalThroughputControlSimpleGroup) group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,
                 targetCollectionRid,

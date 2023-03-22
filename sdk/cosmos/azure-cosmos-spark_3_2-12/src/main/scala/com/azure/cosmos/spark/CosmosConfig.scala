@@ -106,6 +106,8 @@ private[spark] object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+  val ThroughputControlGlobalControlUseDedicatedContainer =
+    "spark.cosmos.throughputControl.globalControl.useDedicatedContainer"
   val SerializationInclusionMode =
     "spark.cosmos.serialization.inclusionMode"
   val SerializationDateTimeConversionMode =
@@ -180,6 +182,7 @@ private[spark] object CosmosConfigNames {
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
     ThroughputControlGlobalControlExpireIntervalInMS,
+    ThroughputControlGlobalControlUseDedicatedContainer,
     SerializationInclusionMode,
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
@@ -1398,7 +1401,8 @@ private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAcco
                                                  globalControlDatabase: String,
                                                  globalControlContainer: String,
                                                  globalControlRenewInterval: Option[Duration],
-                                                 globalControlExpireInterval: Option[Duration])
+                                                 globalControlExpireInterval: Option[Duration],
+                                                 globalControlUseDedicatedContainer: Boolean)
 
 private object CosmosThroughputControlConfig {
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
@@ -1472,6 +1476,14 @@ private object CosmosThroughputControlConfig {
             "and hence allow its throughput share to be taken by other clients. " +
             "Default is 11s, the allowed min value is 2 * renewIntervalInMS + 1")
 
+    private val globalControlUseDedicatedContainerSupplier = CosmosConfigEntry[Boolean](
+        key = CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer,
+        mandatory = false,
+        defaultValue = Some(true),
+        parseFromStringFunction = globalControlUseDedicatedContainer => globalControlUseDedicatedContainer.toBoolean,
+        helpMessage = "Flag to indicate whether use dedicated container for global throughput put control. " +
+            "If false, will equally distribute throughput across all executors.")
+
     def parseThroughputControlConfig(cfg: Map[String, String]): Option[CosmosThroughputControlConfig] = {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
@@ -1490,10 +1502,15 @@ private object CosmosThroughputControlConfig {
             val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
             val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
             val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+            val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
 
             assert(groupName.isDefined)
-            assert(globalControlDatabase.isDefined)
-            assert(globalControlContainer.isDefined)
+            assert(globalControlUseDedicatedContainer.isDefined)
+
+            if (globalControlUseDedicatedContainer.get) {
+                assert(globalControlDatabase.isDefined)
+                assert(globalControlContainer.isDefined)
+            }
 
             Some(CosmosThroughputControlConfig(
                 throughputControlCosmosAccountConfig,
@@ -1503,7 +1520,8 @@ private object CosmosThroughputControlConfig {
                 globalControlDatabase.get,
                 globalControlContainer.get,
                 globalControlItemRenewInterval,
-                globalControlItemExpireInterval))
+                globalControlItemExpireInterval,
+                globalControlUseDedicatedContainer.get))
         } else {
             None
         }

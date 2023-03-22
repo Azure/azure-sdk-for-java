@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 
+import java.util.concurrent.Callable;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ThroughputControlGroupFactory {
@@ -45,5 +47,24 @@ public class ThroughputControlGroupFactory {
                 globalControlConfig.getControlItemRenewInterval(),
                 globalControlConfig.getControlItemExpireInterval());
 
+    }
+
+    public static GlobalThroughputControlSimpleGroup createThroughputGlobalControlSimpleGroup(
+        ThroughputControlGroupConfig groupConfig,
+        Callable<Integer> instanceCountCallable,
+        CosmosAsyncContainer targetContainer) {
+
+        checkNotNull(groupConfig, "Argument 'groupConfig' can not be null");
+        checkNotNull(instanceCountCallable, "Argument 'instanceCountCallable' can not be null");
+        checkNotNull(targetContainer, "Argument 'targetContainer' can not be null");
+
+        return new GlobalThroughputControlSimpleGroup(
+            groupConfig.getGroupName(),
+            targetContainer,
+            groupConfig.getTargetThroughput(),
+            groupConfig.getTargetThroughputThreshold(),
+            groupConfig.isDefault(),
+            groupConfig.continueOnInitError(),
+            instanceCountCallable);
     }
 }

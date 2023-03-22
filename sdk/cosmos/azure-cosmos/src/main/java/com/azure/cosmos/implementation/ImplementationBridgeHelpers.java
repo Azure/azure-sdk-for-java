@@ -717,6 +717,12 @@ public class ImplementationBridgeHelpers {
                 GlobalThroughputControlConfig globalControlConfig,
                 Mono<Integer> throughputQueryMono);
 
+            void enableGlobalThroughputControlSimpleGroup(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                ThroughputControlGroupConfig groupConfig,
+                Callable<Integer> instanceCountCallable,
+                Mono<Integer> throughputQueryMono);
+
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 Callable<IFaultInjectorProvider> injectorProviderCallable);

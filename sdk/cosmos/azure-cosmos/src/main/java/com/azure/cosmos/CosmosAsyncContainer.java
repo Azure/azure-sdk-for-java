@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlSimpleGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosBatch;
@@ -68,7 +69,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -1890,6 +1890,27 @@ public class CosmosAsyncContainer {
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
+    /***
+     * Attention: Used only internally.
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param instanceCountCallable the callable to get the total number of instances within the same group.
+     * @param throughputQueryMono The throughput query mono.
+     */
+    void enableGlobalThroughputControlSimpleGroup(
+        ThroughputControlGroupConfig groupConfig,
+        Callable<Integer> instanceCountCallable,
+        Mono<Integer> throughputQueryMono) {
+
+        checkNotNull(groupConfig, "Argument 'groupConfig' can not be null");
+        checkNotNull(instanceCountCallable, "Argument 'instanceCountCallable' can not be null");
+
+        GlobalThroughputControlSimpleGroup globalControlGroup =
+            ThroughputControlGroupFactory.createThroughputGlobalControlSimpleGroup(groupConfig, instanceCountCallable, this);
+
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
+    }
+
     void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {
         this.database.getClient().configureFaultInjectorProvider(injectorProvider);
     }
@@ -1930,6 +1951,16 @@ public class CosmosAsyncContainer {
                     GlobalThroughputControlConfig globalControlConfig,
                     Mono<Integer> throughputQueryMono) {
                     cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, throughputQueryMono);
+                }
+
+                @Override
+                public void enableGlobalThroughputControlSimpleGroup(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    ThroughputControlGroupConfig groupConfig,
+                    Callable<Integer> instanceCountCallable,
+                    Mono<Integer> throughputQueryMono) {
+
+                    cosmosAsyncContainer.enableGlobalThroughputControlSimpleGroup(groupConfig, instanceCountCallable, throughputQueryMono);
                 }
 
                 @Override
