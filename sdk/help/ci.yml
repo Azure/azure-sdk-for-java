@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/help/ci.yml
+      - sdk/help/azure-resourcemanager-help/
+    exclude:
+      - sdk/help/pom.xml
+      - sdk/help/azure-resourcemanager-help/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/help/ci.yml
+      - sdk/help/azure-resourcemanager-help/
+    exclude:
+      - sdk/help/pom.xml
+      - sdk/help/azure-resourcemanager-help/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerhelp
+    displayName: azure-resourcemanager-help
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: help
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-help
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhelp
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhelp }}
