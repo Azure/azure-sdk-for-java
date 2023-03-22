@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
 import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.quota.models.QuotaRequestDetailsList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QuotaRequestStatusClient. */
 public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusClient {
-    private final ClientLogger logger = new ClientLogger(QuotaRequestStatusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QuotaRequestStatusService service;
 
@@ -58,7 +55,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureQuotaExtensionA")
-    private interface QuotaRequestStatusService {
+    public interface QuotaRequestStatusService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Quota/quotaRequests/{id}")
         @ExpectedResponses({200})
@@ -109,7 +106,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
+     *     specific location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope) {
@@ -147,7 +144,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
+     *     specific location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope, Context context) {
@@ -181,19 +178,32 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
+     *     specific location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaRequestDetailsInner> getAsync(String id, String scope) {
-        return getWithResponseAsync(id, scope)
-            .flatMap(
-                (Response<QuotaRequestDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(id, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the quota request details and status by quota request ID for the resources of the resource provider at a
+     * specific location. The quota request ID **id** is returned in the response of the PUT operation.
+     *
+     * @param id Quota request ID.
+     * @param scope The target Azure resource URI. For example,
+     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
+     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota request details and status by quota request ID for the resources of the resource provider at a
+     *     specific location along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
+        return getWithResponseAsync(id, scope, context).block();
     }
 
     /**
@@ -213,28 +223,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaRequestDetailsInner get(String id, String scope) {
-        return getAsync(id, scope).block();
-    }
-
-    /**
-     * Get the quota request details and status by quota request ID for the resources of the resource provider at a
-     * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
-     * @param id Quota request ID.
-     * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
-        return getWithResponseAsync(id, scope, context).block();
+        return getWithResponse(id, scope, Context.NONE).getValue();
     }
 
     /**
@@ -255,7 +244,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
@@ -314,7 +303,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
@@ -362,7 +351,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaRequestDetailsInner> listAsync(String scope, String filter, Integer top, String skiptoken) {
@@ -381,7 +370,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaRequestDetailsInner> listAsync(String scope) {
@@ -411,7 +400,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaRequestDetailsInner> listAsync(
@@ -432,7 +421,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaRequestDetailsInner> list(String scope) {
@@ -461,7 +450,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaRequestDetailsInner> list(
@@ -472,11 +461,12 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -507,12 +497,13 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaRequestDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {

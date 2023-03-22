@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Quota request information. */
 @Fluent
 public final class QuotaRequestDetailsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaRequestDetailsList.class);
-
     /*
      * Quota request details.
      */
@@ -23,11 +19,14 @@ public final class QuotaRequestDetailsList {
     private List<QuotaRequestDetailsInner> value;
 
     /*
-     * The URI for fetching the next page of quota limits. When there are no
-     * more pages, this string is null.
+     * The URI for fetching the next page of quota limits. When there are no more pages, this string is null.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of QuotaRequestDetailsList class. */
+    public QuotaRequestDetailsList() {
+    }
 
     /**
      * Get the value property: Quota request details.

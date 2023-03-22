@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.QuotasClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QuotasClient. */
 public final class QuotasClientImpl implements QuotasClient {
-    private final ClientLogger logger = new ClientLogger(QuotasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QuotasService service;
 
@@ -67,7 +64,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureQuotaExtensionA")
-    private interface QuotasService {
+    public interface QuotasService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Quota/quotas/{resourceName}")
         @ExpectedResponses({200})
@@ -141,7 +138,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
+     * @return the quota limit of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotasGetResponse> getWithResponseAsync(String resourceName, String scope) {
@@ -186,7 +183,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
+     * @return the quota limit of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotasGetResponse> getWithResponseAsync(String resourceName, String scope, Context context) {
@@ -221,39 +218,11 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
+     * @return the quota limit of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentQuotaLimitBaseInner> getAsync(String resourceName, String scope) {
-        return getWithResponseAsync(resourceName, scope)
-            .flatMap(
-                (QuotasGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
-     * quota limit that can be submitted with a PUT request.
-     *
-     * @param resourceName Resource name for a given resource provider. For example: - SKU name for Microsoft.Compute -
-     *     SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
-     * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota limit of a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentQuotaLimitBaseInner get(String resourceName, String scope) {
-        return getAsync(resourceName, scope).block();
+        return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -278,6 +247,26 @@ public final class QuotasClientImpl implements QuotasClient {
     }
 
     /**
+     * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
+     * quota limit that can be submitted with a PUT request.
+     *
+     * @param resourceName Resource name for a given resource provider. For example: - SKU name for Microsoft.Compute -
+     *     SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
+     * @param scope The target Azure resource URI. For example,
+     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
+     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota limit of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CurrentQuotaLimitBaseInner get(String resourceName, String scope) {
+        return getWithResponse(resourceName, scope, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
      * these steps: 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific
      * resource and to calculate the new quota limit. These steps are detailed in [this
@@ -295,7 +284,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -353,7 +342,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -407,7 +396,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link PollerFlux} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
@@ -421,7 +410,7 @@ public final class QuotasClientImpl implements QuotasClient {
                 this.client.getHttpPipeline(),
                 CurrentQuotaLimitBaseInner.class,
                 CurrentQuotaLimitBaseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -443,7 +432,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link PollerFlux} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
@@ -479,12 +468,12 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
     }
 
     /**
@@ -506,12 +495,12 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();
     }
 
     /**
@@ -532,7 +521,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(
@@ -561,7 +550,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentQuotaLimitBaseInner> createOrUpdateAsync(
@@ -642,7 +631,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -700,7 +689,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -754,7 +743,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link PollerFlux} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
@@ -767,7 +756,7 @@ public final class QuotasClientImpl implements QuotasClient {
                 this.client.getHttpPipeline(),
                 CurrentQuotaLimitBaseInner.class,
                 CurrentQuotaLimitBaseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -789,7 +778,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link PollerFlux} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
@@ -825,12 +814,12 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
-        return beginUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
     }
 
     /**
@@ -852,12 +841,12 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
-        return beginUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();
     }
 
     /**
@@ -878,7 +867,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentQuotaLimitBaseInner> updateAsync(
@@ -907,7 +896,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentQuotaLimitBaseInner> updateAsync(
@@ -981,7 +970,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(String scope) {
@@ -1022,7 +1012,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listSinglePageAsync(String scope, Context context) {
@@ -1061,7 +1052,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CurrentQuotaLimitBaseInner> listAsync(String scope) {
@@ -1080,7 +1072,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CurrentQuotaLimitBaseInner> listAsync(String scope, Context context) {
@@ -1099,7 +1092,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentQuotaLimitBaseInner> list(String scope) {
@@ -1118,7 +1112,8 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentQuotaLimitBaseInner> list(String scope, Context context) {
@@ -1128,11 +1123,12 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limits.
+     * @return quota limits along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listNextSinglePageAsync(String nextLink) {
@@ -1163,12 +1159,13 @@ public final class QuotasClientImpl implements QuotasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limits.
+     * @return quota limits along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentQuotaLimitBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {

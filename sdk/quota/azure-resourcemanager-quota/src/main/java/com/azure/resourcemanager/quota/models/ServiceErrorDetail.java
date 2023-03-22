@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error details. */
 @Immutable
 public final class ServiceErrorDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceErrorDetail.class);
-
     /*
      * Error code.
      */
@@ -25,6 +21,10 @@ public final class ServiceErrorDetail {
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of ServiceErrorDetail class. */
+    public ServiceErrorDetail() {
+    }
 
     /**
      * Get the code property: Error code.

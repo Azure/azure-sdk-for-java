@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QuotaRequestStatus List. */
 public final class QuotaRequestStatusListSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getQuotaRequestsHistory.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getQuotaRequestsHistory.json
      */
     /**
      * Sample code: QuotaRequestHistory.
@@ -24,6 +22,6 @@ public final class QuotaRequestStatusListSamples {
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

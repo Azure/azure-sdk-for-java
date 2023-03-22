@@ -25,13 +25,14 @@ public interface QuotasClient {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CurrentQuotaLimitBaseInner get(String resourceName, String scope);
+    QuotasGetResponse getWithResponse(String resourceName, String scope, Context context);
 
     /**
      * Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new
@@ -43,14 +44,13 @@ public interface QuotasClient {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota limit of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotasGetResponse getWithResponse(String resourceName, String scope, Context context);
+    CurrentQuotaLimitBaseInner get(String resourceName, String scope);
 
     /**
      * Create or update the quota limit for the specified resource with the requested value. To update the quota, follow
@@ -70,7 +70,7 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
@@ -95,7 +95,7 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
@@ -168,7 +168,7 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
@@ -193,7 +193,7 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limit.
+     * @return the {@link SyncPoller} for polling of quota limit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
@@ -258,7 +258,8 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CurrentQuotaLimitBaseInner> list(String scope);
@@ -275,7 +276,8 @@ public interface QuotasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current quota limits of all resources for the specified scope.
+     * @return a list of current quota limits of all resources for the specified scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CurrentQuotaLimitBaseInner> list(String scope, Context context);

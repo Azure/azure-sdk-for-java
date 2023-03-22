@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeUsages.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getComputeUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForCompute.
@@ -21,11 +19,11 @@ public final class UsagesListSamples {
             .usages()
             .list(
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getNetworkUsages.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getNetworkUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForNetwork.
@@ -37,11 +35,11 @@ public final class UsagesListSamples {
             .usages()
             .list(
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getMachineLearningServicesUsages.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getMachineLearningServicesUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesMachineLearningServices.
@@ -53,6 +51,6 @@ public final class UsagesListSamples {
             .usages()
             .list(
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.MachineLearningServices/locations/eastus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.UsagesClient;
 import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
 import com.azure.resourcemanager.quota.models.UsagesGetResponse;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
 public final class UsagesClientImpl implements UsagesClient {
-    private final ClientLogger logger = new ClientLogger(UsagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UsagesService service;
 
@@ -58,7 +55,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureQuotaExtensionA")
-    private interface UsagesService {
+    public interface UsagesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Quota/usages/{resourceName}")
         @ExpectedResponses({200})
@@ -105,7 +102,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
+     * @return the current usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UsagesGetResponse> getWithResponseAsync(String resourceName, String scope) {
@@ -149,7 +146,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
+     * @return the current usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UsagesGetResponse> getWithResponseAsync(String resourceName, String scope, Context context) {
@@ -183,38 +180,11 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
+     * @return the current usage of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CurrentUsagesBaseInner> getAsync(String resourceName, String scope) {
-        return getWithResponseAsync(resourceName, scope)
-            .flatMap(
-                (UsagesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the current usage of a resource.
-     *
-     * @param resourceName Resource name for a given resource provider. For example: - SKU name for Microsoft.Compute -
-     *     SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
-     * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage of a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CurrentUsagesBaseInner get(String resourceName, String scope) {
-        return getAsync(resourceName, scope).block();
+        return getWithResponseAsync(resourceName, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -238,6 +208,25 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
+     * Get the current usage of a resource.
+     *
+     * @param resourceName Resource name for a given resource provider. For example: - SKU name for Microsoft.Compute -
+     *     SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
+     * @param scope The target Azure resource URI. For example,
+     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
+     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current usage of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CurrentUsagesBaseInner get(String resourceName, String scope) {
+        return getWithResponse(resourceName, scope, Context.NONE).getValue();
+    }
+
+    /**
      * Get a list of current usage for all resources for the scope specified.
      *
      * @param scope The target Azure resource URI. For example,
@@ -247,7 +236,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listSinglePageAsync(String scope) {
@@ -287,7 +277,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listSinglePageAsync(String scope, Context context) {
@@ -325,7 +316,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CurrentUsagesBaseInner> listAsync(String scope) {
@@ -343,7 +335,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CurrentUsagesBaseInner> listAsync(String scope, Context context) {
@@ -361,7 +354,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentUsagesBaseInner> list(String scope) {
@@ -379,7 +373,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CurrentUsagesBaseInner> list(String scope, Context context) {
@@ -389,11 +384,12 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limits.
+     * @return quota limits along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listNextSinglePageAsync(String nextLink) {
@@ -424,12 +420,13 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota limits.
+     * @return quota limits along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CurrentUsagesBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -5,20 +5,28 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The QuotasListHeaders model. */
 @Fluent
 public final class QuotasListHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotasListHeaders.class);
-
     /*
      * The Etag property.
      */
     @JsonProperty(value = "Etag")
     private String etag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of QuotasListHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public QuotasListHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the etag property: The Etag property.

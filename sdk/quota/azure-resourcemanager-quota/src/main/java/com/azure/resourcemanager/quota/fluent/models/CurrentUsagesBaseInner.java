@@ -6,21 +6,21 @@ package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.models.UsagesProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource usage. */
 @Fluent
 public final class CurrentUsagesBaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CurrentUsagesBaseInner.class);
-
     /*
      * Usage properties for the specified resource.
      */
     @JsonProperty(value = "properties")
     private UsagesProperties properties;
+
+    /** Creates an instance of CurrentUsagesBaseInner class. */
+    public CurrentUsagesBaseInner() {
+    }
 
     /**
      * Get the properties property: Usage properties for the specified resource.

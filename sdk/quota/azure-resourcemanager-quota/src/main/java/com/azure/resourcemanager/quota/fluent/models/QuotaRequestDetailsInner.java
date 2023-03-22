@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.models.QuotaRequestState;
 import com.azure.resourcemanager.quota.models.ServiceErrorDetail;
 import com.azure.resourcemanager.quota.models.SubRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** List of quota requests with details. */
 @Fluent
 public final class QuotaRequestDetailsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaRequestDetailsInner.class);
-
     /*
      * Quota request ID.
      */
@@ -42,6 +38,10 @@ public final class QuotaRequestDetailsInner {
      */
     @JsonProperty(value = "properties")
     private QuotaRequestProperties innerProperties;
+
+    /** Creates an instance of QuotaRequestDetailsInner class. */
+    public QuotaRequestDetailsInner() {
+    }
 
     /**
      * Get the id property: Quota request ID.
