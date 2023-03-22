@@ -43,7 +43,7 @@ public class TestUtils {
     public static final BinaryData LAYER_DATA = BinaryData.fromString("hello world");
     public static final String LAYER_DIGEST = computeDigest(LAYER_DATA.toByteBuffer());
     public static final OciImageManifest MANIFEST = createManifest();
-    public static final String MANIFEST_DIGEST = "sha256:f1e8b959aa4250751da92d2f79263e35e9d4b00fe0166a2aa3a31e104fbe2284";
+    public static final String MANIFEST_DIGEST = "sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598";
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String ALPINE_REPOSITORY_NAME = "library/alpine";
@@ -216,7 +216,6 @@ public class TestUtils {
 
     private static OciImageManifest createManifest() {
         OciImageManifest manifest = new OciImageManifest()
-            .setSchemaVersion(2)
             .setConfig(new OciDescriptor()
                 .setMediaType("application/vnd.acme.rocket.config.v1+json")
                 .setDigest(CONFIG_DIGEST)

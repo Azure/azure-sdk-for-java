@@ -20,6 +20,15 @@ public final class HybridComputeProvisioningState extends ExpandableStringEnum<H
     public static final HybridComputeProvisioningState EXPIRED = fromString("Expired");
 
     /**
+     * Creates a new instance of HybridComputeProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HybridComputeProvisioningState() {
+    }
+
+    /**
      * Creates or finds a HybridComputeProvisioningState from its string representation.
      *
      * @param name a name to look for.

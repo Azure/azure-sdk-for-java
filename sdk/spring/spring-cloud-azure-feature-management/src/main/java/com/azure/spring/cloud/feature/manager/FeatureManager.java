@@ -13,11 +13,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
+import com.azure.spring.cloud.feature.manager.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
+import com.azure.spring.cloud.feature.manager.models.FilterNotFoundException;
 
 import reactor.core.publisher.Mono;
 
@@ -49,19 +50,32 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
      * @throws FilterNotFoundException file not found
      */
-    public Mono<Boolean> isEnabledAsync(String feature) throws FilterNotFoundException {
-        return Mono.just(checkFeatures(feature));
+    public Mono<Boolean> isEnabledAsync(String feature) {
+        return Mono.just(checkFeature(feature));
     }
 
-    private boolean checkFeatures(String feature) throws FilterNotFoundException {
+    /**
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
+     *
+     * @param feature Feature being checked.
+     * @return state of the feature
+     * @throws FilterNotFoundException file not found
+     */
+    public Boolean isEnabled(String feature) throws FilterNotFoundException {
+        return checkFeature(feature);
+    }
+
+    private boolean checkFeature(String feature) throws FilterNotFoundException {
         if (featureManagementConfigurations.getFeatureManagement() == null
             || featureManagementConfigurations.getOnOff() == null) {
             return false;
@@ -81,12 +95,12 @@ public class FeatureManager {
 
         return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
             .filter(featureFilter -> featureFilter.getName() != null)
-            .map(featureFilter -> isFeatureOn(featureFilter, feature)).findAny().orElse(false);
+            .anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
         try {
-            IFeatureFilter featureFilter = (IFeatureFilter) context.getBean(filter.getName());
+            FeatureFilter featureFilter = (FeatureFilter) context.getBean(filter.getName());
             filter.setFeatureName(feature);
 
             return featureFilter.evaluate(filter);

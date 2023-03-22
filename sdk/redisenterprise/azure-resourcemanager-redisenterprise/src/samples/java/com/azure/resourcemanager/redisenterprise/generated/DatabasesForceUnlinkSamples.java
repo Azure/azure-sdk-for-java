@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import java.util.Arrays;
 
 /** Samples for Databases ForceUnlink. */
 public final class DatabasesForceUnlinkSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesForceUnlink.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesForceUnlink.json
      */
     /**
      * Sample code: How to unlink a database during a regional outage.
@@ -31,6 +30,6 @@ public final class DatabasesForceUnlinkSamples {
                         Arrays
                             .asList(
                                 "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

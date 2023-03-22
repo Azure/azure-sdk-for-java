@@ -1,42 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e4e9380e-26de-4913-a5cd-5fb906c9803a",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ad0f7821-787e-4df8-a1ec-7900289b909a",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "2442",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1b5260e6-3771-4123-80c6-081a3cfb0e3a",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Fri, 19 Aug 2022 22:42:35 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7c79aba2-733d-4848-b75d-2b8644d54b63"
-    },
-    "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "21",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "925",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e6a56729-e8de-4a95-bf6e-3464291c3cf9",
+      "apim-request-id" : "6fb14534-3001-40e8-afcf-e05df340a023",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\n  \"operationId\": \"31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"failed\",\n  \"createdDateTime\": \"2022-08-19T22:42:32Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:42:35Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/dc36c443-aa98-40dc-8514-8a126f60beea?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"details\": [\n      {\n        \"code\": \"ModelBuildError\",\n        \"message\": \"Could not build the model: Can\\u0027t find any OCR files for training.\"\n      }\n    ]\n  }\n}",
-      "Date" : "Fri, 19 Aug 2022 22:42:40 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "StatusCode" : "400",
+      "Body" : "{\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"innererror\": {\n      \"code\": \"TrainingContentMissing\",\n      \"message\": \"Training data is missing: Could not find any training data at the given path.\"\n    }\n  }\n}",
+      "Date" : "Tue, 14 Mar 2023 18:21:07 GMT",
+      "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],

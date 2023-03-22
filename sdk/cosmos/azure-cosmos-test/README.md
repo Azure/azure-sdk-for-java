@@ -9,7 +9,7 @@ Library containing core fault injection classes used to test Azure Cosmos DB SDK
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-test</artifactId>
-  <version>1.0.0-beta1</version>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,88 +40,90 @@ The following section provides several code snippets covering how to create some
 ### High Channel Acquisition Scenario
 
 ```java readme-sample-highChannelAcquisitionScenario
- FaultInjectionRule serverConnectionDelayRule =
-            new FaultInjectionRuleBuilder("ServerError-ConnectionTimeout")
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_CONNECTION_DELAY)
-                        .delay(Duration.ofSeconds(6)) // default connection timeout is 5s
-                        .times(1)
-                        .build()
-                )
-                .duration(Duration.ofMinutes(5))
-                .build();
+FaultInjectionRule serverConnectionDelayRule =
+    new FaultInjectionRuleBuilder("<YOUR RULE ID>")
+        .condition(
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                .build()
+        )
+        .result(
+            FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                .delay(Duration.ofSeconds(6)) // default connection timeout is 5s
+                .times(1)
+                .build()
+        )
+        .duration(Duration.ofMinutes(5))
+        .build();
+
+CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
 ```
 
 ### Broken Connection Scenario
 ```java readme-sample-brokenConnectionScenario
- FaultInjectionRule timeoutRule =
-            new FaultInjectionRuleBuilder(timeoutRuleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_RESPONSE_DELAY)
-                        .times(1)
-                        .delay(Duration.ofSeconds(6)) // the default time out is 5s
-                        .build()
-                )
-                .duration(Duration.ofMinutes(5))
-                .build();
-                
- CosmosFaultInjectionHelper.configFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();               
+FaultInjectionRule timeoutRule =
+    new FaultInjectionRuleBuilder("<YOUR RULE ID>")
+        .condition(
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build()
+        )
+        .result(
+            FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                .times(1)
+                .delay(Duration.ofSeconds(6)) // the default time out is 5s
+                .build()
+        )
+        .duration(Duration.ofMinutes(5))
+        .build();
+
+CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
 ```
 
 ### Server Return Gone Scenario
 ```java readme-sample-serverReturnGoneScenario
- FaultInjectionRule serverErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
-                        .times(1)
-                        .build()
-                )
-                .duration(Duration.ofMinutes(5))
-                .build();
-                
-  CosmosFaultInjectionHelper.configFaultInjectionRules(container, Arrays.asList(serverErrorRule)).block();  
+FaultInjectionRule serverErrorRule =
+    new FaultInjectionRuleBuilder("<YOUR RULE ID>")
+        .condition(
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build()
+        )
+        .result(
+            FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                .times(1)
+                .build()
+        )
+        .duration(Duration.ofMinutes(5))
+        .build();
+
+CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverErrorRule)).block();
 ```
 ### Random Connection Close Scenario
 
 ```java readme-sample-randomConnectionCloseScenario
- FaultInjectionRule connectionErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE)
-                        .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk()))).build())
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(errorType)
-                        .interval(Duration.ofSeconds(1))
-                        .threshold(1.0)
-                        .build()
-                )
-                .duration(Duration.ofSeconds(2))
-                .build();
-                
- CosmosFaultInjectionHelper.configFaultInjectionRules(container, Arrays.asList(connectionErrorRule)).block();  
+FaultInjectionRule connectionErrorRule =
+    new FaultInjectionRuleBuilder("<YOUR RULE ID>")
+        .condition(
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey("<YOUR PARTITION KEY>"))).build())
+                .build()
+        )
+        .result(
+            FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                .interval(Duration.ofSeconds(1))
+                .threshold(1.0)
+                .build()
+        )
+        .duration(Duration.ofSeconds(2))
+        .build();
+
+CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(connectionErrorRule)).block();
 ```
 
 ## Troubleshooting
@@ -168,5 +170,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)

@@ -16,6 +16,10 @@ public final class AuthorizeRequest {
     @JsonProperty(value = "remoteVolumeResourceId")
     private String remoteVolumeResourceId;
 
+    /** Creates an instance of AuthorizeRequest class. */
+    public AuthorizeRequest() {
+    }
+
     /**
      * Get the remoteVolumeResourceId property: Resource id of the remote volume.
      *

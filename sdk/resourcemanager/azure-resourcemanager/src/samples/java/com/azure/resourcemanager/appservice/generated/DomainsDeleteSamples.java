@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains Delete. */
 public final class DomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/DeleteAppServiceDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/DeleteAppServiceDomain.json
      */
     /**
      * Sample code: Delete App Service Domain.
@@ -22,6 +20,6 @@ public final class DomainsDeleteSamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .deleteWithResponse("testrg123", "example.com", true, Context.NONE);
+            .deleteWithResponse("testrg123", "example.com", true, com.azure.core.util.Context.NONE);
     }
 }

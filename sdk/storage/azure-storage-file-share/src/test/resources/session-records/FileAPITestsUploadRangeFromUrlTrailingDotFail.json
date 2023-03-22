@@ -1,0 +1,125 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/ab339c71ab339c7105c512189370328fcea046198a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "469d78ec-9016-47ec-b269-1c1fb298bb58"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2022-11-02",
+      "ETag" : "0x8DB04B371F04353",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "475503e8-e01a-0007-319c-36fda4000000",
+      "Date" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "x-ms-client-request-id" : "469d78ec-9016-47ec-b269-1c1fb298bb58"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/ab339c71ab339c7105c512189370328fcea046198a/ab339c710ab339c7105c08807283ed69c1c6d48b295d.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "abe8f18c-88d1-4447-8f20-7e85819c9509"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-permission-key" : "15656609847289850250*4283089269493653228",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-file-creation-time" : "2023-02-02T00:21:36.3481571Z",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "ETag" : "0x8DB04B3722107E3",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-02T00:21:36.3481571Z",
+      "x-ms-request-id" : "475503eb-e01a-0007-329c-36fda4000000",
+      "x-ms-file-last-write-time" : "2023-02-02T00:21:36.3481571Z",
+      "x-ms-client-request-id" : "abe8f18c-88d1-4447-8f20-7e85819c9509"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/ab339c71ab339c7105c512189370328fcea046198a/ab339c711ab339c7105c034916d97a4fd489744a195a.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "58c9c0e6-0533-436e-a72b-d05038bc85de"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-file-id" : "11529285414812647424",
+      "x-ms-file-permission-key" : "15656609847289850250*4283089269493653228",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-file-creation-time" : "2023-02-02T00:21:36.4461828Z",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "ETag" : "0x8DB04B3722FFD04",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-02T00:21:36.4461828Z",
+      "x-ms-request-id" : "475503ed-e01a-0007-339c-36fda4000000",
+      "x-ms-file-last-write-time" : "2023-02-02T00:21:36.4461828Z",
+      "x-ms-client-request-id" : "58c9c0e6-0533-436e-a72b-d05038bc85de"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/ab339c71ab339c7105c512189370328fcea046198a/ab339c710ab339c7105c08807283ed69c1c6d48b295d.?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8fc5d2aa-f940-492e-938e-dcf23218c2ad",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2022-11-02",
+      "ETag" : "0x8DB04B37250CB7F",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "475503ee-e01a-0007-349c-36fda4000000",
+      "Date" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "x-ms-file-last-write-time" : "2023-02-02T00:21:36.6611839Z",
+      "x-ms-client-request-id" : "8fc5d2aa-f940-492e-938e-dcf23218c2ad",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/ab339c71ab339c7105c512189370328fcea046198a/ab339c711ab339c7105c034916d97a4fd489744a195a.?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7d298b8d-35ad-4585-b9f0-ef5c7d650b30"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "x-ms-error-code" : "CannotVerifyCopySource",
+      "retry-after" : "0",
+      "Content-Length" : "297",
+      "StatusCode" : "401",
+      "x-ms-request-id" : "475503ef-e01a-0007-359c-36fda4000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>CannotVerifyCopySource</Code><Message>Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\nRequestId:475503ef-e01a-0007-359c-36fda4000000\nTime:2023-02-02T00:21:36.9545785Z</Message></Error>",
+      "Date" : "Thu, 02 Feb 2023 00:21:36 GMT",
+      "x-ms-client-request-id" : "7d298b8d-35ad-4585-b9f0-ef5c7d650b30",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ab339c71ab339c7105c512189370328fcea046198a", "ab339c71ab339c7105c1086140ab61c62df74bb084", "ab339c710ab339c7105c08807283ed69c1c6d48b295d", "ab339c711ab339c7105c034916d97a4fd489744a195a" ]
+}

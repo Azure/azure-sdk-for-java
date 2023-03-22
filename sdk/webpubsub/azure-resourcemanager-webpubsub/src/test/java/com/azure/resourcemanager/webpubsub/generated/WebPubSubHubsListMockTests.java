@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import java.nio.ByteBuffer;
@@ -61,7 +60,8 @@ public final class WebPubSubHubsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WebPubSubHub> response = manager.webPubSubHubs().list("rjqc", "rgz", Context.NONE);
+        PagedIterable<WebPubSubHub> response =
+            manager.webPubSubHubs().list("rjqc", "rgz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("zrnw", response.iterator().next().properties().anonymousConnectPolicy());
     }

@@ -37,6 +37,10 @@ public final class ReplicationInner {
     @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
+    /** Creates an instance of ReplicationInner class. */
+    public ReplicationInner() {
+    }
+
     /**
      * Get the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.

@@ -17,6 +17,10 @@ public final class GeoRegionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private GeoRegionProperties innerProperties;
 
+    /** Creates an instance of GeoRegionInner class. */
+    public GeoRegionInner() {
+    }
+
     /**
      * Get the innerProperties property: GeoRegion resource specific properties.
      *

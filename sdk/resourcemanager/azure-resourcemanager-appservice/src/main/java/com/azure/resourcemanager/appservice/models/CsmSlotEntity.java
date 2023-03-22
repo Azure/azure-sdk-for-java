@@ -18,11 +18,14 @@ public final class CsmSlotEntity {
     private String targetSlot;
 
     /*
-     * <code>true</code> to preserve Virtual Network to the slot during swap;
-     * otherwise, <code>false</code>.
+     * <code>true</code> to preserve Virtual Network to the slot during swap; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "preserveVnet", required = true)
     private boolean preserveVnet;
+
+    /** Creates an instance of CsmSlotEntity class. */
+    public CsmSlotEntity() {
+    }
 
     /**
      * Get the targetSlot property: Destination deployment slot during swap operation.

@@ -22,6 +22,10 @@ public final class Peers {
     @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZone;
 
+    /** Creates an instance of Peers class. */
+    public Peers() {
+    }
+
     /**
      * Get the subscriptionId property: The subscription ID.
      *

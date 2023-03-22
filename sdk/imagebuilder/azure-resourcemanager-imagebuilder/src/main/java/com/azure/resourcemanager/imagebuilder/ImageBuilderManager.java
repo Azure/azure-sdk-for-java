@@ -26,8 +26,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.fluent.ImageBuilderClient;
 import com.azure.resourcemanager.imagebuilder.implementation.ImageBuilderClientBuilder;
 import com.azure.resourcemanager.imagebuilder.implementation.OperationsImpl;
+import com.azure.resourcemanager.imagebuilder.implementation.TriggersImpl;
 import com.azure.resourcemanager.imagebuilder.implementation.VirtualMachineImageTemplatesImpl;
 import com.azure.resourcemanager.imagebuilder.models.Operations;
+import com.azure.resourcemanager.imagebuilder.models.Triggers;
 import com.azure.resourcemanager.imagebuilder.models.VirtualMachineImageTemplates;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -39,6 +41,8 @@ import java.util.stream.Collectors;
 /** Entry point to ImageBuilderManager. Azure Virtual Machine Image Builder Client. */
 public final class ImageBuilderManager {
     private VirtualMachineImageTemplates virtualMachineImageTemplates;
+
+    private Triggers triggers;
 
     private Operations operations;
 
@@ -207,7 +211,7 @@ public final class ImageBuilderManager {
                 .append("-")
                 .append("com.azure.resourcemanager.imagebuilder")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -275,6 +279,18 @@ public final class ImageBuilderManager {
                 new VirtualMachineImageTemplatesImpl(clientObject.getVirtualMachineImageTemplates(), this);
         }
         return virtualMachineImageTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of Triggers. It manages Trigger.
+     *
+     * @return Resource collection API of Triggers.
+     */
+    public Triggers triggers() {
+        if (this.triggers == null) {
+            this.triggers = new TriggersImpl(clientObject.getTriggers(), this);
+        }
+        return triggers;
     }
 
     /**

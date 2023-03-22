@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps DeletePrivateEndpointConnectionSlot. */
 public final class WebAppsDeletePrivateEndpointConnectionSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a site.
@@ -22,6 +20,7 @@ public final class WebAppsDeletePrivateEndpointConnectionSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .deletePrivateEndpointConnectionSlot("rg", "testSite", "connection", "stage", Context.NONE);
+            .deletePrivateEndpointConnectionSlot(
+                "rg", "testSite", "connection", "stage", com.azure.core.util.Context.NONE);
     }
 }

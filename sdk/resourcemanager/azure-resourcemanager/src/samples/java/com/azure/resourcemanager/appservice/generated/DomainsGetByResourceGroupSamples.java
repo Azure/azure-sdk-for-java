@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains GetByResourceGroup. */
 public final class DomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/GetDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/GetDomain.json
      */
     /**
      * Sample code: Get Domain.
@@ -22,6 +20,6 @@ public final class DomainsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .getByResourceGroupWithResponse("testrg123", "example.com", Context.NONE);
+            .getByResourceGroupWithResponse("testrg123", "example.com", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Provider GetFunctionAppStacksForLocation. */
 public final class ProviderGetFunctionAppStacksForLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetFunctionAppStacksForLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetFunctionAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Function App Stacks.
@@ -22,6 +20,6 @@ public final class ProviderGetFunctionAppStacksForLocationSamples {
             .manager()
             .serviceClient()
             .getProviders()
-            .getFunctionAppStacksForLocation("westus", null, Context.NONE);
+            .getFunctionAppStacksForLocation("westus", null, com.azure.core.util.Context.NONE);
     }
 }

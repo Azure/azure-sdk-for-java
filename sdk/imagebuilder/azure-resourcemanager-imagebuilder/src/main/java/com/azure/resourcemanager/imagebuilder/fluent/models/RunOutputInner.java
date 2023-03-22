@@ -6,6 +6,7 @@ package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,6 +19,16 @@ public final class RunOutputInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RunOutputProperties innerProperties;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of RunOutputInner class. */
+    public RunOutputInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the run output.
      *
@@ -25,6 +36,15 @@ public final class RunOutputInner extends ProxyResource {
      */
     private RunOutputProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

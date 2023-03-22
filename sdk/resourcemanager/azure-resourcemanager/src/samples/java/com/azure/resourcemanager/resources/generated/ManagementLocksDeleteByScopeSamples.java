@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks DeleteByScope. */
 public final class ManagementLocksDeleteByScopeSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksDeleteByScopeSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .deleteByScopeWithResponse("subscriptions/subscriptionId", "testlock", Context.NONE);
+            .deleteByScopeWithResponse("subscriptions/subscriptionId", "testlock", com.azure.core.util.Context.NONE);
     }
 }

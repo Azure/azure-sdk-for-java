@@ -67,7 +67,7 @@ public final class VirtualNetworksOperationsClientImpl implements VirtualNetwork
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridContainerServi")
-    private interface VirtualNetworksOperationsService {
+    public interface VirtualNetworksOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
@@ -518,7 +518,7 @@ public final class VirtualNetworksOperationsClientImpl implements VirtualNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworksInner>, VirtualNetworksInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworksName, VirtualNetworksInner virtualNetworks) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks).getSyncPoller();
     }
 
     /**
@@ -538,7 +538,8 @@ public final class VirtualNetworksOperationsClientImpl implements VirtualNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworksInner>, VirtualNetworksInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworksName, VirtualNetworksInner virtualNetworks, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks, context)
             .getSyncPoller();
     }
 
@@ -962,7 +963,7 @@ public final class VirtualNetworksOperationsClientImpl implements VirtualNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworksInner>, VirtualNetworksInner> beginUpdate(
         String resourceGroupName, String virtualNetworksName, VirtualNetworksPatch virtualNetworks) {
-        return beginUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks).getSyncPoller();
     }
 
     /**
@@ -982,7 +983,7 @@ public final class VirtualNetworksOperationsClientImpl implements VirtualNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworksInner>, VirtualNetworksInner> beginUpdate(
         String resourceGroupName, String virtualNetworksName, VirtualNetworksPatch virtualNetworks, Context context) {
-        return beginUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, virtualNetworksName, virtualNetworks, context).getSyncPoller();
     }
 
     /**

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Alerts ListResourceGroupLevelByRegion. */
 public final class AlertsListResourceGroupLevelByRegionSamples {
     /*
@@ -18,6 +16,6 @@ public final class AlertsListResourceGroupLevelByRegionSamples {
      */
     public static void getSecurityAlertsOnAResourceGroupFromASecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.alerts().listResourceGroupLevelByRegion("westeurope", "myRg1", Context.NONE);
+        manager.alerts().listResourceGroupLevelByRegion("westeurope", "myRg1", com.azure.core.util.Context.NONE);
     }
 }

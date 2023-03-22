@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -205,15 +204,11 @@ abstract class AppServiceBaseImpl<
     }
 
     public Mono<PublishingProfile> getPublishingProfileAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .listPublishingProfileXmlWithSecretsAsync(
-                        resourceGroupName(), name(), new CsmPublishingProfileOptions()))
-            .map(
-                bytes -> new PublishingProfileImpl(new String(bytes, StandardCharsets.UTF_8), AppServiceBaseImpl.this));
+        return manager()
+            .serviceClient()
+            .getWebApps()
+            .listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name(), new CsmPublishingProfileOptions())
+            .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
     }
 
     @Override
@@ -352,9 +347,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager().serviceClient().getWebApps().getWebSiteContainerLogsAsync(resourceGroupName(), name()));
+        return manager().serviceClient().getWebApps().getWebSiteContainerLogsAsync(resourceGroupName(), name())
+            .map(BinaryData::toBytes);
     }
 
     @Override
@@ -364,9 +358,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsZipAsync() {
-        return FluxUtil
-            .collectBytesInByteBufferStream(
-                manager().serviceClient().getWebApps().getContainerLogsZipAsync(resourceGroupName(), name()));
+        return manager().serviceClient().getWebApps().getContainerLogsZipAsync(resourceGroupName(), name())
+            .map(BinaryData::toBytes);
     }
 
     @Override

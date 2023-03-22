@@ -18,7 +18,7 @@ public final class CacheNetworkSettings {
     private Integer mtu;
 
     /*
-     * Array of additional IP addresses used by this Cache.
+     * Array of additional IP addresses used by this cache.
      */
     @JsonProperty(value = "utilityAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> utilityAddresses;
@@ -66,7 +66,7 @@ public final class CacheNetworkSettings {
     }
 
     /**
-     * Get the utilityAddresses property: Array of additional IP addresses used by this Cache.
+     * Get the utilityAddresses property: Array of additional IP addresses used by this cache.
      *
      * @return the utilityAddresses value.
      */

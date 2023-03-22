@@ -18,6 +18,10 @@ public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyR
     @JsonProperty(value = "properties")
     private StaticSiteFunctionOverviewArmResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteFunctionOverviewArmResourceInner class. */
+    public StaticSiteFunctionOverviewArmResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteFunctionOverviewARMResource resource specific properties.
      *

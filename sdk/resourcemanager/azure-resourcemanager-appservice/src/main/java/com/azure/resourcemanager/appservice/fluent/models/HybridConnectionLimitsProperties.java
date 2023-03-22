@@ -22,6 +22,10 @@ public final class HybridConnectionLimitsProperties {
     @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximum;
 
+    /** Creates an instance of HybridConnectionLimitsProperties class. */
+    public HybridConnectionLimitsProperties() {
+    }
+
     /**
      * Get the current property: The current number of Hybrid Connections.
      *

@@ -10,11 +10,10 @@ import com.azure.resourcemanager.signalr.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.signalr.models.UpstreamAuthType;
 import com.azure.resourcemanager.signalr.models.UpstreamTemplate;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UpstreamTemplateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UpstreamTemplate model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class UpstreamTemplateTests {
         Assertions.assertEquals("napkteoellw", model.auth().managedIdentity().resource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UpstreamTemplate model =
             new UpstreamTemplate()
                 .withHubPattern("bnxknalaulppg")

@@ -68,8 +68,7 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}"
-                + "/securitySolutionsReferenceData")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutionsReferenceData")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecuritySolutionsReferenceDataListInner>> listByHomeRegion(

@@ -42,6 +42,10 @@ public final class WorkerPool {
     @JsonProperty(value = "instanceNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> instanceNames;
 
+    /** Creates an instance of WorkerPool class. */
+    public WorkerPool() {
+    }
+
     /**
      * Get the workerSizeId property: Worker size ID for referencing this worker pool.
      *

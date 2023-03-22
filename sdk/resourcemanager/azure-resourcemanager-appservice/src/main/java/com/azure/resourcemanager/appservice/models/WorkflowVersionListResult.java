@@ -24,6 +24,10 @@ public final class WorkflowVersionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of WorkflowVersionListResult class. */
+    public WorkflowVersionListResult() {
+    }
+
     /**
      * Get the value property: A list of workflow versions.
      *

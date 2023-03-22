@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -24,8 +25,17 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class FeedRangeGoneSplitHandlerTests {
-    @Test(groups = "unit")
-    public void splitHandlerForEpkBasedLease() {
+
+    @DataProvider(name = "secondChildLeaseSuccessArgProvider")
+    public Object[][] secondChildLeaseSuccessArgProvider() {
+        return new Object[][]{
+            { true },
+            { false } // this is used to mimic two different instances both handling the partition split scenario
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "secondChildLeaseSuccessArgProvider")
+    public void splitHandlerForEpkBasedLease(boolean secondChildLeaseSuccess) {
         // Testing an imaginary scenario FeedRange "AA-CC" has been split into "''-BB", "BB-FF"
         // In this case, new child leases should be created for AA-BB, BB-CC
         ServiceItemLeaseV1 leaseWithGoneException =
@@ -56,28 +66,35 @@ public class FeedRangeGoneSplitHandlerTests {
         expectedChildLeases.add(childLease2);
 
         LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
-
         Mockito.when(leaseManagerMock.createLeaseIfNotExist(Mockito.any(FeedRangeEpkImpl.class), Mockito.any()))
-                .thenReturn(Mono.just(expectedChildLeases.get(0)))
-                .thenReturn(Mono.just(expectedChildLeases.get(1)));
+            .thenReturn(Mono.just(expectedChildLeases.get(0)))
+            .thenReturn(
+                secondChildLeaseSuccess ? Mono.just(expectedChildLeases.get(1)) : Mono.empty());
 
         FeedRangeGoneSplitHandler splitHandler = new FeedRangeGoneSplitHandler(
-                leaseWithGoneException,
-                childRanges,
-                leaseManagerMock
+            leaseWithGoneException,
+            childRanges,
+            leaseManagerMock
         );
 
-        StepVerifier
+        if (secondChildLeaseSuccess) {
+            StepVerifier
                 .create(splitHandler.handlePartitionGone())
                 .expectNext(expectedChildLeases.get(0))
                 .expectNext(expectedChildLeases.get(1))
                 .verifyComplete();
+        } else {
+            StepVerifier
+                .create(splitHandler.handlePartitionGone())
+                .expectNext(expectedChildLeases.get(0))
+                .verifyComplete();
+        }
 
         ArgumentCaptor<FeedRangeEpkImpl> epkArgumentCaptor = ArgumentCaptor.forClass(FeedRangeEpkImpl.class);
         ArgumentCaptor<String> continuationTokenArgumentCapture = ArgumentCaptor.forClass(String.class);
 
         verify(leaseManagerMock, times(2))
-                .createLeaseIfNotExist(epkArgumentCaptor.capture(), continuationTokenArgumentCapture.capture());
+            .createLeaseIfNotExist(epkArgumentCaptor.capture(), continuationTokenArgumentCapture.capture());
         List<FeedRangeEpkImpl> capturedEpkArguments = epkArgumentCaptor.getAllValues();
         assertThat(capturedEpkArguments.size()).isEqualTo(2);
         assertThat(capturedEpkArguments.get(0)).isEqualTo(expectedChildLeases.get(0).getFeedRange());

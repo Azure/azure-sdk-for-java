@@ -62,11 +62,10 @@ public final class ContactsClientImpl implements ContactsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureOrbitalContacts")
-    private interface ContactsService {
+    public interface ContactsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
-                + "/{spacecraftName}/contacts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactListResult>> list(
@@ -81,8 +80,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
-                + "/{spacecraftName}/contacts/{contactName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactInner>> get(
@@ -97,8 +95,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
-                + "/{spacecraftName}/contacts/{contactName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -114,8 +111,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
-                + "/{spacecraftName}/contacts/{contactName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -491,22 +487,6 @@ public final class ContactsClientImpl implements ContactsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified contact in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContactInner get(String resourceGroupName, String spacecraftName, String contactName) {
-        return getAsync(resourceGroupName, spacecraftName, contactName).block();
-    }
-
-    /**
-     * Gets the specified contact in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spacecraftName Spacecraft ID.
-     * @param contactName Contact name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -517,6 +497,22 @@ public final class ContactsClientImpl implements ContactsClient {
     public Response<ContactInner> getWithResponse(
         String resourceGroupName, String spacecraftName, String contactName, Context context) {
         return getWithResponseAsync(resourceGroupName, spacecraftName, contactName, context).block();
+    }
+
+    /**
+     * Gets the specified contact in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param spacecraftName Spacecraft ID.
+     * @param contactName Contact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified contact in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContactInner get(String resourceGroupName, String spacecraftName, String contactName) {
+        return getWithResponse(resourceGroupName, spacecraftName, contactName, Context.NONE).getValue();
     }
 
     /**
@@ -702,7 +698,7 @@ public final class ContactsClientImpl implements ContactsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(
         String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters) {
-        return beginCreateAsync(resourceGroupName, spacecraftName, contactName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, spacecraftName, contactName, parameters).getSyncPoller();
     }
 
     /**
@@ -721,7 +717,9 @@ public final class ContactsClientImpl implements ContactsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactInner>, ContactInner> beginCreate(
         String resourceGroupName, String spacecraftName, String contactName, ContactInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, spacecraftName, contactName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, spacecraftName, contactName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -964,7 +962,7 @@ public final class ContactsClientImpl implements ContactsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String spacecraftName, String contactName) {
-        return beginDeleteAsync(resourceGroupName, spacecraftName, contactName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, spacecraftName, contactName).getSyncPoller();
     }
 
     /**
@@ -982,7 +980,7 @@ public final class ContactsClientImpl implements ContactsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String spacecraftName, String contactName, Context context) {
-        return beginDeleteAsync(resourceGroupName, spacecraftName, contactName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, spacecraftName, contactName, context).getSyncPoller();
     }
 
     /**
@@ -1057,7 +1055,8 @@ public final class ContactsClientImpl implements ContactsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1093,7 +1092,8 @@ public final class ContactsClientImpl implements ContactsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -285,7 +285,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311",
+    "Uri" : "https://REDACTED.azurecr.io/v2/oci-artifact/manifests/v2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.3 (17.0.4; Windows 11; 10.0)",
       "x-ms-client-request-id" : "78959a59-724b-4ed4-b880-61f0fa9f7e11"

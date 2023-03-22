@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.models.AclAction;
 import com.azure.resourcemanager.signalr.models.FeatureFlags;
 import com.azure.resourcemanager.signalr.models.LiveTraceCategory;
@@ -34,7 +33,7 @@ import java.util.Map;
 /** Samples for SignalR Update. */
 public final class SignalRUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Update.json
      */
     /**
      * Sample code: SignalR_Update.
@@ -45,12 +44,12 @@ public final class SignalRUpdateSamples {
         SignalRResource resource =
             manager
                 .signalRs()
-                .getByResourceGroupWithResponse("myResourceGroup", "mySignalRService", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withTags(mapOf("key1", "value1"))
-            .withSku(new ResourceSku().withName("Standard_S1").withTier(SignalRSkuTier.STANDARD).withCapacity(1))
+            .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new SignalRTlsSettings().withClientCertEnabled(false))
             .withFeatures(

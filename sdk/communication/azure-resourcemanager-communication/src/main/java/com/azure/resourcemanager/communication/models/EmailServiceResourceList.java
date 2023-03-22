@@ -25,6 +25,10 @@ public final class EmailServiceResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EmailServiceResourceList class. */
+    public EmailServiceResourceList() {
+    }
+
     /**
      * Get the value property: List of EmailService.
      *

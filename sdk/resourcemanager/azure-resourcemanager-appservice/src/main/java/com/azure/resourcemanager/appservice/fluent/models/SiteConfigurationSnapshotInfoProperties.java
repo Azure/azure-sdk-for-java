@@ -23,6 +23,10 @@ public final class SiteConfigurationSnapshotInfoProperties {
     @JsonProperty(value = "snapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer snapshotId;
 
+    /** Creates an instance of SiteConfigurationSnapshotInfoProperties class. */
+    public SiteConfigurationSnapshotInfoProperties() {
+    }
+
     /**
      * Get the time property: The time the snapshot was taken.
      *

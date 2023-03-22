@@ -59,8 +59,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
     public interface BmsPrepareDataMoveOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationResults/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultStorageConfigOperationResultResponseInner>> get(

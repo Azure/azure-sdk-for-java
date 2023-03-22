@@ -31,9 +31,17 @@ public final class StartMenuItemsImpl implements StartMenuItems {
         return Utils.mapPage(inner, inner1 -> new StartMenuItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StartMenuItem> list(String resourceGroupName, String applicationGroupName, Context context) {
+    public PagedIterable<StartMenuItem> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         PagedIterable<StartMenuItemInner> inner =
-            this.serviceClient().list(resourceGroupName, applicationGroupName, context);
+            this
+                .serviceClient()
+                .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new StartMenuItemImpl(inner1, this.manager()));
     }
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListWebWorkerUsages. */
 public final class AppServiceEnvironmentsListWebWorkerUsagesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListWebWorkerUsages.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListWebWorkerUsages.json
      */
     /**
      * Sample code: Get usage metrics for a worker pool of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListWebWorkerUsagesSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listWebWorkerUsages("test-rg", "test-ase", "0", Context.NONE);
+            .listWebWorkerUsages("test-rg", "test-ase", "0", com.azure.core.util.Context.NONE);
     }
 }

@@ -48,6 +48,10 @@ public final class RestoreStatusInner {
     @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
 
+    /** Creates an instance of RestoreStatusInner class. */
+    public RestoreStatusInner() {
+    }
+
     /**
      * Get the healthy property: Restore health status.
      *

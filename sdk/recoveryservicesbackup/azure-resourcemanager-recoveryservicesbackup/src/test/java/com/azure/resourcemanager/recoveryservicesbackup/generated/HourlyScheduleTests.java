@@ -15,23 +15,23 @@ public final class HourlyScheduleTests {
         HourlySchedule model =
             BinaryData
                 .fromString(
-                    "{\"interval\":179999920,\"scheduleWindowStartTime\":\"2021-11-16T08:02:07Z\",\"scheduleWindowDuration\":498585791}")
+                    "{\"interval\":1907750437,\"scheduleWindowStartTime\":\"2021-09-04T14:52:10Z\",\"scheduleWindowDuration\":1075307971}")
                 .toObject(HourlySchedule.class);
-        Assertions.assertEquals(179999920, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T08:02:07Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(498585791, model.scheduleWindowDuration());
+        Assertions.assertEquals(1907750437, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T14:52:10Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1075307971, model.scheduleWindowDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HourlySchedule model =
             new HourlySchedule()
-                .withInterval(179999920)
-                .withScheduleWindowStartTime(OffsetDateTime.parse("2021-11-16T08:02:07Z"))
-                .withScheduleWindowDuration(498585791);
+                .withInterval(1907750437)
+                .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-04T14:52:10Z"))
+                .withScheduleWindowDuration(1075307971);
         model = BinaryData.fromObject(model).toObject(HourlySchedule.class);
-        Assertions.assertEquals(179999920, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T08:02:07Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(498585791, model.scheduleWindowDuration());
+        Assertions.assertEquals(1907750437, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T14:52:10Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1075307971, model.scheduleWindowDuration());
     }
 }

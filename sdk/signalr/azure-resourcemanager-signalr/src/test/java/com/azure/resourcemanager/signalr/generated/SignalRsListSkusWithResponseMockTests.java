@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.SkuList;
 import java.nio.ByteBuffer;
@@ -59,6 +58,7 @@ public final class SignalRsListSkusWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SkuList response = manager.signalRs().listSkusWithResponse("wabm", "oefki", Context.NONE).getValue();
+        SkuList response =
+            manager.signalRs().listSkusWithResponse("wabm", "oefki", com.azure.core.util.Context.NONE).getValue();
     }
 }

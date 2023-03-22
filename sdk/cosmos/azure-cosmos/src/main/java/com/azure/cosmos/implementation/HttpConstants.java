@@ -294,7 +294,7 @@ public class HttpConstants {
         public static final String SUPPORTED_CAPABILITIES;
         public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
-            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
+            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE);
             SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
         }
     }

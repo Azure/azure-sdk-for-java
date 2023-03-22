@@ -14,15 +14,17 @@ public final class OperationResultInfoTests {
     public void testDeserialize() throws Exception {
         OperationResultInfo model =
             BinaryData
-                .fromString("{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"lglxnfui\"]}")
+                .fromString(
+                    "{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"]}")
                 .toObject(OperationResultInfo.class);
-        Assertions.assertEquals("lglxnfui", model.jobList().get(0));
+        Assertions.assertEquals("tsysi", model.jobList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResultInfo model = new OperationResultInfo().withJobList(Arrays.asList("lglxnfui"));
+        OperationResultInfo model =
+            new OperationResultInfo().withJobList(Arrays.asList("tsysi", "fvcl", "lxnfuijtkbusqogs", "ikayiansharuj"));
         model = BinaryData.fromObject(model).toObject(OperationResultInfo.class);
-        Assertions.assertEquals("lglxnfui", model.jobList().get(0));
+        Assertions.assertEquals("tsysi", model.jobList().get(0));
     }
 }

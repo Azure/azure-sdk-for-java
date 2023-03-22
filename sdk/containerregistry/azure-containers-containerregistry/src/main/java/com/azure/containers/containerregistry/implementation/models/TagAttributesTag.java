@@ -60,21 +60,19 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
     public static TagAttributesTag fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String signatureRecord = null;
+                    TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("signatureRecord".equals(fieldName)) {
-                            signatureRecord = reader.getString();
+                            deserializedTagAttributesTag.signatureRecord = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    TagAttributesTag deserializedValue = new TagAttributesTag();
-                    deserializedValue.signatureRecord = signatureRecord;
 
-                    return deserializedValue;
+                    return deserializedTagAttributesTag;
                 });
     }
 }

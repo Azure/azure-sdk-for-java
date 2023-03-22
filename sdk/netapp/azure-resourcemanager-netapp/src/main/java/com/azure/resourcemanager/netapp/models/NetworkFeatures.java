@@ -21,6 +21,15 @@ public final class NetworkFeatures extends ExpandableStringEnum<NetworkFeatures>
     public static final NetworkFeatures STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of NetworkFeatures value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkFeatures() {
+    }
+
+    /**
      * Creates or finds a NetworkFeatures from its string representation.
      *
      * @param name a name to look for.
