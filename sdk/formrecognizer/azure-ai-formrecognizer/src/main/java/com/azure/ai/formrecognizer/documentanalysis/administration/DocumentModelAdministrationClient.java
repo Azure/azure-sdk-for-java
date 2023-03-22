@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildClassifierOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
@@ -269,143 +269,6 @@ public final class DocumentModelAdministrationClient {
             buildModelPollingOperation(finalContext),
             getCancellationIsNotSupported(),
             buildModelFetchingOperation(finalContext));
-    }
-
-    /**
-     * Builds a custom document analysis model.
-     * <p>Models are built using documents that are of the following content
-     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
-     * Other type of content is ignored.
-     * </p>
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     * <pre>
-     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * String modelId = &quot;custom-model-id&quot;;
-     * String prefix = &quot;Invoice&quot;;
-     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
-     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
-     *
-     * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
-     *         DocumentModelBuildMode.TEMPLATE,
-     *         prefix,
-     *         new BuildDocumentModelOptions&#40;&#41;
-     *             .setModelId&#40;modelId&#41;
-     *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setTags&#40;attrs&#41;,
-     *         Context.NONE&#41;
-     *     .getFinalResult&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
-     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
-     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
-     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     *
-     * @param docTypes explain doctypes.
-     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
-     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code docTypes} is null.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifier(
-        Map<String, ClassifierDocumentTypeDetails> docTypes) {
-        return beginBuildClassifier(docTypes, null, Context.NONE);
-    }
-
-    /**
-     * Builds a custom document analysis model.
-     * <p>Models are built using documents that are of the following content
-     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
-     * Other type of content is ignored.
-     * </p>
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     * <pre>
-     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * String modelId = &quot;custom-model-id&quot;;
-     * String prefix = &quot;Invoice&quot;;
-     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
-     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
-     *
-     * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
-     *         DocumentModelBuildMode.TEMPLATE,
-     *         prefix,
-     *         new BuildDocumentModelOptions&#40;&#41;
-     *             .setModelId&#40;modelId&#41;
-     *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setTags&#40;attrs&#41;,
-     *         Context.NONE&#41;
-     *     .getFinalResult&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
-     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
-     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
-     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     *
-     * @param docTypes explain doctypes.
-     * @param buildClassifierOptions The configurable {@link BuildClassifierOptions options} to pass when
-     * building a custom document analysis model.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
-     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code docTypes} is null.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifier(
-        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildClassifierOptions buildClassifierOptions, Context context) {
-        return beginBuildClassifierSync(docTypes, buildClassifierOptions, context);
-    }
-
-    SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildClassifierSync(
-        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildClassifierOptions options, Context context) {
-
-        BuildClassifierOptions finalBuildClassifierOptions = options == null ? new BuildClassifierOptions() : options;
-        String classifierId = finalBuildClassifierOptions.getClassifierId();
-        if (classifierId == null) {
-            classifierId = Utility.generateRandomModelID();
-        }
-        String finalId = classifierId;
-        context = enableSyncRestProxy(getTracingContext(context));
-        Context finalContext = context;
-
-        return SyncPoller.createPoller(
-            DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildClassifierActivationOperation(
-                finalId,
-                docTypes,
-                finalBuildClassifierOptions,
-                finalContext).apply(cxt)),
-            buildModelPollingOperation(finalContext),
-            getCancellationIsNotSupported(),
-            classifierFetchingOperation(finalContext));
     }
 
     /**
@@ -1181,6 +1044,179 @@ public final class DocumentModelAdministrationClient {
         }
     }
     /**
+     * Builds a custom document analysis model.
+     * <p>Models are built using documents that are of the following content
+     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
+     * Other type of content is ignored.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     * <pre>
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String modelId = &quot;custom-model-id&quot;;
+     * String prefix = &quot;Invoice&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     *
+     * DocumentModelDetails documentModelDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
+     *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
+     *         new BuildDocumentModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
+     *             .setDescription&#40;&quot;model desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;,
+     *         Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
+     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
+     *
+     * @param docTypes explain doctypes.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code docTypes} is null.
+     */
+    /**
+     * Builds a custom classifier document model.
+     * <p>Classifier models can identify multiple documents or multiple instances of a single document. For that,
+     * you need at least five documents for each class and two classes of documents.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map -->
+     * <pre>
+     * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
+     * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
+     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     *
+     * DocumentClassifierDetails classifierDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, classifierDetails.getClassifierId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
+     * classifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map -->
+     *
+     * @param docTypes List of document types to classify against.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code docTypes} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(
+        Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        return beginBuildDocumentClassifier(docTypes, null, Context.NONE);
+    }
+
+    /**
+     * Builds a custom classifier document model.
+     * <p>Classifier models can identify multiple documents or multiple instances of a single document. For that,
+     * you need at least five documents for each class and two classes of documents.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context -->
+     * <pre>
+     * String blobContainerUrl1040D = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
+     * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
+     * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     *
+     * DocumentClassifierDetails classifierDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes,
+     *         new BuildDocumentClassifierOptions&#40;&#41;
+     *             .setClassifierId&#40;&quot;classifierId&quot;&#41;
+     *             .setDescription&#40;&quot;classifier desc&quot;&#41;,
+     *         Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Classifier ID: %s%n&quot;, classifierDetails.getClassifierId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier description: %s%n&quot;, classifierDetails.getDescription&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier created on: %s%n&quot;, classifierDetails.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Classifier expires on: %s%n&quot;, classifierDetails.getExpiresOn&#40;&#41;&#41;;
+     * classifierDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     System.out.printf&#40;&quot;Blob Source container Url: %s&quot;, documentTypeDetails
+     *         .getAzureBlobSource&#40;&#41;.getContainerUrl&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context -->
+     *
+     * @param docTypes List of document types to classify against.
+     * @param buildDocumentClassifierOptions The configurable {@link BuildDocumentClassifierOptions options} to pass when
+     * building a custom classifier document model.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document classifier model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code docTypes} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(
+        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
+        return beginBuildDocumentClassifierSync(docTypes, buildDocumentClassifierOptions, context);
+    }
+
+    SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifierSync(
+        Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions options, Context context) {
+
+        BuildDocumentClassifierOptions
+            finalBuildDocumentClassifierOptions = options == null ? new BuildDocumentClassifierOptions() : options;
+        String classifierId = finalBuildDocumentClassifierOptions.getClassifierId();
+        if (classifierId == null) {
+            classifierId = Utility.generateRandomModelID();
+        }
+        String finalId = classifierId;
+        context = enableSyncRestProxy(getTracingContext(context));
+        Context finalContext = context;
+
+        return SyncPoller.createPoller(
+            DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildClassifierActivationOperation(
+                finalId,
+                docTypes,
+                finalBuildDocumentClassifierOptions,
+                finalContext).apply(cxt)),
+            buildModelPollingOperation(finalContext),
+            getCancellationIsNotSupported(),
+            classifierFetchingOperation(finalContext));
+    }
+
+    /**
      * List information for each document classifier on the Form Recognizer account that were built successfully.
      *
      * <p><strong>Code sample</strong></p>
@@ -1520,12 +1556,12 @@ public final class DocumentModelAdministrationClient {
 
     private Function<PollingContext<OperationResult>, OperationResult> buildClassifierActivationOperation(
         String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes,
-        BuildClassifierOptions buildClassifierOptions, Context context) {
+        BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(docTypes, "'docTypes' cannot be null.");
                 BuildDocumentClassifierRequest buildDocumentModelRequest =
-                    getBuildDocumentClassifierRequest(classifierId, buildClassifierOptions.getDescription(), toInnerDocTypes(docTypes));
+                    getBuildDocumentClassifierRequest(classifierId, buildDocumentClassifierOptions.getDescription(), toInnerDocTypes(docTypes));
 
                 ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>
                     response = documentClassifiersImpl.buildClassifierWithResponse(buildDocumentModelRequest, context);
@@ -1536,52 +1572,6 @@ public final class DocumentModelAdministrationClient {
             }
         };
     }
-    private Function<PollingContext<OperationResult>, PollResponse<OperationResult>>
-        buildClassifierPollingOperation(Context context) {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                String modelId = operationResultPollResponse.getValue().getOperationId();
-                Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails>
-                    modelSimpleResponse = miscellaneousImpl.getOperationWithResponse(modelId, context);
-                return processBuildingModelResponse(modelSimpleResponse.getValue(), operationResultPollResponse);
-            } catch (ErrorResponseException ex) {
-                throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
-            }
-        };
-    }
-    private PollResponse<OperationResult> processBuildingClassifierResponse(
-        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails getOperationResponse,
-        PollResponse<OperationResult> trainingModelOperationResponse) {
-        LongRunningOperationStatus status;
-        switch (getOperationResponse.getStatus()) {
-            case NOT_STARTED:
-            case RUNNING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case SUCCEEDED:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case FAILED:
-                throw LOGGER.logExceptionAsError(
-                    Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
-            case CANCELED:
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    getOperationResponse.getStatus().toString(), true);
-                break;
-        }
-        return new PollResponse<>(status,
-            trainingModelOperationResponse.getValue());
-    }
-
-    // private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
-    // getCancellationIsNotSupported() {
-    //     return (pollingContext, activationResponse) -> {
-    //         throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-    //     };
-    // }
 
     private Function<PollingContext<OperationResult>, DocumentClassifierDetails>
         classifierFetchingOperation(Context context) {
@@ -1589,7 +1579,7 @@ public final class DocumentModelAdministrationClient {
             try {
                 final String classifierId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return
-                    Transforms.toDocumentClassifierDetails(documentClassifiersImpl.getClassifierWithResponse(
+                    Transforms.toDocumentClassifierFromOperationId(miscellaneousImpl.getOperationWithResponse(
                         classifierId,
                         context).getValue());
             } catch (ErrorResponseException ex) {

@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Options that may be passed to build document models.
+ * Options that may be passed to build document classifier models.
  */
 @Fluent
-public final class BuildClassifierOptions {
+public final class BuildDocumentClassifierOptions {
     private String description;
 
     private String classifierId;
@@ -27,9 +27,9 @@ public final class BuildClassifierOptions {
      * Set the model description.
      *
      * @param description the model description value to set.
-     * @return the BuildDocumentModelOptions object itself.
+     * @return the BuildDocumentClassifierOptions object itself.
      */
-    public BuildClassifierOptions setDescription(String description) {
+    public BuildDocumentClassifierOptions setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -47,9 +47,9 @@ public final class BuildClassifierOptions {
      * Set the unique document classifier name.
      *
      * @param classifierId the classifierId value to set.
-     * @return the BuildClassifierOptions object itself.
+     * @return the BuildDocumentClassifierOptions object itself.
      */
-    public BuildClassifierOptions setClassifierId(String classifierId) {
+    public BuildDocumentClassifierOptions setClassifierId(String classifierId) {
         this.classifierId = classifierId;
         return this;
     }

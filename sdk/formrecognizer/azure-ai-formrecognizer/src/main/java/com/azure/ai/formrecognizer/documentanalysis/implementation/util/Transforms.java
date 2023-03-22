@@ -328,13 +328,22 @@ public class Transforms {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
                 copyOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) operationDetails).getResult();
             return toDocumentModelDetails(copyOperationModelResult);
-
         } else if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
                 composeOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) operationDetails).getResult();
             return toDocumentModelDetails(composeOperationModelResult);
         }
         return new DocumentModelDetails();
+    }
+
+    public static DocumentClassifierDetails toDocumentClassifierFromOperationId(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
+        if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierBuildOperationDetails) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails
+                classifierDetails =
+                ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierBuildOperationDetails) operationDetails).getResult();
+            return toDocumentClassifierDetails(classifierDetails);
+        }
+        return null;
     }
 
     public static DocumentModelDetails toDocumentModelDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {

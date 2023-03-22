@@ -15,9 +15,9 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.HashMap;
 
 /**
- * Sample to build a classifier with 2 sets of training data.
+ * Sample to build a classifier model with training data.
  * For instructions on setting up documents for training in an Azure Storage Blob Container, see
- * <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+ * <a href="https://aka.ms/azsdk/formrecognizer/buildclassifiermodel">here</a>.
  * <p>
  * For this sample, you can use the training documents found in
  * <a href="https://aka.ms/azsdk/formrecognizer/sampletrainingfiles">here</a>
@@ -25,7 +25,7 @@ import java.util.HashMap;
  * For instructions to create a label file for your training forms, please see:
  * <a href="https://aka.ms/azsdk/formrecognizer/labelingtool">here</a>.
  * <p>
- * Further, see AnalyzeDocumentWithClassifierFromUrl.java to analyze a document with your built document classifier.
+ * Further, see AnalyzeDocumentWithClassifier.java to analyze a document with your custom classifer built model.
  */
 public class BuildDocumentClassifier {
 
@@ -41,26 +41,26 @@ public class BuildDocumentClassifier {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        // Build custom document analysis model
-        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        String prefix = "{blob_name_prefix}";
+        // Build custom classifier document model
+        String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
-        docTypes.put("Standard Doc", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl)));
-        SyncPoller<OperationResult, DocumentClassifierDetails> buildOperationPoller =
-            client.beginBuildClassifier(docTypes);
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040D)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040A)));
 
+        SyncPoller<OperationResult, DocumentClassifierDetails> buildOperationPoller
+            = client.beginBuildDocumentClassifier(docTypes);
         DocumentClassifierDetails documentClassifierDetails = buildOperationPoller.getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
-        System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
-        System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
+        System.out.printf("Classifier description: %s%n", documentClassifierDetails.getDescription());
+        System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedOn());
+        System.out.printf("Classifier expires on: %s%n", documentClassifierDetails.getExpiresOn());
         documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
             System.out.printf("Blob Source container Url: %s", documentTypeDetails
                 .getAzureBlobSource().getContainerUrl());
-            System.out.printf("Blob File list Source container Url: %s", documentTypeDetails
-                .getAzureBlobFileListSource().getContainerUrl());
         });
     }
 }

@@ -5,7 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
@@ -455,6 +458,67 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
         });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listOperations#Context
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildDocumentClassifier(Map)}
+     */
+    public void beginBuildDocumentClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map
+        String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
+        HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040D)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040A)));
+
+        DocumentClassifierDetails classifierDetails
+            = documentModelAdministrationClient.beginBuildDocumentClassifier(docTypes)
+            .getFinalResult();
+
+        System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
+        System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
+        System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
+        System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
+        classifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+            System.out.printf("Blob Source container Url: %s", documentTypeDetails
+                .getAzureBlobSource().getContainerUrl());
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildDocumentClassifier(Map, BuildDocumentClassifierOptions, Context)}
+     * with options
+     */
+    public void beginBuildDocumentClassifierWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context
+        String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
+        HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040D)));
+        docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
+            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040A)));
+
+        DocumentClassifierDetails classifierDetails
+            = documentModelAdministrationClient.beginBuildDocumentClassifier(docTypes,
+                new BuildDocumentClassifierOptions()
+                    .setClassifierId("classifierId")
+                    .setDescription("classifier desc"),
+                Context.NONE)
+            .getFinalResult();
+
+        System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
+        System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
+        System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
+        System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
+        classifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+            System.out.printf("Blob Source container Url: %s", documentTypeDetails
+                .getAzureBlobSource().getContainerUrl());
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentClassifier#Map-Options-Context
     }
 
     /**
