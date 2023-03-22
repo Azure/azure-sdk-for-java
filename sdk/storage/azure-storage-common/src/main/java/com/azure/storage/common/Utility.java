@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -331,5 +332,32 @@ public final class Utility {
         return (url.indexOf('?') != -1)
             ? url + "&" + key + "=" + value
             : url + "?" + key + "=" + value;
+    }
+
+    /**
+     * Extracts the byte buffer for upload operations.
+     *
+     * @param data the {@link Flux<ByteBuffer>} byte buffer, if specified.
+     * @param optionalLength length of data.
+     * @param blockSize the block size (chunk size) to transfer at a time.
+     * @param dataStream the {@link InputStream}, if specified.
+     * @return the updated {@link Flux<ByteBuffer>} byte buffer.
+     */
+    public static Flux<ByteBuffer> extractByteBuffer(Flux<ByteBuffer> data, Long optionalLength, Long blockSize, InputStream dataStream) {
+        // no specified length: use azure.core's converter
+        if (data == null && optionalLength == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                blockSize);
+            data = FluxUtil.toFluxByteBuffer(dataStream, chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+        } else if (data == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                blockSize);
+            data = Utility.convertStreamToByteBuffer(
+                dataStream, optionalLength, chunkSize, false);
+        }
+        return data;
     }
 }
