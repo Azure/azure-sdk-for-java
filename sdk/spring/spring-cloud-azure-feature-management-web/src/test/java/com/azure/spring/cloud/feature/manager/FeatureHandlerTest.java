@@ -29,6 +29,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.method.HandlerMethod;
 
+import com.azure.spring.cloud.feature.management.FeatureManager;
+
 import reactor.core.publisher.Mono;
 
 /**
