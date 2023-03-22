@@ -109,6 +109,14 @@ public class ManagedHsmTests extends SamplesTestBase {
         AzureEnvironment.AZURE.getEndpoints().put("managedHsm", ".managedhsm.azure.net");
     }
 
+    /**
+     * Note: Managed HSM instance is costly and it'll still cost you even if you delete the instance or the associated
+     *       resource group, unless the instance is <string>purged</string>.
+     *       <p>So, please be careful when running this test and always double check that the instance has been
+     *       {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#purgeDeleted(String, String)} after the test. </p>
+     *       <p>You can use {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#listDeleted()} to list all deleted instances
+     *       that's not purged after deletion.</p>
+     */
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canOperateManagedHsmAndKeys() throws Exception {
