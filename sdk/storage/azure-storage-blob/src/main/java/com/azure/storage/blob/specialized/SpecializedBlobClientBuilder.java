@@ -150,8 +150,13 @@ public final class SpecializedBlobClientBuilder implements
         validateConstruction();
         String containerName = getContainerName();
 
-        return new BlockBlobClient(getHttpPipeline(), endpoint, getServiceVersion(), accountName, containerName,
-            blobName, snapshot, customerProvidedKey, encryptionScope, versionId, buildBlockBlobAsyncClient());
+        HttpPipeline pipeline = getHttpPipeline();
+        BlobServiceVersion serviceVersion = getServiceVersion();
+        BlockBlobAsyncClient asyncClient = new BlockBlobAsyncClient(pipeline, endpoint, serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+
+        return new BlockBlobClient(pipeline, endpoint, serviceVersion, accountName, containerName,
+            blobName, snapshot, customerProvidedKey, encryptionScope, versionId, asyncClient);
     }
 
     /**
