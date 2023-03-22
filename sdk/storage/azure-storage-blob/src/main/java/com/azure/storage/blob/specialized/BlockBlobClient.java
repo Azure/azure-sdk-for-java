@@ -62,7 +62,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
-public class BlockBlobClient extends BlobClientBase {
+public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
     private final BlockBlobAsyncClient client;
@@ -246,8 +246,8 @@ public class BlockBlobClient extends BlobClientBase {
         }
 
         return new StorageSeekableByteChannel(
-            options.getChunkSize() != null
-                ? options.getChunkSize().intValue()
+            options.getBlockSizeInBytes() != null
+                ? options.getBlockSizeInBytes().intValue()
                 : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
             new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
                 options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
