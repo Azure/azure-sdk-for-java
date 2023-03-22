@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicemicrosoftcontainerserviceaks/ci.yml
+      - sdk/containerservicemicrosoftcontainerserviceaks/azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated/
+    exclude:
+      - sdk/containerservicemicrosoftcontainerserviceaks/pom.xml
+      - sdk/containerservicemicrosoftcontainerserviceaks/azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicemicrosoftcontainerserviceaks/ci.yml
+      - sdk/containerservicemicrosoftcontainerserviceaks/azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated/
+    exclude:
+      - sdk/containerservicemicrosoftcontainerserviceaks/pom.xml
+      - sdk/containerservicemicrosoftcontainerserviceaks/azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerservicemicrosoftcontainerserviceaksgenerated
+    displayName: azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerservicemicrosoftcontainerserviceaks
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-containerservicemicrosoftcontainerserviceaks-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicemicrosoftcontainerserviceaksgenerated
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicemicrosoftcontainerserviceaksgenerated }}
