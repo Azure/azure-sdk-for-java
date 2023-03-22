@@ -35,7 +35,7 @@ public final class UnassignJobOptions {
     /**
      * Sets isWorkerRematchPending to true or false.
      * If set to true, the job is NOT queued for re-matching.
-     * @param isWorkerRematchPending
+     * @param isWorkerRematchPending true, if job is requested to not be queued; false, otherwise.
      */
     public void setIsWorkerRematchPending(Boolean isWorkerRematchPending) {
         this.isWorkerRematchPending = isWorkerRematchPending;

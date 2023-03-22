@@ -306,6 +306,7 @@ public final class RouterClient {
      * Unassigns a job from assigned worker.
      *
      * @param unassignJobOptions Options object for close job operation.
+     * @return UnassignJobResult
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
