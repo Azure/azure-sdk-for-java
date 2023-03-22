@@ -27,12 +27,12 @@ public class CommunicationIdentifierTests {
     @Test
     public void defaultCloudIsPublicForMicrosoftBotIdentifier() {
         assertEquals(CommunicationCloudEnvironment.PUBLIC,
-            new MicrosoftBotIdentifier(userId, true).setRawId(fullId).getCloudEnvironment());
+            new MicrosoftBotIdentifier(userId, false).setRawId(fullId).getCloudEnvironment());
     }
 
     @Test
-    public void defaultIsGlobalIsFalseForMicrosoftBotIdentifier() {
-        assertFalse(new MicrosoftBotIdentifier(userId).setRawId(fullId).isGlobal());
+    public void defaultIsResourceAccountConfiguredIsTrueForMicrosoftBotIdentifier() {
+        assertTrue(new MicrosoftBotIdentifier(userId).setRawId(fullId).isResourceAccountConfigured());
     }
     @Test
     public void rawIdTakesPrecedenceInEqualityCheck() {
@@ -87,11 +87,11 @@ public class CommunicationIdentifierTests {
             new PhoneNumberIdentifier("+override").setRawId("4:+14255550123"));
 
         // Bots
-        assertEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, true),
-            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, true));
-        assertNotEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, true)
+        assertEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, false),
+            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, false));
+        assertNotEquals(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, false)
                 .setRawId("Raw Id"),
-            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, true)
+            new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  CommunicationCloudEnvironment.PUBLIC, false)
                 .setRawId("Another Raw Id"));
     }
 
@@ -107,12 +107,12 @@ public class CommunicationIdentifierTests {
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",  false), "8:orgid:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true), "8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setRawId("8:orgid:legacyFormat"), "8:orgid:legacyFormat");
-        assertRawId(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, true), "28:45ab2481-1c1c-4005-be24-0ffb879b1130");
-        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, true), "28:gcch-global:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, true), "28:dod-global:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC, false), "28:orgid:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, false), "28:gcch:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, false), "28:dod:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, false), "28:45ab2481-1c1c-4005-be24-0ffb879b1130");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, false), "28:gcch-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, false), "28:dod-global:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC, true), "28:orgid:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, true), "28:gcch:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, true), "28:dod:01234567-89ab-cdef-0123-456789abcdef");
         assertRawId(new PhoneNumberIdentifier("+112345556789"), "4:+112345556789");
         assertRawId(new PhoneNumberIdentifier("112345556789"), "4:112345556789");
         assertRawId(new PhoneNumberIdentifier("otherFormat").setRawId("4:207ffef6-9444-41fb-92ab-20eacaae2768"), "4:207ffef6-9444-41fb-92ab-20eacaae2768");
@@ -135,12 +135,12 @@ public class CommunicationIdentifierTests {
         assertIdentifier("8:gcch:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH));
         assertIdentifier("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
         assertIdentifier("8:orgid:legacyFormat", new MicrosoftTeamsUserIdentifier("legacyFormat", false).setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
-        assertIdentifier("28:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, true));
-        assertIdentifier("28:gcch-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, true));
-        assertIdentifier("28:dod-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, true));
-        assertIdentifier("28:orgid:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC, false));
-        assertIdentifier("28:gcch:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, false));
-        assertIdentifier("28:dod:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, false));
+        assertIdentifier("28:45ab2481-1c1c-4005-be24-0ffb879b1130", new MicrosoftBotIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC, false));
+        assertIdentifier("28:gcch-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, false));
+        assertIdentifier("28:dod-global:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, false));
+        assertIdentifier("28:orgid:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC, true));
+        assertIdentifier("28:gcch:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH, true));
+        assertIdentifier("28:dod:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftBotIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD, true));
         assertIdentifier("4:+112345556789", new PhoneNumberIdentifier("+112345556789"));
         assertIdentifier("4:112345556789", new PhoneNumberIdentifier("112345556789"));
         assertIdentifier("4:207ffef6-9444-41fb-92ab-20eacaae2768", new PhoneNumberIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768"));

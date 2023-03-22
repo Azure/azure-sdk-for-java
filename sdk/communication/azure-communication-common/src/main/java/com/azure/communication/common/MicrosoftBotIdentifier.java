@@ -10,7 +10,7 @@ import com.azure.core.util.CoreUtils;
  */
 public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     private final String botId;
-    private final boolean isGlobal;
+    private final boolean isResourceAccountConfigured;
     private boolean rawIdSet = false;
 
     private final CommunicationCloudEnvironment cloudEnvironment;
@@ -20,16 +20,16 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      *
      * @param botId botId The unique Microsoft app ID for the bot as registered with the Bot Framework.
      * @param cloudEnvironment the cloud environment in which this identifier is created.
-     * @param isGlobal set this to true if the bot is global and false if the bot is tenantized.
+     * @param isResourceAccountConfigured set this to true if the bot is tennantized. It is false if the bot is global and no resource account is configured.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
-    public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isGlobal) {
+    public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isResourceAccountConfigured) {
         if (CoreUtils.isNullOrEmpty(botId)) {
             throw new IllegalArgumentException("The initialization parameter [botId] cannot be null or empty.");
         }
         this.botId = botId;
         this.cloudEnvironment = cloudEnvironment;
-        this.isGlobal = isGlobal;
+        this.isResourceAccountConfigured = isResourceAccountConfigured;
         generateRawId();
     }
 
@@ -40,18 +40,18 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId) {
-        this(botId, CommunicationCloudEnvironment.PUBLIC, false);
+        this(botId, CommunicationCloudEnvironment.PUBLIC, true);
     }
 
     /**
      * Creates a MicrosoftBotIdentifier object
      *
      * @param botId Id of the Microsoft bot.
-     * @param isGlobal set this to true if the bot is global and false if the bot is tenantized.
+     * @param isResourceAccountConfigured set this to true if the bot is tennantized. It is false if the bot is global and no resource account is configured.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
-    public MicrosoftBotIdentifier(String botId, boolean isGlobal)  {
-        this(botId, CommunicationCloudEnvironment.PUBLIC, isGlobal);
+    public MicrosoftBotIdentifier(String botId, boolean isResourceAccountConfigured)  {
+        this(botId, CommunicationCloudEnvironment.PUBLIC, isResourceAccountConfigured);
     }
 
     /**
@@ -65,8 +65,8 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
     /**
      * @return True if the bot is global.
      */
-    public boolean isGlobal() {
-        return this.isGlobal;
+    public boolean isResourceAccountConfigured() {
+        return this.isResourceAccountConfigured;
     }
 
     /**
@@ -112,7 +112,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
 
     private void generateRawId() {
         if (!rawIdSet) {
-            if (this.isGlobal) {
+            if (!this.isResourceAccountConfigured) {
                 if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
                     super.setRawId(BOT_DOD_CLOUD_GLOBAL_PREFIX + this.botId);
                 } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
