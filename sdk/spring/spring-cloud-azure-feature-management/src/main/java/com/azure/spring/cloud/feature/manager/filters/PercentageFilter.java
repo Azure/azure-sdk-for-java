@@ -8,12 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 /**
  * A feature filter that can be used to activate a feature based on a random percentage.
  */
-public final class PercentageFilter implements IFeatureFilter {
+public final class PercentageFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PercentageFilter.class);
 

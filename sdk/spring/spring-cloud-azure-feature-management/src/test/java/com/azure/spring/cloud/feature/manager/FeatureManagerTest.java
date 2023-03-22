@@ -23,12 +23,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
+import com.azure.spring.cloud.feature.manager.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.models.FilterNotFoundException;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 
 /**
  * Unit tests for FeatureManager.
@@ -139,7 +139,7 @@ public class FeatureManagerTest {
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
-    class AlwaysOnFilter implements IFeatureFilter {
+    class AlwaysOnFilter implements FeatureFilter {
 
         @Override
         public boolean evaluate(FeatureFilterEvaluationContext context) {

@@ -11,6 +11,6 @@ public interface TargetingContextAccessor {
      * Configures the Targeting Context for Feature Targeting evaluation.
      * @param context Targeting Context for selecting feature
      */
-    void configureTargetingContextAsync(TargetingContext context);
+    void configureTargetingContext(TargetingContext context);
 
 }

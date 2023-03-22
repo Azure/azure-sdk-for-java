@@ -5,6 +5,7 @@ package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 
@@ -67,7 +68,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
     @Override
     public boolean injectRntbdServerConnectionDelay(
-        RntbdRequestRecord requestRecord,
+        IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer) {
         if (requestRecord == null) {
             return false;
@@ -79,11 +80,10 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         if (serverConnectionDelayRule != null) {
             request.faultInjectionRequestContext
                 .applyFaultInjectionRule(
-                    requestRecord.transportRequestId(),
+                    requestRecord.getRequestId(),
                     serverConnectionDelayRule.getId());
             openConnectionWithDelayConsumer.accept(serverConnectionDelayRule.getResult().getDelay());
             return true;
-
         }
 
         return false;

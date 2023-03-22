@@ -221,7 +221,7 @@ class AppConfigurationRefreshUtil {
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
-                watchedKeySize = checkFeatureFlags(currentKeys, state, client, eventData);
+                watchedKeySize += checkFeatureFlags(currentKeys, state, client, eventData);
             }
 
             if (!eventData.getDoRefresh() && watchedKeySize != state.getWatchKeys().size()) {
@@ -268,8 +268,14 @@ class AppConfigurationRefreshUtil {
         FeatureFlagStore featureStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
         List<String> profiles) throws AppConfigurationStatusException {
         for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
-            SettingSelector selector = new SettingSelector().setKeyFilter(watchKey.getKeyFilter())
-                .setLabelFilter(watchKey.getLabelFilterText(profiles));
+            String keyFilter = SELECT_ALL_FEATURE_FLAGS;
+
+            if (StringUtils.hasText(watchKey.getKeyFilter())) {
+                keyFilter = FEATURE_FLAG_PREFIX + watchKey.getKeyFilter();
+            }
+
+            SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
+                .setLabelFilter(watchKey.getLabelFilterText(profiles));            
             List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
 
             int watchedKeySize = 0;
