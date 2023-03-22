@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -56,7 +57,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -83,7 +83,7 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
         if (cosmosDiagnostics.clientSideRequestStatistics() == null) {
-            return Collections.<String>emptySet();
+            return Collections.emptySet();
         }
         return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
@@ -116,7 +116,7 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
                                                                               Class<T> cls) {
-        return new ResourceResponse<T>(response, cls);
+        return new ResourceResponse<>(response, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -132,7 +132,7 @@ public final class BridgeInternal {
     }
 
     private static <T> FeedResponse<T> applyDiagnosticsToFeedResponse(CosmosDiagnostics diagnostics, FeedResponse<T> response) {
-        if (diagnostics == null) {
+        if (diagnostics == null || diagnostics == response.getCosmosDiagnostics()) {
             return response;
         }
 
@@ -150,7 +150,7 @@ public final class BridgeInternal {
         if (feedResponseDiagnosticsFromCosmosDiagnostics != null) {
             BridgeInternal.addClientSideDiagnosticsToFeed(
                 response.getCosmosDiagnostics(),
-                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatisticsSet());
+                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatistics());
         }
 
         return response;
@@ -205,7 +205,7 @@ public final class BridgeInternal {
         }
         BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
             cosmosDiagnostics.getFeedResponseDiagnostics()
-                             .getClientSideRequestStatisticsSet());
+                             .getClientSideRequestStatistics());
 
         return feedResponseWithDiagnostics;
     }
@@ -236,7 +236,7 @@ public final class BridgeInternal {
             }
             BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
                                                           cosmosDiagnostics.getFeedResponseDiagnostics()
-                                                              .getClientSideRequestStatisticsSet());
+                                                              .getClientSideRequestStatistics());
         }
 
         return feedResponseWithQueryMetrics;
@@ -267,7 +267,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
-                         Set<ClientSideRequestStatistics> requestStatistics) {
+                         Collection<ClientSideRequestStatistics> requestStatistics) {
         cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 
@@ -568,19 +568,19 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Set<ClientSideRequestStatistics> getClientSideRequestStatisticsSet(CosmosDiagnostics cosmosDiagnostics) {
+    public static Collection<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
-        Set<ClientSideRequestStatistics> clientSideRequestStatisticsSet = new HashSet<>();
+        Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList = new DistinctClientSideRequestStatisticsCollection();
 
         if (cosmosDiagnostics != null) {
-            clientSideRequestStatisticsSet
-                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsSet());
+            clientSideRequestStatisticsList
+                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics());
             if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                clientSideRequestStatisticsSet.add(cosmosDiagnostics.clientSideRequestStatistics());
+                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
             }
         }
-        return clientSideRequestStatisticsSet;
+        return clientSideRequestStatisticsList;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

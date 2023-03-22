@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.MetricsOptions;
@@ -37,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
@@ -47,7 +45,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Class with config options for Cosmos Client telemetry
  */
 public final class CosmosClientTelemetryConfig {
-    private static Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;

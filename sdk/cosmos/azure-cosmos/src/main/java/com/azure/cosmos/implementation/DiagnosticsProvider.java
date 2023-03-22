@@ -697,7 +697,7 @@ public final class DiagnosticsProvider {
      * in scope of trace context. This enables OpenTelemetry auto-collection
      * to pick it up and correlate lower levels of instrumentation and logs
      * to logical Cosmos spans.
-     *
+     * <p>
      * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
     private final class PropagatingMono extends Mono<Object> {
@@ -712,7 +712,7 @@ public final class DiagnosticsProvider {
      * in scope of trace context. This enables OpenTelemetry auto-collection
      * to pick it up and correlate lower levels of instrumentation and logs
      * to logical Cosmos spans.
-     *
+     * <p>
      * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
     private final class PropagatingFlux extends Flux<Object> {
@@ -969,7 +969,7 @@ public final class DiagnosticsProvider {
                     }
                 }
 
-                for (ClientSideRequestStatistics c: feedResponseDiagnostics.getClientSideRequestStatisticsSet()) {
+                for (ClientSideRequestStatistics c: feedResponseDiagnostics.getClientSideRequestStatistics()) {
                     addClientSideRequestStatisticsOnTracerEvent(c, context);
                 }
             }
@@ -1226,7 +1226,7 @@ public final class DiagnosticsProvider {
         }
 
         private void traceTransportLevelRequests(
-            Set<ClientSideRequestStatistics> clientSideRequestStatistics,
+            Collection<ClientSideRequestStatistics> clientSideRequestStatistics,
             Context context) {
 
             if (clientSideRequestStatistics != null) {
@@ -1255,7 +1255,7 @@ public final class DiagnosticsProvider {
                     diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics);
                 if (feedResponseDiagnostics != null) {
                     traceTransportLevelRequests(
-                        feedResponseDiagnostics.getClientSideRequestStatisticsSet(),
+                        feedResponseDiagnostics.getClientSideRequestStatistics(),
                         context);
                 }
             }

@@ -490,7 +490,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         FeedResponse<InternalObjectNode> response = cosmosContainer.readMany(itemIdList, InternalObjectNode.class);
         FeedResponseDiagnostics diagnostics = response.getCosmosDiagnostics().getFeedResponseDiagnostics();
 
-        assertThat(diagnostics.getClientSideRequestStatisticsSet().size()).isEqualTo(1);
+        assertThat(diagnostics.getClientSideRequestStatistics().size()).isEqualTo(1);
         assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
     }
 

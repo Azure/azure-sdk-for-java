@@ -87,13 +87,12 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -2288,7 +2287,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                Set<ClientSideRequestStatistics> aggregateRequestStatistics = new HashSet<>();
+                                Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2302,7 +2301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsSet(page.getCosmosDiagnostics()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                                 }
                                 CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
                                 BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);

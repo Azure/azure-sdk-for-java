@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -93,8 +92,8 @@ public final class CosmosDiagnostics {
     public Duration getDuration() {
         if (this.feedResponseDiagnostics != null) {
 
-            Set<ClientSideRequestStatistics> statistics =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
+            Collection<ClientSideRequestStatistics> statistics =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
             if (statistics == null) {
                 return Duration.ZERO;
             }
@@ -157,10 +156,10 @@ public final class CosmosDiagnostics {
                 }
             }
 
-            Set<ClientSideRequestStatistics> clientStatisticSet =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
-            if (clientStatisticSet != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticSet) {
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticCollection) {
                     Set<String> temp = clientStatistics.getContactedRegionNames();
                     if (temp != null && temp.size() > 0) {
                         aggregatedRegionsContacted.addAll(temp);
@@ -200,10 +199,10 @@ public final class CosmosDiagnostics {
         if (this.feedResponseDiagnostics != null) {
             int totalResponsePayloadSizeInBytes = 0;
 
-            Set<ClientSideRequestStatistics> clientStatisticSet =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
-            if (clientStatisticSet != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticSet) {
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticCollection) {
                     totalResponsePayloadSizeInBytes += clientStatistics.getMaxResponsePayloadSizeInBytes();
                 }
             }
@@ -218,12 +217,12 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics;
     }
 
-    Set<ClientSideRequestStatistics> getClientSideRequestStatistics() {
+    Collection<ClientSideRequestStatistics> getClientSideRequestStatistics() {
         if (this.feedResponseDiagnostics != null) {
-            return this.feedResponseDiagnostics.getClientSideRequestStatisticsSet();
+            return this.feedResponseDiagnostics.getClientSideRequestStatistics();
         }
 
-        return ImmutableSet.of(this.clientSideRequestStatistics);
+        return ImmutableList.of(this.clientSideRequestStatistics);
     }
 
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
@@ -285,7 +284,7 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public Set<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
+                public Collection<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
                     if (cosmosDiagnostics == null) {
                         return null;
                     }

@@ -41,6 +41,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -432,7 +433,7 @@ public final class ClientTelemetryMetrics {
             }
 
             for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-                Set<ClientSideRequestStatistics> clientSideRequestStatistics =
+                Collection<ClientSideRequestStatistics> clientSideRequestStatistics =
                     diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
 
                 if (clientSideRequestStatistics != null) {

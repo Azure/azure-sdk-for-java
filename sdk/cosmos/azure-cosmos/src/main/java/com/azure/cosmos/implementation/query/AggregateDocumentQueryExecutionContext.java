@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -16,10 +17,8 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -61,11 +60,11 @@ public class AggregateDocumentQueryExecutionContext
                     double requestCharge = 0;
                     List<Document> aggregateResults = new ArrayList<>();
                     HashMap<String, String> headers = new HashMap<>();
-                    Set<ClientSideRequestStatistics> diagnosticsList = new HashSet<>();
+                    Collection<ClientSideRequestStatistics> diagnosticsList = new DistinctClientSideRequestStatisticsCollection();
 
                     for(FeedResponse<Document> page : superList) {
                         diagnosticsList.addAll(BridgeInternal
-                                                   .getClientSideRequestStatisticsSet(page.getCosmosDiagnostics()));
+                                                   .getClientSideRequestStatistics(page.getCosmosDiagnostics()));
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));

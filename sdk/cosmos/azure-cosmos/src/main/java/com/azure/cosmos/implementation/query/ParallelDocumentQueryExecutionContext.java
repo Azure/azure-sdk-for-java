@@ -32,12 +32,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -377,8 +377,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                 }
 
                 DocumentProducer<T>.DocumentProducerFeedResponse page;
-                page = current;
-                page = this.addCompositeContinuationToken(page,
+                page = this.addCompositeContinuationToken(current,
                         compositeContinuationToken);
 
                 return page;
@@ -403,8 +402,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         UUID correlatedActivityId,
         String activityId,
         Supplier<String> operationContextTextProvider) {
-        Set<ClientSideRequestStatistics> requestStatistics =
-            BridgeInternal.getClientSideRequestStatisticsSet(cosmosDiagnostics);
+        Collection<ClientSideRequestStatistics> requestStatistics =
+            BridgeInternal.getClientSideRequestStatistics(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

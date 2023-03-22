@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -18,11 +19,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
@@ -78,14 +79,14 @@ public final class GroupByDocumentQueryExecutionContext implements
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
-                Set<ClientSideRequestStatistics> diagnosticsList = new HashSet<>();
+                Collection<ClientSideRequestStatistics> diagnosticsList = new DistinctClientSideRequestStatisticsCollection();
                 ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
                 for (FeedResponse<Document> page : superList) {
                     List<Document> results = page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
-                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsSet(page.getCosmosDiagnostics()));
+                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
@@ -122,7 +123,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         double requestCharge,
         ConcurrentMap<String, QueryMetrics> queryMetrics,
         List<Document> groupByResults,
-        Set<ClientSideRequestStatistics> diagnosticsList) {
+        Collection<ClientSideRequestStatistics> diagnostics) {
 
         if (this.groupingTable == null) {
             throw new IllegalStateException("No grouping table defined.");
@@ -133,7 +134,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
             queryMetrics, null, false,
             false, null);
-        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnostics);
         return frp;
     }
 

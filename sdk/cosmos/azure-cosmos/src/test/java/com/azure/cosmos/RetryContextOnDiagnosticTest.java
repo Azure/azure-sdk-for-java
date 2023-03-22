@@ -337,7 +337,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
                 .getFeedResponseDiagnostics()
-                .getClientSideRequestStatisticsSet()
+                .getClientSideRequestStatistics()
                 .stream()
                 .filter(context -> context.getRetryContext().getRetryCount() == 2
                     && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
@@ -428,7 +428,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
                 .getFeedResponseDiagnostics()
-                .getClientSideRequestStatisticsSet()
+                .getClientSideRequestStatistics()
                 .stream()
                 .filter(context -> context.getRetryContext().getRetryCount() == 4
                     && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 410
@@ -568,7 +568,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
                 .getFeedResponseDiagnostics()
-                .getClientSideRequestStatisticsSet()
+                .getClientSideRequestStatistics()
                 .stream()
                 .filter(context -> context.getRetryContext().getRetryCount() == 2
                     && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 404
@@ -707,7 +707,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
                 .getFeedResponseDiagnostics()
-                .getClientSideRequestStatisticsSet()
+                .getClientSideRequestStatistics()
                 .stream()
                 .filter(context -> context.getRetryContext().getRetryCount() == 2
                     && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)
@@ -803,7 +803,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             feedResponse = iterator.next();
             Optional<ClientSideRequestStatistics> first = feedResponse.getCosmosDiagnostics()
                 .getFeedResponseDiagnostics()
-                .getClientSideRequestStatisticsSet()
+                .getClientSideRequestStatistics()
                 .stream()
                 .filter(context -> context.getRetryContext().getRetryCount() == 2
                     && context.getRetryContext().getStatusAndSubStatusCodes().get(0)[0] == 429)

@@ -865,7 +865,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
         if (clientSideRequestStatistics != null ||
             (feedResponseDiagnostics != null &&
-                feedResponseDiagnostics.getClientSideRequestStatisticsSet().size() > 0)) {
+                feedResponseDiagnostics.getClientSideRequestStatistics().size() > 0)) {
 
             assertThat(mockTracer).isNotNull();
             assertThat(mockTracer.context).isNotNull();
@@ -917,7 +917,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
         if (clientSideRequestStatistics != null ||
             (feedResponseDiagnostics != null &&
-                feedResponseDiagnostics.getClientSideRequestStatisticsSet().size() > 0)) {
+                feedResponseDiagnostics.getClientSideRequestStatistics().size() > 0)) {
 
             assertThat(mockTracer).isNotNull();
             assertThat(mockTracer.context).isNotNull();
@@ -1209,7 +1209,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         FeedResponseDiagnostics feedResponseDiagnostics =
             cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
-        if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsSet().size() > 0) {
+        if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatistics().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan
                 assertEvent(
@@ -1221,7 +1221,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             counter = 1;
             for (ClientSideRequestStatistics clientSideStatistics :
-                feedResponseDiagnostics.getClientSideRequestStatisticsSet()) {
+                feedResponseDiagnostics.getClientSideRequestStatistics()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
                     && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
 

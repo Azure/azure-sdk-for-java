@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -20,9 +21,9 @@ import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,7 +62,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
-            Set<ClientSideRequestStatistics> clientSideRequestStatisticsList = ConcurrentHashMap.newKeySet();
+            Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList = new DistinctClientSideRequestStatisticsCollection();
             return OrderByUtils.orderedMerge(consumeComparer, tracker, documentProducers, queryMetricsMap,
                     targetRangeToOrderByContinuationTokenMap, clientSideRequestStatisticsList)
                     .map(orderByQueryResult -> resultPageFrom(tracker, orderByQueryResult));
