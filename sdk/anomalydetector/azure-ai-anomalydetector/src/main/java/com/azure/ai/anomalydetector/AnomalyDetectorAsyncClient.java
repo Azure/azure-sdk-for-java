@@ -933,23 +933,22 @@ public final class AnomalyDetectorAsyncClient {
      * @param skip Skip indicates how many models will be skipped.
      * @param top Top indicates how many models will be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of listing models as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
+    PagedFlux<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
         // Generated convenience method for listMultivariateModels
         RequestOptions requestOptions = new RequestOptions();
         if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+            requestOptions.addQueryParam("skip", String.valueOf(skip));
         }
         if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
+            requestOptions.addQueryParam("top", String.valueOf(top));
         }
         PagedFlux<BinaryData> pagedFluxResponse = listMultivariateModels(requestOptions);
         return PagedFlux.create(

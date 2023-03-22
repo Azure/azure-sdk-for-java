@@ -921,16 +921,15 @@ public final class AnomalyDetectorClient {
      * @param skip Skip indicates how many models will be skipped.
      * @param top Top indicates how many models will be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
+    PagedIterable<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
         // Generated convenience method for listMultivariateModels
         return new PagedIterable<>(client.listMultivariateModels(skip, top));
     }
