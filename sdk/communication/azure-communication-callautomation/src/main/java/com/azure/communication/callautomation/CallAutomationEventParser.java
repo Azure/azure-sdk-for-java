@@ -23,8 +23,11 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+<<<<<<< HEAD:sdk/communication/azure-communication-callautomation/src/main/java/com/azure/communication/callautomation/CallAutomationEventParser.java
 import com.azure.communication.callautomation.models.events.SendDtmfCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfFailed;
+=======
+>>>>>>> 43e543a03bc (add event handler for remove participant events):sdk/communication/azure-communication-callautomation/src/main/java/com/azure/communication/callautomation/EventHandler.java
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
