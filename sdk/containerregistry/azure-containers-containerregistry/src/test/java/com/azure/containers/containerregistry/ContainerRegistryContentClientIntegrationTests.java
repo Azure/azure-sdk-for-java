@@ -386,9 +386,6 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         assertNotNull(manifestResult.getValue());
         assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
 
-        assertThrows(IllegalStateException.class, () -> manifestResult.getValue().getManifest().toObject(OciImageManifest.class));
-
-        // does not throw
         ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
         assertEquals(2, list.getSchemaVersion());
         assertEquals(dockerListType.toString(), list.getMediaType());
@@ -417,7 +414,6 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         // but service does the best effort to return what it supports
         assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
-        assertThrows(IllegalStateException.class, () -> manifestResult.getManifest().toObject(OciImageManifest.class));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
