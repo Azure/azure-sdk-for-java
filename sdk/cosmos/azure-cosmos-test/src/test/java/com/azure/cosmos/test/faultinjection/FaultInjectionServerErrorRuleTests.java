@@ -91,6 +91,19 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "faultInjectionOperationTypeProvider")
+    public static Object[][] faultInjectionOperationTypeProvider() {
+        return new Object[][]{
+            // fault injection operation type, primaryAddressOnly
+            { FaultInjectionOperationType.READ_ITEM, false },
+            { FaultInjectionOperationType.REPLACE_ITEM, true },
+            { FaultInjectionOperationType.CREATE_ITEM, true },
+            { FaultInjectionOperationType.DELETE_ITEM, true},
+            { FaultInjectionOperationType.QUERY_ITEM, false },
+            { FaultInjectionOperationType.PATCH_ITEM, true }
+        };
+    }
+
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
@@ -559,6 +572,64 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 true
             );
 
+        } finally {
+            serverConnectionDelayRule.disable();
+            safeClose(newClient);
+        }
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "faultInjectionOperationTypeProvider", timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_ServerConnectionDelay_warmup(
+        FaultInjectionOperationType operationType,
+        boolean primaryAddressesOnly) {
+
+        CosmosAsyncClient newClient = null; // creating new client to force creating new connections
+        // simulate high channel acquisition/connectionTimeout during openConnection flow
+        String ruleId = "serverErrorRule-serverConnectionDelay-warmup" + UUID.randomUUID();
+        FaultInjectionRule serverConnectionDelayRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(operationType)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        .delay(Duration.ofSeconds(2))
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
+
+            newClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .directMode(directConnectionConfig)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                newClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
+
+            int partitionSize = container.getFeedRanges().block().size();
+            container.openConnectionsAndInitCaches().block();
+
+            if (primaryAddressesOnly) {
+                assertThat(serverConnectionDelayRule.getHitCount()).isEqualTo(partitionSize);
+            } else {
+                assertThat(serverConnectionDelayRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
+            }
         } finally {
             serverConnectionDelayRule.disable();
             safeClose(newClient);

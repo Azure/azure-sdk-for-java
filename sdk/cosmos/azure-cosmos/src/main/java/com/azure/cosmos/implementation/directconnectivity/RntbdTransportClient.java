@@ -250,11 +250,11 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
-        request.requestContext.storePhysicalAddress = address;
+        request.requestContext.storePhysicalAddressUri = addressUri;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, address);
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI());
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
@@ -349,16 +349,19 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
+        checkNotNull(openConnectionRequest, "Argument 'openConnectionRequest' should not be null");
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-        checkNotNull(serviceEndpoint, "Argument 'serviceEndpoint' should not be null");
 
         this.throwIfClosed();
 
-        final URI address = addressUri.getURI();
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
+        final RntbdEndpoint endpoint =
+            this.endpointProvider.createIfAbsent(
+                openConnectionRequest.requestContext.locationEndpointToRoute,
+                addressUri.getURI());
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(serviceEndpoint, address);
-        return Mono.fromFuture(endpoint.openConnection(addressUri));
+        return Mono.fromFuture(endpoint.openConnection(requestArgs));
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

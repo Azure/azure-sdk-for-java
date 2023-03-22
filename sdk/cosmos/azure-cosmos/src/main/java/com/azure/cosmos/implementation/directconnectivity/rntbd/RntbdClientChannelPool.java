@@ -462,7 +462,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
 
         OpenChannelPromise openChannelPromise =
-                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime());
+                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime(), requestRecord);
 
         try {
             // Compared to the normal request flow

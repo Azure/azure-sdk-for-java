@@ -518,8 +518,8 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             return Mono.empty();
         }
         @Override
-        public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-            throw new NotImplementedException("tryOpenConnection is not supported in RntbdTransportClientTest");
+        public Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest) {
+            throw new NotImplementedException("openConnection is not supported in RntbdTransportClientTest");
         }
 
         @Override
