@@ -15,6 +15,8 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.azure.spring.cloud.feature.management.FeatureManager;
+
 import reactor.core.publisher.Mono;
 
 /**

@@ -4,6 +4,8 @@ package com.azure.spring.cloud.feature.manager;
 
 import java.util.HashMap;
 
+import com.azure.spring.cloud.feature.management.FeatureManager;
+
 import reactor.core.publisher.Mono;
 
 /**

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
 
 import com.azure.spring.cloud.feature.manager.FeatureHandler;
-import com.azure.spring.cloud.feature.manager.FeatureManager;
 import com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
+import com.azure.spring.cloud.feature.management.FeatureManager;
 import com.azure.spring.cloud.feature.manager.DisabledFeaturesHandler;
 
 /**
