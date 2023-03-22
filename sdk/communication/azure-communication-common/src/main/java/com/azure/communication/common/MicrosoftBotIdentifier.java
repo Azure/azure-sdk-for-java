@@ -20,7 +20,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      *
      * @param botId botId The unique Microsoft app ID for the bot as registered with the Bot Framework.
      * @param cloudEnvironment the cloud environment in which this identifier is created.
-     * @param isResourceAccountConfigured set this to true if the bot is tennantized. It is false if the bot is global and no resource account is configured.
+     * @param isResourceAccountConfigured set this to true if the bot is tenantized. It is false if the bot is global and no resource account is configured.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isResourceAccountConfigured) {
