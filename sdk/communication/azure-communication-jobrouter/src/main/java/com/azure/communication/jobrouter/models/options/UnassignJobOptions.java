@@ -56,4 +56,12 @@ public final class UnassignJobOptions {
     public String getAssignmentId() {
         return this.assignmentId;
     }
+
+    /**
+     * Get isWorkerRematchPending.
+     * @return isWorkerRematchPending
+     */
+    public Boolean getIsWorkerRematchPending() {
+        return this.isWorkerRematchPending;
+    }
 }
