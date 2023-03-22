@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomEntityStoreAssignments ListByResourceGroup. */
 public final class CustomEntityStoreAssignmentsListByResourceGroupSamples {
     /*
@@ -18,6 +16,8 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupSamples {
      */
     public static void listCustomEntityStoreAssignmentsInASubscriptionAndAResourceGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.customEntityStoreAssignments().listByResourceGroup("TestResourceGroup", Context.NONE);
+        manager
+            .customEntityStoreAssignments()
+            .listByResourceGroup("TestResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

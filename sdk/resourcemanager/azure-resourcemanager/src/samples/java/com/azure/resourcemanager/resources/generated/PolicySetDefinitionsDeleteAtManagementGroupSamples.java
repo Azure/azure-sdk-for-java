@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicySetDefinitions DeleteAtManagementGroup. */
 public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
     /*
@@ -23,6 +21,7 @@ public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .deleteAtManagementGroupWithResponse("CostManagement", "MyManagementGroup", Context.NONE);
+            .deleteAtManagementGroupWithResponse(
+                "CostManagement", "MyManagementGroup", com.azure.core.util.Context.NONE);
     }
 }

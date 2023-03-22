@@ -23,16 +23,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
+import com.azure.spring.cloud.feature.manager.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
-import com.azure.spring.cloud.feature.manager.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
-import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
-import com.azure.spring.cloud.feature.manager.models.IFeatureVariantAssigner;
-
-import reactor.core.publisher.Mono;
+import com.azure.spring.cloud.feature.manager.models.FilterNotFoundException;
 
 /**
  * Unit tests for FeatureManager.
@@ -51,14 +47,11 @@ public class FeatureManagerTest {
     @Mock
     private FeatureManagementProperties featureManagementPropertiesMock;
 
-    @Mock
-    private MockFilter filterMock;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
-        
+
         featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties);
     }
 
@@ -146,21 +139,7 @@ public class FeatureManagerTest {
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
-    class MockFilter implements IFeatureFilter, IFeatureVariantAssigner {
-
-        @Override
-        public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {
-            return null;
-        }
-
-        @Override
-        public boolean evaluate(FeatureFilterEvaluationContext context) {
-            return false;
-        }
-
-    }
-
-    class AlwaysOnFilter implements IFeatureFilter {
+    class AlwaysOnFilter implements FeatureFilter {
 
         @Override
         public boolean evaluate(FeatureFilterEvaluationContext context) {

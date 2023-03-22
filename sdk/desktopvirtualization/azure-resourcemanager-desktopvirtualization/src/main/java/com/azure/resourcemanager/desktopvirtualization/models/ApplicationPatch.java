@@ -26,6 +26,10 @@ public final class ApplicationPatch {
     @JsonProperty(value = "properties")
     private ApplicationPatchProperties innerProperties;
 
+    /** Creates an instance of ApplicationPatch class. */
+    public ApplicationPatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *

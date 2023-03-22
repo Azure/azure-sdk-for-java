@@ -14,10 +14,10 @@ public final class CacheUpgradeSettingsTests {
     public void testDeserialize() throws Exception {
         CacheUpgradeSettings model =
             BinaryData
-                .fromString("{\"upgradeScheduleEnabled\":false,\"scheduledTime\":\"2021-11-03T09:03:22Z\"}")
+                .fromString("{\"upgradeScheduleEnabled\":false,\"scheduledTime\":\"2021-02-04T13:42:35Z\"}")
                 .toObject(CacheUpgradeSettings.class);
         Assertions.assertEquals(false, model.upgradeScheduleEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T09:03:22Z"), model.scheduledTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T13:42:35Z"), model.scheduledTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,9 +25,9 @@ public final class CacheUpgradeSettingsTests {
         CacheUpgradeSettings model =
             new CacheUpgradeSettings()
                 .withUpgradeScheduleEnabled(false)
-                .withScheduledTime(OffsetDateTime.parse("2021-11-03T09:03:22Z"));
+                .withScheduledTime(OffsetDateTime.parse("2021-02-04T13:42:35Z"));
         model = BinaryData.fromObject(model).toObject(CacheUpgradeSettings.class);
         Assertions.assertEquals(false, model.upgradeScheduleEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T09:03:22Z"), model.scheduledTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T13:42:35Z"), model.scheduledTime());
     }
 }

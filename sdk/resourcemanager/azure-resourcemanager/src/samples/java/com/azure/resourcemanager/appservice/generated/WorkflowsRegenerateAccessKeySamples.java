@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.KeyType;
 import com.azure.resourcemanager.appservice.models.RegenerateActionParameter;
 
 /** Samples for Workflows RegenerateAccessKey. */
 public final class WorkflowsRegenerateAccessKeySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Workflows_RegenerateAccessKey.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Workflows_RegenerateAccessKey.json
      */
     /**
      * Sample code: Regenerate the callback URL access key for request triggers.
@@ -30,6 +29,6 @@ public final class WorkflowsRegenerateAccessKeySamples {
                 "test-name",
                 "testWorkflowName",
                 new RegenerateActionParameter().withKeyType(KeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

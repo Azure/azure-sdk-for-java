@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
+import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -52,7 +53,7 @@ public final class VolumeProperties {
      * usageThreshold
      *
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      */
     @JsonProperty(value = "usageThreshold", required = true)
     private long usageThreshold;
@@ -274,12 +275,27 @@ public final class VolumeProperties {
     private Integer cloneProgress;
 
     /*
+     * Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present
+     * on the volume.
+     */
+    @JsonProperty(value = "fileAccessLogs", access = JsonProperty.Access.WRITE_ONLY)
+    private FileAccessLogs fileAccessLogs;
+
+    /*
      * avsDataStore
      *
      * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
      */
     @JsonProperty(value = "avsDataStore")
     private AvsDataStore avsDataStore;
+
+    /*
+     * dataStoreResourceId
+     *
+     * Data store resource unique identifier
+     */
+    @JsonProperty(value = "dataStoreResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> dataStoreResourceId;
 
     /*
      * Specifies if default quota is enabled for the volume.
@@ -357,6 +373,27 @@ public final class VolumeProperties {
     @JsonProperty(value = "enableSubvolumes")
     private EnableSubvolumes enableSubvolumes;
 
+    /*
+     * Provisioned Availability Zone
+     *
+     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * volume resides.
+     */
+    @JsonProperty(value = "provisionedAvailabilityZone", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisionedAvailabilityZone;
+
+    /*
+     * Is Large Volume
+     *
+     * Specifies whether volume is a Large Volume or Regular Volume.
+     */
+    @JsonProperty(value = "isLargeVolume")
+    private Boolean isLargeVolume;
+
+    /** Creates an instance of VolumeProperties class. */
+    public VolumeProperties() {
+    }
+
     /**
      * Get the fileSystemId property: FileSystem ID
      *
@@ -420,7 +457,7 @@ public final class VolumeProperties {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -432,7 +469,7 @@ public final class VolumeProperties {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
@@ -1053,6 +1090,16 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the fileAccessLogs property: Flag indicating whether file access logs are enabled for the volume, based on
+     * active diagnostic settings present on the volume.
+     *
+     * @return the fileAccessLogs value.
+     */
+    public FileAccessLogs fileAccessLogs() {
+        return this.fileAccessLogs;
+    }
+
+    /**
      * Get the avsDataStore property: avsDataStore
      *
      * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
@@ -1074,6 +1121,17 @@ public final class VolumeProperties {
     public VolumeProperties withAvsDataStore(AvsDataStore avsDataStore) {
         this.avsDataStore = avsDataStore;
         return this;
+    }
+
+    /**
+     * Get the dataStoreResourceId property: dataStoreResourceId
+     *
+     * <p>Data store resource unique identifier.
+     *
+     * @return the dataStoreResourceId value.
+     */
+    public List<String> dataStoreResourceId() {
+        return this.dataStoreResourceId;
     }
 
     /**
@@ -1281,6 +1339,42 @@ public final class VolumeProperties {
      */
     public VolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
         this.enableSubvolumes = enableSubvolumes;
+        return this;
+    }
+
+    /**
+     * Get the provisionedAvailabilityZone property: Provisioned Availability Zone
+     *
+     * <p>The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * volume resides.
+     *
+     * @return the provisionedAvailabilityZone value.
+     */
+    public String provisionedAvailabilityZone() {
+        return this.provisionedAvailabilityZone;
+    }
+
+    /**
+     * Get the isLargeVolume property: Is Large Volume
+     *
+     * <p>Specifies whether volume is a Large Volume or Regular Volume.
+     *
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.isLargeVolume;
+    }
+
+    /**
+     * Set the isLargeVolume property: Is Large Volume
+     *
+     * <p>Specifies whether volume is a Large Volume or Regular Volume.
+     *
+     * @param isLargeVolume the isLargeVolume value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withIsLargeVolume(Boolean isLargeVolume) {
+        this.isLargeVolume = isLargeVolume;
         return this;
     }
 

@@ -26,6 +26,10 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "sku")
     private SkuDescription sku;
 
+    /** Creates an instance of WorkerPoolResourceInner class. */
+    public WorkerPoolResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

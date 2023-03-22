@@ -59,8 +59,8 @@ public final class AppServiceCertificateOrderProperties {
     private CertificateProductType productType;
 
     /*
-     * <code>true</code> if the certificate should be automatically renewed
-     * when it expires; otherwise, <code>false</code>.
+     * <code>true</code> if the certificate should be automatically renewed when it expires; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
@@ -120,15 +120,13 @@ public final class AppServiceCertificateOrderProperties {
     private OffsetDateTime expirationTime;
 
     /*
-     * <code>true</code> if private key is external; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if private key is external; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isPrivateKeyExternal", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrivateKeyExternal;
 
     /*
-     * Reasons why App Service Certificate is not renewable at the current
-     * moment.
+     * Reasons why App Service Certificate is not renewable at the current moment.
      */
     @JsonProperty(value = "appServiceCertificateNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons;
@@ -144,6 +142,10 @@ public final class AppServiceCertificateOrderProperties {
      */
     @JsonProperty(value = "contact", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateOrderContact contact;
+
+    /** Creates an instance of AppServiceCertificateOrderProperties class. */
+    public AppServiceCertificateOrderProperties() {
+    }
 
     /**
      * Get the certificates property: State of the Key Vault secret.

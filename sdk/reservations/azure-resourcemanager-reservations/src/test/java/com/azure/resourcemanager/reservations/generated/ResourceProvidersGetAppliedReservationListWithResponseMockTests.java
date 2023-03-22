@@ -31,7 +31,7 @@ public final class ResourceProvidersGetAppliedReservationListWithResponseMockTes
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"f\",\"name\":\"otxhojujby\",\"type\":\"lmcuvhixb\",\"properties\":{\"reservationOrderIds\":{\"value\":[],\"nextLink\":\"n\"}}}";
+            "{\"id\":\"czu\",\"name\":\"ejwcwwqiok\",\"type\":\"sx\",\"properties\":{\"reservationOrderIds\":{\"value\":[],\"nextLink\":\"vpkjpr\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class ResourceProvidersGetAppliedReservationListWithResponseMockTes
         AppliedReservations response =
             manager
                 .resourceProviders()
-                .getAppliedReservationListWithResponse("upev", com.azure.core.util.Context.NONE)
+                .getAppliedReservationListWithResponse("jltduceam", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("n", response.reservationOrderIds().nextLink());
+        Assertions.assertEquals("vpkjpr", response.reservationOrderIds().nextLink());
     }
 }

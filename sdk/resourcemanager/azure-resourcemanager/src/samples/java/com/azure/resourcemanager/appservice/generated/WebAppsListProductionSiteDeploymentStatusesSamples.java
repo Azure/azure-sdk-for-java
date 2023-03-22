@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps ListProductionSiteDeploymentStatuses. */
 public final class WebAppsListProductionSiteDeploymentStatusesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListSiteDeploymentStatus.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListSiteDeploymentStatus.json
      */
     /**
      * Sample code: List Deployment Status.
@@ -22,6 +20,6 @@ public final class WebAppsListProductionSiteDeploymentStatusesSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .listProductionSiteDeploymentStatuses("rg", "testSite", Context.NONE);
+            .listProductionSiteDeploymentStatuses("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

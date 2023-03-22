@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Assessments List. */
 public final class AssessmentsListSamples {
     /*
@@ -17,6 +15,8 @@ public final class AssessmentsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void listSecurityAssessments(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.assessments().list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", Context.NONE);
+        manager
+            .assessments()
+            .list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", com.azure.core.util.Context.NONE);
     }
 }

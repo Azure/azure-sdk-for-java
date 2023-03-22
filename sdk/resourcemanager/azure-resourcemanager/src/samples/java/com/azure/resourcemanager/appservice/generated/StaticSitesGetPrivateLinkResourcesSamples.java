@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites GetPrivateLinkResources. */
 public final class StaticSitesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateLinkResources.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSitePrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
@@ -22,6 +20,6 @@ public final class StaticSitesGetPrivateLinkResourcesSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .getPrivateLinkResourcesWithResponse("rg", "testSite", Context.NONE);
+            .getPrivateLinkResourcesWithResponse("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

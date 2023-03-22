@@ -47,15 +47,6 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
     }
 
-    public NetAppAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        NetAppAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new NetAppAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NetAppAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<NetAppAccountInner> inner =
@@ -66,6 +57,15 @@ public final class AccountsImpl implements Accounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NetAppAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NetAppAccount getByResourceGroup(String resourceGroupName, String accountName) {
+        NetAppAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new NetAppAccountImpl(inner, this.manager());
         } else {
             return null;
         }

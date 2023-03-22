@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.AwsEnvironmentData;
 import com.azure.resourcemanager.security.models.CloudName;
 import com.azure.resourcemanager.security.models.CspmMonitorAwsOffering;
@@ -28,7 +27,8 @@ public final class SecurityConnectorsUpdateSamples {
         SecurityConnector resource =
             manager
                 .securityConnectors()
-                .getByResourceGroupWithResponse("exampleResourceGroup", "exampleSecurityConnectorName", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "exampleResourceGroup", "exampleSecurityConnectorName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

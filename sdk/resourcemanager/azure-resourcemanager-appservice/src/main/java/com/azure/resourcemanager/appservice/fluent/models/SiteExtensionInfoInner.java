@@ -20,6 +20,10 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SiteExtensionInfoProperties innerProperties;
 
+    /** Creates an instance of SiteExtensionInfoInner class. */
+    public SiteExtensionInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: SiteExtensionInfo resource specific properties.
      *

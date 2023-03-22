@@ -1,14 +1,13 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.0-beta.2 (2023-03-16)
 
 ### Features Added
-
-### Breaking Changes
+- Added CAE support to service principal authentication.
+- Pass more detailed refresh policy for managed identity tokens to MSAL.
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed detection logic for az/azd.
 
 ## 1.8.1 (2023-03-06)
 

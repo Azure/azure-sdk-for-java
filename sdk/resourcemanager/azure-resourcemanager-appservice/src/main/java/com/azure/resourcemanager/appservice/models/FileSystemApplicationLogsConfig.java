@@ -16,6 +16,10 @@ public final class FileSystemApplicationLogsConfig {
     @JsonProperty(value = "level")
     private LogLevel level;
 
+    /** Creates an instance of FileSystemApplicationLogsConfig class. */
+    public FileSystemApplicationLogsConfig() {
+    }
+
     /**
      * Get the level property: Log level.
      *

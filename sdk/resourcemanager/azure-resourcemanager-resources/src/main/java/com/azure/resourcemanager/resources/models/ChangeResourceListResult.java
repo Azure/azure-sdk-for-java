@@ -24,6 +24,10 @@ public final class ChangeResourceListResult {
     @JsonProperty(value = "value")
     private List<ChangeResourceResultInner> value;
 
+    /** Creates an instance of ChangeResourceListResult class. */
+    public ChangeResourceListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of Change Resources.
      *

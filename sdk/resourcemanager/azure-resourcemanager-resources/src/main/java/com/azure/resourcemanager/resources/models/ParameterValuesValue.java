@@ -16,6 +16,10 @@ public final class ParameterValuesValue {
     @JsonProperty(value = "value")
     private Object value;
 
+    /** Creates an instance of ParameterValuesValue class. */
+    public ParameterValuesValue() {
+    }
+
     /**
      * Get the value property: The value of the parameter.
      *

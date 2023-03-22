@@ -138,33 +138,30 @@ public final class RepositoryWriteableProperties implements JsonSerializable<Rep
     public static RepositoryWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Boolean deleteEnabled = null;
-                    Boolean writeEnabled = null;
-                    Boolean listEnabled = null;
-                    Boolean readEnabled = null;
+                    RepositoryWriteableProperties deserializedRepositoryWriteableProperties =
+                            new RepositoryWriteableProperties();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("deleteEnabled".equals(fieldName)) {
-                            deleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedRepositoryWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("writeEnabled".equals(fieldName)) {
-                            writeEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedRepositoryWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("listEnabled".equals(fieldName)) {
-                            listEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedRepositoryWriteableProperties.listEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("readEnabled".equals(fieldName)) {
-                            readEnabled = reader.getNullable(JsonReader::getBoolean);
+                            deserializedRepositoryWriteableProperties.readEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    RepositoryWriteableProperties deserializedValue = new RepositoryWriteableProperties();
-                    deserializedValue.deleteEnabled = deleteEnabled;
-                    deserializedValue.writeEnabled = writeEnabled;
-                    deserializedValue.listEnabled = listEnabled;
-                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedValue;
+                    return deserializedRepositoryWriteableProperties;
                 });
     }
 }

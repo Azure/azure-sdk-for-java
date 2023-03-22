@@ -24,6 +24,10 @@ public final class SubvolumeInfoInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SubvolumeInfoInner class. */
+    public SubvolumeInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: Subvolume Properties.
      *

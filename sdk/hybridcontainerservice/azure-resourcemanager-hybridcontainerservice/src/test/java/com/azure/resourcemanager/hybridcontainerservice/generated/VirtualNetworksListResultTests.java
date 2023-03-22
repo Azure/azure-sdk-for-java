@@ -13,49 +13,61 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[],\"dnsServers\":[],\"gateway\":\"fdsd\",\"ipAddressPrefix\":\"kgtdlmkkze\",\"vlanID\":\"l\",\"provisioningState\":\"Accepted\"},\"extendedLocation\":{\"type\":\"sttwvogvbbe\",\"name\":\"cngqqmoakufgmjz\"},\"location\":\"wr\",\"tags\":{\"bminrfdwoyuhhzi\":\"twaenuuzko\",\"zqhof\":\"iefozbhdmsml\",\"ah\":\"rmaequ\"},\"id\":\"icslfaoq\",\"name\":\"piyylhalnswhccsp\",\"type\":\"kaivwit\"}],\"nextLink\":\"cywuggwol\"}")
+                    "{\"value\":[{\"properties\":{\"vipPool\":[],\"vmipPool\":[],\"dhcpServers\":[],\"dnsServers\":[],\"gateway\":\"cstwity\",\"ipAddressPrefix\":\"evxccedcp\",\"vlanID\":\"dyodnwzxltj\",\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"ugcxnavvwxq\",\"name\":\"y\"},\"location\":\"unyowxwl\",\"tags\":{\"acizsjqlhkrr\":\"rkvfgbvfvpdbo\",\"hvxndzwmkrefajpj\":\"bdeibqipqk\",\"yhgbijtjivfx\":\"rwkq\",\"stawfsdjpvkv\":\"sjabibs\"},\"id\":\"bjxbkzbzk\",\"name\":\"vncjabudurgk\",\"type\":\"kmokz\"}],\"nextLink\":\"jk\"}")
                 .toObject(VirtualNetworksListResult.class);
-        Assertions.assertEquals("wr", model.value().get(0).location());
-        Assertions.assertEquals("twaenuuzko", model.value().get(0).tags().get("bminrfdwoyuhhzi"));
-        Assertions.assertEquals("sttwvogvbbe", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("cngqqmoakufgmjz", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("cywuggwol", model.nextLink());
+        Assertions.assertEquals("unyowxwl", model.value().get(0).location());
+        Assertions.assertEquals("rkvfgbvfvpdbo", model.value().get(0).tags().get("acizsjqlhkrr"));
+        Assertions.assertEquals("cstwity", model.value().get(0).properties().gateway());
+        Assertions.assertEquals("evxccedcp", model.value().get(0).properties().ipAddressPrefix());
+        Assertions.assertEquals("ugcxnavvwxq", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("y", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jk", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksListResult model =
             new VirtualNetworksListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new VirtualNetworksInner()
-                                .withLocation("wr")
+                                .withLocation("unyowxwl")
                                 .withTags(
-                                    mapOf("bminrfdwoyuhhzi", "twaenuuzko", "zqhof", "iefozbhdmsml", "ah", "rmaequ"))
+                                    mapOf(
+                                        "acizsjqlhkrr",
+                                        "rkvfgbvfvpdbo",
+                                        "hvxndzwmkrefajpj",
+                                        "bdeibqipqk",
+                                        "yhgbijtjivfx",
+                                        "rwkq",
+                                        "stawfsdjpvkv",
+                                        "sjabibs"))
                                 .withProperties(
                                     new VirtualNetworksProperties()
                                         .withVipPool(Arrays.asList())
-                                        .withVmipPool(Arrays.asList()))
+                                        .withVmipPool(Arrays.asList())
+                                        .withDnsServers(Arrays.asList())
+                                        .withGateway("cstwity")
+                                        .withIpAddressPrefix("evxccedcp"))
                                 .withExtendedLocation(
-                                    new VirtualNetworksExtendedLocation()
-                                        .withType("sttwvogvbbe")
-                                        .withName("cngqqmoakufgmjz"))))
-                .withNextLink("cywuggwol");
+                                    new VirtualNetworksExtendedLocation().withType("ugcxnavvwxq").withName("y"))))
+                .withNextLink("jk");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksListResult.class);
-        Assertions.assertEquals("wr", model.value().get(0).location());
-        Assertions.assertEquals("twaenuuzko", model.value().get(0).tags().get("bminrfdwoyuhhzi"));
-        Assertions.assertEquals("sttwvogvbbe", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("cngqqmoakufgmjz", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("cywuggwol", model.nextLink());
+        Assertions.assertEquals("unyowxwl", model.value().get(0).location());
+        Assertions.assertEquals("rkvfgbvfvpdbo", model.value().get(0).tags().get("acizsjqlhkrr"));
+        Assertions.assertEquals("cstwity", model.value().get(0).properties().gateway());
+        Assertions.assertEquals("evxccedcp", model.value().get(0).properties().ipAddressPrefix());
+        Assertions.assertEquals("ugcxnavvwxq", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("y", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jk", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

@@ -43,6 +43,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChann
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndpointMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
@@ -955,6 +956,7 @@ public final class RntbdTransportClientTest {
         final URI remoteURI;
         final Tag tag;
         private final Tag clientMetricTag;
+        private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
         private FakeEndpoint(
             final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
@@ -969,6 +971,8 @@ public final class RntbdTransportClientTest {
                     null,
                     null,
                     null);
+                this.durableEndpointMetrics = new RntbdDurableEndpointMetrics();
+                this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
                     lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
@@ -1010,13 +1014,8 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public int totalChannelsAcquiredMetric() {
-            return 0;
-        }
-
-        @Override
-        public int totalChannelsClosedMetric() {
-            return 0;
+        public RntbdDurableEndpointMetrics durableEndpointMetrics() {
+            return new RntbdDurableEndpointMetrics();
         }
 
         @Override
@@ -1132,8 +1131,8 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
-            throw new NotImplementedException("tryOpenConnection is not supported in FakeEndpoint.");
+        public OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs openConnectionRequestArgs) {
+            throw new NotImplementedException("openConnection is not supported in FakeEndpoint.");
         }
 
         // endregion

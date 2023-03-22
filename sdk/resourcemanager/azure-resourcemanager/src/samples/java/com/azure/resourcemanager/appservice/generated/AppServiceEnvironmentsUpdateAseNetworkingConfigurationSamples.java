@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AseV3NetworkingConfigurationInner;
 
 /** Samples for AppServiceEnvironments UpdateAseNetworkingConfiguration. */
 public final class AppServiceEnvironmentsUpdateAseNetworkingConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_UpdateAseNetworkingConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_UpdateAseNetworkingConfiguration.json
      */
     /**
      * Sample code: Update networking configuration of an App Service Environment.
@@ -28,6 +27,6 @@ public final class AppServiceEnvironmentsUpdateAseNetworkingConfigurationSamples
                 "test-rg",
                 "test-ase",
                 new AseV3NetworkingConfigurationInner().withFtpEnabled(true).withRemoteDebugEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

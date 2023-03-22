@@ -135,8 +135,7 @@ public final class InformationProtectionPolicyImpl
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "scope");
         this.informationProtectionPolicyName =
             InformationProtectionPolicyName
@@ -144,8 +143,7 @@ public final class InformationProtectionPolicyImpl
                     Utils
                         .getValueFromIdByParameterName(
                             innerObject.id(),
-                            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                                + "/{informationProtectionPolicyName}",
+                            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                             "informationProtectionPolicyName"));
     }
 

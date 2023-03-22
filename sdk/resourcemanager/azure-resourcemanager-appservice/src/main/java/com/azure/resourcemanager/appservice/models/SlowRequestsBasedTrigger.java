@@ -34,6 +34,10 @@ public final class SlowRequestsBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
+    /** Creates an instance of SlowRequestsBasedTrigger class. */
+    public SlowRequestsBasedTrigger() {
+    }
+
     /**
      * Get the timeTaken property: Time taken.
      *

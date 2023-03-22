@@ -27,6 +27,15 @@ public final class SignalRSkuTier extends ExpandableStringEnum<SignalRSkuTier> {
     public static final SignalRSkuTier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of SignalRSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignalRSkuTier() {
+    }
+
+    /**
      * Creates or finds a SignalRSkuTier from its string representation.
      *
      * @param name a name to look for.

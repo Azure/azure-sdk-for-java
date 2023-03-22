@@ -52,7 +52,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -166,7 +165,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
-    private final RntbdServiceEndpoint endpoint;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
     // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
@@ -175,8 +173,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final int maxRequestsPerChannel;
     private final ChannelPoolHandler poolHandler;
     private final boolean releaseHealthCheck;
-    private final AtomicInteger totalAcquiredChannels = new AtomicInteger(0);
-    private final AtomicInteger totalClosedChannels = new AtomicInteger(0);
+    private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
     // Because state from these fields can be requested on any thread...
 
@@ -202,6 +199,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @param config the {@link Config} that is used for the channel pool instance created.
      * @param clientTelemetry the {@link ClientTelemetry} that is used to track client telemetry related metrics.
      * @param connectionStateListener the {@link RntbdConnectionStateListener}.
+     * @param durableEndpointMetrics a holder for the metric state (which should be
+     *      durable for endpoints with the same address)
      */
     RntbdClientChannelPool(
         final RntbdServiceEndpoint endpoint,
@@ -209,7 +208,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector faultInjectionInterceptors) {
+        final RntbdServerErrorInjector faultInjectionInterceptors,
+        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
         this(
             endpoint,
             bootstrap,
@@ -217,7 +217,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
             new RntbdClientChannelHealthChecker(config),
             clientTelemetry,
             connectionStateListener,
-            faultInjectionInterceptors);
+            faultInjectionInterceptors,
+            durableEndpointMetrics);
     }
 
     private RntbdClientChannelPool(
@@ -227,18 +228,20 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final RntbdClientChannelHealthChecker healthChecker,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector serverErrorInjector) {
+        final RntbdServerErrorInjector serverErrorInjector,
+        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
         checkNotNull(config, "expected non-null config");
         checkNotNull(healthChecker, "expected non-null healthChecker");
+        checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
-        this.endpoint = endpoint;
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
+        this.durableEndpointMetrics = durableEndpointMetrics;
 
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
@@ -290,26 +293,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pendingAcquisitionExpirationFuture = null;
         }
         this.clientTelemetry = clientTelemetry;
-
-//        this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
-//            () -> {
-//                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
-//
-//                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-//                    if (logger.isDebugEnabled()) {
-//                        logger.debug(
-//                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-//                            endpoint,
-//                            Duration.ofNanos(elapsedTimeInNanos),
-//                            Duration.ofNanos(idleEndpointTimeoutInNanos));
-//                    }
-//                    endpoint.close();
-//                    return;
-//                }
-//
-//                this.runTasksInPendingAcquisitionQueue();
-//
-//            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
     }
 
     // region Accessors
@@ -339,24 +322,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     public int channelsAcquiredMetrics() {
         return this.acquiredChannels.size();
-    }
-
-    /**
-     * Gets the total acquired channel count.
-     *
-     * @return the total acquired channel count.
-     */
-    public int totalChannelsAcquiredMetrics() {
-        return this.totalAcquiredChannels.get();
-    }
-
-    /**
-     * Gets the total closed channel count.
-     *
-     * @return the total closed channel count.
-     */
-    public int totalChannelsClosedMetrics() {
-        return this.totalClosedChannels.get();
     }
 
     /**
@@ -497,7 +462,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
 
         OpenChannelPromise openChannelPromise =
-                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime());
+                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime(), requestRecord);
 
         try {
             // Compared to the normal request flow
@@ -899,7 +864,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void closeChannel(final Channel channel) {
         this.ensureInEventLoop();
-        totalClosedChannels.incrementAndGet();
+        this.durableEndpointMetrics.incrementClosedChannels();
         this.acquiredChannels.remove(channel);
         this.availableChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
@@ -1234,7 +1199,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
 
-                    totalAcquiredChannels.incrementAndGet();
+                    durableEndpointMetrics.incrementAcquiredChannels();
 
                     this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
                         reportIssueUnless(logger, acquiredChannel == null, this,

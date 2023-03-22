@@ -73,7 +73,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @Host("{$host}")
     @ServiceInterface(name = "CommunicationService")
-    private interface CommunicationServicesService {
+    public interface CommunicationServicesService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Communication/checkNameAvailability")
         @ExpectedResponses({200})
@@ -88,8 +88,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}/linkNotificationHub")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/linkNotificationHub")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkedNotificationHubInner>> linkNotificationHub(
@@ -115,8 +114,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationServiceResourceList>> listByResourceGroup(
@@ -129,11 +127,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}")
-        @ExpectedResponses({200, 201})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
+        Mono<Response<CommunicationServiceResourceInner>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -145,8 +142,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationServiceResourceInner>> getByResourceGroup(
@@ -160,8 +156,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -176,8 +171,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -191,8 +185,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationServiceKeysInner>> listKeys(
@@ -206,11 +199,10 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/communicationServices/{communicationServiceName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> regenerateKey(
+        Mono<Response<CommunicationServiceKeysInner>> regenerateKey(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -361,23 +353,6 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(
-        NameAvailabilityParameters nameAvailabilityParameters) {
-        return checkNameAvailabilityAsync(nameAvailabilityParameters).block();
-    }
-
-    /**
-     * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
-     * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,6 +363,23 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
         NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(nameAvailabilityParameters, context).block();
+    }
+
+    /**
+     * Check Name Availability
+     *
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
+     *
+     * @param nameAvailabilityParameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResponseInner checkNameAvailability(
+        NameAvailabilityParameters nameAvailabilityParameters) {
+        return checkNameAvailabilityWithResponse(nameAvailabilityParameters, Context.NONE).getValue();
     }
 
     /**
@@ -516,30 +508,6 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
-     * @param linkNotificationHubParameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LinkedNotificationHubInner> linkNotificationHubAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters) {
-        return linkNotificationHubWithResponseAsync(
-                resourceGroupName, communicationServiceName, linkNotificationHubParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,25 +521,6 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         return linkNotificationHubWithResponseAsync(
                 resourceGroupName, communicationServiceName, linkNotificationHubParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName) {
-        final LinkNotificationHubParameters linkNotificationHubParameters = null;
-        return linkNotificationHubAsync(resourceGroupName, communicationServiceName, linkNotificationHubParameters)
-            .block();
     }
 
     /**
@@ -597,6 +546,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         return linkNotificationHubWithResponseAsync(
                 resourceGroupName, communicationServiceName, linkNotificationHubParameters, context)
             .block();
+    }
+
+    /**
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communicationServiceName The name of the CommunicationService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a notification hub that has been linked to the communication service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName) {
+        final LinkNotificationHubParameters linkNotificationHubParameters = null;
+        return linkNotificationHubWithResponse(
+                resourceGroupName, communicationServiceName, linkNotificationHubParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -957,7 +926,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1018,7 +987,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(
         String resourceGroupName,
         String communicationServiceName,
         CommunicationServiceResourceUpdate parameters,
@@ -1074,119 +1043,13 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginUpdateAsync(
-            String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters);
-        return this
-            .client
-            .<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceResourceInner.class,
-                CommunicationServiceResourceInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String communicationServiceName,
-            CommunicationServiceResourceUpdate parameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context);
-        return this
-            .client
-            .<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceResourceInner.class,
-                CommunicationServiceResourceInner.class,
-                context);
-    }
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginUpdate(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, communicationServiceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginUpdate(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, communicationServiceName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing a CommunicationService resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommunicationServiceResourceInner> updateAsync(
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, communicationServiceName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1201,17 +1064,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource on successful completion of {@link Mono}.
+     * @return a class representing a CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceResourceInner> updateAsync(
+    public Response<CommunicationServiceResourceInner> updateWithResponse(
         String resourceGroupName,
         String communicationServiceName,
         CommunicationServiceResourceUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context).block();
     }
 
     /**
@@ -1230,30 +1091,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationServiceResourceInner update(
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
-        return updateAsync(resourceGroupName, communicationServiceName, parameters).block();
-    }
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner update(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context) {
-        return updateAsync(resourceGroupName, communicationServiceName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, communicationServiceName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1386,24 +1224,6 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CommunicationService and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner getByResourceGroup(
-        String resourceGroupName, String communicationServiceName) {
-        return getByResourceGroupAsync(resourceGroupName, communicationServiceName).block();
-    }
-
-    /**
-     * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1414,6 +1234,24 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     public Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String communicationServiceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, communicationServiceName, context).block();
+    }
+
+    /**
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communicationServiceName The name of the CommunicationService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CommunicationService and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationServiceResourceInner getByResourceGroup(
+        String resourceGroupName, String communicationServiceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -1617,7 +1455,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     public SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1641,7 +1479,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
             String communicationServiceName,
             CommunicationServiceResourceInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1895,7 +1734,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName) {
-        return beginDeleteAsync(resourceGroupName, communicationServiceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, communicationServiceName).getSyncPoller();
     }
 
     /**
@@ -1914,7 +1753,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String communicationServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, communicationServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, communicationServiceName, context).getSyncPoller();
     }
 
     /**
@@ -2119,23 +1958,6 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceKeysInner listKeys(String resourceGroupName, String communicationServiceName) {
-        return listKeysAsync(resourceGroupName, communicationServiceName).block();
-    }
-
-    /**
-     * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2146,6 +1968,23 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     public Response<CommunicationServiceKeysInner> listKeysWithResponse(
         String resourceGroupName, String communicationServiceName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, communicationServiceName, context).block();
+    }
+
+    /**
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communicationServiceName The name of the CommunicationService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the CommunicationService resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationServiceKeysInner listKeys(String resourceGroupName, String communicationServiceName) {
+        return listKeysWithResponse(resourceGroupName, communicationServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -2164,7 +2003,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
+    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2226,7 +2065,7 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
+    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName,
         String communicationServiceName,
         RegenerateKeyParameters parameters,
@@ -2283,124 +2122,13 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner>
-        beginRegenerateKeyAsync(
-            String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters);
-        return this
-            .client
-            .<CommunicationServiceKeysInner, CommunicationServiceKeysInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceKeysInner.class,
-                CommunicationServiceKeysInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner>
-        beginRegenerateKeyAsync(
-            String resourceGroupName,
-            String communicationServiceName,
-            RegenerateKeyParameters parameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context);
-        return this
-            .client
-            .<CommunicationServiceKeysInner, CommunicationServiceKeysInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceKeysInner.class,
-                CommunicationServiceKeysInner.class,
-                context);
-    }
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner> beginRegenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, communicationServiceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner> beginRegenerateKey(
-        String resourceGroupName,
-        String communicationServiceName,
-        RegenerateKeyParameters parameters,
-        Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, communicationServiceName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing the access keys of a CommunicationService on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommunicationServiceKeysInner> regenerateKeyAsync(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, communicationServiceName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2416,17 +2144,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing the access keys of a CommunicationService on successful completion of {@link Mono}.
+     * @return a class representing the access keys of a CommunicationService along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceKeysInner> regenerateKeyAsync(
+    public Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(
         String resourceGroupName,
         String communicationServiceName,
         RegenerateKeyParameters parameters,
         Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, communicationServiceName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context).block();
     }
 
     /**
@@ -2446,31 +2172,8 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationServiceKeysInner regenerateKey(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
-        return regenerateKeyAsync(resourceGroupName, communicationServiceName, parameters).block();
-    }
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceKeysInner regenerateKey(
-        String resourceGroupName,
-        String communicationServiceName,
-        RegenerateKeyParameters parameters,
-        Context context) {
-        return regenerateKeyAsync(resourceGroupName, communicationServiceName, parameters, context).block();
+        return regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**

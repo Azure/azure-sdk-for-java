@@ -17,6 +17,10 @@ public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SwiftVirtualNetworkProperties innerProperties;
 
+    /** Creates an instance of SwiftVirtualNetworkInner class. */
+    public SwiftVirtualNetworkInner() {
+    }
+
     /**
      * Get the innerProperties property: SwiftVirtualNetwork resource specific properties.
      *

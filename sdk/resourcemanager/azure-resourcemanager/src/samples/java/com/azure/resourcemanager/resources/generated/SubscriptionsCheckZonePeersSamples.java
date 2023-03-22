@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.models.CheckZonePeersRequest;
 import java.util.Arrays;
 
@@ -29,6 +28,6 @@ public final class SubscriptionsCheckZonePeersSamples {
                 new CheckZonePeersRequest()
                     .withLocation("eastus")
                     .withSubscriptionIds(Arrays.asList("subscriptions/11111111-1111-1111-1111-111111111111")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

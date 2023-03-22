@@ -25,6 +25,10 @@ public final class DetectorResponseCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DetectorResponseCollection class. */
+    public DetectorResponseCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *
