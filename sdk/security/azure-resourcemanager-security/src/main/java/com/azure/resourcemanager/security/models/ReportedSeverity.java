@@ -23,6 +23,15 @@ public final class ReportedSeverity extends ExpandableStringEnum<ReportedSeverit
     public static final ReportedSeverity HIGH = fromString("High");
 
     /**
+     * Creates a new instance of ReportedSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReportedSeverity() {
+    }
+
+    /**
      * Creates or finds a ReportedSeverity from its string representation.
      *
      * @param name a name to look for.

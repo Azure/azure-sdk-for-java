@@ -17,6 +17,15 @@ public final class GovernanceRuleOwnerSourceType extends ExpandableStringEnum<Go
     public static final GovernanceRuleOwnerSourceType MANUALLY = fromString("Manually");
 
     /**
+     * Creates a new instance of GovernanceRuleOwnerSourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GovernanceRuleOwnerSourceType() {
+    }
+
+    /**
      * Creates or finds a GovernanceRuleOwnerSourceType from its string representation.
      *
      * @param name a name to look for.

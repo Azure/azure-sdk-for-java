@@ -19,7 +19,9 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in TagOperationsClient. */
 public interface TagOperationsClient {
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -33,7 +35,9 @@ public interface TagOperationsClient {
     Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue);
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -47,20 +51,9 @@ public interface TagOperationsClient {
     Mono<Void> deleteValueAsync(String tagName, String tagValue);
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * Deletes a predefined tag value for a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteValue(String tagName, String tagValue);
-
-    /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -75,8 +68,25 @@ public interface TagOperationsClient {
     Response<Void> deleteValueWithResponse(String tagName, String tagValue, Context context);
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteValue(String tagName, String tagValue);
+
+    /**
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -89,8 +99,10 @@ public interface TagOperationsClient {
     Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue);
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -103,22 +115,10 @@ public interface TagOperationsClient {
     Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue);
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Creates a predefined value for a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TagValueInner createOrUpdateValue(String tagName, String tagValue);
-
-    /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -132,7 +132,25 @@ public interface TagOperationsClient {
     Response<TagValueInner> createOrUpdateValueWithResponse(String tagName, String tagValue, Context context);
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TagValueInner createOrUpdateValue(String tagName, String tagValue);
+
+    /**
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -146,7 +164,9 @@ public interface TagOperationsClient {
     Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName);
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -160,21 +180,9 @@ public interface TagOperationsClient {
     Mono<TagDetailsInner> createOrUpdateAsync(String tagName);
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * Creates a predefined tag name.
      *
-     * @param tagName The name of the tag to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TagDetailsInner createOrUpdate(String tagName);
-
-    /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -189,9 +197,27 @@ public interface TagOperationsClient {
     Response<TagDetailsInner> createOrUpdateWithResponse(String tagName, Context context);
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
+     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     *
+     * @param tagName The name of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TagDetailsInner createOrUpdate(String tagName);
+
+    /**
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +229,11 @@ public interface TagOperationsClient {
     Mono<Response<Void>> deleteWithResponseAsync(String tagName);
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,22 +245,11 @@ public interface TagOperationsClient {
     Mono<Void> deleteAsync(String tagName);
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Deletes a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String tagName);
-
-    /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @param context The context to associate with this operation.
@@ -245,9 +262,26 @@ public interface TagOperationsClient {
     Response<Void> deleteWithResponse(String tagName, Context context);
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
+     *
+     * @param tagName The name of the tag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String tagName);
+
+    /**
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,9 +291,11 @@ public interface TagOperationsClient {
     PagedFlux<TagDetailsInner> listAsync();
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,9 +305,11 @@ public interface TagOperationsClient {
     PagedIterable<TagDetailsInner> list();
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,8 +321,10 @@ public interface TagOperationsClient {
     PagedIterable<TagDetailsInner> list(Context context);
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -299,8 +339,10 @@ public interface TagOperationsClient {
         String scope, TagsResourceInner parameters);
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -313,22 +355,10 @@ public interface TagOperationsClient {
     Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters);
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
      *
-     * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters);
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -343,11 +373,29 @@ public interface TagOperationsClient {
         String scope, TagsResourceInner parameters, Context context);
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters);
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -361,11 +409,13 @@ public interface TagOperationsClient {
     Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters);
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -378,28 +428,13 @@ public interface TagOperationsClient {
     Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters);
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
      *
-     * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters);
-
-    /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -411,6 +446,25 @@ public interface TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TagsResourceInner> updateAtScopeWithResponse(String scope, TagsPatchResource parameters, Context context);
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters);
 
     /**
      * Gets the entire set of tags on a resource or subscription.
@@ -441,18 +495,6 @@ public interface TagOperationsClient {
      * Gets the entire set of tags on a resource or subscription.
      *
      * @param scope The resource scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entire set of tags on a resource or subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner getAtScope(String scope);
-
-    /**
-     * Gets the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -461,6 +503,18 @@ public interface TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TagsResourceInner> getAtScopeWithResponse(String scope, Context context);
+
+    /**
+     * Gets the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entire set of tags on a resource or subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TagsResourceInner getAtScope(String scope);
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
@@ -490,17 +544,6 @@ public interface TagOperationsClient {
      * Deletes the entire set of tags on a resource or subscription.
      *
      * @param scope The resource scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAtScope(String scope);
-
-    /**
-     * Deletes the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -509,4 +552,15 @@ public interface TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteAtScopeWithResponse(String scope, Context context);
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAtScope(String scope);
 }

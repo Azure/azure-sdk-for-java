@@ -123,29 +123,6 @@ public interface WorkflowRunActionRepetitionsClient {
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
-
-    /**
-     * Get a workflow run action repetition.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,6 +138,29 @@ public interface WorkflowRunActionRepetitionsClient {
         String actionName,
         String repetitionName,
         Context context);
+
+    /**
+     * Get a workflow run action repetition.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run action repetition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowRunActionRepetitionDefinitionInner get(
+        String resourceGroupName,
+        String name,
+        String workflowName,
+        String runName,
+        String actionName,
+        String repetitionName);
 
     /**
      * Lists a workflow run expression trace.

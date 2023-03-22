@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecuritySolutions Get. */
 public final class SecuritySolutionsGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class SecuritySolutionsGetSamples {
      */
     public static void getASecuritySolutionFromASecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securitySolutions().getWithResponse("myRg2", "centralus", "paloalto7", Context.NONE);
+        manager
+            .securitySolutions()
+            .getWithResponse("myRg2", "centralus", "paloalto7", com.azure.core.util.Context.NONE);
     }
 }

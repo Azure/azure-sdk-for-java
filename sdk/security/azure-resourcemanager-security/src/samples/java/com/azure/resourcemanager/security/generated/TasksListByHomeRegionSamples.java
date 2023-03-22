@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks ListByHomeRegion. */
 public final class TasksListByHomeRegionSamples {
     /*
@@ -18,6 +16,6 @@ public final class TasksListByHomeRegionSamples {
      */
     public static void getSecurityRecommendationsTasksFromSecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.tasks().listByHomeRegion("westeurope", null, Context.NONE);
+        manager.tasks().listByHomeRegion("westeurope", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the resource. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * The principal ID of resource identity.
      */
@@ -31,13 +31,17 @@ public class Identity {
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the resource. The user
-     * identity dictionary key references will be ARM resource ids in the form:
+     * The list of user identities associated with the resource. The user identity dictionary key references will be
+     * ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.

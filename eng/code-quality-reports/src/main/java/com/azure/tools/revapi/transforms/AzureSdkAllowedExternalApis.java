@@ -82,7 +82,7 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
                     || "messaging.servicebus.".regionMatches(0, className, 10, 21)
                     || "resourcemanager.".regionMatches(0, className, 10, 16)
                     || "security.keyvault.".regionMatches(0, className, 10, 18)
-                    || "spring.cloud.config.".regionMatches(0, className, 10, 20)
+                    || "spring.cloud.appconfiguration.config.".regionMatches(0, className, 10, 20)
                     || "spring.cloud.feature.".regionMatches(0, className, 10, 21)
                     || "storage.".regionMatches(0, className, 10, 8)) {
                     return ExternalApiStatus.SDK_CLASSES;

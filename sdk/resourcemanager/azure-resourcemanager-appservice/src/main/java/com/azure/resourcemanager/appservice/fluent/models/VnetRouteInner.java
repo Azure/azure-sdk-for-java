@@ -18,6 +18,10 @@ public final class VnetRouteInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetRouteProperties innerProperties;
 
+    /** Creates an instance of VnetRouteInner class. */
+    public VnetRouteInner() {
+    }
+
     /**
      * Get the innerProperties property: VnetRoute resource specific properties.
      *

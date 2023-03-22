@@ -12,7 +12,7 @@ public final class QuotaRequestStatusDetailsTests {
     public void testDeserialize() throws Exception {
         QuotaRequestStatusDetails model =
             BinaryData
-                .fromString("{\"provisioningState\":\"Accepted\",\"message\":\"lkrm\"}")
+                .fromString("{\"provisioningState\":\"Failed\",\"message\":\"zikywgg\"}")
                 .toObject(QuotaRequestStatusDetails.class);
     }
 

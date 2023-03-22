@@ -28,6 +28,10 @@ public final class RegistryCredentials {
     @JsonProperty(value = "passwordSecretRef")
     private String passwordSecretRef;
 
+    /** Creates an instance of RegistryCredentials class. */
+    public RegistryCredentials() {
+    }
+
     /**
      * Get the server property: Container Registry Server.
      *

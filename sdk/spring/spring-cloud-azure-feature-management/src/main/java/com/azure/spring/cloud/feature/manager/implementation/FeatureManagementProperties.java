@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.feature.manager.implementation;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
-            .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
 
@@ -58,22 +57,10 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             m = features;
         }
 
-        Map<? extends String, ? extends Object> featureFlags = removePrefixes(m, "feature-flags");
-        Map<? extends String, ? extends Object> dynamicFeatures = removePrefixes(m, "dynamic-features");
-
-        if (featureFlags.size() > 0 || dynamicFeatures.size() > 0) {
-            for (String key : featureFlags.keySet()) {
-                addToFeatures(featureFlags, key, "");
-            }
-
-            for (String key : dynamicFeatures.keySet()) {
-                addToFeatures(dynamicFeatures, key, "");
-            }
-        } else {
-            for (String key : m.keySet()) {
-                addToFeatures(m, key, "");
-            }
+        for (String key : m.keySet()) {
+            addToFeatures(m, key, "");
         }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -103,8 +90,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             }
             // When coming from a file "feature.flag" is not a possible flag name
             if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
-                if (LinkedHashMap.class.isAssignableFrom(featureValue.getClass())) {
-                    features = (LinkedHashMap<String, Object>) featureValue;
+                if (Map.class.isAssignableFrom(featureValue.getClass())) {
+                    features = (Map<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {
                         addToFeatures(features, fKey, combined + key);
                     }

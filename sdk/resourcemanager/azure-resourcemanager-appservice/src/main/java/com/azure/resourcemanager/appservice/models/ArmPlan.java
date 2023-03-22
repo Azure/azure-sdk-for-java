@@ -40,6 +40,10 @@ public final class ArmPlan {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ArmPlan class. */
+    public ArmPlan() {
+    }
+
     /**
      * Get the name property: The name.
      *

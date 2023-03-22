@@ -73,6 +73,10 @@ public final class BackupProperties {
     @JsonProperty(value = "useExistingSnapshot")
     private Boolean useExistingSnapshot;
 
+    /** Creates an instance of BackupProperties class. */
+    public BackupProperties() {
+    }
+
     /**
      * Get the backupId property: backupId
      *

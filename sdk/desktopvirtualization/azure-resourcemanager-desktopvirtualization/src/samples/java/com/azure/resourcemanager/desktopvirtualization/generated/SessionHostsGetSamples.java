@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SessionHosts Get. */
 public final class SessionHostsGetSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_Get.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Get.json
      */
     /**
      * Sample code: SessionHost_Get.
@@ -20,6 +18,7 @@ public final class SessionHostsGetSamples {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         manager
             .sessionHosts()
-            .getWithResponse("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
+import com.azure.resourcemanager.appservice.models.DatabaseConnectionOverview;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
@@ -21,6 +22,10 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties")
     private StaticSiteBuildArmResourceProperties innerProperties;
+
+    /** Creates an instance of StaticSiteBuildArmResourceInner class. */
+    public StaticSiteBuildArmResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: StaticSiteBuildARMResource resource specific properties.
@@ -117,6 +122,15 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
      */
     public List<StaticSiteLinkedBackend> linkedBackends() {
         return this.innerProperties() == null ? null : this.innerProperties().linkedBackends();
+    }
+
+    /**
+     * Get the databaseConnections property: Database connections for the static site build.
+     *
+     * @return the databaseConnections value.
+     */
+    public List<DatabaseConnectionOverview> databaseConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseConnections();
     }
 
     /**

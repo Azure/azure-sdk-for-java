@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalRPrivateEndpointConnections Delete. */
 public final class SignalRPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRPrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRPrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Delete.
@@ -24,6 +22,6 @@ public final class SignalRPrivateEndpointConnectionsDeleteSamples {
                 "mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 "myResourceGroup",
                 "mySignalRService",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

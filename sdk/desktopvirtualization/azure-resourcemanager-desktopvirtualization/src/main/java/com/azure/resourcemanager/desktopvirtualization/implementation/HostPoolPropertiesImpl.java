@@ -6,13 +6,12 @@ package com.azure.resourcemanager.desktopvirtualization.implementation;
 
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPropertiesInner;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.RegistrationInfoInner;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfo;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import java.util.Collections;
@@ -116,16 +115,12 @@ public final class HostPoolPropertiesImpl implements HostPoolProperties {
         return this.innerModel().startVMOnConnect();
     }
 
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerModel().migrationRequest();
-    }
-
     public Boolean cloudPcResource() {
         return this.innerModel().cloudPcResource();
     }
 
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerModel().publicNetworkAccess();
+    public AgentUpdateProperties agentUpdate() {
+        return this.innerModel().agentUpdate();
     }
 
     public HostPoolPropertiesInner innerModel() {

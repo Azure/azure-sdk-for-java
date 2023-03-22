@@ -104,8 +104,7 @@ public final class SiteExtensionInfoProperties {
     private Integer downloadCount;
 
     /*
-     * <code>true</code> if the local version is the latest version;
-     * <code>false</code> otherwise.
+     * <code>true</code> if the local version is the latest version; <code>false</code> otherwise.
      */
     @JsonProperty(value = "local_is_latest_version")
     private Boolean localIsLatestVersion;
@@ -133,6 +132,10 @@ public final class SiteExtensionInfoProperties {
      */
     @JsonProperty(value = "comment")
     private String comment;
+
+    /** Creates an instance of SiteExtensionInfoProperties class. */
+    public SiteExtensionInfoProperties() {
+    }
 
     /**
      * Get the extensionId property: Site extension ID.
