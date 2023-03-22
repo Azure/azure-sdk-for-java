@@ -40,11 +40,11 @@ public class ReadmeSamples {
     public void createBlobClient() {
         // BEGIN: readme-sample-createBlobClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRepository blobClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .repositoryName(repository)
-            .buildClient();
+            .buildClient()
+            .getRepository(repository);
         // END: readme-sample-createBlobClient
     }
 
@@ -282,14 +282,14 @@ public class ReadmeSamples {
     }
 
     public void deleteBlob()  {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRepository blobClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
-            .repositoryName(repository)
             .credential(credential)
-            .buildClient();
+            .buildClient()
+            .getRepository(repository);
 
         // BEGIN: readme-sample-deleteBlob
-        DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+        DownloadManifestResult manifestResult = blobClient.getArtifact("latest").getManifest();
 
         OciImageManifest manifest = manifestResult.asOciImageManifest();
         for (OciDescriptor layer : manifest.getLayers()) {
@@ -299,15 +299,16 @@ public class ReadmeSamples {
     }
 
     public void deleteManifest()  {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRepository blobClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
-            .repositoryName(repository)
             .credential(credential)
-            .buildClient();
+            .buildClient()
+            .getRepository(repository);
 
         // BEGIN: readme-sample-deleteManifest
-        DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
-        blobClient.deleteManifest(manifestResult.getDigest());
+        RegistryArtifact artifact = blobClient.getArtifact("latest");
+        DownloadManifestResult manifestResult = artifact.getManifest();
+        artifact.delete();
         // END: readme-sample-deleteManifest
     }
 

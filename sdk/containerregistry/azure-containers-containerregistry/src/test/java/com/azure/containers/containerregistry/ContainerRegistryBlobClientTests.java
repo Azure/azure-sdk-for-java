@@ -99,7 +99,7 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadBlobWrongDigestInHeaderSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         assertThrows(ServiceResponseException.class, () -> client.downloadStream("some-digest", Channels.newChannel(stream)));
@@ -107,8 +107,8 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadManigestWrongDigestInHeaderSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
-        assertThrows(ServiceResponseException.class, () -> client.downloadManifest("latest"));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
+        assertThrows(ServiceResponseException.class, () -> client.getArtifact("latest").getManifest());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadBlobWrongResponseSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, DIGEST_UNKNOWN));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         assertThrows(ServiceResponseException.class, () -> client.downloadStream(SMALL_CONTENT_SHA256, Channels.newChannel(stream)));
@@ -140,8 +140,8 @@ public class ContainerRegistryBlobClientTests {
 
     @Test
     public void downloadManifestWrongResponseSync() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
-        assertThrows(ServiceResponseException.class, () -> client.downloadManifest("latest"));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, DIGEST_UNKNOWN, null));
+        assertThrows(ServiceResponseException.class, () -> client.getArtifact("latest").getManifest());
     }
 
     @Test
@@ -165,11 +165,11 @@ public class ContainerRegistryBlobClientTests {
 
     @SyncAsyncTest
     public void downloadManifest() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, null));
 
         DownloadManifestResult result = SyncAsyncExtension.execute(
-            () -> client.downloadManifest(MANIFEST_DIGEST),
+            () ->  client.getArtifact(MANIFEST_DIGEST).getManifest(),
             () -> asyncClient.downloadManifest(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getContent().toBytes());
@@ -179,11 +179,11 @@ public class ContainerRegistryBlobClientTests {
 
     @SyncAsyncTest
     public void downloadManifestWithDockerType() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
+        ContainerRepository client = createSyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(MANIFEST_DATA, MANIFEST_DIGEST, ManifestMediaType.DOCKER_MANIFEST));
 
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(MANIFEST_DIGEST, Context.NONE),
+            () -> client.getArtifact(MANIFEST_DIGEST).getManifestWithResponse(Context.NONE),
             () -> asyncClient.downloadManifestWithResponse(MANIFEST_DIGEST));
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getValue().getContent().toBytes());
@@ -193,11 +193,11 @@ public class ContainerRegistryBlobClientTests {
 
     @SyncAsyncTest
     public void downloadManifestWithOciIndexType() {
-        ContainerRegistryBlobClient client = createSyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
+        ContainerRepository client = createSyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createClientManifests(OCI_INDEX, OCI_INDEX_DIGEST, OCI_INDEX_MEDIA_TYPE));
 
         Response<DownloadManifestResult> result = SyncAsyncExtension.execute(
-            () -> client.downloadManifestWithResponse(OCI_INDEX_DIGEST, Context.NONE),
+            () -> client.getArtifact(OCI_INDEX_DIGEST).getManifestWithResponse(Context.NONE),
             () -> asyncClient.downloadManifestWithResponse(OCI_INDEX_DIGEST));
 
         assertArrayEquals(OCI_INDEX.toBytes(), result.getValue().getContent().toBytes());
@@ -208,7 +208,7 @@ public class ContainerRegistryBlobClientTests {
 
     @SyncAsyncTest
     public void downloadBlobOneChunk() throws IOException {
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(SMALL_CONTENT, SMALL_CONTENT_SHA256));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -226,7 +226,7 @@ public class ContainerRegistryBlobClientTests {
         BinaryData content = getDataSync((int) (CHUNK_SIZE * 2.3), sha256);
         String expectedDigest = "sha256:" + bytesToHexString(sha256.digest());
 
-        ContainerRegistryBlobClient client = createSyncClient(createDownloadBlobClient(content, expectedDigest));
+        ContainerRepository client = createSyncClient(createDownloadBlobClient(content, expectedDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createDownloadBlobClient(content, expectedDigest));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -244,7 +244,7 @@ public class ContainerRegistryBlobClientTests {
         BinaryData content = getDataSync((int) (CHUNK_SIZE * 0.1), sha256);
 
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(content),
@@ -256,7 +256,7 @@ public class ContainerRegistryBlobClientTests {
         Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, CHUNK_SIZE / 10, sha256);
 
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
@@ -268,7 +268,7 @@ public class ContainerRegistryBlobClientTests {
         Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, (int) (CHUNK_SIZE * 1.5), sha256);
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
@@ -311,7 +311,7 @@ public class ContainerRegistryBlobClientTests {
             sink.error(new IllegalStateException("foo"));
         });
 
-        ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(() -> "foo"));
+        ContainerRepository client = createSyncClient(createUploadBlobClient(() -> "foo"));
         ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(() -> "foo"));
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
@@ -346,7 +346,7 @@ public class ContainerRegistryBlobClientTests {
         try (ByteBufferBackedInputStream stream = new ByteBufferBackedInputStream(data)) {
             Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
-            ContainerRegistryBlobClient client = createSyncClient(createUploadBlobClient(calculateDigest));
+            ContainerRepository client = createSyncClient(createUploadBlobClient(calculateDigest));
             ContainerRegistryBlobAsyncClient asyncClient = createAsyncClient(createUploadBlobClient(calculateDigest));
             SyncAsyncExtension.execute(
                 () -> client.uploadBlob(BinaryData.fromStream(stream)),
@@ -469,12 +469,12 @@ public class ContainerRegistryBlobClientTests {
         });
     }
 
-    private ContainerRegistryBlobClient createSyncClient(HttpClient httpClient) {
-        return new ContainerRegistryBlobClientBuilder()
+    private ContainerRepository createSyncClient(HttpClient httpClient) {
+        return new ContainerRegistryClientBuilder()
             .endpoint("https://endpoint.com")
-            .repositoryName("foo")
             .httpClient(httpClient)
-            .buildClient();
+            .buildClient()
+            .getRepository("foo");
     }
 
     private ContainerRegistryBlobAsyncClient createAsyncClient(HttpClient httpClient) {

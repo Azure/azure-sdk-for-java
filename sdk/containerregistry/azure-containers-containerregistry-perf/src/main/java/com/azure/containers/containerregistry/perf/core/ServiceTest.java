@@ -7,8 +7,8 @@ import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
 import com.azure.containers.containerregistry.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.ContainerRegistryBlobClient;
 import com.azure.containers.containerregistry.ContainerRegistryBlobClientBuilder;
+import com.azure.containers.containerregistry.ContainerRepository;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -60,7 +60,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
 
-    protected ContainerRegistryBlobClient blobClient;
+    protected ContainerRepository repository;
     protected ContainerRegistryBlobAsyncClient blobAsyncClient;
 
     /**
@@ -97,7 +97,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             .endpoint(registryEndpoint)
             .repositoryName("oci-artifact");
 
-        this.blobClient = blobClientBuilder.buildClient();
+        this.repository = containerRegistryClient.getRepository("oci-artifact");
         this.blobAsyncClient = blobClientBuilder.buildAsyncClient();
     }
 

@@ -421,7 +421,8 @@ public final class ContainerRegistryClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        return new ContainerRegistryClient(getHttpPipeline(createTracer(clientOptions)), endpoint, serviceVersion.getVersion());
+        Tracer tracer = createTracer(clientOptions);
+        return new ContainerRegistryClient(getHttpPipeline(createTracer(clientOptions)), endpoint, serviceVersion.getVersion(), tracer);
     }
 
     private HttpPipeline getHttpPipeline(Tracer tracer) {

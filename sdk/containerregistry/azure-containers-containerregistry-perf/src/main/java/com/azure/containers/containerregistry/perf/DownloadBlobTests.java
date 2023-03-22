@@ -37,7 +37,7 @@ public class DownloadBlobTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.downloadStreamWithResponse(digest[0], Channels.newChannel(output), Context.NONE);
+        repository.downloadStreamWithResponse(digest[0], Channels.newChannel(output), Context.NONE);
     }
 
     @Override
