@@ -3,6 +3,9 @@
 
 package com.azure.communication.jobrouter.models.options;
 
+/**
+ * Request options to unassign a job from a worker.
+ */
 public final class UnassignJobOptions {
     /**
      * id of job to close.

@@ -13,7 +13,6 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -93,7 +92,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         while (true) {
             worker = routerClient.getWorker(workerId);
             jobOffers = worker.getOffers();
-            if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) break;
+            if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) {
+                break;
+            }
         }
 
         assertTrue(jobOffers.size() == 1);
