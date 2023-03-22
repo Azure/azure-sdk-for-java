@@ -42,7 +42,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.skip>true</jacoco.skip>
+    <jacoco.min.linecoverage>0.1</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage> 
   </properties>
   <dependencies>
     <dependency>
@@ -98,25 +99,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-<build>
-    <plugins>
-
-  <plugin>
-  <groupId>com.azure.tools</groupId>
-  <artifactId>codesnippet-maven-plugin</artifactId>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
-  <configuration>
-    <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
-    <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
-    <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
-    <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
-    <includeSource>true</includeSource>
-    <readmePath>${project.basedir}/README.md</readmePath>
-    <includeReadme>true</includeReadme>
-    <maxLineLength>120</maxLineLength>
-    <skip>false</skip>
-  </configuration>
-  </plugin>
-  </plugins>
-</build>
 </project>
