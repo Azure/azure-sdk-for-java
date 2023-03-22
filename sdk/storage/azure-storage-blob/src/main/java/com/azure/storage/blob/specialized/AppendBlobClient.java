@@ -58,7 +58,6 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
-     * @deprecated Use {@link #MAX_APPEND_BLOCK_BYTES_OLD_VERSION}
      */
     @Deprecated
     public static final int MAX_APPEND_BLOCK_BYTES = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES;
@@ -71,13 +70,13 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_OLD_VERSION = 4 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = 4 * Constants.MB;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      * For versions 2022-11-02 and above.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_NEW_VERSION = 100 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -415,9 +414,9 @@ public final class AppendBlobClient extends BlobClientBase {
         // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
         // support up to 4MB
         if (appendBlobAsyncClient.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
-            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_OLD_VERSION, true);
+            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW, true);
         } else {
-            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_NEW_VERSION, true);
+            fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE, true);
         }
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,

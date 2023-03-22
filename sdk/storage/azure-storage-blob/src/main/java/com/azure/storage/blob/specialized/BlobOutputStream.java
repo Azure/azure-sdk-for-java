@@ -160,8 +160,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
             // versions support up to 4MB
             super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
-                ? AppendBlobClient.MAX_APPEND_BLOCK_BYTES_OLD_VERSION
-                : AppendBlobClient.MAX_APPEND_BLOCK_BYTES_NEW_VERSION);
+                ? AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW
+                : AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE);
 
             this.client = client;
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
