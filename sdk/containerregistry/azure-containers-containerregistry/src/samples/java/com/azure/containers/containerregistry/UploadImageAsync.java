@@ -6,8 +6,8 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadManifestOptions;
-import com.azure.containers.containerregistry.models.UploadManifestResult;
+import com.azure.containers.containerregistry.models.SetManifestOptions;
+import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
@@ -31,7 +31,7 @@ public class UploadImageAsync {
     private static final int CHUNK_SIZE = 4 * 1024 * 1024; // content will be uploaded in chunks of up to 4MB size
     public static void main(String[] args) {
 
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -60,7 +60,7 @@ public class UploadImageAsync {
                 .setConfig(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
-            .flatMap(manifest -> blobClient.uploadManifest(manifest, "latest"))
+            .flatMap(manifest -> blobClient.setManifest(manifest, "latest"))
             .doOnSuccess(manifestResult -> System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
             .block();
         // END: readme-sample-uploadImageAsync
@@ -89,8 +89,8 @@ public class UploadImageAsync {
         });
     }
 
-    private void uploadManifest() {
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+    private void setManifest() {
+        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -116,13 +116,13 @@ public class UploadImageAsync {
         config
             .flatMap(configDescriptor ->
                 layer.flatMap(layerDescriptor -> {
-                    // BEGIN: com.azure.containers.containerregistry.uploadManifestAsync
+                    // BEGIN: com.azure.containers.containerregistry.setManifestAsync
                     OciImageManifest manifest = new OciImageManifest()
                             .setConfig(configDescriptor)
                             .setSchemaVersion(2)
                             .setLayers(Collections.singletonList(layerDescriptor));
-                    Mono<UploadManifestResult> result = blobClient.uploadManifest(manifest, "latest");
-                    // END: com.azure.containers.containerregistry.uploadManifestAsync
+                    Mono<SetManifestResult> result = blobClient.setManifest(manifest, "latest");
+                    // END: com.azure.containers.containerregistry.setManifestAsync
                     return result;
                 }))
             .subscribe(result -> System.out.println("Manifest uploaded, digest - " + result.getDigest()));
@@ -130,7 +130,7 @@ public class UploadImageAsync {
 
     private void uploadCustomManifestMediaType() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(credential)
@@ -156,17 +156,17 @@ public class UploadImageAsync {
         BinaryData manifestList = BinaryData.fromString(manifest);
 
         // BEGIN: com.azure.containers.containerregistry.uploadCustomManifestAsync
-        UploadManifestOptions options = new UploadManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE)
+        SetManifestOptions options = new SetManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE)
             .setTag("v2");
 
-        blobClient.uploadManifestWithResponse(options)
+        blobClient.setManifestWithResponse(options)
             .subscribe(response ->
                 System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest()));
         // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
     }
 
     private void uploadBlob() throws FileNotFoundException {
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)

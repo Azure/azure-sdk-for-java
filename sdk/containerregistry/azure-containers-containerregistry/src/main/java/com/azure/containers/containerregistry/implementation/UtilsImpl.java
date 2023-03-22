@@ -13,7 +13,7 @@ import com.azure.containers.containerregistry.implementation.models.TagAttribute
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
-import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -89,8 +89,8 @@ public final class UtilsImpl {
         + ",application/vnd.docker.distribution.manifest.list.v2+json";
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
-    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.uploadBlob";
-    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.downloadBlob";
+    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.uploadBlob";
+    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.downloadBlob";
 
     private UtilsImpl() { }
 
@@ -226,7 +226,7 @@ public final class UtilsImpl {
         }
     }
 
-    public static Response<DownloadManifestResult> toDownloadManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+    public static Response<GetManifestResult> toGetManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
         String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
 
@@ -242,7 +242,7 @@ public final class UtilsImpl {
             rawResponse.getRequest(),
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
-            ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
+            ConstructorAccessors.createGetManifestResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     /**

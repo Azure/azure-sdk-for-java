@@ -249,21 +249,28 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
     public static TagAttributesBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    TagAttributesBase deserializedTagAttributesBase = new TagAttributesBase();
+                    String name = null;
+                    String digest = null;
+                    OffsetDateTime createdOn = null;
+                    OffsetDateTime lastUpdatedOn = null;
+                    Boolean deleteEnabled = null;
+                    Boolean writeEnabled = null;
+                    Boolean listEnabled = null;
+                    Boolean readEnabled = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("name".equals(fieldName)) {
-                            deserializedTagAttributesBase.name = reader.getString();
+                            name = reader.getString();
                         } else if ("digest".equals(fieldName)) {
-                            deserializedTagAttributesBase.digest = reader.getString();
+                            digest = reader.getString();
                         } else if ("createdTime".equals(fieldName)) {
-                            deserializedTagAttributesBase.createdOn =
+                            createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            deserializedTagAttributesBase.lastUpdatedOn =
+                            lastUpdatedOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("changeableAttributes".equals(fieldName)
@@ -273,17 +280,13 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
                                 reader.nextToken();
 
                                 if ("deleteEnabled".equals(fieldName)) {
-                                    deserializedTagAttributesBase.deleteEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    deleteEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("writeEnabled".equals(fieldName)) {
-                                    deserializedTagAttributesBase.writeEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    writeEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("listEnabled".equals(fieldName)) {
-                                    deserializedTagAttributesBase.listEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    listEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("readEnabled".equals(fieldName)) {
-                                    deserializedTagAttributesBase.readEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    readEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else {
                                     reader.skipChildren();
                                 }
@@ -292,8 +295,17 @@ public class TagAttributesBase implements JsonSerializable<TagAttributesBase> {
                             reader.skipChildren();
                         }
                     }
+                    TagAttributesBase deserializedValue = new TagAttributesBase();
+                    deserializedValue.name = name;
+                    deserializedValue.digest = digest;
+                    deserializedValue.createdOn = createdOn;
+                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
+                    deserializedValue.deleteEnabled = deleteEnabled;
+                    deserializedValue.writeEnabled = writeEnabled;
+                    deserializedValue.listEnabled = listEnabled;
+                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedTagAttributesBase;
+                    return deserializedValue;
                 });
     }
 }

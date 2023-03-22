@@ -18,7 +18,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <surefireXmx>1024m</surefireXmx>
     <perf.test.mainClass>com.azure.containers.containerregistry.perf.App</perf.test.mainClass>
   </properties>
 

@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Options for configuring the upload manifest operation.
  */
-public final class UploadManifestOptions {
+public final class SetManifestOptions {
     private final ManifestMediaType mediaType;
     private final BinaryData manifest;
     private String tag;
@@ -19,7 +19,7 @@ public final class UploadManifestOptions {
      * Instantiate an instance of upload manifest options with the ocimanifest information.
      * @param ociManifest The Oci manifest.
      */
-    public UploadManifestOptions(OciImageManifest ociManifest) {
+    public SetManifestOptions(OciImageManifest ociManifest) {
         Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
         this.manifest = BinaryData.fromObject(ociManifest);
         this.mediaType = ManifestMediaType.OCI_MANIFEST;
@@ -30,7 +30,7 @@ public final class UploadManifestOptions {
      * @param manifest The manifest that needs to be uploaded.
      * @param manifestMediaType The media type of supplied manifest.
      */
-    public UploadManifestOptions(BinaryData manifest, ManifestMediaType manifestMediaType) {
+    public SetManifestOptions(BinaryData manifest, ManifestMediaType manifestMediaType) {
         Objects.requireNonNull(manifest, "'manifest' can't be null.");
         Objects.requireNonNull(manifestMediaType, "'manifestMediaType' can't be null.");
         this.manifest = manifest;
@@ -40,9 +40,9 @@ public final class UploadManifestOptions {
     /**
      * A tag to assign to the artifact represented by this manifest.
      * @param tag The tag of the manifest.
-     * @return The UploadManifestOptions object.
+     * @return The SetManifestOptions object.
      */
-    public UploadManifestOptions setTag(String tag) {
+    public SetManifestOptions setTag(String tag) {
         this.tag = tag;
         return this;
     }

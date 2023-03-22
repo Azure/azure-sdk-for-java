@@ -148,25 +148,33 @@ public final class ManifestListAttributes implements JsonSerializable<ManifestLi
     public static ManifestListAttributes fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ManifestListAttributes deserializedManifestListAttributes = new ManifestListAttributes();
+                    String mediaType = null;
+                    Long size = null;
+                    String digest = null;
+                    Platform platform = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("mediaType".equals(fieldName)) {
-                            deserializedManifestListAttributes.mediaType = reader.getString();
+                            mediaType = reader.getString();
                         } else if ("size".equals(fieldName)) {
-                            deserializedManifestListAttributes.size = reader.getNullable(JsonReader::getLong);
+                            size = reader.getNullable(JsonReader::getLong);
                         } else if ("digest".equals(fieldName)) {
-                            deserializedManifestListAttributes.digest = reader.getString();
+                            digest = reader.getString();
                         } else if ("platform".equals(fieldName)) {
-                            deserializedManifestListAttributes.platform = Platform.fromJson(reader);
+                            platform = Platform.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    ManifestListAttributes deserializedValue = new ManifestListAttributes();
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.size = size;
+                    deserializedValue.digest = digest;
+                    deserializedValue.platform = platform;
 
-                    return deserializedManifestListAttributes;
+                    return deserializedValue;
                 });
     }
 }

@@ -112,23 +112,29 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     public static AcrErrorInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    AcrErrorInfo deserializedAcrErrorInfo = new AcrErrorInfo();
+                    String code = null;
+                    String message = null;
+                    Object detail = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("code".equals(fieldName)) {
-                            deserializedAcrErrorInfo.code = reader.getString();
+                            code = reader.getString();
                         } else if ("message".equals(fieldName)) {
-                            deserializedAcrErrorInfo.message = reader.getString();
+                            message = reader.getString();
                         } else if ("detail".equals(fieldName)) {
-                            deserializedAcrErrorInfo.detail = reader.readUntyped();
+                            detail = reader.readUntyped();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    AcrErrorInfo deserializedValue = new AcrErrorInfo();
+                    deserializedValue.code = code;
+                    deserializedValue.message = message;
+                    deserializedValue.detail = detail;
 
-                    return deserializedAcrErrorInfo;
+                    return deserializedValue;
                 });
     }
 }

@@ -112,23 +112,29 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
     public static ImageSignature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ImageSignature deserializedImageSignature = new ImageSignature();
+                    JWK headerProperty = null;
+                    String signature = null;
+                    String protectedProperty = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("header".equals(fieldName)) {
-                            deserializedImageSignature.headerProperty = JWK.fromJson(reader);
+                            headerProperty = JWK.fromJson(reader);
                         } else if ("signature".equals(fieldName)) {
-                            deserializedImageSignature.signature = reader.getString();
+                            signature = reader.getString();
                         } else if ("protected".equals(fieldName)) {
-                            deserializedImageSignature.protectedProperty = reader.getString();
+                            protectedProperty = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    ImageSignature deserializedValue = new ImageSignature();
+                    deserializedValue.headerProperty = headerProperty;
+                    deserializedValue.signature = signature;
+                    deserializedValue.protectedProperty = protectedProperty;
 
-                    return deserializedImageSignature;
+                    return deserializedValue;
                 });
     }
 }

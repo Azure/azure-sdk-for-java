@@ -141,27 +141,33 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
     public static AcrManifests fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    AcrManifests deserializedAcrManifests = new AcrManifests();
+                    String registryLoginServer = null;
+                    String repository = null;
+                    List<ManifestAttributesBase> manifests = null;
+                    String link = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("registry".equals(fieldName)) {
-                            deserializedAcrManifests.registryLoginServer = reader.getString();
+                            registryLoginServer = reader.getString();
                         } else if ("imageName".equals(fieldName)) {
-                            deserializedAcrManifests.repository = reader.getString();
+                            repository = reader.getString();
                         } else if ("manifests".equals(fieldName)) {
-                            List<ManifestAttributesBase> manifests =
-                                    reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
-                            deserializedAcrManifests.manifests = manifests;
+                            manifests = reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
                         } else if ("link".equals(fieldName)) {
-                            deserializedAcrManifests.link = reader.getString();
+                            link = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    AcrManifests deserializedValue = new AcrManifests();
+                    deserializedValue.registryLoginServer = registryLoginServer;
+                    deserializedValue.repository = repository;
+                    deserializedValue.manifests = manifests;
+                    deserializedValue.link = link;
 
-                    return deserializedAcrManifests;
+                    return deserializedValue;
                 });
     }
 }

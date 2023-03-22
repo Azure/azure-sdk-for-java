@@ -8,9 +8,9 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 /**
  * The result from uploading a manifest.
  */
-public final class UploadManifestResult {
+public final class SetManifestResult {
     static {
-        ConstructorAccessors.setUploadManifestResultAccessor(UploadManifestResult::new);
+        ConstructorAccessors.setSetManifestResultAccessor(SetManifestResult::new);
     }
     private final String digest;
 
@@ -18,7 +18,7 @@ public final class UploadManifestResult {
      * Initializes upload manifest result object.
      * @param digest The digest associated with the manifest.
      */
-    private UploadManifestResult(String digest) {
+    private SetManifestResult(String digest) {
         this.digest = digest;
     }
 

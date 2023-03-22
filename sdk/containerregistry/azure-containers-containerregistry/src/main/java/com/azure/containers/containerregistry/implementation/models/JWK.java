@@ -86,21 +86,25 @@ public final class JWK implements JsonSerializable<JWK> {
     public static JWK fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    JWK deserializedJWK = new JWK();
+                    JWKHeader jwk = null;
+                    String alg = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("jwk".equals(fieldName)) {
-                            deserializedJWK.jwk = JWKHeader.fromJson(reader);
+                            jwk = JWKHeader.fromJson(reader);
                         } else if ("alg".equals(fieldName)) {
-                            deserializedJWK.alg = reader.getString();
+                            alg = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    JWK deserializedValue = new JWK();
+                    deserializedValue.jwk = jwk;
+                    deserializedValue.alg = alg;
 
-                    return deserializedJWK;
+                    return deserializedValue;
                 });
     }
 }

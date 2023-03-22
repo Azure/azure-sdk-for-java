@@ -94,25 +94,29 @@ public final class ManifestList extends Manifest {
     public static ManifestList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ManifestList deserializedManifestList = new ManifestList();
+                    Integer schemaVersion = null;
+                    String mediaType = null;
+                    List<ManifestListAttributes> manifests = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            deserializedManifestList.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
                         } else if ("mediaType".equals(fieldName)) {
-                            deserializedManifestList.mediaType = reader.getString();
+                            mediaType = reader.getString();
                         } else if ("manifests".equals(fieldName)) {
-                            List<ManifestListAttributes> manifests =
-                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                            deserializedManifestList.manifests = manifests;
+                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    ManifestList deserializedValue = new ManifestList();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.manifests = manifests;
 
-                    return deserializedManifestList;
+                    return deserializedValue;
                 });
     }
 }

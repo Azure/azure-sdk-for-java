@@ -388,38 +388,49 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    OciAnnotations deserializedOciAnnotations = new OciAnnotations();
+                    OffsetDateTime created = null;
+                    String authors = null;
+                    String url = null;
+                    String documentation = null;
+                    String source = null;
+                    String version = null;
+                    String revision = null;
+                    String vendor = null;
+                    String licenses = null;
+                    String name = null;
+                    String title = null;
+                    String description = null;
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("org.opencontainers.image.created".equals(fieldName)) {
-                            deserializedOciAnnotations.created =
+                            created =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("org.opencontainers.image.authors".equals(fieldName)) {
-                            deserializedOciAnnotations.authors = reader.getString();
+                            authors = reader.getString();
                         } else if ("org.opencontainers.image.url".equals(fieldName)) {
-                            deserializedOciAnnotations.url = reader.getString();
+                            url = reader.getString();
                         } else if ("org.opencontainers.image.documentation".equals(fieldName)) {
-                            deserializedOciAnnotations.documentation = reader.getString();
+                            documentation = reader.getString();
                         } else if ("org.opencontainers.image.source".equals(fieldName)) {
-                            deserializedOciAnnotations.source = reader.getString();
+                            source = reader.getString();
                         } else if ("org.opencontainers.image.version".equals(fieldName)) {
-                            deserializedOciAnnotations.version = reader.getString();
+                            version = reader.getString();
                         } else if ("org.opencontainers.image.revision".equals(fieldName)) {
-                            deserializedOciAnnotations.revision = reader.getString();
+                            revision = reader.getString();
                         } else if ("org.opencontainers.image.vendor".equals(fieldName)) {
-                            deserializedOciAnnotations.vendor = reader.getString();
+                            vendor = reader.getString();
                         } else if ("org.opencontainers.image.licenses".equals(fieldName)) {
-                            deserializedOciAnnotations.licenses = reader.getString();
+                            licenses = reader.getString();
                         } else if ("org.opencontainers.image.ref.name".equals(fieldName)) {
-                            deserializedOciAnnotations.name = reader.getString();
+                            name = reader.getString();
                         } else if ("org.opencontainers.image.title".equals(fieldName)) {
-                            deserializedOciAnnotations.title = reader.getString();
+                            title = reader.getString();
                         } else if ("org.opencontainers.image.description".equals(fieldName)) {
-                            deserializedOciAnnotations.description = reader.getString();
+                            description = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -428,9 +439,22 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    deserializedOciAnnotations.additionalProperties = additionalProperties;
+                    OciAnnotations deserializedValue = new OciAnnotations();
+                    deserializedValue.created = created;
+                    deserializedValue.authors = authors;
+                    deserializedValue.url = url;
+                    deserializedValue.documentation = documentation;
+                    deserializedValue.source = source;
+                    deserializedValue.version = version;
+                    deserializedValue.revision = revision;
+                    deserializedValue.vendor = vendor;
+                    deserializedValue.licenses = licenses;
+                    deserializedValue.name = name;
+                    deserializedValue.title = title;
+                    deserializedValue.description = description;
+                    deserializedValue.additionalProperties = additionalProperties;
 
-                    return deserializedOciAnnotations;
+                    return deserializedValue;
                 });
     }
 }

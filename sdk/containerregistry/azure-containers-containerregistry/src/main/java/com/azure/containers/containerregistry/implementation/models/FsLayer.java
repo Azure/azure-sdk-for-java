@@ -60,19 +60,21 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
     public static FsLayer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    FsLayer deserializedFsLayer = new FsLayer();
+                    String blobSum = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("blobSum".equals(fieldName)) {
-                            deserializedFsLayer.blobSum = reader.getString();
+                            blobSum = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    FsLayer deserializedValue = new FsLayer();
+                    deserializedValue.blobSum = blobSum;
 
-                    return deserializedFsLayer;
+                    return deserializedValue;
                 });
     }
 }

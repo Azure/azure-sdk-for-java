@@ -164,27 +164,37 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
     public static JWKHeader fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    JWKHeader deserializedJWKHeader = new JWKHeader();
+                    String crv = null;
+                    String kid = null;
+                    String kty = null;
+                    String x = null;
+                    String y = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("crv".equals(fieldName)) {
-                            deserializedJWKHeader.crv = reader.getString();
+                            crv = reader.getString();
                         } else if ("kid".equals(fieldName)) {
-                            deserializedJWKHeader.kid = reader.getString();
+                            kid = reader.getString();
                         } else if ("kty".equals(fieldName)) {
-                            deserializedJWKHeader.kty = reader.getString();
+                            kty = reader.getString();
                         } else if ("x".equals(fieldName)) {
-                            deserializedJWKHeader.x = reader.getString();
+                            x = reader.getString();
                         } else if ("y".equals(fieldName)) {
-                            deserializedJWKHeader.y = reader.getString();
+                            y = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    JWKHeader deserializedValue = new JWKHeader();
+                    deserializedValue.crv = crv;
+                    deserializedValue.kid = kid;
+                    deserializedValue.kty = kty;
+                    deserializedValue.x = x;
+                    deserializedValue.y = y;
 
-                    return deserializedJWKHeader;
+                    return deserializedValue;
                 });
     }
 }

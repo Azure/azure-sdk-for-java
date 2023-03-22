@@ -60,19 +60,21 @@ public final class History implements JsonSerializable<History> {
     public static History fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    History deserializedHistory = new History();
+                    String v1Compatibility = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("v1Compatibility".equals(fieldName)) {
-                            deserializedHistory.v1Compatibility = reader.getString();
+                            v1Compatibility = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    History deserializedValue = new History();
+                    deserializedValue.v1Compatibility = v1Compatibility;
 
-                    return deserializedHistory;
+                    return deserializedValue;
                 });
     }
 }

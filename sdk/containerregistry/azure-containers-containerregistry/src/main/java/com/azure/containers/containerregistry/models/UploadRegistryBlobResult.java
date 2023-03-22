@@ -8,9 +8,9 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 /**
 * The result from uploading the blob.
 */
-public final class UploadBlobResult {
+public final class UploadRegistryBlobResult {
     static {
-        ConstructorAccessors.setUploadBlobResultAccessor(UploadBlobResult::new);
+        ConstructorAccessors.setUploadRegistryBlobResultAccessor(UploadRegistryBlobResult::new);
     }
 
     private final String digest;
@@ -20,7 +20,7 @@ public final class UploadBlobResult {
      * Instantiate the upload blob result.
      * @param digest The digest of the blob that was uploaded.
      */
-    private UploadBlobResult(String digest, long length) {
+    private UploadRegistryBlobResult(String digest, long length) {
         this.digest = digest;
         this.length = length;
     }

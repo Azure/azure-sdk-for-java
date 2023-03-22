@@ -314,31 +314,39 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
     public static ArtifactTagPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ArtifactTagPropertiesInternal deserializedArtifactTagPropertiesInternal =
-                            new ArtifactTagPropertiesInternal();
+                    String registryLoginServer = null;
+                    String repositoryName = null;
+                    String name = null;
+                    String digest = null;
+                    OffsetDateTime createdOn = null;
+                    OffsetDateTime lastUpdatedOn = null;
+                    Boolean deleteEnabled = null;
+                    Boolean writeEnabled = null;
+                    Boolean listEnabled = null;
+                    Boolean readEnabled = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("registry".equals(fieldName)) {
-                            deserializedArtifactTagPropertiesInternal.registryLoginServer = reader.getString();
+                            registryLoginServer = reader.getString();
                         } else if ("imageName".equals(fieldName)) {
-                            deserializedArtifactTagPropertiesInternal.repositoryName = reader.getString();
+                            repositoryName = reader.getString();
                         } else if ("tag".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
                                 fieldName = reader.getFieldName();
                                 reader.nextToken();
 
                                 if ("name".equals(fieldName)) {
-                                    deserializedArtifactTagPropertiesInternal.name = reader.getString();
+                                    name = reader.getString();
                                 } else if ("digest".equals(fieldName)) {
-                                    deserializedArtifactTagPropertiesInternal.digest = reader.getString();
+                                    digest = reader.getString();
                                 } else if ("createdTime".equals(fieldName)) {
-                                    deserializedArtifactTagPropertiesInternal.createdOn =
+                                    createdOn =
                                             reader.getNullable(
                                                     nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                                 } else if ("lastUpdateTime".equals(fieldName)) {
-                                    deserializedArtifactTagPropertiesInternal.lastUpdatedOn =
+                                    lastUpdatedOn =
                                             reader.getNullable(
                                                     nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                                 } else if ("changeableAttributes".equals(fieldName)
@@ -348,17 +356,13 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
                                         reader.nextToken();
 
                                         if ("deleteEnabled".equals(fieldName)) {
-                                            deserializedArtifactTagPropertiesInternal.deleteEnabled =
-                                                    reader.getNullable(JsonReader::getBoolean);
+                                            deleteEnabled = reader.getNullable(JsonReader::getBoolean);
                                         } else if ("writeEnabled".equals(fieldName)) {
-                                            deserializedArtifactTagPropertiesInternal.writeEnabled =
-                                                    reader.getNullable(JsonReader::getBoolean);
+                                            writeEnabled = reader.getNullable(JsonReader::getBoolean);
                                         } else if ("listEnabled".equals(fieldName)) {
-                                            deserializedArtifactTagPropertiesInternal.listEnabled =
-                                                    reader.getNullable(JsonReader::getBoolean);
+                                            listEnabled = reader.getNullable(JsonReader::getBoolean);
                                         } else if ("readEnabled".equals(fieldName)) {
-                                            deserializedArtifactTagPropertiesInternal.readEnabled =
-                                                    reader.getNullable(JsonReader::getBoolean);
+                                            readEnabled = reader.getNullable(JsonReader::getBoolean);
                                         } else {
                                             reader.skipChildren();
                                         }
@@ -371,8 +375,19 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
                             reader.skipChildren();
                         }
                     }
+                    ArtifactTagPropertiesInternal deserializedValue = new ArtifactTagPropertiesInternal();
+                    deserializedValue.registryLoginServer = registryLoginServer;
+                    deserializedValue.repositoryName = repositoryName;
+                    deserializedValue.name = name;
+                    deserializedValue.digest = digest;
+                    deserializedValue.createdOn = createdOn;
+                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
+                    deserializedValue.deleteEnabled = deleteEnabled;
+                    deserializedValue.writeEnabled = writeEnabled;
+                    deserializedValue.listEnabled = listEnabled;
+                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedArtifactTagPropertiesInternal;
+                    return deserializedValue;
                 });
     }
 }

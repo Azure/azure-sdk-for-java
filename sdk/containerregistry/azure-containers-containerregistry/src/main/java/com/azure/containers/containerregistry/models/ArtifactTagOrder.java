@@ -9,13 +9,13 @@ import java.util.Collection;
 
 /** Sort options for ordering tags in a collection. */
 public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrder> {
-    /** Do not provide an orderby value in the request. */
+    /** Static value none for ArtifactTagOrder. */
     public static final ArtifactTagOrder NONE = fromString("none");
 
-    /** Order tags by LastUpdatedOn field, from most recently updated to least recently updated. */
+    /** Static value timedesc for ArtifactTagOrder. */
     public static final ArtifactTagOrder LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
-    /** Order tags by LastUpdatedOn field, from least recently updated to most recently updated. */
+    /** Static value timeasc for ArtifactTagOrder. */
     public static final ArtifactTagOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**

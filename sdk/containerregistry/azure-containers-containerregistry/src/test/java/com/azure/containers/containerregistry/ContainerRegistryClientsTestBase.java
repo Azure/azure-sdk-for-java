@@ -106,22 +106,22 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
+    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getBlobClientBuilder(repositoryName, httpClient, credential);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential) {
         return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential, String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        return new ContainerRegistryBlobClientBuilder()
+        return new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .repositoryName(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)

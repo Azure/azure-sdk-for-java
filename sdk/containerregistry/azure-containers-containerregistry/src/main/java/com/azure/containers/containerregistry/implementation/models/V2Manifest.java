@@ -121,26 +121,33 @@ public final class V2Manifest extends Manifest {
     public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    V2Manifest deserializedV2Manifest = new V2Manifest();
+                    Integer schemaVersion = null;
+                    String mediaType = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            deserializedV2Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
                         } else if ("mediaType".equals(fieldName)) {
-                            deserializedV2Manifest.mediaType = reader.getString();
+                            mediaType = reader.getString();
                         } else if ("config".equals(fieldName)) {
-                            deserializedV2Manifest.config = OciDescriptor.fromJson(reader);
+                            config = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                            deserializedV2Manifest.layers = layers;
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    V2Manifest deserializedValue = new V2Manifest();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.config = config;
+                    deserializedValue.layers = layers;
 
-                    return deserializedV2Manifest;
+                    return deserializedValue;
                 });
     }
 }

@@ -138,27 +138,33 @@ public final class TagWriteableProperties implements JsonSerializable<TagWriteab
     public static TagWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    TagWriteableProperties deserializedTagWriteableProperties = new TagWriteableProperties();
+                    Boolean deleteEnabled = null;
+                    Boolean writeEnabled = null;
+                    Boolean listEnabled = null;
+                    Boolean readEnabled = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("deleteEnabled".equals(fieldName)) {
-                            deserializedTagWriteableProperties.deleteEnabled =
-                                    reader.getNullable(JsonReader::getBoolean);
+                            deleteEnabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("writeEnabled".equals(fieldName)) {
-                            deserializedTagWriteableProperties.writeEnabled =
-                                    reader.getNullable(JsonReader::getBoolean);
+                            writeEnabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("listEnabled".equals(fieldName)) {
-                            deserializedTagWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
+                            listEnabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("readEnabled".equals(fieldName)) {
-                            deserializedTagWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
+                            readEnabled = reader.getNullable(JsonReader::getBoolean);
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    TagWriteableProperties deserializedValue = new TagWriteableProperties();
+                    deserializedValue.deleteEnabled = deleteEnabled;
+                    deserializedValue.writeEnabled = writeEnabled;
+                    deserializedValue.listEnabled = listEnabled;
+                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedTagWriteableProperties;
+                    return deserializedValue;
                 });
     }
 }

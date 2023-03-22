@@ -205,31 +205,41 @@ public final class Platform implements JsonSerializable<Platform> {
     public static Platform fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Platform deserializedPlatform = new Platform();
+                    String architecture = null;
+                    String os = null;
+                    String osVersion = null;
+                    List<String> osFeatures = null;
+                    String variant = null;
+                    List<String> features = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("architecture".equals(fieldName)) {
-                            deserializedPlatform.architecture = reader.getString();
+                            architecture = reader.getString();
                         } else if ("os".equals(fieldName)) {
-                            deserializedPlatform.os = reader.getString();
+                            os = reader.getString();
                         } else if ("os.version".equals(fieldName)) {
-                            deserializedPlatform.osVersion = reader.getString();
+                            osVersion = reader.getString();
                         } else if ("os.features".equals(fieldName)) {
-                            List<String> osFeatures = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.osFeatures = osFeatures;
+                            osFeatures = reader.readArray(reader1 -> reader1.getString());
                         } else if ("variant".equals(fieldName)) {
-                            deserializedPlatform.variant = reader.getString();
+                            variant = reader.getString();
                         } else if ("features".equals(fieldName)) {
-                            List<String> features = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.features = features;
+                            features = reader.readArray(reader1 -> reader1.getString());
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    Platform deserializedValue = new Platform();
+                    deserializedValue.architecture = architecture;
+                    deserializedValue.os = os;
+                    deserializedValue.osVersion = osVersion;
+                    deserializedValue.osFeatures = osFeatures;
+                    deserializedValue.variant = variant;
+                    deserializedValue.features = features;
 
-                    return deserializedPlatform;
+                    return deserializedValue;
                 });
     }
 }

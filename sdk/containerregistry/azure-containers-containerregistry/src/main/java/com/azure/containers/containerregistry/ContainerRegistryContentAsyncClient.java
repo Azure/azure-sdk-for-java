@@ -9,12 +9,12 @@ import com.azure.containers.containerregistry.implementation.ContainerRegistries
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkHeaders;
-import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadBlobResult;
-import com.azure.containers.containerregistry.models.UploadManifestOptions;
-import com.azure.containers.containerregistry.models.UploadManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
+import com.azure.containers.containerregistry.models.SetManifestOptions;
+import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -52,7 +52,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.toDownloadManifestResponse;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
@@ -63,20 +63,20 @@ import static com.azure.core.util.FluxUtil.withContext;
  * This class provides a client that exposes operations to push and pull images into container registry.
  * It exposes methods that upload, download and delete artifacts from the registry i.e. images and manifests.
  *
- * <p>View {@link ContainerRegistryBlobClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ContainerRegistryContentClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see ContainerRegistryBlobClientBuilder
+ * @see ContainerRegistryContentClientBuilder
  */
-@ServiceClient(builder = ContainerRegistryBlobClientBuilder.class, isAsync = true)
-public final class ContainerRegistryBlobAsyncClient {
+@ServiceClient(builder = ContainerRegistryContentClientBuilder.class, isAsync = true)
+public final class ContainerRegistryContentAsyncClient {
     private final ContainerRegistryBlobsImpl blobsImpl;
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
     private final String repositoryName;
     private final Tracer tracer;
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryContentAsyncClient.class);
 
-    ContainerRegistryBlobAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
+    ContainerRegistryContentAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version, Tracer tracer) {
         this.repositoryName = repositoryName;
         this.endpoint = endpoint;
         AzureContainerRegistryImpl registryImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version);
@@ -108,15 +108,15 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <p><strong>Code Samples:</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadManifestAsync -->
+     * <!-- src_embed com.azure.containers.containerregistry.setManifestAsync -->
      * <pre>
      * OciImageManifest manifest = new OciImageManifest&#40;&#41;
      *         .setConfig&#40;configDescriptor&#41;
      *         .setSchemaVersion&#40;2&#41;
      *         .setLayers&#40;Collections.singletonList&#40;layerDescriptor&#41;&#41;;
-     * Mono&lt;UploadManifestResult&gt; result = blobClient.uploadManifest&#40;manifest, &quot;latest&quot;&#41;;
+     * Mono&lt;SetManifestResult&gt; result = blobClient.setManifest&#40;manifest, &quot;latest&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadManifestAsync -->
+     * <!-- end com.azure.containers.containerregistry.setManifestAsync -->
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      * @param manifest The {@link OciImageManifest} that needs to be uploaded.
@@ -126,12 +126,12 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadManifestResult> uploadManifest(OciImageManifest manifest, String tag) {
+    public Mono<SetManifestResult> setManifest(OciImageManifest manifest, String tag) {
         if (manifest == null) {
             return monoError(LOGGER, new NullPointerException("'manifest' can't be null."));
         }
 
-        return withContext(context -> uploadManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, context))
+        return withContext(context -> setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, context))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -142,10 +142,10 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifestAsync -->
      * <pre>
-     * UploadManifestOptions options = new UploadManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;
+     * SetManifestOptions options = new SetManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;
      *     .setTag&#40;&quot;v2&quot;&#41;;
      *
-     * blobClient.uploadManifestWithResponse&#40;options&#41;
+     * blobClient.setManifestWithResponse&#40;options&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.println&#40;&quot;Manifest uploaded, digest - &quot; + response.getValue&#40;&#41;.getDigest&#40;&#41;&#41;&#41;;
      * </pre>
@@ -158,12 +158,12 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options) {
+    public Mono<Response<SetManifestResult>> setManifestWithResponse(SetManifestOptions options) {
         if (options == null) {
             return monoError(LOGGER, new NullPointerException("'options' can't be null."));
         }
 
-        return withContext(context -> this.uploadManifestWithResponse(options.getManifest(), options.getTag(), options.getManifestMediaType(), context));
+        return withContext(context -> this.setManifestWithResponse(options.getManifest(), options.getTag(), options.getManifestMediaType(), context));
     }
 
     /**
@@ -186,18 +186,18 @@ public final class ContainerRegistryBlobAsyncClient {
      * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
      * To decrease number of chunks for big content, use buffers of 4MB size.
      *
-     * @param data The blob content that needs to be uploaded.
+     * @param content The blob content that needs to be uploaded.
      * @return The operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBlobResult> uploadBlob(BinaryData data) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'data' can't be null."));
+    public Mono<UploadRegistryBlobResult> uploadBlob(BinaryData content) {
+        if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' can't be null."));
         }
 
-        return uploadBlob(data.toFluxByteBuffer());
+        return uploadBlob(content.toFluxByteBuffer());
     }
 
     /**
@@ -221,14 +221,14 @@ public final class ContainerRegistryBlobAsyncClient {
      * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
      * To decrease number of chunks for big content, use buffers of 4MB size.
      *
-     * @param data The blob content that needs to be uploaded.
+     * @param content The blob content that needs to be uploaded.
      * @return The rest response containing the operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBlobResult> uploadBlob(Flux<ByteBuffer> data) {
-        return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(data, span), context));
+    public Mono<UploadRegistryBlobResult> uploadBlob(Flux<ByteBuffer> content) {
+        return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(content, span), context));
     }
 
     /**
@@ -236,13 +236,13 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <p><strong>Code Samples:</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestAsync -->
+     * <!-- src_embed com.azure.containers.containerregistry.getManifestAsync -->
      * <pre>
-     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;downloadResult -&gt; &#123;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
-     *             OciImageManifest manifest = downloadResult.asOciImageManifest&#40;&#41;;
+     *             OciImageManifest manifest = downloadResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
      *         &#125; else &#123;
      *             throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + downloadResult.getManifestMediaType&#40;&#41;&#41;;
@@ -250,7 +250,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *     &#125;&#41;
      *     .block&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.downloadManifestAsync -->
+     * <!-- end com.azure.containers.containerregistry.getManifestAsync -->
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
@@ -260,8 +260,8 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DownloadManifestResult> downloadManifest(String tagOrDigest) {
-        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, context)).flatMap(FluxUtil::toMono);
+    public Mono<GetManifestResult> getManifest(String tagOrDigest) {
+        return withContext(context -> this.getManifestWithResponse(tagOrDigest, context)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -269,14 +269,14 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <p><strong>Code Samples:</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.downloadManifestWithResponseAsync -->
+     * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponseAsync -->
      * <pre>
-     * blobClient.downloadManifestWithResponse&#40;&quot;latest&quot;&#41;
+     * blobClient.getManifestWithResponse&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;response -&gt; &#123;
-     *         DownloadManifestResult manifestResult = response.getValue&#40;&#41;;
+     *         GetManifestResult manifestResult = response.getValue&#40;&#41;;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
-     *             OciImageManifest manifest = manifestResult.asOciImageManifest&#40;&#41;;
+     *             OciImageManifest manifest = manifestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
      *         &#125; else &#123;
      *             throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + manifestResult.getManifestMediaType&#40;&#41;&#41;;
@@ -284,7 +284,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *     &#125;&#41;
      *     .block&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.downloadManifestWithResponseAsync -->
+     * <!-- end com.azure.containers.containerregistry.getManifestWithResponseAsync -->
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
      * @return The response for the manifest identified by the given tag or digest.
@@ -292,8 +292,8 @@ public final class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest) {
-        return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, context));
+    public Mono<Response<GetManifestResult>> getManifestWithResponse(String tagOrDigest) {
+        return withContext(context -> this.getManifestWithResponse(tagOrDigest, context));
     }
 
     /**
@@ -350,7 +350,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <!-- src_embed readme-sample-deleteBlobAsync -->
      * <pre>
-     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
      *     .flatMap&#40;manifest -&gt; blobClient.deleteBlob&#40;manifest.getDigest&#40;&#41;&#41;&#41;
      *     .block&#40;&#41;;
      * </pre>
@@ -386,7 +386,7 @@ public final class ContainerRegistryBlobAsyncClient {
      *
      * <!-- src_embed readme-sample-deleteManifestAsync -->
      * <pre>
-     * blobClient.downloadManifest&#40;&quot;latest&quot;&#41;
+     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
      *     .flatMap&#40;manifest -&gt; blobClient.deleteManifest&#40;manifest.getDigest&#40;&#41;&#41;&#41;
      *     .block&#40;&#41;;
      * </pre>
@@ -415,7 +415,7 @@ public final class ContainerRegistryBlobAsyncClient {
         return withContext(context -> deleteManifestWithResponse(digest, context));
     }
 
-    private Mono<Response<UploadManifestResult>> uploadManifestWithResponse(BinaryData manifestData, String tagOrDigest, ManifestMediaType manifestMediaType, Context context) {
+    private Mono<Response<SetManifestResult>> setManifestWithResponse(BinaryData manifestData, String tagOrDigest, ManifestMediaType manifestMediaType, Context context) {
         ByteBuffer data = manifestData.toByteBuffer();
         if (tagOrDigest == null) {
             tagOrDigest = computeDigest(data);
@@ -429,24 +429,24 @@ public final class ContainerRegistryBlobAsyncClient {
                 data.remaining(),
                 manifestMediaType.toString(),
                 context)
-            .map(response -> (Response<UploadManifestResult>)
+            .map(response -> (Response<SetManifestResult>)
                 new ResponseBase<>(
                     response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    ConstructorAccessors.createUploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
+                    ConstructorAccessors.createSetManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                     response.getDeserializedHeaders()))
             .onErrorMap(UtilsImpl::mapException);
     }
 
 
-    private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, Context context) {
+    private Mono<Response<GetManifestResult>> getManifestWithResponse(String tagOrDigest, Context context) {
         if (tagOrDigest == null) {
             return monoError(LOGGER, new NullPointerException("'tagOrDigest' can't be null."));
         }
 
         return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, SUPPORTED_MANIFEST_TYPES, context)
-            .map(response -> toDownloadManifestResponse(tagOrDigest, response))
+            .map(response -> toGetManifestResponse(tagOrDigest, response))
             .onErrorMap(UtilsImpl::mapException);
     }
 
@@ -551,21 +551,21 @@ public final class ContainerRegistryBlobAsyncClient {
             .last();
     }
 
-    private Mono<UploadBlobResult> uploadBlob(Flux<ByteBuffer> data, Context context) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'data' can't be null."));
+    private Mono<UploadRegistryBlobResult> uploadBlob(Flux<ByteBuffer> content, Context context) {
+        if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' can't be null."));
         }
 
         AtomicLong streamLength = new AtomicLong(0);
         MessageDigest sha256 = createSha256();
-        Flux<ByteBuffer> chunks = chunkSource(data, sha256, streamLength);
+        Flux<ByteBuffer> chunks = chunkSource(content, sha256, streamLength);
 
         return blobsImpl
             .startUploadWithResponseAsync(repositoryName, context)
             .flatMap(response -> upload(chunks, getLocation(response), context))
             // TODO (limolkova) if we knew when's the last chunk, we could upload it in complete call instead.
             .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
-            .map(response -> ConstructorAccessors.createUploadBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME), streamLength.get()))
+            .map(response -> ConstructorAccessors.createUploadRegistryBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME), streamLength.get()))
             .onErrorMap(UtilsImpl::mapException);
     }
 

@@ -6,9 +6,9 @@ package com.azure.containers.containerregistry.perf.core;
 import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
-import com.azure.containers.containerregistry.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.ContainerRegistryBlobClientBuilder;
+import com.azure.containers.containerregistry.ContainerRegistryContentAsyncClient;
+import com.azure.containers.containerregistry.ContainerRegistryContentClient;
+import com.azure.containers.containerregistry.ContainerRegistryContentClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -60,8 +60,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
 
-    protected ContainerRegistryBlobClient blobClient;
-    protected ContainerRegistryBlobAsyncClient blobAsyncClient;
+    protected ContainerRegistryContentClient blobClient;
+    protected ContainerRegistryContentAsyncClient blobAsyncClient;
 
     /**
      * The base class for Azure Container Registry performance tests.
@@ -91,7 +91,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         this.containerRegistryClient = builder.buildClient();
         this.containerRegistryAsyncClient  = builder.buildAsyncClient();
 
-        ContainerRegistryBlobClientBuilder blobClientBuilder = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClientBuilder blobClientBuilder = new ContainerRegistryContentClientBuilder()
             .credential(tokenCredential)
             .clientOptions(httpOptions)
             .endpoint(registryEndpoint)

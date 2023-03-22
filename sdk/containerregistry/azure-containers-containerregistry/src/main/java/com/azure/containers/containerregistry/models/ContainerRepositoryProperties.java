@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /** Properties of this repository. */
 @Fluent
-public final class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
+public class ContainerRepositoryProperties implements JsonSerializable<ContainerRepositoryProperties> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
@@ -236,28 +236,36 @@ public final class ContainerRepositoryProperties implements JsonSerializable<Con
     public static ContainerRepositoryProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ContainerRepositoryProperties deserializedContainerRepositoryProperties =
-                            new ContainerRepositoryProperties();
+                    String registryLoginServer = null;
+                    String name = null;
+                    OffsetDateTime createdOn = null;
+                    OffsetDateTime lastUpdatedOn = null;
+                    int manifestCount = 0;
+                    int tagCount = 0;
+                    Boolean deleteEnabled = null;
+                    Boolean writeEnabled = null;
+                    Boolean listEnabled = null;
+                    Boolean readEnabled = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("registry".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.registryLoginServer = reader.getString();
+                            registryLoginServer = reader.getString();
                         } else if ("imageName".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.name = reader.getString();
+                            name = reader.getString();
                         } else if ("createdTime".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.createdOn =
+                            createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.lastUpdatedOn =
+                            lastUpdatedOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("manifestCount".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.manifestCount = reader.getInt();
+                            manifestCount = reader.getInt();
                         } else if ("tagCount".equals(fieldName)) {
-                            deserializedContainerRepositoryProperties.tagCount = reader.getInt();
+                            tagCount = reader.getInt();
                         } else if ("changeableAttributes".equals(fieldName)
                                 && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -265,17 +273,13 @@ public final class ContainerRepositoryProperties implements JsonSerializable<Con
                                 reader.nextToken();
 
                                 if ("deleteEnabled".equals(fieldName)) {
-                                    deserializedContainerRepositoryProperties.deleteEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    deleteEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("writeEnabled".equals(fieldName)) {
-                                    deserializedContainerRepositoryProperties.writeEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    writeEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("listEnabled".equals(fieldName)) {
-                                    deserializedContainerRepositoryProperties.listEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    listEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else if ("readEnabled".equals(fieldName)) {
-                                    deserializedContainerRepositoryProperties.readEnabled =
-                                            reader.getNullable(JsonReader::getBoolean);
+                                    readEnabled = reader.getNullable(JsonReader::getBoolean);
                                 } else {
                                     reader.skipChildren();
                                 }
@@ -284,8 +288,19 @@ public final class ContainerRepositoryProperties implements JsonSerializable<Con
                             reader.skipChildren();
                         }
                     }
+                    ContainerRepositoryProperties deserializedValue = new ContainerRepositoryProperties();
+                    deserializedValue.registryLoginServer = registryLoginServer;
+                    deserializedValue.name = name;
+                    deserializedValue.createdOn = createdOn;
+                    deserializedValue.lastUpdatedOn = lastUpdatedOn;
+                    deserializedValue.manifestCount = manifestCount;
+                    deserializedValue.tagCount = tagCount;
+                    deserializedValue.deleteEnabled = deleteEnabled;
+                    deserializedValue.writeEnabled = writeEnabled;
+                    deserializedValue.listEnabled = listEnabled;
+                    deserializedValue.readEnabled = readEnabled;
 
-                    return deserializedContainerRepositoryProperties;
+                    return deserializedValue;
                 });
     }
 }

@@ -230,10 +230,9 @@ directive:
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
-      "type": "integer",
-      "description": "Schema version",
-      "x-ms-client-default": 2
-    };
+          "type": "integer",
+          "description": "Schema version"
+        };
 ```
 
 # Take stream as manifest body

@@ -60,19 +60,21 @@ public class Manifest implements JsonSerializable<Manifest> {
     public static Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Manifest deserializedManifest = new Manifest();
+                    Integer schemaVersion = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            deserializedManifest.schemaVersion = reader.getNullable(JsonReader::getInt);
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    Manifest deserializedValue = new Manifest();
+                    deserializedValue.schemaVersion = schemaVersion;
 
-                    return deserializedManifest;
+                    return deserializedValue;
                 });
     }
 }

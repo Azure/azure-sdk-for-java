@@ -62,22 +62,21 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
     public static ManifestAttributesManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ManifestAttributesManifest deserializedManifestAttributesManifest =
-                            new ManifestAttributesManifest();
+                    List<ArtifactManifestPlatform> references = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("references".equals(fieldName)) {
-                            List<ArtifactManifestPlatform> references =
-                                    reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
-                            deserializedManifestAttributesManifest.references = references;
+                            references = reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    ManifestAttributesManifest deserializedValue = new ManifestAttributesManifest();
+                    deserializedValue.references = references;
 
-                    return deserializedManifestAttributesManifest;
+                    return deserializedValue;
                 });
     }
 }

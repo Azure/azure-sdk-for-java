@@ -330,48 +330,65 @@ public final class ManifestWrapper extends Manifest {
     public static ManifestWrapper fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    ManifestWrapper deserializedManifestWrapper = new ManifestWrapper();
+                    Integer schemaVersion = null;
+                    String mediaType = null;
+                    List<ManifestListAttributes> manifests = null;
+                    OciDescriptor config = null;
+                    List<OciDescriptor> layers = null;
+                    OciAnnotations annotations = null;
+                    String architecture = null;
+                    String name = null;
+                    String tag = null;
+                    List<FsLayer> fsLayers = null;
+                    List<History> history = null;
+                    List<ImageSignature> signatures = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            deserializedManifestWrapper.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
                         } else if ("mediaType".equals(fieldName)) {
-                            deserializedManifestWrapper.mediaType = reader.getString();
+                            mediaType = reader.getString();
                         } else if ("manifests".equals(fieldName)) {
-                            List<ManifestListAttributes> manifests =
-                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                            deserializedManifestWrapper.manifests = manifests;
+                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
                         } else if ("config".equals(fieldName)) {
-                            deserializedManifestWrapper.config = OciDescriptor.fromJson(reader);
+                            config = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                            deserializedManifestWrapper.layers = layers;
+                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
                         } else if ("annotations".equals(fieldName)) {
-                            deserializedManifestWrapper.annotations = OciAnnotations.fromJson(reader);
+                            annotations = OciAnnotations.fromJson(reader);
                         } else if ("architecture".equals(fieldName)) {
-                            deserializedManifestWrapper.architecture = reader.getString();
+                            architecture = reader.getString();
                         } else if ("name".equals(fieldName)) {
-                            deserializedManifestWrapper.name = reader.getString();
+                            name = reader.getString();
                         } else if ("tag".equals(fieldName)) {
-                            deserializedManifestWrapper.tag = reader.getString();
+                            tag = reader.getString();
                         } else if ("fsLayers".equals(fieldName)) {
-                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
-                            deserializedManifestWrapper.fsLayers = fsLayers;
+                            fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
                         } else if ("history".equals(fieldName)) {
-                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
-                            deserializedManifestWrapper.history = history;
+                            history = reader.readArray(reader1 -> History.fromJson(reader1));
                         } else if ("signatures".equals(fieldName)) {
-                            List<ImageSignature> signatures =
-                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
-                            deserializedManifestWrapper.signatures = signatures;
+                            signatures = reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    ManifestWrapper deserializedValue = new ManifestWrapper();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.mediaType = mediaType;
+                    deserializedValue.manifests = manifests;
+                    deserializedValue.config = config;
+                    deserializedValue.layers = layers;
+                    deserializedValue.annotations = annotations;
+                    deserializedValue.architecture = architecture;
+                    deserializedValue.name = name;
+                    deserializedValue.tag = tag;
+                    deserializedValue.fsLayers = fsLayers;
+                    deserializedValue.history = history;
+                    deserializedValue.signatures = signatures;
 
-                    return deserializedManifestWrapper;
+                    return deserializedValue;
                 });
     }
 }

@@ -60,19 +60,21 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
     public static AcrAccessToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    AcrAccessToken deserializedAcrAccessToken = new AcrAccessToken();
+                    String accessToken = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("access_token".equals(fieldName)) {
-                            deserializedAcrAccessToken.accessToken = reader.getString();
+                            accessToken = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    AcrAccessToken deserializedValue = new AcrAccessToken();
+                    deserializedValue.accessToken = accessToken;
 
-                    return deserializedAcrAccessToken;
+                    return deserializedValue;
                 });
     }
 }

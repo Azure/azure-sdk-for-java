@@ -95,25 +95,29 @@ public final class OCIIndex extends Manifest {
     public static OCIIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    OCIIndex deserializedOCIIndex = new OCIIndex();
+                    Integer schemaVersion = null;
+                    List<ManifestListAttributes> manifests = null;
+                    OciAnnotations annotations = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            deserializedOCIIndex.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                            schemaVersion = reader.getNullable(JsonReader::getInt);
                         } else if ("manifests".equals(fieldName)) {
-                            List<ManifestListAttributes> manifests =
-                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
-                            deserializedOCIIndex.manifests = manifests;
+                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
                         } else if ("annotations".equals(fieldName)) {
-                            deserializedOCIIndex.annotations = OciAnnotations.fromJson(reader);
+                            annotations = OciAnnotations.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    OCIIndex deserializedValue = new OCIIndex();
+                    deserializedValue.setSchemaVersion(schemaVersion);
+                    deserializedValue.manifests = manifests;
+                    deserializedValue.annotations = annotations;
 
-                    return deserializedOCIIndex;
+                    return deserializedValue;
                 });
     }
 }

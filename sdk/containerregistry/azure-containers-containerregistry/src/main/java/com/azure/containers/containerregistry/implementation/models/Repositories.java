@@ -87,22 +87,25 @@ public final class Repositories implements JsonSerializable<Repositories> {
     public static Repositories fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Repositories deserializedRepositories = new Repositories();
+                    List<String> repositories = null;
+                    String link = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("repositories".equals(fieldName)) {
-                            List<String> repositories = reader.readArray(reader1 -> reader1.getString());
-                            deserializedRepositories.repositories = repositories;
+                            repositories = reader.readArray(reader1 -> reader1.getString());
                         } else if ("link".equals(fieldName)) {
-                            deserializedRepositories.link = reader.getString();
+                            link = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
+                    Repositories deserializedValue = new Repositories();
+                    deserializedValue.repositories = repositories;
+                    deserializedValue.link = link;
 
-                    return deserializedRepositories;
+                    return deserializedValue;
                 });
     }
 }
