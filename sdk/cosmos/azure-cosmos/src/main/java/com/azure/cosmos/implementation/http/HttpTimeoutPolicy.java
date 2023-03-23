@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.OperationType;
@@ -8,9 +10,11 @@ import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
+    public List<ResponseTimeoutAndDelays> timeoutAndDelaysList = new ArrayList<>();
 
     final public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
@@ -21,7 +23,7 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
 
     @Override
     public Duration maximumRetryTimeLimit() {
-        return Duration.ofSeconds(Configs.getGatewayResponseTimeoutInSeconds());
+        return Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
     }
 
     @Override
@@ -63,10 +65,8 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     }
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        List<ResponseTimeoutAndDelays> timeoutAndDelays = new ArrayList<ResponseTimeoutAndDelays>();
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1));
-        timeoutAndDelays.add(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
-        return timeoutAndDelays;
+        return List.of(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
     }
 }

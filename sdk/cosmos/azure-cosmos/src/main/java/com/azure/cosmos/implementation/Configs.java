@@ -81,7 +81,6 @@ public class Configs {
     private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
-    private static final int GATEWAY_RESPONSE_TIMEOUT = 65;
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -235,10 +234,6 @@ public class Configs {
 
     public static int getQueryPlanResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
-    }
-
-    public static int getGatewayResponseTimeoutInSeconds() {
-        return GATEWAY_RESPONSE_TIMEOUT;
     }
 
     public static String getClientTelemetryEndpoint() {
