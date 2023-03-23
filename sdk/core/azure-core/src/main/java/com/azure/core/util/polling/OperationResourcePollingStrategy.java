@@ -151,8 +151,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .onErrorComplete(error ->
-                    error instanceof UncheckedIOException && error.getCause() instanceof JsonProcessingException)
+                .onErrorResume(error ->
+                    error instanceof UncheckedIOException && error.getCause() instanceof JsonProcessingException,
+                    error -> Mono.empty())
                 .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {

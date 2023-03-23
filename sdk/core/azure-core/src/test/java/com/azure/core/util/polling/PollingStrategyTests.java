@@ -238,7 +238,7 @@ public class PollingStrategyTests {
     }
 
     @Test
-    public void operationLocationPollingStrategySucceedsOnPollWithPutNew() {
+    public void operationLocationPollingStrategySucceedsOnPollWithPutPolling() {
         // https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#put-with-additional-long-running-processing
         // The difference from case "operationLocationPollingStrategySucceedsOnPollWithPut" is that the response of PUT is the Resource object, not PullResult object
 
