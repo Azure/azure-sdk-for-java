@@ -10,8 +10,6 @@ import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,27 +19,14 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
-    private static final Map<String, String> ATTRIBUTE_MAPPING_V1_17_0 = getMappingsV1700();
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
-    private static Map<String, String> getMappingsV1700() {
-        Map<String, String> mappings = new HashMap<>(8);
-        // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
-        mappings.put(ENTITY_PATH_KEY, "messaging.destination.name");
-        mappings.put(HOST_NAME_KEY, "net.peer.name");
-        mappings.put(CLIENT_REQUEST_ID_ATTRIBUTE, "az.client_request_id");
-        mappings.put(SERVICE_REQUEST_ID_ATTRIBUTE, "az.service_request_id");
-
-        return Collections.unmodifiableMap(mappings);
-    }
 
     public static Attributes convert(Map<String, Object> attributeMap, OpenTelemetrySchemaVersion schemaVersion) {
         if (attributeMap == null || attributeMap.isEmpty()) {
             return Attributes.empty();
         }
-
-        Map<String, String> mappings = getMappingsForVersion(schemaVersion);
 
         AttributesBuilder builder = Attributes.builder();
         for (Map.Entry<String, Object> kvp : attributeMap.entrySet()) {
@@ -49,19 +34,35 @@ class OpenTelemetryUtils {
                 continue;
             }
 
-            addAttribute(builder, mappings.getOrDefault(kvp.getKey(), kvp.getKey()), kvp.getValue());
+            addAttribute(builder, mapAttributeName(kvp.getKey(), schemaVersion), kvp.getValue());
         }
 
         return builder.build();
     }
 
-    private static Map<String, String> getMappingsForVersion(OpenTelemetrySchemaVersion version) {
+    private static String mapAttributeName(String name, OpenTelemetrySchemaVersion version) {
         if (version == OpenTelemetrySchemaVersion.V1_17_0) {
-            return ATTRIBUTE_MAPPING_V1_17_0;
+            return mapAttributeNameV1170(name);
         }
 
         LOGGER.verbose("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
-        return getMappingsForVersion(OpenTelemetrySchemaVersion.getLatest());
+        return mapAttributeNameV1170(name);
+    }
+
+    private static String mapAttributeNameV1170(String name) {
+        if (ENTITY_PATH_KEY.equals(name)) {
+            return "messaging.destination.name";
+        }
+        if (HOST_NAME_KEY.equals(name)) {
+            return "net.peer.name";
+        }
+        if (CLIENT_REQUEST_ID_ATTRIBUTE.equals(name)) {
+            return "az.client_request_id";
+        }
+        if (SERVICE_REQUEST_ID_ATTRIBUTE.equals(name)) {
+            return "az.service_request_id";
+        }
+        return name;
     }
 
     /**
@@ -107,7 +108,7 @@ class OpenTelemetryUtils {
     static void addAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
         Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
 
-        key = getMappingsForVersion(schemaVersion).getOrDefault(key, key);
+        key = mapAttributeName(key, schemaVersion);
         if (value instanceof String) {
             span.setAttribute(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Long) {
