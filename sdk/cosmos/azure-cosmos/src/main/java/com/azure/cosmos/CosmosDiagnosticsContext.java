@@ -53,12 +53,12 @@ public final class CosmosDiagnosticsContext {
     private Duration duration = null;
     private int statusCode = 0;
     private int subStatusCode = 0;
-    private AtomicInteger actualItemCount = new AtomicInteger(-1);
+    private final AtomicInteger actualItemCount = new AtomicInteger(-1);
     private float totalRequestCharge = 0;
     private int maxRequestSize = 0;
     private int maxResponseSize = 0;
     private String cachedRequestDiagnostics = null;
-    private AtomicBoolean isCompleted = new AtomicBoolean(false);
+    private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -157,7 +157,7 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * The operation identifier of the operation - this can be used to
-     * add an additional dimension for feed operations - like queries -
+     * add a dimension for feed operations - like queries -
      * so, metrics and diagnostics can be separated for different query types etc.
      * @return the operation identifier of the operation
      */
@@ -229,18 +229,7 @@ public final class CosmosDiagnosticsContext {
             return true;
         }
 
-        if (this.thresholds.getPayloadSizeThreshold() < Math.max(this.maxRequestSize, this.maxResponseSize)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    void addDiagnostics(Collection<CosmosDiagnostics> cosmosDiagnostics) {
-        checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
-        for (CosmosDiagnostics d: cosmosDiagnostics) {
-            this.addDiagnostics(d);
-        }
+        return this.thresholds.getPayloadSizeThreshold() < Math.max(this.maxRequestSize, this.maxResponseSize);
     }
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
@@ -398,26 +387,15 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    synchronized void recordOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
-        synchronized (this.spanName) {
-            this.statusCode = statusCode;
-            this.subStatusCode = subStatusCode;
-            this.finalError = finalError;
-            if (actualItemCount != null) {
-                if (this.actualItemCount.get() >= 0) {
-                    this.actualItemCount.addAndGet(actualItemCount);
-                } else {
-                    this.actualItemCount.set(actualItemCount);
-                }
-            }
-            this.duration = Duration.between(this.startTime, Instant.now());
-            this.cachedRequestDiagnostics = null;
-        }
-    }
-
     synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
         synchronized (this.spanName) {
             this.isCompleted.set(true);
+            this.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+        }
+    }
+
+    synchronized void recordOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+        synchronized (this.spanName) {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
@@ -460,7 +438,7 @@ public final class CosmosDiagnosticsContext {
             ctxNode.put("maxItems", this.maxItemCount);
         }
 
-        if (this.actualItemCount != null) {
+        if (this.actualItemCount.get() >= 0) {
             ctxNode.put("actualItems", this.actualItemCount.get());
         }
 
@@ -546,6 +524,15 @@ public final class CosmosDiagnosticsContext {
                     public void recordOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
                                                 Integer actualItemCount, Double requestCharge,
                                                 CosmosDiagnostics diagnostics, Throwable finalError) {
+                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
+                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                    }
+
+                    private void validateAndRecordOperationResult(
+                        CosmosDiagnosticsContext ctx,
+                        Double requestCharge,
+                        CosmosDiagnostics diagnostics) {
+
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         if (diagnostics != null) {
                             ctx.addDiagnostics(diagnostics);
@@ -554,7 +541,6 @@ public final class CosmosDiagnosticsContext {
                         if (requestCharge != null) {
                             ctx.addRequestCharge(requestCharge.floatValue());
                         }
-                        ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
                     }
 
                     @Override
@@ -562,14 +548,7 @@ public final class CosmosDiagnosticsContext {
                                              Integer actualItemCount, Double requestCharge,
                                              CosmosDiagnostics diagnostics, Throwable finalError) {
 
-                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        if (diagnostics != null) {
-                            ctx.addDiagnostics(diagnostics);
-                        }
-
-                        if (requestCharge != null) {
-                            ctx.addRequestCharge(requestCharge.floatValue());
-                        }
+                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
                         ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
                     }
 

@@ -64,11 +64,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -471,7 +471,7 @@ public class CosmosAsyncContainer {
 
     /**
      *  Best effort to initialize the container by warming up the caches and connections for the current read region.
-     *
+     * <p>
      *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
      *  to get an estimated time:
      *  If it took 200ms to establish a connection, and you have 100 partitions in your container
@@ -490,7 +490,7 @@ public class CosmosAsyncContainer {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
-                new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+                new CosmosContainerProactiveInitConfigBuilder(Collections.singletonList(cosmosContainerIdentity))
                     .setProactiveConnectionRegionsCount(1)
                     .build();
 
@@ -508,7 +508,7 @@ public class CosmosAsyncContainer {
     /**
      *  Best effort to initialize the container by warming up the caches and connections to a specified no.
      *  of regions from the  preferred list of regions.
-     *
+     * <p>
      *  Depending on how many partitions the container has, the total time needed will also change. But
      *  generally you can use the following formula to get an estimated time:
      *  If it took 200ms to establish a connection, and you have 100 partitions in your container
@@ -1312,7 +1312,7 @@ public class CosmosAsyncContainer {
      * Deletes all items in the Container with the specified partitionKey value.
      * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
      * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
-     *
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for all the deleted items.
      *
@@ -1350,13 +1350,12 @@ public class CosmosAsyncContainer {
     }
 
     private String getItemLink(String itemId) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.getLink());
-        builder.append("/");
-        builder.append(Paths.DOCUMENTS_PATH_SEGMENT);
-        builder.append("/");
-        builder.append(itemId);
-        return builder.toString();
+        String builder = this.getLink()
+            + "/"
+            + Paths.DOCUMENTS_PATH_SEGMENT
+            + "/"
+            + itemId;
+        return builder;
     }
 
     /**
@@ -1901,7 +1900,7 @@ public class CosmosAsyncContainer {
 
      /**
      * Enable the throughput control group with local control mode.
-     *
+     * <p>
      * <!-- src_embed com.azure.cosmos.throughputControl.localControl -->
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
@@ -1924,7 +1923,7 @@ public class CosmosAsyncContainer {
     /**
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
-     *
+     * <p>
      * <!-- src_embed com.azure.cosmos.throughputControl.globalControl -->
      * <pre>
      * ThroughputControlGroupConfig groupConfig =

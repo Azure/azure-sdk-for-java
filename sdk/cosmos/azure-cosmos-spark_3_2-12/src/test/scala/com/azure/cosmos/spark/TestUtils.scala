@@ -18,6 +18,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
+import java.net.URI
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger

@@ -291,7 +291,7 @@ public class CosmosAsyncDatabase {
      * <p>
      * The throughput setting will only be used if the specified container
      * does not exist and therefore a new container will be created.
-     *
+     * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
@@ -317,7 +317,7 @@ public class CosmosAsyncDatabase {
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
-     *
+     * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
@@ -362,7 +362,7 @@ public class CosmosAsyncDatabase {
      * <p>
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
-     *
+     * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -388,7 +388,7 @@ public class CosmosAsyncDatabase {
      * <p>
      * The throughput setting will only be used if the specified container
      * does not exist and a new container will be created.
-     *
+     * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.

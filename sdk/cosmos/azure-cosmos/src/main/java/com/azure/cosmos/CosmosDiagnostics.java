@@ -65,11 +65,6 @@ public final class CosmosDiagnostics {
         return clientSideRequestStatistics;
     }
 
-    CosmosDiagnostics clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
-        this.clientSideRequestStatistics = clientSideRequestStatistics;
-        return this;
-    }
-
     /**
      * Retrieves Response Diagnostic String
      *
