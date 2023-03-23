@@ -38,17 +38,12 @@ import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.query.TriFunction;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -72,6 +67,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -104,16 +100,9 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
     private IOpenConnectionsHandler openConnectionsHandler;
-    private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
-    private static final Map<String, OpenConnectionsConcurrencySetting> openConnectionsConcurrencySettings = new HashMap<>();
-
-    static {
-        openConnectionsConcurrencySettings.put("AGGRESSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3));
-        openConnectionsConcurrencySettings.put("DEFENSIVE", new OpenConnectionsConcurrencySetting(Configs.getCPUCnt(), Configs.getCPUCnt()));
-    }
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -126,9 +115,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        IOpenConnectionsHandler openConnectionsHandler) {
 
         this.clientContext = clientContext;
         try {
@@ -173,7 +160,6 @@ public class GatewayAddressCache implements IAddressCache {
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
         this.openConnectionsHandler = openConnectionsHandler;
-        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.connectionPolicy = connectionPolicy;
         this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
         this.replicaValidationScopes = ConcurrentHashMap.newKeySet();
@@ -192,9 +178,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        IOpenConnectionsHandler openConnectionsHandler) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -205,9 +189,7 @@ public class GatewayAddressCache implements IAddressCache {
                 apiType,
                 globalEndpointManager,
                 connectionPolicy,
-                openConnectionsHandler,
-                proactiveOpenConnectionsProcessor
-                );
+                openConnectionsHandler);
     }
 
     @Override
@@ -335,11 +317,6 @@ public class GatewayAddressCache implements IAddressCache {
     @Override
     public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler) {
         this.openConnectionsHandler = openConnectionsHandler;
-    }
-
-    @Override
-    public void setOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
-        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -690,7 +667,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
 
                             if (this.replicaAddressValidationEnabled) {
-                                this.validateReplicaAddresses(mergedAddresses);
+                                this.validateReplicaAddresses(collectionRid, mergedAddresses);
                             }
 
                             return Mono.just(mergedAddresses);
@@ -879,8 +856,9 @@ public class GatewayAddressCache implements IAddressCache {
         return mergedAddresses.toArray(new AddressInformation[mergedAddresses.size()]);
     }
 
-    private void validateReplicaAddresses(AddressInformation[] addresses) {
+    private void validateReplicaAddresses(String collectionRid, AddressInformation[] addresses) {
         checkNotNull(addresses, "Argument 'addresses' can not be null");
+        checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' can not be null");
 
         // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Connected, UnhealthyPending
         // using open connection to validate addresses in UnhealthyPending status
@@ -906,7 +884,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0) {
             this.openConnectionsHandler
-                    .openConnections(this.serviceEndpoint, addressesNeedToValidation)
+                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation, Configs.getMinConnectionPoolSizePerEndpoint())
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -934,141 +912,14 @@ public class GatewayAddressCache implements IAddressCache {
         return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(
-            DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities
-    ) {
-        return this.openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities, "AGGRESSIVE", false);
-    }
-
-    public Flux<ImmutablePair<DocumentCollection , AddressInformation>> resolveAddressesAndInitCaches(
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            String openConnectionsConcurrencyMode
-    ) {
-
-        checkNotNull(collection, "Argument 'collection' should not be null");
-        checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
-
-        OpenConnectionsConcurrencySetting connectionsConcurrencySetting = openConnectionsConcurrencySettings
-                .getOrDefault(openConnectionsConcurrencyMode, openConnectionsConcurrencySettings.get("AGGRESSIVE"));
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(
-                    "openConnectionsAndInitCaches collection: {}, partitionKeyRangeIdentities: {}",
-                    collection.getResourceId(),
-                    JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
-        }
-
-        if (this.replicaAddressValidationEnabled) {
-            this.replicaValidationScopes.add(Uri.HealthStatus.Unknown);
-        }
-
-        List<Flux<List<Address>>> tasks = new ArrayList<>();
-        int batchSize = GatewayAddressCache.DefaultBatchSize;
-
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-                this.clientContext,
-                OperationType.Read,
-                collection.getResourceId(),
-                ResourceType.DocumentCollection,
-                Collections.emptyMap());
-
-        for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
-
-            int endIndex = i + batchSize;
-            endIndex = Math.min(endIndex, partitionKeyRangeIdentities.size());
-
-            tasks.add(
-                    this.getServerAddressesViaGatewayWithRetry(
-                            request,
-                            collection.getResourceId(),
-                            partitionKeyRangeIdentities
-                                    .subList(i, endIndex)
-                                    .stream()
-                                    .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
-                                    .collect(Collectors.toList()),
-                            false).flux());
-        }
-
-        return Flux.concat(tasks)
-                .flatMap(list -> {
-                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos =
-                            list.stream()
-                                    .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
-                                    .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
-                                    .values()
-                                    .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
-                                    .collect(Collectors.toList());
-
-                    return Flux.fromIterable(addressInfos)
-                            .flatMap(addressInfo -> {
-                                this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
-
-                                List<AddressInformation> addresses = new ArrayList<>();
-
-                                for (Pair<PartitionKeyRangeIdentity, AddressInformation[]> pair : addressInfos) {
-                                    addresses.addAll(Arrays.stream(pair.getRight()).toList());
-                                }
-                                return Mono.just(addressInfo);
-                            })
-                            .flatMap(partitionKeyRangeIdentityPair -> {
-                                AddressInformation[] addressInfosForPkr = partitionKeyRangeIdentityPair.getRight();
-                                return Flux.fromArray(addressInfosForPkr);
-                            })
-                            .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(collection, addressInformation)));
-                });
-
-    }
-
-    public Mono<List<OpenConnectionResponse>> openConnection(
-            AddressInformation address,
-            DocumentCollection documentCollection,
-            String openConnectionsConcurrencyMode,
-            boolean isBackgroundFlow
-    ) {
-        if (this.openConnectionsHandler != null) {
-            if (isBackgroundFlow) {
-                for (int i = 0; i < connectionPolicy.getMinChannelPoolSizePerEndpoint(); i++) {
-                    TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionsFunc =
-                            this.openConnectionsHandler::openConnection;
-
-                    OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                            openConnectionsFunc,
-                            documentCollection,
-                            this.serviceEndpoint,
-                            address.getPhysicalUri(),
-                            openConnectionsConcurrencyMode);
-
-                    this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
-                }
-                return Mono.empty();
-            }
-
-            List<Mono<OpenConnectionResponse>> openConnectionTasks = new ArrayList<>();
-
-            for (int i = 0; i < connectionPolicy.getMinChannelPoolSizePerEndpoint(); i++) {
-                openConnectionTasks.add(this.openConnectionsHandler.openConnection(this.serviceEndpoint, address.getPhysicalUri(), openConnectionsConcurrencyMode));
-            }
-
-            return Flux.mergeSequential(openConnectionTasks).collectList();
-        }
-
-        return Mono.empty();
-    }
-
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(
-            DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            String openConnectionsConcurrencyMode,
-            boolean isBackgroundFlow
+            int connectionsPerEndpointCount
             ) {
 
         checkNotNull(collection, "Argument 'collection' should not be null");
         checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
-
-        OpenConnectionsConcurrencySetting connectionsConcurrencySetting = openConnectionsConcurrencySettings
-                .getOrDefault(openConnectionsConcurrencyMode, openConnectionsConcurrencySettings.get("AGGRESSIVE"));
 
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -1123,68 +974,27 @@ public class GatewayAddressCache implements IAddressCache {
                                 addressInfo -> {
                                     this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
 
-                                    if (this.openConnectionsHandler != null) {
-                                        if (!isBackgroundFlow) {
-                                            List<Flux<OpenConnectionResponse>> openConnectionTasks = new ArrayList<>();
+                                    int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
+                                            Configs.getMinConnectionPoolSizePerEndpoint());
 
-                                            for (int i = 0; i < connectionPolicy.getMinChannelPoolSizePerEndpoint(); i++) {
-                                                openConnectionTasks.add(this.openConnectionsHandler.openConnections(
+                                    if (this.openConnectionsHandler != null) {
+                                        return this.openConnectionsHandler.openConnections(
+                                                        collection.getResourceId(),
                                                         this.serviceEndpoint,
                                                         Arrays
                                                                 .stream(addressInfo.getRight())
                                                                 .map(addressInformation -> addressInformation.getPhysicalUri())
                                                                 .collect(Collectors.toList()),
-                                                        openConnectionsConcurrencyMode
-                                                ).doOnNext(openConnectionResponse -> {
-                                                    if (!openConnectionResponse.isConnected()) {
-                                                        TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionsFunc =
-                                                                this.openConnectionsHandler::openConnection;
-
-                                                        OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                                                                openConnectionsFunc,
-                                                                collection, this.serviceEndpoint,
-                                                                openConnectionResponse.getUri(),
-                                                                RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
-                                                        );
-
-                                                        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
-                                                    }
-                                                }));
-                                            }
-
-                                            return Flux.mergeSequential(openConnectionTasks).collectList();
-
-                                        } else {
-                                            AddressInformation[] addressInformations = addressInfo.getRight();
-
-                                            for (int i = 0; i < connectionPolicy.getMinChannelPoolSizePerEndpoint(); i++) {
-                                                for (AddressInformation addressInformation : addressInformations) {
-
-                                                    System.out.println("In background flow");
-
-                                                    TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionsFunc =
-                                                            this.openConnectionsHandler::openConnection;
-
-                                                    OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                                                            openConnectionsFunc,
-                                                            collection, this.serviceEndpoint,
-                                                            addressInformation.getPhysicalUri(),
-                                                            RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
-                                                    );
-
-                                                    this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
-                                                }
-                                            }
-
-                                            return Flux.just(new ArrayList<>());
-                                        }
+                                                        connectionsRequiredForEndpoint
+                                                )
+                                        .repeat(connectionsRequiredForEndpoint - 1);
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");
-                                    return Flux.just(new ArrayList<>());
+                                    return Flux.empty();
                                 },
-                                connectionsConcurrencySetting.concurrency,
-                                connectionsConcurrencySetting.prefetch);
+                                Configs.getCPUCnt() * 10,
+                                Configs.getCPUCnt() * 3);
                 });
     }
 
@@ -1272,16 +1082,6 @@ public class GatewayAddressCache implements IAddressCache {
                 .compareTo(minDurationBeforeEnforcingCollectionRoutingMapRefresh) >= 0;
 
             return returnValue;
-        }
-    }
-
-    private static final class OpenConnectionsConcurrencySetting {
-        private int concurrency;
-        private int prefetch;
-
-        public OpenConnectionsConcurrencySetting(int concurrency, int prefetch) {
-            this.concurrency = concurrency;
-            this.prefetch = prefetch;
         }
     }
 }

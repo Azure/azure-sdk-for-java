@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -842,12 +843,12 @@ public class ClientMetricsTest extends BatchTestBase {
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
 
             String address = "https://localhost:12345";
-            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address), Configs.getMinConnectionPoolSizePerEndpoint());
             RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
             firstEndpoint.close();
             assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
-            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address));
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address), Configs.getMinConnectionPoolSizePerEndpoint());
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);

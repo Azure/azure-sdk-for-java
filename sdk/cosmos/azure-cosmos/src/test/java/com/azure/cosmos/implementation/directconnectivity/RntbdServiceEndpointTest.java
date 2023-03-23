@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -40,13 +41,13 @@ public class RntbdServiceEndpointTest {
             uriList.add(physicalAddress);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();

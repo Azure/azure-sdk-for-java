@@ -52,6 +52,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -673,6 +674,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             Channel candidate = null;
 
+            // in the open channel flow, force a new channel
+            // to be opened
             if (!(promise instanceof OpenChannelPromise)) {
                 candidate = this.pollChannel(channelAcquisitionTimeline);
 

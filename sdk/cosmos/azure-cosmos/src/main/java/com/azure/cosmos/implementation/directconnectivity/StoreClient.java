@@ -36,7 +36,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -81,7 +80,6 @@ public class StoreClient implements IStoreClient {
             useMultipleWriteLocations);
 
         addressResolver.setOpenConnectionsHandler(this.transportClient.getOpenConnectionsHandler());
-        addressResolver.setOpenConnectionsExecutor(this.transportClient.getOpenConnectionsExecutor());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -138,12 +136,7 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
-    }
-
-    @Override
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 

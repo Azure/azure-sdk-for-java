@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -38,7 +39,25 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndpointMetrics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestEncoder;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestTimer;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
@@ -621,7 +640,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -819,7 +838,7 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
@@ -939,6 +958,7 @@ public final class RntbdTransportClientTest {
         final URI remoteURI;
         final Tag tag;
         private final Tag clientMetricTag;
+        private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
         private FakeEndpoint(
             final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
@@ -953,6 +973,8 @@ public final class RntbdTransportClientTest {
                     null,
                     null,
                     null);
+                this.durableEndpointMetrics = new RntbdDurableEndpointMetrics();
+                this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
                     lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
@@ -994,13 +1016,8 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public int totalChannelsAcquiredMetric() {
-            return 0;
-        }
-
-        @Override
-        public int totalChannelsClosedMetric() {
-            return 0;
+        public RntbdDurableEndpointMetrics durableEndpointMetrics() {
+            return new RntbdDurableEndpointMetrics();
         }
 
         @Override
@@ -1099,6 +1116,16 @@ public final class RntbdTransportClientTest {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 
+        @Override
+        public int getMinChannelsRequired() {
+            return Configs.getMinConnectionPoolSizePerEndpoint();
+        }
+
+        @Override
+        public void setMinChannelsRequired(int minConnectionsRequired) {
+            throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
+        }
+
         // endregion
 
         // region Methods
@@ -1116,8 +1143,8 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
-            throw new NotImplementedException("tryOpenConnection is not supported in FakeEndpoint.");
+        public OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs openConnectionRequestArgs) {
+            throw new NotImplementedException("openConnection is not supported in FakeEndpoint.");
         }
 
         // endregion
@@ -1161,7 +1188,7 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress, int minChannelsRequired) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
@@ -1182,12 +1209,7 @@ public final class RntbdTransportClientTest {
 
             @Override
             public IOpenConnectionsHandler getOpenConnectionHandler() {
-                throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClientTest");
-            }
-
-            @Override
-            public ProactiveOpenConnectionsProcessor getRntbdOpenConnectionExecutor() {
-                throw new NotImplementedException("getRntbdOpenConnectionExecutor is not implemented for RntbdTransportClientTest");
+                throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClient");
             }
         }
 

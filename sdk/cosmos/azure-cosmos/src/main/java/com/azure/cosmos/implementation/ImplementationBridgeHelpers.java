@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -1203,6 +1204,47 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
+        }
+    }
+
+    public static final class CosmosContainerProactiveInitConfigHelper {
+
+        private static final AtomicReference<Boolean> cosmosContainerProactiveInitConfigClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
+
+        private CosmosContainerProactiveInitConfigHelper() {}
+
+        public static CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor getCosmosContainerIdentityAccessor() {
+
+            if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
+                logger.debug("Initializing CosmosContainerIdentityAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosContainerIdentityAccessor is not initialized yet!");
+                System.exit(9729); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosContainerProactiveInitConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosContainerProactiveInitConfigAccessor...");
+                cosmosContainerProactiveInitConfigClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosContainerProactiveInitConfigAccessor {
+            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

@@ -7,6 +7,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -194,15 +195,16 @@ public class GlobalAddressResolverTest {
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
-                .thenReturn(Flux.just(openConnectionResponses));
+                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint()))
+                .thenReturn(Flux.fromIterable(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
         StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))
-                        .expectNext(Arrays.asList(response1, response2))
+                        .expectNext(response1)
+                        .expectNext(response2)
                         .verifyComplete();
         Mockito
                 .verify(collectionCache, Mockito.times(1))
@@ -217,6 +219,6 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnectionsAndInitCaches(documentCollection, ranges);
+                .openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint());
     }
 }

@@ -6,6 +6,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
@@ -14,98 +17,31 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
+    private static final int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
     private final RntbdEndpoint.Provider endpointProvider;
-    private static final Map<String, SemaphoreSettings> semaphoreRegistry = new HashMap<>();
-    public static final String DEFENSIVE_CONNECTIONS_MODE = "DEFENSIVE";
-    public static final String AGGRESSIVE_CONNECTIONS_MODE = "AGGRESSIVE";
-
-    static {
-        semaphoreRegistry.put(AGGRESSIVE_CONNECTIONS_MODE, new SemaphoreSettings(10 * Configs.getCPUCnt(), 30));
-        semaphoreRegistry.put(DEFENSIVE_CONNECTIONS_MODE, new SemaphoreSettings(Configs.getCPUCnt(), 10));
-    }
+    private final Semaphore openConnectionsSemaphore;
 
     public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
 
         checkNotNull(endpointProvider, "Argument 'endpointProvider' can not be null");
 
         this.endpointProvider = endpointProvider;
+        this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt() * 10);
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-
-        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-
-        return openConnection(serviceEndpoint, addressUri, AGGRESSIVE_CONNECTIONS_MODE);
-    }
-
-    @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri, String openConnectionsConcurrencyMode) {
-
-        SemaphoreSettings semaphoreSettings = semaphoreRegistry.getOrDefault(openConnectionsConcurrencyMode, semaphoreRegistry.get(AGGRESSIVE_CONNECTIONS_MODE));
-        Semaphore openConnectionsSemaphore = semaphoreSettings.semaphore;
-        int timeout = semaphoreSettings.timeout;
-
-        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-
-        try {
-            if (openConnectionsSemaphore.tryAcquire(timeout, TimeUnit.MINUTES)) {
-                return Mono.defer(() -> Mono.just(addressUri.getURI()))
-                        .flatMap(address -> {
-
-                            RntbdEndpoint endpoint = endpointProvider.createIfAbsent(serviceEndpoint, address);
-
-                            if (endpoint.channelsMetrics() < endpointProvider.config().getMinChannelPoolSizePerEndpoint()) {
-
-                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(addressUri)))
-                                        .onErrorResume(throwable -> {
-                                            if (openConnectionsConcurrencyMode.equals(DEFENSIVE_CONNECTIONS_MODE)) {
-                                                return Mono.error(throwable);
-                                            } else {
-                                                return Mono.just(new OpenConnectionResponse(addressUri, false, throwable));
-                                            }
-                                        });
-                            }
-                            return Mono.just(new OpenConnectionResponse(addressUri, true, null));
-                        }).doOnTerminate(() -> openConnectionsSemaphore.release());
-            }
-        } catch (InterruptedException e) {
-            logger.warn("Acquire connection semaphore failed", e);
-        }
-
-        return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses) {
-
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredForEndpoint) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(
-                    "Open connections for addresses {}",
-                    StringUtils.join(addresses, ","));
-        }
-
-        return openConnections(serviceEndpoint, addresses, AGGRESSIVE_CONNECTIONS_MODE);
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnections(URI serviceEndpoint, List<Uri> addresses, String openConnectionsConcurrencyMode) {
-
-        checkNotNull(addresses, "Argument 'addresses' should not be null");
+        checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' cannot be null nor empty");
 
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -114,16 +50,65 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         }
 
         return Flux.fromIterable(addresses)
-                .flatMap(addressUri -> this.openConnection(serviceEndpoint, addressUri, openConnectionsConcurrencyMode));
+                .flatMap(addressUri -> {
+                    try {
+                        if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
+
+                            RxDocumentServiceRequest openConnectionRequest =
+                                    this.getOpenConnectionRequest(collectionRid, serviceEndpoint, addressUri);
+
+                            final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
+                            final RntbdEndpoint endpoint =
+                                    this.endpointProvider.createIfAbsent(
+                                            openConnectionRequest.requestContext.locationEndpointToRoute,
+                                            addressUri.getURI(),
+                                            minConnectionsRequiredForEndpoint
+                                    );
+
+                            // if endpoint had already been instantiated with a
+                            // different minConnectionsRequired value, check if
+                            // the open connections flow through a different
+                            // container for the same endpoint has a higher
+                            // value for minConnectionsRequired and choose the higher
+                            // value
+                            int minConnectionsRequired = endpoint.getMinChannelsRequired();
+                            int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
+
+                            endpoint.setMinChannelsRequired(newMinConnectionsRequired);
+
+                            int connectionsOpened = endpoint.channelsMetrics();
+
+                            if (connectionsOpened < newMinConnectionsRequired) {
+                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(requestArgs)))
+                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                        .doOnNext(response -> {
+                                            if (logger.isDebugEnabled()) {
+                                                logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
+                                            }
+                                        })
+                                        .doOnTerminate(() -> this.openConnectionsSemaphore.release());
+                            }
+
+                            openConnectionsSemaphore.release();
+                            return Mono.just(new OpenConnectionResponse(addressUri, true, null));
+                        }
+
+                    } catch (InterruptedException e) {
+                        logger.warn("Acquire connection semaphore failed", e);
+                    }
+
+                    return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));
+                });
     }
 
-    private static final class SemaphoreSettings {
-        private final Semaphore semaphore;
-        private final int timeout;
+    private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {
+        RxDocumentServiceRequest openConnectionRequest =
+            RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
+        openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
+        openConnectionRequest.requestContext.storePhysicalAddressUri = addressUri;
+        openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;
+        openConnectionRequest.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
 
-        SemaphoreSettings(int permits, int timeout) {
-            this.semaphore = new Semaphore(permits);
-            this.timeout = timeout;
-        }
+        return openConnectionRequest;
     }
 }
