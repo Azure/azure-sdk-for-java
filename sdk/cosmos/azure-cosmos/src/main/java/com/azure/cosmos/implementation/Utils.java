@@ -57,7 +57,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
-
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     private static final int JAVA_VERSION = getJavaVersion();
@@ -725,9 +724,17 @@ public class Utils {
         if (pagedFluxOptions.getMaxItemCount() != null) {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
         } else {
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
-                cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-            pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .applyMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions);
+
+            // if query request options also don't have maxItemCount set, apply defaults
+            if (pagedFluxOptions.getMaxItemCount() == null) {
+                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
+                    cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+                pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+            }
         }
     }
 
