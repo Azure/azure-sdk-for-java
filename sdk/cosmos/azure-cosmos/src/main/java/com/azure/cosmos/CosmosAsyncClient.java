@@ -638,7 +638,7 @@ public final class CosmosAsyncClient implements Closeable {
                             Map<String, Integer> minConnectionsToContainerSettings = ImplementationBridgeHelpers
                                     .CosmosContainerProactiveInitConfigHelper
                                     .getCosmosContainerIdentityAccessor()
-                                    .getMinConnectionsPerContainerSettings(proactiveContainerInitConfig);
+                                    .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
 
                             return cosmosAsyncContainer
                                     .openConnectionsAndInitCaches(

@@ -149,7 +149,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 Map<String, Integer> minConnectionsPerContainerSettings = ImplementationBridgeHelpers
                                                         .CosmosContainerProactiveInitConfigHelper
                                                         .getCosmosContainerIdentityAccessor()
-                                                        .getMinConnectionsPerContainerSettings(proactiveContainerInitConfig);
+                                                        .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
 
                                                 int connectionsPerReplicaCountForContainer = minConnectionsPerContainerSettings.getOrDefault(containerLink, Configs.getMinConnectionPoolSizePerEndpoint());
 

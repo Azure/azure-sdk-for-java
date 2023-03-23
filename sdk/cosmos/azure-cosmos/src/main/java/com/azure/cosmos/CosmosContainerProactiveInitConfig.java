@@ -9,7 +9,6 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,18 +20,18 @@ public final class CosmosContainerProactiveInitConfig {
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
-    private final Map<String, Integer> minConnectionsToContainerSettings;
+    private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private final int numProactiveConnectionRegions;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
-        Map<String, Integer> minConnectionsToContainerSettings
+        Map<String, Integer> containerLinkToMinConnectionsMap
     ) {
 
         this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
-        this.minConnectionsToContainerSettings = minConnectionsToContainerSettings;
+        this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
     }
 
     /**
@@ -104,8 +103,8 @@ public final class CosmosContainerProactiveInitConfig {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.setCosmosContainerProactiveInitConfigAccessor(new ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor() {
             @Override
-            public Map<String, Integer> getMinConnectionsPerContainerSettings(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
-                return cosmosContainerProactiveInitConfig.minConnectionsToContainerSettings;
+            public Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
+                return cosmosContainerProactiveInitConfig.containerLinkToMinConnectionsMap;
             }
         });
     }

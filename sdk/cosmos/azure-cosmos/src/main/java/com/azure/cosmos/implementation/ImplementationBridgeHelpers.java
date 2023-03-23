@@ -1242,7 +1242,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosContainerProactiveInitConfigAccessor {
-            Map<String, Integer> getMinConnectionsPerContainerSettings(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }
