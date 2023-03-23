@@ -178,7 +178,7 @@ public class CosmosPagedFluxOptions {
         this.databaseId = databaseId;
         this.containerId = containerId;
         this.tracerSpanName = tracerSpanName;
-        this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.operationId = operationId;
         this.operationType = operationType;
@@ -205,7 +205,7 @@ public class CosmosPagedFluxOptions {
         checkNotNull(resourceType, "Argument 'resourceType' must not be NULL.");
         checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be NULL.");
         checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
-        this.tracerProvider  =  BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.tracerSpanName = tracerSpanName;
         this.databaseId = databaseId;

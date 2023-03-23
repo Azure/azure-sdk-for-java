@@ -843,7 +843,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
                 BridgeInternal.getLink(this.container), serverRequest, options, false);
 
-            return BridgeInternal.getTracerProvider(this.cosmosClient)
+            return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(
                     responseMono,
                     context,

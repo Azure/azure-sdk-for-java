@@ -10,8 +10,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DiagnosticsProvider;
-import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -31,7 +29,6 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -531,11 +528,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String extractResourceSelfLink(Resource resource) {
-        return resource.getSelfLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setResourceSelfLink(Resource resource, String selfLink) {
         ModelBridgeInternal.setResourceSelfLink(resource, selfLink);
     }
@@ -660,51 +652,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
         return cosmosAsyncContainer.getLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflict createCosmosAsyncConflict(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncConflict(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainer createCosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncContainer(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabase createCosmosAsyncDatabase(String id, CosmosAsyncClient client) {
-        return new CosmosAsyncDatabase(id, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
-        return new CosmosAsyncPermission(id, user);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunction(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncUser(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
-        return new CosmosDatabase(id, client, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static DiagnosticsProvider getTracerProvider(CosmosAsyncClient client) {
-        return client.getDiagnosticsProvider();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
-        return new CosmosUser(asyncUser, database, id);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

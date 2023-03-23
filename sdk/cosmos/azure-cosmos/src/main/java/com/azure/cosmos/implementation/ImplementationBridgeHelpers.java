@@ -1172,6 +1172,8 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
                 CosmosAsyncClient client,
                 CosmosDiagnosticsThresholds operationLevelThresholds);
+
+            DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
         }
     }
 

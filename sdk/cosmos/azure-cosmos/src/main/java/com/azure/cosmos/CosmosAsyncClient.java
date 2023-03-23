@@ -917,6 +917,11 @@ public final class CosmosAsyncClient implements Closeable {
 
                     return client.getEffectiveDiagnosticsThresholds(operationLevelThresholds);
                 }
+
+                @Override
+                public DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client) {
+                    return client.getDiagnosticsProvider();
+                }
             }
         );
     }
