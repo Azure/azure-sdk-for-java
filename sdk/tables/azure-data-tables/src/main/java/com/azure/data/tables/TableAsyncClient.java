@@ -96,7 +96,6 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  */
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
 public final class TableAsyncClient {
-    private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -948,17 +947,12 @@ public final class TableAsyncClient {
             return Mono.empty();
         }
 
-        String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
-
-        if (split.length == 0) {
-            return monoError(logger, new RuntimeException(
-                "Split done incorrectly, must have partition key: " + token));
+        try {
+            String[] split = TableUtils.getKeysFromToken(token);
+            return listEntities(split[0], split[1], context, options, resultType);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
-
-        String nextPartitionKey = split[0];
-        String nextRowKey = split.length > 1 ? split[1] : null;
-
-        return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,

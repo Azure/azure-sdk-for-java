@@ -102,7 +102,6 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
 public final class TableClient {
 
     private static final ExecutorService THREAD_POOL = TableUtils.getThreadPoolWithShutdownHook();
-    private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private final ClientLogger logger = new ClientLogger(TableClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -957,18 +956,12 @@ public final class TableClient {
             return null;
         }
 
-        String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
-
-        if (split.length == 0) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                "Split done incorrectly, must have partition key: " + token));
+        try {
+            String[] keys = TableUtils.getKeysFromToken(token);
+            return listEntities(keys[0], keys[1], context, options, resultType);
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
         }
-
-        String nextPartitionKey = split[0];
-        String nextRowKey = split.length > 1 ? split[1] : null;
-
-        return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
-
     }
 
     private <T extends TableEntity> PagedResponse<T> listEntities(String nextPartitionKey, String nextRowKey,

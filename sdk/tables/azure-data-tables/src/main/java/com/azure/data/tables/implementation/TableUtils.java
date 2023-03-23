@@ -60,6 +60,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
+    private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
     private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS = 5;
@@ -594,5 +595,20 @@ public final class TableUtils {
         } else {
             return (RuntimeException) mapThrowableToTableServiceException(exception);
         }
+    }
+
+    public static String[] getKeysFromToken(String token) {
+        String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
+        String[] keys = new String[2];
+        if (split.length == 0){
+            throw new RuntimeException("Split done incorrectly, must have partition key. Token: " + token);
+        } else if (split.length == 2) {
+            keys[0] = split[0];
+            keys[1] = split[1];
+        } else {
+            keys[0] = split[0];
+            keys[1] = null;
+        }
+        return keys;
     }
 }
