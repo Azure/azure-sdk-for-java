@@ -35,7 +35,8 @@
     "uniqueSubDomainName": "[format('{0}', parameters('baseName'))]",
     "endpointValue": "[format('https://api.cognitive.microsofttranslator.com')]",
     "customEndpointValue": "[format('https://{0}.cognitiveservices.azure.com/translator/text/v3.0', parameters('baseName'))]",
-    "regionValue": "[format('{0}', parameters('location'))]"
+    "regionValue": "[format('{0}', parameters('location'))]",
+	"tokenURLValue": "[format('https://{0}.api.cognitive.microsoft.com', parameters('location'))]"
   },
   "resources": [
     {
@@ -68,6 +69,10 @@
     "AZURE_TEXT_TRANSLATION_REGION": {
       "type": "string",
       "value": "[variables('regionValue')]"
+    },
+	"AZURE_TEXT_TRANSLATION_TOKENURL": {
+      "type": "string",
+      "value": "[variables('tokenURLValue')]"
     }
   }
 }

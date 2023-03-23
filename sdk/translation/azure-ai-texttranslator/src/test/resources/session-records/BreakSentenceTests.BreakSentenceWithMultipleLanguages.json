@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/breaksentence?api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "42831ec9-b98a-432f-8d17-7c32de852943",
+      "x-ms-client-request-id" : "fb1e9eff-8637-4dd5-ae78-944c9ed6030a",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "BKST.MW1P.99BF.0320T2311.56F8AA",
+      "X-RequestId" : "BKST.MW1P.99BD.0323T1927.C96A7BE",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId",
       "X-Content-Type-Options" : "nosniff",
@@ -16,7 +16,7 @@
       "Content-Length" : "133",
       "StatusCode" : "200",
       "Body" : "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":1.0},\"sentLen\":[11]},{\"detectedLanguage\":{\"language\":\"ar\",\"score\":1.0},\"sentLen\":[32]}]",
-      "Date" : "Mon, 20 Mar 2023 23:11:56 GMT",
+      "Date" : "Thu, 23 Mar 2023 19:26:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

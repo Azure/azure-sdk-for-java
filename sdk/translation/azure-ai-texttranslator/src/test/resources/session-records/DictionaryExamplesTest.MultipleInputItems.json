@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/dictionary/examples?from=en&to=es&api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "66471878-218d-45be-9444-47a776d6f017",
+      "x-ms-client-request-id" : "f10755a6-dd2c-4339-a4e9-4b61b47eb0c2",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "DTEX.MW1P.99BF.0320T2311.56F8F0",
+      "X-RequestId" : "DTEX.MW1P.99BD.0323T1927.C96A817",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -17,7 +17,7 @@
       "Content-Length" : "2704",
       "StatusCode" : "200",
       "Body" : "[{\"normalizedSource\":\"fly\",\"normalizedTarget\":\"volar\",\"examples\":[{\"sourcePrefix\":\"I mean, for a guy who could \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Quiero decir, para un tipo que podía \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"Now it's time to make you \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Ahora es hora de que te haga \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"One happy thought will make you \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Uno solo te hará \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"They need machines to \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Necesitan máquinas para \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"That should really \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Eso realmente debe \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"It sure takes longer when you can't \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Lleva más tiempo cuando no puedes \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"I have to \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\" home in the morning.\",\"targetPrefix\":\"Tengo que \",\"targetTerm\":\"volar\",\"targetSuffix\":\" a casa por la mañana.\"},{\"sourcePrefix\":\"You taught me to \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Me enseñaste a \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"I think you should \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\" with the window closed.\",\"targetPrefix\":\"Creo que debemos \",\"targetTerm\":\"volar\",\"targetSuffix\":\" con la ventana cerrada.\"},{\"sourcePrefix\":\"They look like they could \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Parece que pudieran \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"But you can \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\", for instance?\",\"targetPrefix\":\"Que puedes \",\"targetTerm\":\"volar\",\"targetSuffix\":\", por ejemplo.\"},{\"sourcePrefix\":\"At least until her kids can be able to \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Al menos hasta que sus hijos sean capaces de \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"I thought you could \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Pensé que podías \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"I was wondering what it would be like to \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Me preguntaba cómo sería \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"},{\"sourcePrefix\":\"But nobody else can \",\"sourceTerm\":\"fly\",\"sourceSuffix\":\".\",\"targetPrefix\":\"Pero nadie puede \",\"targetTerm\":\"volar\",\"targetSuffix\":\".\"}]},{\"normalizedSource\":\"beef\",\"normalizedTarget\":\"came\",\"examples\":[]}]",
-      "Date" : "Mon, 20 Mar 2023 23:11:56 GMT",
+      "Date" : "Thu, 23 Mar 2023 19:26:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

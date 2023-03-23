@@ -18,8 +18,8 @@ public class TextTranslationClientBase extends TestBase {
     private final String defaultEndpoint = "https://fakeEndpoint.cognitive.microsofttranslator.com";
     private final String defaultApiKey = "fakeApiKey";
     private final String defaultRegion = "fakeRegion";
-    private final String defaultCustomEndpoint = "https://fakeCustomEndpoint.cognitive.microsofttranslator.com";
-
+    private final String defaultCustomEndpoint = "https://fakeCustomEndpoint.cognitiveservices.azure.com";
+	private final String defaultTokenURL = "https://fakeTokenEndpoint.api.cognitive.microsoft.com";
 
     TextTranslationClient getTranslationClient() {
         return getClient(getEndpoint());
@@ -61,6 +61,10 @@ public class TextTranslationClientBase extends TestBase {
     private String getRegion() {
     return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
     }
+	
+	private String getTokenURL() {
+    return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_TOKENURL", defaultTokenURL);
+    }
 
     TextTranslationClient getTranslationClientWithToken()
         throws MalformedURLException, IOException
@@ -82,9 +86,8 @@ public class TextTranslationClientBase extends TestBase {
 
     private TokenCredential getTokenCredential()
         throws MalformedURLException, IOException
-    {
-        String issueTokenURL = String.format("https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken?", getRegion());
-        URL tokenService = new URL(issueTokenURL + "Subscription-Key=" + getKey());
+    {        
+        URL tokenService = new URL(getTokenURL() + "/sts/v1.0/issueToken?Subscription-Key=" + getKey());
         HttpURLConnection connection = (HttpURLConnection) tokenService.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");

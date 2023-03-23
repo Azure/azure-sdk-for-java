@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/transliterate?language=hi&fromScript=Deva&toScript=Latn&api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "76b6f3b1-556a-407d-beb2-bc7423d56603",
+      "x-ms-client-request-id" : "8e636d23-1879-4bcb-9d11-36b595ec92f7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "TLIT.MW1P.99BF.0320T2312.56FCB1",
+      "X-RequestId" : "TLIT.MW1P.99BD.0323T1927.C96AC17",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -17,7 +17,7 @@
       "Content-Length" : "96",
       "StatusCode" : "200",
       "Body" : "[{\"text\":\"yhekakasautihekasautihai\",\"script\":\"Latn\"},{\"text\":\"yhekakasoutihai\",\"script\":\"Latn\"}]",
-      "Date" : "Mon, 20 Mar 2023 23:11:59 GMT",
+      "Date" : "Thu, 23 Mar 2023 19:27:03 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
