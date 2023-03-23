@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Applications List. */
 public final class ApplicationsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ApplicationsListSamples {
      */
     public static void listApplicationsSecurityBySubscriptionLevelScope(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.applications().list(Context.NONE);
+        manager.applications().list(com.azure.core.util.Context.NONE);
     }
 }

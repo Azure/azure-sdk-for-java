@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolution List. */
 public final class IotSecuritySolutionListSamples {
     /*
@@ -18,7 +16,7 @@ public final class IotSecuritySolutionListSamples {
      */
     public static void listIoTSecuritySolutionsBySubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutions().list(null, Context.NONE);
+        manager.iotSecuritySolutions().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,6 +33,6 @@ public final class IotSecuritySolutionListSamples {
             .list(
                 "properties.iotHubs/any(i eq"
                     + " \"/subscriptions/075423e9-7d33-4166-8bdf-3920b04e3735/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/FirstIotHub\")",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

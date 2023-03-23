@@ -3,11 +3,12 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.azure.core.util.Configuration;
 
 public class IdentityClientOptionsTest {
 
@@ -19,16 +20,12 @@ public class IdentityClientOptionsTest {
 
     @Test
     public void testEnvAuthorityHost() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        String envAuthorityHost = "https://envauthority.com/";
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put("AZURE_AUTHORITY_HOST", envAuthorityHost));
 
-        try {
-            String envAuthorityHost = "https://envauthority.com/";
-            configuration.put("AZURE_AUTHORITY_HOST", envAuthorityHost);
-            IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-            Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
-        } finally {
-            configuration.remove("AZURE_AUTHORITY_HOST");
-        }
+        IdentityClientOptions identityClientOptions = new IdentityClientOptions().setConfiguration(configuration);
+        Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
     }
 
     @Test

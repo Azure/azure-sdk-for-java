@@ -28,6 +28,10 @@ public final class MsixPackageDependencies {
     @JsonProperty(value = "minVersion")
     private String minVersion;
 
+    /** Creates an instance of MsixPackageDependencies class. */
+    public MsixPackageDependencies() {
+    }
+
     /**
      * Get the dependencyName property: Name of package dependency.
      *

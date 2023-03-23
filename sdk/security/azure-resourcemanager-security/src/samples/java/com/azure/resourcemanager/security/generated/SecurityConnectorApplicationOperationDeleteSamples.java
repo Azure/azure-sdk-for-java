@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectorApplicationOperation Delete. */
 public final class SecurityConnectorApplicationOperationDeleteSamples {
     /*
@@ -20,6 +18,9 @@ public final class SecurityConnectorApplicationOperationDeleteSamples {
         manager
             .securityConnectorApplicationOperations()
             .deleteWithResponse(
-                "gcpResourceGroup", "gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", Context.NONE);
+                "gcpResourceGroup",
+                "gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
+                com.azure.core.util.Context.NONE);
     }
 }

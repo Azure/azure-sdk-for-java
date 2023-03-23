@@ -24,6 +24,10 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
     @JsonProperty(value = "imageId", required = true)
     private String imageId;
 
+    /** Creates an instance of ImageTemplateManagedImageSource class. */
+    public ImageTemplateManagedImageSource() {
+    }
+
     /**
      * Get the imageId property: ARM resource id of the managed image in customer subscription.
      *

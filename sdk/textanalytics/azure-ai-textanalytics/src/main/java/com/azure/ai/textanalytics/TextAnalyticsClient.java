@@ -19,7 +19,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
 import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
@@ -52,7 +51,6 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
@@ -1697,146 +1695,6 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link String document} with provided
-     * {@link DynamicClassificationOptions} options.
-     *
-     * <!-- src_embed Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
-     * <pre>
-     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
-     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
-     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
-     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
-     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
-     *
-     * &#47;&#47; Analyzing dynamic classification
-     * DynamicClassifyDocumentResultCollection resultCollection =
-     *     textAnalyticsClient.dynamicClassificationBatch&#40;documents, &quot;en&quot;, options&#41;;
-     *
-     * &#47;&#47; Result of dynamic classification
-     * resultCollection.forEach&#40;documentResult -&gt; &#123;
-     *     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
-     * English as default.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
-     * analyzing dynamic classification.
-     *
-     * @return A {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
-        String language, DynamicClassificationOptions options) {
-        return dynamicClassificationBatchWithResponse(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), options, Context.NONE).getValue();
-    }
-
-    /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
-     * {@link DynamicClassificationOptions} options.
-     *
-     * <!-- Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
-     * <pre>
-     * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
-     *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
-     *         .setLanguage&#40;&quot;en&quot;&#41;,
-     *     new TextDocumentInput&#40;&quot;2&quot;, &quot;The restaurant had amazing gnocchi. The hotel was dark and unclean.&quot;&#41;
-     *         .setLanguage&#40;&quot;en&quot;&#41;
-     * &#41;;
-     *
-     * AnalyzeSentimentOptions options = new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;
-     *     .setIncludeStatistics&#40;true&#41;;
-     *
-     * &#47;&#47; Analyzing batch sentiments
-     * Response&lt;AnalyzeSentimentResultCollection&gt; response =
-     *     textAnalyticsClient.analyzeSentimentBatchWithResponse&#40;textDocumentInputs, options, Context.NONE&#41;;
-     *
-     * &#47;&#47; Response's status code
-     * System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * AnalyzeSentimentResultCollection resultCollection = response.getValue&#40;&#41;;
-     *
-     * &#47;&#47; Batch statistics
-     * TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
-     * System.out.printf&#40;&quot;A batch of documents statistics, transaction count: %s, valid document count: %s.%n&quot;,
-     *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Analyzed sentiment for each of documents from a batch of documents
-     * resultCollection.forEach&#40;analyzeSentimentResult -&gt; &#123;
-     *     System.out.printf&#40;&quot;Document ID: %s%n&quot;, analyzeSentimentResult.getId&#40;&#41;&#41;;
-     *     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment&#40;&#41;;
-     *     documentSentiment.getSentences&#40;&#41;.forEach&#40;sentenceSentiment -&gt; &#123;
-     *         System.out.printf&#40;&quot;&#92;tSentence sentiment: %s%n&quot;, sentenceSentiment.getSentiment&#40;&#41;&#41;;
-     *         sentenceSentiment.getOpinions&#40;&#41;.forEach&#40;opinion -&gt; &#123;
-     *             TargetSentiment targetSentiment = opinion.getTarget&#40;&#41;;
-     *             System.out.printf&#40;&quot;&#92;tTarget sentiment: %s, target text: %s%n&quot;, targetSentiment.getSentiment&#40;&#41;,
-     *                 targetSentiment.getText&#40;&#41;&#41;;
-     *             for &#40;AssessmentSentiment assessmentSentiment : opinion.getAssessments&#40;&#41;&#41; &#123;
-     *                 System.out.printf&#40;&quot;&#92;t&#92;t'%s' sentiment because of &#92;&quot;%s&#92;&quot;. Is the assessment negated: %s.%n&quot;,
-     *                     assessmentSentiment.getSentiment&#40;&#41;, assessmentSentiment.getText&#40;&#41;,
-     *                     assessmentSentiment.isNegated&#40;&#41;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
-     * analyzing dynamic classification.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link Response} that contains a {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassificationBatchWithResponse} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
-        return client.dynamicClassificationUtilClient.getResultCollectionResponseSync(
-            documents, options, context);
-    }
-
-    /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of {@link String documents}.
      *
      * This method will use the default language that can be set by using method
@@ -2810,7 +2668,7 @@ public final class TextAnalyticsClient {
      * &#125;
      * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
      *     textAnalyticsClient.beginAbstractSummary&#40;documents, &quot;en&quot;,
-     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;&#41;;
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
      *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
@@ -2891,7 +2749,7 @@ public final class TextAnalyticsClient {
      * &#125;
      * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
      *     textAnalyticsClient.beginAbstractSummary&#40;documents,
-     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;,
      *         Context.NONE&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;

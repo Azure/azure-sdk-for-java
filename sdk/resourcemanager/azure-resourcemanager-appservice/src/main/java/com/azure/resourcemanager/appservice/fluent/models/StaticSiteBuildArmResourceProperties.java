@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
+import com.azure.resourcemanager.appservice.models.DatabaseConnectionOverview;
 import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -68,6 +69,16 @@ public final class StaticSiteBuildArmResourceProperties {
      */
     @JsonProperty(value = "linkedBackends", access = JsonProperty.Access.WRITE_ONLY)
     private List<StaticSiteLinkedBackend> linkedBackends;
+
+    /*
+     * Database connections for the static site build
+     */
+    @JsonProperty(value = "databaseConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DatabaseConnectionOverview> databaseConnections;
+
+    /** Creates an instance of StaticSiteBuildArmResourceProperties class. */
+    public StaticSiteBuildArmResourceProperties() {
+    }
 
     /**
      * Get the buildId property: An identifier for the static site build.
@@ -151,6 +162,15 @@ public final class StaticSiteBuildArmResourceProperties {
     }
 
     /**
+     * Get the databaseConnections property: Database connections for the static site build.
+     *
+     * @return the databaseConnections value.
+     */
+    public List<DatabaseConnectionOverview> databaseConnections() {
+        return this.databaseConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -161,6 +181,9 @@ public final class StaticSiteBuildArmResourceProperties {
         }
         if (linkedBackends() != null) {
             linkedBackends().forEach(e -> e.validate());
+        }
+        if (databaseConnections() != null) {
+            databaseConnections().forEach(e -> e.validate());
         }
     }
 }

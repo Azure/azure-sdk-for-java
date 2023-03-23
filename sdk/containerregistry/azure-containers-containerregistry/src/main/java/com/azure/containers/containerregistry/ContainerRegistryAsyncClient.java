@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.core.annotation.ReturnType;
@@ -36,7 +35,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
@@ -51,7 +49,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -64,7 +61,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRegistryAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryAsyncClient.class);
-    private final AzureContainerRegistryImpl registryImplClient;
     private final ContainerRegistriesImpl registriesImplClient;
     private final HttpPipeline httpPipeline;
     private final String endpoint;
@@ -73,12 +69,8 @@ public final class ContainerRegistryAsyncClient {
     ContainerRegistryAsyncClient(HttpPipeline httpPipeline, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.registryImplClient = new AzureContainerRegistryImplBuilder()
-            .url(endpoint)
-            .pipeline(httpPipeline)
-            .apiVersion(version)
-            .buildClient();
-        this.registriesImplClient = this.registryImplClient.getContainerRegistries();
+        this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
+            .getContainerRegistries();
         this.apiVersion = version;
     }
 

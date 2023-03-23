@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.appservice.models.DatabaseConnectionOverview;
 import com.azure.resourcemanager.appservice.models.EnterpriseGradeCdnStatus;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResponseMessageEnvelopeRemotePrivateEndpointConnection;
@@ -45,6 +46,10 @@ public final class StaticSiteArmResourceInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of StaticSiteArmResourceInner class. */
+    public StaticSiteArmResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
@@ -432,6 +437,15 @@ public final class StaticSiteArmResourceInner extends Resource {
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
+    }
+
+    /**
+     * Get the databaseConnections property: Database connections for the static site.
+     *
+     * @return the databaseConnections value.
+     */
+    public List<DatabaseConnectionOverview> databaseConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseConnections();
     }
 
     /**

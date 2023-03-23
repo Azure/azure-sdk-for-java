@@ -37,7 +37,7 @@ public final class SapCentralInstancesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"instanceNo\":\"dqbwpypqtgsfja\",\"subnet\":\"slhhxudbxv\",\"messageServerProperties\":{\"msPort\":3476105471330074630,\"internalMsPort\":4620463543237855952,\"httpPort\":3579473819283071102,\"httpsPort\":522814180418790552,\"hostname\":\"sckdlp\",\"ipAddress\":\"zrcxfailcfxwmdbo\",\"health\":\"Unhealthy\"},\"enqueueServerProperties\":{\"hostname\":\"ft\",\"ipAddress\":\"qobr\",\"port\":3034279146046559675,\"health\":\"Degraded\"},\"gatewayServerProperties\":{\"port\":7176311738598981100,\"health\":\"Unhealthy\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"v\",\"hostname\":\"nrzvuljraaer\",\"kernelVersion\":\"okqgukkjq\",\"kernelPatch\":\"broyla\",\"ipAddress\":\"ulcdisdosf\",\"health\":\"Unknown\"},\"kernelVersion\":\"vgjrwhr\",\"kernelPatch\":\"ycy\",\"loadBalancerDetails\":{\"id\":\"lxgccknfnwmbtm\"},\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"fedxihchrphkm\",\"tags\":{\"fzpbgtgkyl\":\"dqns\",\"jeuut\":\"dgh\",\"bwnhhtql\":\"wxezwzhok\"},\"id\":\"ehgpp\",\"name\":\"pifhpfeoajvgcxtx\",\"type\":\"csheafidltugsr\"}";
+            "{\"properties\":{\"instanceNo\":\"lbj\",\"subnet\":\"nljlageuaulx\",\"messageServerProperties\":{\"msPort\":4644267611854169292,\"internalMsPort\":1025453690932299158,\"httpPort\":7293143912225340990,\"httpsPort\":3933133394775341003,\"hostname\":\"lsvxeizz\",\"ipAddress\":\"klnsrmffey\",\"health\":\"Unknown\"},\"enqueueServerProperties\":{\"hostname\":\"piymerteea\",\"ipAddress\":\"xqiekkkzddrtk\",\"port\":6820222826477981340,\"health\":\"Unhealthy\"},\"gatewayServerProperties\":{\"port\":162263939675431561,\"health\":\"Healthy\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"svecuijpxtxs\",\"hostname\":\"prtujwsawdd\",\"kernelVersion\":\"babxvitit\",\"kernelPatch\":\"zeexavoxtfgle\",\"ipAddress\":\"m\",\"health\":\"Degraded\"},\"kernelVersion\":\"pypqtgsfj\",\"kernelPatch\":\"b\",\"loadBalancerDetails\":{\"id\":\"hxudbxvodht\"},\"vmDetails\":[],\"status\":\"SoftShutdown\",\"health\":\"Healthy\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"ckdlpag\",\"tags\":{\"a\":\"x\",\"xwmdboxd\":\"lc\",\"ckknhxkizvy\":\"gsftufqobrjlnacg\",\"nok\":\"nrzvuljraaer\"},\"id\":\"gukkjqnvbroy\",\"name\":\"a\",\"type\":\"xulcdisdos\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,18 +68,18 @@ public final class SapCentralInstancesCreateMockTests {
         SapCentralServerInstance response =
             manager
                 .sapCentralInstances()
-                .define("pqfrtqlkz")
-                .withRegion("cxcktpi")
-                .withExistingSapVirtualInstance("xpmyyefrpmpdnq", "skawaoqvmmb")
-                .withTags(mapOf("qiekkkzddrt", "rteeamm", "ojbmxv", "g", "cuijpxt", "vrefdeesv", "wprtu", "s"))
+                .define("tilaxh")
+                .withRegion("ah")
+                .withExistingSapVirtualInstance("yrpfoobrlttymsj", "ygqdnfwqzdz")
+                .withTags(mapOf("jhhn", "atjeaahh"))
                 .withMessageServerProperties(new MessageServerProperties())
                 .withEnqueueServerProperties(new EnqueueServerProperties())
                 .withGatewayServerProperties(new GatewayServerProperties())
                 .withEnqueueReplicationServerProperties(new EnqueueReplicationServerProperties())
                 .create();
 
-        Assertions.assertEquals("fedxihchrphkm", response.location());
-        Assertions.assertEquals("dqns", response.tags().get("fzpbgtgkyl"));
+        Assertions.assertEquals("ckdlpag", response.location());
+        Assertions.assertEquals("x", response.tags().get("a"));
     }
 
     @SuppressWarnings("unchecked")

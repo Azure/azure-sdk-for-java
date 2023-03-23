@@ -24,6 +24,10 @@ public final class AvailableContactsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AvailableContactsListResult class. */
+    public AvailableContactsListResult() {
+    }
+
     /**
      * Get the value property: A list of available contacts.
      *

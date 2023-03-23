@@ -26,6 +26,9 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -55,9 +58,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -67,6 +72,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -104,6 +110,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final Timestamps timestamps = new Timestamps();
     private final RntbdConnectionStateListener rntbdConnectionStateListener;
     private final long idleConnectionTimerResolutionInNanos;
+    private final long tcpNetworkRequestTimeoutInNanos;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
@@ -114,7 +122,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final ChannelHealthChecker healthChecker,
         final int pendingRequestLimit,
         final RntbdConnectionStateListener connectionStateListener,
-        final long idleConnectionTimerResolutionInNanos) {
+        final long idleConnectionTimerResolutionInNanos,
+        final RntbdServerErrorInjector serverErrorInjector,
+        final long tcpNetworkRequestTimeoutInNanos) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -124,6 +134,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.healthChecker = healthChecker;
         this.rntbdConnectionStateListener = connectionStateListener;
         this.idleConnectionTimerResolutionInNanos = idleConnectionTimerResolutionInNanos;
+        this.tcpNetworkRequestTimeoutInNanos = tcpNetworkRequestTimeoutInNanos;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     // region ChannelHandler methods
@@ -416,6 +428,16 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 }
             }
 
+            if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
+                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
+                return;
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
+                context.close();
+                return;
+            }
+
             context.fireUserEventTriggered(event);
 
         } catch (Throwable error) {
@@ -587,6 +609,20 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 record.setSendingRequestHasStarted();
                 this.timestamps.channelWriteAttempted();
 
+                if (this.serverErrorInjector != null) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
+                        this.timestamps.channelWriteCompleted();
+                        this.timestamps.channelReadCompleted();
+                        return;
+                    }
+
+                    Consumer<Duration> writeRequestWithInjectedDelayConsumer =
+                        (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelay(record, writeRequestWithInjectedDelayConsumer)) {
+                        return;
+                    }
+                }
+
                 context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                     record.stage(RntbdRequestRecord.Stage.SENT);
                     if (completed.isSuccess()) {
@@ -615,6 +651,35 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         reportIssue(context, "", error);
         this.exceptionCaught(context, error);
+    }
+
+    private void writeRequestWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final ChannelPromise promise,
+        Duration delay) {
+
+        // Start the timer but delay the write
+        // The ultimate effect will be similar to reduce the request timeout
+        // But if the configured delay > networkRequestTimeout, then do not bother to send the request
+        this.addPendingRequestRecord(context, rntbdRequestRecord);
+        rntbdRequestRecord.stage(RntbdRequestRecord.Stage.SENT);
+        this.timestamps.channelWriteCompleted();
+
+        // Since this is to simulate a response delay, mark write completed
+        this.timestamps.channelWriteCompleted();
+
+        long effectiveDelayInNanos = Math.min(this.tcpNetworkRequestTimeoutInNanos, delay.toNanos());
+        context.executor().schedule(
+            () -> {
+                if (this.tcpNetworkRequestTimeoutInNanos <= delay.toNanos()) {
+                    return;
+                }
+                context.write(rntbdRequestRecord, promise);
+            },
+            effectiveDelayInNanos,
+            TimeUnit.NANOSECONDS
+        );
     }
 
     public RntbdChannelStatistics getChannelStatistics(

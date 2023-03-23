@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.reservations.fluent.models.RefundResponseInner;
+import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResponseInner;
 import com.azure.resourcemanager.reservations.models.RefundRequest;
 
 /** An instance of this class provides access to all the operations defined in ReturnsClient. */
@@ -24,11 +24,10 @@ public interface ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RefundResponseInner>, RefundResponseInner> beginPost(
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
         String reservationOrderId, RefundRequest body);
 
     /**
@@ -42,11 +41,10 @@ public interface ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response of refund request containing refund information of
-     *     reservation.
+     * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RefundResponseInner>, RefundResponseInner> beginPost(
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
         String reservationOrderId, RefundRequest body, Context context);
 
     /**
@@ -59,10 +57,10 @@ public interface ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RefundResponseInner post(String reservationOrderId, RefundRequest body);
+    ReservationOrderResponseInner post(String reservationOrderId, RefundRequest body);
 
     /**
      * Return a reservation.
@@ -75,8 +73,8 @@ public interface ReturnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RefundResponseInner post(String reservationOrderId, RefundRequest body, Context context);
+    ReservationOrderResponseInner post(String reservationOrderId, RefundRequest body, Context context);
 }

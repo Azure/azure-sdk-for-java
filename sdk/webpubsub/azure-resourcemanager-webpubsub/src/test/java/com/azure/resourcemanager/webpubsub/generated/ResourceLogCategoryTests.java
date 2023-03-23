@@ -7,11 +7,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogCategory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceLogCategoryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceLogCategory model =
             BinaryData
                 .fromString("{\"name\":\"vjtoqnermclfp\",\"enabled\":\"hoxus\"}")
@@ -20,8 +19,8 @@ public final class ResourceLogCategoryTests {
         Assertions.assertEquals("hoxus", model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceLogCategory model = new ResourceLogCategory().withName("vjtoqnermclfp").withEnabled("hoxus");
         model = BinaryData.fromObject(model).toObject(ResourceLogCategory.class);
         Assertions.assertEquals("vjtoqnermclfp", model.name());

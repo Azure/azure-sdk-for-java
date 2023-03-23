@@ -82,6 +82,10 @@ public final class WorkflowRunActionProperties {
     @JsonProperty(value = "retryHistory")
     private List<RetryHistory> retryHistory;
 
+    /** Creates an instance of WorkflowRunActionProperties class. */
+    public WorkflowRunActionProperties() {
+    }
+
     /**
      * Get the startTime property: Gets the start time.
      *

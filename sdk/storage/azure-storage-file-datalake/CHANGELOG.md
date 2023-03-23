@@ -1,15 +1,38 @@
 # Release History
 
-## 12.14.0-beta.2 (Unreleased)
+## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `FileReadHeaders.getCreationTime()` and `FileReadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
+- Added support for 2022-11-02 service version.
+- Adding support for Encryption Context on DataLake files, a string value that can be passed to allow users to generate 
+file-level encryption keys. This value is returned on `DataLakeFileClient.getProperties()`, `DataLakeFileClient.readWithResponse()`,
+and `DataLakeFileClient.listPaths()`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.14.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 12.14.0 (2023-02-21)
+
+### Features Added
+- Added `FileReadHeaders.getCreationTime()` and `FileReadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
+- Added support for 2021-12-02 service version.
+- Added support for leasing operations on `DataLakeFileClient.appendWithResponse()` and `DataLakeFileClient.flushWithResponse()`.
+
+### Other Changes
+- Deprecated the always-failing API `DataLakeFileClient.flush(long)` to avoid confusion regarding overwrite semantics in DataLake.
 
 ## 12.13.3 (2023-02-09)
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadBalancerProbes List. */
 public final class LoadBalancerProbesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerProbeList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LoadBalancerProbeList.json
      */
     /**
      * Sample code: LoadBalancerProbeList.
@@ -17,6 +15,11 @@ public final class LoadBalancerProbesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerProbeList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerProbes().list("testrg", "lb", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerProbes()
+            .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 }

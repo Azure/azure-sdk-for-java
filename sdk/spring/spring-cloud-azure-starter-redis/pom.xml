@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.7.7</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>2.7.8</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
 
   </dependencies>

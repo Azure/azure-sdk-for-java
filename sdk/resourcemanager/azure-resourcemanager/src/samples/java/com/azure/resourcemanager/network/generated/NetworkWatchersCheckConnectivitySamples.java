@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.ConnectivityDestination;
 import com.azure.resourcemanager.network.models.ConnectivityParameters;
 import com.azure.resourcemanager.network.models.ConnectivitySource;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.network.models.IpVersion;
 /** Samples for NetworkWatchers CheckConnectivity. */
 public final class NetworkWatchersCheckConnectivitySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherConnectivityCheck.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherConnectivityCheck.json
      */
     /**
      * Sample code: Check connectivity.
@@ -36,6 +35,6 @@ public final class NetworkWatchersCheckConnectivitySamples {
                                 "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"))
                     .withDestination(new ConnectivityDestination().withAddress("192.168.100.4").withPort(3389))
                     .withPreferredIpVersion(IpVersion.IPV4),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

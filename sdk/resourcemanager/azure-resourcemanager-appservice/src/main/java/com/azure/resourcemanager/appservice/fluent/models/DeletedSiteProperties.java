@@ -58,6 +58,10 @@ public final class DeletedSiteProperties {
     @JsonProperty(value = "geoRegionName", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegionName;
 
+    /** Creates an instance of DeletedSiteProperties class. */
+    public DeletedSiteProperties() {
+    }
+
     /**
      * Get the deletedSiteId property: Numeric id for the deleted site.
      *

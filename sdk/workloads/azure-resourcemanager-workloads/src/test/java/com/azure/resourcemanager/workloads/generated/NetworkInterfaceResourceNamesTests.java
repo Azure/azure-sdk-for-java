@@ -13,16 +13,16 @@ public final class NetworkInterfaceResourceNamesTests {
     public void testDeserialize() throws Exception {
         NetworkInterfaceResourceNames model =
             BinaryData
-                .fromString("{\"networkInterfaceName\":\"bxarzgszufoxci\"}")
+                .fromString("{\"networkInterfaceName\":\"ldsyuuximerqfob\"}")
                 .toObject(NetworkInterfaceResourceNames.class);
-        Assertions.assertEquals("bxarzgszufoxci", model.networkInterfaceName());
+        Assertions.assertEquals("ldsyuuximerqfob", model.networkInterfaceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfaceResourceNames model =
-            new NetworkInterfaceResourceNames().withNetworkInterfaceName("bxarzgszufoxci");
+            new NetworkInterfaceResourceNames().withNetworkInterfaceName("ldsyuuximerqfob");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceResourceNames.class);
-        Assertions.assertEquals("bxarzgszufoxci", model.networkInterfaceName());
+        Assertions.assertEquals("ldsyuuximerqfob", model.networkInterfaceName());
     }
 }

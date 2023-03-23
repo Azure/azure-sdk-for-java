@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolutionsAnalyticsAggregatedAlert Dismiss. */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertDismissSamples {
     /*
@@ -20,6 +18,10 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertDismissSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-            .dismissWithResponse("IoTEdgeResources", "default", "IoT_Bruteforce_Fail/2019-02-02/dismiss", Context.NONE);
+            .dismissWithResponse(
+                "IoTEdgeResources",
+                "default",
+                "IoT_Bruteforce_Fail/2019-02-02/dismiss",
+                com.azure.core.util.Context.NONE);
     }
 }

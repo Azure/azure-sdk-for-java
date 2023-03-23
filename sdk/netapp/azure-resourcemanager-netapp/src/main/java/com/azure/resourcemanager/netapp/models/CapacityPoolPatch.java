@@ -19,6 +19,10 @@ public final class CapacityPoolPatch extends Resource {
     @JsonProperty(value = "properties")
     private PoolPatchProperties innerProperties;
 
+    /** Creates an instance of CapacityPoolPatch class. */
+    public CapacityPoolPatch() {
+    }
+
     /**
      * Get the innerProperties property: Capacity pool properties.
      *

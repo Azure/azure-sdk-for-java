@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
@@ -86,6 +87,44 @@ class APISpec extends StorageSpec {
         }
     }
 
+    def getOAuthServiceClient(ShareServiceClientBuilder builder) {
+        if (builder == null) builder = new ShareServiceClientBuilder()
+        builder.endpoint(environment.primaryAccount.fileEndpoint)
+
+        instrument(builder)
+
+        return setOauthCredentials(builder).buildClient()
+    }
+
+    def setOauthCredentials(ShareServiceClientBuilder builder) {
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(environment.primaryAccount.credential)
+        }
+    }
+
+    def getOAuthShareClient(ShareClientBuilder builder) {
+        if (builder == null) builder = new ShareClientBuilder()
+        builder.endpoint(environment.primaryAccount.fileEndpoint)
+
+        instrument(builder)
+
+        return setOauthCredentials(builder).buildClient()
+    }
+
+    def setOauthCredentials(ShareClientBuilder builder) {
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(environment.primaryAccount.credential)
+        }
+    }
+
     def generateShareName() {
         generateResourceName(entityNo++)
     }
@@ -96,6 +135,14 @@ class APISpec extends StorageSpec {
 
     private String generateResourceName(int entityNo) {
         return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
+    }
+
+    byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(namer.getRandomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
     }
 
     ShareServiceAsyncClient getServiceAsyncClient(TestAccount account) {
@@ -153,6 +200,13 @@ class APISpec extends StorageSpec {
         return shareBuilderHelper(shareName, null)
     }
 
+    ShareClient getShareClient(final String shareName, Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+        def builder = shareBuilderHelper(shareName, null)
+        if (allowTrailingDot != null) builder.allowTrailingDot(allowTrailingDot)
+        if (allowSourceTrailingDot != null) builder.allowSourceTrailingDot(allowSourceTrailingDot)
+        return builder.buildClient()
+    }
+
     def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = instrument(new ShareClientBuilder())
         return builder.connectionString(environment.primaryAccount.connectionString)
@@ -206,6 +260,13 @@ class APISpec extends StorageSpec {
             builder.sasToken(sasToken)
         }
 
+        return builder.buildFileClient()
+    }
+
+    ShareFileClient getFileClient(final String shareName, final String fileName, Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+        def builder = fileBuilderHelper(shareName, fileName)
+        if (allowTrailingDot != null) builder.allowTrailingDot(allowTrailingDot)
+        if (allowSourceTrailingDot != null) builder.allowSourceTrailingDot(allowSourceTrailingDot)
         return builder.buildFileClient()
     }
 

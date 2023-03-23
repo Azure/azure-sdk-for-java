@@ -22,11 +22,14 @@ public final class ApiOperationListResult {
     private String nextLink;
 
     /*
-     * List of Resource Provider operations supported by the
-     * Microsoft.StorageCache resource provider.
+     * List of Resource Provider operations supported by the Microsoft.StorageCache resource provider.
      */
     @JsonProperty(value = "value")
     private List<ApiOperationInner> value;
+
+    /** Creates an instance of ApiOperationListResult class. */
+    public ApiOperationListResult() {
+    }
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.

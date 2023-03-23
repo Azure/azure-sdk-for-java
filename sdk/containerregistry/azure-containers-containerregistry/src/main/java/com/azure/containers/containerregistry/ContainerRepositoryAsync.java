@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
@@ -44,7 +43,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRepositoryAsync repositoryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;
  *     .getRepository&#40;repository&#41;;
  * </pre>
@@ -75,15 +73,9 @@ public final class ContainerRepositoryAsync {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
-        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
-            .pipeline(httpPipeline)
-            .url(endpoint)
-            .apiVersion(version)
-            .buildClient();
-
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
-        this.serviceClient = registryImpl.getContainerRegistries();
+        this.serviceClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
         this.apiVersion = version;
         this.httpPipeline = httpPipeline;
 

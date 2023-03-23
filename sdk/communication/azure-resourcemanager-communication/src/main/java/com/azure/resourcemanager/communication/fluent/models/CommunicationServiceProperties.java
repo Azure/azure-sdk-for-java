@@ -55,6 +55,10 @@ public final class CommunicationServiceProperties {
     @JsonProperty(value = "linkedDomains")
     private List<String> linkedDomains;
 
+    /** Creates an instance of CommunicationServiceProperties class. */
+    public CommunicationServiceProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
      *

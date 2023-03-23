@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** A string indicating what maskingMode to use to mask the personal information detected in the input text. */
@@ -19,12 +18,19 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
     public static final PiiDetectionSkillMaskingMode REPLACE = fromString("replace");
 
     /**
+     * Creates a new instance of PiiDetectionSkillMaskingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiDetectionSkillMaskingMode() {}
+
+    /**
      * Creates or finds a PiiDetectionSkillMaskingMode from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PiiDetectionSkillMaskingMode.
      */
-    @JsonCreator
     public static PiiDetectionSkillMaskingMode fromString(String name) {
         return fromString(name, PiiDetectionSkillMaskingMode.class);
     }

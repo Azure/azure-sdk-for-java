@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpaces;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for StorageSpacesOperation Update. */
 public final class StorageSpacesOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateStorageSpace.json
      */
     /**
      * Sample code: UpdateStorageSpace.
@@ -24,7 +23,8 @@ public final class StorageSpacesOperationUpdateSamples {
         StorageSpaces resource =
             manager
                 .storageSpacesOperations()
-                .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-storage", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "test-arcappliance-resgrp", "test-storage", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }

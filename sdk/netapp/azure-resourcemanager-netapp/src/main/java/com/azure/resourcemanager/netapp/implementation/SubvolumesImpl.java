@@ -43,17 +43,6 @@ public final class SubvolumesImpl implements Subvolumes {
         return Utils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
     }
 
-    public SubvolumeInfo get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        SubvolumeInfoInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
-        if (inner != null) {
-            return new SubvolumeInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SubvolumeInfo> getWithResponse(
         String resourceGroupName,
         String accountName,
@@ -71,6 +60,17 @@ public final class SubvolumesImpl implements Subvolumes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SubvolumeInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SubvolumeInfo get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+        SubvolumeInfoInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        if (inner != null) {
+            return new SubvolumeInfoImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceProperties;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ShareablePrivateLinkResourceTypeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ShareablePrivateLinkResourceType model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class ShareablePrivateLinkResourceTypeTests {
         Assertions.assertEquals("gdkz", model.properties().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ShareablePrivateLinkResourceType model =
             new ShareablePrivateLinkResourceType()
                 .withName("c")

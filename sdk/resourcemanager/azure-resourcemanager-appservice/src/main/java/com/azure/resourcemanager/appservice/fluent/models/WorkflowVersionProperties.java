@@ -93,6 +93,10 @@ public final class WorkflowVersionProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WorkflowParameter> parameters;
 
+    /** Creates an instance of WorkflowVersionProperties class. */
+    public WorkflowVersionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state.
      *

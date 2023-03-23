@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResourcePropertyChangeType. */
+/** The type of change that occurred. */
 public enum ResourcePropertyChangeType {
     /** Enum value Update. */
     UPDATE("Update"),
@@ -33,6 +33,9 @@ public enum ResourcePropertyChangeType {
      */
     @JsonCreator
     public static ResourcePropertyChangeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourcePropertyChangeType[] items = ResourcePropertyChangeType.values();
         for (ResourcePropertyChangeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ResourcePropertyChangeType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

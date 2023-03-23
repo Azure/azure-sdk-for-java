@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GitHubActionCodeConfiguration {
     /*
-     * Runtime stack is used to determine the workflow file content for code
-     * base apps.
+     * Runtime stack is used to determine the workflow file content for code base apps.
      */
     @JsonProperty(value = "runtimeStack")
     private String runtimeStack;
 
     /*
-     * Runtime version is used to determine what build version to set in the
-     * workflow file.
+     * Runtime version is used to determine what build version to set in the workflow file.
      */
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
+
+    /** Creates an instance of GitHubActionCodeConfiguration class. */
+    public GitHubActionCodeConfiguration() {
+    }
 
     /**
      * Get the runtimeStack property: Runtime stack is used to determine the workflow file content for code base apps.

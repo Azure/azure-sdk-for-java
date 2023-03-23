@@ -27,6 +27,10 @@ public final class VolumeQuotaRuleInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of VolumeQuotaRuleInner class. */
+    public VolumeQuotaRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Volume Quota Rule Properties.
      *

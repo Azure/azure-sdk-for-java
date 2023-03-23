@@ -12,39 +12,58 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Distribute via Shared Image Gallery. */
+/** Distribute via Azure Compute Gallery. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SharedImage")
 @Fluent
 public final class ImageTemplateSharedImageDistributor extends ImageTemplateDistributor {
     /*
-     * Resource Id of the Shared Image Gallery image
+     * Resource Id of the Azure Compute Gallery image
      */
     @JsonProperty(value = "galleryImageId", required = true)
     private String galleryImageId;
 
     /*
-     * A list of regions that the image will be replicated to
+     * [Deprecated] A list of regions that the image will be replicated to. This list can be specified only if
+     * targetRegions is not specified. This field is deprecated - use targetRegions instead.
      */
-    @JsonProperty(value = "replicationRegions", required = true)
+    @JsonProperty(value = "replicationRegions")
     private List<String> replicationRegions;
 
     /*
-     * Flag that indicates whether created image version should be excluded
-     * from latest. Omit to use the default (false).
+     * Flag that indicates whether created image version should be excluded from latest. Omit to use the default
+     * (false).
      */
     @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
 
     /*
-     * Storage account type to be used to store the shared image. Omit to use
-     * the default (Standard_LRS).
+     * [Deprecated] Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS).
+     * This field can be specified only if replicationRegions is specified. This field is deprecated - use
+     * targetRegions instead.
      */
     @JsonProperty(value = "storageAccountType")
     private SharedImageStorageAccountType storageAccountType;
 
+    /*
+     * The target regions where the distributed Image Version is going to be replicated to. This object supersedes
+     * replicationRegions and can be specified only if replicationRegions is not specified.
+     */
+    @JsonProperty(value = "targetRegions")
+    private List<TargetRegion> targetRegions;
+
+    /*
+     * Describes how to generate new x.y.z version number for distribution.
+     */
+    @JsonProperty(value = "versioning")
+    private DistributeVersioner versioning;
+
+    /** Creates an instance of ImageTemplateSharedImageDistributor class. */
+    public ImageTemplateSharedImageDistributor() {
+    }
+
     /**
-     * Get the galleryImageId property: Resource Id of the Shared Image Gallery image.
+     * Get the galleryImageId property: Resource Id of the Azure Compute Gallery image.
      *
      * @return the galleryImageId value.
      */
@@ -53,7 +72,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Set the galleryImageId property: Resource Id of the Shared Image Gallery image.
+     * Set the galleryImageId property: Resource Id of the Azure Compute Gallery image.
      *
      * @param galleryImageId the galleryImageId value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
@@ -64,7 +83,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Get the replicationRegions property: A list of regions that the image will be replicated to.
+     * Get the replicationRegions property: [Deprecated] A list of regions that the image will be replicated to. This
+     * list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions
+     * instead.
      *
      * @return the replicationRegions value.
      */
@@ -73,7 +94,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Set the replicationRegions property: A list of regions that the image will be replicated to.
+     * Set the replicationRegions property: [Deprecated] A list of regions that the image will be replicated to. This
+     * list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions
+     * instead.
      *
      * @param replicationRegions the replicationRegions value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
@@ -106,8 +129,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Get the storageAccountType property: Storage account type to be used to store the shared image. Omit to use the
-     * default (Standard_LRS).
+     * Get the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
+     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
+     * field is deprecated - use targetRegions instead.
      *
      * @return the storageAccountType value.
      */
@@ -116,8 +140,9 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Set the storageAccountType property: Storage account type to be used to store the shared image. Omit to use the
-     * default (Standard_LRS).
+     * Set the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
+     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
+     * field is deprecated - use targetRegions instead.
      *
      * @param storageAccountType the storageAccountType value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
@@ -125,6 +150,48 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     public ImageTemplateSharedImageDistributor withStorageAccountType(
         SharedImageStorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the targetRegions property: The target regions where the distributed Image Version is going to be replicated
+     * to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified.
+     *
+     * @return the targetRegions value.
+     */
+    public List<TargetRegion> targetRegions() {
+        return this.targetRegions;
+    }
+
+    /**
+     * Set the targetRegions property: The target regions where the distributed Image Version is going to be replicated
+     * to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified.
+     *
+     * @param targetRegions the targetRegions value to set.
+     * @return the ImageTemplateSharedImageDistributor object itself.
+     */
+    public ImageTemplateSharedImageDistributor withTargetRegions(List<TargetRegion> targetRegions) {
+        this.targetRegions = targetRegions;
+        return this;
+    }
+
+    /**
+     * Get the versioning property: Describes how to generate new x.y.z version number for distribution.
+     *
+     * @return the versioning value.
+     */
+    public DistributeVersioner versioning() {
+        return this.versioning;
+    }
+
+    /**
+     * Set the versioning property: Describes how to generate new x.y.z version number for distribution.
+     *
+     * @param versioning the versioning value to set.
+     * @return the ImageTemplateSharedImageDistributor object itself.
+     */
+    public ImageTemplateSharedImageDistributor withVersioning(DistributeVersioner versioning) {
+        this.versioning = versioning;
         return this;
     }
 
@@ -156,11 +223,11 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
                     new IllegalArgumentException(
                         "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
         }
-        if (replicationRegions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property replicationRegions in model ImageTemplateSharedImageDistributor"));
+        if (targetRegions() != null) {
+            targetRegions().forEach(e -> e.validate());
+        }
+        if (versioning() != null) {
+            versioning().validate();
         }
     }
 

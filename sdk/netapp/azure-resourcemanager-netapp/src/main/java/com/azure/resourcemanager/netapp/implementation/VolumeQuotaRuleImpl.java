@@ -217,8 +217,13 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRuleImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public VolumeQuotaRuleImpl withQuotaSizeInKiBs(Long quotaSizeInKiBs) {

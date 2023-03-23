@@ -15,18 +15,6 @@ public interface HostPools {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a host pool.
-     */
-    HostPool getByResourceGroup(String resourceGroupName, String hostPoolName);
-
-    /**
-     * Get a host pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,15 +24,16 @@ public interface HostPools {
     Response<HostPool> getByResourceGroupWithResponse(String resourceGroupName, String hostPoolName, Context context);
 
     /**
-     * Remove a host pool.
+     * Get a host pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a host pool.
      */
-    void delete(String resourceGroupName, String hostPoolName);
+    HostPool getByResourceGroup(String resourceGroupName, String hostPoolName);
 
     /**
      * Remove a host pool.
@@ -61,6 +50,17 @@ public interface HostPools {
     Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, Boolean force, Context context);
 
     /**
+     * Remove a host pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostPoolName The name of the host pool within the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String hostPoolName);
+
+    /**
      * List hostPools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -75,13 +75,17 @@ public interface HostPools {
      * List hostPools.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<HostPool> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<HostPool> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List hostPools in subscription.
@@ -95,25 +99,16 @@ public interface HostPools {
     /**
      * List hostPools in subscription.
      *
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hostPoolList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<HostPool> list(Context context);
-
-    /**
-     * Registration token of the host pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a RegistrationInfo definition.
-     */
-    RegistrationInfo retrieveRegistrationToken(String resourceGroupName, String hostPoolName);
+    PagedIterable<HostPool> list(Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * Registration token of the host pool.
@@ -128,6 +123,18 @@ public interface HostPools {
      */
     Response<RegistrationInfo> retrieveRegistrationTokenWithResponse(
         String resourceGroupName, String hostPoolName, Context context);
+
+    /**
+     * Registration token of the host pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostPoolName The name of the host pool within the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a RegistrationInfo definition.
+     */
+    RegistrationInfo retrieveRegistrationToken(String resourceGroupName, String hostPoolName);
 
     /**
      * Get a host pool.

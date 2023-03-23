@@ -28,6 +28,10 @@ public final class CapabilityInner {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of CapabilityInner class. */
+    public CapabilityInner() {
+    }
+
     /**
      * Get the name property: Name of the SKU capability.
      *

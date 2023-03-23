@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExternalSecuritySolutions List. */
 public final class ExternalSecuritySolutionsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ExternalSecuritySolutionsListSamples {
      */
     public static void getExternalSecuritySolutionsOnASubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.externalSecuritySolutions().list(Context.NONE);
+        manager.externalSecuritySolutions().list(com.azure.core.util.Context.NONE);
     }
 }

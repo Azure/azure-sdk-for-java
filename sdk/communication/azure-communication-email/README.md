@@ -12,7 +12,7 @@ This package contains the Java SDK for Azure Communication Services for Email.
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above
 - [Apache Maven](https://maven.apache.org/download.cgi)
 
-To create these resource, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
+To create these resources, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
 
 ### Include the package
 #### Include the BOM file
@@ -54,9 +54,11 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0/version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 ## Key concepts
 > More details coming soon.
 
@@ -105,56 +107,59 @@ EmailClient emailClient = new EmailClientBuilder()
 
 ### Send an Email Message
 
-To send an email message, call the `send` function from the `EmailClient`.
+To send an email message, call the `beginSend` function from the `EmailClient`. This will return a poller. You can use this poller to check on the status of the operation and retrieve the result once it's finished.
 
 ```java readme-sample-sendEmailToSingleRecipient
-EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setToRecipients("<recipient-email-address>")
+    .setSubject("test subject")
+    .setBodyPlainText("test message");
 
-ArrayList<EmailAddress> addressList = new ArrayList<>();
-addressList.add(emailAddress);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-EmailRecipients emailRecipients = new EmailRecipients()
-    .setTo(addressList);
-
-EmailContent content = new EmailContent("test subject")
-    .setPlainText("test message");
-
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
-
-SendEmailResult response = emailClient.send(emailMessage);
-System.out.println("Message Id: " + response.getMessageId());
+System.out.println("Operation Id: " + response.getValue().getId());
 ```
 
 ### Send an Email Message to Multiple Recipients
 
-To send an email message to multiple recipients, add a object for each recipient type and an object for each recipient.
+To send an email message to multiple recipients, simply add the new addresses in the appropriate `EmailMessage` setter.
 
 ```java readme-sample-sendEmailToMultipleRecipients
-EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
-EmailAddress emailAddress2 = new EmailAddress("<recipient-2-email-address>");
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setSubject("test subject")
+    .setBodyPlainText("test message")
+    .setToRecipients("<recipient-email-address>", "<recipient-2-email-address>")
+    .setCcRecipients("<cc-recipient-email-address>")
+    .setBccRecipients("<bcc-recipient-email-address>");
 
-ArrayList<EmailAddress> toAddressList = new ArrayList<>();
-toAddressList.add(emailAddress);
-toAddressList.add(emailAddress2);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-ArrayList<EmailAddress> ccAddressList = new ArrayList<>();
-ccAddressList.add(emailAddress);
+System.out.println("Operation Id: " + response.getValue().getId());
+```
 
-ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
-bccAddressList.add(emailAddress);
+To customize the email message recipients further, you can instantiate the `EmailAddress` objects and pass that them to the appropriate `EmailMessage' setters.
 
-EmailRecipients emailRecipients = new EmailRecipients()
-    .setTo(toAddressList)
-    .setCc(ccAddressList)
-    .setBcc(bccAddressList);
+```java readme-sample-sendEmailToMultipleRecipientsWithOptions
+EmailAddress toAddress1 = new EmailAddress("<recipient-email-address>")
+    .setDisplayName("Recipient");
 
-EmailContent content = new EmailContent("test subject")
-    .setPlainText("test message");
+EmailAddress toAddress2 = new EmailAddress("<recipient-2-email-address>")
+    .setDisplayName("Recipient 2");
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setSubject("test subject")
+    .setBodyPlainText("test message")
+    .setToRecipients(toAddress1, toAddress2);
 
-SendEmailResult response = emailClient.send(emailMessage);
-System.out.println("Message Id: " + response.getMessageId());
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+System.out.println("Operation Id: " + response.getValue().getId());
 ```
 
 ### Send Email with Attachments
@@ -162,47 +167,24 @@ System.out.println("Message Id: " + response.getMessageId());
 Azure Communication Services support sending email with attachments.
 
 ```java readme-sample-sendEmailWithAttachment
-File file = new File("C:/attachment.txt");
+BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+EmailAttachment attachment = new EmailAttachment(
+    "attachment.txt",
+    "text/plain",
+    attachmentContent
+);
 
-byte[] fileContent = null;
-try {
-    fileContent = Files.readAllBytes(file.toPath());
-} catch (Exception e) {
-    System.out.println(e);
-}
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setToRecipients("<recipient-email-address>")
+    .setSubject("test subject")
+    .setBodyPlainText("test message")
+    .setAttachments(attachment);
 
-String b64file = Base64.getEncoder().encodeToString(fileContent);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
-EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
-
-ArrayList<EmailAddress> addressList = new ArrayList<>();
-addressList.add(emailAddress);
-
-EmailRecipients emailRecipients = new EmailRecipients()
-    .setTo(addressList);
-
-EmailContent content = new EmailContent("test subject")
-    .setPlainText("test message");
-
-EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachmentType.TXT, b64file);
-
-ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
-attachmentList.add(attachment);
-
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
-    .setAttachments(attachmentList);
-
-SendEmailResult response = emailClient.send(emailMessage);
-System.out.println("Message Id: " + response.getMessageId());
-```
-
-### Get Email Message Status
-
-The result from the `send` call contains a `messageId` which can be used to query the status of the email.
-
-```java readme-sample-getMessageStatus
-SendStatusResult response = emailClient.getSendStatus("<sent-message-id>");
-System.out.println("Status: " + response.getStatus());
+System.out.println("Operation Id: " + response.getValue().getId());
 ```
 
 ## Troubleshooting

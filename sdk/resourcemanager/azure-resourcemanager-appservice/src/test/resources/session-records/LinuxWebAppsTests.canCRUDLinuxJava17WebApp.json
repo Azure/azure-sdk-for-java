@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/serverfarms/java-webapp-715255plan50204d7?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/serverfarms/java-webapp-715255plan50204d7?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "8e184007-4e59-4e4e-a1a4-92a27ce83c37",
@@ -57,7 +57,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "169fcd1a-5db0-4343-bbc0-d369da92deb8",
@@ -87,7 +87,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/web?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/web?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "42882c2e-7b53-40f7-886f-594b5cb39fc3",
@@ -117,7 +117,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/appsettings/list?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/appsettings/list?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "164c4a8b-d9e4-43ef-b48e-bd40b09e526d",
@@ -146,7 +146,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/appsettings?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/sites/java-webapp-715255/config/appsettings?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "e3a5ab0a-00c8-42c4-8ef9-157e3d50de1a",
@@ -176,7 +176,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/serverfarms/java-webapp-715255plan50204d7?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg5634284f/providers/Microsoft.Web/serverfarms/java-webapp-715255plan50204d7?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "619bfd7b-e16e-4209-9ecd-32ce75ebd7dd",

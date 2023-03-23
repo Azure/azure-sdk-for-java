@@ -24,6 +24,10 @@ public final class ResourceGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ResourceGroupListResult class. */
+    public ResourceGroupListResult() {
+    }
+
     /**
      * Get the value property: An array of resource groups.
      *

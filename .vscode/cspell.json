@@ -16,7 +16,7 @@
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/chromedriver",
-    ".gitignore",	
+    ".gitignore",
     "*.jar",
     "*.zip",
     "*.avro",
@@ -172,8 +172,6 @@
     "sdk/purview/azure-analytics-purview-workflow/**",
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
-    "sdk/schemaregistry/azure-data-schemaregistry/**",
-    "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
     "sdk/search/azure-search-documents/**",
     "sdk/storage/azure-storage-internal-avro/**",
@@ -209,12 +207,14 @@
     "amqp",
     "Amqp",
     "AMQP",
+    "apacheavro",
     "Apim",
     "AUHours",
     "autoscale",
     "autodetection",
     "azsdk",
     "azsynapse",
+    "azurecr",
     "azurestackhci",
     "backoff",
     "boringssl",
@@ -249,6 +249,8 @@
     "doclinting",
     "doctitle",
     "dlocal",
+    "dtlk",
+    "dtlksd",
     "dummyrg",
     "eastus",
     "embedme",
@@ -292,6 +294,7 @@
     "KUBERNETES",
     "kubernetesconfiguration",
     "kusto",
+    "kvlt",
     "linecoverage",
     "linksource",
     "listbyconfigurationprofileassignments",
@@ -312,11 +315,13 @@
     "OLTP",
     "onboarded",
     "onenote",
+    "premf",
     "pwsh",
     "protonj",
     "PSQL",
     "qpid",
     "racdw",
+    "RAGRS",
     "reimage",
     "reimaging",
     "Remediations",
@@ -329,7 +334,9 @@
     "runtimes",
     "SBOM",
     "scalastyle",
+    "schemaregistryapacheavroserializer",
     "servicebus",
+    "sftdl",
     "skus",
     "sonatype",
     "Sonatype",
@@ -627,6 +634,14 @@
       "words": [
         "Bourrillion",
         "kevinb"
+      ]
+    },
+    {
+      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "words": [
+        "Pfast",
+        "Pdirect",
+	"Pmulti"
       ]
     },
     {
@@ -952,6 +967,7 @@
         "OIDC",
         "qpid",
         "reqoest",
+        "signin",
         "Spel",
         "sqldb",
         "SQLDB",
@@ -973,6 +989,16 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/purview/azure-analytics-purview-sharing/**",
+      "words": [
+        "ADLS",
+        "Adls"
+      ],
+      "ignoreRegExpList": [
+        "/\/\/\\s*(BEGIN:|END:).*/"
       ]
     }
   ],

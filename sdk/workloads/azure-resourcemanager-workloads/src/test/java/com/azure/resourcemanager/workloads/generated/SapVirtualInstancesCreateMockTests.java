@@ -39,7 +39,7 @@ public final class SapVirtualInstancesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"ECC\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ndtic\"},\"status\":\"Stopping\",\"health\":\"Unhealthy\",\"state\":\"SoftwareDetectionInProgress\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"gxobfirclnp\",\"tags\":{\"khyawfvjlboxqv\":\"ayzri\"},\"id\":\"jlmxhomdynhd\",\"name\":\"digumbnr\",\"type\":\"auzzptjazysd\"}";
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ydzgkrvqeevtoe\"},\"status\":\"SoftShutdown\",\"health\":\"Unknown\",\"state\":\"RegistrationComplete\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"mov\",\"tags\":{\"wzqa\":\"va\",\"gzuriglaecxndt\":\"f\"},\"id\":\"cokpv\",\"name\":\"mlqtmldgxob\",\"type\":\"irclnpk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -70,26 +70,26 @@ public final class SapVirtualInstancesCreateMockTests {
         SapVirtualInstance response =
             manager
                 .sapVirtualInstances()
-                .define("ztcktyh")
-                .withRegion("ev")
-                .withExistingResourceGroup("iycslevuf")
+                .define("vwzjbhyz")
+                .withRegion("tjb")
+                .withExistingResourceGroup("vdwxfzwi")
                 .withEnvironment(SapEnvironmentType.PROD)
-                .withSapProduct(SapProductType.S4HANA)
+                .withSapProduct(SapProductType.OTHER)
                 .withConfiguration(new SapConfiguration())
-                .withTags(mapOf("nwy", "pryu"))
+                .withTags(mapOf("jlxr", "mflvest", "wk", "ilozapeewchpxlk"))
                 .withIdentity(
                     new UserAssignedServiceIdentity()
                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf()))
-                .withManagedResourceGroupConfiguration(new ManagedRGConfiguration().withName("lwmmrqzzrrjv"))
+                .withManagedResourceGroupConfiguration(new ManagedRGConfiguration().withName("rnegvmn"))
                 .create();
 
-        Assertions.assertEquals("gxobfirclnp", response.location());
-        Assertions.assertEquals("ayzri", response.tags().get("khyawfvjlboxqv"));
+        Assertions.assertEquals("mov", response.location());
+        Assertions.assertEquals("va", response.tags().get("wzqa"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals(SapEnvironmentType.PROD, response.environment());
-        Assertions.assertEquals(SapProductType.ECC, response.sapProduct());
-        Assertions.assertEquals("ndtic", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals(SapEnvironmentType.NON_PROD, response.environment());
+        Assertions.assertEquals(SapProductType.OTHER, response.sapProduct());
+        Assertions.assertEquals("ydzgkrvqeevtoe", response.managedResourceGroupConfiguration().name());
     }
 
     @SuppressWarnings("unchecked")

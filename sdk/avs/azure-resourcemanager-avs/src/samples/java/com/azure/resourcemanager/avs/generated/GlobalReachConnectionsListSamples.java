@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GlobalReachConnections List. */
 public final class GlobalReachConnectionsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class GlobalReachConnectionsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.globalReachConnections().list("group1", "cloud1", Context.NONE);
+        manager.globalReachConnections().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

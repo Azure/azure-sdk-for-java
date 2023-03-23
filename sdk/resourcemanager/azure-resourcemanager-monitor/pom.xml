@@ -48,7 +48,6 @@
 
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -79,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

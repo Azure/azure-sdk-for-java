@@ -26,6 +26,15 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
     public static final CloudName AZURE_DEV_OPS = fromString("AzureDevOps");
 
     /**
+     * Creates a new instance of CloudName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudName() {
+    }
+
+    /**
      * Creates or finds a CloudName from its string representation.
      *
      * @param name a name to look for.

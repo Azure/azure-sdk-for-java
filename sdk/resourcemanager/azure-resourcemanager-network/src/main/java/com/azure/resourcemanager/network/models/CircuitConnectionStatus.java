@@ -20,6 +20,15 @@ public final class CircuitConnectionStatus extends ExpandableStringEnum<CircuitC
     public static final CircuitConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of CircuitConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CircuitConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a CircuitConnectionStatus from its string representation.
      *
      * @param name a name to look for.

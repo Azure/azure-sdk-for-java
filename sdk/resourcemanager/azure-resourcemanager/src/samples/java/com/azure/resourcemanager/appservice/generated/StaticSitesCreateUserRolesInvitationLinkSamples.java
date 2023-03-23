@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserInvitationRequestResource;
 
 /** Samples for StaticSites CreateUserRolesInvitationLink. */
 public final class StaticSitesCreateUserRolesInvitationLinkSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateUserRolesInvitationLink.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateUserRolesInvitationLink.json
      */
     /**
      * Sample code: Create an invitation link for a user for a static site.
@@ -33,6 +32,6 @@ public final class StaticSitesCreateUserRolesInvitationLinkSamples {
                     .withUserDetails("username")
                     .withRoles("admin,contributor")
                     .withNumHoursToExpiration(1),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

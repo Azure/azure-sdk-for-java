@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.SiteSealRequest;
 
 /** Samples for AppServiceCertificateOrders RetrieveSiteSeal. */
 public final class AppServiceCertificateOrdersRetrieveSiteSealSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/RetrieveSiteSeal.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RetrieveSiteSeal.json
      */
     /**
      * Sample code: Retrieve Site Seal.
@@ -27,6 +26,6 @@ public final class AppServiceCertificateOrdersRetrieveSiteSealSamples {
                 "testrg123",
                 "SampleCertOrder",
                 new SiteSealRequest().withLightTheme(true).withLocale("en-us"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

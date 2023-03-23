@@ -27,6 +27,15 @@ public final class RegionStorageToNetworkProximity extends ExpandableStringEnum<
     public static final RegionStorageToNetworkProximity T1AND_T2 = fromString("T1AndT2");
 
     /**
+     * Creates a new instance of RegionStorageToNetworkProximity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegionStorageToNetworkProximity() {
+    }
+
+    /**
      * Creates or finds a RegionStorageToNetworkProximity from its string representation.
      *
      * @param name a name to look for.

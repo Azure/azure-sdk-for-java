@@ -55,7 +55,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientScriptCmdle")
-    private interface ScriptCmdletsService {
+    public interface ScriptCmdletsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"

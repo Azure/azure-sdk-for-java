@@ -9,11 +9,10 @@ import com.azure.resourcemanager.signalr.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.signalr.models.SignalRRequestType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointAclTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointAcl model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class PrivateEndpointAclTests {
         Assertions.assertEquals("zvszj", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointAcl model =
             new PrivateEndpointAcl()
                 .withAllow(

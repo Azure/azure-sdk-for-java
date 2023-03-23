@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations.

@@ -17,6 +17,15 @@ public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<Inb
     public static final InboundSecurityRulesProtocol UDP = fromString("UDP");
 
     /**
+     * Creates a new instance of InboundSecurityRulesProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InboundSecurityRulesProtocol() {
+    }
+
+    /**
      * Creates or finds a InboundSecurityRulesProtocol from its string representation.
      *
      * @param name a name to look for.
