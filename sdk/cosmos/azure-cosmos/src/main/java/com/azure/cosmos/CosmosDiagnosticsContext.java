@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -15,9 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -173,7 +169,7 @@ public final class CosmosDiagnosticsContext {
      * The effective consistency level of the operation
      * @return the effective consistency level of the operation
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    public ConsistencyLevel getEffectiveConsistencyLevel() {
         return this.consistencyLevel;
     }
 

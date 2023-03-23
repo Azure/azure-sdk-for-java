@@ -142,7 +142,7 @@ public final class ClientTelemetryMetrics {
             diagnosticsContext.getOperationType(),
             diagnosticsContext.isPointOperation(),
             diagnosticsContext.getResourceType(),
-            diagnosticsContext.getConsistencyLevel(),
+            diagnosticsContext.getEffectiveConsistencyLevel(),
             diagnosticsContext.getOperationId(),
             diagnosticsContext.getTotalRequestCharge(),
             diagnosticsContext.getDuration()

@@ -80,18 +80,18 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
-        FeedResponse<T> feedResponseWithDiagnostics = ModelBridgeInternal.createFeedResponse(results, headers);
+        this(results, headers);
 
-        if (cosmosDiagnostics != null) {
+        if (diagnostics != null) {
             ClientSideRequestStatistics requestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatisticsRaw(cosmosDiagnostics);
+                diagnosticsAccessor.getClientSideRequestStatisticsRaw(diagnostics);
             if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(cosmosDiagnostics,
                     List.of(requestStatistics));
             } else {
                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                    feedResponseWithDiagnostics.getCosmosDiagnostics(),
-                    diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics));
+                    cosmosDiagnostics,
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
             }
         }
     }
@@ -591,7 +591,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 @Override
                 public <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers,
                                                               CosmosDiagnostics diagnostics) {
-                    return new FeedResponse(results, headers, diagnostics);
+                    return new FeedResponse<>(results, headers, diagnostics);
                 }
             });
     }

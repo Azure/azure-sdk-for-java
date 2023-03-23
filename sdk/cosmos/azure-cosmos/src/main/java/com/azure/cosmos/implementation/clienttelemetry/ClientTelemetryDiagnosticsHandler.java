@@ -63,7 +63,7 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
                 diagnosticsContext.getDatabaseName(),
                 operationType,
                 resourceType,
-                diagnosticsContext.getConsistencyLevel(),
+                diagnosticsContext.getEffectiveConsistencyLevel(),
                 diagnosticsContext.getTotalRequestCharge()
             );
         }
