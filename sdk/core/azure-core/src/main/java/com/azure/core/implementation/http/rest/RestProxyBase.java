@@ -93,8 +93,6 @@ public abstract class RestProxyBase {
 
             request.setMetadata(methodParser.createRequestMetadata());
 
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
-
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
