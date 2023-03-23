@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -470,7 +469,7 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
     }
 
-    @Disabled("Until retry policy sync workflow implemented")
+    //@Disabled("Until retry policy sync workflow implemented")
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
@@ -501,8 +500,10 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         HttpResponse response = pipeline.sendSync(request, CONTEXT);
-
+        BinaryData content = response.getBodyAsBinaryData();
+        assertEquals(2, requestCount.get());
         String logString = convertOutputStreamToString(logCaptureStream);
+        System.out.println(logString);
         List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
         assertEquals(3, messages.size());
 
@@ -510,13 +511,13 @@ public class HttpLoggingPolicyTests {
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
         expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
 
-        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+        assertArrayEquals(responseBody, content.toBytes());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) throws JsonProcessingException {
+    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};

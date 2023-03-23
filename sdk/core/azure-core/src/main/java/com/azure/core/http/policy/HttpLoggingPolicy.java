@@ -16,6 +16,7 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -542,5 +543,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         public Mono<String> getBodyAsString(Charset charset) {
             return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
+
+        @Override
+        public BinaryData getBodyAsBinaryData() {
+            BinaryData content =  actualResponse.getBodyAsBinaryData();
+            logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                    prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                        content.toString()))
+                .log(RESPONSE_LOG_MESSAGE);
+
+            return content;
+        }
+
     }
 }
