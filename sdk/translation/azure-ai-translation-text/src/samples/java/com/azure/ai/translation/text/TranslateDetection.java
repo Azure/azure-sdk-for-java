@@ -3,15 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
 import com.azure.ai.translation.text.models.InputTextItem;
-import com.azure.ai.translation.text.models.ProfanityAction;
-import com.azure.ai.translation.text.models.ProfanityMarker;
-import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.Translation;
 
@@ -49,16 +45,13 @@ public class TranslateDetection {
 
         List<TranslatedTextItem> translations = client.translate(targetLanguages, content);
 
-        for (TranslatedTextItem translation : translations)
-        {
-            if (translation.getDetectedLanguage() != null)
-            {
+        for (TranslatedTextItem translation : translations) {
+            if (translation.getDetectedLanguage() != null) {
                 DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
                 System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getScore() + ".");
             }
 
-            for (Translation textTranslation : translation.getTranslations())
-            {
+            for (Translation textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }

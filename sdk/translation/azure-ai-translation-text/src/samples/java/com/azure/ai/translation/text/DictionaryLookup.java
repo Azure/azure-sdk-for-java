@@ -36,8 +36,7 @@ public class DictionaryLookup {
 
         List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 
-        for (DictionaryLookupItem dictionaryEntry : dictionaryEntries)
-        {
+        for (DictionaryLookupItem dictionaryEntry : dictionaryEntries) {
             System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
             System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
         }

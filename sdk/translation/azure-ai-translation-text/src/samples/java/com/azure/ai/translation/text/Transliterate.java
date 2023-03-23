@@ -38,8 +38,7 @@ public class Transliterate {
 
         List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
 
-        for (TransliteratedText transliteration : transliterations)
-        {
+        for (TransliteratedText transliteration : transliterations) {
             System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
         }
     }

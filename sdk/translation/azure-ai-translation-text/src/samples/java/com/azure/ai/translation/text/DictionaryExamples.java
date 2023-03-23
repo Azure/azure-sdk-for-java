@@ -36,8 +36,7 @@ public class DictionaryExamples {
 
         List<DictionaryExampleItem> dictionaryEntries = client.lookupDictionaryExamples(sourceLanguage, targetLanguage, content);
 
-        for (DictionaryExampleItem dictionaryEntry : dictionaryEntries)
-        {
+        for (DictionaryExampleItem dictionaryEntry : dictionaryEntries) {
             System.out.println("For the given input " + dictionaryEntry.getExamples().size() + " entries were found in the dictionary.");
             System.out.println("Example: '" + dictionaryEntry.getExamples().get(0).getTargetPrefix() + dictionaryEntry.getExamples().get(0).getTargetTerm() + dictionaryEntry.getExamples().get(0).getTargetSuffix());
         }

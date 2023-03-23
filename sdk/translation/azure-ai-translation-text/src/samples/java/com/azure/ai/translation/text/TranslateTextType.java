@@ -3,11 +3,9 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.models.DetectedLanguage;
 import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
@@ -45,10 +43,8 @@ public class TranslateTextType {
 
         List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, textType, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
 
-        for (TranslatedTextItem translation : translations)
-        {
-            for (Translation textTranslation : translation.getTranslations())
-            {
+        for (TranslatedTextItem translation : translations) {
+            for (Translation textTranslation : translation.getTranslations()) {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }

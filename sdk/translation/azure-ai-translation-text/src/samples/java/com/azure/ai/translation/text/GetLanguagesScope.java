@@ -5,9 +5,7 @@ package com.azure.ai.translation.text;
 
 import java.util.Map;
 import com.azure.ai.translation.text.models.GetLanguagesResult;
-import com.azure.ai.translation.text.models.SourceDictionaryLanguage;
 import com.azure.ai.translation.text.models.TranslationLanguage;
-import com.azure.ai.translation.text.models.TransliterationLanguage;
 
 /**
  * You can limit the scope of the response of the languages API by providing the optional parameter scope.
