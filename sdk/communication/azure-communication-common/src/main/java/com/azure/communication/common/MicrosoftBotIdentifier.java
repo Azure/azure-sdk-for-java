@@ -23,7 +23,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      * @param isResourceAccountConfigured set this to true if the bot is tenantized. It is false if the bot is global and no resource account is configured.
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
-    public MicrosoftBotIdentifier(String botId, CommunicationCloudEnvironment cloudEnvironment, boolean isResourceAccountConfigured) {
+    public MicrosoftBotIdentifier(String botId, boolean isResourceAccountConfigured, CommunicationCloudEnvironment cloudEnvironment) {
         if (CoreUtils.isNullOrEmpty(botId)) {
             throw new IllegalArgumentException("The initialization parameter [botId] cannot be null or empty.");
         }
@@ -40,7 +40,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId) {
-        this(botId, CommunicationCloudEnvironment.PUBLIC, true);
+        this(botId, true, CommunicationCloudEnvironment.PUBLIC);
     }
 
     /**
@@ -51,7 +51,7 @@ public final class MicrosoftBotIdentifier extends CommunicationIdentifier {
      * @throws IllegalArgumentException thrown if botId parameter fail the validation.
      */
     public MicrosoftBotIdentifier(String botId, boolean isResourceAccountConfigured)  {
-        this(botId, CommunicationCloudEnvironment.PUBLIC, isResourceAccountConfigured);
+        this(botId, isResourceAccountConfigured, CommunicationCloudEnvironment.PUBLIC);
     }
 
     /**
