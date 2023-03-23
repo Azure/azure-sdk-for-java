@@ -1117,12 +1117,12 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public int getMinConnectionsRequired() {
+        public int getMinChannelsRequired() {
             return Configs.getMinConnectionPoolSizePerEndpoint();
         }
 
         @Override
-        public void setMinConnectionsRequired(int minConnectionsRequired) {
+        public void setMinChannelsRequired(int minConnectionsRequired) {
             throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
         }
 

@@ -84,9 +84,9 @@ public interface RntbdEndpoint extends AutoCloseable {
         double threshold,
         Class<?> eventType);
 
-    int getMinConnectionsRequired();
+    int getMinChannelsRequired();
 
-    void setMinConnectionsRequired(int minChannelsRequired);
+    void setMinChannelsRequired(int minChannelsRequired);
 
     // endregion
 

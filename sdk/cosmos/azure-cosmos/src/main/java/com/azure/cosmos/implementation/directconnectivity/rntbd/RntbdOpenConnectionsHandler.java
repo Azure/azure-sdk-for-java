@@ -71,10 +71,10 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             // container for the same endpoint has a higher
                             // value for minConnectionsRequired and choose the higher
                             // value
-                            int minConnectionsRequired = endpoint.getMinConnectionsRequired();
+                            int minConnectionsRequired = endpoint.getMinChannelsRequired();
                             int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
 
-                            endpoint.setMinConnectionsRequired(newMinConnectionsRequired);
+                            endpoint.setMinChannelsRequired(newMinConnectionsRequired);
 
                             int connectionsOpened = endpoint.channelsMetrics();
 
