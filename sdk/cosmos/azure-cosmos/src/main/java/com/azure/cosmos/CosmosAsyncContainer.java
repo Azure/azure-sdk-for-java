@@ -1900,7 +1900,7 @@ public class CosmosAsyncContainer {
 
      /**
      * Enable the throughput control group with local control mode.
-     * <p>
+     * <br/>
      * <!-- src_embed com.azure.cosmos.throughputControl.localControl -->
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
@@ -1923,7 +1923,7 @@ public class CosmosAsyncContainer {
     /**
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
-     * <p>
+     * <br/>
      * <!-- src_embed com.azure.cosmos.throughputControl.globalControl -->
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
@@ -1954,7 +1954,7 @@ public class CosmosAsyncContainer {
 
     /***
      * Only used internally.
-     *
+     * <br/>
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      * @param throughputQueryMono The throughput query mono.
