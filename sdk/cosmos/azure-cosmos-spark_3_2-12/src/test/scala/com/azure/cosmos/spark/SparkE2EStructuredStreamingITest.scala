@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicLong
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
+import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.types.StringType
 import org.scalatest.Retries
 import org.scalatest.tagobjects.Retryable
@@ -779,6 +781,8 @@ class SparkE2EStructuredStreamingITest
       .appName("spark connector sample for recovering structure streaming query")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     spark.streams.addListener(new StreamingQueryListener() {
       override def onQueryStarted(queryStarted: QueryStartedEvent): Unit = {}

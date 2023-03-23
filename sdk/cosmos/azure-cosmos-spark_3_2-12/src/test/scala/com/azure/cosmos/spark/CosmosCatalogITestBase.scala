@@ -5,9 +5,12 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
+import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import sourcecode.TestUtil
 
 import java.util.UUID
 // scalastyle:off underscore.import
@@ -30,6 +33,8 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
       .master("local")
       .enableHiveSupport()
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     spark.conf.set(s"spark.sql.catalog.testCatalog", "com.azure.cosmos.spark.CosmosCatalog")
     spark.conf.set(s"spark.sql.catalog.testCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)

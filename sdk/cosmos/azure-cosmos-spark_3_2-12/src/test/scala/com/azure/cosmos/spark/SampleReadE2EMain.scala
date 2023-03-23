@@ -4,7 +4,9 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
 import org.apache.spark.sql.SparkSession
+import org.apache.hadoop.fs.FileSystem
 
 /** sample test for query */
 object SampleReadE2EMain {
@@ -36,6 +38,8 @@ object SampleReadE2EMain {
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     val df = spark.read.format("cosmos.oltp").options(cfg).load()
     df.show(numRows = 10)

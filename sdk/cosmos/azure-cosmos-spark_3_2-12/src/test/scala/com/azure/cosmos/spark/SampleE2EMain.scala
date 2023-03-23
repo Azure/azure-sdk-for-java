@@ -4,6 +4,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
+import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
+import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.SparkSession
 
 object SampleE2EMain {
@@ -33,6 +35,8 @@ object SampleE2EMain {
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping

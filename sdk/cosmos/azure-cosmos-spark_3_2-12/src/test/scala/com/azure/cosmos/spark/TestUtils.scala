@@ -7,15 +7,18 @@ import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosCo
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.globalmentor.apache.hadoop.fs.{BareLocalFileSystem, NakedLocalFileSystem}
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import org.apache.commons.lang3.RandomStringUtils
+import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.sql.SparkSession
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
+import java.net.URI
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
@@ -44,6 +47,8 @@ trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     spark
   }
@@ -79,6 +84,8 @@ trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
       .config("spark.cosmos.metrics.intervalInSeconds", "10")
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     spark
   }
 }
@@ -96,6 +103,8 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
       .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
       .config("spark.cosmos.metrics.slf4j.enabled", "false")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     spark
   }
@@ -370,5 +379,29 @@ object Platform {
       s"Test was skipped as it will attempt to reflectively access DirectByteBuffer while using JVM version ${util.Properties.javaSpecVersion} and Spark version $sparkVersion. "
         + "These versions used together will result in an InaccessibleObjectException due to JVM changes on how internal APIs can be accessed by reflection,"
         + " and the Spark version, or unknown version, attempts to access DirectByteBuffer via reflection.")
+  }
+}
+
+class NakedLocalJavaFileSystem() extends NakedLocalFileSystem {
+  override def getUri: URI = {
+    LocalJavaFileSystem.NAME
+  }
+
+  override def checkPath(path: Path): Unit = {
+    super.checkPath(path)
+  }
+}
+
+class BareLocalJavaFileSystem() extends BareLocalFileSystem(new NakedLocalJavaFileSystem()) {
+}
+
+object LocalJavaFileSystem {
+
+  val NAME = URI.create("localfs:///")
+
+  def applyToSparkSession(spark: SparkSession) = {
+    spark.sparkContext.hadoopConfiguration.set("fs.defaultFS", "localfs:///")
+    spark.sparkContext.hadoopConfiguration.setClass(
+      "fs.localfs.impl", classOf[BareLocalJavaFileSystem], classOf[FileSystem])
   }
 }
