@@ -567,6 +567,22 @@ public final class CosmosChangeFeedRequestOptions {
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options) {
                     return options.thresholds;
                 }
+
+                @Override
+                public void applyMaxItemCount(
+                    CosmosChangeFeedRequestOptions requestOptions,
+                    CosmosPagedFluxOptions fluxOptions) {
+
+                    if (requestOptions == null || fluxOptions == null) {
+                        return;
+                    }
+
+                    if (fluxOptions.getMaxItemCount() != null) {
+                        return;
+                    }
+
+                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
+                }
             });
     }
 

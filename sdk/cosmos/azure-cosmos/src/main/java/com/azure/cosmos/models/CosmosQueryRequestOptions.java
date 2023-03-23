@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
@@ -787,6 +788,22 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options) {
                     return options.thresholds;
+                }
+
+                @Override
+                public void applyMaxItemCount(
+                    CosmosQueryRequestOptions requestOptions,
+                    CosmosPagedFluxOptions fluxOptions) {
+
+                    if (requestOptions == null || requestOptions.getMaxItemCount() == null || fluxOptions == null) {
+                        return;
+                    }
+
+                    if (fluxOptions.getMaxItemCount() != null) {
+                        return;
+                    }
+
+                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
             });
     }
