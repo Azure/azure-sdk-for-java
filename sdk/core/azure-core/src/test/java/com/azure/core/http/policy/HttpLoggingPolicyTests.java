@@ -469,7 +469,6 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
     }
 
-    //@Disabled("Until retry policy sync workflow implemented")
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
