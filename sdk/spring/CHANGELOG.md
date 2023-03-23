@@ -13,6 +13,7 @@
 
 #### Features Added
 - Added the following artifacts into current bom file:
+  - spring-cloud-azure-starter-appconfiguration-config
   - spring-cloud-azure-appconfiguration-config
   - spring-cloud-azure-appconfiguration-config-web
   - spring-cloud-azure-feature-management
