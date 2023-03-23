@@ -15,10 +15,10 @@ import java.net.*;
 import java.io.*;
 
 public class TextTranslationClientBase extends TestBase {
-    private final String defaultEndpoint = "fakeEndpoint";
+    private final String defaultEndpoint = "https://fakeEndpoint.cognitive.microsofttranslator.com";
     private final String defaultApiKey = "fakeApiKey";
     private final String defaultRegion = "fakeRegion";
-    private final String defaultCustomEndpoint = "fakeCustomEndpoint";
+    private final String defaultCustomEndpoint = "https://fakeCustomEndpoint.cognitive.microsofttranslator.com";
 
 
     TextTranslationClient getTranslationClient() {
