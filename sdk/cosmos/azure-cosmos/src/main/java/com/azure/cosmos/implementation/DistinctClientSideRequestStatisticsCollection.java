@@ -46,6 +46,9 @@ public class DistinctClientSideRequestStatisticsCollection implements Queue<Clie
 
     @Override
     public synchronized boolean add(ClientSideRequestStatistics clientSideRequestStatistics) {
+        if (clientSideRequestStatistics == null) {
+            return true;
+        }
 
         boolean isNew = set.add(clientSideRequestStatistics);
 
@@ -57,6 +60,10 @@ public class DistinctClientSideRequestStatisticsCollection implements Queue<Clie
 
     @Override
     public synchronized boolean remove(Object o) {
+        if (o == null) {
+            return true;
+        }
+
         if (set.remove((o))) {
             return queue.remove(o);
         }
@@ -66,23 +73,39 @@ public class DistinctClientSideRequestStatisticsCollection implements Queue<Clie
 
     @Override
     public synchronized boolean containsAll(Collection<?> c) {
+        if (c == null || c.isEmpty()) {
+            return true;
+        }
+
         return set.containsAll(c);
     }
 
     @Override
     public synchronized boolean addAll(Collection<? extends ClientSideRequestStatistics> c) {
+        if (c == null || c.isEmpty()) {
+            return true;
+        }
+
         set.addAll(c);
         return queue.addAll(c);
     }
 
     @Override
     public synchronized boolean removeAll(Collection<?> c) {
+        if (c == null || c.isEmpty()) {
+            return true;
+        }
+
         set.removeAll(c);
         return queue.removeAll(c);
     }
 
     @Override
     public synchronized boolean retainAll(Collection<?> c) {
+        if (c == null || c.isEmpty()) {
+            return true;
+        }
+
         set.retainAll(c);
         return queue.retainAll(c);
     }
@@ -95,6 +118,10 @@ public class DistinctClientSideRequestStatisticsCollection implements Queue<Clie
 
     @Override
     public synchronized boolean offer(ClientSideRequestStatistics clientSideRequestStatistics) {
+        if (clientSideRequestStatistics == null) {
+            return true;
+        }
+
         boolean isAccepted = set.add(clientSideRequestStatistics);
         if (isAccepted) {
             return queue.offer(clientSideRequestStatistics);
