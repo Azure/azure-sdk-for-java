@@ -279,3 +279,13 @@ directive:
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
 ```
+
+# Remove security definitions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.
+  transform: >
+    delete $["securityDefinitions"];
+    delete $["security"];
+```

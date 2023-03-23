@@ -68,8 +68,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ContainerRegistryContentClientTests {
     private static final BinaryData SMALL_CONTENT = BinaryData.fromString("foobar");
     private static final String SMALL_CONTENT_SHA256 = "sha256:c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2";
-    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST + ",application/vnd.oci.image.index.v1+json"
-        + ",application/vnd.docker.distribution.manifest.list.v2+json";
+    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = "*/*," + ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST + ",application/vnd.oci.image.index.v1+json"
+        + ",application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.cncf.oras.artifact.manifest.v1+json";
     private static final BinaryData MANIFEST_DATA = BinaryData.fromObject(MANIFEST);
 
     private static final BinaryData OCI_INDEX = BinaryData.fromString("{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.index.v1+json\","
