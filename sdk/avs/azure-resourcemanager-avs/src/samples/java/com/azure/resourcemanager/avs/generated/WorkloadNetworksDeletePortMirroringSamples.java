@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeletePortMirroring. */
 public final class WorkloadNetworksDeletePortMirroringSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkloadNetworksDeletePortMirroringSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeletePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deletePortMirroring("group1", "portMirroring1", "cloud1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .deletePortMirroring("group1", "portMirroring1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,11 +15,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolProfile model =
             BinaryData
                 .fromString(
@@ -43,8 +42,8 @@ public final class AgentPoolProfileTests {
                 "zrlovmclwhijcoej", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolProfile model =
             new AgentPoolProfile()
                 .withCount(811282573)

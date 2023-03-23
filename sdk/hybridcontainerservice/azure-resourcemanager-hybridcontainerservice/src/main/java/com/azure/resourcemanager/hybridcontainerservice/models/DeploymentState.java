@@ -32,6 +32,15 @@ public final class DeploymentState extends ExpandableStringEnum<DeploymentState>
     public static final DeploymentState UPGRADING = fromString("upgrading");
 
     /**
+     * Creates a new instance of DeploymentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentState() {
+    }
+
+    /**
      * Creates or finds a DeploymentState from its string representation.
      *
      * @param name a name to look for.

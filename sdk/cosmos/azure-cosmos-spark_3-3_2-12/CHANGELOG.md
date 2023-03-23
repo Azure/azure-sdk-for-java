@@ -1,17 +1,33 @@
 ## Release History
 
-### 4.17.0-beta.1 (Unreleased)
+### 4.18.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.17.2 (2023-02-28)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33795](https://github.com/Azure/azure-sdk-for-java/pull/33795)
+
+### 4.17.1 (2023-02-27)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33757](https://github.com/Azure/azure-sdk-for-java/pull/33757)
+
+### 4.17.0 (2023-02-17)
 
 #### Features Added
 * Added Service Principle based AAD Auth - See [PR 32393](https://github.com/Azure/azure-sdk-for-java/pull/32393) and [PR 33449](https://github.com/Azure/azure-sdk-for-java/pull/33449)
 * Added capability to allow modification of throughput in Spark via `ALTER TABLE` or `ALTER DATABASE` command. - See [PR 33369](https://github.com/Azure/azure-sdk-for-java/pull/33369)
 
-#### Breaking Changes
-
 #### Bugs Fixed
 - Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
-
-#### Other Changes
 
 ### 4.16.0 (2023-01-13)
 

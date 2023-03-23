@@ -20,6 +20,15 @@ public final class PcProtocol extends ExpandableStringEnum<PcProtocol> {
     public static final PcProtocol ANY = fromString("Any");
 
     /**
+     * Creates a new instance of PcProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PcProtocol() {
+    }
+
+    /**
      * Creates or finds a PcProtocol from its string representation.
      *
      * @param name a name to look for.

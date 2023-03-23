@@ -20,6 +20,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.spring.cloud.feature.management.FeatureManager;
+
 import reactor.core.publisher.Mono;
 
 public class FeatureManagerSnapshotTest {

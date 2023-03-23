@@ -59,8 +59,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
     public interface SecureScoreControlsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}"
-                + "/secureScoreControls")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}/secureScoreControls")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecureScoreControlList>> listBySecureScore(

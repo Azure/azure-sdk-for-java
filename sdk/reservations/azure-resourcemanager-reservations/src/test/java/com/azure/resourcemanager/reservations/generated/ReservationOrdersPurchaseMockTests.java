@@ -42,7 +42,7 @@ public final class ReservationOrdersPurchaseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":592416055,\"properties\":{\"displayName\":\"fezzxscyhwzdg\",\"requestDateTime\":\"2021-01-16T07:41:49Z\",\"createdDateTime\":\"2021-08-21T05:05:09Z\",\"expiryDateTime\":\"2021-05-15T16:47:17Z\",\"benefitStartTime\":\"2021-02-14T17:43:30Z\",\"originalQuantity\":921177918,\"term\":\"P5Y\",\"provisioningState\":\"Succeeded\",\"billingPlan\":\"Upfront\",\"planInformation\":{\"transactions\":[]},\"reservations\":[],\"reviewDateTime\":\"2021-05-20T07:43:06Z\"},\"id\":\"wdsh\",\"name\":\"ssnrbgye\",\"type\":\"rymsgaojfmw\"}";
+            "{\"etag\":930110171,\"properties\":{\"displayName\":\"mduvw\",\"requestDateTime\":\"2021-07-13T14:15:30Z\",\"createdDateTime\":\"2021-02-12T11:01:27Z\",\"expiryDateTime\":\"2021-10-06T10:39:24Z\",\"benefitStartTime\":\"2021-01-18T09:11:28Z\",\"originalQuantity\":1521698279,\"term\":\"P3Y\",\"provisioningState\":\"Succeeded\",\"billingPlan\":\"Upfront\",\"planInformation\":{\"transactions\":[]},\"reservations\":[],\"reviewDateTime\":\"2021-01-06T23:48:23Z\"},\"id\":\"xgibbda\",\"name\":\"confozauors\",\"type\":\"kokwbqplhlvnu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -74,42 +74,42 @@ public final class ReservationOrdersPurchaseMockTests {
             manager
                 .reservationOrders()
                 .purchase(
-                    "jbdhqxvc",
+                    "qgzsles",
                     new PurchaseRequest()
-                        .withSku(new SkuName().withName("rpdsof"))
-                        .withLocation("hrnsvbu")
-                        .withReservedResourceType(ReservedResourceType.COSMOS_DB)
-                        .withBillingScopeId("yybyc")
-                        .withTerm(ReservationTerm.P5Y)
-                        .withBillingPlan(ReservationBillingPlan.UPFRONT)
-                        .withQuantity(461683729)
-                        .withDisplayName("kfawnopqgikyz")
-                        .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
-                        .withAppliedScopes(Arrays.asList("yuxzejntpsewgi", "ilqu"))
+                        .withSku(new SkuName().withName("hernntiewdjc"))
+                        .withLocation("quwrbehwag")
+                        .withReservedResourceType(ReservedResourceType.SQL_DATABASES)
+                        .withBillingScopeId("fkmr")
+                        .withTerm(ReservationTerm.P1Y)
+                        .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                        .withQuantity(901267810)
+                        .withDisplayName("tdrjfutacoebj")
+                        .withAppliedScopeType(AppliedScopeType.SHARED)
+                        .withAppliedScopes(Arrays.asList("jznmwcpmguaa", "raufactkahzova", "j"))
                         .withAppliedScopeProperties(
                             new AppliedScopeProperties()
-                                .withTenantId("dxtqmieoxo")
-                                .withManagementGroupId("gufhyaomtbg")
-                                .withSubscriptionId("avgrvkffovjz")
-                                .withResourceGroupId("jbibg")
-                                .withDisplayName("fxumv"))
+                                .withTenantId("xxpshneeku")
+                                .withManagementGroupId("gs")
+                                .withSubscriptionId("ubkwdle")
+                                .withResourceGroupId("d")
+                                .withDisplayName("tujbazpju"))
                         .withRenew(true)
                         .withReservedResourceProperties(
                             new PurchaseRequestPropertiesReservedResourceProperties()
-                                .withInstanceFlexibility(InstanceFlexibility.OFF))
-                        .withReviewDateTime(OffsetDateTime.parse("2021-05-30T07:45:57Z")),
+                                .withInstanceFlexibility(InstanceFlexibility.ON))
+                        .withReviewDateTime(OffsetDateTime.parse("2021-09-28T06:02:31Z")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(592416055, response.etag());
-        Assertions.assertEquals("fezzxscyhwzdg", response.displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T07:41:49Z"), response.requestDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T05:05:09Z"), response.createdDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T16:47:17Z"), response.expiryDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T17:43:30Z"), response.benefitStartTime());
-        Assertions.assertEquals(921177918, response.originalQuantity());
-        Assertions.assertEquals(ReservationTerm.P5Y, response.term());
+        Assertions.assertEquals(930110171, response.etag());
+        Assertions.assertEquals("mduvw", response.displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T14:15:30Z"), response.requestDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-12T11:01:27Z"), response.createdDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T10:39:24Z"), response.expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T09:11:28Z"), response.benefitStartTime());
+        Assertions.assertEquals(1521698279, response.originalQuantity());
+        Assertions.assertEquals(ReservationTerm.P3Y, response.term());
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.provisioningState());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, response.billingPlan());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T07:43:06Z"), response.reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T23:48:23Z"), response.reviewDateTime());
     }
 }

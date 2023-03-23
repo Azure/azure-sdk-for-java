@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Global GetSubscriptionOperationWithAsyncResponse. */
 public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSubscriptionOperationWithAsyncResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSubscriptionOperationWithAsyncResponse.json
      */
     /**
      * Sample code: Gets an operation in a subscription and given region.
@@ -24,6 +22,6 @@ public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
             .serviceClient()
             .getGlobals()
             .getSubscriptionOperationWithAsyncResponseWithResponse(
-                "West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5", Context.NONE);
+                "West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5", com.azure.core.util.Context.NONE);
     }
 }

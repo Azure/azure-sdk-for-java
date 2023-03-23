@@ -16,28 +16,28 @@ public final class CalculateRefundRequestTests {
         CalculateRefundRequest model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"gsxnkjzkdeslpv\",\"properties\":{\"scope\":\"wiyighxpkdw\",\"reservationToReturn\":{\"reservationId\":\"iuebbaumny\",\"quantity\":624396177}}}")
+                    "{\"id\":\"pabgyeps\",\"properties\":{\"scope\":\"azqugxywpmueefj\",\"reservationToReturn\":{\"reservationId\":\"qkqujidsu\",\"quantity\":168254793}}}")
                 .toObject(CalculateRefundRequest.class);
-        Assertions.assertEquals("gsxnkjzkdeslpv", model.id());
-        Assertions.assertEquals("wiyighxpkdw", model.properties().scope());
-        Assertions.assertEquals("iuebbaumny", model.properties().reservationToReturn().reservationId());
-        Assertions.assertEquals(624396177, model.properties().reservationToReturn().quantity());
+        Assertions.assertEquals("pabgyeps", model.id());
+        Assertions.assertEquals("azqugxywpmueefj", model.properties().scope());
+        Assertions.assertEquals("qkqujidsu", model.properties().reservationToReturn().reservationId());
+        Assertions.assertEquals(168254793, model.properties().reservationToReturn().quantity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CalculateRefundRequest model =
             new CalculateRefundRequest()
-                .withId("gsxnkjzkdeslpv")
+                .withId("pabgyeps")
                 .withProperties(
                     new CalculateRefundRequestProperties()
-                        .withScope("wiyighxpkdw")
+                        .withScope("azqugxywpmueefj")
                         .withReservationToReturn(
-                            new ReservationToReturn().withReservationId("iuebbaumny").withQuantity(624396177)));
+                            new ReservationToReturn().withReservationId("qkqujidsu").withQuantity(168254793)));
         model = BinaryData.fromObject(model).toObject(CalculateRefundRequest.class);
-        Assertions.assertEquals("gsxnkjzkdeslpv", model.id());
-        Assertions.assertEquals("wiyighxpkdw", model.properties().scope());
-        Assertions.assertEquals("iuebbaumny", model.properties().reservationToReturn().reservationId());
-        Assertions.assertEquals(624396177, model.properties().reservationToReturn().quantity());
+        Assertions.assertEquals("pabgyeps", model.id());
+        Assertions.assertEquals("azqugxywpmueefj", model.properties().scope());
+        Assertions.assertEquals("qkqujidsu", model.properties().reservationToReturn().reservationId());
+        Assertions.assertEquals(168254793, model.properties().reservationToReturn().quantity());
     }
 }

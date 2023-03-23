@@ -128,8 +128,8 @@ public final class AlertProperties {
     private OffsetDateTime timeGeneratedUtc;
 
     /*
-     * The name of the product which published this alert (Azure Security Center, Azure ATP, Microsoft Defender ATP,
-     * O365 ATP, MCAS, and so on).
+     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity,
+     * Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
      */
     @JsonProperty(value = "productName", access = JsonProperty.Access.WRITE_ONLY)
     private String productName;
@@ -355,8 +355,9 @@ public final class AlertProperties {
     }
 
     /**
-     * Get the productName property: The name of the product which published this alert (Azure Security Center, Azure
-     * ATP, Microsoft Defender ATP, O365 ATP, MCAS, and so on).
+     * Get the productName property: The name of the product which published this alert (Microsoft Sentinel, Microsoft
+     * Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for
+     * Cloud Apps, and so on).
      *
      * @return the productName value.
      */

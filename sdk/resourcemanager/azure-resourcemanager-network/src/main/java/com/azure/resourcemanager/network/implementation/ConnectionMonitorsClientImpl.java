@@ -250,7 +250,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -322,7 +322,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -459,8 +459,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String connectionMonitorName,
         ConnectionMonitorInner parameters) {
         final String migrate = null;
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
             .getSyncPoller();
     }
 
@@ -486,7 +486,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         ConnectionMonitorInner parameters,
         String migrate,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
             .getSyncPoller();
     }
@@ -658,7 +659,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -715,7 +716,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -821,7 +822,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -878,7 +879,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -952,7 +953,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
@@ -970,7 +971,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1088,7 +1091,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1157,7 +1160,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1275,7 +1278,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1332,7 +1335,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1406,7 +1409,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
@@ -1424,7 +1427,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+        return this
+            .beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1535,7 +1540,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1592,7 +1597,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1666,7 +1671,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
@@ -1684,7 +1689,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+        return this
+            .beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1795,7 +1802,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1852,7 +1859,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1936,7 +1943,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
+        return this.beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
@@ -1954,7 +1961,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).getSyncPoller();
+        return this
+            .beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2064,7 +2073,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2119,7 +2128,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

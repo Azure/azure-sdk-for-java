@@ -3,33 +3,35 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.models.ResourceGroups;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
@@ -423,5 +425,39 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             throw new RuntimeException(exception);
         }
         Assertions.assertEquals(counter.intValue(), 1);
+    }
+
+    @Test
+    public void canListSubnetAvailableIpAddresses() {
+        String networkName = generateRandomResourceName("vnet", 10);
+        String subnetName = "subnet1";
+        String nicName = generateRandomResourceName("nic", 10);
+
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet(subnetName, "10.0.0.0/29")
+            .create();
+
+        Subnet subnet = network.subnets().get(subnetName);
+        Set<String> availableIps = subnet.listAvailablePrivateIPAddresses();
+        Assertions.assertTrue(availableIps.size() > 0);
+
+        String availableIp = availableIps.iterator().next();
+
+        // occupy the available ip address
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(nicName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressStatic(availableIp)
+            .create();
+
+        availableIps = subnet.listAvailablePrivateIPAddresses();
+        Assertions.assertFalse(availableIps.contains(availableIp));
     }
 }

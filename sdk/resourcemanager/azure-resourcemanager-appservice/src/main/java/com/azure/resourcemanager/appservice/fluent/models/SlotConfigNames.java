@@ -33,6 +33,10 @@ public final class SlotConfigNames {
     @JsonProperty(value = "azureStorageConfigNames")
     private List<String> azureStorageConfigNames;
 
+    /** Creates an instance of SlotConfigNames class. */
+    public SlotConfigNames() {
+    }
+
     /**
      * Get the connectionStringNames property: List of connection string names.
      *

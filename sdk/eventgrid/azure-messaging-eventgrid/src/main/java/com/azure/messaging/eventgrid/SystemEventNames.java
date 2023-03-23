@@ -22,6 +22,8 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
@@ -259,6 +261,19 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
             "Microsoft.Communication.ChatThreadWithUserDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event.
+     */
+    public static final String COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED =
+            "Microsoft.Communication.EmailDeliveryReportReceived";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.EmailEngagementTrackingReportReceived event.
+     */
+    public static final String COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED =
+            "Microsoft.Communication.EmailEngagementTrackingReportReceived";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
@@ -897,6 +912,10 @@ public final class SystemEventNames {
                             COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
                             AcsChatThreadPropertiesUpdatedPerUserEventData.class);
                     put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
+                    put(COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED, AcsEmailDeliveryReportReceivedEventData.class);
+                    put(
+                            COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
+                            AcsEmailEngagementTrackingReportReceivedEventData.class);
                     put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
                     put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);

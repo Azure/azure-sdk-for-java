@@ -97,32 +97,28 @@ class ProxySendTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        final EventHubProducerAsyncClient producer = toClose(builder.buildAsyncProducerClient());
         final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
 
         assertNotNull(information, "Should receive partition information.");
 
         final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = builder
+        final EventHubConsumerAsyncClient consumer = toClose(builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
 
-        try {
-            // Act
-            StepVerifier.create(producer.send(events, options))
-                .expectComplete()
-                .verify(TIMEOUT);
+        // Act
+        StepVerifier.create(producer.send(events, options))
+            .expectComplete()
+            .verify(TIMEOUT);
 
-            // Assert
-            logger.info("Waiting to receive events.");
-            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
-                .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
-                .expectNextCount(NUMBER_OF_EVENTS)
-                .expectComplete()
-                .verify(TIMEOUT);
-        } finally {
-            dispose(producer, consumer);
-        }
+        // Assert
+        logger.info("Waiting to receive events.");
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
+            .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

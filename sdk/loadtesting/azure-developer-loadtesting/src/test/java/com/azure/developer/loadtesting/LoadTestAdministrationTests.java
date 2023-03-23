@@ -60,7 +60,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(1)
     public void createOrUpdateTest() {
         BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().createOrUpdateTestWithResponse(newTestId, body, null);
+        Response<BinaryData> response = adminBuilder.buildClient().createOrUpdateTestWithResponse(newTestId, body, null);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
@@ -69,7 +69,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
-        PollResponse<BinaryData> response = builder.buildLoadTestAdministrationClient().beginUploadTestFile(
+        PollResponse<BinaryData> response = adminBuilder.buildClient().beginUploadTestFile(
                                                 newTestId,
                                                 uploadCsvFileName,
                                                 file,
@@ -82,7 +82,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        SyncPoller<BinaryData, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadTestFile(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
+        SyncPoller<BinaryData, BinaryData> poller = adminBuilder.buildClient().beginUploadTestFile(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData fileBinary = poller.getFinalResult();
@@ -100,7 +100,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(4)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().createOrUpdateAppComponentsWithResponse(
+        Response<BinaryData> response = adminBuilder.buildClient().createOrUpdateAppComponentsWithResponse(
                                                 newTestId,
                                                 body,
                                                 null);
@@ -111,7 +111,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(5)
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().createOrUpdateServerMetricsConfigWithResponse(
+        Response<BinaryData> response = adminBuilder.buildClient().createOrUpdateServerMetricsConfigWithResponse(
                                                 newTestId,
                                                 body,
                                                 null);
@@ -123,7 +123,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(6)
     public void getTestFile() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getTestFileWithResponse(newTestId, uploadJmxFileName, null);
+        Response<BinaryData> response = adminBuilder.buildClient().getTestFileWithResponse(newTestId, uploadJmxFileName, null);
         try {
             JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE"));
@@ -136,7 +136,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(7)
     public void getTest() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getTestWithResponse(newTestId, null);
+        Response<BinaryData> response = adminBuilder.buildClient().getTestWithResponse(newTestId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("testId").asText().equals(newTestId));
@@ -149,7 +149,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(8)
     public void getAppComponents() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getAppComponentsWithResponse(newTestId, null);
+        Response<BinaryData> response = adminBuilder.buildClient().getAppComponentsWithResponse(newTestId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
@@ -162,7 +162,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(9)
     public void getServerMetricsConfig() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
+        Response<BinaryData> response = adminBuilder.buildClient().getServerMetricsConfigWithResponse(newTestId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
@@ -178,7 +178,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(10)
     public void listTestFiles() {
-        PagedIterable<BinaryData> response = builder.buildLoadTestAdministrationClient().listTestFiles(newTestId, null);
+        PagedIterable<BinaryData> response = adminBuilder.buildClient().listTestFiles(newTestId, null);
         boolean found = response.stream().anyMatch((fileBinary) -> {
             try {
                 JsonNode file = OBJECT_MAPPER.readTree(fileBinary.toString());
@@ -198,7 +198,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void listTests() {
         RequestOptions reqOpts = new RequestOptions()
                                     .addQueryParam("orderBy", "lastModifiedDateTime desc");
-        PagedIterable<BinaryData> response = builder.buildLoadTestAdministrationClient().listTests(reqOpts);
+        PagedIterable<BinaryData> response = adminBuilder.buildClient().listTests(reqOpts);
         boolean found = response.stream().anyMatch((testBinary) -> {
             try {
                 JsonNode test = OBJECT_MAPPER.readTree(testBinary.toString());
@@ -219,10 +219,10 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(12)
     public void deleteTestFile() {
         Assertions.assertDoesNotThrow(() -> {
-            builder.buildLoadTestAdministrationClient().deleteTestFileWithResponse(newTestId, uploadCsvFileName, null);
+            adminBuilder.buildClient().deleteTestFileWithResponse(newTestId, uploadCsvFileName, null);
         });
         Assertions.assertDoesNotThrow(() -> {
-            builder.buildLoadTestAdministrationClient().deleteTestFileWithResponse(newTestId, uploadJmxFileName, null);
+            adminBuilder.buildClient().deleteTestFileWithResponse(newTestId, uploadJmxFileName, null);
         });
     }
 
@@ -230,7 +230,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(13)
     public void deleteTest() {
         Assertions.assertDoesNotThrow(() -> {
-            builder.buildLoadTestAdministrationClient().deleteTestWithResponse(newTestId, null);
+            adminBuilder.buildClient().deleteTestWithResponse(newTestId, null);
         });
     }
 }

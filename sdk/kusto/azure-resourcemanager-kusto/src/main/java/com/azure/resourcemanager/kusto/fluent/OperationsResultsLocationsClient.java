@@ -16,18 +16,6 @@ public interface OperationsResultsLocationsClient {
      *
      * @param location Azure location (region) name.
      * @param operationId The Guid of the operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void get(String location, String operationId);
-
-    /**
-     * Returns operation results.
-     *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,4 +24,16 @@ public interface OperationsResultsLocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * Returns operation results.
+     *
+     * @param location Azure location (region) name.
+     * @param operationId The Guid of the operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void get(String location, String operationId);
 }

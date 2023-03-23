@@ -229,7 +229,6 @@ extends:
   parameters:
     ServiceDirectory: spring
     EnableBatchRelease: true
-    UseEsrpRelease: false
     Artifacts:
       - name: spring-cloud-azure-core
         groupId: com.azure.spring
@@ -548,20 +547,30 @@ extends:
       - name: spring-cloud-azure-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfig
-        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfig }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_springcloudazureappconfigurationconfig }}
       - name: spring-cloud-azure-appconfiguration-config-web
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfigweb
-        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_springcloudazureappconfigurationconfigweb }}
       - name: spring-cloud-azure-feature-management
         groupId: com.azure.spring
         safeName: springcloudazurefeaturemanagement
-        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagement }}
       - name: spring-cloud-azure-feature-management-web
         groupId: com.azure.spring
         safeName: springcloudazurefeaturemanagementweb
-        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagementweb }}
       - name: spring-cloud-azure-starter-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazurestarterappconfigurationconfig
-        releaseInBatch: ${{ parameters.release_azurespringcloudstarterappconfigurationconfig }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}

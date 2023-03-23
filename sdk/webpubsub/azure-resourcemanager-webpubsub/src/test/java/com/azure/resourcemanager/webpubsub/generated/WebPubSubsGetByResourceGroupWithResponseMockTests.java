@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.AclAction;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentityType;
@@ -64,7 +63,10 @@ public final class WebPubSubsGetByResourceGroupWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WebPubSubResource response =
-            manager.webPubSubs().getByResourceGroupWithResponse("judpfrxt", "thzvaytdwkqbrqu", Context.NONE).getValue();
+            manager
+                .webPubSubs()
+                .getByResourceGroupWithResponse("judpfrxt", "thzvaytdwkqbrqu", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("owpulpq", response.location());
         Assertions.assertEquals("lsyxkqjnsjervt", response.tags().get("agxsdszuemps"));

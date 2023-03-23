@@ -11,7 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanAccountAssociationInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanInner;
+import com.azure.resourcemanager.cognitiveservices.models.PatchResourceTagsAndSku;
 
 /** An instance of this class provides access to all the operations defined in CommitmentPlansClient. */
 public interface CommitmentPlansClient {
@@ -168,4 +170,473 @@ public interface CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String commitmentPlanName, Context context);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginCreateOrUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginCreateOrUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner createOrUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner createOrUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginUpdatePlan(
+        String resourceGroupName, String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan, Context context);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner updatePlan(
+        String resourceGroupName, String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan);
+
+    /**
+     * Create Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner updatePlan(
+        String resourceGroupName, String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan, Context context);
+
+    /**
+     * Deletes a Cognitive Services commitment plan from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePlan(String resourceGroupName, String commitmentPlanName);
+
+    /**
+     * Deletes a Cognitive Services commitment plan from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePlan(
+        String resourceGroupName, String commitmentPlanName, Context context);
+
+    /**
+     * Deletes a Cognitive Services commitment plan from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePlan(String resourceGroupName, String commitmentPlanName);
+
+    /**
+     * Deletes a Cognitive Services commitment plan from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePlan(String resourceGroupName, String commitmentPlanName, Context context);
+
+    /**
+     * Returns a Cognitive Services commitment plan specified by the parameters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommitmentPlanInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String commitmentPlanName, Context context);
+
+    /**
+     * Returns a Cognitive Services commitment plan specified by the parameters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanInner getByResourceGroup(String resourceGroupName, String commitmentPlanName);
+
+    /**
+     * Returns all the resources of a particular type belonging to a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Returns all the resources of a particular type belonging to a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Returns all the resources of a particular type belonging to a subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanInner> listPlansBySubscription();
+
+    /**
+     * Returns all the resources of a particular type belonging to a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanInner> listPlansBySubscription(Context context);
+
+    /**
+     * Gets the associations of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(
+        String resourceGroupName, String commitmentPlanName);
+
+    /**
+     * Gets the associations of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(
+        String resourceGroupName, String commitmentPlanName, Context context);
+
+    /**
+     * Gets the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the association of the Cognitive Services commitment plan along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommitmentPlanAccountAssociationInner> getAssociationWithResponse(
+        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context);
+
+    /**
+     * Gets the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the association of the Cognitive Services commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanAccountAssociationInner getAssociation(
+        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName);
+
+    /**
+     * Create or update the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param association The commitmentPlan properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the commitment plan association.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanAccountAssociationInner>, CommitmentPlanAccountAssociationInner>
+        beginCreateOrUpdateAssociation(
+            String resourceGroupName,
+            String commitmentPlanName,
+            String commitmentPlanAssociationName,
+            CommitmentPlanAccountAssociationInner association);
+
+    /**
+     * Create or update the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param association The commitmentPlan properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the commitment plan association.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommitmentPlanAccountAssociationInner>, CommitmentPlanAccountAssociationInner>
+        beginCreateOrUpdateAssociation(
+            String resourceGroupName,
+            String commitmentPlanName,
+            String commitmentPlanAssociationName,
+            CommitmentPlanAccountAssociationInner association,
+            Context context);
+
+    /**
+     * Create or update the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param association The commitmentPlan properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the commitment plan association.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanAccountAssociationInner createOrUpdateAssociation(
+        String resourceGroupName,
+        String commitmentPlanName,
+        String commitmentPlanAssociationName,
+        CommitmentPlanAccountAssociationInner association);
+
+    /**
+     * Create or update the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param association The commitmentPlan properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the commitment plan association.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommitmentPlanAccountAssociationInner createOrUpdateAssociation(
+        String resourceGroupName,
+        String commitmentPlanName,
+        String commitmentPlanAssociationName,
+        CommitmentPlanAccountAssociationInner association,
+        Context context);
+
+    /**
+     * Deletes the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteAssociation(
+        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName);
+
+    /**
+     * Deletes the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteAssociation(
+        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context);
+
+    /**
+     * Deletes the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAssociation(String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName);
+
+    /**
+     * Deletes the association of the Cognitive Services commitment plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     *     Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAssociation(
+        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context);
 }

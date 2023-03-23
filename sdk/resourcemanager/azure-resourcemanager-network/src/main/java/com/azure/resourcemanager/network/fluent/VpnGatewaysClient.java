@@ -389,13 +389,30 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName);
+    Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
+        String resourceGroupName, String gatewayName, String ipConfigurationId);
+
+    /**
+     * Resets the primary of the vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
+        String resourceGroupName, String gatewayName, String ipConfigurationId);
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
@@ -429,6 +446,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -437,7 +455,21 @@ public interface VpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(
-        String resourceGroupName, String gatewayName, Context context);
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context);
+
+    /**
+     * Resets the primary of the vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGateway Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, String ipConfigurationId);
 
     /**
      * Resets the primary of the vpn gateway in the specified resource group.
@@ -470,6 +502,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -477,7 +510,7 @@ public interface VpnGatewaysClient
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner reset(String resourceGroupName, String gatewayName, Context context);
+    VpnGatewayInner reset(String resourceGroupName, String gatewayName, String ipConfigurationId, Context context);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.

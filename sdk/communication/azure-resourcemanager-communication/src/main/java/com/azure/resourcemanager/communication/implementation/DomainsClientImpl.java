@@ -66,11 +66,10 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CommunicationService")
-    private interface DomainsService {
+    public interface DomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainResourceInner>> get(
@@ -85,8 +84,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +115,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -135,8 +131,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainResourceList>> listByEmailServiceResource(
@@ -150,8 +145,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/initiateVerification")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> initiateVerification(
@@ -167,8 +161,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication"
-                + "/emailServices/{emailServiceName}/domains/{domainName}/cancelVerification")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/cancelVerification")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cancelVerification(
@@ -332,24 +325,6 @@ public final class DomainsClientImpl implements DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Domains resource and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainResourceInner get(String resourceGroupName, String emailServiceName, String domainName) {
-        return getAsync(resourceGroupName, emailServiceName, domainName).block();
-    }
-
-    /**
-     * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -360,6 +335,24 @@ public final class DomainsClientImpl implements DomainsClient {
     public Response<DomainResourceInner> getWithResponse(
         String resourceGroupName, String emailServiceName, String domainName, Context context) {
         return getWithResponseAsync(resourceGroupName, emailServiceName, domainName, context).block();
+    }
+
+    /**
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Domains resource and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainResourceInner get(String resourceGroupName, String emailServiceName, String domainName) {
+        return getWithResponse(resourceGroupName, emailServiceName, domainName, Context.NONE).getValue();
     }
 
     /**
@@ -569,7 +562,9 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -594,7 +589,8 @@ public final class DomainsClientImpl implements DomainsClient {
         String domainName,
         DomainResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
             .getSyncPoller();
     }
 
@@ -867,7 +863,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String emailServiceName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, emailServiceName, domainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, emailServiceName, domainName).getSyncPoller();
     }
 
     /**
@@ -887,7 +883,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String emailServiceName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, emailServiceName, domainName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, emailServiceName, domainName, context).getSyncPoller();
     }
 
     /**
@@ -1183,7 +1179,7 @@ public final class DomainsClientImpl implements DomainsClient {
         String emailServiceName,
         String domainName,
         UpdateDomainRequestParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters).getSyncPoller();
     }
 
     /**
@@ -1208,7 +1204,9 @@ public final class DomainsClientImpl implements DomainsClient {
         String domainName,
         UpdateDomainRequestParameters parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1713,7 +1711,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInitiateVerification(
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters) {
-        return beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
+        return this
+            .beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
             .getSyncPoller();
     }
 
@@ -1739,7 +1738,8 @@ public final class DomainsClientImpl implements DomainsClient {
         String domainName,
         VerificationParameter parameters,
         Context context) {
-        return beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
+        return this
+            .beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2035,7 +2035,8 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancelVerification(
         String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters) {
-        return beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
+        return this
+            .beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters)
             .getSyncPoller();
     }
 
@@ -2061,7 +2062,8 @@ public final class DomainsClientImpl implements DomainsClient {
         String domainName,
         VerificationParameter parameters,
         Context context) {
-        return beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
+        return this
+            .beginCancelVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
             .getSyncPoller();
     }
 

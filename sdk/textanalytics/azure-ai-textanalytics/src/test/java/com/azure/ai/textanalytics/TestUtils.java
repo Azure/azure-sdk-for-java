@@ -4,8 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
@@ -13,9 +13,6 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassificationCategoryPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassifyDocumentResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.DynamicClassifyDocumentResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
@@ -34,9 +31,9 @@ import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
@@ -45,8 +42,6 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -90,7 +85,6 @@ import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -143,10 +137,6 @@ final class TestUtils {
     static final List<String> CUSTOM_MULTI_CLASSIFICATION = asList(
         "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add"
             + " it to my playlist");
-
-    static final List<String> DYNAMIC_CLASSIFICATION = asList(
-        "The WHO is issuing a warning about Monkey Pox.",
-        "Mo Salah plays in Liverpool FC in England.");
 
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
@@ -623,11 +613,11 @@ final class TestUtils {
         SentenceOpinionPropertiesHelper.setAssessments(sentenceOpinion2,
             new IterableStream<>(asList(assessmentSentiment3)));
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
+            "The hotel was dark and unclean. ", TextSentiment.NEGATIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 31);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 32);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
@@ -696,11 +686,11 @@ final class TestUtils {
             new IterableStream<>(asList(assessmentSentiment1, assessmentSentiment2)));
 
         final SentenceSentiment sentenceSentiment1 = new SentenceSentiment(
-            "The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
+            "The restaurant had amazing gnocchi. ", TextSentiment.POSITIVE,
             new SentimentConfidenceScores(0.0, 0.0, 0.0));
         SentenceSentimentPropertiesHelper.setOpinions(sentenceSentiment1, new IterableStream<>(asList(sentenceOpinion1)));
         SentenceSentimentPropertiesHelper.setOffset(sentenceSentiment1, 0);
-        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 35);
+        SentenceSentimentPropertiesHelper.setLength(sentenceSentiment1, 36);
 
         final SentenceSentiment sentenceSentiment2 = new SentenceSentiment(
             "The hotel was dark and unclean.", TextSentiment.NEGATIVE,
@@ -1367,16 +1357,16 @@ final class TestUtils {
             getExpectedSummarySentence(
                 "At Microsoft, we have been on a quest to advance AI beyond existing"
                     + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
-                1.0, 0, 160),
+                0.69, 0, 160),
             getExpectedSummarySentence(
-                "In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human"
-                    + " cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).",
-                0.958, 324, 192),
+                "The goal is to have pretrained models that can jointly learn representations to support a broad"
+                    + " range of downstream AI tasks, much in the way humans do today.",
+                0.81, 856, 158),
             getExpectedSummarySentence(
-                "At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure"
-                    + " 1—a joint representation to create more powerful AI that can speak, hear, see, and understand"
-                    + " humans better.",
-                0.929, 517, 203)
+                "Over the past five years, we have achieved human performance on benchmarks in conversational "
+                    + "speech recognition, machine translation, conversational question answering, machine reading"
+                    + " comprehension, and image captioning.",
+                0.79, 1015, 221)
         ));
 
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);
@@ -1443,43 +1433,6 @@ final class TestUtils {
         summaryContexts.add(summaryContext);
         AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary, IterableStream.of(summaryContexts));
         return abstractiveSummary;
-    }
-
-    // Dynamic classification
-    static DynamicClassifyDocumentResultCollection getExpectedDynamicClassifyDocumentResultCollection() {
-        ClassifyDocumentResult classifyDocumentResult1 = new ClassifyDocumentResult("0",
-            new TextDocumentStatistics(46, 1), null);
-
-        ClassificationCategory classificationCategory1 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory1, "Health");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory1, 0.88);
-        ClassificationCategory classificationCategory2 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory2, "Music");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory2, 0.04);
-
-        ClassificationCategory classificationCategory3 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory3, "Sports");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory3, 0.04);
-
-        ClassificationCategory classificationCategory4 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory4, "Politics");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory4, 0.03);
-
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult1,
-            IterableStream.of(asList(classificationCategory1, classificationCategory2, classificationCategory3,
-            classificationCategory4)));
-
-        ClassifyDocumentResult classifyDocumentResult2 = new ClassifyDocumentResult("1",
-            new TextDocumentStatistics(42, 1), null);
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult2,
-            IterableStream.of(asList(classificationCategory3, classificationCategory2, classificationCategory1,
-                classificationCategory4)));
-
-        DynamicClassifyDocumentResultCollection classifyDocumentResults =
-            new DynamicClassifyDocumentResultCollection(asList(classifyDocumentResult1, classifyDocumentResult2));
-        DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(classifyDocumentResults,
-            new TextDocumentBatchStatistics(2, 2, 0, 0));
-        return classifyDocumentResults;
     }
 
     /**

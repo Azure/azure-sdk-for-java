@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Data POST-ed to the nameAvailability action. */
 @Fluent
 public final class NameAvailabilityParameters extends CheckNameAvailabilityRequest {
+    /** Creates an instance of NameAvailabilityParameters class. */
+    public NameAvailabilityParameters() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public NameAvailabilityParameters withName(String name) {

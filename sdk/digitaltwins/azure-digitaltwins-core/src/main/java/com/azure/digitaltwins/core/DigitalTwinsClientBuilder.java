@@ -30,9 +30,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -59,6 +62,7 @@ public final class DigitalTwinsClientBuilder implements
     // These are the keys to the above properties file that define the client library's name and version for use in the user agent string
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -161,9 +165,18 @@ public final class DigitalTwinsClientBuilder implements
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        TracingOptions tracingOptions = null;
+        if (clientOptions != null) {
+            tracingOptions = clientOptions.getTracingOptions();
+        }
+        
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE, tracingOptions);
+
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
     }
 

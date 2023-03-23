@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders RetrieveCertificateEmailHistory. */
 public final class AppServiceCertificateOrdersRetrieveCertificateEmailHistorySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/RetrieveCertificateEmailHistory.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RetrieveCertificateEmailHistory.json
      */
     /**
      * Sample code: Retrieve Certificate Email History.
@@ -22,6 +20,7 @@ public final class AppServiceCertificateOrdersRetrieveCertificateEmailHistorySam
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .retrieveCertificateEmailHistoryWithResponse("testrg123", "SampleCertOrder", Context.NONE);
+            .retrieveCertificateEmailHistoryWithResponse(
+                "testrg123", "SampleCertOrder", com.azure.core.util.Context.NONE);
     }
 }

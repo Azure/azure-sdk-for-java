@@ -33,7 +33,7 @@ try {
   Push-Location $Directory
   if ($AutorestOptions) {
     Write-Host "Running 'autorest $AutorestOptions' in directory '$Directory'."
-    & "autorest $AutorestOptions"
+    Invoke-Expression "autorest $AutorestOptions"
   } else {
     Write-Host "Running 'autorest' in directory '$Directory'."
     & autorest

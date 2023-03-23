@@ -23,6 +23,15 @@ public final class ApplicationGatewaySslProtocol extends ExpandableStringEnum<Ap
     public static final ApplicationGatewaySslProtocol TLSV1_3 = fromString("TLSv1_3");
 
     /**
+     * Creates a new instance of ApplicationGatewaySslProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewaySslProtocol() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewaySslProtocol from its string representation.
      *
      * @param name a name to look for.

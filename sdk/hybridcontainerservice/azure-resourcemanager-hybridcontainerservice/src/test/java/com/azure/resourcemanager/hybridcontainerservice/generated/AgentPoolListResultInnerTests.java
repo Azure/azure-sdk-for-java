@@ -14,127 +14,125 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"count\":1045217690,\"availabilityZones\":[],\"maxCount\":1515008733,\"maxPods\":286824564,\"minCount\":1616602527,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"ylpstdbhhxsrzdz\",\"vmSize\":\"erscdntne\"},\"extendedLocation\":{\"type\":\"mygtdssls\",\"name\":\"mweriofzpy\"},\"location\":\"semwabnet\",\"tags\":{\"wubmwmbesldn\":\"szhedplvw\",\"lcxog\":\"wwtppj\",\"qqkdltfzxmhhvhgu\":\"okonzmnsikvmkqz\",\"xtibqdxbxwakbog\":\"eodkwobda\"},\"id\":\"xndlkzgxhu\",\"name\":\"iplbpodxunkbebxm\",\"type\":\"byyntwlrbqt\"},{\"properties\":{\"provisioningState\":\"InProgress\",\"count\":1053107000,\"availabilityZones\":[],\"maxCount\":670592534,\"maxPods\":1813369281,\"minCount\":1291535699,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"wzizxbmpgcjefuzm\",\"vmSize\":\"pbttdum\"},\"extendedLocation\":{\"type\":\"ebmnzbtbhjpglk\",\"name\":\"ohdneuel\"},\"location\":\"phsdyhto\",\"tags\":{\"wwquuvxzxclvithh\":\"kd\",\"hcohfwdsjnk\":\"zonosgg\",\"swacffgdkzz\":\"ljuti\"},\"id\":\"wkfvhqcrailvp\",\"name\":\"ppfufl\",\"type\":\"wdmhdlxyjrxs\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"count\":1665526827,\"availabilityZones\":[],\"maxCount\":1260393669,\"maxPods\":808700317,\"minCount\":1856225206,\"mode\":\"User\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"kcvqvpke\",\"vmSize\":\"cvdrhvoodsot\"},\"extendedLocation\":{\"type\":\"opcjwvnhd\",\"name\":\"wmgxcxrsl\"},\"location\":\"mutwuoe\",\"tags\":{\"yqsluic\":\"khjwn\",\"modfvuefywsbpfvm\":\"dggkzzlvmbmpa\"},\"id\":\"yhrfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"},{\"properties\":{\"provisioningState\":\"InProgress\",\"count\":487764269,\"availabilityZones\":[],\"maxCount\":1929847054,\"maxPods\":1598005613,\"minCount\":1083170526,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"pkwhojvpa\",\"vmSize\":\"gxysmocmbqfqvm\"},\"extendedLocation\":{\"type\":\"apvhelxprgly\",\"name\":\"dd\"},\"location\":\"kcbcue\",\"tags\":{\"qibrhosxsdqrhzoy\":\"xgc\",\"m\":\"i\",\"hwflu\":\"qyib\"},\"id\":\"zdtmhrkwofy\",\"name\":\"voqacpiexpbt\",\"type\":\"iwbwoenwashrtdtk\"}],\"nextLink\":\"qxwbpokulpiu\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"count\":282783230,\"availabilityZones\":[],\"maxCount\":960001198,\"maxPods\":668336306,\"minCount\":953152084,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"apkteoellwptfdyg\",\"vmSize\":\"qbuaceopzfqr\"},\"extendedLocation\":{\"type\":\"pppcqeqxo\",\"name\":\"dahzxctobg\"},\"location\":\"kdmoi\",\"tags\":{\"kxbpvj\":\"stmgrcfbunrmfqjh\",\"xjyngudivk\":\"mjh\"},\"id\":\"tswb\",\"name\":\"qzvszjf\",\"type\":\"uvjfdxxive\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"count\":928990245,\"availabilityZones\":[],\"maxCount\":1493412527,\"maxPods\":608754752,\"minCount\":1242839577,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"lqbhsf\",\"vmSize\":\"blytk\"},\"extendedLocation\":{\"type\":\"wwwfbkr\",\"name\":\"nsvs\"},\"location\":\"q\",\"tags\":{\"sbfov\":\"xc\"},\"id\":\"srruvwbhsqfsubcg\",\"name\":\"birx\",\"type\":\"pybsrfbjfdtw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"count\":1553831435,\"availabilityZones\":[],\"maxCount\":1616367631,\"maxPods\":1933405011,\"minCount\":1057432086,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"nvwpmqtaruouj\",\"vmSize\":\"cjhwq\"},\"extendedLocation\":{\"type\":\"bnw\",\"name\":\"wgdrjervnaenqp\"},\"location\":\"hin\",\"tags\":{\"dslgnayqigynduh\":\"gmifthnzd\"},\"id\":\"vhqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"count\":1277939729,\"availabilityZones\":[],\"maxCount\":1148330667,\"maxPods\":532112858,\"minCount\":242994282,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"cwyhzdxssa\",\"vmSize\":\"zmnvdfznudaod\"},\"extendedLocation\":{\"type\":\"cblylpstdbhhxsr\",\"name\":\"zucerscdntnev\"},\"location\":\"iwjmygtdssls\",\"tags\":{\"abnetshh\":\"weriofzpyqsem\",\"bmwmbesldnkw\":\"zhedplvwiw\",\"gaokonzmnsikv\":\"tppjflcx\"},\"id\":\"kqze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}],\"nextLink\":\"ur\"}")
                 .toObject(AgentPoolListResultInner.class);
-        Assertions.assertEquals("semwabnet", model.value().get(0).location());
-        Assertions.assertEquals("szhedplvw", model.value().get(0).tags().get("wubmwmbesldn"));
-        Assertions.assertEquals("mygtdssls", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("mweriofzpy", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(1045217690, model.value().get(0).count());
-        Assertions.assertEquals(1515008733, model.value().get(0).maxCount());
-        Assertions.assertEquals(286824564, model.value().get(0).maxPods());
-        Assertions.assertEquals(1616602527, model.value().get(0).minCount());
-        Assertions.assertEquals(Mode.SYSTEM, model.value().get(0).mode());
+        Assertions.assertEquals("kdmoi", model.value().get(0).location());
+        Assertions.assertEquals("stmgrcfbunrmfqjh", model.value().get(0).tags().get("kxbpvj"));
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(282783230, model.value().get(0).count());
+        Assertions.assertEquals(960001198, model.value().get(0).maxCount());
+        Assertions.assertEquals(668336306, model.value().get(0).maxPods());
+        Assertions.assertEquals(953152084, model.value().get(0).minCount());
+        Assertions.assertEquals(Mode.LB, model.value().get(0).mode());
         Assertions.assertEquals(OsType.WINDOWS, model.value().get(0).osType());
-        Assertions.assertEquals("ylpstdbhhxsrzdz", model.value().get(0).nodeImageVersion());
-        Assertions.assertEquals("erscdntne", model.value().get(0).vmSize());
-        Assertions.assertEquals("qxwbpokulpiu", model.nextLink());
+        Assertions.assertEquals("apkteoellwptfdyg", model.value().get(0).nodeImageVersion());
+        Assertions.assertEquals("qbuaceopzfqr", model.value().get(0).vmSize());
+        Assertions.assertEquals("ur", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolListResultInner model =
             new AgentPoolListResultInner()
                 .withValue(
                     Arrays
                         .asList(
                             new AgentPoolInner()
-                                .withLocation("semwabnet")
-                                .withTags(
-                                    mapOf(
-                                        "wubmwmbesldn",
-                                        "szhedplvw",
-                                        "lcxog",
-                                        "wwtppj",
-                                        "qqkdltfzxmhhvhgu",
-                                        "okonzmnsikvmkqz",
-                                        "xtibqdxbxwakbog",
-                                        "eodkwobda"))
+                                .withLocation("kdmoi")
+                                .withTags(mapOf("kxbpvj", "stmgrcfbunrmfqjh", "xjyngudivk", "mjh"))
                                 .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("mygtdssls").withName("mweriofzpy"))
-                                .withCount(1045217690)
+                                    new AgentPoolExtendedLocation().withType("pppcqeqxo").withName("dahzxctobg"))
+                                .withCount(282783230)
                                 .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1515008733)
-                                .withMaxPods(286824564)
-                                .withMinCount(1616602527)
-                                .withMode(Mode.SYSTEM)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("ylpstdbhhxsrzdz")
-                                .withVmSize("erscdntne"),
-                            new AgentPoolInner()
-                                .withLocation("phsdyhto")
-                                .withTags(
-                                    mapOf("wwquuvxzxclvithh", "kd", "hcohfwdsjnk", "zonosgg", "swacffgdkzz", "ljuti"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("ebmnzbtbhjpglk").withName("ohdneuel"))
-                                .withCount(1053107000)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(670592534)
-                                .withMaxPods(1813369281)
-                                .withMinCount(1291535699)
-                                .withMode(Mode.SYSTEM)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("wzizxbmpgcjefuzm")
-                                .withVmSize("pbttdum"),
-                            new AgentPoolInner()
-                                .withLocation("mutwuoe")
-                                .withTags(mapOf("yqsluic", "khjwn", "modfvuefywsbpfvm", "dggkzzlvmbmpa"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("opcjwvnhd").withName("wmgxcxrsl"))
-                                .withCount(1665526827)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1260393669)
-                                .withMaxPods(808700317)
-                                .withMinCount(1856225206)
-                                .withMode(Mode.USER)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("kcvqvpke")
-                                .withVmSize("cvdrhvoodsot"),
-                            new AgentPoolInner()
-                                .withLocation("kcbcue")
-                                .withTags(mapOf("qibrhosxsdqrhzoy", "xgc", "m", "i", "hwflu", "qyib"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("apvhelxprgly").withName("dd"))
-                                .withCount(487764269)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1929847054)
-                                .withMaxPods(1598005613)
-                                .withMinCount(1083170526)
+                                .withMaxCount(960001198)
+                                .withMaxPods(668336306)
+                                .withMinCount(953152084)
                                 .withMode(Mode.LB)
                                 .withNodeLabels(mapOf())
                                 .withNodeTaints(Arrays.asList())
                                 .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("pkwhojvpa")
-                                .withVmSize("gxysmocmbqfqvm")))
-                .withNextLink("qxwbpokulpiu");
+                                .withNodeImageVersion("apkteoellwptfdyg")
+                                .withVmSize("qbuaceopzfqr"),
+                            new AgentPoolInner()
+                                .withLocation("q")
+                                .withTags(mapOf("sbfov", "xc"))
+                                .withExtendedLocation(
+                                    new AgentPoolExtendedLocation().withType("wwwfbkr").withName("nsvs"))
+                                .withCount(928990245)
+                                .withAvailabilityZones(Arrays.asList())
+                                .withMaxCount(1493412527)
+                                .withMaxPods(608754752)
+                                .withMinCount(1242839577)
+                                .withMode(Mode.SYSTEM)
+                                .withNodeLabels(mapOf())
+                                .withNodeTaints(Arrays.asList())
+                                .withOsType(OsType.WINDOWS)
+                                .withNodeImageVersion("lqbhsf")
+                                .withVmSize("blytk"),
+                            new AgentPoolInner()
+                                .withLocation("hin")
+                                .withTags(mapOf("dslgnayqigynduh", "gmifthnzd"))
+                                .withExtendedLocation(
+                                    new AgentPoolExtendedLocation().withType("bnw").withName("wgdrjervnaenqp"))
+                                .withCount(1553831435)
+                                .withAvailabilityZones(Arrays.asList())
+                                .withMaxCount(1616367631)
+                                .withMaxPods(1933405011)
+                                .withMinCount(1057432086)
+                                .withMode(Mode.SYSTEM)
+                                .withNodeLabels(mapOf())
+                                .withNodeTaints(Arrays.asList())
+                                .withOsType(OsType.LINUX)
+                                .withNodeImageVersion("nvwpmqtaruouj")
+                                .withVmSize("cjhwq"),
+                            new AgentPoolInner()
+                                .withLocation("iwjmygtdssls")
+                                .withTags(
+                                    mapOf(
+                                        "abnetshh",
+                                        "weriofzpyqsem",
+                                        "bmwmbesldnkw",
+                                        "zhedplvwiw",
+                                        "gaokonzmnsikv",
+                                        "tppjflcx"))
+                                .withExtendedLocation(
+                                    new AgentPoolExtendedLocation()
+                                        .withType("cblylpstdbhhxsr")
+                                        .withName("zucerscdntnev"))
+                                .withCount(1277939729)
+                                .withAvailabilityZones(Arrays.asList())
+                                .withMaxCount(1148330667)
+                                .withMaxPods(532112858)
+                                .withMinCount(242994282)
+                                .withMode(Mode.LB)
+                                .withNodeLabels(mapOf())
+                                .withNodeTaints(Arrays.asList())
+                                .withOsType(OsType.LINUX)
+                                .withNodeImageVersion("cwyhzdxssa")
+                                .withVmSize("zmnvdfznudaod")))
+                .withNextLink("ur");
         model = BinaryData.fromObject(model).toObject(AgentPoolListResultInner.class);
-        Assertions.assertEquals("semwabnet", model.value().get(0).location());
-        Assertions.assertEquals("szhedplvw", model.value().get(0).tags().get("wubmwmbesldn"));
-        Assertions.assertEquals("mygtdssls", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("mweriofzpy", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(1045217690, model.value().get(0).count());
-        Assertions.assertEquals(1515008733, model.value().get(0).maxCount());
-        Assertions.assertEquals(286824564, model.value().get(0).maxPods());
-        Assertions.assertEquals(1616602527, model.value().get(0).minCount());
-        Assertions.assertEquals(Mode.SYSTEM, model.value().get(0).mode());
+        Assertions.assertEquals("kdmoi", model.value().get(0).location());
+        Assertions.assertEquals("stmgrcfbunrmfqjh", model.value().get(0).tags().get("kxbpvj"));
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(282783230, model.value().get(0).count());
+        Assertions.assertEquals(960001198, model.value().get(0).maxCount());
+        Assertions.assertEquals(668336306, model.value().get(0).maxPods());
+        Assertions.assertEquals(953152084, model.value().get(0).minCount());
+        Assertions.assertEquals(Mode.LB, model.value().get(0).mode());
         Assertions.assertEquals(OsType.WINDOWS, model.value().get(0).osType());
-        Assertions.assertEquals("ylpstdbhhxsrzdz", model.value().get(0).nodeImageVersion());
-        Assertions.assertEquals("erscdntne", model.value().get(0).vmSize());
-        Assertions.assertEquals("qxwbpokulpiu", model.nextLink());
+        Assertions.assertEquals("apkteoellwptfdyg", model.value().get(0).nodeImageVersion());
+        Assertions.assertEquals("qbuaceopzfqr", model.value().get(0).vmSize());
+        Assertions.assertEquals("ur", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

@@ -7,20 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.DataConnectionCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataConnectionCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"tpuqujmq\"}").toObject(DataConnectionCheckNameRequest.class);
-        Assertions.assertEquals("tpuqujmq", model.name());
+            BinaryData.fromString("{\"name\":\"xiilivpdtiirqt\"}").toObject(DataConnectionCheckNameRequest.class);
+        Assertions.assertEquals("xiilivpdtiirqt", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        DataConnectionCheckNameRequest model = new DataConnectionCheckNameRequest().withName("tpuqujmq");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataConnectionCheckNameRequest model = new DataConnectionCheckNameRequest().withName("xiilivpdtiirqt");
         model = BinaryData.fromObject(model).toObject(DataConnectionCheckNameRequest.class);
-        Assertions.assertEquals("tpuqujmq", model.name());
+        Assertions.assertEquals("xiilivpdtiirqt", model.name());
     }
 }

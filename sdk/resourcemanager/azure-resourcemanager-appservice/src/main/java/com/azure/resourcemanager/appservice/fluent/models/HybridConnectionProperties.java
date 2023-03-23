@@ -41,26 +41,28 @@ public final class HybridConnectionProperties {
     private Integer port;
 
     /*
-     * The name of the Service Bus key which has Send permissions. This is used
-     * to authenticate to Service Bus.
+     * The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
      */
     @JsonProperty(value = "sendKeyName")
     private String sendKeyName;
 
     /*
-     * The value of the Service Bus key. This is used to authenticate to
-     * Service Bus. In ARM this key will not be returned
+     * The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be
+     * returned
      * normally, use the POST /listKeys API instead.
      */
     @JsonProperty(value = "sendKeyValue")
     private String sendKeyValue;
 
     /*
-     * The suffix for the service bus endpoint. By default this is
-     * .servicebus.windows.net
+     * The suffix for the service bus endpoint. By default this is .servicebus.windows.net
      */
     @JsonProperty(value = "serviceBusSuffix")
     private String serviceBusSuffix;
+
+    /** Creates an instance of HybridConnectionProperties class. */
+    public HybridConnectionProperties() {
+    }
 
     /**
      * Get the serviceBusNamespace property: The name of the Service Bus namespace.

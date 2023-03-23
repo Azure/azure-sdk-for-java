@@ -7,11 +7,10 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.SkuCapability;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuCapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuCapability model =
             BinaryData
                 .fromString("{\"name\":\"jwyahuxinpmqnja\",\"value\":\"ixjsprozvcputeg\"}")
@@ -20,8 +19,8 @@ public final class SkuCapabilityTests {
         Assertions.assertEquals("ixjsprozvcputeg", model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuCapability model = new SkuCapability().withName("jwyahuxinpmqnja").withValue("ixjsprozvcputeg");
         model = BinaryData.fromObject(model).toObject(SkuCapability.class);
         Assertions.assertEquals("jwyahuxinpmqnja", model.name());

@@ -17,24 +17,21 @@ public final class CacheUsernameDownloadSettings {
     private Boolean extendedGroups;
 
     /*
-     * This setting determines how the cache gets username and group names for
-     * clients.
+     * This setting determines how the cache gets username and group names for clients.
      */
     @JsonProperty(value = "usernameSource")
     private UsernameSource usernameSource;
 
     /*
-     * The URI of the file containing group information (in /etc/group file
-     * format). This field must be populated when 'usernameSource' is set to
-     * 'File'.
+     * The URI of the file containing group information (in /etc/group file format). This field must be populated when
+     * 'usernameSource' is set to 'File'.
      */
     @JsonProperty(value = "groupFileURI")
     private String groupFileUri;
 
     /*
-     * The URI of the file containing user information (in /etc/passwd file
-     * format). This field must be populated when 'usernameSource' is set to
-     * 'File'.
+     * The URI of the file containing user information (in /etc/passwd file format). This field must be populated when
+     * 'usernameSource' is set to 'File'.
      */
     @JsonProperty(value = "userFileURI")
     private String userFileUri;
@@ -58,30 +55,28 @@ public final class CacheUsernameDownloadSettings {
     private Boolean encryptLdapConnection;
 
     /*
-     * Determines if the certificates must be validated by a certificate
-     * authority. When true, caCertificateURI must be provided.
+     * Determines if the certificates must be validated by a certificate authority. When true, caCertificateURI must be
+     * provided.
      */
     @JsonProperty(value = "requireValidCertificate")
     private Boolean requireValidCertificate;
 
     /*
-     * Determines if the certificate should be automatically downloaded. This
-     * applies to 'caCertificateURI' only if 'requireValidCertificate' is true.
+     * Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if
+     * 'requireValidCertificate' is true.
      */
     @JsonProperty(value = "autoDownloadCertificate")
     private Boolean autoDownloadCertificate;
 
     /*
-     * The URI of the CA certificate to validate the LDAP secure connection.
-     * This field must be populated when 'requireValidCertificate' is set to
-     * true.
+     * The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when
+     * 'requireValidCertificate' is set to true.
      */
     @JsonProperty(value = "caCertificateURI")
     private String caCertificateUri;
 
     /*
-     * Indicates whether or not the HPC Cache has performed the username
-     * download successfully.
+     * Indicates whether or not the HPC Cache has performed the username download successfully.
      */
     @JsonProperty(value = "usernameDownloaded", access = JsonProperty.Access.WRITE_ONLY)
     private UsernameDownloadedType usernameDownloaded;
@@ -91,6 +86,10 @@ public final class CacheUsernameDownloadSettings {
      */
     @JsonProperty(value = "credentials")
     private CacheUsernameDownloadSettingsCredentials credentials;
+
+    /** Creates an instance of CacheUsernameDownloadSettings class. */
+    public CacheUsernameDownloadSettings() {
+    }
 
     /**
      * Get the extendedGroups property: Whether or not Extended Groups is enabled.

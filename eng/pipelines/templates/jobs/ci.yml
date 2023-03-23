@@ -155,7 +155,7 @@ jobs:
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - script: |
-          pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
+          python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
@@ -401,7 +401,7 @@ jobs:
 
     pool:
       name: azsdk-pool-mms-win-2022-general
-      vmImage: MMS2022
+      vmImage: windows-2022
     steps:
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:

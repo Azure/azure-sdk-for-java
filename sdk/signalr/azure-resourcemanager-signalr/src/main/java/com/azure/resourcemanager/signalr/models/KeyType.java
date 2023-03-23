@@ -20,6 +20,15 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
     public static final KeyType SALT = fromString("Salt");
 
     /**
+     * Creates a new instance of KeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyType() {
+    }
+
+    /**
      * Creates or finds a KeyType from its string representation.
      *
      * @param name a name to look for.

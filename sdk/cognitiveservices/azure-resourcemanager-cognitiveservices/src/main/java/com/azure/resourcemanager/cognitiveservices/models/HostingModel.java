@@ -20,6 +20,15 @@ public final class HostingModel extends ExpandableStringEnum<HostingModel> {
     public static final HostingModel DISCONNECTED_CONTAINER = fromString("DisconnectedContainer");
 
     /**
+     * Creates a new instance of HostingModel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostingModel() {
+    }
+
+    /**
      * Creates or finds a HostingModel from its string representation.
      *
      * @param name a name to look for.

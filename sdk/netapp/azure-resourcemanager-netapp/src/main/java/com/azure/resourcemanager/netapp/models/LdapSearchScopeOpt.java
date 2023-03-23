@@ -28,6 +28,10 @@ public final class LdapSearchScopeOpt {
     @JsonProperty(value = "groupMembershipFilter")
     private String groupMembershipFilter;
 
+    /** Creates an instance of LdapSearchScopeOpt class. */
+    public LdapSearchScopeOpt() {
+    }
+
     /**
      * Get the userDN property: This specifies the user DN, which overrides the base DN for user lookups.
      *

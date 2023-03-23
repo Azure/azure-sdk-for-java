@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,8 @@ public final class SignalRPrivateEndpointConnectionsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.signalRPrivateEndpointConnections().delete("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", Context.NONE);
+        manager
+            .signalRPrivateEndpointConnections()
+            .delete("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", com.azure.core.util.Context.NONE);
     }
 }

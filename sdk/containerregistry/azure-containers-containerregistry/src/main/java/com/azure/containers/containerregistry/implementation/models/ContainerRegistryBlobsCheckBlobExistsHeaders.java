@@ -7,7 +7,6 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsCheckBlobExistsHeaders model. */
 @Fluent
@@ -15,19 +14,16 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
     /*
      * The Content-Length property.
      */
-    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /*
      * The Docker-Content-Digest property.
      */
-    @JsonProperty(value = "Docker-Content-Digest")
     private String dockerContentDigest;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
 
     private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
@@ -39,12 +35,12 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCheckBlobExistsHeaders(HttpHeaders rawHeaders) {
-        String contentLength = rawHeaders.getValue("Content-Length");
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
-        this.location = rawHeaders.getValue("Location");
+        this.dockerContentDigest = rawHeaders.getValue(DOCKER_CONTENT_DIGEST);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**

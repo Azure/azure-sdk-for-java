@@ -63,8 +63,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -583,20 +581,12 @@ public final class BlobServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTags(options, null);
+            return findBlobsByTags(options, null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
-    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
-        throwOnAnonymousAccess();
-        StorageImplUtils.assertNotNull("options", options);
-        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
-            (marker, pageSize) -> withContext(context -> this.findBlobsByTags(
-                new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize), marker, timeout, context));
-        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
-    }
 
     PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();
@@ -622,8 +612,7 @@ public final class BlobServiceAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(null, null,
-                options.getQuery(), marker, options.getMaxResultsPerPage(), null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+                options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null
                     ? Collections.emptyList()
@@ -722,8 +711,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices().getPropertiesWithResponseAsync(null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getServices().getPropertiesWithResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -871,8 +859,7 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices().setPropertiesWithResponseAsync(finalProperties, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getServices().setPropertiesWithResponseAsync(finalProperties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -976,7 +963,7 @@ public final class BlobServiceAsyncClient {
                 new KeyInfo()
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -1033,8 +1020,7 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices().getStatisticsWithResponseAsync(null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getServices().getStatisticsWithResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -1268,8 +1254,7 @@ public final class BlobServiceAsyncClient {
                 : options.getDeletedContainerName();
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().restoreWithResponseAsync(finalDestinationContainerName, null,
-            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(), context)
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }

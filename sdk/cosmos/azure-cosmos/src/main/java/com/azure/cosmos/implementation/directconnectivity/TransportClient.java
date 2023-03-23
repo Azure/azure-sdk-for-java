@@ -6,11 +6,14 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -46,11 +49,13 @@ public abstract class TransportClient implements AutoCloseable {
     /***
      * Only open new connection if there is no existed established connection.
      *
-     * @param addressUri the replica address.
-     *
+     * @param physicalAddress the store physical addresses.
+     * @param openConnectionRequest open connection request.
      * @return the {@link OpenConnectionResponse}.
      */
-    public abstract Mono<OpenConnectionResponse> openConnection(final Uri addressUri);
+    public abstract Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest);
+
+    public abstract void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
 

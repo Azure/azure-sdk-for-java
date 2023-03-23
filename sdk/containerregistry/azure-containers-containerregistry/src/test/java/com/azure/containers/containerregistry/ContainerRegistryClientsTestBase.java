@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -96,18 +95,12 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
-
-        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
+        return new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential)
-            .audience(audience);
-
-              // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        return builder;
+            .credential(credential);
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
@@ -119,34 +112,30 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getBlobClientBuilder(repositoryName, httpClient, credential);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential) {
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+        TokenCredential credential) {
         return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential, String endpoint) {
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+        TokenCredential credential, String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
-
-        ContainerRegistryBlobClientBuilder builder = new ContainerRegistryBlobClientBuilder()
+        return new ContainerRegistryBlobClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .repository(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential)
-            .audience(audience);
-
-        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        // builder.httpClient(new OkHttpAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
-        return builder;
+            .credential(credential);
     }
 
     List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {
         return artifacts.stream()
             .filter(artifact -> artifact.getArchitecture() != null)
-            .map(s -> s.getDigest()).collect(Collectors.toList());
+            .map(ArtifactManifestPlatform::getDigest)
+            .collect(Collectors.toList());
     }
 
     String getChildArtifactDigest(Collection<ArtifactManifestPlatform> artifacts) {
@@ -199,8 +188,9 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList, boolean isOrdered) {
         List<ArtifactManifestProperties> props = new ArrayList<>();
-        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
+        pagedResList.forEach(res -> props.addAll(res.getValue()));
+        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactManifestProperties::getLastUpdatedOn)
+            .collect(Collectors.toList());
 
         validateListArtifacts(props);
         return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -209,8 +199,9 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     boolean validateListTags(Collection<PagedResponse<ArtifactTagProperties>> pagedResList, boolean isOrdered) {
         List<ArtifactTagProperties> props = new ArrayList<>();
-        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(artifact -> artifact.getLastUpdatedOn()).collect(Collectors.toList());
+        pagedResList.forEach(res -> props.addAll(res.getValue()));
+        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactTagProperties::getLastUpdatedOn)
+            .collect(Collectors.toList());
 
         return validateListTags(props)
             && pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -224,7 +215,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     boolean validateRepositoriesByPage(Collection<PagedResponse<String>> pagedResList) {
         List<String> props = new ArrayList<>();
-        pagedResList.forEach(res -> res.getValue().forEach(prop -> props.add(prop)));
+        pagedResList.forEach(res -> props.addAll(res.getValue()));
 
         return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_1)
             && validateRepositories(props);

@@ -1,6 +1,17 @@
 # Release History
 
-## 5.3.0-beta.2 (Unreleased)
+## 5.3.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+- Removed `Dynamic Classification` feature, which was introduced in the previous beta release.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.3.0-beta.2 (2023-03-07)
 
 ### Features Added
 - Added the following methods for performing abstractive summarization and extractive summarization actions:
@@ -11,13 +22,42 @@
     - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
 
 ### Breaking Changes
-
-### Bugs Fixed
+- Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
+- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Changed `BaseResolution` to an abstract class.
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
 
 ### Other Changes
 - Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
   It simplifies stack traces and improves debugging experience.
-  
+
+## 5.2.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 5.2.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 5.2.3 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
+
 ## 5.3.0-beta.1 (2022-11-18)
 
 ### Features Added

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateEndpointConnectionInner;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 
 /** Samples for ApplicationGatewayPrivateEndpointConnections Update. */
 public final class ApplicationGatewayPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayPrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayPrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Update Application Gateway Private Endpoint Connection.
@@ -35,6 +34,6 @@ public final class ApplicationGatewayPrivateEndpointConnectionsUpdateSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus("Approved")
                             .withDescription("approved it for some reason.")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

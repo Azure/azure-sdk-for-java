@@ -17,6 +17,15 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
     public static final ConfigurationType CONNECTIVITY = fromString("Connectivity");
 
     /**
+     * Creates a new instance of ConfigurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationType() {
+    }
+
+    /**
      * Creates or finds a ConfigurationType from its string representation.
      *
      * @param name a name to look for.

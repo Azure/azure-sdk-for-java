@@ -122,8 +122,11 @@ public final class TableServiceClientBuilder implements
      * respectively.
      */
     public TableServiceClient buildClient() {
-        return new TableServiceClient(buildAsyncClient());
+        TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
+        HttpPipeline pipeline = prepareClient();
+        return new TableServiceClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
+
 
     /**
      * Creates a {@link TableServiceAsyncClient} based on options set in the builder.
@@ -140,7 +143,11 @@ public final class TableServiceClientBuilder implements
      */
     public TableServiceAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
+        HttpPipeline pipeline = prepareClient();
+        return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
+    }
 
+    private HttpPipeline prepareClient() {
         validateCredentials(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString,
             logger);
 
@@ -194,8 +201,8 @@ public final class TableServiceClientBuilder implements
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
             tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
             perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
-
-        return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
+        
+        return pipeline;
     }
 
     /**

@@ -6,9 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -16,18 +14,17 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.EntityPaged;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableSasGenerator;
 import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
-import com.azure.data.tables.implementation.models.AccessPolicy;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -43,7 +40,6 @@ import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
 import com.azure.data.tables.implementation.models.TransactionalBatchSubmitBatchHeaders;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
-import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
@@ -238,6 +234,7 @@ public final class TableAsyncClient {
         return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
+
     /**
      * Creates the table within the Tables service.
      *
@@ -287,7 +284,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableItem>> createTableWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -349,7 +346,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
@@ -432,7 +429,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -532,14 +529,14 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
-        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
-        String rowKey = escapeSingleQuotes(entity.getRowKey());
+        String partitionKey = TableUtils.escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = TableUtils.escapeSingleQuotes(entity.getRowKey());
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
@@ -699,14 +696,14 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   boolean ifUnchanged, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
-        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
-        String rowKey = escapeSingleQuotes(entity.getRowKey());
+        String partitionKey = TableUtils.escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = TableUtils.escapeSingleQuotes(entity.getRowKey());
         String eTag = ifUnchanged ? entity.getETag() : "*";
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
@@ -839,7 +836,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                                   Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
@@ -848,7 +845,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName,
-                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), eTag, null, null, null, context)
+            TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), eTag, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -953,13 +950,13 @@ public final class TableAsyncClient {
 
         String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
 
-        if (split.length != 2) {
+        if (split.length == 0) {
             return monoError(logger, new RuntimeException(
-                "Split done incorrectly, must have partition and row key: " + token));
+                "Split done incorrectly, must have partition key: " + token));
         }
 
         String nextPartitionKey = split[0];
-        String nextRowKey = split[1];
+        String nextRowKey = split.length > 1 ? split[1] : null;
 
         return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
     }
@@ -967,7 +964,7 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1008,53 +1005,6 @@ public final class TableAsyncClient {
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-    }
-
-    private static class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
-        private final Response<TableEntityQueryResponse> httpResponse;
-        private final IterableStream<T> entityStream;
-        private final String continuationToken;
-
-        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList,
-                    String nextPartitionKey, String nextRowKey) {
-            if (nextPartitionKey == null || nextRowKey == null) {
-                this.continuationToken = null;
-            } else {
-                this.continuationToken = String.join(DELIMITER_CONTINUATION_TOKEN, nextPartitionKey, nextRowKey);
-            }
-
-            this.httpResponse = httpResponse;
-            this.entityStream = IterableStream.of(entityList);
-        }
-
-        @Override
-        public int getStatusCode() {
-            return httpResponse.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return httpResponse.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return httpResponse.getRequest();
-        }
-
-        @Override
-        public IterableStream<T> getElements() {
-            return entityStream;
-        }
-
-        @Override
-        public String getContinuationToken() {
-            return continuationToken;
-        }
-
-        @Override
-        public void close() {
         }
     }
 
@@ -1156,7 +1106,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
-                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), null, null, queryOptions, context)
+                    TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();
@@ -1248,7 +1198,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return tablesImplementation.getTables()
@@ -1256,31 +1206,11 @@ public final class TableAsyncClient {
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response,
                     new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
-                        .map(this::toTableSignedIdentifier)
+                        .map(TableUtils::toTableSignedIdentifier)
                         .collect(Collectors.toList()))));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    }
-
-    private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
-        if (signedIdentifier == null) {
-            return null;
-        }
-
-        return new TableSignedIdentifier(signedIdentifier.getId())
-            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
-    }
-
-    private TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
-        if (accessPolicy == null) {
-            return null;
-        }
-
-        return new TableAccessPolicy()
-            .setExpiresOn(accessPolicy.getExpiry())
-            .setStartsOn(accessPolicy.getStart())
-            .setPermissions(accessPolicy.getPermission());
     }
 
     /**
@@ -1368,7 +1298,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         List<SignedIdentifier> signedIdentifiers = null;
 
         /*
@@ -1380,7 +1310,7 @@ public final class TableAsyncClient {
         if (tableSignedIdentifiers != null) {
             signedIdentifiers = tableSignedIdentifiers.stream()
                 .map(tableSignedIdentifier -> {
-                    SignedIdentifier signedIdentifier = toSignedIdentifier(tableSignedIdentifier);
+                    SignedIdentifier signedIdentifier = TableUtils.toSignedIdentifier(tableSignedIdentifier);
 
                     if (signedIdentifier != null) {
                         if (signedIdentifier.getAccessPolicy() != null
@@ -1413,27 +1343,6 @@ public final class TableAsyncClient {
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    }
-
-    private SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
-        if (tableSignedIdentifier == null) {
-            return null;
-        }
-
-        return new SignedIdentifier()
-            .setId(tableSignedIdentifier.getId())
-            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
-    }
-
-    private AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
-        if (tableAccessPolicy == null) {
-            return null;
-        }
-
-        return new AccessPolicy()
-            .setExpiry(tableAccessPolicy.getExpiresOn())
-            .setStart(tableAccessPolicy.getStartsOn())
-            .setPermission(tableAccessPolicy.getPermissions());
     }
 
     /**
@@ -1617,7 +1526,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
+        Context finalContext = TableUtils.setContext(context);
 
         if (transactionActions.isEmpty()) {
             return monoError(logger,
@@ -1749,15 +1658,5 @@ public final class TableAsyncClient {
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
-    }
-
-    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
-    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
-    private String escapeSingleQuotes(String input) {
-        if (input == null) {
-            return null;
-        }
-
-        return input.replace("'", "''");
     }
 }

@@ -12,11 +12,11 @@ import com.azure.resourcemanager.security.models.RemediationEta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Security GovernanceAssignment over a given scope. */
+/** Governance assignment over a given scope. */
 @Fluent
 public final class GovernanceAssignmentInner extends ProxyResource {
     /*
-     * Properties of a security governanceAssignment
+     * The properties of a governance assignment
      */
     @JsonProperty(value = "properties")
     private GovernanceAssignmentProperties innerProperties;
@@ -26,7 +26,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Properties of a security governanceAssignment.
+     * Get the innerProperties property: The properties of a governance assignment.
      *
      * @return the innerProperties value.
      */

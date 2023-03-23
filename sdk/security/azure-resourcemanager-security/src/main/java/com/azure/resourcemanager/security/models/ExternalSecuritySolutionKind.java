@@ -20,6 +20,15 @@ public final class ExternalSecuritySolutionKind extends ExpandableStringEnum<Ext
     public static final ExternalSecuritySolutionKind AAD = fromString("AAD");
 
     /**
+     * Creates a new instance of ExternalSecuritySolutionKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExternalSecuritySolutionKind() {
+    }
+
+    /**
      * Creates or finds a ExternalSecuritySolutionKind from its string representation.
      *
      * @param name a name to look for.

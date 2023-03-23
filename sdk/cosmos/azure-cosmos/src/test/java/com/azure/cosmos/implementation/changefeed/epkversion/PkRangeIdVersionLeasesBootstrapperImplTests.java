@@ -53,6 +53,8 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        // when the pkRangeId version lease store is already initialized, there is no need to acquire the lock then release it
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(0)).releaseInitializationLock();
     }
 
     @Test(groups = "unit")
@@ -88,5 +90,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.verify(partitionSynchronizerMock, times(0)).createMissingLeases(anyList());
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
+        // when the pkRangeId version lease store is not initialized, then we need to acquire the lock of it as well
+        Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).releaseInitializationLock();
     }
 }

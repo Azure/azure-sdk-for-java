@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServiceTagInformation List. */
 public final class ServiceTagInformationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
      */
     /**
      * Sample code: Get list of service tags with no address prefixes.
@@ -22,11 +20,11 @@ public final class ServiceTagInformationListSamples {
             .manager()
             .serviceClient()
             .getServiceTagInformations()
-            .list("westeurope", true, null, Context.NONE);
+            .list("westeurope", true, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResult.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceTagInformationListResult.json
      */
     /**
      * Sample code: Get list of service tags.
@@ -39,11 +37,11 @@ public final class ServiceTagInformationListSamples {
             .manager()
             .serviceClient()
             .getServiceTagInformations()
-            .list("westeurope", null, null, Context.NONE);
+            .list("westeurope", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResultWithTagname.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceTagInformationListResultWithTagname.json
      */
     /**
      * Sample code: Get list of service tags with tag name.
@@ -56,6 +54,6 @@ public final class ServiceTagInformationListSamples {
             .manager()
             .serviceClient()
             .getServiceTagInformations()
-            .list("westeurope", null, "ApiManagement", Context.NONE);
+            .list("westeurope", null, "ApiManagement", com.azure.core.util.Context.NONE);
     }
 }

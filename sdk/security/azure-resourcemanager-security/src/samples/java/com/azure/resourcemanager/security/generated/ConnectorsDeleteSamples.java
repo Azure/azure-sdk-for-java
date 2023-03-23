@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Connectors Delete. */
 public final class ConnectorsDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class ConnectorsDeleteSamples {
      */
     public static void deleteACloudAccountConnectorFromASubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.connectors().deleteWithResponse("aws_dev1", Context.NONE);
+        manager.connectors().deleteWithResponse("aws_dev1", com.azure.core.util.Context.NONE);
     }
 }

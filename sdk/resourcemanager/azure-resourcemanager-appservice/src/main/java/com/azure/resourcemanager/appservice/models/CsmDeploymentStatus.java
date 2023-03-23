@@ -18,6 +18,10 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CsmDeploymentStatusProperties innerProperties;
 
+    /** Creates an instance of CsmDeploymentStatus class. */
+    public CsmDeploymentStatus() {
+    }
+
     /**
      * Get the innerProperties property: CsmDeploymentStatus resource specific properties.
      *

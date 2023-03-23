@@ -78,19 +78,6 @@ public interface SpacecraftsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified spacecraft in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SpacecraftInner getByResourceGroup(String resourceGroupName, String spacecraftName);
-
-    /**
-     * Gets the specified spacecraft in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,6 +87,19 @@ public interface SpacecraftsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SpacecraftInner> getByResourceGroupWithResponse(
         String resourceGroupName, String spacecraftName, Context context);
+
+    /**
+     * Gets the specified spacecraft in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param spacecraftName Spacecraft ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified spacecraft in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SpacecraftInner getByResourceGroup(String resourceGroupName, String spacecraftName);
 
     /**
      * Creates or updates a spacecraft resource.

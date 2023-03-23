@@ -1,14 +1,24 @@
 # Release History
 
-## 2.24.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.25.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Updated class `Identity` to final class.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of policy (policyAssignments) to `2022-06-01`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.23.0 (2023-01-27)
 

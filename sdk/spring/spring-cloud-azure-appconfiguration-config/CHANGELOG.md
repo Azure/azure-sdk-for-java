@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0-beta.1 (2023-02-16)
+
+This first beta release of Spring Cloud Azure App Configuration Config as part of Spring Cloud Azure. 
 
 ## 2.11.0 (2023-01-18)
 Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5

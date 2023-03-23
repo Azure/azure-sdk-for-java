@@ -279,29 +279,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
-        e.setRntbdChannelTaskQueueSize(value);
-        return e;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> int getRntbdPendingRequestQueueSize(E e) {
-        return e.getRntbdPendingRequestQueueSize();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setRntbdPendingRequestQueueSize(E e, int value) {
-        e.setRntbdPendingRequestQueueSize(value);
-        return e;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> int getChannelTaskQueueSize(E e) {
-        return e.getRntbdChannelTaskQueueSize();
-    }
-
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
         e.setRntbdRequestLength(requestLen);
         return e;

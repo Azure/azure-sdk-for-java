@@ -4,12 +4,31 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyExemptions Get. */
 public final class PolicyExemptionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/getPolicyExemption.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemptionWithResourceSelectors.json
+     */
+    /**
+     * Sample code: Retrieve a policy exemption with resource selectors.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void retrieveAPolicyExemptionWithResourceSelectors(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .genericResources()
+            .manager()
+            .policyClient()
+            .getPolicyExemptions()
+            .getWithResponse(
+                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+                "DemoExpensiveVM",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemption.json
      */
     /**
      * Sample code: Retrieve a policy exemption.
@@ -25,6 +44,6 @@ public final class PolicyExemptionsGetSamples {
             .getWithResponse(
                 "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
                 "DemoExpensiveVM",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

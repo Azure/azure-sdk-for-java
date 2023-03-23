@@ -77,8 +77,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -1365,7 +1363,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, flushOptions.isUncommittedDataRetained(),
                 flushOptions.isClose(), (long) 0, flushOptions.getLeaseAction(), leaseDuration, flushOptions.getProposedLeaseId(),
-                null, httpHeaders, lac, mac, getCpkInfo(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, httpHeaders, lac, mac, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
@@ -1548,7 +1546,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
         .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response))));
     }
 
     /**
@@ -1774,8 +1772,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
         return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
             pathExpiryOptions, null,
-            null, expiresOn,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, expiresOn, context)
             .map(rb -> new SimpleResponse<>(rb, null));
     }
 

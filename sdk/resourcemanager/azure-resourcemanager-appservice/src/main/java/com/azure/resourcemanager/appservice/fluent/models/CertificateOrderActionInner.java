@@ -24,6 +24,10 @@ public final class CertificateOrderActionInner {
     @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
+    /** Creates an instance of CertificateOrderActionInner class. */
+    public CertificateOrderActionInner() {
+    }
+
     /**
      * Get the actionType property: Action type.
      *

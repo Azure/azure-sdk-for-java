@@ -6,9 +6,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Represents the status of an individual indexer execution. */
 public enum IndexerExecutionStatus {
     /** Enum value transientFailure. */
@@ -36,7 +33,6 @@ public enum IndexerExecutionStatus {
      * @param value the serialized value to parse.
      * @return the parsed IndexerExecutionStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static IndexerExecutionStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -51,7 +47,6 @@ public enum IndexerExecutionStatus {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -1030,4 +1030,24 @@ public final class BlobDownloadHeaders {
         internalHeaders.setXMsLegalHold(hasLegalHold);
         return this;
     }
+
+    /**
+     * Get the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @return the creation time value.
+     */
+    public OffsetDateTime getCreationTime() {
+        return internalHeaders.getXMsCreationTime();
+    }
+
+    /**
+     * Set the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @param creationTime the xMsCreationTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setCreationTime(OffsetDateTime creationTime) {
+        internalHeaders.setXMsCreationTime(creationTime);
+        return this;
+    }
 }

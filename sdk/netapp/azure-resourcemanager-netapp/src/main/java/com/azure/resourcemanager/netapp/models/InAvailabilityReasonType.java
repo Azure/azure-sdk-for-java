@@ -20,6 +20,15 @@ public final class InAvailabilityReasonType extends ExpandableStringEnum<InAvail
     public static final InAvailabilityReasonType ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
+     * Creates a new instance of InAvailabilityReasonType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InAvailabilityReasonType() {
+    }
+
+    /**
      * Creates or finds a InAvailabilityReasonType from its string representation.
      *
      * @param name a name to look for.
