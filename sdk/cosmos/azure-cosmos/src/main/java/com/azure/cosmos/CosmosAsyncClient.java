@@ -37,7 +37,6 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -54,6 +53,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -78,24 +78,13 @@ public final class CosmosAsyncClient implements Closeable {
         .CosmosClientTelemetryConfigHelper
         .getCosmosClientTelemetryConfigAccessor();
 
-    // Async Cosmos client wrapper
-    private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
-    private final String keyOrResourceToken;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
-    private final List<CosmosPermissionProperties> permissions;
-    private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final AzureKeyCredential credential;
-    private final TokenCredential tokenCredential;
-    private final boolean sessionCapturingOverride;
-    private final boolean enableTransportClientSharing;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final DiagnosticsProvider diagnosticsProvider;
-    private final boolean contentResponseOnWriteEnabled;
-    private final ApiType apiType;
-    private final String clientCorrelationId;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
     private final boolean clientMetricsEnabled;
@@ -107,17 +96,18 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel accountConsistencyLevel;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
-        this.configs = builder.configs();
+        // Async Cosmos client wrapper
+        Configs configs = builder.configs();
         this.serviceEndpoint = builder.getEndpoint();
-        this.keyOrResourceToken = builder.getKey();
+        String keyOrResourceToken = builder.getKey();
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
-        this.permissions = builder.getPermissions();
-        this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
+        List<CosmosPermissionProperties> permissions = builder.getPermissions();
+        CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.credential = builder.getCredential();
-        this.tokenCredential = builder.getTokenCredential();
-        this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
-        this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
+        TokenCredential tokenCredential = builder.getTokenCredential();
+        boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
+        boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
@@ -128,38 +118,38 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryConfig = effectiveTelemetryConfig;
         this.isSendClientTelemetryToServiceEnabled = telemetryConfigAccessor
             .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig);
-        this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
-        this.apiType = builder.apiType();
-        this.clientCorrelationId =  telemetryConfigAccessor
+        boolean contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
+        ApiType apiType = builder.apiType();
+        String clientCorrelationId = telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
-        if (this.permissions != null) {
+        if (permissions != null) {
             permissionList =
-                this.permissions
+                permissions
                     .stream()
-                    .map(permissionProperties -> ModelBridgeInternal.getPermission(permissionProperties))
-                    .filter(permission -> permission != null)
+                    .map(ModelBridgeInternal::getPermission)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
 
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
-                                       .withMasterKeyOrResourceToken(this.keyOrResourceToken)
+                                       .withMasterKeyOrResourceToken(keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
-                                       .withSessionCapturingOverride(this.sessionCapturingOverride)
-                                       .withConfigs(this.configs)
-                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
+                                       .withSessionCapturingOverride(sessionCapturingOverride)
+                                       .withConfigs(configs)
+                                       .withTokenResolver(cosmosAuthorizationTokenResolver)
                                        .withCredential(this.credential)
-                                       .withTransportClientSharing(this.enableTransportClientSharing)
-                                       .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
-                                       .withTokenCredential(this.tokenCredential)
+                                       .withTransportClientSharing(enableTransportClientSharing)
+                                       .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                       .withTokenCredential(tokenCredential)
                                        .withState(builder.metadataCaches())
                                        .withPermissionFeed(permissionList)
-                                       .withApiType(this.apiType)
+                                       .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
-                                       .withClientCorrelationId(this.clientCorrelationId)
+                                       .withClientCorrelationId(clientCorrelationId)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -260,15 +250,6 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     /**
-     * Gets the key or resource token.
-     *
-     * @return get the key or resource token.
-     */
-    String getKeyOrResourceToken() {
-        return keyOrResourceToken;
-    }
-
-    /**
      * Get the connection policy.
      *
      * @return {@link ConnectionPolicy}.
@@ -277,44 +258,8 @@ public final class CosmosAsyncClient implements Closeable {
         return connectionPolicy;
     }
 
-    /**
-     * Gets the consistency level.
-     *
-     * @return the {@link ConsistencyLevel}.
-     */
-    ConsistencyLevel getDesiredConsistencyLevel() {
-        return desiredConsistencyLevel;
-    }
-
-    /**
-     * Gets the permission list.
-     *
-     * @return the permission list.
-     */
-    List<CosmosPermissionProperties> getPermissions() {
-        return permissions;
-    }
-
     AsyncDocumentClient getDocClientWrapper() {
         return asyncDocumentClient;
-    }
-
-    /**
-     * Gets the configs.
-     *
-     * @return the configs.
-     */
-    Configs getConfigs() {
-        return configs;
-    }
-
-    /**
-     * Gets the token resolver.
-     *
-     * @return the token resolver.
-     */
-    CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
-        return cosmosAuthorizationTokenResolver;
     }
 
     /**
@@ -324,22 +269,6 @@ public final class CosmosAsyncClient implements Closeable {
      */
     AzureKeyCredential credential() {
         return credential;
-    }
-
-    /**
-     * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
-     * in case of Create, Update and Delete operations on CosmosItem.
-     *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it
-     * on the client.
-     *
-     * By-default, this is false.
-     *
-     * @return a boolean indicating whether resource will be included in the response or not.
-     */
-    boolean isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
     }
 
     /***
@@ -772,7 +701,7 @@ public final class CosmosAsyncClient implements Closeable {
         String spanName = "createDatabase." + database.getId();
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, requestOptions)
-            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
+            .map(ModelBridgeInternal::createCosmosDatabaseResponse)
             .single();
         return this.diagnosticsProvider
             .traceEnabledCosmosResponsePublisher(

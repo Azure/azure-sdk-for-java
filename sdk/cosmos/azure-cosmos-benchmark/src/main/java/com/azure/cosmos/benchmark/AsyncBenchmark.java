@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
-    private ScheduledReporter reporter;
+    private final ScheduledReporter reporter;
 
     private volatile Meter successMeter;
     private volatile Meter failureMeter;

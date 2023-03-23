@@ -71,11 +71,6 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
  **/
 @Warning(value = INTERNAL_USE_ONLY_WARNING)
 public final class BridgeInternal {
-
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -209,15 +204,17 @@ public final class BridgeInternal {
         ClientSideRequestStatistics requestStatistics;
         if (cosmosDiagnostics != null) {
             requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
             if (requestStatistics != null) {
                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(
                     feedResponseWithQueryMetrics.getCosmosDiagnostics(),
                     Collections.singletonList(requestStatistics));
+            } else {
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    cosmosDiagnostics.getFeedResponseDiagnostics()
+                                     .getClientSideRequestStatistics());
             }
-
-            diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                          cosmosDiagnostics.getFeedResponseDiagnostics()
-                                                              .getClientSideRequestStatistics());
         }
 
         return feedResponseWithQueryMetrics;

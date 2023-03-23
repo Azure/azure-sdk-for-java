@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models._
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -18,7 +18,6 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
-import java.net.URI
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
