@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
@@ -61,6 +62,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     /**
      * Key for {@link Context} to pass request retry count metadata for logging.
+     *
+     * @deprecated No longer used, manage retry count by leveraging {@link HttpRequestMetadata#getTryCount()} and
+     * {@link HttpRequestMetadata#incrementTryCount()}.
      */
     @Deprecated
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
