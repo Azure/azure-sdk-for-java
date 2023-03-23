@@ -612,7 +612,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // if BinaryData is present, convert it to Flux Byte Buffer
             Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
-            data = Utility.extractByteBuffer(data, options.getOptionalLength(),
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 validatedParallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),

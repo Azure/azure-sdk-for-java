@@ -706,7 +706,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
             Flux<ByteBuffer> data = options.getDataFlux();
-            data = Utility.extractByteBuffer(data, options.getOptionalLength(),
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),

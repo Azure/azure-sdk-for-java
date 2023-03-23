@@ -423,7 +423,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
 
             Flux<ByteBuffer> data = options.getDataFlux();
-            data = Utility.extractByteBuffer(data, options.getOptionalLength(),
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);

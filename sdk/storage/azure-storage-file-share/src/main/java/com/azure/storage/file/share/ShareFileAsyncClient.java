@@ -2060,7 +2060,7 @@ public class ShareFileAsyncClient {
             };
 
             Flux<ByteBuffer> data = options.getDataFlux();
-            data = Utility.extractByteBuffer(data, options.getLength(),
+            data = UploadUtils.extractByteBuffer(data, options.getLength(),
                 validatedParallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
             return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
