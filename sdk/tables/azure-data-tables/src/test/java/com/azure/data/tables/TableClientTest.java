@@ -1017,7 +1017,6 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    @Disabled
     // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
     // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
