@@ -59,8 +59,11 @@ public final class TestUtils {
     static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
     static final String W2_JPG = "w2-single.png";
     static final String INSURANCE_PNG = "insurance.png";
-
     static final String GERMAN_PNG = "read-german.png";
+    static final String EXAMPLE_DOCX = "example.docx";
+    static final String EXAMPLE_PPT = "example.pptx";
+    static final String EXAMPLE_HTML = "example.html";
+    static final String EXAMPLE_XLSX = "example.xlsx";
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
