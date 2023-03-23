@@ -58,6 +58,7 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * @deprecated due to refactoring of code.
      */
     @Deprecated
     public static final int MAX_APPEND_BLOCK_BYTES = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES;
