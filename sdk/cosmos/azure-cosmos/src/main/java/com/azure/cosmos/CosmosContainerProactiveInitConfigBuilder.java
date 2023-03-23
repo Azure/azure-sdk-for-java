@@ -3,9 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
@@ -14,7 +20,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosContainerProactiveInitConfigBuilder {
 
     private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 5;
-    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final Set<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final Map<String, Integer> minConnectionsToContainerSettings;
     private int numProactiveConnectionRegions;
 
     /**
@@ -26,7 +33,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         checkArgument(
             cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty(),
             "The list of container identities cannot be null or empty.");
-        this.cosmosContainerIdentities = cosmosContainerIdentities;
+        this.cosmosContainerIdentities = cosmosContainerIdentities.stream().collect(Collectors.toSet());
+        this.minConnectionsToContainerSettings = new HashMap<>();
         this.numProactiveConnectionRegions = 1;
     }
 
@@ -53,6 +61,15 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         return this;
     }
 
+    CosmosContainerProactiveInitConfigBuilder withMinConnectionsPerReplicaForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerReplica) {
+        String containerLink = ImplementationBridgeHelpers.CosmosContainerIdentityHelper
+                .getCosmosContainerIdentityAccessor()
+                .getContainerLink(cosmosContainerIdentity);
+
+        minConnectionsToContainerSettings.put(containerLink, minConnectionsPerReplica);
+        return this;
+    }
+
     /**
      * Builds {@link CosmosContainerProactiveInitConfig} with the provided properties
      *
@@ -66,7 +83,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                     MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS);
         return new CosmosContainerProactiveInitConfig(
                 this.cosmosContainerIdentities,
-                this.numProactiveConnectionRegions
+                this.numProactiveConnectionRegions,
+                this.minConnectionsToContainerSettings
         );
     }
 }

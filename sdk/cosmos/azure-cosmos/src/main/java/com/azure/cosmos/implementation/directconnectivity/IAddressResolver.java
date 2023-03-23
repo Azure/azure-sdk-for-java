@@ -10,6 +10,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 public interface IAddressResolver {
 
     Mono<AddressInformation[]> resolveAsync(

@@ -52,6 +52,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -670,24 +671,25 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         try {
-            Channel candidate = this.pollChannel(channelAcquisitionTimeline);
 
-            if (candidate != null) {
+            Channel candidate = null;
 
-                // Fulfill this request with our candidate, assuming it's healthy
-                // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+            // in the open channel flow, force a new channel
+            // to be opened
+            if (!(promise instanceof OpenChannelPromise)) {
+                candidate = this.pollChannel(channelAcquisitionTimeline);
 
-                doAcquireChannel(promise, candidate);
-                return;
+                if (candidate != null) {
+
+                    // Fulfill this request with our candidate, assuming it's healthy
+                    // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+
+                    doAcquireChannel(promise, candidate);
+                    return;
+                }
             }
 
-            // ONLY allow maximum 1 channel to be opened by open channel request
-            int allowedMaxChannels = this.maxChannels;
-            if (promise instanceof OpenChannelPromise) {
-                allowedMaxChannels = 1;
-            }
-
-            if (this.allowedToOpenNewChannel(allowedMaxChannels)) {
+            if (this.allowedToOpenNewChannel(this.maxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
 
                     // Fulfill this request with a new channel, assuming we can connect one

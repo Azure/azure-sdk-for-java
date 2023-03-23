@@ -270,7 +270,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
+        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
@@ -288,13 +288,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
         Mockito
             .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -336,7 +336,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
+        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
@@ -354,13 +354,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
         Mockito
             .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -403,7 +403,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
         Mockito
-            .when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any()))
+            .when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Flux.empty());
 
         int suboptimalRefreshTime = 2;
@@ -425,13 +425,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        origCache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
         Mockito
             .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -522,7 +522,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
         IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
+        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
@@ -883,7 +883,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
         IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         if (replicaValidationEnabled) {
             System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "true");
@@ -916,7 +916,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (openConnectionAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+            cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
             Mockito.clearInvocations(openConnectionsHandlerMock);
             httpClientWrapper.capturedRequests.clear();
         }
@@ -942,16 +942,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 // If openConnectionAndInitCaches is called, then replica validation will also include for unknown status
                 Mockito
                     .verify(openConnectionsHandlerMock, Mockito.times(1))
-                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
+                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.any());
                 assertThat(openConnectionArguments.getValue()).hasSize(addressInfosFromCache.size());
             } else {
                 // Open connection will only be called for unhealthyPending status address
                 Mockito
                     .verify(openConnectionsHandlerMock, Mockito.times(0))
-                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
+                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.any());
             }
         } else {
-            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
         }
 
         httpClientWrapper.capturedRequests.clear();
@@ -1002,7 +1002,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
             Mockito
                 .verify(openConnectionsHandlerMock, Mockito.times(1))
-                .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
+                .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.any());
             if (openConnectionAndInitCaches) {
                 assertThat(openConnectionArguments.getValue()).containsExactlyElementsOf(Arrays.asList(unhealthyAddressUri, unknownAddressUri));
             } else {
@@ -1010,7 +1010,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             }
 
         } else {
-            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
         }
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
@@ -1023,7 +1023,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
         IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1085,7 +1085,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
         IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1155,7 +1155,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
         IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1204,7 +1204,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
         Mockito
             .verify(openConnectionsHandlerMock, Mockito.times(1))
-            .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
+            .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.any());
 
         assertThat(openConnectionArguments.getValue()).containsExactlyElementsOf(
                 Arrays.asList(address4, address2)
@@ -1221,7 +1221,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
         IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),

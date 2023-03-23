@@ -635,7 +635,12 @@ public final class CosmosAsyncClient implements Closeable {
                     .flatMap(
                         cosmosAsyncContainer -> cosmosAsyncContainer
                             .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
+                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
+                                this.proactiveContainerInitConfig.getMinConnectionsToContainerSettings()
+                                        .getOrDefault(
+                                                cosmosAsyncContainer.getLinkWithoutTrailingSlash(), Configs.getMinChannelPoolPerEndpointAsInt()
+                                        )
+                            ),
                         concurrency,
                         prefetch)
                     .collectList();

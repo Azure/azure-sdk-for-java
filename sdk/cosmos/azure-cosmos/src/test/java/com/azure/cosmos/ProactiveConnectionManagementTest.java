@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -139,8 +140,16 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
             }
 
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
+            CosmosContainerProactiveInitConfigBuilder cosmosContainerProactiveInitConfigBuilder = new
+                    CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions);
+
+            for (int i = 1; i <= numContainers; i++) {
+                cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
+                        .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentities.get(i - 1), i);
+            }
+
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = cosmosContainerProactiveInitConfigBuilder
                     .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
@@ -216,6 +225,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
             assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+
+            for (RntbdEndpoint rntbdEndpoint : provider.list().collect(Collectors.toList())) {
+                System.out.println("Endpoint name : " + rntbdEndpoint.id() + ";" + "Connections count : " + rntbdEndpoint.channelsMetrics());
+            }
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();

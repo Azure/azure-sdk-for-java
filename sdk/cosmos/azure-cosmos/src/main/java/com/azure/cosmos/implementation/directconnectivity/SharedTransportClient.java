@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -44,7 +45,8 @@ public class SharedTransportClient extends TransportClient {
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager) {
+        GlobalEndpointManager globalEndpointManager
+    ) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
@@ -95,11 +97,6 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest) {
-        return this.transportClient.openConnection(physicalAddress, openConnectionRequest);
-    }
-
-    @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }
@@ -124,5 +121,10 @@ public class SharedTransportClient extends TransportClient {
     @Override
     protected GlobalEndpointManager getGlobalEndpointManager() {
         return this.transportClient.getGlobalEndpointManager();
+    }
+
+    @Override
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
+        return this.transportClient.getOpenConnectionsHandler();
     }
 }

@@ -6,8 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -18,15 +17,19 @@ public final class CosmosContainerProactiveInitConfig {
         containerIdAccessor = ImplementationBridgeHelpers
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
-    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final Set<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final Map<String, Integer> minConnectionsToContainerSettings;
     private final int numProactiveConnectionRegions;
 
     CosmosContainerProactiveInitConfig(
-        List<CosmosContainerIdentity> cosmosContainerIdentities,
-        int numProactiveConnectionRegions) {
+        Set<CosmosContainerIdentity> cosmosContainerIdentities,
+        int numProactiveConnectionRegions,
+        Map<String, Integer> minConnectionsToContainerSettings
+        ) {
 
-        this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
+        this.cosmosContainerIdentities = Collections.unmodifiableSet(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
+        this.minConnectionsToContainerSettings = minConnectionsToContainerSettings;
     }
 
     /**
@@ -35,7 +38,7 @@ public final class CosmosContainerProactiveInitConfig {
      * @return list of {@link CosmosContainerIdentity}
      * */
     public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
-        return cosmosContainerIdentities;
+        return cosmosContainerIdentities.stream().toList();
     }
 
     /**
@@ -71,6 +74,10 @@ public final class CosmosContainerProactiveInitConfig {
         return numProactiveConnectionRegions;
     }
 
+    Map<String, Integer> getMinConnectionsToContainerSettings() {
+        return minConnectionsToContainerSettings;
+    }
+
     @Override
     public String toString() {
 
@@ -90,4 +97,15 @@ public final class CosmosContainerProactiveInitConfig {
                     .collect(Collectors.joining(",")),
                 numProactiveConnectionRegions);
     }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.setCosmosContainerProactiveInitConfigAccessor(new ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor() {
+            @Override
+            public Map<String, Integer> getMinConnectionsPerContainerSettings(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
+                return cosmosContainerProactiveInitConfig.minConnectionsToContainerSettings;
+            }
+        });
+    }
+
+    static { initialize(); }
 }

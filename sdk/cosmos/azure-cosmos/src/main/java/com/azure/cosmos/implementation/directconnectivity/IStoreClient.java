@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.function.Function;
 
 public interface IStoreClient {

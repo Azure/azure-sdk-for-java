@@ -884,7 +884,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0) {
             this.openConnectionsHandler
-                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation)
+                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation, Configs.getMinChannelPoolPerEndpointAsInt())
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -914,7 +914,9 @@ public class GatewayAddressCache implements IAddressCache {
 
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
+            int connectionsPerEndpointCount
+            ) {
 
         checkNotNull(collection, "Argument 'collection' should not be null");
         checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
@@ -974,12 +976,15 @@ public class GatewayAddressCache implements IAddressCache {
 
                                     if (this.openConnectionsHandler != null) {
                                         return this.openConnectionsHandler.openConnections(
-                                            collection.getResourceId(),
-                                            this.serviceEndpoint,
-                                            Arrays
-                                                .stream(addressInfo.getRight())
-                                                .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                .collect(Collectors.toList()));
+                                                        collection.getResourceId(),
+                                                        this.serviceEndpoint,
+                                                        Arrays
+                                                                .stream(addressInfo.getRight())
+                                                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                                .collect(Collectors.toList()),
+                                                        Math.max(connectionsPerEndpointCount, Configs.getMinChannelPoolPerEndpointAsInt())
+                                                )
+                                        .repeat(Math.max(connectionsPerEndpointCount, Configs.getMinChannelPoolPerEndpointAsInt()) - 1);
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");

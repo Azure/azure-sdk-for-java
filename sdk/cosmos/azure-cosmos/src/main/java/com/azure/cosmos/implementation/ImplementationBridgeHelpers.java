@@ -4,19 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GlobalThroughputControlConfig;
-import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -1201,6 +1189,49 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
+            int getConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity);
+            void setConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity, int connectionsPerReplicaCount);
+        }
+    }
+
+    public static final class CosmosContainerProactiveInitConfigHelper {
+
+        private static final AtomicReference<Boolean> cosmosContainerProactiveInitConfigClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
+
+        private CosmosContainerProactiveInitConfigHelper() {}
+
+        public static CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor getCosmosContainerIdentityAccessor() {
+
+            if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
+                logger.debug("Initializing CosmosContainerIdentityAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosContainerIdentityAccessor is not initialized yet!");
+                System.exit(9729); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosContainerProactiveInitConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosContainerProactiveInitConfigAccessor...");
+                cosmosContainerProactiveInitConfigClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosContainerProactiveInitConfigAccessor {
+            Map<String, Integer> getMinConnectionsPerContainerSettings(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

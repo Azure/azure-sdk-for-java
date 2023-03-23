@@ -9,8 +9,8 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -207,6 +207,10 @@ public class RntbdTransportClient extends TransportClient {
         return this.globalEndpointManager;
     }
 
+    @Override
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
+        return this.endpointProvider.getOpenConnectionHandler();
+    }
     /**
      * The number of {@linkplain RntbdEndpoint endpoints} allocated to this {@linkplain RntbdTransportClient client}.
      *
@@ -254,7 +258,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI());
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI(), Configs.getMinChannelPoolPerEndpointAsInt());
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
@@ -346,22 +350,6 @@ public class RntbdTransportClient extends TransportClient {
             record.cancel(true);
 
         }).contextWrite(reactorContext);
-    }
-
-    @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
-        checkNotNull(openConnectionRequest, "Argument 'openConnectionRequest' should not be null");
-        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-
-        this.throwIfClosed();
-
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
-        final RntbdEndpoint endpoint =
-            this.endpointProvider.createIfAbsent(
-                openConnectionRequest.requestContext.locationEndpointToRoute,
-                addressUri.getURI());
-
-        return Mono.fromFuture(endpoint.openConnection(requestArgs));
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

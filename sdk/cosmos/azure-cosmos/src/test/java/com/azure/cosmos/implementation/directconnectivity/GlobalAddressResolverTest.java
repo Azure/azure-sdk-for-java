@@ -7,17 +7,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -194,7 +184,7 @@ public class GlobalAddressResolverTest {
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
+                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinChannelPoolPerEndpointAsInt()))
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
@@ -218,6 +208,6 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnectionsAndInitCaches(documentCollection, ranges);
+                .openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinChannelPoolPerEndpointAsInt());
     }
 }

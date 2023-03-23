@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,19 +27,19 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
     private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
-    private final TransportClient transportClient;
+    private final RntbdEndpoint.Provider endpointProvider;
     private final Semaphore openConnectionsSemaphore;
 
-    public RntbdOpenConnectionsHandler(TransportClient transportClient) {
+    public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
 
-        checkNotNull(transportClient, "Argument 'transportClient' can not be null");
+        checkNotNull(endpointProvider, "Argument 'endpointProvider' can not be null");
 
-        this.transportClient = transportClient;
+        this.endpointProvider = endpointProvider;
         this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt() * 10);
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses) {
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredPerEndpoint) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
         checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' cannot be null nor empty");
 
@@ -56,15 +55,31 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                         if (this.openConnectionsSemaphore.tryAcquire(DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES, TimeUnit.MINUTES)) {
 
                             RxDocumentServiceRequest openConnectionRequest =
-                                this.getOpenConnectionRequest(collectionRid, serviceEndpoint, addressUri);
-                            return this.transportClient.openConnection(addressUri, openConnectionRequest)
-                                    .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
-                                    .doOnNext(response -> {
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
-                                        }
-                                    })
-                                    .doOnTerminate(() -> this.openConnectionsSemaphore.release());
+                                    this.getOpenConnectionRequest(collectionRid, serviceEndpoint, addressUri);
+
+                            final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
+                            final RntbdEndpoint endpoint =
+                                    this.endpointProvider.createIfAbsent(
+                                            openConnectionRequest.requestContext.locationEndpointToRoute,
+                                            addressUri.getURI(),
+                                            minConnectionsRequiredPerEndpoint
+                                    );
+
+                            int connectionsOpened = endpoint.channelsMetrics();
+
+                            if (connectionsOpened < minConnectionsRequiredPerEndpoint) {
+                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(requestArgs)))
+                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                        .doOnNext(response -> {
+                                            if (logger.isDebugEnabled()) {
+                                                logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
+                                            }
+                                        })
+                                        .doOnTerminate(() -> this.openConnectionsSemaphore.release());
+                            }
+
+                            openConnectionsSemaphore.release();
+                            return Mono.just(new OpenConnectionResponse(addressUri, true, null));
                         }
 
                     } catch (InterruptedException e) {
@@ -77,7 +92,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {
         RxDocumentServiceRequest openConnectionRequest =
-            RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
+                RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
         openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
         openConnectionRequest.requestContext.storePhysicalAddressUri = addressUri;
         openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;

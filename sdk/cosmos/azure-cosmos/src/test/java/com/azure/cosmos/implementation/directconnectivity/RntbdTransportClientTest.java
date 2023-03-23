@@ -6,35 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.ForbiddenException;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.LockedException;
-import com.azure.cosmos.implementation.MethodNotAllowedException;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.PreconditionFailedException;
-import com.azure.cosmos.implementation.RequestEntityTooLargeException;
-import com.azure.cosmos.implementation.RequestRateTooLargeException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.RequestVerb;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RetryWithException;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.UnauthorizedException;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
@@ -836,7 +808,7 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Configs.getMinChannelPoolPerEndpointAsInt())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
@@ -1114,6 +1086,11 @@ public final class RntbdTransportClientTest {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 
+        @Override
+        public int getMinChannelsRequired() {
+            return 0;
+        }
+
         // endregion
 
         // region Methods
@@ -1176,7 +1153,7 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress, int minChannelsRequired) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
@@ -1193,6 +1170,11 @@ public final class RntbdTransportClientTest {
             @Override
             public Stream<RntbdEndpoint> list() {
                 return Stream.empty();
+            }
+
+            @Override
+            public IOpenConnectionsHandler getOpenConnectionHandler() {
+                throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClient");
             }
         }
 

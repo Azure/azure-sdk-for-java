@@ -517,10 +517,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
             return Mono.empty();
         }
-        @Override
-        public Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest) {
-            throw new NotImplementedException("openConnection is not supported in RntbdTransportClientTest");
-        }
 
         @Override
         public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
@@ -534,6 +530,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         protected GlobalEndpointManager getGlobalEndpointManager() {
             return this.globalEndpointManager;
+        }
+
+        @Override
+        public IOpenConnectionsHandler getOpenConnectionsHandler() {
+            throw new NotImplementedException("getOpenConnectionsHandler is not supported in RntbdTransportClientTest");
         }
     }
 

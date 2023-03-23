@@ -4,17 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -139,14 +129,30 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                                 .collect(Collectors.toList());
                                     })
-                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig));
+                                    .flatMapMany(pkRangeIdentities -> {
+                                                String containerLink = ImplementationBridgeHelpers
+                                                        .CosmosContainerIdentityHelper
+                                                        .getCosmosContainerIdentityAccessor()
+                                                        .getContainerLink(containerIdentity);
+
+                                                Map<String, Integer> minConnectionsPerContainerSettings = ImplementationBridgeHelpers
+                                                        .CosmosContainerProactiveInitConfigHelper
+                                                        .getCosmosContainerIdentityAccessor()
+                                                        .getMinConnectionsPerContainerSettings(proactiveContainerInitConfig);
+
+                                                int connectionsPerReplicaCountForContainer = minConnectionsPerContainerSettings.getOrDefault(containerLink, Configs.getMinChannelPoolPerEndpointAsInt());
+
+                                                return this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig, connectionsPerReplicaCountForContainer);
+                                            }
+                                    );
                         }));
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            int connectionsPerReplicaCount
     ) {
 
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
@@ -156,7 +162,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                             return this.addressCacheByEndpoint.get(readEndpoint)
                                     .addressCache
-                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities, connectionsPerReplicaCount);
                         }
                         return Flux.empty();
                     });

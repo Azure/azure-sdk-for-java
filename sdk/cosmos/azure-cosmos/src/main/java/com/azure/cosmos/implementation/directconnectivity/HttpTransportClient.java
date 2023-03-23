@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
@@ -237,11 +238,6 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
-        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
-    }
-
-    @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         throw new NotImplementedException("configureFaultInjectorProvider is not supported in httpTransportClient");
     }
@@ -249,6 +245,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     protected GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
+    }
+
+    @Override
+    public IOpenConnectionsHandler getOpenConnectionsHandler() {
+        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {

@@ -559,6 +559,46 @@ public class CosmosAsyncContainer {
         }
     }
 
+    Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions, int minConnectionsPerEndpointForContainer) {
+        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
+        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
+
+        checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
+
+        if (numProactiveConnectionRegions > 1) {
+            checkArgument(
+                    endpointDiscoveryEnabled,
+                    "endpoint discovery should be enabled when no. " +
+                            "of proactive regions is greater than 1");
+            checkArgument(
+                    preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions,
+                    "no. of proactive connection " +
+                            "regions should be lesser than the no. of preferred regions.");
+        }
+
+        if (isInitialized.compareAndSet(false, true)) {
+
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+                    new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+                            .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
+                            .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentity, minConnectionsPerEndpointForContainer)
+                            .build();
+
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
+                    .flatMap(
+                            openResult -> {
+                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                                return Mono.empty();
+                            }));
+        } else {
+            logger.warn(
+                    "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
+                    this.getId());
+            return Mono.empty();
+        }
+    }
+
     /***
      * Internal implementation to try to initialize the container by warming up the caches and
      * connections for the current read region.
