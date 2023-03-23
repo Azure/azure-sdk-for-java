@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 diagnosticsAccessor.getClientSideRequestStatisticsRaw(diagnostics);
             if (requestStatistics != null) {
                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(cosmosDiagnostics,
-                    List.of(requestStatistics));
+                    Collections.singletonList(requestStatistics));
             } else {
                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(
                     cosmosDiagnostics,

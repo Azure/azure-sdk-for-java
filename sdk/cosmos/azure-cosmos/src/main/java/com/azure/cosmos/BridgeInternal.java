@@ -142,8 +142,7 @@ public final class BridgeInternal {
         ClientSideRequestStatistics requestStatistics = diagnostics.clientSideRequestStatistics();
         if (requestStatistics != null) {
             response.getCosmosDiagnostics()
-                .addClientSideDiagnosticsToFeed(
-                    List.of(requestStatistics));
+                .addClientSideDiagnosticsToFeed(Collections.singletonList(requestStatistics));
         }
 
         FeedResponseDiagnostics feedResponseDiagnosticsFromCosmosDiagnostics = diagnostics
@@ -211,8 +210,9 @@ public final class BridgeInternal {
         if (cosmosDiagnostics != null) {
             requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
             if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                              List.of(requestStatistics));
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    Collections.singletonList(requestStatistics));
             }
 
             diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
