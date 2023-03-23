@@ -833,11 +833,12 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
 
-    private <T> List<T> getAsList(PagedFlux<T> listIterable) {
+    private <T> List<T> getAsList(PagedFlux<T> flux) {
         List<T> list = new ArrayList<T>();
 
-        listIterable
-            .subscribe(item -> list.add(item));
+        flux.toIterable().forEach(item -> {
+            list.add(item);
+        });
 
         return list;
     }
