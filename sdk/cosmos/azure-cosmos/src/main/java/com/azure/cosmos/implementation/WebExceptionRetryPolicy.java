@@ -39,13 +39,13 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         boolean isOutOfRetries = isOutOfRetries();
-        if (isOutOfRetries || !timeoutPolicy.isSafeToRetry(httpMethod)) {
+        if (isOutOfRetries) {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
         if (!timeoutPolicy.isSafeToRetry(httpMethod) && !WebExceptionUtility.isWebExceptionRetriable(exception)) {
             this.durationTimer.stop();
-            return Mono.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
         if (!WebExceptionUtility.isWebExceptionRetriable(exception)) {
             // Have caller propagate original exception.
