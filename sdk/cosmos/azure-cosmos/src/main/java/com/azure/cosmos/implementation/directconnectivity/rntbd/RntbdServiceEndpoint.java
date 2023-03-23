@@ -337,7 +337,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     @Override
     public int getMinChannelsRequired() {
-        return 0;
+        return this.minChannelsRequiredCount;
     }
 
     // endregion
