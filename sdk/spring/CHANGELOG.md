@@ -12,7 +12,6 @@
 - Upgrade `azure-resourcemanager` to 2.24.0.
 
 #### Features Added
-- Support passwordless connections for JMS ServiceBus in Spring. [#33489](https://github.com/Azure/azure-sdk-for-java/pull/33489)
 - Added the following artifacts into current bom file:
   - spring-cloud-azure-starter-appconfiguration-config
   - spring-cloud-azure-appconfiguration-config
@@ -34,6 +33,9 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support passwordless connections for JMS ServiceBus in Spring. [#33489](https://github.com/Azure/azure-sdk-for-java/pull/33489)
 
 #### Breaking Changes
 - Deprecated properties for AAD and AAD B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
