@@ -77,9 +77,9 @@ public final class CosmosContainerProactiveInitConfig {
         return numProactiveConnectionRegions;
     }
 
-    Map<String, Integer> getMinConnectionsToContainerSettings() {
-        return minConnectionsToContainerSettings;
-    }
+//    Map<String, Integer> getMinConnectionsToContainerSettings() {
+//        return minConnectionsToContainerSettings;
+//    }
 
     @Override
     public String toString() {

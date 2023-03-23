@@ -258,7 +258,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI(), Configs.getMinChannelPoolPerEndpointAsInt());
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);

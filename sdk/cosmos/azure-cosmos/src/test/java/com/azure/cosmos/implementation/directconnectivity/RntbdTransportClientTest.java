@@ -838,7 +838,7 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Configs.getMinChannelPoolPerEndpointAsInt())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
@@ -1117,8 +1117,13 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public int getMinChannelsRequired() {
-            return 0;
+        public int getMinConnectionsRequired() {
+            return Configs.getMinConnectionPoolSizePerEndpoint();
+        }
+
+        @Override
+        public void setMinConnectionsRequired(int minChannelsRequired) {
+            throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
         }
 
         // endregion

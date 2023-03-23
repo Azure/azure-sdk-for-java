@@ -884,7 +884,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0) {
             this.openConnectionsHandler
-                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation, Configs.getMinChannelPoolPerEndpointAsInt())
+                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation, Configs.getMinConnectionPoolSizePerEndpoint())
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -982,9 +982,9 @@ public class GatewayAddressCache implements IAddressCache {
                                                                 .stream(addressInfo.getRight())
                                                                 .map(addressInformation -> addressInformation.getPhysicalUri())
                                                                 .collect(Collectors.toList()),
-                                                        Math.max(connectionsPerEndpointCount, Configs.getMinChannelPoolPerEndpointAsInt())
+                                                        Math.max(connectionsPerEndpointCount, Configs.getMinConnectionPoolSizePerEndpoint())
                                                 )
-                                        .repeat(Math.max(connectionsPerEndpointCount, Configs.getMinChannelPoolPerEndpointAsInt()) - 1);
+                                        .repeat(Math.max(connectionsPerEndpointCount, Configs.getMinConnectionPoolSizePerEndpoint()) - 1);
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");

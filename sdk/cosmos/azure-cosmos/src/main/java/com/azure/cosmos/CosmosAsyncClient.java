@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
@@ -633,14 +634,21 @@ public final class CosmosAsyncClient implements Closeable {
                         prefetch
                     )
                     .flatMap(
-                        cosmosAsyncContainer -> cosmosAsyncContainer
-                            .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                this.proactiveContainerInitConfig.getMinConnectionsToContainerSettings()
-                                        .getOrDefault(
-                                                cosmosAsyncContainer.getLinkWithoutTrailingSlash(), Configs.getMinChannelPoolPerEndpointAsInt()
-                                        )
-                            ),
+                        cosmosAsyncContainer -> {
+                            Map<String, Integer> minConnectionsToContainerSettings = ImplementationBridgeHelpers
+                                    .CosmosContainerProactiveInitConfigHelper
+                                    .getCosmosContainerIdentityAccessor()
+                                    .getMinConnectionsPerContainerSettings(proactiveContainerInitConfig);
+
+                            return cosmosAsyncContainer
+                                    .openConnectionsAndInitCaches(
+                                            this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
+                                            minConnectionsToContainerSettings
+                                                    .getOrDefault(
+                                                            cosmosAsyncContainer.getLinkWithoutTrailingSlash(), Configs.getMinConnectionPoolSizePerEndpoint()
+                                                    )
+                                    );
+                        },
                         concurrency,
                         prefetch)
                     .collectList();

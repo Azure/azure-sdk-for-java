@@ -26,7 +26,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
-    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
+    private static final int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
     private final RntbdEndpoint.Provider endpointProvider;
     private final Semaphore openConnectionsSemaphore;
 
@@ -65,9 +65,20 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                             minConnectionsRequiredPerEndpoint
                                     );
 
+                            // if endpoint had already been instantiated with a
+                            // different minConnectionsRequired value, check if
+                            // the open connections flow through a different
+                            // container for the same endpoint has a higher
+                            // value for minConnectionsRequired and choose the higher
+                            // value
+                            int minConnectionsRequired = endpoint.getMinConnectionsRequired();
+                            int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredPerEndpoint);
+
+                            endpoint.setMinConnectionsRequired(newMinConnectionsRequired);
+
                             int connectionsOpened = endpoint.channelsMetrics();
 
-                            if (connectionsOpened < minConnectionsRequiredPerEndpoint) {
+                            if (connectionsOpened < newMinConnectionsRequired) {
                                 return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(requestArgs)))
                                         .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                         .doOnNext(response -> {
@@ -92,7 +103,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {
         RxDocumentServiceRequest openConnectionRequest =
-                RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
+            RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
         openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
         openConnectionRequest.requestContext.storePhysicalAddressUri = addressUri;
         openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;

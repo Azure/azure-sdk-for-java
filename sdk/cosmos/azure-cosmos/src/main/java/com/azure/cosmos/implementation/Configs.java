@@ -114,8 +114,8 @@ public class Configs {
     private static final String TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = "COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED";
     private static final boolean DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = true;
 
-    private static final String MIN_CHANNEL_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CHANNEL_POOL_SIZE_PER_ENDPOINT";
-    private static final int DEFAULT_MIN_CHANNEL_POOL_SIZE_PER_ENDPOINT = 1;
+    private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
+    private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -328,7 +328,7 @@ public class Configs {
             DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
     }
 
-    public static int getMinChannelPoolPerEndpointAsInt() {
-        return getIntValue(System.getProperty(MIN_CHANNEL_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CHANNEL_POOL_SIZE_PER_ENDPOINT);
+    public static int getMinConnectionPoolSizePerEndpoint() {
+        return getIntValue(System.getProperty(MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
     }
 }

@@ -288,7 +288,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinConnectionPoolSizePerEndpoint()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -354,7 +354,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
+        cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinConnectionPoolSizePerEndpoint()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -425,7 +425,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
+        origCache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinConnectionPoolSizePerEndpoint()).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -916,7 +916,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (openConnectionAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinChannelPoolPerEndpointAsInt()).blockLast();
+            cache.openConnectionsAndInitCaches(createdCollection, pkriList, Configs.getMinConnectionPoolSizePerEndpoint()).blockLast();
             Mockito.clearInvocations(openConnectionsHandlerMock);
             httpClientWrapper.capturedRequests.clear();
         }

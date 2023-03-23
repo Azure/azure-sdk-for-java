@@ -195,7 +195,7 @@ public class GlobalAddressResolverTest {
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinChannelPoolPerEndpointAsInt()))
+                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint()))
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
@@ -219,6 +219,6 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinChannelPoolPerEndpointAsInt());
+                .openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint());
     }
 }

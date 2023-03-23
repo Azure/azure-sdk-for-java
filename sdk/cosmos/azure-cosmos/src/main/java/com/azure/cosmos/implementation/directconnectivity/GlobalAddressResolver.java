@@ -151,7 +151,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         .getCosmosContainerIdentityAccessor()
                                                         .getMinConnectionsPerContainerSettings(proactiveContainerInitConfig);
 
-                                                int connectionsPerReplicaCountForContainer = minConnectionsPerContainerSettings.getOrDefault(containerLink, Configs.getMinChannelPoolPerEndpointAsInt());
+                                                int connectionsPerReplicaCountForContainer = minConnectionsPerContainerSettings.getOrDefault(containerLink, Configs.getMinConnectionPoolSizePerEndpoint());
 
                                                 return this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig, connectionsPerReplicaCountForContainer);
                                             }

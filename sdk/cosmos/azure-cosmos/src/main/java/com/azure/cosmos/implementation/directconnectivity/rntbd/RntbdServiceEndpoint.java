@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -95,7 +94,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdDurableEndpointMetrics durableMetrics;
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
-    private int minChannelsRequiredCount;
+    private int minChannelsRequired;
 
     // endregion
 
@@ -112,13 +111,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI serviceEndpoint,
         final RntbdDurableEndpointMetrics durableMetrics,
         final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler,
-        final int minChannelsRequiredCount
+        final int minChannelsRequired
         ) {
 
         this.durableMetrics = durableMetrics;
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
         this.serviceEndpoint = serviceEndpoint;
-        this.minChannelsRequiredCount = minChannelsRequiredCount;
+        this.minChannelsRequired = minChannelsRequired;
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
@@ -336,8 +335,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
-    public int getMinChannelsRequired() {
-        return this.minChannelsRequiredCount;
+    public int getMinConnectionsRequired() {
+        return this.minChannelsRequired;
+    }
+
+    @Override
+    public void setMinConnectionsRequired(int minChannelsRequired) {
+        this.minChannelsRequired = minChannelsRequired;
     }
 
     // endregion

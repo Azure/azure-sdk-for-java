@@ -41,13 +41,13 @@ public class RntbdServiceEndpointTest {
             uriList.add(physicalAddress);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), Configs.getMinChannelPoolPerEndpointAsInt());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), Configs.getMinChannelPoolPerEndpointAsInt());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();
