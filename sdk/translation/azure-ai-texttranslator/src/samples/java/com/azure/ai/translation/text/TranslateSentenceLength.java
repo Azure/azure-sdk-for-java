@@ -18,7 +18,7 @@ import com.azure.ai.translation.text.models.Translation;
 /**
  * You can ask translator service to include sentence boundaries for the input text and the translated text.
  */
-public class TranslateSenteceLength {
+public class TranslateSentenceLength {
     /**
      * Main method to invoke this demo.
      *
@@ -49,8 +49,8 @@ public class TranslateSenteceLength {
             for (Translation textTranslation : translation.getTranslations())
             {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Source Sentece length: " + textTranslation.getSentLen().getSrcSentLen());
-                System.out.println("Translated Sentece length: " + textTranslation.getSentLen().getTransSentLen());
+                System.out.println("Source Sentence length: " + textTranslation.getSentLen().getSrcSentLen());
+                System.out.println("Translated Sentence length: " + textTranslation.getSentLen().getTransSentLen());
             }
         }
     }

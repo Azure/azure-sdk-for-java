@@ -16,12 +16,12 @@ import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.Translation;
 
 /**
- * You can ommit source languge of the input text. In this case, API will try to auto-detect the language.
+ * You can omit source language of the input text. In this case, API will try to auto-detect the language.
  *
  * > Note that you must provide the source language rather than autodetection when
  * using the dynamic dictionary feature.
  *
- * > Note you can use `suggestedFrom` paramter that specifies a fallback language if the language
+ * > Note you can use `suggestedFrom` parameter that specifies a fallback language if the language
  * of the input text can't be identified. Language autodetection is applied when the from parameter
  * is omitted. If detection fails, the suggestedFrom language will be assumed.
  */

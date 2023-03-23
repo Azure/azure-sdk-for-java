@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Elemented containing break sentence result. */
+/** Item containing break sentence result. */
 @Immutable
 public final class BreakSentenceItem {
     /*

@@ -38,7 +38,7 @@ public class BreakSentence {
 
         for (BreakSentenceItem breakSentence : breakSentences)
         {
-            System.out.println("The detected sentece boundaries: " + breakSentence.getSentLen());
+            System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
         }
     }
 }

@@ -21,7 +21,7 @@ import com.azure.ai.translation.text.models.Translation;
  * Add the Category ID from your Custom Translator project details: (https://learn.microsoft.com/en-us/azure/cognitive-services/translator/custom-translator/how-to-create-project#view-project-details)
  * to this parameter to use your deployed customized system.
  *
- * It is possible to set `allowFalback` paramter. It specifies that the service is allowed to fall
+ * It is possible to set `allowFallback` parameter. It specifies that the service is allowed to fall
  * back to a general system when a custom system doesn't exist. Possible values are: `true` (default)
  * or `false`.
  *
