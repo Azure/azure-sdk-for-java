@@ -635,7 +635,7 @@ public final class CosmosAsyncClient implements Closeable {
                     )
                     .flatMap(
                         cosmosAsyncContainer -> {
-                            Map<String, Integer> minConnectionsToContainerSettings = ImplementationBridgeHelpers
+                            Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
                                     .CosmosContainerProactiveInitConfigHelper
                                     .getCosmosContainerIdentityAccessor()
                                     .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
@@ -643,7 +643,7 @@ public final class CosmosAsyncClient implements Closeable {
                             return cosmosAsyncContainer
                                     .openConnectionsAndInitCaches(
                                             this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                            minConnectionsToContainerSettings
+                                            containerLinkToMinConnectionsMap
                                                     .getOrDefault(
                                                             cosmosAsyncContainer.getLinkWithoutTrailingSlash(), Configs.getMinConnectionPoolSizePerEndpoint()
                                                     )
