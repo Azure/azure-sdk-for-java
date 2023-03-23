@@ -61,7 +61,7 @@ public class TextTranslationClientBase extends TestBase {
     private String getRegion() {
     return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
     }
-	
+
 	private String getTokenURL() {
     return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_TOKENURL", defaultTokenURL);
     }
@@ -86,18 +86,24 @@ public class TextTranslationClientBase extends TestBase {
 
     private TokenCredential getTokenCredential()
         throws MalformedURLException, IOException
-    {        
-        URL tokenService = new URL(getTokenURL() + "/sts/v1.0/issueToken?Subscription-Key=" + getKey());
-        HttpURLConnection connection = (HttpURLConnection) tokenService.openConnection();
-        connection.setDoOutput(true);
-        connection.setRequestMethod("POST");
-        OutputStreamWriter writers = new OutputStreamWriter(connection.getOutputStream());
-        writers.write("{}"); //body
-        writers.flush();
+    {
+        String tokenResponse;
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String tokenResponse = in.readLine();
-        in.close();
+        if (getTestMode() == TestMode.PLAYBACK) {
+            tokenResponse = "FAKE_TOKEN";
+        } else {
+            URL tokenService = new URL(getTokenURL() + "/sts/v1.0/issueToken?Subscription-Key=" + getKey());
+            HttpURLConnection connection = (HttpURLConnection) tokenService.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            OutputStreamWriter writers = new OutputStreamWriter(connection.getOutputStream());
+            writers.write("{}"); //body
+            writers.flush();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            tokenResponse = in.readLine();
+            in.close();
+        }
 
         return new StaticTokenForTest(tokenResponse);
     }
