@@ -39,7 +39,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredPerEndpoint) {
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredForEndpoint) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
         checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' cannot be null nor empty");
 
@@ -62,7 +62,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                     this.endpointProvider.createIfAbsent(
                                             openConnectionRequest.requestContext.locationEndpointToRoute,
                                             addressUri.getURI(),
-                                            minConnectionsRequiredPerEndpoint
+                                            minConnectionsRequiredForEndpoint
                                     );
 
                             // if endpoint had already been instantiated with a
@@ -72,7 +72,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             // value for minConnectionsRequired and choose the higher
                             // value
                             int minConnectionsRequired = endpoint.getMinConnectionsRequired();
-                            int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredPerEndpoint);
+                            int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
 
                             endpoint.setMinConnectionsRequired(newMinConnectionsRequired);
 

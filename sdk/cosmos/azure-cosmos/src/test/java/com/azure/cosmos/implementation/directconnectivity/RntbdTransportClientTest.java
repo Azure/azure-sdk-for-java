@@ -1122,7 +1122,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public void setMinConnectionsRequired(int minChannelsRequired) {
+        public void setMinConnectionsRequired(int minConnectionsRequired) {
             throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
         }
 

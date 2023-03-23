@@ -94,7 +94,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdDurableEndpointMetrics durableMetrics;
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
-    private int minChannelsRequired;
+    private int minConnectionsRequired;
 
     // endregion
 
@@ -111,13 +111,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI serviceEndpoint,
         final RntbdDurableEndpointMetrics durableMetrics,
         final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler,
-        final int minChannelsRequired
+        final int minConnectionsRequired
         ) {
 
         this.durableMetrics = durableMetrics;
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
         this.serviceEndpoint = serviceEndpoint;
-        this.minChannelsRequired = minChannelsRequired;
+        this.minConnectionsRequired = minConnectionsRequired;
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
@@ -336,12 +336,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     @Override
     public int getMinConnectionsRequired() {
-        return this.minChannelsRequired;
+        return this.minConnectionsRequired;
     }
 
     @Override
-    public void setMinConnectionsRequired(int minChannelsRequired) {
-        this.minChannelsRequired = minChannelsRequired;
+    public void setMinConnectionsRequired(int minConnectionsRequired) {
+        this.minConnectionsRequired = minConnectionsRequired;
     }
 
     // endregion

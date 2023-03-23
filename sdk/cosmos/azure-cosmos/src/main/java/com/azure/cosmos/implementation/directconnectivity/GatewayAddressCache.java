@@ -974,6 +974,9 @@ public class GatewayAddressCache implements IAddressCache {
                                 addressInfo -> {
                                     this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
 
+                                    int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
+                                            Configs.getMinConnectionPoolSizePerEndpoint());
+
                                     if (this.openConnectionsHandler != null) {
                                         return this.openConnectionsHandler.openConnections(
                                                         collection.getResourceId(),
@@ -982,9 +985,9 @@ public class GatewayAddressCache implements IAddressCache {
                                                                 .stream(addressInfo.getRight())
                                                                 .map(addressInformation -> addressInformation.getPhysicalUri())
                                                                 .collect(Collectors.toList()),
-                                                        Math.max(connectionsPerEndpointCount, Configs.getMinConnectionPoolSizePerEndpoint())
+                                                        connectionsRequiredForEndpoint
                                                 )
-                                        .repeat(Math.max(connectionsPerEndpointCount, Configs.getMinConnectionPoolSizePerEndpoint()) - 1);
+                                        .repeat(connectionsRequiredForEndpoint - 1);
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");
