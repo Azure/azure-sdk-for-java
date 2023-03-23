@@ -12,7 +12,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
 import org.slf4j.Logger;
@@ -147,7 +146,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     private <TOutput> Flux<TOutput> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<TOutput> publisher) {
-        DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
+        DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
         if (tracerProvider == null ||
             !tracerProvider.isEnabled()) {
 
@@ -209,7 +208,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                 FeedResponse<T> response = signal.get();
                 Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
-                DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
+                DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
                         this.recordFeedResponse(traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
@@ -248,11 +247,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             }});
 
 
-        final DiagnosticsProvider tracerProvider = pagedFluxOptions.getTracerProvider();
+        final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
         if (isTracerEnabled(tracerProvider)) {
 
             final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-                pagedFluxOptions.getTracerSpanName(),
+                pagedFluxOptions.getSpanName(),
                 pagedFluxOptions.getAccountTag(),
                 BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
                 pagedFluxOptions.getDatabaseId(),
@@ -275,8 +274,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         tracerProvider.endSpan(traceCtx);
                     }))
                 .contextWrite(DiagnosticsProvider.setContextInReactor(
-                    pagedFluxOptions.getTracerProvider().startSpan(
-                        pagedFluxOptions.getTracerSpanName(),
+                    pagedFluxOptions.getDiagnosticsProvider().startSpan(
+                        pagedFluxOptions.getSpanName(),
                         cosmosCtx,
                         context)));
 

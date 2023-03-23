@@ -158,12 +158,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
-    private Map<String, PartitionedQueryExecutionInfo> queryPlanCache;
+    private final Map<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
     private ClientTelemetry clientTelemetry;
-    private ApiType apiType;
+    private final ApiType apiType;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -669,16 +669,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public URI getServiceEndpoint() {
         return this.serviceEndpoint;
-    }
-
-    @Override
-    public URI getWriteEndpoint() {
-        return globalEndpointManager.getWriteEndpoints().stream().findFirst().orElse(null);
-    }
-
-    @Override
-    public URI getReadEndpoint() {
-        return globalEndpointManager.getReadEndpoints().stream().findFirst().orElse(null);
     }
 
     @Override
@@ -2832,13 +2822,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    @Override
-    public Mono<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink,
-                                                                               StoredProcedure storedProcedure, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
-    }
-
     private Mono<ResourceResponse<StoredProcedure>> upsertStoredProcedureInternal(String collectionLink,
                                                                                         StoredProcedure storedProcedure, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
@@ -3002,12 +2985,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
-                                                                      List<Object> procedureParams) {
-        return this.executeStoredProcedure(storedProcedureLink, null, procedureParams);
-    }
-
-    @Override
-    public Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       RequestOptions options, List<Object> procedureParams) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams, documentClientRetryPolicy), documentClientRetryPolicy);
@@ -3102,13 +3079,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Failure in creating a Trigger due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
-    }
-
-    @Override
-    public Mono<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger,
-                                                               RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Mono<ResourceResponse<Trigger>> upsertTriggerInternal(String collectionLink, Trigger trigger,
@@ -3297,13 +3267,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Failure in creating a UserDefinedFunction due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
-    }
-
-    @Override
-    public Mono<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink,
-                                                                                       UserDefinedFunction udf, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Mono<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunctionInternal(String collectionLink,
@@ -3844,12 +3807,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<FeedResponse<ClientEncryptionKey>> queryClientEncryptionKeys(String databaseLink, String query,
-     CosmosQueryRequestOptions options) {
-        return queryClientEncryptionKeys(databaseLink, new SqlQuerySpec(query), options);
-    }
-
-    @Override
     public Flux<FeedResponse<ClientEncryptionKey>> queryClientEncryptionKeys(String databaseLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return createQuery(databaseLink, querySpec, options, ClientEncryptionKey.class, ResourceType.ClientEncryptionKey);
     }
@@ -4182,11 +4139,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> getDatabaseAccountInternal(documentClientRetryPolicy),
          documentClientRetryPolicy);
-    }
-
-    @Override
-    public DatabaseAccount getLatestDatabaseAccount() {
-        return this.globalEndpointManager.getLatestDatabaseAccount();
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountInternal(DocumentClientRetryPolicy documentClientRetryPolicy) {

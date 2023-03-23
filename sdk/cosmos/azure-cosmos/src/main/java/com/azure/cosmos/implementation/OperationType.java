@@ -3,11 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Operation types in the Azure Cosmos DB database service.
  */

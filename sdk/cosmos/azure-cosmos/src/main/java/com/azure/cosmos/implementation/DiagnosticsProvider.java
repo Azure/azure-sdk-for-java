@@ -326,7 +326,7 @@ public final class DiagnosticsProvider {
         }
     }
 
-    private <T> void recordPageCore(
+    private void recordPageCore(
         Context context,
         CosmosDiagnostics diagnostics,
         Integer actualItemCount,
@@ -366,21 +366,7 @@ public final class DiagnosticsProvider {
         }
     }
 
-    public <T> void recordFeedResponseConsumerLatency(
-        Context context,
-        CosmosDiagnosticsContext cosmosCtx,
-        Duration feedResponseConsumerLatency
-    ) {
-        // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
-        try {
-             this.recordFeedResponseConsumerLatencyCore(context, cosmosCtx, feedResponseConsumerLatency);
-        } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
-        }
-    }
-
-    private <T> void recordFeedResponseConsumerLatencyCore(
+    private void recordFeedResponseConsumerLatencyCore(
         Context context,
         CosmosDiagnosticsContext cosmosCtx,
         Duration feedResponseConsumerLatency
@@ -931,7 +917,7 @@ public final class DiagnosticsProvider {
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
             } else {
-                String eventName = "Diagnostics " + diagnosticsCounter++;
+                String eventName = "Diagnostics ";
                 this.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
             }
@@ -1243,8 +1229,7 @@ public final class DiagnosticsProvider {
         }
 
         private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
-            // TODO @fabianm - assumption is that in java HTTP calls are automatically captured as well
-            // Validate this
+            // HTTP calls are automatically captured as well
 
             for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
                 traceTransportLevelRequests(

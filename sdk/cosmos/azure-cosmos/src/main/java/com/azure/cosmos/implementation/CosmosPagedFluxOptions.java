@@ -3,13 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
-
-import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -24,7 +21,7 @@ public class CosmosPagedFluxOptions {
     private String requestContinuation;
     private Integer maxItemCount;
     private DiagnosticsProvider tracerProvider;
-    private String tracerSpanName;
+    private String spanName;
     private String databaseId;
     private String containerId;
     private OperationType operationType;
@@ -117,7 +114,7 @@ public class CosmosPagedFluxOptions {
      * Gets the tracer provider
      * @return tracerProvider
      */
-    public DiagnosticsProvider getTracerProvider() {
+    public DiagnosticsProvider getDiagnosticsProvider() {
         return this.tracerProvider;
     }
 
@@ -125,8 +122,8 @@ public class CosmosPagedFluxOptions {
      * Gets the tracer span name
      * @return tracerSpanName
      */
-    public String getTracerSpanName() {
-        return tracerSpanName;
+    public String getSpanName() {
+        return spanName;
     }
 
     /**
@@ -147,10 +144,6 @@ public class CosmosPagedFluxOptions {
 
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return  this.thresholds;
-    }
-
-    public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
-        this.thresholds = thresholds;
     }
 
     public String getOperationId() {
@@ -177,7 +170,7 @@ public class CosmosPagedFluxOptions {
 
         this.databaseId = databaseId;
         this.containerId = containerId;
-        this.tracerSpanName = tracerSpanName;
+        this.spanName = tracerSpanName;
         this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
         this.operationId = operationId;
@@ -207,7 +200,7 @@ public class CosmosPagedFluxOptions {
         checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
         this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
-        this.tracerSpanName = tracerSpanName;
+        this.spanName = tracerSpanName;
         this.databaseId = databaseId;
         this.containerId = containerId;
         this.operationType = operationType;
