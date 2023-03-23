@@ -37,6 +37,8 @@ import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,6 +67,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationAsyncClient}.
  */
 @Tag("integration")
+@Execution(ExecutionMode.SAME_THREAD)
 class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
@@ -476,7 +479,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("sub", 10);
 
-        client.createQueue(queueName).block(TIMEOUT);
+        client.createQueue(queueName)
+            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))

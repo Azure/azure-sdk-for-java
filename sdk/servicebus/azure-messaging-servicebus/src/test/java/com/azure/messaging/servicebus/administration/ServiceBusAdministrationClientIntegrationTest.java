@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -180,7 +181,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertNotNull(runtimeProperties.getCreatedAt());
 
         //cleanup
-        //client.deleteQueue(queueName);
+        client.deleteQueue(queueName);
     }
 
     @Test
@@ -211,7 +212,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
 
-        //client.deleteTopic(topicName);
+        client.deleteTopic(topicName);
     }
 
     @Test
@@ -738,7 +739,12 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-9"
             : getEntityName(getTopicBaseName(), 9);
-        client.createTopic(topicName);
+
+        try {
+            client.createTopic(topicName);
+        } catch (Exception ex) {
+            assertInstanceOf(ResourceExistsException.class, ex);
+        }
 
         client.deleteTopic(topicName);
     }
