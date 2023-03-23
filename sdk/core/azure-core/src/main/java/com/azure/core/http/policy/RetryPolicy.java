@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -177,7 +176,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
             httpResponse = next.clone().processSync();
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount)) {
-                System.out.println("!!!!!!!!!!!!!" + LOGGER.canLogAtLevel(LogLevel.VERBOSE));
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());

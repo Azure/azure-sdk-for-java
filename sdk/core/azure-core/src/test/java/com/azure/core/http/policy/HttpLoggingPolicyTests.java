@@ -509,7 +509,7 @@ public class HttpLoggingPolicyTests {
         List<HttpLogMessage> messages = HttpLogMessage.fromString(logString).stream()
             .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
 
-        assertTrue(3 == messages.size() || 4 == messages.size(), logString);
+        assertEquals(3, messages.size(), logString);
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);

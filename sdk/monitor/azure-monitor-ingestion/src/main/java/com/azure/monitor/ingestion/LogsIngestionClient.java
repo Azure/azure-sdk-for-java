@@ -239,7 +239,6 @@ public final class LogsIngestionClient implements AutoCloseable {
             requestOptions = new RequestOptions();
         }
 
-        requestOptions.setContext(requestOptions.getContext());
         requestOptions.addRequestCallback(request -> {
             HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
             if (httpHeader == null) {

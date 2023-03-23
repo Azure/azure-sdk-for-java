@@ -47,7 +47,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
