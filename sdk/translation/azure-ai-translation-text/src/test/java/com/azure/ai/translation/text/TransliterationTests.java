@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransliterationTests extends TextTranslationClientBase{
-    
+public class TransliterationTests extends TextTranslationClientBase {
+
     @Test
-    public void VerifyTransliteration() {
+    public void verifyTransliteration() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("这里怎么一回事?"));
 
@@ -22,7 +22,7 @@ public class TransliterationTests extends TextTranslationClientBase{
     }
 
     @Test
-    public void VerifyTransliterationWithMultipleTextArray() {
+    public void verifyTransliterationWithMultipleTextArray() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("यहएककसौटीहैयहएककसौटीहै"));
         content.add(new InputTextItem("यहएककसौटीहै"));
@@ -33,7 +33,7 @@ public class TransliterationTests extends TextTranslationClientBase{
     }
 
     @Test
-    public void VerifyTransliterationWithEditDistance() {
+    public void verifyTransliterationWithEditDistance() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("gujarat"));
         content.add(new InputTextItem("hadman"));
@@ -46,8 +46,7 @@ public class TransliterationTests extends TextTranslationClientBase{
 
         String[] expectedText = { "ગુજરાત", "હદમાં", "હુક્કાબાર" };
         int editDistance = 0;
-        for (int i = 0; i < expectedText.length; i++)
-        {
+        for (int i = 0; i < expectedText.length; i++) {
             editDistance = editDistance + TestHelper.EditDistance(expectedText[i], response.get(i).getText());
         }
         assertTrue(editDistance < 6, "Total string distance: {editDistance}");

@@ -25,8 +25,7 @@ class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param region - region where the Translator resource was created.
      */
-    public TranslatorRegionAuthenticationPolicy(String region)
-    {
+    TranslatorRegionAuthenticationPolicy(String region) {
         Objects.requireNonNull(region, "'region' cannot be null.");
         this.region = region;
     }

@@ -4,8 +4,6 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.TranslatorRegionAuthenticationPolicy;
-import com.azure.ai.translation.text.CustomEndpointUtils;
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;

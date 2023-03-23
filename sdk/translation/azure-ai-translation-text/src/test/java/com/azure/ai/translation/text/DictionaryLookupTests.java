@@ -10,27 +10,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-public class DictionaryLookupTests extends TextTranslationClientBase{
-    @Test    
-    public void SingleInputItem() throws Exception {
+public class DictionaryLookupTests extends TextTranslationClientBase {
+    @Test
+    public void singleInputItem() throws Exception {
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("fly"));
 
         List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content, null);
-        
+
         assertEquals("fly", response.get(0).getNormalizedSource());
-        assertEquals("fly", response.get(0).getDisplaySource());        
+        assertEquals("fly", response.get(0).getDisplaySource());
     }
-    
-    @Test    
-    public void MultipleInputItems() throws Exception {
+
+    @Test
+    public void multipleInputItems() throws Exception {
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("fly"));
         content.add(new InputTextItem("fox"));
 
         List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content, null);
-        assertTrue(response.size() == 2);      
+        assertTrue(response.size() == 2);
     }
 }

@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BreakSentenceTests extends TextTranslationClientBase{
-    
+public class BreakSentenceTests extends TextTranslationClientBase {
+
     @Test
-    public void BreakSentenceWithAutoDetect() {
+    public void breakSentenceWithAutoDetect() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("hello world"));
 
@@ -26,20 +26,19 @@ public class BreakSentenceTests extends TextTranslationClientBase{
     }
 
     @Test
-    public void BreakSentenceWithLanguage() {
+    public void breakSentenceWithLanguage() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia."));
-        
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content,null, "es", null);
-        int[] expectedLengths = new int[]{30, 42, 20, 20 };
-        for (int i = 0; i < expectedLengths.length; i++)
-        {
+
+        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "es", null);
+        int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
+        for (int i = 0; i < expectedLengths.length; i++) {
             assertEquals(expectedLengths[i], response.get(0).getSentLen().get(i));
         }
     }
 
     @Test
-    public void BreakSentenceWithLanguageAndScript() {
+    public void breakSentenceWithLanguageAndScript() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("zhè shì gè cè shì。"));
 
@@ -48,7 +47,7 @@ public class BreakSentenceTests extends TextTranslationClientBase{
     }
 
     @Test
-    public void BreakSentenceWithMultipleLanguages() {
+    public void breakSentenceWithMultipleLanguages() {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("hello world"));
         content.add(new InputTextItem("العالم هو مكان مثير جدا للاهتمام"));
