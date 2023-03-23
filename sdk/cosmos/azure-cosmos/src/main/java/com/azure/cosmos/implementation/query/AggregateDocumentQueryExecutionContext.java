@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
@@ -26,6 +27,12 @@ import java.util.function.BiFunction;
 public class AggregateDocumentQueryExecutionContext
     implements IDocumentQueryExecutionComponent<Document>{
 
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     public static final String PAYLOAD_PROPERTY_NAME = "payload";
     private final boolean isValueAggregateQuery;
     private final IDocumentQueryExecutionComponent<Document> component;
@@ -68,9 +75,10 @@ public class AggregateDocumentQueryExecutionContext
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                            FeedResponse<Document> frp = BridgeInternal
-                                .createFeedResponse(aggregateResults, headers, null);
-                            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                            FeedResponse<Document> frp = feedResponseAccessor.createFeedResponse(
+                                aggregateResults, headers, null);
+                            diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                                frp.getCosmosDiagnostics(), diagnosticsList);
                             return frp;
                         }
 
@@ -92,14 +100,15 @@ public class AggregateDocumentQueryExecutionContext
                     }
 
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                    FeedResponse<Document> frp = BridgeInternal
-                        .createFeedResponse(aggregateResults, headers, null);
+                    FeedResponse<Document> frp = feedResponseAccessor.createFeedResponse(
+                        aggregateResults, headers, null);
                     if(!queryMetricsMap.isEmpty()) {
                         for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {
                             BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());
                         }
                     }
-                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        frp.getCosmosDiagnostics(), diagnosticsList);
                     return frp;
                 }).flux();
     }

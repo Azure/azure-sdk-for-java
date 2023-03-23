@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceId;
@@ -55,6 +56,14 @@ import java.util.regex.Pattern;
  */
 public class OrderByDocumentQueryExecutionContext
         extends ParallelDocumentQueryExecutionContextBase<Document> {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
     private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
@@ -619,7 +628,7 @@ public class OrderByDocumentQueryExecutionContext
                     // Observable<FeedResponsePage<OrderByRowResult<T>>>>
                     .map(orderByRowResults -> {
                         // construct a page from result with request charge
-                        FeedResponse<OrderByRowResult<Document>> feedResponse = BridgeInternal.createFeedResponse(
+                        FeedResponse<OrderByRowResult<Document>> feedResponse = feedResponseAccessor.createFeedResponse(
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()),
                                 null);
@@ -635,7 +644,7 @@ public class OrderByDocumentQueryExecutionContext
                     // Emit an empty page so the downstream observables know when there are no more
                     // results.
                     .concatWith(Flux.defer(() -> {
-                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
+                        return Flux.just(feedResponseAccessor.createFeedResponse(Utils.immutableListOf(),
                                 null, null));
                     }))
                     // CREATE pairs from the stream to allow the observables downstream to "peek"
@@ -687,8 +696,8 @@ public class OrderByDocumentQueryExecutionContext
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
                         false, feedOfOrderByRowResults.getCosmosDiagnostics());
-                    BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
-                        clientSideRequestStatistics);
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
@@ -700,8 +709,8 @@ public class OrderByDocumentQueryExecutionContext
                             false,
                             false,
                             null);
-                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
-                        clientSideRequestStatistics);
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        frp.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return Flux.just(frp);
                     }));
         }

@@ -117,6 +117,10 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -2304,7 +2308,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                                 }
                                 CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
+                                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                                    aggregatedDiagnostics, aggregateRequestStatistics);
+
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
                                 FeedResponse<T> frp = BridgeInternal
@@ -2535,8 +2541,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .flatMap(resourceResponse -> {
                 CosmosItemResponse<T> cosmosItemResponse =
                     ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
-                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Collections.singleton(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
+                    Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
+                    cosmosItemResponse.getResponseHeaders());
+
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    feedResponse.getCosmosDiagnostics(),
+                    Collections.singleton(
+                        BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+
                 return Mono.just(feedResponse);
             });
     }

@@ -683,6 +683,11 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics);
             int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
             int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
+
+            ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics);
+            void addClientSideDiagnosticsToFeed(
+                CosmosDiagnostics cosmosDiagnostics,
+                Collection<ClientSideRequestStatistics> requestStatistics);
         }
     }
 
@@ -852,6 +857,8 @@ public class ImplementationBridgeHelpers {
         public interface FeedResponseAccessor {
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
+            <T> FeedResponse<T> createFeedResponse(
+                List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics);
         }
     }
 

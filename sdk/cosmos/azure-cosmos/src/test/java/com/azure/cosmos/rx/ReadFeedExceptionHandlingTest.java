@@ -29,6 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -44,8 +46,8 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         dbs.add(new CosmosDatabaseProperties("db2"));
 
         ArrayList<FeedResponse<CosmosDatabaseProperties>> frps = new ArrayList<>();
-        frps.add(BridgeInternal.createFeedResponse(dbs, null, null));
-        frps.add(BridgeInternal.createFeedResponse(dbs, null, null));
+        frps.add(feedResponseAccessor.createFeedResponse(dbs, null, null));
+        frps.add(feedResponseAccessor.createFeedResponse(dbs, null, null));
 
         Flux<FeedResponse<CosmosDatabaseProperties>> response = Flux.merge(Flux.fromIterable(frps))
                                                                     .mergeWith(Flux.error(BridgeInternal.createCosmosException(0)))

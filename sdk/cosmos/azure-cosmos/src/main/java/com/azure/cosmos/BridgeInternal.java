@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollec
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -30,6 +31,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -72,6 +74,10 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
  **/
 @Warning(value = INTERNAL_USE_ONLY_WARNING)
 public final class BridgeInternal {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private BridgeInternal() {}
 
@@ -141,15 +147,14 @@ public final class BridgeInternal {
             BridgeInternal
                 .addClientSideDiagnosticsToFeed(
                     response.getCosmosDiagnostics(),
-                    Collections.singleton(requestStatistics));
+                    List.of(requestStatistics));
         }
 
         FeedResponseDiagnostics feedResponseDiagnosticsFromCosmosDiagnostics = diagnostics
             .getFeedResponseDiagnostics();
 
         if (feedResponseDiagnosticsFromCosmosDiagnostics != null) {
-            BridgeInternal.addClientSideDiagnosticsToFeed(
-                response.getCosmosDiagnostics(),
+            response.getCosmosDiagnostics().addClientSideDiagnosticsToFeed(
                 feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatistics());
         }
 
@@ -190,24 +195,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-            Map<String, String> headers, CosmosDiagnostics cosmosDiagnostics) {
-        FeedResponse<T> feedResponseWithDiagnostics = ModelBridgeInternal.createFeedResponse(results, headers);
-
-        if (cosmosDiagnostics == null) {
-            return feedResponseWithDiagnostics;
-        }
-
-        ClientSideRequestStatistics requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
-        if (requestStatistics != null) {
-            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
-                Collections.singleton(requestStatistics));
-        }
-        BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
-            cosmosDiagnostics.getFeedResponseDiagnostics()
-                             .getClientSideRequestStatistics());
-
-        return feedResponseWithDiagnostics;
+    public static <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers) {
+        throw new NotImplementedException(
+            "Use ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor instead.");
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -231,10 +221,11 @@ public final class BridgeInternal {
         if (cosmosDiagnostics != null) {
             requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
             if (requestStatistics != null) {
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                              Collections.singleton(requestStatistics));
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                                                              List.of(requestStatistics));
             }
-            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+
+            diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
                                                           cosmosDiagnostics.getFeedResponseDiagnostics()
                                                               .getClientSideRequestStatistics());
         }
@@ -266,8 +257,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
-                         Collection<ClientSideRequestStatistics> requestStatistics) {
+    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics, List<ClientSideRequestStatistics> requestStatistics) {
         cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 

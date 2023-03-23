@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.models.FeedResponse;
@@ -27,6 +28,10 @@ import java.util.function.BiFunction;
  */
 public class DCountDocumentQueryExecutionContext
     implements IDocumentQueryExecutionComponent<Document> {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final IDocumentQueryExecutionComponent<Document> component;
     private final QueryInfo info;
@@ -95,7 +100,8 @@ public class DCountDocumentQueryExecutionContext
                                                                              queryMetricsMap, null, false,
                                                                              false, null);
 
-                       BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnostics);
+                       diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                           frp.getCosmosDiagnostics(), diagnostics);
                        return BridgeInternal
                                         .createFeedResponseWithQueryMetrics(Collections
                                                                                 .singletonList(result),

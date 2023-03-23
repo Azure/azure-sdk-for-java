@@ -259,6 +259,15 @@ public final class CosmosDiagnostics {
         return this.diagnosticsCapturedInPagedFlux;
     }
 
+    void addClientSideDiagnosticsToFeed(Collection<ClientSideRequestStatistics> requestStatistics) {
+        if (this.feedResponseDiagnostics == null || requestStatistics == null || requestStatistics.isEmpty()) {
+            return;
+        }
+
+        this.feedResponseDiagnostics
+            .addClientSideRequestStatistics(requestStatistics);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +302,15 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
+                public ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
+                    return cosmosDiagnostics.getClientSideRequestStatisticsRaw();
+                }
+
+                @Override
                 public int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics) {
                     if (cosmosDiagnostics == null) {
                         return 0;
@@ -308,6 +326,17 @@ public final class CosmosDiagnostics {
                     }
 
                     return cosmosDiagnostics.getRequestPayloadSizeInBytes();
+                }
+
+                @Override
+                public void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
+                                                           Collection<ClientSideRequestStatistics> requestStatistics) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    cosmosDiagnostics
+                        .addClientSideDiagnosticsToFeed(requestStatistics);
                 }
             });
     }

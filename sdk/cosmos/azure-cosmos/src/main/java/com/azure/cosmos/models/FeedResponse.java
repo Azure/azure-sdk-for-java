@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -33,6 +34,10 @@ import java.util.regex.Pattern;
  * @param <T> the type parameter
  */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
@@ -72,6 +77,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
         this(results, header, true, nochanges, new ConcurrentHashMap<>());
+    }
+
+    FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
+        FeedResponse<T> feedResponseWithDiagnostics = ModelBridgeInternal.createFeedResponse(results, headers);
+
+        if (cosmosDiagnostics != null) {
+            ClientSideRequestStatistics requestStatistics =
+                diagnosticsAccessor.getClientSideRequestStatisticsRaw(cosmosDiagnostics);
+            if (requestStatistics != null) {
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithDiagnostics.getCosmosDiagnostics(),
+                    List.of(requestStatistics));
+            } else {
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    feedResponseWithDiagnostics.getCosmosDiagnostics(),
+                    diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics));
+            }
+        }
     }
 
     // TODO: need to more sure the query metrics can round trip just from the headers.
@@ -564,6 +586,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                     TNew> conversion) {
 
                     return feedResponse.convertGenericType(conversion);
+                }
+
+                @Override
+                public <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers,
+                                                              CosmosDiagnostics diagnostics) {
+                    return new FeedResponse(results, headers, diagnostics);
                 }
             });
     }

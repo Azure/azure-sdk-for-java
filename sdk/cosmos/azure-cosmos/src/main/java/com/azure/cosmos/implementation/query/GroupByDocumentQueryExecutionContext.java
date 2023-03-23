@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
@@ -31,6 +32,9 @@ import java.util.function.BiFunction;
 public final class GroupByDocumentQueryExecutionContext implements
     IDocumentQueryExecutionComponent<Document> {
 
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
                                                                                     "for queries with GROUP BY." +
                                                                                     "Do not use continuation token" +
@@ -134,7 +138,9 @@ public final class GroupByDocumentQueryExecutionContext implements
         FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
             queryMetrics, null, false,
             false, null);
-        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnostics);
+        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+            frp.getCosmosDiagnostics(), diagnostics);
+
         return frp;
     }
 

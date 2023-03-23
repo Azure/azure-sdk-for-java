@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollec
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -31,6 +32,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 class OrderByDocumentProducer extends DocumentProducer<Document> {
+
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private final OrderbyRowComparer<Document> consumeComparer;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -73,8 +77,8 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<Document> row) {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
-        FeedResponse<Document> fr = BridgeInternal
-            .createFeedResponse(Collections.singletonList((Document) row), headers, null);
+        FeedResponse<Document> fr = feedResponseAccessor.createFeedResponse(
+            Collections.singletonList((Document) row), headers, null);
         return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 
