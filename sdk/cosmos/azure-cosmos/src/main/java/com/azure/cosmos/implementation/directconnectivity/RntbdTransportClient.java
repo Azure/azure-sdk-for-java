@@ -250,7 +250,6 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
-        request.requestContext.storePhysicalAddressUri = addressUri;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
