@@ -17,6 +17,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PollingStrategyTests {
     private static final TypeReference<PollResult> POLL_RESULT_TYPE_REFERENCE
         = TypeReference.createInstance(PollResult.class);
+    private static final TypeReference<Resource> RESOURCE_TYPE_REFERENCE
+        = TypeReference.createInstance(Resource.class);
+    private static final TypeReference<ResourcePollResult> RESOURCE_POLL_RESULT_TYPE_REFERENCE
+        = TypeReference.createInstance(ResourcePollResult.class);
 
     @Test
     public void statusCheckPollingStrategySucceedsOnActivation() {
@@ -226,6 +232,53 @@ public class PollingStrategyTests {
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
             .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
+            .verifyComplete();
+
+        assertEquals(1, activationCallCount[0]);
+    }
+
+    @Test
+    public void operationLocationPollingStrategySucceedsOnPollWithPutNew() {
+        // https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#put-with-additional-long-running-processing
+        // The difference from case "operationLocationPollingStrategySucceedsOnPollWithPut" is that the response of PUT is the Resource object, not PullResult object
+
+        int[] activationCallCount = new int[1];
+        String putUrl = "http://localhost";
+        String mockPollUrl = "http://localhost/poll";
+
+        Supplier<Mono<Response<Resource>>> activationOperation = () -> Mono.fromCallable(() -> {
+            activationCallCount[0]++;
+            return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
+                new HttpHeaders().set("Operation-Location", mockPollUrl), new Resource("resource"));
+        });
+
+        HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
+
+        HttpClient httpClient = request -> {
+            if (mockPollUrl.equals(request.getUrl().toString())) {
+                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                    new ResourcePollResult("Succeeded")));
+            } else if (putUrl.equals(request.getUrl().toString())) {
+                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                    new Resource("resource")));
+            } else {
+                return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
+            }
+        };
+
+        PollerFlux<ResourcePollResult, Resource> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
+            RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse ->
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+
+        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult))
+            .expectNextMatches(resource -> "resource".equals(resource.getName()))
             .verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
@@ -622,6 +675,37 @@ public class PollingStrategyTests {
         @Override
         public String toString() {
             return "Status: " + status;
+        }
+    }
+
+    public static class ResourcePollResult {
+        private final String status;
+
+        @JsonCreator
+        public ResourcePollResult(@JsonProperty(value = "status", required = true) String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+    }
+
+    public static class Resource {
+        private final String name;
+
+        @JsonCreator
+        public Resource(@JsonProperty(value = "name", required = true) String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return "Resource: " + name;
         }
     }
 

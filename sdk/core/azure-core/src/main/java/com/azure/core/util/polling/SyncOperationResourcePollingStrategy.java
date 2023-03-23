@@ -21,7 +21,9 @@ import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.core.JacksonException;
 
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -146,8 +148,16 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
         if (response.getStatusCode() == 200 || response.getStatusCode() == 201
             || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
+            T responseData = null;
+            try {
+                responseData = PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType);
+            } catch (UncheckedIOException e) {
+                if (!(e.getCause() instanceof JacksonException)) {
+                    throw e;
+                }
+            }
+
+            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, responseData, retryAfter);
         }
 
         throw LOGGER.logExceptionAsError(new AzureException(String.format(

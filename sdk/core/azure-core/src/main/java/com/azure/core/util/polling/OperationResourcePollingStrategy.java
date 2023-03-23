@@ -23,8 +23,10 @@ import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.core.JacksonException;
 import reactor.core.publisher.Mono;
 
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -149,6 +151,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
+                .onErrorComplete(error ->
+                    error instanceof UncheckedIOException && error.getCause() instanceof JacksonException)
                 .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
