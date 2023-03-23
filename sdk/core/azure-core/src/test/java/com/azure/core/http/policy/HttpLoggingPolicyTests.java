@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
@@ -502,9 +503,13 @@ public class HttpLoggingPolicyTests {
         BinaryData content = response.getBodyAsBinaryData();
         assertEquals(2, requestCount.get());
         String logString = convertOutputStreamToString(logCaptureStream);
-        System.out.println(logString);
-        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
-        assertEquals(3, messages.size());
+
+        // if HttpLoggingPolicy logger was created when verbose was enabled,
+        // there is no way to change it.
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString).stream()
+            .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
+
+        assertTrue(3 == messages.size() || 4 == messages.size(), logString);
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);

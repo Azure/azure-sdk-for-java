@@ -55,8 +55,6 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final Context ENABLE_SYNC_CONTEXT = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     private final IngestionUsingDataCollectionRulesClient client;
 
     // dynamic thread pool that scales up and down on demand.
@@ -145,8 +143,6 @@ public final class LogsIngestionClient implements AutoCloseable {
         Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
         Objects.requireNonNull(streamName, "'streamName' cannot be null.");
         Objects.requireNonNull(logs, "'logs' cannot be null.");
-
-        context = enableSync(context);
 
         Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
 
@@ -243,7 +239,7 @@ public final class LogsIngestionClient implements AutoCloseable {
             requestOptions = new RequestOptions();
         }
 
-        requestOptions.setContext(enableSync(requestOptions.getContext()));
+        requestOptions.setContext(requestOptions.getContext());
         requestOptions.addRequestCallback(request -> {
             HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
             if (httpHeader == null) {
@@ -253,14 +249,6 @@ public final class LogsIngestionClient implements AutoCloseable {
             }
         });
         return client.uploadWithResponse(ruleId, streamName, logs, requestOptions);
-    }
-
-    private static Context enableSync(Context context) {
-        if (context == null || context == Context.NONE) {
-            return ENABLE_SYNC_CONTEXT;
-        }
-
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     @Override
