@@ -382,7 +382,7 @@ public class ServiceBusProcessorTest {
         final int numberOfTimes = 5;
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
-
+        when(tracer.isEnabled()).thenReturn(true);
         when(tracer.extractContext(any())).thenAnswer(invocation -> {
             Function<String, String> consumer = invocation.getArgument(0, Function.class);
             assertEquals(diagnosticId, consumer.apply("traceparent"));
@@ -436,14 +436,46 @@ public class ServiceBusProcessorTest {
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
         verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testProcessorWithTracingDisabled() throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+
+        when(tracer.isEnabled()).thenReturn(false);
+
+        Flux<ServiceBusMessageContext> messageFlux =
+            Flux.create(emitter -> {
+                ServiceBusReceivedMessage serviceBusReceivedMessage =
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                emitter.next(new ServiceBusMessageContext(serviceBusReceivedMessage));
+            });
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
+            null, null,
+            messageContext -> countDownLatch.countDown(),
+            error -> Assertions.fail("Error occurred when receiving messages from the processor"),
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+
+        serviceBusProcessorClient.start();
+        boolean success = countDownLatch.await(1, TimeUnit.SECONDS);
+        serviceBusProcessorClient.close();
+
+        assertTrue(success, "Failed to receive message");
+        verify(tracer, never()).extractContext(any());
+        verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, never()).end(any(), any(), any());
     }
 
     @Test
     public void testProcessorWithTracingEnabledWithoutDiagnosticId() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
-
+        when(tracer.isEnabled()).thenReturn(true);
         when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);

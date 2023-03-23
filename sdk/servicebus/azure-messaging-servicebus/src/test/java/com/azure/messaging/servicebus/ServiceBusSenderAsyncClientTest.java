@@ -399,7 +399,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
-        String traceparent = "traceparent";
+        when(tracer1.isEnabled()).thenReturn(true);
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer1, null, NAMESPACE, ENTITY_NAME);
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
@@ -491,6 +491,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         TestMeter meter = new TestMeter();
         Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer, meter, NAMESPACE, ENTITY_NAME);
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,

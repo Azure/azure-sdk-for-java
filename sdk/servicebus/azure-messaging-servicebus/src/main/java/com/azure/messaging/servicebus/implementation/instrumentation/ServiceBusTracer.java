@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
@@ -61,21 +59,21 @@ public class ServiceBusTracer {
      * Checks if tracing is enabled.
      */
     public boolean isEnabled() {
-        return tracer != null;
+        return tracer != null && tracer.isEnabled();
     }
 
     /**
      * Makes span in provided context (if any) current. Caller is responsible to close the returned scope.
      */
     public AutoCloseable makeSpanCurrent(Context span) {
-        return tracer == null ? NOOP_CLOSEABLE : tracer.makeSpanCurrent(span);
+        return isEnabled() ? tracer.makeSpanCurrent(span) : NOOP_CLOSEABLE;
     }
 
     /**
      * Traces arbitrary mono. No special send or receive semantics is applied.
      */
     public <T> Mono<T> traceMono(String spanName, Mono<T> publisher) {
-        if (tracer != null) {
+        if (isEnabled()) {
             return publisher
                 .doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
@@ -94,7 +92,7 @@ public class ServiceBusTracer {
      * Traces arbitrary mono that operates with received message as input, e.g. renewLock. No special send or receive semantics is applied.
      */
     public <T> Mono<T> traceMonoWithLink(String spanName, Mono<T> publisher, ServiceBusReceivedMessage message, Context messageContext) {
-        if (tracer != null) {
+        if (isEnabled()) {
             return publisher
                 .doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
@@ -111,13 +109,6 @@ public class ServiceBusTracer {
     /**
      * Traces arbitrary mono that operates with sent message as input, e.g. schedule. No special send or receive semantics is applied.
      */
-    public <T> Mono<T> traceMonoWithLink(String spanName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
-        return traceMonoWithLink(spanName, null, publisher, message, messageContext);
-    }
-
-    /**
-     * Traces arbitrary mono that operates with sent message as input, e.g. schedule. No special send or receive semantics is applied.
-     */
     public <T> Mono<T> traceScheduleMono(String spanName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
         return traceMonoWithLink(spanName, OperationName.PUBLISH, publisher, message, messageContext);
     }
@@ -126,7 +117,7 @@ public class ServiceBusTracer {
      * Traces arbitrary mono that operates with batch of sent message as input, e.g. schedule. No special send or receive semantics is applied.
      */
     public <T> Flux<T> traceScheduleFlux(String spanName, Flux<T> publisher, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getContext) {
-        if (tracer != null) {
+        if (isEnabled()) {
             return publisher
                 .doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
@@ -143,7 +134,7 @@ public class ServiceBusTracer {
      * Ends span and scope.
      */
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
-        if (tracer != null) {
+        if (isEnabled()) {
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
@@ -166,7 +157,7 @@ public class ServiceBusTracer {
      * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
      */
     public void reportMessageSpan(ServiceBusMessage serviceBusMessage, Context messageContext) {
-        if (tracer == null || messageContext == null || messageContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+        if (!isEnabled() || messageContext == null || messageContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
             // if message has context (in case of retries), don't start a message span or add a new context
             return;
         }
@@ -202,28 +193,22 @@ public class ServiceBusTracer {
      */
     public Mono<ServiceBusReceivedMessage> traceManagementReceive(String spanName, Mono<ServiceBusReceivedMessage> publisher,
         Function<ServiceBusReceivedMessage, Context> getMessageContext) {
-        if (tracer != null) {
-            AtomicReference<Instant> startTime = new AtomicReference<>();
-            AtomicReference<ServiceBusReceivedMessage> message = new AtomicReference<>();
+        if (isEnabled()) {
+            final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
             return publisher.doOnEach(signal -> {
                 if (signal.hasValue()) {
-                    message.set(signal.get());
+                    ServiceBusReceivedMessage message = signal.get();
+                    if (message != null) {
+                        startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), getMessageContext.apply(message)));
+                    }
                 }
 
                 if (signal.isOnComplete() || signal.isOnError()) {
-                    ServiceBusReceivedMessage msg = message.get();
-                    Context messageContext = msg == null ? null : getMessageContext.apply(msg);
-
-                    StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
-                    if (msg != null) {
-                        startOptions.addLink(createLink(msg.getApplicationProperties(), msg.getEnqueuedTime(), messageContext));
-                        startOptions.setStartTimestamp(startTime.get());
-                    }
                     Context span = tracer.start(spanName, startOptions, Context.NONE);
-                    tracer.end(null, null, span);
+                    tracer.end(null, signal.getThrowable(), span);
                 }
             })
-            .doOnSubscribe(s -> startTime.set(Instant.now()));
+            .doOnSubscribe(s -> startOptions.setStartTimestamp(Instant.now()));
         }
         return publisher;
     }
@@ -238,28 +223,29 @@ public class ServiceBusTracer {
      * Creates a single span with links to each message being received.
      */
     public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
-        if (tracer != null) {
-            AtomicReference<StartSpanOptions> startOptions = new AtomicReference<>(createStartOption(SpanKind.CLIENT, OperationName.RECEIVE));
-            AtomicInteger messageCount = new AtomicInteger(0);
+        if (isEnabled()) {
+            final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
             return messages
                 .doOnEach(signal -> {
-                    ServiceBusReceivedMessage message = signal.get();
-                    if (message != null) {
-                        startOptions.get().addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
-                        messageCount.getAndIncrement();
+                    if (signal.hasValue()) {
+                        ServiceBusReceivedMessage message = signal.get();
+                        if (message != null) {
+                            startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
+                        }
                     } else if (signal.isOnComplete() || signal.isOnError()) {
-                        startOptions.get().setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, messageCount.get());
-                        Context span = tracer.start(spanName, startOptions.get(), Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
+                        int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
+                        startOptions.setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);
+                        Context span = tracer.start(spanName, startOptions, Context.NONE);
+                        tracer.end(null, signal.getThrowable(), span);
                     }
                 })
-                .doOnSubscribe((ignored) -> startOptions.get().setStartTimestamp(Instant.now()));
+                .doOnSubscribe((ignored) -> startOptions.setStartTimestamp(Instant.now()));
         }
         return messages;
     }
 
     public Context startSpanWithLinks(String spanName, OperationName operationName, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getMessageContext, Context parent) {
-        if (tracer != null) {
+        if (isEnabled() && batch != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, operationName);
             startOptions.setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, batch.size());
             for (ServiceBusMessage message : batch) {
@@ -273,7 +259,7 @@ public class ServiceBusTracer {
     }
 
     Context startSpanWithLink(String spanName, OperationName operationName, ServiceBusReceivedMessage message, Context messageContext, Context parent) {
-        if (tracer != null) {
+        if (isEnabled() && message != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, operationName);
             startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), messageContext));
             return tracer.start(spanName, startOptions, parent);
@@ -286,7 +272,7 @@ public class ServiceBusTracer {
      * Starts span. Used by ServiceBus*Instrumentations.
      */
     Context startProcessSpan(String spanName, ServiceBusReceivedMessage message, Context parent) {
-        if (tracer != null) {
+        if (isEnabled() && message != null) {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
                 .setRemoteParent(extractContext(message.getApplicationProperties()));
 
@@ -316,6 +302,10 @@ public class ServiceBusTracer {
     }
 
     private Context extractContext(Map<String, Object> applicationProperties) {
+        if (applicationProperties == null) {
+            return Context.NONE;
+        }
+
         return tracer.extractContext(key ->  {
             if (TRACEPARENT_KEY.equals(key)) {
                 return getTraceparent(applicationProperties);
@@ -352,7 +342,7 @@ public class ServiceBusTracer {
     }
 
     private <T> Mono<T> traceMonoWithLink(String spanName, OperationName operationName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
-        if (tracer != null) {
+        if (isEnabled()) {
             return publisher
                 .doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {

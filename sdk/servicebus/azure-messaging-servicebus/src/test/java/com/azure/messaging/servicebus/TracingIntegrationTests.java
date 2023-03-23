@@ -27,7 +27,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -104,8 +103,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         GlobalOpenTelemetry.resetForTest();
         sharedBuilder = null;
 
-        if (processor != null)
-        {
+        if (processor != null) {
             toClose.add(processor);
         }
 
