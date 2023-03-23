@@ -4,6 +4,20 @@
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.9. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>9) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
 
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.11.
+- Upgrade `azure-spring-data-cosmos` to 3.33.0.
+- Upgrade `azure-resourcemanager` to 2.24.0.
+
+#### Features Added
+- Added the following artifacts into current bom file:
+  - spring-cloud-azure-appconfiguration-config
+  - spring-cloud-azure-appconfiguration-config-web
+  - spring-cloud-azure-feature-management
+  - spring-cloud-azure-feature-management-web
+
 ### Spring Messaging Event Hubs
 This section includes changes in `spring-messaging-azure-eventhubs` module.
 
