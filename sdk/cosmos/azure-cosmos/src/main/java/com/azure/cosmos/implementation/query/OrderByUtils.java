@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Resource;
@@ -29,6 +30,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class OrderByUtils {
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     public static <T extends Resource> Flux<OrderByRowResult<Document>> orderedMerge(OrderbyRowComparer<Document> consumeComparer,
                                                                                      RequestChargeTracker tracker,
@@ -84,7 +88,7 @@ class OrderByUtils {
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
                 clientSideRequestStatistics.addAll(
-                    BridgeInternal.getClientSideRequestStatistics(documentProducerFeedResponse
+                    diagnosticsAccessor.getClientSideRequestStatistics(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
                 QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
                                                   BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));

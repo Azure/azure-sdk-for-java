@@ -2305,7 +2305,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                                    aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                                 }
                                 CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
                                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(

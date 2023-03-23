@@ -49,6 +49,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
 
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CosmosClient client;
     private CosmosContainer container;
@@ -185,8 +189,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
@@ -219,8 +223,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(1);
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(1);
 
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
@@ -252,8 +256,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-        assertThat(BridgeInternal.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             SampleType fetchedResult = feedResponse.getResults().get(i);

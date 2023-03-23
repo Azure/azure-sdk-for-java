@@ -52,6 +52,9 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
@@ -403,7 +406,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         String activityId,
         Supplier<String> operationContextTextProvider) {
         Collection<ClientSideRequestStatistics> requestStatistics =
-            BridgeInternal.getClientSideRequestStatistics(cosmosDiagnostics);
+            diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

@@ -144,9 +144,8 @@ public final class BridgeInternal {
 
         ClientSideRequestStatistics requestStatistics = diagnostics.clientSideRequestStatistics();
         if (requestStatistics != null) {
-            BridgeInternal
+            response.getCosmosDiagnostics()
                 .addClientSideDiagnosticsToFeed(
-                    response.getCosmosDiagnostics(),
                     List.of(requestStatistics));
         }
 
@@ -192,12 +191,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> boolean noChanges(FeedResponse<T> page) {
         return ModelBridgeInternal.noChanges(page);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers) {
-        throw new NotImplementedException(
-            "Use ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor instead.");
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -254,11 +247,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
         cosmosDiagnostics.getFeedResponseDiagnostics().setDiagnosticsContext(diagnosticsContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics, List<ClientSideRequestStatistics> requestStatistics) {
-        cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -555,22 +543,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Collection<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
-        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
-        //feedResponseDiagnostics. So we need to add from both the places
-        Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList = new DistinctClientSideRequestStatisticsCollection();
-
-        if (cosmosDiagnostics != null) {
-            clientSideRequestStatisticsList
-                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics());
-            if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
-            }
-        }
-        return clientSideRequestStatisticsList;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

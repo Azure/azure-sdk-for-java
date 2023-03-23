@@ -70,8 +70,8 @@ public class AggregateDocumentQueryExecutionContext
                     Collection<ClientSideRequestStatistics> diagnosticsList = new DistinctClientSideRequestStatisticsCollection();
 
                     for(FeedResponse<Document> page : superList) {
-                        diagnosticsList.addAll(BridgeInternal
-                                                   .getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                        diagnosticsList.addAll(
+                            diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));

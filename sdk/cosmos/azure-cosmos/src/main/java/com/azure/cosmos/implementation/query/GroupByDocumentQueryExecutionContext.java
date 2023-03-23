@@ -90,7 +90,8 @@ public final class GroupByDocumentQueryExecutionContext implements
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
-                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                    diagnosticsList.addAll(
+                        diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
