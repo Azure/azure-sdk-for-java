@@ -21,6 +21,8 @@ public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
 
+    private static final HttpRequestMetadata EMPTY_METADATA = new HttpRequestMetadata("", null, false, false, false);
+
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
@@ -285,7 +287,7 @@ public class HttpRequest {
      * @return The metadata associated with this request.
      */
     public HttpRequestMetadata getMetadata() {
-        return metadata;
+        return metadata == null ? EMPTY_METADATA : metadata;
     }
 
     /**
@@ -310,7 +312,12 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, body)
-            .setMetadata(metadata.copy());
+        HttpRequest copy = new HttpRequest(httpMethod, url, bufferedHeaders, body);
+
+        if (metadata != null) {
+            copy.setMetadata(metadata);
+        }
+
+        return copy;
     }
 }

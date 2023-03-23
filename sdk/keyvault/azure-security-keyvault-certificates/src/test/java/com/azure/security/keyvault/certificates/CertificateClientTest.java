@@ -79,7 +79,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         //skip paging and polling requests until their sync stack support lands in azure-core.
         BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
+            String callerMethod = request.getMetadata().getCallerMethod();
             return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
                 || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
                 || callerMethod.contains("recover") || callerMethod.contains("createCertificate")

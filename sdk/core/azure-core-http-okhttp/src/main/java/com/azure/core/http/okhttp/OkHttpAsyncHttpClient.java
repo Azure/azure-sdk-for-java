@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
@@ -49,10 +50,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
-    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
-
     final OkHttpClient httpClient;
 
     OkHttpAsyncHttpClient(OkHttpClient httpClient) {
@@ -66,9 +63,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        HttpRequestMetadata requestMetadata = request.getMetadata();
+        boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
+        boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
+        boolean eagerlyConvertHeaders = requestMetadata.isHeadersEagerlyConverted();
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
@@ -101,9 +99,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        HttpRequestMetadata requestMetadata = request.getMetadata();
+        boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
+        boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
+        boolean eagerlyConvertHeaders = requestMetadata.isHeadersEagerlyConverted();
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -33,8 +34,6 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
  */
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -59,8 +58,9 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        HttpRequestMetadata requestMetadata = request.getMetadata();
+        boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
+        boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
 
         Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
@@ -83,8 +83,9 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        HttpRequestMetadata requestMetadata = request.getMetadata();
+        boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
+        boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
 
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {

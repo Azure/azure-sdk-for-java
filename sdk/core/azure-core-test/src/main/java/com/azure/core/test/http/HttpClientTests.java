@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
@@ -284,21 +285,17 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that client returns buffered response if requested via azure-eagerly-read-response Context flag.
+     * Tests that client returns buffered response if requested via HttpRequestMetadata.isResponseEagerlyRead flag.
      */
     @SyncAsyncTest
     public void shouldBufferResponse() {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            BinaryData.fromString("test body"));
-
-        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            BinaryData.fromString("test body"))
+            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request, Context.NONE)
         );
 
         // Buffering buffered response is identity transformation.
@@ -313,17 +310,13 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
-
-        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            requestBody)
+            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request, Context.NONE)
         );
 
         // Read response twice using all accessors.
@@ -358,13 +351,12 @@ public abstract class HttpClientTests {
     public void eagerlyConvertedHeadersAreHttpHeaders() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
-            requestBody);
-
-        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
+            requestBody)
+            .setMetadata(new HttpRequestMetadata(null, null, false, false, true));
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request, Context.NONE)
         );
 
         // Validate getHttpHeaders type is HttpHeaders (not instanceof)

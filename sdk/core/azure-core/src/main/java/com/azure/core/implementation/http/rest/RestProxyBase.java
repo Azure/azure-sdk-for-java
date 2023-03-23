@@ -15,7 +15,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -92,25 +91,9 @@ public abstract class RestProxyBase {
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
-            request.setMetadata(new HttpRequestMetadata()
-                .setCallerMethod(methodParser.getFullyQualifiedMethodName())
-                .setResponseEagerlyRead(methodParser.isResponseEagerlyRead())
-                .setResponseBodyIgnored(methodParser.isResponseBodyIgnored())
-                .setHeadersEagerlyConverted(methodParser.isHeadersEagerlyConverted()));
+            request.setMetadata(methodParser.createRequestMetadata());
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
-
-            if (methodParser.isResponseEagerlyRead()) {
-                context = context.addData("azure-eagerly-read-response", true);
-            }
-
-            if (methodParser.isResponseBodyIgnored()) {
-                context = context.addData("azure-ignore-response-body", true);
-            }
-
-            if (methodParser.isHeadersEagerlyConverted()) {
-                context = context.addData("azure-eagerly-convert-headers", true);
-            }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 

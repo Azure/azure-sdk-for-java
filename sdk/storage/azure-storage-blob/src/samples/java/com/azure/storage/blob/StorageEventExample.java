@@ -8,12 +8,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -108,12 +106,15 @@ public class StorageEventExample {
         public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
             HttpRequest request = httpPipelineCallContext.getHttpRequest();
             /*
-            Check how many retries have gone out. Send an initial sendingRequest event or a retryRequest event as
-            appropriate.
-            This value is updated automatically by the retry policy before the request gets here
+             * Check how many retries have gone out. Send an initial sendingRequest event or a retryRequest event as
+             * appropriate.
+             *
+             * This value is updated automatically by the retry policy before the request gets here
+             *
+             * The HttpRequestMetadata tracks try counts, so one will need to be subtracted from it to determine if the
+             * attempt is a retry attempt.
              */
-            Optional<Object> retryOptional = httpPipelineCallContext.getData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT);
-            Integer retryCount = retryOptional.map(o -> (Integer) o).orElse(0);
+            int retryCount = httpPipelineCallContext.getHttpRequest().getMetadata().getTryCount() - 1;
             if (retryCount <= 1) {
                 this.sendingRequestEvent.accept(request);
             } else {

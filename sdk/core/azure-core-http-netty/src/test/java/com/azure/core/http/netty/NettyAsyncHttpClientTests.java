@@ -10,6 +10,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.MockProxyServer;
@@ -350,8 +351,9 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void testBufferedResponseSync() {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH));
-        HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))
+            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+        HttpResponse response = client.sendSync(request, Context.NONE);
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
 
@@ -361,11 +363,12 @@ public class NettyAsyncHttpClientTests {
 
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
-                                  .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-                                  .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                                               .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
+                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
-        Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
+        Contexts contexts = Contexts.with(Context.NONE)
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add));
         HttpResponse response = client.sendSync(request, contexts.getContext());
         assertEquals(200, response.getStatusCode());
         List<Long> progressList = progress.stream().collect(Collectors.toList());
@@ -376,9 +379,9 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void testFileUploadSync() throws IOException {
         WireMockServer local = new WireMockServer(WireMockConfiguration.options()
-                                                      .dynamicPort()
-                                                      .maxRequestJournalEntries(1)
-                                                      .gzipDisabled(true));
+            .dynamicPort()
+            .maxRequestJournalEntries(1)
+            .gzipDisabled(true));
 
         local.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
         local.start();
@@ -389,7 +392,7 @@ public class NettyAsyncHttpClientTests {
 
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, SHORT_POST_BODY_PATH))
-                                  .setBody(body);
+            .setBody(body);
 
         HttpResponse response = client.sendSync(request, Context.NONE);
         assertEquals(200, response.getStatusCode());
@@ -402,8 +405,8 @@ public class NettyAsyncHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponseSync() {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
-                                  .setHeader("Content-Length", "132")
-                                  .setBody(Flux.error(new RuntimeException("boo")));
+            .setHeader("Content-Length", "132")
+            .setBody(Flux.error(new RuntimeException("boo")));
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getMessage());
@@ -426,11 +429,11 @@ public class NettyAsyncHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
-                                  .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
-                                  .setBody(Flux.just(contentChunk)
-                                               .repeat(repetitions)
-                                               .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-                                               .concatWith(Flux.error(new RuntimeException("boo"))));
+            .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
+            .setBody(Flux.just(contentChunk)
+                .repeat(repetitions)
+                .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+                .concatWith(Flux.error(new RuntimeException("boo"))));
 
         RuntimeException thrown = assertThrows(RuntimeException.class,
             () -> client.sendSync(request, Context.NONE));
@@ -459,16 +462,16 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
-                                      .parallel(25)
-                                      .runOn(Schedulers.boundedElastic())
-                                      .flatMap(ignored -> {
-                                          HttpResponse response = doRequestSync(client, "/long");
-                                          byte[] body = response.getBodyAsBinaryData().toBytes();
-                                          assertArrayEquals(LONG_BODY, body);
-                                          return Flux.just((long) body.length);
-                                      })
-                                      .sequential()
-                                      .reduce(0L, Long::sum);
+            .parallel(25)
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(ignored -> {
+                HttpResponse response = doRequestSync(client, "/long");
+                byte[] body = response.getBodyAsBinaryData().toBytes();
+                assertArrayEquals(LONG_BODY, body);
+                return Flux.just((long) body.length);
+            })
+            .sequential()
+            .reduce(0L, Long::sum);
 
         StepVerifier.create(numBytesMono)
             .expectNext((long) numRequests * LONG_BODY.length)
@@ -557,8 +560,8 @@ public class NettyAsyncHttpClientTests {
                 .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
-                    new Context("azure-eagerly-read-response", true)))
+            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))
+                    .setMetadata(new HttpRequestMetadata(null, null, true, false, false)), Context.NONE))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
                 .verify();

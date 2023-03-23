@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Contexts;
@@ -121,9 +120,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
         }
 
-        // Update the RETRY_COUNT_CONTEXT to log retries.
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
-
         // Reset progress if progress is tracked.
         ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
         if (progressReporter != null) {
@@ -165,6 +161,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
 
                 Flux<ByteBuffer> responseBody = response.getBody();
+                originalRequest.getMetadata().incrementTryCount();
                 if (responseBody == null) {
                     return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                         attempt + 1, suppressed);
@@ -209,6 +206,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(exceptionRetryStatus.unwrappedThrowable);
+                originalRequest.getMetadata().incrementTryCount();
                 return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1,
                     suppressedLocal);
             }

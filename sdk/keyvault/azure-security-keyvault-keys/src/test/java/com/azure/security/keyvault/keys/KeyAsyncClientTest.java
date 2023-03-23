@@ -80,7 +80,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         //skip paging and polling requests until their sync stack support is landed in azure-core.
         BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
+            String callerMethod = request.getMetadata().getCallerMethod();
             return (callerMethod.contains("list") || callerMethod.contains("getKeys")
                 || callerMethod.contains("getKeyVersions") || callerMethod.contains("delete")
                 || callerMethod.contains("recover") || callerMethod.contains("Cryptography"));

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -27,7 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -161,7 +161,7 @@ public class VertxAsyncHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequests() throws NoSuchAlgorithmException {
+    public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
         int concurrency = 10;
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
@@ -169,7 +169,7 @@ public class VertxAsyncHttpClientTests {
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(concurrency)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> getResponse(client, "/long", Context.NONE)
+            .flatMap(ignored -> getResponse(client, "/long", null)
                 .flatMapMany(HttpResponse::getBodyAsByteArray)
                 .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
             .sequential()
@@ -216,10 +216,10 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testBufferedResponse() {
-        Context context = new Context("azure-eagerly-read-response", true);
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
-        StepVerifier.create(getResponse(client, "/short", context).flatMapMany(HttpResponse::getBody))
+        StepVerifier.create(getResponse(client, "/short", new HttpRequestMetadata(null, null, true, false, false))
+                .flatMapMany(HttpResponse::getBody))
             .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
             .verifyComplete();
     }
@@ -234,11 +234,10 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testEmptyBufferedResponse() {
-        Context context = new Context("azure-eagerly-read-response", true);
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
-        StepVerifier.create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody),
-                EMPTY_INITIAL_REQUEST_OPTIONS)
+        StepVerifier.create(getResponse(client, "/empty", new HttpRequestMetadata(null, null, true, false, false))
+                .flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .verifyComplete();
@@ -246,12 +245,13 @@ public class VertxAsyncHttpClientTests {
 
     private static Mono<HttpResponse> getResponse(String path) {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
-        return getResponse(client, path, Context.NONE);
+        return getResponse(client, path, null);
     }
 
-    private static Mono<HttpResponse> getResponse(HttpClient client, String path, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request, context);
+    private static Mono<HttpResponse> getResponse(HttpClient client, String path, HttpRequestMetadata requestMetadata) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path))
+            .setMetadata(requestMetadata);
+        return client.send(request, Context.NONE);
     }
 
     static URL url(WireMockServer server, String path) {

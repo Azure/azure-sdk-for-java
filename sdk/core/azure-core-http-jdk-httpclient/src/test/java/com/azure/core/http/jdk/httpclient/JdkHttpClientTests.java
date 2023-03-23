@@ -6,6 +6,7 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -119,8 +120,9 @@ public class JdkHttpClientTests {
     @Test
     public void testBufferedResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"));
-        HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"))
+            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+        HttpResponse response = client.sendSync(request, Context.NONE);
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
 

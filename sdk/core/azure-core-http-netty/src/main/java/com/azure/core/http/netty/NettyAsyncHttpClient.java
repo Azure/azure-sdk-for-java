@@ -78,11 +78,7 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 class NettyAsyncHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
     private static final byte[] EMPTY_BYTES = new byte[0];
-
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final boolean disableBufferCopy;
     final long readTimeout;

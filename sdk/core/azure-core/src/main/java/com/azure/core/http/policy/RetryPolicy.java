@@ -127,10 +127,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
 
-    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest, final int tryCount, final List<Throwable> suppressed) {
+    private Mono<HttpResponse> attemptAsync(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+        HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
         context.setHttpRequest(originalHttpRequest.copy());
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
             .flatMap(httpResponse -> {
                 if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
@@ -140,6 +139,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
                     httpResponse.close();
 
+                    originalHttpRequest.getMetadata().incrementTryCount();
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed)
                         .delaySubscription(delayDuration);
                 } else {
@@ -154,6 +154,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                     List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                     suppressedLocal.add(err);
+
+                    originalHttpRequest.getMetadata().incrementTryCount();
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
@@ -166,11 +168,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextSyncPolicy next,
-                                     final HttpRequest originalHttpRequest, final int tryCount,
-                                     final List<Throwable> suppressed) {
+    private HttpResponse attemptSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
+                                     HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
         context.setHttpRequest(originalHttpRequest.copy());
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         HttpResponse httpResponse;
         try {
             httpResponse = next.clone().processSync();
@@ -185,6 +185,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(err);
+                originalHttpRequest.getMetadata().incrementTryCount();
                 return attemptSync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal);
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
@@ -208,6 +209,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             } catch (InterruptedException ie) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(ie));
             }
+
+            originalHttpRequest.getMetadata().incrementTryCount();
             return attemptSync(context, next, originalHttpRequest, tryCount + 1, suppressed);
         } else {
             if (tryCount >= retryStrategy.getMaxRetries()) {

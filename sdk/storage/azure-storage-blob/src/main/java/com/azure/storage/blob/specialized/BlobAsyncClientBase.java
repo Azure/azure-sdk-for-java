@@ -1263,12 +1263,8 @@ public class BlobAsyncClientBase {
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        // The first range should eagerly convert headers as they'll be used to create response types.
-        Context firstRangeContext = context == null ? new Context("azure-eagerly-convert-headers", true)
-            : context.addData("azure-eagerly-convert-headers", true);
-
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
-            firstRangeContext)
+            context == null ? Context.NONE : context)
             .map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();

@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +27,6 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -51,17 +49,18 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final Logger logger = LoggerFactory.getLogger((String) context.getData("caller-method").orElse(""));
+        HttpRequest request = context.getHttpRequest();
+
+        final Logger logger = LoggerFactory.getLogger(request.getMetadata().getCallerMethod());
         final long startNs = System.nanoTime();
 
-        return logRequest(logger, context.getHttpRequest(), context.getData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT))
+        return logRequest(logger, context.getHttpRequest())
             .then(next.process())
             .flatMap(response -> logResponse(logger, response, startNs))
             .doOnError(throwable -> logger.warn("<-- HTTP FAILED: ", throwable));
     }
 
-    private Mono<Void> logRequest(final Logger logger, final HttpRequest request,
-                                  final Optional<Object> optionalRetryCount) {
+    private Mono<Void> logRequest(final Logger logger, final HttpRequest request) {
         if (!logger.isInfoEnabled()) {
             return Mono.empty();
         }
@@ -71,13 +70,12 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
             .append(request.getHttpMethod())
             .append(" ")
             .append(request.getUrl())
+            .append(System.lineSeparator())
+            .append("Try count: ")
+            .append(request.getMetadata().getTryCount())
             .append(System.lineSeparator());
 
-        optionalRetryCount.ifPresent(o -> requestLogMessage.append("Try count: ")
-            .append(o)
-            .append(System.lineSeparator()));
-
-        addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
+        addHeadersToLogMessage(request.getHeaders(), requestLogMessage);
 
         if (request.getBody() == null) {
             requestLogMessage.append("(empty body)")
@@ -159,7 +157,7 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
             .append(")")
             .append(System.lineSeparator());
 
-        addHeadersToLogMessage(logger, response.getHeaders(), responseLogMessage);
+        addHeadersToLogMessage(response.getHeaders(), responseLogMessage);
 
         String contentTypeHeader = response.getHeaderValue("Content-Type");
         long contentLength = getContentLength(logger, response.getHeaders());
@@ -194,7 +192,7 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
         return Mono.justOrEmpty(data);
     }
 
-    private void addHeadersToLogMessage(Logger logger, HttpHeaders headers, StringBuilder sb) {
+    private void addHeadersToLogMessage(HttpHeaders headers, StringBuilder sb) {
         for (HttpHeader header : headers) {
             String headerName = header.getName();
             sb.append(headerName).append(":");

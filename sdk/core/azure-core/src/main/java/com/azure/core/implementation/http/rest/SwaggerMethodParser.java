@@ -25,6 +25,8 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -41,6 +43,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -83,6 +86,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // to search the raw value on each call.
     private final String rawHost;
     private final String fullyQualifiedMethodName;
+    private final ClientLogger logger;
     private final HttpMethod httpMethod;
     private final String relativePath;
     final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
@@ -126,6 +130,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
+        logger = new ClientLogger(fullyQualifiedMethodName);
 
         if (swaggerMethod.isAnnotationPresent(Get.class)) {
             this.httpMethod = HttpMethod.GET;
@@ -744,6 +749,18 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public String getSpanName() {
         return spanName;
+    }
+
+    /**
+     * Creates an {@link HttpRequestMetadata} based on this REST API method.
+     * <p>
+     * This is used as the metadata for an {@link HttpRequest}.
+     *
+     * @return Creates an {@link HttpRequestMetadata} based on this REST API method.
+     */
+    public HttpRequestMetadata createRequestMetadata() {
+        return new HttpRequestMetadata(fullyQualifiedMethodName, logger, responseEagerlyRead, ignoreResponseBody,
+            headersEagerlyConverted);
     }
 
     public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {

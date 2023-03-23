@@ -35,27 +35,18 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
+    // Unnamed ClientLogger to be used when the request doesn't provide a ClientLogger that will associate the logs to
+    // the request method.
+    private static final ClientLogger UNNAMED_LOGGER = new ClientLogger("");
     private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
-    private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
-
-    // Use a cache to retain the caller method ClientLogger.
-    //
-    // The same method may be called thousands or millions of times, so it is wasteful to create a new logger instance
-    // each time the method is called. Instead, retain the created ClientLogger until a certain number of unique method
-    // calls have been made and then clear the cache and rebuild it. Long term, this should be replaced with an LRU,
-    // or another type of cache, for better cache management.
-    private static final int LOGGER_CACHE_MAX_SIZE = 1000;
-    private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
 
@@ -63,6 +54,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
+    private final int maxLogBodySizeInBytes;
 
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -70,6 +62,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /**
      * Key for {@link Context} to pass request retry count metadata for logging.
      */
+    @Deprecated
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
@@ -86,6 +79,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.prettyPrintBody = false;
+            this.maxLogBodySizeInBytes = HttpLogOptions.DEFAULT_MAX_BODY_LOG_SIZE;
 
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -100,6 +94,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
+            this.maxLogBodySizeInBytes = httpLogOptions.getMaxBodyLogSizeInBytes();
 
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
@@ -117,7 +112,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final ClientLogger logger = (context.getHttpRequest().getMetadata().getLogger() == null)
+            ? UNNAMED_LOGGER : context.getHttpRequest().getMetadata().getLogger();
         final long startNs = System.nanoTime();
 
         return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
@@ -134,7 +130,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.processSync();
         }
 
-        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final ClientLogger logger = (context.getHttpRequest().getMetadata().getLogger() == null)
+            ? UNNAMED_LOGGER : context.getHttpRequest().getMetadata().getLogger();
         final long startNs = System.nanoTime();
 
         requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
@@ -154,14 +151,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
         return new HttpRequestLoggingContext(callContext.getHttpRequest(),
             callContext.getContext(),
-            getRequestRetryCount(callContext.getContext()));
+            callContext.getHttpRequest().getMetadata().getTryCount());
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             callContext.getContext(),
-            getRequestRetryCount(callContext.getContext()));
+            callContext.getHttpRequest().getMetadata().getTryCount());
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
@@ -424,41 +421,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param contentLength Content-Length header represented as a numeric.
      * @return A flag indicating if the request or response body should be logged.
      */
-    private static boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
-        return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
-            && contentLength != 0
-            && contentLength < MAX_BODY_LOG_SIZE;
-    }
-
-    /*
-     * Gets the request retry count to include in logging.
-     *
-     * If there is no value set, or it isn't a valid number null will be returned indicating that retry count won't be
-     * logged.
-     */
-    private static Integer getRequestRetryCount(Context context) {
-        Object rawRetryCount = context.getData(RETRY_COUNT_CONTEXT).orElse(null);
-        if (rawRetryCount == null) {
-            return null;
-        }
-
-        try {
-            return Integer.valueOf(rawRetryCount.toString());
-        } catch (NumberFormatException ex) {
-            LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
-            return null;
-        }
-    }
-
-    /*
-     * Get or create the ClientLogger for the method having its request and response logged.
-     */
-    private static ClientLogger getOrCreateMethodLogger(String methodName) {
-        if (CALLER_METHOD_LOGGER_CACHE.size() > LOGGER_CACHE_MAX_SIZE) {
-            CALLER_METHOD_LOGGER_CACHE.clear();
-        }
-
-        return CALLER_METHOD_LOGGER_CACHE.computeIfAbsent(methodName, ClientLogger::new);
+    private boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
+        // Only log the body if it has a known content size, the known content size is within the allowed limit of
+        // body logging, and the Content-Type isn't 'application/octet-stream'.
+        return contentLength != 0
+            && contentLength < maxLogBodySizeInBytes
+            && !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader);
     }
 
     private static LoggingEventBuilder getLogBuilder(LogLevel logLevel, ClientLogger logger) {

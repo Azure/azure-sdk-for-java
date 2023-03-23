@@ -23,6 +23,7 @@ public class HttpLogOptions {
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
+    private int maxBodyLogSizeInBytes;
 
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
@@ -67,6 +68,8 @@ public class HttpLogOptions {
         "api-version"
     );
 
+    static final int DEFAULT_MAX_BODY_LOG_SIZE = 1024 * 16;
+
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.
      */
@@ -75,6 +78,7 @@ public class HttpLogOptions {
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
         applicationId = null;
+        maxBodyLogSizeInBytes = DEFAULT_MAX_BODY_LOG_SIZE;
     }
 
     /**
@@ -168,7 +172,6 @@ public class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
-        this.getClass().getName();
         return this;
 
     }
@@ -229,6 +232,38 @@ public class HttpLogOptions {
      */
     public HttpLogOptions setPrettyPrintBody(boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
+        return this;
+    }
+
+    /**
+     * Gets the maximum size, in bytes, of a request or response body that can be logged.
+     * <p>
+     * Request and response bodies are only logged when {@link #getLogLevel()} is {@link HttpLogDetailLevel#BODY} or
+     * {@link HttpLogDetailLevel#BODY_AND_HEADERS}.
+     * <p>
+     * The default value is 16 KB.
+     *
+     * @return The maximum size, in bytes, of a request or response body that can be logged.
+     */
+    public int getMaxBodyLogSizeInBytes() {
+        return maxBodyLogSizeInBytes;
+    }
+
+    /**
+     * Sets the maximum size, in bytes, of a request or response body that can be logged.
+     * <p>
+     * Request and response bodies are only logged when {@link #getLogLevel()} is {@link HttpLogDetailLevel#BODY} or
+     * {@link HttpLogDetailLevel#BODY_AND_HEADERS}.
+     * <p>
+     * The default value is 16 KB.
+     * <p>
+     * If a negative value is passed for {@code maxBodySizeInBytes} the request or response body will never be logged.
+     *
+     * @param maxBodyLogSizeInBytes The maximum size, in bytes, of a request or response body that can be logged.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions setMaxBodyLogSizeInBytes(int maxBodyLogSizeInBytes) {
+        this.maxBodyLogSizeInBytes = maxBodyLogSizeInBytes;
         return this;
     }
 
