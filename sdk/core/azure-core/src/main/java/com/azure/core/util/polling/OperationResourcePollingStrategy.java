@@ -23,7 +23,7 @@ import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
@@ -152,7 +152,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
                 .onErrorComplete(error ->
-                    error instanceof UncheckedIOException && error.getCause() instanceof JacksonException)
+                    error instanceof UncheckedIOException && error.getCause() instanceof JsonProcessingException)
                 .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
