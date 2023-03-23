@@ -3,11 +3,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.streaming.StreamingQueryListener
 import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
 import org.apache.spark.sql.{DataFrame, SparkSession}
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
 
 import java.util.UUID
 

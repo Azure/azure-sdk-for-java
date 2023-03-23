@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
-
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
-import org.apache.hadoop.fs.FileSystem
+
+import java.util.UUID
 
 class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals

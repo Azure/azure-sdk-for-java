@@ -4,9 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
 import org.apache.spark.sql.SparkSession
-import org.apache.hadoop.fs.FileSystem
 
 /** sample test for query */
 object SampleReadE2EMain {

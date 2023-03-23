@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.models._
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -383,6 +383,10 @@ object Platform {
 }
 
 class NakedLocalJavaFileSystem() extends NakedLocalFileSystem {
+
+  // The NakedLocalFileSystem requires to use schema file:/// - which conflicts
+  // with some spark code paths where this would automatically trigger winutils to be
+  // used - overriding the schema here to allow using NakedLocalFileSystem instead of winutils
   override def getUri: URI = {
     LocalJavaFileSystem.NAME
   }
@@ -392,6 +396,7 @@ class NakedLocalJavaFileSystem() extends NakedLocalFileSystem {
   }
 }
 
+// Just a wrapper to allow injecting the NakedLocalFileSystem with modified schema
 class BareLocalJavaFileSystem() extends BareLocalFileSystem(new NakedLocalJavaFileSystem()) {
 }
 

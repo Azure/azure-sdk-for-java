@@ -4,8 +4,6 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
-import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.SparkSession
 
 object SampleE2EMain {

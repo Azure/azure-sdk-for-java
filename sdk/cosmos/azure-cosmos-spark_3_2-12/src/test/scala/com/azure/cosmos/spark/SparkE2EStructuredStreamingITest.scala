@@ -5,21 +5,18 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.{ModelBridgeInternal, PartitionKey, ThroughputProperties}
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
-import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
-
-import java.util.UUID
-import java.util.concurrent.atomic.AtomicLong
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
-import org.apache.hadoop.fs.FileSystem
+import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
+import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
 import org.apache.spark.sql.types.StringType
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.scalatest.Retries
 import org.scalatest.tagobjects.Retryable
 
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
 
 class SparkE2EStructuredStreamingITest

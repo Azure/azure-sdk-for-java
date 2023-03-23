@@ -4,9 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
-import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.SparkSession
-import com.globalmentor.apache.hadoop.fs.BareLocalFileSystem
 
 object SampleCosmosCatalogE2EMain {
   def main(args: Array[String]) {
