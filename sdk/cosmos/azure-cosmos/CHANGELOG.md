@@ -3,6 +3,7 @@
 ### 4.43.0-beta.1 (Unreleased)
 
 #### Features Added
+Added configurability for minimum connection pool size for all containers through a system property - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 34171](https://github.com/Azure/azure-sdk-for-java/pull/34171).
 
 #### Breaking Changes
 
