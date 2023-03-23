@@ -34,6 +34,9 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+- Support passwordless connections for JMS ServiceBus in Spring. [#33489](https://github.com/Azure/azure-sdk-for-java/pull/33489)
+
 #### Breaking Changes
 - Deprecated properties for AAD and AAD B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
   - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
