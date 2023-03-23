@@ -282,7 +282,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * CREATE a Database if it does not already exist on the service.
-     * <p>
+     * <br/>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
      *
@@ -297,7 +297,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Create a Database if it does not already exist on the service.
-     * <p>
+     * <br/>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
      *
@@ -311,10 +311,10 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Create a Database if it does not already exist on the service.
-     * <p>
+     * <br/>
      * The throughputProperties will only be used if the specified database
      * does not exist and therefor a new database will be created with throughputProperties.
-     * <p>
+     * <br/>
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
      *
@@ -329,7 +329,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -349,7 +349,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -364,7 +364,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -379,7 +379,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -406,7 +406,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -437,7 +437,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Reads all databases.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -475,7 +475,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Reads all databases.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -489,7 +489,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Query for databases.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -508,7 +508,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Query for databases.
-     * <p>
+     * <br/>
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.

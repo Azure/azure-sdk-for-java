@@ -180,7 +180,7 @@ public final class DiagnosticsProvider {
 
     /**
      * For each tracer plugged into the SDK a new tracing span is created.
-     * <p>
+     * <br/>
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
@@ -683,7 +683,7 @@ public final class DiagnosticsProvider {
      * in scope of trace context. This enables OpenTelemetry auto-collection
      * to pick it up and correlate lower levels of instrumentation and logs
      * to logical Cosmos spans.
-     * <p>
+     * <br/>
      * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
     private final class PropagatingMono extends Mono<Object> {
@@ -698,7 +698,7 @@ public final class DiagnosticsProvider {
      * in scope of trace context. This enables OpenTelemetry auto-collection
      * to pick it up and correlate lower levels of instrumentation and logs
      * to logical Cosmos spans.
-     * <p>
+     * <br/>
      * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
     private final class PropagatingFlux extends Flux<Object> {

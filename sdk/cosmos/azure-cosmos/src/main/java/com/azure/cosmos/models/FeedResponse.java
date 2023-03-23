@@ -339,7 +339,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     /**
      * Gets the request charge as request units (RU) consumed by the operation.
-     * <p>
+     * <br/>
      * For more information about the RU and factors that can impact the effective charges please visit
      * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *

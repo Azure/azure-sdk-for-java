@@ -155,11 +155,11 @@ public final class GroupByDocumentQueryExecutionContext implements
 
     /**
      * When a group by query gets rewritten the projection looks like:
-     * <p>
+     * <br/>
      * SELECT
      * [{"item": c.age}, {"item": c.name}] AS groupByItems,
      * {"age": c.age, "name": c.name} AS payload
-     * <p>
+     * <br/>
      * This class just lets us easily access the "groupByItems" and "payload" property.
      */
     static final class RewrittenGroupByProjection extends JsonSerializable {

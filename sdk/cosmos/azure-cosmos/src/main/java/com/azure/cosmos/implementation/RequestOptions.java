@@ -11,7 +11,6 @@ import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,6 @@ public class RequestOptions {
     private String ifNoneMatchETag;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
-    private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
     private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
@@ -140,7 +138,6 @@ public class RequestOptions {
      * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
      *
      * @param filterPredicate the filterPredicate associated with the request.
-     * @return the current request options
      */
     public void setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
@@ -281,24 +278,6 @@ public class RequestOptions {
     }
 
     /**
-     * Internal usage only: Gets the partition key range id used to identify the current request's target partition.
-     *
-     * @return the partition key range id value.
-     */
-    String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
-    }
-
-    /**
-     * Internal usage only: Sets the partition key range id used to identify the current request's target partition.
-     *
-     * @param partitionKeyRangeId the partition key range id value.
-     */
-    protected void setPartitionKeyRengeId(String partitionKeyRangeId) {
-        this.partitionKeyRangeId = partitionKeyRangeId;
-    }
-
-    /**
      * Gets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
      * service or not.
      *
@@ -382,12 +361,12 @@ public class RequestOptions {
     /**
      * Gets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <p>
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <p>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <p>
      * By-default, this is null.
      *
      * @return a boolean indicating whether payload will be included in the response or not for this request.
@@ -399,14 +378,14 @@ public class RequestOptions {
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <p>
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <p>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <p>
      * By-default, this is null.
-     *
+     * <p>
      * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
      * however if specified on {@link com.azure.cosmos.models.CosmosItemRequestOptions},
      * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
