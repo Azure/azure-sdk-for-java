@@ -1202,8 +1202,6 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
-            int getConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity);
-            void setConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity, int connectionsPerReplicaCount);
         }
     }
 

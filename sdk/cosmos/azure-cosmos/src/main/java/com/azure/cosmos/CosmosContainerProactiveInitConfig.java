@@ -20,17 +20,17 @@ public final class CosmosContainerProactiveInitConfig {
         containerIdAccessor = ImplementationBridgeHelpers
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
-    private final Set<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> minConnectionsToContainerSettings;
     private final int numProactiveConnectionRegions;
 
     CosmosContainerProactiveInitConfig(
-        Set<CosmosContainerIdentity> cosmosContainerIdentities,
+        List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
         Map<String, Integer> minConnectionsToContainerSettings
-        ) {
+    ) {
 
-        this.cosmosContainerIdentities = Collections.unmodifiableSet(cosmosContainerIdentities);
+        this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         this.minConnectionsToContainerSettings = minConnectionsToContainerSettings;
     }
@@ -41,7 +41,7 @@ public final class CosmosContainerProactiveInitConfig {
      * @return list of {@link CosmosContainerIdentity}
      * */
     public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
-        return cosmosContainerIdentities.stream().toList();
+        return cosmosContainerIdentities;
     }
 
     /**

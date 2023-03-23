@@ -20,7 +20,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosContainerProactiveInitConfigBuilder {
 
     private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 5;
-    private final Set<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> minConnectionsToContainerSettings;
     private int numProactiveConnectionRegions;
 
@@ -33,7 +33,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         checkArgument(
             cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty(),
             "The list of container identities cannot be null or empty.");
-        this.cosmosContainerIdentities = cosmosContainerIdentities.stream().collect(Collectors.toSet());
+        this.cosmosContainerIdentities = cosmosContainerIdentities;
         this.minConnectionsToContainerSettings = new HashMap<>();
         this.numProactiveConnectionRegions = 1;
     }

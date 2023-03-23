@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Paths;
@@ -21,7 +20,6 @@ public final class CosmosContainerIdentity {
     private final String databaseName;
     private final String containerName;
     private final String containerLink;
-    private int connectionsPerReplicaCount = Configs.getMinChannelPoolPerEndpointAsInt();
 
     /**
      * Instantiates a {@link CosmosContainerIdentity} class
@@ -58,16 +56,6 @@ public final class CosmosContainerIdentity {
             @Override
             public String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity) {
                 return cosmosContainerIdentity.containerLink;
-            }
-
-            @Override
-            public int getConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity) {
-                return cosmosContainerIdentity.connectionsPerReplicaCount;
-            }
-
-            @Override
-            public void setConnectionsPerReplicaCount(CosmosContainerIdentity cosmosContainerIdentity, int connectionsPerReplicaCount) {
-                cosmosContainerIdentity.connectionsPerReplicaCount = connectionsPerReplicaCount;
             }
         });
     }
