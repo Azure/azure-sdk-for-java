@@ -66,8 +66,8 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
     }
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        return List.of(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 0),
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 0),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(20), 0));
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(20), 0)));
     }
 }

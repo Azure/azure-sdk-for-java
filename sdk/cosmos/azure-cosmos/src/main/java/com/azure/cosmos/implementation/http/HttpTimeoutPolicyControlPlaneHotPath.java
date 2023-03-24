@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -66,8 +67,8 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
     }
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        return List.of(new ResponseTimeoutAndDelays(Duration.ofSeconds((long).5), 0),
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds((long).5), 0),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0));
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
 }

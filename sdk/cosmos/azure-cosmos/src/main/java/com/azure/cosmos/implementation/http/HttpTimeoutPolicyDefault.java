@@ -11,6 +11,8 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -65,8 +67,8 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     }
 
     private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        return List.of(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0));
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0)));
     }
 }
