@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
