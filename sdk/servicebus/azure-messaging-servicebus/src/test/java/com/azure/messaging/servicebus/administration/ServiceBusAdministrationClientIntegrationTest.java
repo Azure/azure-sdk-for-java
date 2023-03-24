@@ -482,7 +482,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-99"
-            : getEntityName(getTopicBaseName(), 99);
+            : testResourceNamer.randomName(getTopicBaseName(), 10);
 
         assertFalse(client.getTopicExists(topicName));
     }
@@ -626,7 +626,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         final String ruleName = interceptorManager.isPlaybackMode()
             ? "rule-2"
-            : getEntityName(getRuleBaseName(), 2);
+            : "$Default";
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -750,7 +750,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         final String ruleName = interceptorManager.isPlaybackMode()
             ? "rule-2"
-            : getEntityName(getRuleBaseName(), 2);
+            : "$Default";
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
