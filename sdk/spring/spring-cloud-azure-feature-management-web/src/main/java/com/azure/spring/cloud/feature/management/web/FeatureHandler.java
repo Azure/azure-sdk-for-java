@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager;
+package com.azure.spring.cloud.feature.management.web;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
