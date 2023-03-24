@@ -37,7 +37,7 @@ public final class QueueDescriptionImpl {
     @JacksonXmlProperty(
             localName = "MaxSizeInMegabytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer maxSizeInMegabytes;
+    private Long maxSizeInMegabytes;
 
     /*
      * A value indicating if this queue requires duplicate detection.
@@ -272,7 +272,7 @@ public final class QueueDescriptionImpl {
     @JacksonXmlProperty(
             localName = "MaxMessageSizeInKilobytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer maxMessageSizeInKilobytes;
+    private Long maxMessageSizeInKilobytes;
 
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
@@ -304,7 +304,7 @@ public final class QueueDescriptionImpl {
      *
      * @return the maxSizeInMegabytes value.
      */
-    public Integer getMaxSizeInMegabytes() {
+    public Long getMaxSizeInMegabytes() {
         return this.maxSizeInMegabytes;
     }
 
@@ -315,7 +315,7 @@ public final class QueueDescriptionImpl {
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescriptionImpl setMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
+    public QueueDescriptionImpl setMaxSizeInMegabytes(Long maxSizeInMegabytes) {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
         return this;
     }
@@ -837,7 +837,7 @@ public final class QueueDescriptionImpl {
      *
      * @return the maxMessageSizeInKilobytes value.
      */
-    public Integer getMaxMessageSizeInKilobytes() {
+    public Long getMaxMessageSizeInKilobytes() {
         return this.maxMessageSizeInKilobytes;
     }
 
@@ -848,7 +848,7 @@ public final class QueueDescriptionImpl {
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescriptionImpl setMaxMessageSizeInKilobytes(Integer maxMessageSizeInKilobytes) {
+    public QueueDescriptionImpl setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
         this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }

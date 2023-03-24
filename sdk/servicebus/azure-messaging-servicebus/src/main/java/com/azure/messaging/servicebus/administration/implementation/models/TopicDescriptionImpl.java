@@ -38,7 +38,7 @@ public final class TopicDescriptionImpl {
     @JacksonXmlProperty(
             localName = "MaxSizeInMegabytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer maxSizeInMegabytes;
+    private Long maxSizeInMegabytes;
 
     /*
      * A value indicating if this topic requires duplicate detection.
@@ -235,7 +235,7 @@ public final class TopicDescriptionImpl {
     @JacksonXmlProperty(
             localName = "MaxMessageSizeInKilobytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer maxMessageSizeInKilobytes;
+    private Long maxMessageSizeInKilobytes;
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
@@ -267,7 +267,7 @@ public final class TopicDescriptionImpl {
      *
      * @return the maxSizeInMegabytes value.
      */
-    public Integer getMaxSizeInMegabytes() {
+    public Long getMaxSizeInMegabytes() {
         return this.maxSizeInMegabytes;
     }
 
@@ -278,7 +278,7 @@ public final class TopicDescriptionImpl {
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescriptionImpl setMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
+    public TopicDescriptionImpl setMaxSizeInMegabytes(Long maxSizeInMegabytes) {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
         return this;
     }
@@ -710,7 +710,7 @@ public final class TopicDescriptionImpl {
      *
      * @return the maxMessageSizeInKilobytes value.
      */
-    public Integer getMaxMessageSizeInKilobytes() {
+    public Long getMaxMessageSizeInKilobytes() {
         return this.maxMessageSizeInKilobytes;
     }
 
@@ -721,7 +721,7 @@ public final class TopicDescriptionImpl {
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescriptionImpl setMaxMessageSizeInKilobytes(Integer maxMessageSizeInKilobytes) {
+    public TopicDescriptionImpl setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
         this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
