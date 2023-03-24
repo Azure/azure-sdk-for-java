@@ -1189,6 +1189,10 @@ public final class DiagnosticsProvider {
                     attributes.put("rntbd.sub_status_code", Integer.toString(storeResponseDiagnostics.getSubStatusCode()));
                 }
 
+                if (storeResponseDiagnostics.getFaultInjectionRuleId() != null) {
+                    attributes.put("rntbd.fault_injection_rule_id", storeResponseDiagnostics.getFaultInjectionRuleId());
+                }
+
                 Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
                 if (backendLatency != null) {
                     attributes.put("rntbd.backend_latency", Double.toString(backendLatency));

@@ -71,7 +71,7 @@ public class AggregateDocumentQueryExecutionContext
 
                     for(FeedResponse<Document> page : superList) {
                         diagnosticsList.addAll(
-                            diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));

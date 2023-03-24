@@ -88,7 +88,7 @@ class OrderByUtils {
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
                 clientSideRequestStatistics.addAll(
-                    diagnosticsAccessor.getClientSideRequestStatistics(documentProducerFeedResponse
+                    diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
                 QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
                                                   BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));

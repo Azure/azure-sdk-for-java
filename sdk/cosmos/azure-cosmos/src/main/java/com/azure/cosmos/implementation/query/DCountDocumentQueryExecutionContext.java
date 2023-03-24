@@ -75,7 +75,7 @@ public class DCountDocumentQueryExecutionContext
 
                        for (FeedResponse<Document> page : superList) {
                            diagnostics.addAll(
-                               diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                               diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();
                            QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,

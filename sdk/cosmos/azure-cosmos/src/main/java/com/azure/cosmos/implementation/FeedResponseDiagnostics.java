@@ -43,6 +43,7 @@ public class FeedResponseDiagnostics {
         }
 
         this.clientSideRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
+        this.clientSideRequestStatistics.addAll(toBeCloned.clientSideRequestStatistics);
 
         if (diagnosticsContext != null) {
             this.diagnosticsContext = new QueryInfo.QueryPlanDiagnosticsContext(

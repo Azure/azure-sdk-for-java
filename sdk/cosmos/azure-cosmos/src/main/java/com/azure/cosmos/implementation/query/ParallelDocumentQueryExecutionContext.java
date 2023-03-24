@@ -406,7 +406,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         String activityId,
         Supplier<String> operationContextTextProvider) {
         Collection<ClientSideRequestStatistics> requestStatistics =
-            diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

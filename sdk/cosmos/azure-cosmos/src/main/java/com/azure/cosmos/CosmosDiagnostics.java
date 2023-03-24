@@ -18,9 +18,11 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -220,6 +222,22 @@ public final class CosmosDiagnostics {
         return ImmutableList.of(this.clientSideRequestStatistics);
     }
 
+    Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations() {
+        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
+        //feedResponseDiagnostics. So we need to add from both the places
+        List<ClientSideRequestStatistics> combinedStatistics = new ArrayList<>();
+
+        combinedStatistics
+            .addAll(this.feedResponseDiagnostics.getClientSideRequestStatistics());
+        if (this.clientSideRequestStatistics != null) {
+            combinedStatistics.add(this.clientSideRequestStatistics);
+        }
+
+        return combinedStatistics;
+    }
+
+
+
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
             if (parentNode != null) {
@@ -294,6 +312,15 @@ public final class CosmosDiagnostics {
                     }
 
                     return cosmosDiagnostics.getClientSideRequestStatistics();
+                }
+
+                @Override
+                public Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return new ArrayList<>();
+                    }
+
+                    return cosmosDiagnostics.getClientSideRequestStatisticsForQueryPipelineAggregations();
                 }
 
                 @Override
