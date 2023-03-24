@@ -36,7 +36,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -49,8 +48,19 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.azure.messaging.servicebus.TestUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
