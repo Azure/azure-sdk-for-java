@@ -67,7 +67,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationAsyncClient}.
  */
 @Tag("integration")
-@Execution(ExecutionMode.SAME_THREAD)
 class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 

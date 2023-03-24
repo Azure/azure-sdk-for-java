@@ -12,8 +12,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -40,15 +39,12 @@ import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,47 +57,9 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationClient}.
  */
 @Tag("integration")
-@Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
-
-    @AfterAll
-    static void cleanup() {
-
-        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return;
-        }
-        final ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(getConnectionString(false))
-            .buildClient();
-        // Clear all queues
-        client.listQueues().stream()
-            .filter(queueProperties -> !queueProperties.getName().toLowerCase(Locale.ROOT)
-                                        .equals(getEntityName(getQueueBaseName(), 5)))
-            .forEach(property -> client.deleteQueue(property.getName()));
-
-        //Clear all topics
-        client.listTopics().stream()
-            .filter(properties -> !(properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getTopicBaseName(), 2))
-            || properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getTopicBaseName(), 1))))
-            .forEach(property -> client.deleteTopic(property.getName()));
-
-        //Clear all subscriptions
-        final String topicName = getEntityName(getTopicBaseName(), 2);
-        client.listSubscriptions(topicName).stream()
-            .filter(properties -> !properties.getSubscriptionName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getSubscriptionBaseName(), 2)))
-            .forEach(property -> client.deleteSubscription(topicName, property.getSubscriptionName()));
-
-        //Clear rules in subscription
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
-        client.listRules(topicName, subscriptionName).stream()
-            .filter(properties -> !properties.getName().toLowerCase(Locale.ROOT)
-                .equals(getEntityName(getRuleBaseName(), 2)))
-            .forEach(property -> client.deleteRule(topicName, subscriptionName, property.getName()));
-    }
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientIntegrationTest.class);
 
     /**
      * Test to connect to the service bus with an azure sas credential.
@@ -126,14 +84,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .buildClient();
         NamespaceProperties np = client.getNamespaceProperties();
         assertNotNull(np.getName());
-    }
-
-    private void deleteIfExists(Runnable delete) {
-        try {
-            delete.run();
-        } catch (Exception ex) {
-            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
-        }
     }
 
     @Test
@@ -165,7 +115,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         expected.getAuthorizationRules().add(rule);
 
-        deleteIfExists(() -> client.deleteQueue(queueName));
         final QueueProperties actual = client.createQueue(queueName, expected);
         assertEquals(queueName, actual.getName());
 
@@ -187,9 +136,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getTotalMessageCount());
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
-
-        //cleanup
-        deleteIfExists(() -> client.deleteQueue(queueName));
     }
 
     @Test
@@ -219,8 +165,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getSubscriptionCount());
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
-
-        deleteIfExists(() -> client.deleteTopic(topicName));
     }
 
     @Test
@@ -359,7 +303,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getSubscriptionBaseName(), 2);
         final ServiceBusAdministrationClient client = getClient();
 
-        deleteIfExists(() -> client.deleteSubscription(topicName, subscriptionName));
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () -> client.createSubscription(topicName, subscriptionName),
             "Queue exists exception not thrown when creating a queue with existing name");
@@ -512,7 +455,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-99"
             : getEntityName(getTopicBaseName(), 99);
 
-        deleteIfExists(() -> client.deleteTopic(topicName));
         assertThrows(ResourceNotFoundException.class, () -> client.getTopic(topicName),
             "Topic exists! But should not. Incorrect getTopic behavior");
     }
@@ -534,7 +476,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-99"
             : getEntityName(getTopicBaseName(), 99);
 
-        deleteIfExists(() -> client.deleteTopic(topicName));
         assertFalse(client.getTopicExists(topicName));
     }
 
@@ -707,12 +648,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "queue-9"
             : getEntityName(getQueueBaseName(), 9);
 
-        try {
-            client.createQueue(queueName);
-        } catch (Exception ex) {
-            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
-        }
-
         client.deleteQueue(queueName);
     }
 
@@ -754,12 +689,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-9"
             : getEntityName(getTopicBaseName(), 9);
-
-        try {
-            client.createTopic(topicName);
-        } catch (Exception ex) {
-            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
-        }
 
         client.deleteTopic(topicName);
     }
