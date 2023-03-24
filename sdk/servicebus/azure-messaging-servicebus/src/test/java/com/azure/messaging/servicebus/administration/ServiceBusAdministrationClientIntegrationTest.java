@@ -99,7 +99,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-2"
-            : getEntityName(getQueueBaseName(), 2);
+            : testResourceNamer.randomName("queue", 10);
         final String forwardToEntityName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(getQueueBaseName(), 5);
@@ -216,7 +216,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -262,7 +262,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final SqlRuleFilter filter = new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
 
         final CreateRuleOptions options = new CreateRuleOptions()
@@ -461,7 +461,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-99"
-            : getEntityName(getTopicBaseName(), 99);
+            : testResourceNamer.randomName("topic", 10);
 
         assertThrows(ResourceNotFoundException.class, () -> client.getTopic(topicName),
             "Topic exists! But should not. Incorrect getTopic behavior");
@@ -515,7 +515,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionProperties properties = client.getSubscription(topicName, subscriptionName);
@@ -539,7 +539,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-99"
-            : getEntityName(getSubscriptionBaseName(), 99);
+            : testResourceNamer.randomName(getSubscriptionBaseName(), 10);
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () ->  client.getSubscription(topicName, subscriptionName),
@@ -612,7 +612,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
@@ -632,7 +632,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
 
         final Response<RuleProperties> response = client.getRuleWithResponse(topicName, subscriptionName, ruleName, null);
         assertEquals(200, response.getStatusCode());
@@ -670,7 +670,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
@@ -684,7 +684,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-9"
-            : getEntityName(getSubscriptionBaseName(), 9);
+            : testResourceNamer.randomName(getSubscriptionBaseName(), 10);
 
         client.createSubscription(topicName, subscriptionName);
 
