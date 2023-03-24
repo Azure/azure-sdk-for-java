@@ -43,6 +43,7 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -1403,7 +1404,16 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         @Override
         public void end(String statusMessage, Throwable error, Context context) {
-            LOGGER.info("--> end {}, {}", statusMessage, error);
+            if (error != null) {
+                LOGGER.info("Span-Error: {}", error.getMessage(), error);
+            }
+
+            if (error != null) {
+                LOGGER.info("Span-StatusMessage: {}", statusMessage);
+            }
+
+            LOGGER.info("Span-Json: {}", this.toJson());
+
             assertThat(this.error).isNull();
             assertThat(this.statusMessage).isNull();
             this.error = error;
@@ -1413,7 +1423,6 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         @Override
         public void setAttribute(String key, String value, Context context) {
-            LOGGER.info("--> SetAttribute {}: {}", key, value);
             this.attributes.put(key, value);
             this.context = context;
         }
@@ -1433,6 +1442,32 @@ public class CosmosTracerTest extends TestSuiteBase {
             this.context = null;
             this.attributes.clear();
             this.events.clear();
+        }
+
+        public String toJson() {
+            ObjectNode node = OBJECT_MAPPER.createObjectNode();
+            for (String attributeName : this.attributes.keySet()) {
+                node.put(attributeName, OBJECT_MAPPER. valueToTree(this.attributes.get(attributeName)));
+            }
+
+            if (!this.events.isEmpty()) {
+                ArrayNode eventsNode = node.putArray("events");
+                for (EventRecord event : events) {
+                    ObjectNode eventNode  = OBJECT_MAPPER.createObjectNode();
+                    for (String eventAttributeName : event.attributes.keySet()) {
+                        eventNode.put(
+                            eventAttributeName,
+                            OBJECT_MAPPER. valueToTree(event.attributes.get(eventAttributeName)));
+                    }
+                    eventsNode.add(eventNode);
+                }
+            }
+
+            try {
+                return OBJECT_MAPPER.writeValueAsString(node);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

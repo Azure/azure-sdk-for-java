@@ -2202,7 +2202,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .flatMap(documentCollectionResourceResponse -> {
                     final DocumentCollection collection = documentCollectionResourceResponse.v;
                     if (collection == null) {
-                        throw new IllegalStateException("Collection cannot be null");
+                        return Mono.error(new IllegalStateException("Collection cannot be null"));
                     }
 
                     final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
@@ -2217,7 +2217,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap = new HashMap<>();
                         CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
                         if (routingMap == null) {
-                            throw new IllegalStateException("Failed to get routing map.");
+                            return Mono.error(new IllegalStateException("Failed to get routing map."));
                         }
                         itemIdentityList
                             .forEach(itemIdentity -> {
@@ -2673,7 +2673,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             DocumentCollection collection = documentCollectionResourceResponse.v;
             if (collection == null) {
-                throw new IllegalStateException("Collection cannot be null");
+                return Mono.error(new IllegalStateException("Collection cannot be null"));
             }
 
             PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
@@ -2708,7 +2708,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
                         if (routingMap == null) {
-                            throw new IllegalStateException("Failed to get routing map.");
+                            return Mono.error(new IllegalStateException("Failed to get routing map."));
                         }
 
                         String effectivePartitionKeyString = PartitionKeyInternalHelper
@@ -2818,31 +2818,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in creating a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Mono.error(e);
-        }
-    }
-
-    private Mono<ResourceResponse<StoredProcedure>> upsertStoredProcedureInternal(String collectionLink,
-                                                                                        StoredProcedure storedProcedure, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
-        // we are using an observable factory here
-        // observable will be created fresh upon subscription
-        // this is to ensure we capture most up to date information (e.g.,
-        // session)
-        try {
-
-            logger.debug("Upserting a StoredProcedure. collectionLink: [{}], storedProcedure id [{}]",
-                    collectionLink, storedProcedure.getId());
-            RxDocumentServiceRequest request = getStoredProcedureRequest(collectionLink, storedProcedure, options,
-                    OperationType.Upsert);
-            if (retryPolicyInstance != null) {
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
-
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, StoredProcedure.class));
-
-        } catch (Exception e) {
-            // this is only in trace level to capture what's going on
-            logger.debug("Failure in upserting a StoredProcedure due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
     }
@@ -3081,26 +3056,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Mono<ResourceResponse<Trigger>> upsertTriggerInternal(String collectionLink, Trigger trigger,
-                                                                        RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
-        try {
-
-            logger.debug("Upserting a Trigger. collectionLink [{}], trigger id [{}]", collectionLink,
-                    trigger.getId());
-            RxDocumentServiceRequest request = getTriggerRequest(collectionLink, trigger, options,
-                    OperationType.Upsert);
-            if (retryPolicyInstance != null){
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
-
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Trigger.class));
-
-        } catch (Exception e) {
-            logger.debug("Failure in upserting a Trigger due to [{}]", e.getMessage(), e);
-            return Mono.error(e);
-        }
-    }
-
     private RxDocumentServiceRequest getTriggerRequest(String collectionLink, Trigger trigger, RequestOptions options,
                                                        OperationType operationType) {
         if (StringUtils.isEmpty(collectionLink)) {
@@ -3265,30 +3220,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in creating a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Mono.error(e);
-        }
-    }
-
-    private Mono<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunctionInternal(String collectionLink,
-                                                                                                UserDefinedFunction udf, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
-        // we are using an observable factory here
-        // observable will be created fresh upon subscription
-        // this is to ensure we capture most up to date information (e.g.,
-        // session)
-        try {
-            logger.debug("Upserting a UserDefinedFunction. collectionLink [{}], udf id [{}]", collectionLink,
-                    udf.getId());
-            RxDocumentServiceRequest request = getUserDefinedFunctionRequest(collectionLink, udf, options,
-                    OperationType.Upsert);
-            if (retryPolicyInstance != null){
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
-
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, UserDefinedFunction.class));
-
-        } catch (Exception e) {
-            // this is only in trace level to capture what's going on
-            logger.debug("Failure in upserting a UserDefinedFunction due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
     }
@@ -4406,7 +4337,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return collectionObs.flatMap(documentCollectionResourceResponse -> {
             final DocumentCollection collection = documentCollectionResourceResponse.v;
             if (collection == null) {
-                throw new IllegalStateException("Collection cannot be null");
+                return Mono.error(new IllegalStateException("Collection cannot be null"));
             }
 
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache

@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -31,7 +32,7 @@ public final class CosmosDiagnosticsContext {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
-    private final static ObjectMapper mapper = new ObjectMapper();
+    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
     private final String spanName;
     private final String accountName;
