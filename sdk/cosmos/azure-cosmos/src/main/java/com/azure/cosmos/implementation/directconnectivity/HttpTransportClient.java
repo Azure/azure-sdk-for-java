@@ -249,7 +249,7 @@ public class HttpTransportClient extends TransportClient {
 
     @Override
     public IOpenConnectionsHandler getOpenConnectionsHandler() {
-        throw new NotImplementedException("openConnection is not supported in httpTransportClient");
+        return null;
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
