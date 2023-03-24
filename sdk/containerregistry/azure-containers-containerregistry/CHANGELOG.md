@@ -6,15 +6,19 @@
 
 ### Breaking Changes from version 1.1.0-beta.3
 
-- Replaced `setManifest(OciImageManifest)` method on `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` classes
-  with `setManifest(OciImageManifest manifest, String tag)` method.
-- Removed `DownloadBlobAsyncResult` in favor of using `BinaryData` instead.
-- Removed `Collection<ManifestMediaType> mediaTypes` parameter from `getManifestWithResponse` method on blob clients.
-- Renamed `ContainerRegistryContentClient.downloadStream(String, WritableByteChannel, Context`) to `downloadStreamWithResponse`. It also now returns `Response<Void>`.
-- Renamed `ContainerRegistryContentClientBuilder.repository` method to `repositoryName`.
-- Renamed `GetManifestResult.getMediaType` to `getManifestMediaType` 
-- Renamed `SetManifestOptions.getMediaType` to `getManifestMediaType`
-- Moved `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` classes to `com.azure.containers.containerregistry` package.
+- `ContainerRegistryContentClientBuilder`, `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were renamed to `ContainerRegistryContentClientBuilder`,
+  `ContainerRegistryContentClient`, and `ContainerRegistryContentAsyncClient` and moved to `com.azure.containers.containerregistry` package. 
+- `UploadBlobResult` was renamed to `UploadRegistryBlobResult`
+- `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` changes:
+  - `uploadManifest` method was renamed to `setManifest`, `uploadManifestWithResponse` renamed to `setManifestWithResponse`, the return type of these methods was renamed to `SetManifestResult`.
+    `UploadManifestOptions` renamed to `SetManifestOptions`.
+  - `downloadManifest` method was renamed to `getManifest`, `downloadManifestWithResponse` renamed to `getManifestWithResponse`, the return type of these methods renamed to `GetManifestResult`.
+  - Removed `DownloadBlobAsyncResult` and changes `ContainerRegistryContentAsyncClient.downloadStream` return type to `Mono<BinaryData>`.
+  - Removed `Collection<ManifestMediaType> mediaTypes` parameter from `downloadManifestWithResponse` method on blob clients.
+  - Renamed `downloadStream(String, WritableByteChannel, Context`) to `downloadStreamWithResponse`. It also now returns `Response<Void>`.
+  - Renamed `ContainerRegistryContentClientBuilder.repository` method to `repositoryName`.
+- Renamed `GetManifestResult.getMediaType` and `UploadManifestOptions.getMediaType` to `getManifestMediaType`
+- Removed `GetManifestResult.asOciManifest` - use `GetManifestResult.getManifest().toObject(OciImageManifest.class)` instead.
 
 ### Bugs Fixed
 
@@ -38,19 +42,19 @@
 
 ### Breaking Changes from version 1.1.0-beta.2
 - Download blob changes:
-  - `ContainerRegistryContentClient.downloadBlob` method was renamed to `downloadStream` and now writes content to channel provided in parameters. It no longer returns `DownloadBlobResult`.
-  - `ContainerRegistryContentAsyncClient.downloadBlob` method was renamed to `downloadStream` and now returns `DownloadBlobAsyncResult`.
-  - `downloadBlobWithResponse` methods on `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` classes were removed.
+  - `ContainerRegistryBlobClient.downloadBlob` method was renamed to `downloadStream` and now writes content to channel provided in parameters. It no longer returns `DownloadBlobResult`.
+  - `ContainerRegistryBlobAsyncClient.downloadBlob` method was renamed to `downloadStream` and now returns `DownloadBlobAsyncResult`.
+  - `downloadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes were removed.
 - Upload blob changes:
-  - `uploadBlobWithResponse` methods on `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` were removed.
+  - `uploadBlobWithResponse` methods on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were removed.
 - Manifest changes:
-  - `GetManifestOptions` class was removed: `getManifest` and `getManifestWithResponse` methods
-    (on `ContainerRegistryContentAsyncClient` or `ContainerRegistryContentClient`) now take tag or digest string value instead of `GetManifestOptions`
-  - `GetManifestResult.getManifestStream` and `getManifest` methods were renamed to `getContent` and `asOciImageManifest`.
+  - `DownloadManifestOptions` class was removed: `downloadManifest` and `downloadManifestWithResponse` methods
+    (on `ContainerRegistryBlobAsyncClient` or `ContainerRegistryBlobClient`) now take tag or digest string value instead of `DownloadManifestOptions`
+  - `DownloadManifestResult.getManifestStream` and `getManifest` methods were renamed to `getContent` and `asOciManifest`.
   - `OciBlobDescriptor` class was renamed to `OciDescriptor`, `getSize` and `setSize` methods on it were renamed to `getSizeInBytes` and `setSizeInBytes`
   - `OciManifest` class was renamed to `OciImageManifest`
-  - `SetManifestOptions(binaryData)` constructor was replaced with `SetManifestOptions(BinaryData, ManifestMediaType)` one.
-  - `SetManifestResult(string)` constructor was removed.
+  - `UploadManifestOptions(binaryData)` constructor was replaced with `UploadManifestOptions(BinaryData, ManifestMediaType)` one.
+  - `UploadManifestResult(string)` constructor was removed.
 - Misc
   - Default audience was changed from `https://management.azure.com` to `https://containerregistry.azure.net`.
 
@@ -158,7 +162,7 @@
 ### Features Added
 
 - Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
-- Added support for `ContainerRegistryContentAsyncClient`.
+- Added support for `ContainerRegistryBlobAsyncClient`.
 
 ## 1.0.3 (2022-04-06)
 
@@ -190,8 +194,8 @@
 ## 1.0.0 (2022-01-11)
 
 ### Breaking Changes
- - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
- - Renamed `ArtifactManifestOrderBy` to `ArtifactManifestOrder`.
+  - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
+  - Renamed `ArtifactManifestOrderBy` to `ArtifactManifestOrder`.
 
 ### Other Changes
 
