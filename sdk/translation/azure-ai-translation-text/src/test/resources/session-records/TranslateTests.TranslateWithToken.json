@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/translate?to=cs&api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "d6bfc124-62fd-44b0-bbf0-36c82985915e",
+      "x-ms-client-request-id" : "d1d3bb9c-f570-48cb-a116-3dd4f3ae4d83",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "TRAN.MW1P.99BD.0323T1927.C96AB4C",
+      "X-RequestId" : "TRAN.SN1P.E230.0323T2309.6DC7E93",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -18,7 +18,7 @@
       "Content-Length" : "105",
       "StatusCode" : "200",
       "Body" : "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":1.0},\"translations\":[{\"text\":\"Tohle je test.\",\"to\":\"cs\"}]}]",
-      "Date" : "Thu, 23 Mar 2023 19:27:02 GMT",
+      "Date" : "Thu, 23 Mar 2023 23:09:56 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/transliterate?language=zh-Hans&fromScript=Hans&toScript=Latn&api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "3ab48ac4-334e-4876-b9f9-e26008b6869e",
+      "x-ms-client-request-id" : "a695022a-5fdf-4f75-8c65-a2b199d8b98c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "TLIT.MW1P.99BD.0323T1927.C96AC09",
+      "X-RequestId" : "TLIT.SN1P.E230.0323T2310.6DC8202",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -17,7 +17,7 @@
       "Content-Length" : "60",
       "StatusCode" : "200",
       "Body" : "[{\"text\":\"zhè lǐ zěn me yì huí shì?\",\"script\":\"Latn\"}]",
-      "Date" : "Thu, 23 Mar 2023 19:27:03 GMT",
+      "Date" : "Thu, 23 Mar 2023 23:09:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

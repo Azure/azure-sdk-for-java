@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/translate?to=cs&api-version=3.0&includeAlignment=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "a9bd01c3-d5d2-4e85-b72a-63751ba29b14",
+      "x-ms-client-request-id" : "ff3518d5-ddcd-4ff7-85a9-e4aea269df42",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "TRAN.MW1P.99BD.0323T1927.C96ABBB",
+      "X-RequestId" : "TRAN.SN1P.E230.0323T2309.6DC801D",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -18,7 +18,7 @@
       "Content-Length" : "159",
       "StatusCode" : "200",
       "Body" : "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":1.0},\"translations\":[{\"text\":\"Je krásné ráno\",\"to\":\"cs\",\"alignment\":{\"proj\":\"0:1-0:1 0:1-3:8 18:24-10:13\"}}]}]",
-      "Date" : "Thu, 23 Mar 2023 19:27:03 GMT",
+      "Date" : "Thu, 23 Mar 2023 23:09:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

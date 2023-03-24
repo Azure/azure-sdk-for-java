@@ -47,7 +47,7 @@ public class TransliterationTests extends TextTranslationClientBase {
         String[] expectedText = { "ગુજરાત", "હદમાં", "હુક્કાબાર" };
         int editDistance = 0;
         for (int i = 0; i < expectedText.length; i++) {
-            editDistance = editDistance + TestHelper.EditDistance(expectedText[i], response.get(i).getText());
+            editDistance = editDistance + TestHelper.editDistance(expectedText[i], response.get(i).getText());
         }
         assertTrue(editDistance < 6, "Total string distance: {editDistance}");
     }

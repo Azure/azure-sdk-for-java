@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/dictionary/lookup?from=en&to=es&api-version=3.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
-      "x-ms-client-request-id" : "78761300-9eef-4429-8b27-455056ad578d",
+      "x-ms-client-request-id" : "75fc8121-b87f-4cb1-a370-88f57c1ec0c2",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "X-RequestId" : "DTLK.MW1P.99BD.0323T1927.C96A84D",
+      "X-RequestId" : "DTLK.SN1P.E230.0323T2309.6DC7C5C",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
       "X-Content-Type-Options" : "nosniff",
@@ -17,7 +17,7 @@
       "Content-Length" : "3045",
       "StatusCode" : "200",
       "Body" : "[{\"normalizedSource\":\"fly\",\"displaySource\":\"fly\",\"translations\":[{\"normalizedTarget\":\"volar\",\"displayTarget\":\"volar\",\"posTag\":\"VERB\",\"confidence\":0.4081,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":15,\"frequencyCount\":4637},{\"normalizedText\":\"flying\",\"displayText\":\"flying\",\"numExamples\":15,\"frequencyCount\":1365},{\"normalizedText\":\"blow\",\"displayText\":\"blow\",\"numExamples\":15,\"frequencyCount\":503},{\"normalizedText\":\"flight\",\"displayText\":\"flight\",\"numExamples\":15,\"frequencyCount\":135}]},{\"normalizedTarget\":\"mosca\",\"displayTarget\":\"mosca\",\"posTag\":\"NOUN\",\"confidence\":0.2668,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":15,\"frequencyCount\":1697},{\"normalizedText\":\"flyweight\",\"displayText\":\"flyweight\",\"numExamples\":0,\"frequencyCount\":48},{\"normalizedText\":\"flies\",\"displayText\":\"flies\",\"numExamples\":9,\"frequencyCount\":34}]},{\"normalizedTarget\":\"operan\",\"displayTarget\":\"operan\",\"posTag\":\"VERB\",\"confidence\":0.1144,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"operate\",\"displayText\":\"operate\",\"numExamples\":15,\"frequencyCount\":1344},{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":1,\"frequencyCount\":422}]},{\"normalizedTarget\":\"pilotar\",\"displayTarget\":\"pilotar\",\"posTag\":\"VERB\",\"confidence\":0.095,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":15,\"frequencyCount\":104},{\"normalizedText\":\"pilot\",\"displayText\":\"pilot\",\"numExamples\":15,\"frequencyCount\":61}]},{\"normalizedTarget\":\"moscas\",\"displayTarget\":\"moscas\",\"posTag\":\"VERB\",\"confidence\":0.0644,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"flies\",\"displayText\":\"flies\",\"numExamples\":15,\"frequencyCount\":1219},{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":15,\"frequencyCount\":143}]},{\"normalizedTarget\":\"marcha\",\"displayTarget\":\"marcha\",\"posTag\":\"NOUN\",\"confidence\":0.0514,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"march\",\"displayText\":\"March\",\"numExamples\":15,\"frequencyCount\":5355},{\"normalizedText\":\"up\",\"displayText\":\"up\",\"numExamples\":15,\"frequencyCount\":1277},{\"normalizedText\":\"running\",\"displayText\":\"running\",\"numExamples\":15,\"frequencyCount\":752},{\"normalizedText\":\"going\",\"displayText\":\"going\",\"numExamples\":15,\"frequencyCount\":570},{\"normalizedText\":\"fly\",\"displayText\":\"fly\",\"numExamples\":15,\"frequencyCount\":253}]}]},{\"normalizedSource\":\"fox\",\"displaySource\":\"fox\",\"translations\":[{\"normalizedTarget\":\"fox\",\"displayTarget\":\"Fox\",\"posTag\":\"NOUN\",\"confidence\":0.5333,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"fox\",\"displayText\":\"fox\",\"numExamples\":15,\"frequencyCount\":2888}]},{\"normalizedTarget\":\"zorro\",\"displayTarget\":\"zorro\",\"posTag\":\"NOUN\",\"confidence\":0.4667,\"prefixWord\":\"\",\"backTranslations\":[{\"normalizedText\":\"fox\",\"displayText\":\"fox\",\"numExamples\":15,\"frequencyCount\":1984},{\"normalizedText\":\"thresher\",\"displayText\":\"thresher\",\"numExamples\":0,\"frequencyCount\":16},{\"normalizedText\":\"foxes\",\"displayText\":\"foxes\",\"numExamples\":5,\"frequencyCount\":15}]}]}]",
-      "Date" : "Thu, 23 Mar 2023 19:27:00 GMT",
+      "Date" : "Thu, 23 Mar 2023 23:09:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

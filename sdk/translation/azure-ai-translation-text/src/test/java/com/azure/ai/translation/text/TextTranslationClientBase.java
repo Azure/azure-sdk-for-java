@@ -19,7 +19,7 @@ public class TextTranslationClientBase extends TestBase {
     private final String defaultApiKey = "fakeApiKey";
     private final String defaultRegion = "fakeRegion";
     private final String defaultCustomEndpoint = "https://fakeCustomEndpoint.cognitiveservices.azure.com";
-	private final String defaultTokenURL = "https://fakeTokenEndpoint.api.cognitive.microsoft.com";
+    private final String defaultTokenURL = "https://fakeTokenEndpoint.api.cognitive.microsoft.com";
 
     TextTranslationClient getTranslationClient() {
         return getClient(getEndpoint());
@@ -28,7 +28,6 @@ public class TextTranslationClientBase extends TestBase {
     TextTranslationClient getTranslationClientWithCustomEndpoint() {
         return getClient(getCustomEndpoint());
     }
-
 
     TextTranslationClient getClient(String endpoint) {
         TextTranslationClientBuilder textTranslationClientbuilder =
@@ -59,22 +58,20 @@ public class TextTranslationClientBase extends TestBase {
     }
 
     private String getRegion() {
-    return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
+        return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
     }
 
 	private String getTokenURL() {
-    return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_TOKENURL", defaultTokenURL);
+        return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_TOKENURL", defaultTokenURL);
     }
 
-    TextTranslationClient getTranslationClientWithToken()
-        throws MalformedURLException, IOException
-    {
+    TextTranslationClient getTranslationClientWithToken() throws MalformedURLException, IOException {
         TextTranslationClientBuilder textTranslationClientbuilder =
-                new TextTranslationClientBuilder()
-                        .credential(getTokenCredential())
-                        .region(getRegion())
-                        .endpoint(getEndpoint())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            new TextTranslationClientBuilder()
+            .credential(getTokenCredential())
+            .region(getRegion())
+            .endpoint(getEndpoint())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -84,9 +81,7 @@ public class TextTranslationClientBase extends TestBase {
         return textTranslationClientbuilder.buildClient();
     }
 
-    private TokenCredential getTokenCredential()
-        throws MalformedURLException, IOException
-    {
+    private TokenCredential getTokenCredential() throws MalformedURLException, IOException {
         String tokenResponse;
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -104,7 +99,6 @@ public class TextTranslationClientBase extends TestBase {
             tokenResponse = in.readLine();
             in.close();
         }
-
         return new StaticTokenForTest(tokenResponse);
     }
 }
