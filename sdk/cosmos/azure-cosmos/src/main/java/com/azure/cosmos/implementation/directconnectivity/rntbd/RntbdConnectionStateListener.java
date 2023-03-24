@@ -97,14 +97,16 @@ public class RntbdConnectionStateListener {
                 "DEFENSIVE"
         );
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
-                new OpenConnectionOperation(
-                        openConnectionsCallable,
-                        endpoint.serviceEndpoint(),
-                        this.addressUris.stream().findFirst().get(),
-                        "DEFENSIVE"
-                )
-        );
+        for (int i = 0; i < endpoint.getMinChannelsRequired(); i++) {
+            this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
+                    new OpenConnectionOperation(
+                            openConnectionsCallable,
+                            endpoint.serviceEndpoint(),
+                            this.addressUris.stream().findFirst().get(),
+                            "DEFENSIVE"
+                    )
+            );
+        }
 
         this.proactiveOpenConnectionsProcessor
                 .getOpenConnectionsPublisher()

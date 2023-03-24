@@ -749,7 +749,15 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     private void blockListVoidResponseWithTimeout(Mono<List<Void>> voidListMono, Duration timeout) {
-        voidListMono.block(timeout);
+        try {
+            voidListMono.block(timeout);
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            }
+        }
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

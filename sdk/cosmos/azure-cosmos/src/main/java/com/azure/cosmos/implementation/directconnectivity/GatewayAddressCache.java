@@ -1037,7 +1037,7 @@ public class GatewayAddressCache implements IAddressCache {
                     Configs.getMinConnectionPoolSizePerEndpoint());
 
             if (isBackgroundFlow) {
-                for (int i = 0; i < connectionPolicy.getMinChannelPoolSizePerEndpoint(); i++) {
+                for (int i = 0; i < connectionsRequiredForEndpoint; i++) {
                     Callable<Flux<OpenConnectionResponse>> openConnectionsFunc =
                             () -> this.openConnectionsHandler.openConnections(
                                     documentCollection.getResourceId(),
@@ -1057,8 +1057,6 @@ public class GatewayAddressCache implements IAddressCache {
                 }
                 return Flux.empty();
             }
-
-            List<Flux<OpenConnectionResponse>> openConnectionTasks = new ArrayList<>();
 
             return this.openConnectionsHandler.openConnections(
                     documentCollection.getResourceId(),

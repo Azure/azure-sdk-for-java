@@ -168,8 +168,8 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             this.serverErrorInjector,
-                proactiveOpenConnectionsProcessor
-            );
+            proactiveOpenConnectionsProcessor
+        );
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);

@@ -185,8 +185,6 @@ public class GlobalAddressResolver implements IAddressResolver {
             return containerLinkToColl1.getLeft().compareTo(containerLinkToColl2.getLeft());
         };
 
-        System.out.println("Address resolution flux list : " + addressResolutionFluxList.size());
-
         List<Flux<OpenConnectionResponse>> openConnectionTasks = new ArrayList<>();
 
         for (int i = 0; i < addressResolutionFluxList.size(); i++) {

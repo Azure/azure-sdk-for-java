@@ -80,6 +80,7 @@ public class StoreClient implements IStoreClient {
             useMultipleWriteLocations);
 
         addressResolver.setOpenConnectionsHandler(this.transportClient.getOpenConnectionsHandler());
+        addressResolver.setOpenConnectionsProcessor(this.transportClient.getOpenConnectionsProcessor());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

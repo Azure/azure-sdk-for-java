@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -130,95 +131,110 @@ public class GlobalAddressResolverTest {
         assertThat(urlsBeforeResolve.contains(testUrl)).isTrue();//New endpoint will be added in addressCacheByEndpoint
     }
 
-//    @Test(groups = "unit")
-//    public void openConnectionAndInitCaches() {
-//        GlobalAddressResolver globalAddressResolver =
-//                new GlobalAddressResolver(
-//                        mockDiagnosticsClientContext(),
-//                        httpClient,
-//                        endpointManager,
-//                        Protocol.HTTPS,
-//                        authorizationTokenProvider,
-//                        collectionCache,
-//                        routingMapProvider,
-//                        userAgentContainer,
-//                        serviceConfigReader,
-//                        connectionPolicy,
-//                        null);
-//        GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
-//        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
-//        endpointCache.addressCache = gatewayAddressCache;
-//        globalAddressResolver.addressCacheByEndpoint.clear();
-//        globalAddressResolver.addressCacheByEndpoint.put(urlforRead1, endpointCache);
-//        globalAddressResolver.addressCacheByEndpoint.put(urlforRead2, endpointCache);
-//
-//        Mockito
-//                .when(endpointManager.getReadEndpoints())
-//                .thenReturn(new UnmodifiableList<URI>(Arrays.asList(urlforRead1, urlforRead2)));
-//
-//        DocumentCollection documentCollection = new DocumentCollection();
-//        documentCollection.setId("TestColl");
-//        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
-//        documentCollection.setSelfLink("dbs/testDb/colls/TestColl");
-//
-//        PartitionKeyRange range = new PartitionKeyRange(
-//                "0",
-//                PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
-//                PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
-//        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
-//        partitionKeyRanges.add(range);
-//
-//        Mockito
-//                .when(collectionCache.resolveByNameAsync(null, documentCollection.getSelfLink(), null))
-//                .thenReturn(Mono.just(documentCollection));
-//
-//        Mockito
-//                .when(routingMapProvider.tryGetOverlappingRangesAsync(
-//                        null,
-//                        documentCollection.getResourceId(),
-//                        PartitionKeyInternalHelper.FullRange,
-//                        true,
-//                        null))
-//                .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
-//
-//        // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
-//        List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
-//        for (PartitionKeyRange partitionKeyRange : partitionKeyRanges) {
-//            ranges.add(new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId()));
-//        }
-//
-//        List<OpenConnectionResponse> openConnectionResponses = new ArrayList<>();
-//        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true);
-//        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"));
-//
-//        openConnectionResponses.add(response1);
-//        openConnectionResponses.add(response2);
-//
-//        Mockito
-//                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint()))
-//                .thenReturn(Flux.fromIterable(openConnectionResponses));
-//
-//        CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
-//                .setProactiveConnectionRegionsCount(1)
-//                .build();
-//
-//        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))
-//                        .expectNext(response1)
-//                        .expectNext(response2)
-//                        .verifyComplete();
-//        Mockito
-//                .verify(collectionCache, Mockito.times(1))
-//                .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
-//        Mockito
-//                .verify(routingMapProvider, Mockito.times(1))
-//                .tryGetOverlappingRangesAsync(
-//                        null,
-//                        documentCollection.getResourceId(),
-//                        PartitionKeyInternalHelper.FullRange,
-//                        true,
-//                        null);
-//        Mockito
-//                .verify(gatewayAddressCache, Mockito.times(1))
-//                .openConnectionsAndInitCaches(documentCollection, ranges, Configs.getMinConnectionPoolSizePerEndpoint());
-//    }
+    @Test(groups = "unit")
+    public void openConnectionAndInitCaches() {
+        GlobalAddressResolver globalAddressResolver =
+                new GlobalAddressResolver(
+                        mockDiagnosticsClientContext(),
+                        httpClient,
+                        endpointManager,
+                        Protocol.HTTPS,
+                        authorizationTokenProvider,
+                        collectionCache,
+                        routingMapProvider,
+                        userAgentContainer,
+                        serviceConfigReader,
+                        connectionPolicy,
+                        null);
+        GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
+        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
+        endpointCache.addressCache = gatewayAddressCache;
+        globalAddressResolver.addressCacheByEndpoint.clear();
+        globalAddressResolver.addressCacheByEndpoint.put(urlforRead1, endpointCache);
+        globalAddressResolver.addressCacheByEndpoint.put(urlforRead2, endpointCache);
+
+        AddressInformation addressInformation = new AddressInformation(true, true, "https://be1.west-us.com:8080", Protocol.TCP);
+
+        Mockito
+                .when(endpointManager.getReadEndpoints())
+                .thenReturn(new UnmodifiableList<URI>(Arrays.asList(urlforRead1, urlforRead2)));
+
+        DocumentCollection documentCollection = new DocumentCollection();
+        documentCollection.setId("TestColl");
+        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
+        documentCollection.setSelfLink("dbs/testDb/colls/TestColl");
+
+        PartitionKeyRange range = new PartitionKeyRange(
+                "0",
+                PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+                PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
+        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
+        partitionKeyRanges.add(range);
+
+        Mockito
+                .when(collectionCache.resolveByNameAsync(null, documentCollection.getSelfLink(), null))
+                .thenReturn(Mono.just(documentCollection));
+
+        Mockito
+                .when(routingMapProvider.tryGetOverlappingRangesAsync(
+                        null,
+                        documentCollection.getResourceId(),
+                        PartitionKeyInternalHelper.FullRange,
+                        true,
+                        null))
+                .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
+
+        // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
+        List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
+        for (PartitionKeyRange partitionKeyRange : partitionKeyRanges) {
+            ranges.add(new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId()));
+        }
+
+        List<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> collectionToAddresses = new ArrayList<>();
+
+        collectionToAddresses.add(new ImmutablePair<>(new ImmutablePair<>("coll1", documentCollection), addressInformation));
+
+        List<OpenConnectionResponse> openConnectionResponses = new ArrayList<>();
+        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true);
+        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"));
+
+        openConnectionResponses.add(response1);
+        openConnectionResponses.add(response2);
+
+        Mockito
+                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.anyString()))
+                        .thenReturn(Flux.fromIterable(collectionToAddresses));
+
+        Mockito
+                .when(gatewayAddressCache.openConnections(addressInformation, documentCollection,  "AGGRESSIVE", Configs.getMinConnectionPoolSizePerEndpoint(), false))
+                .thenReturn(Flux.fromIterable(openConnectionResponses));
+
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
+                .setProactiveConnectionRegionsCount(1)
+                .build();
+
+        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, "AGGRESSIVE", false))
+                        .expectNext(response1)
+                        .expectNext(response2)
+                        .verifyComplete();
+        Mockito
+                .verify(collectionCache, Mockito.times(1))
+                .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
+        Mockito
+                .verify(routingMapProvider, Mockito.times(1))
+                .tryGetOverlappingRangesAsync(
+                        null,
+                        documentCollection.getResourceId(),
+                        PartitionKeyInternalHelper.FullRange,
+                        true,
+                        null);
+        Mockito
+                .verify(gatewayAddressCache, Mockito.times(1))
+                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.anyString());
+
+
+        Mockito
+                .verify(gatewayAddressCache, Mockito.times(1))
+                .openConnections(addressInformation, documentCollection,  "AGGRESSIVE", Configs.getMinConnectionPoolSizePerEndpoint(), false);
+    }
 }
