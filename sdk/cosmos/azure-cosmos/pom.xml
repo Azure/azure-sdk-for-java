@@ -75,6 +75,8 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd=com.fasterxml.jackson.databind
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.feedranges=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.patch=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
@@ -98,6 +100,13 @@ Licensed under the MIT License.
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-test</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>commons-io</groupId>

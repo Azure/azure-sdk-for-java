@@ -9,6 +9,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -20,6 +21,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -35,6 +37,7 @@ import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -42,6 +45,17 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
+import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -50,6 +64,7 @@ import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -65,6 +80,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -75,6 +91,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
+import static org.assertj.core.api.InstanceOfAssertFactories.comparable;
 
 public class CosmosTracerTest extends TestSuiteBase {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTracerTest.class);
@@ -299,6 +316,86 @@ public class CosmosTracerTest extends TestSuiteBase {
             enableRequestLevelTracing,
             forceThresholdViolations);
         mockTracer.reset();
+    }
+
+    @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = 10000000 * TIMEOUT)
+    public void cosmosAsyncContainerWithFaultInjection(
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        boolean forceThresholdViolations) throws Exception {
+
+        if (client.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure ingestion is only supported for Direct mode currently.");
+        }
+
+        TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
+
+        createAndInitializeDiagnosticsProvider(
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, forceThresholdViolations);
+
+        IFaultInjectionResult result = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(Duration.ofMillis(20))
+            .build();
+
+        FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .build();
+
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay")
+            .condition(condition)
+            .result(result)
+            .build();
+
+        FaultInjectorProvider injectorProvider = (FaultInjectorProvider) cosmosAsyncContainer
+            .getOrConfigureFaultInjectorProvider(() -> new FaultInjectorProvider(cosmosAsyncContainer));
+
+        injectorProvider.configureFaultInjectionRules(List.of(rule)).block();
+
+
+        ObjectNode item = getDocumentDefinition(ITEM_ID);
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+
+        try {
+            for (boolean injectedFailureEnabled : Arrays.asList(true, false)) {
+
+                try {
+                    if (!injectedFailureEnabled) {
+                        rule.disable();
+                    }
+
+                    CosmosItemResponse<ObjectNode> cosmosItemResponse = cosmosAsyncContainer
+                        .createItem(item, requestOptions)
+                        .block();
+
+                    assertThat(cosmosItemResponse).isNotNull();
+                    assertThat(cosmosItemResponse.getDiagnostics().toString().contains("InjectedResponseDelay"))
+                        .isEqualTo(injectedFailureEnabled);
+                    verifyTracerAttributes(
+                        mockTracer,
+                        "createItem." + cosmosAsyncContainer.getId(),
+                        cosmosAsyncDatabase.getId(),
+                        cosmosAsyncContainer.getId(),
+                        cosmosItemResponse.getDiagnostics(),
+                        null,
+                        useLegacyTracing,
+                        enableRequestLevelTracing,
+                        forceThresholdViolations);
+
+                } finally {
+                    mockTracer.reset();
+
+                    cosmosAsyncContainer
+                        .deleteItem(item, requestOptions)
+                        .block();
+                    mockTracer.reset();
+                }
+            }
+        }
+        finally {
+            rule.disable();
+        }
     }
 
     @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = 10000000 * TIMEOUT)
