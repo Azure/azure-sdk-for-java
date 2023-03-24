@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
@@ -62,6 +63,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1299,7 +1301,11 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         clientTelemetryConfig.tracer(mockTracer);
 
-        DiagnosticsProvider tracerProvider = new DiagnosticsProvider(clientTelemetryConfig);
+        DiagnosticsProvider tracerProvider = new DiagnosticsProvider(
+            clientTelemetryConfig,
+            client.getClientCorrelationTag().getValue(),
+            client.getUserAgent(),
+            client.getConnectionPolicy().getConnectionMode());
         ReflectionUtils.setClientTelemetryConfig(client, clientTelemetryConfig);
         ReflectionUtils.setDiagnosticsProvider(client, tracerProvider);
 
@@ -1376,22 +1382,37 @@ public class CosmosTracerTest extends TestSuiteBase {
         public Map<String, Object> attributes = new HashMap<>();
         public String methodName;
         public String statusMessage;
+        public Instant startTime;
+        public Instant endTime;
         public Throwable error;
         public List<EventRecord> events = new ArrayList<>();
         public Context context;
+        public SpanKind spanKind = SpanKind.INTERNAL;
 
         @Override
         public Context start(String methodName, Context context) {
             LOGGER.info("--> start {}", methodName);
             assertThat(this.methodName).isNull();
             this.methodName = methodName;
-
+            this.startTime = Instant.now();
             return this.context = context;
         }
 
         @Override
         public Context start(String methodName, StartSpanOptions options, Context context) {
             Context ctx = Tracer.super.start(methodName, options, context);
+
+            if (options != null && options.getStartTimestamp() != null) {
+                this.startTime = options.getStartTimestamp();
+            } else {
+                this.startTime = Instant.now();
+            }
+
+            if (options != null && options.getSpanKind() != null) {
+                this.spanKind = options.getSpanKind();
+            } else {
+                this.spanKind = SpanKind.INTERNAL;
+            }
 
             if (options != null) {
                 for (String key : options.getAttributes().keySet()) {
@@ -1404,6 +1425,11 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         @Override
         public void end(String statusMessage, Throwable error, Context context) {
+            assertThat(this.error).isNull();
+            assertThat(this.statusMessage).isNull();
+
+            this.endTime = Instant.now();
+
             if (error != null) {
                 LOGGER.info("Span-Error: {}", error.getMessage(), error);
             }
@@ -1414,8 +1440,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             LOGGER.info("Span-Json: {}", this.toJson());
 
-            assertThat(this.error).isNull();
-            assertThat(this.statusMessage).isNull();
+
             this.error = error;
             this.statusMessage = statusMessage;
             this.context = context;
@@ -1440,12 +1465,25 @@ public class CosmosTracerTest extends TestSuiteBase {
             this.statusMessage = null;
             this.methodName = null;
             this.context = null;
+            this.startTime = null;
+            this.endTime = null;
+            this.spanKind = SpanKind.INTERNAL;
             this.attributes.clear();
             this.events.clear();
         }
 
         public String toJson() {
             ObjectNode node = OBJECT_MAPPER.createObjectNode();
+            node.put("name", "dependency");
+            node.put("spanName", this.methodName);
+            node.put("kind", this.spanKind.name());
+            node.put("startTime", DateTimeFormatter.ISO_INSTANT.format(this.startTime));
+            node.put("endTime", DateTimeFormatter.ISO_INSTANT.format(this.endTime));
+            node.put("duration", Duration.between(this.startTime, this.endTime).toString());
+            node.put("statusMessage", this.statusMessage);
+            if (this.error != null){
+                node.put("error", this.error.toString());
+            }
             for (String attributeName : this.attributes.keySet()) {
                 node.put(attributeName, OBJECT_MAPPER. valueToTree(this.attributes.get(attributeName)));
             }
@@ -1454,6 +1492,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                 ArrayNode eventsNode = node.putArray("events");
                 for (EventRecord event : events) {
                     ObjectNode eventNode  = OBJECT_MAPPER.createObjectNode();
+                    eventNode.put("name", event.name);
+                    eventNode.put("timestamp", event.timestamp.format(DateTimeFormatter.ISO_INSTANT));
                     for (String eventAttributeName : event.attributes.keySet()) {
                         eventNode.put(
                             eventAttributeName,

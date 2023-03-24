@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
@@ -224,7 +225,11 @@ public final class CosmosAsyncClient implements Closeable {
             );
         }
 
-        this.diagnosticsProvider = new DiagnosticsProvider(effectiveTelemetryConfig);
+        this.diagnosticsProvider = new DiagnosticsProvider(
+            effectiveTelemetryConfig,
+            effectiveClientCorrelationId,
+            this.getUserAgent(),
+            this.connectionPolicy.getConnectionMode());
     }
 
     AsyncDocumentClient getContextClient() {
@@ -775,6 +780,14 @@ public final class CosmosAsyncClient implements Closeable {
         return this.accountTagValue;
     }
 
+    Tag getClientCorrelationTag() {
+        return this.clientCorrelationTag;
+    }
+
+    String getUserAgent() {
+        return this.asyncDocumentClient.getUserAgent();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -784,7 +797,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public Tag getClientCorrelationTag(CosmosAsyncClient client) {
-                    return client.clientCorrelationTag;
+                    return client.getClientCorrelationTag();
                 }
 
                 @Override

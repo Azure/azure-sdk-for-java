@@ -8,6 +8,7 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -90,9 +91,15 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     public DiagnosticsProvider(
-        CosmosClientTelemetryConfig clientTelemetryConfig) {
+        CosmosClientTelemetryConfig clientTelemetryConfig,
+        String clientId,
+        String userAgent,
+        ConnectionMode connectionMode) {
 
         checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' must not be null.");
+        checkNotNull(clientId, "Argument 'clientId' must not be null.");
+        checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
+        checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
 
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
@@ -114,7 +121,10 @@ public final class DiagnosticsProvider {
             } else {
                 this.cosmosTracer = new OpenTelemetryCosmosTracer(
                     this.tracer,
-                    clientTelemetryConfig);
+                    clientTelemetryConfig,
+                    clientId,
+                    userAgent,
+                    connectionMode.name().toLowerCase());
             }
         } else {
             this.cosmosTracer = null;
@@ -729,7 +739,6 @@ public final class DiagnosticsProvider {
             checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
 
-            // @TODO implement non-legacy
             StartSpanOptions spanOptions = this.startSpanOptions(
                 spanName,
                 cosmosCtx.getDatabaseName(),
@@ -973,12 +982,26 @@ public final class DiagnosticsProvider {
     private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
         private final Tracer tracer;
         private final CosmosClientTelemetryConfig config;
+        private final String clientId;
+        private final String connectionMode;
+        private final String userAgent;
 
-        public OpenTelemetryCosmosTracer(Tracer tracer, CosmosClientTelemetryConfig config) {
+        public OpenTelemetryCosmosTracer(
+            Tracer tracer,
+            CosmosClientTelemetryConfig config,
+            String clientId,
+            String userAgent,
+            String connectionMode) {
             checkNotNull(tracer, "Argument 'tracer' must not be null.");
             checkNotNull(config, "Argument 'config' must not be null.");
+            checkNotNull(clientId, "Argument 'clientId' must not be null.");
+            checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
+            checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
             this.tracer = tracer;
             this.config = config;
+            this.clientId = clientId;
+            this.userAgent = userAgent;
+            this.connectionMode = connectionMode;
         }
 
         private boolean isTransportLevelTracingEnabled() {
@@ -1006,17 +1029,20 @@ public final class DiagnosticsProvider {
             StartSpanOptions spanOptions;
 
             if (tracer instanceof EnabledNoOpTracer) {
-                spanOptions = new StartSpanOptions(SpanKind.CLIENT);
+                spanOptions = new StartSpanOptions(SpanKind.INTERNAL);
             } else {
-                spanOptions = new StartSpanOptions(SpanKind.CLIENT)
+                spanOptions = new StartSpanOptions(SpanKind.INTERNAL)
                     .setAttribute("db.system", "cosmosdb")
                     .setAttribute("db.operation", spanName)
                     .setAttribute("net.peer.name", cosmosCtx.getAccountName())
                     .setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType())
                     .setAttribute("db.cosmosdb.resource_type",cosmosCtx.getResourceType())
-                    .setAttribute("db.name", cosmosCtx.getDatabaseName());
+                    .setAttribute("db.name", cosmosCtx.getDatabaseName())
+                    .setAttribute("db.cosmosdb.client_id", this.clientId)
+                    .setAttribute("user_agent.original", this.userAgent)
+                    .setAttribute("db.cosmosdb.connection_mode", this.connectionMode);
 
-                if (!cosmosCtx.getOperationId().isEmpty()) {
+                if (!cosmosCtx.getOperationId().isEmpty() && !cosmosCtx.getOperationId().equals(cosmosCtx.getSpanName())) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
 
@@ -1100,7 +1126,7 @@ public final class DiagnosticsProvider {
                 "db.cosmosdb.request_charge",
                 Float.toString(cosmosCtx.getTotalRequestCharge()),
                 context);
-            tracer.setAttribute("db.cosmosdb.max_request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
+            tracer.setAttribute("db.cosmosdb.request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
             tracer.setAttribute("db.cosmosdb.max_response_content_length_bytes",cosmosCtx.getMaxResponsePayloadSizeInBytes(), context);
             tracer.setAttribute("db.cosmosdb.retry_count",cosmosCtx.getRetryCount() , context);
 
