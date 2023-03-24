@@ -175,6 +175,11 @@ public final class SubscriptionDescriptionImpl {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
+    @JacksonXmlProperty(
+        localName = "DefaultRuleDescription",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private RuleDescriptionImpl defaultRule;
+
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
@@ -560,6 +565,26 @@ public final class SubscriptionDescriptionImpl {
     public SubscriptionDescriptionImpl setEntityAvailabilityStatus(
             EntityAvailabilityStatusImpl entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
+        return this;
+    }
+
+    /***
+     * Get the rule that the subscription was created with, if any.
+     *
+     * @return the Rule description
+     */
+    public RuleDescriptionImpl getDefaultRule() {
+        return this.defaultRule;
+    }
+
+    /***
+     * Set the rule that the subscriptions should be created with, if any.
+     *
+     * @param ruleDescription the rule description (name, action, filter)
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescriptionImpl setDefaultRule(RuleDescriptionImpl ruleDescription) {
+        this.defaultRule = ruleDescription;
         return this;
     }
 }
