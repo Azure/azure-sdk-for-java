@@ -14,7 +14,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-tests</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-benchmark;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-tests;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - azure-core and azure-core-test tests</name>
   <description>This package contains tests for azure-cosmos and azure-cosmos-test modules</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
