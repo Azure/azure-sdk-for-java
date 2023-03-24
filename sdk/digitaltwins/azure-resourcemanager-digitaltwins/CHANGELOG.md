@@ -1,14 +1,35 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2023-03-24)
 
-### Features Added
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.TimeSeriesDatabaseConnections` was modified
 
-### Other Changes
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.RecordPropertyAndItemRemovals` was added
+
+* `models.CleanupConnectionArtifacts` was added
+
+#### `models.TimeSeriesDatabaseConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,models.CleanupConnectionArtifacts,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,models.CleanupConnectionArtifacts,com.azure.core.util.Context)` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `adxRelationshipLifecycleEventsTableName()` was added
+* `adxTwinLifecycleEventsTableName()` was added
+* `withAdxRelationshipLifecycleEventsTableName(java.lang.String)` was added
+* `withAdxTwinLifecycleEventsTableName(java.lang.String)` was added
+* `recordPropertyAndItemRemovals()` was added
+* `withRecordPropertyAndItemRemovals(models.RecordPropertyAndItemRemovals)` was added
 
 ## 1.2.0-beta.1 (2023-02-07)
 

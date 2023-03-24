@@ -223,7 +223,7 @@ public final class AzureDigitalTwinsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.digitaltwins")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

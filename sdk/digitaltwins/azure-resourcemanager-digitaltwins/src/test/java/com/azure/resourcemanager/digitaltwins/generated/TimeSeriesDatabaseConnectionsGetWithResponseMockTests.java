@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
@@ -33,7 +32,7 @@ public final class TimeSeriesDatabaseConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Deleted\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"eotg\"}},\"id\":\"l\",\"name\":\"tmuwlauwzi\",\"type\":\"xbmp\"}";
+            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Moving\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"gfbcvkcv\"}},\"id\":\"pkeqdcvdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,10 +63,10 @@ public final class TimeSeriesDatabaseConnectionsGetWithResponseMockTests {
         TimeSeriesDatabaseConnection response =
             manager
                 .timeSeriesDatabaseConnections()
-                .getWithResponse("podxunkb", "bxmubyynt", "lrb", Context.NONE)
+                .getWithResponse("railvpnppfuf", "rwdmhdlxyjrxsa", "afcnih", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.properties().identity().type());
-        Assertions.assertEquals("eotg", response.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals("gfbcvkcv", response.properties().identity().userAssignedIdentity());
     }
 }
