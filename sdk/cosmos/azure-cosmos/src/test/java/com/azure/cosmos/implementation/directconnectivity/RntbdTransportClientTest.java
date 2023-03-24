@@ -41,6 +41,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedExceptio
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -640,7 +641,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -1210,6 +1211,11 @@ public final class RntbdTransportClientTest {
             @Override
             public IOpenConnectionsHandler getOpenConnectionHandler() {
                 throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClient");
+            }
+
+            @Override
+            public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+                throw new NotImplementedException("getProactiveOpenConnectionsProcessor is not implemented for RntbdTransportClient");
             }
         }
 

@@ -236,7 +236,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withRntbdOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        public Builder withProactiveOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
             this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
             return this;
         }
@@ -1670,8 +1670,6 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow);
-
     /**
      * Warm up caches and open connections for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
@@ -1680,7 +1678,11 @@ public interface AsyncDocumentClient {
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            String openConnectionsConcurrencyMode,
+            boolean isBackgroundFlow
+    );
 
     /***
      * Configure fault injector provider.

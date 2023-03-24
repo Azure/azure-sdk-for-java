@@ -192,11 +192,7 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
-    }
-
-    public Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             String openConnectionsConcurrencyMode,
             boolean isBackgroundFlow

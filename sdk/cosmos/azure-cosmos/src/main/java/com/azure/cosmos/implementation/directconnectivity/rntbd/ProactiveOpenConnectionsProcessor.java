@@ -37,15 +37,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public void submitOpenConnectionsTask(
-            TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionsFunc,
-            URI serviceEndpoint,
-            Uri addressUri,
-            String openConnectionsConcurrencySettings
-    ) {
-        openConnectionsTaskSink.tryEmitNext(openConnectionsFunc.apply(serviceEndpoint, addressUri, openConnectionsConcurrencySettings));
-    }
-
     public void submitOpenConnectionsTask(OpenConnectionOperation openConnectionOperation) {
         int sinkId = random.nextInt(this.openConnectionsOperationSinks.size());
         Sinks.Many<OpenConnectionOperation> sink = this.openConnectionsOperationSinks.get(sinkId);
@@ -73,12 +64,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     return Mono.just(openConnectionOperations);
                 })
                 .flatMapIterable(openConnectionOperations -> openConnectionOperations)
-                .doOnNext(op -> System.out.println("Open connection on : " + op.getDocumentCollection().getSelfLink()))
-                .flatMap(openConnectionOperation -> BackoffRetryUtility.executeRetry(() -> openConnectionOperation.getOpenConnectionFunc()
-                        .apply(
-                                openConnectionOperation.getServiceEndpoint(),
-                                openConnectionOperation.getAddressUri(),
-                                openConnectionOperation.getOpenConnectionsConcurrencyMode()), new ProactiveOpenConnectionsRetryPolicy()), 1, 1)
+                .flatMap(openConnectionOperation -> BackoffRetryUtility.fluxExecuteRetry(openConnectionOperation.getOpenConnectionCallable()
+                        , new ProactiveOpenConnectionsRetryPolicy()), 1, 1)
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC);
     }
 

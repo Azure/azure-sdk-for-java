@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -535,6 +536,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         public IOpenConnectionsHandler getOpenConnectionsHandler() {
             throw new NotImplementedException("getOpenConnectionsHandler is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+            throw new NotImplementedException("getOpenConnectionsProcessor is not supported in RntbdTransportClientTest");
         }
     }
 

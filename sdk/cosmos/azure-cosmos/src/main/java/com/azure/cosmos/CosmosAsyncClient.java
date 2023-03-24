@@ -11,22 +11,26 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -43,15 +47,19 @@ import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.io.Closeable;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -100,6 +108,10 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
 
+    private static final String AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
+    private static final String DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
         Iterator<?> iterator = serviceLoader.iterator();
@@ -108,6 +120,8 @@ public final class CosmosAsyncClient implements Closeable {
         } else {
             TRACER = null;
         }
+        AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "AGGRESSIVE";
+        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "DEFENSIVE";
     }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -142,6 +156,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.apiType = builder.apiType();
         this.clientCorrelationId =  telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(20);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -170,6 +185,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
+                                       .withProactiveOpenConnectionsProcessor(this.proactiveOpenConnectionsProcessor)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
@@ -618,42 +634,104 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        blockListVoidResponse(openConnectionsAndInitCachesInternal());
+        blockListVoidResponse(
+                openConnectionsAndInitCachesInternal(new HashSet<>())
+                        .flatMap(tuples -> Mono.just(new ArrayList<>())));
     }
 
-    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
+    void openConnectionsAndInitCaches(Duration timeout) {
+        Set<String> warmedUpContainerLinks = new HashSet<>();
+
+        blockListVoidResponseWithTimeout(
+                openConnectionsAndInitCachesInternal(warmedUpContainerLinks)
+                        .flatMap(tuples -> Mono.just(new ArrayList<>())), timeout);
+
+        openConnectionsInBackground(warmedUpContainerLinks);
+    }
+
+    private Mono<List<Tuple2<CosmosAsyncContainer, ImmutablePair<Long, Long>>>> openConnectionsAndInitCachesInternal(Set<String> warmedUpContainerLinks) {
         int concurrency = 1;
         int prefetch = 1;
+
         if (this.proactiveContainerInitConfig != null) {
             return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
                     .flatMap(
-                        cosmosContainerIdentity -> Mono.just(this
-                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                        concurrency,
-                        prefetch
+                            cosmosContainerIdentity -> Mono.just(this
+                                    .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
+                                    .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
+                            concurrency,
+                            prefetch
                     )
-                    .flatMap(
-                        cosmosAsyncContainer -> {
-                            Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
-                                    .CosmosContainerProactiveInitConfigHelper
-                                    .getCosmosContainerIdentityAccessor()
-                                    .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
+                    .flatMap(cosmosAsyncContainer -> {
 
-                            return cosmosAsyncContainer
-                                    .openConnectionsAndInitCaches(
-                                            this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                            containerLinkToMinConnectionsMap
-                                                    .getOrDefault(
-                                                            cosmosAsyncContainer.getLinkWithoutTrailingSlash(), Configs.getMinConnectionPoolSizePerEndpoint()
-                                                    )
-                                    );
-                        },
-                        concurrency,
-                        prefetch)
+                                Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
+                                        .CosmosContainerProactiveInitConfigHelper
+                                        .getCosmosContainerIdentityAccessor()
+                                        .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
+
+                                return Mono.zip(
+                                        Mono.just(cosmosAsyncContainer),
+                                        cosmosAsyncContainer
+                                                .openConnectionsAndInitCachesInternal(
+                                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
+                                                        containerLinkToMinConnectionsMap
+                                                                .getOrDefault(
+                                                                        cosmosAsyncContainer.getLinkWithoutTrailingSlash(),
+                                                                        Configs.getMinConnectionPoolSizePerEndpoint()
+                                                                ),
+                                                        AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE,
+                                                        false
+                                                )
+                                );
+                            },
+                            concurrency,
+                            prefetch
+                    )
+                    .doOnNext(objects -> {
+                                long endpointsConnectedCount = objects.getT2().left;
+                                long endpointsConnectionFailedCount = objects.getT2().right;
+
+                                if (endpointsConnectedCount > 0 && endpointsConnectionFailedCount == 0) {
+                                    warmedUpContainerLinks.add(objects.getT1().getLink());
+                                }
+                            }
+                    )
                     .collectList();
         }
         return Mono.empty();
+    }
+
+    private void openConnectionsInBackground(Set<String> warmedUpContainerLinks) {
+
+        int concurrency = 1;
+        int prefetch = 1;
+
+        // prioritized containers for which no endpoints have been created
+        List<CosmosContainerIdentity> nonWarmedUpContainerIdentities = this.proactiveContainerInitConfig
+                .getCosmosContainerIdentities()
+                .stream()
+                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
+                .collect(Collectors.toList());
+
+        // redo warmup of remaining endpoints in case any are remaining
+        List<CosmosContainerIdentity> warmedUpContainerIdenties = this.proactiveContainerInitConfig
+                .getCosmosContainerIdentities()
+                .stream()
+                .filter(cosmosContainerIdentity -> warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
+                .collect(Collectors.toList());
+
+        asyncDocumentClient.openConnectionsAndInitCaches(
+                        proactiveContainerInitConfig,
+                        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE,
+                        true
+                )
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
+
+        this.proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
     }
 
     private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
@@ -668,6 +746,10 @@ public final class CosmosAsyncClient implements Closeable {
                 throw Exceptions.propagate(throwable);
             }
         }
+    }
+
+    private void blockListVoidResponseWithTimeout(Mono<List<Void>> voidListMono, Duration timeout) {
+        voidListMono.block(timeout);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

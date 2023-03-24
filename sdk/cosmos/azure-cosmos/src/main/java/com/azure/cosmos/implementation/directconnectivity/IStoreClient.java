@@ -38,7 +38,9 @@ public interface IStoreClient {
         return processMessageAsync(request, null, null);
     }
 
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
-
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            String openConnectionsConcurrencyMode,
+            boolean isBackgroundFlow
+    );
 }

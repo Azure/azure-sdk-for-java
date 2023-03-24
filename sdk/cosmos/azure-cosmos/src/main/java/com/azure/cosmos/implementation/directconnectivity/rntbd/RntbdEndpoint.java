@@ -122,6 +122,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         Stream<RntbdEndpoint> list();
 
         IOpenConnectionsHandler getOpenConnectionHandler();
+
+        ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
     }
 
     final class Config {

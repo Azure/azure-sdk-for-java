@@ -34,5 +34,5 @@ public interface IAddressCache {
      */
     void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler);
 
-    void setOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
+    void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }

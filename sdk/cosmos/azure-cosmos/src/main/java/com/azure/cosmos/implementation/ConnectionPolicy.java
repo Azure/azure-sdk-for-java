@@ -94,11 +94,6 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
-        this.minChannelPoolSizePerEndpoint =
-                ImplementationBridgeHelpers
-                        .DirectConnectionConfigHelper
-                        .getDirectConnectionConfigAccessor()
-                        .getMinChannelPoolSizePerEndpoint(directConnectionConfig);
     }
 
     private ConnectionPolicy() {

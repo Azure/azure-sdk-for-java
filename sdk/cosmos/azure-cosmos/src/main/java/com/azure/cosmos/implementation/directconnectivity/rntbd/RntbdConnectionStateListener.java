@@ -4,14 +4,19 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -84,11 +89,21 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
-                this.rntbdOpenConnectionsHandler::openConnection,
+        Callable<Flux<OpenConnectionResponse>> openConnectionsCallable = () -> this.rntbdOpenConnectionsHandler.openConnections(
+                "",
                 this.endpoint.serviceEndpoint(),
-                this.addressUris.stream().findFirst().get(),
-                RntbdOpenConnectionsHandler.DEFENSIVE_CONNECTIONS_MODE
+                Arrays.asList(this.addressUris.stream().findFirst().get()),
+                this.endpoint.getMinChannelsRequired(),
+                "DEFENSIVE"
+        );
+
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
+                new OpenConnectionOperation(
+                        openConnectionsCallable,
+                        endpoint.serviceEndpoint(),
+                        this.addressUris.stream().findFirst().get(),
+                        "DEFENSIVE"
+                )
         );
 
         this.proactiveOpenConnectionsProcessor

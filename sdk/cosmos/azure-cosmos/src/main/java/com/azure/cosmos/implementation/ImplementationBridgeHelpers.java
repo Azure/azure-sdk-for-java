@@ -204,8 +204,6 @@ public class ImplementationBridgeHelpers {
             DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
                 DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
             boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
-            DirectConnectionConfig setMinChannelPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minChannelPoolSizePerEndpiont);
-            int getMinChannelPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig);
         }
     }
 

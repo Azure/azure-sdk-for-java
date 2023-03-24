@@ -10,5 +10,17 @@ import java.net.URI;
 import java.util.List;
 
 public interface IOpenConnectionsHandler {
-    Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredForEndpoint);
+    Flux<OpenConnectionResponse> openConnections(
+        String collectionRid,
+        URI serviceEndpoint,
+        List<Uri> addresses,
+        int minConnectionsRequiredForEndpoint,
+        String openConnectionsConcurrencySetting
+    );
+
+    Flux<OpenConnectionResponse> openConnections(
+        String collectionRid,
+        URI serviceEndpoint,
+        List<Uri> addresses
+    );
 }

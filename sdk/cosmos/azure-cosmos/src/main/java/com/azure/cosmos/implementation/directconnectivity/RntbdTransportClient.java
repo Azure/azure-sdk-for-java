@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
@@ -104,6 +105,7 @@ public class RntbdTransportClient extends TransportClient {
     private final GlobalEndpointManager globalEndpointManager;
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     // endregion
 
@@ -124,14 +126,17 @@ public class RntbdTransportClient extends TransportClient {
         final UserAgentContainer userAgent,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
-
+        final GlobalEndpointManager globalEndpointManager,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
-            globalEndpointManager);
+            globalEndpointManager,
+                proactiveOpenConnectionsProcessor
+        );
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -142,6 +147,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
+        this.proactiveOpenConnectionsProcessor = null;
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -150,7 +156,9 @@ public class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
+        final GlobalEndpointManager globalEndpointManager,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -159,12 +167,15 @@ public class RntbdTransportClient extends TransportClient {
             checkNotNull(sslContext, "expected non-null sslContext"),
             addressResolver,
             clientTelemetry,
-            this.serverErrorInjector);
+            this.serverErrorInjector,
+                proactiveOpenConnectionsProcessor
+            );
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
@@ -211,6 +222,12 @@ public class RntbdTransportClient extends TransportClient {
     public IOpenConnectionsHandler getOpenConnectionsHandler() {
         return this.endpointProvider.getOpenConnectionHandler();
     }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+        return this.endpointProvider.getProactiveOpenConnectionsProcessor();
+    }
+
     /**
      * The number of {@linkplain RntbdEndpoint endpoints} allocated to this {@linkplain RntbdTransportClient client}.
      *

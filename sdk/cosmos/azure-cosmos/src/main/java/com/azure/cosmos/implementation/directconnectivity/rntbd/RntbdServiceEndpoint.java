@@ -111,6 +111,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI serviceEndpoint,
         final RntbdDurableEndpointMetrics durableMetrics,
         final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
         final int minChannelsRequired
         ) {
 
@@ -144,7 +145,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this) : null;
+            ? new RntbdConnectionStateListener(this, this.provider.rntbdOpenConnectionsHandler, this.provider.proactiveOpenConnectionsProcessor) : null;
 
         this.channelPool =
             new RntbdClientChannelPool(
@@ -646,6 +647,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final ClientTelemetry clientTelemetry;
         private final RntbdServerErrorInjector serverErrorInjector;
         private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
+        private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
         public Provider(
             final RntbdTransportClient transportClient,
@@ -653,7 +655,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final SslContext sslContext,
             final IAddressResolver addressResolver,
             final ClientTelemetry clientTelemetry,
-            final RntbdServerErrorInjector serverErrorInjector
+            final RntbdServerErrorInjector serverErrorInjector,
+            final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
             ) {
 
             checkNotNull(transportClient, "expected non-null provider");
@@ -683,6 +686,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
             this.rntbdOpenConnectionsHandler = new RntbdOpenConnectionsHandler(this);
+            this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
             this.serverErrorInjector = serverErrorInjector;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
@@ -767,6 +771,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         serviceEndpoint,
                         durableEndpointMetrics,
                         this.rntbdOpenConnectionsHandler,
+                        this.proactiveOpenConnectionsProcessor,
                         minChannelsRequiredCount
                     );
 
@@ -795,6 +800,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         @Override
         public IOpenConnectionsHandler getOpenConnectionHandler() {
             return this.rntbdOpenConnectionsHandler;
+        }
+
+        @Override
+        public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+            return this.proactiveOpenConnectionsProcessor;
         }
 
         private void evict(final RntbdEndpoint endpoint) {

@@ -5,34 +5,28 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.query.TriFunction;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import java.net.URI;
-import java.util.List;
+import java.util.concurrent.Callable;
 
 public final class OpenConnectionOperation {
 
-    private final TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionFunc;
-    private final DocumentCollection documentCollection;
+    private final Callable<Flux<OpenConnectionResponse>> openConnectionCallable;
     private final URI serviceEndpoint;
     private final Uri addressUri;
     private final String openConnectionsConcurrencyMode;
 
-    public OpenConnectionOperation(TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> openConnectionFunc, DocumentCollection documentCollection, URI serviceEndpoint, Uri addressUri, String openConnectionsConcurrencyMode) {
-        this.openConnectionFunc = openConnectionFunc;
-        this.documentCollection = documentCollection;
+
+    public OpenConnectionOperation(Callable<Flux<OpenConnectionResponse>> openConnectionCallable, URI serviceEndpoint, Uri addressUri, String openConnectionsConcurrencyMode) {
+        this.openConnectionCallable = openConnectionCallable;
         this.serviceEndpoint = serviceEndpoint;
         this.addressUri = addressUri;
         this.openConnectionsConcurrencyMode = openConnectionsConcurrencyMode;
     }
 
-    public TriFunction<URI, Uri, String, Mono<OpenConnectionResponse>> getOpenConnectionFunc() {
-        return openConnectionFunc;
-    }
-
-    public DocumentCollection getDocumentCollection() {
-        return documentCollection;
+    public Callable<Flux<OpenConnectionResponse>> getOpenConnectionCallable() {
+        return openConnectionCallable;
     }
 
     public URI getServiceEndpoint() {

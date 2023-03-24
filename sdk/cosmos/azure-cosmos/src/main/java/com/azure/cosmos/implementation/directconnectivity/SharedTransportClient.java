@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +46,16 @@ public class SharedTransportClient extends TransportClient {
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager
-    ) {
+        GlobalEndpointManager globalEndpointManager,
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
                 sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy,
-                    userAgent, addressResolver, clientTelemetry, globalEndpointManager);
+                    userAgent, addressResolver, clientTelemetry, globalEndpointManager, proactiveOpenConnectionsProcessor);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -76,12 +78,14 @@ public class SharedTransportClient extends TransportClient {
         UserAgentContainer userAgent,
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager) {
+        GlobalEndpointManager globalEndpointManager,
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
+        ) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
             this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
-                clientTelemetry, globalEndpointManager);
+                clientTelemetry, globalEndpointManager, proactiveOpenConnectionsProcessor);
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;
@@ -126,5 +130,10 @@ public class SharedTransportClient extends TransportClient {
     @Override
     public IOpenConnectionsHandler getOpenConnectionsHandler() {
         return this.transportClient.getOpenConnectionsHandler();
+    }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+        return this.transportClient.getOpenConnectionsProcessor();
     }
 }

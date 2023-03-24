@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
@@ -39,9 +38,17 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, int minConnectionsRequiredForEndpoint) {
+    public Flux<OpenConnectionResponse> openConnections(
+            String collectionRid,
+            URI serviceEndpoint,
+            List<Uri> addresses,
+            int minConnectionsRequiredForEndpoint,
+            String openConnectionsConcurrencyMode
+    ) {
+        // collectionRid may not always be available, especially for open connection flows
+        // from the RntbdConnectionsStateListener, hence there is no null check for collectionRid
+
         checkNotNull(addresses, "Argument 'addresses' should not be null");
-        checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' cannot be null nor empty");
 
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -99,6 +106,17 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
                     return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));
                 });
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses) {
+        return openConnections(
+                collectionRid,
+                serviceEndpoint,
+                addresses,
+                Configs.getMinConnectionPoolSizePerEndpoint(),
+                "AGGRESSIVE"
+        );
     }
 
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {

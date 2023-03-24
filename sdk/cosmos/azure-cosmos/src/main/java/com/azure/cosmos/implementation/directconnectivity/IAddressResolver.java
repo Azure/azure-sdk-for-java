@@ -11,8 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 public interface IAddressResolver {
 
     Mono<AddressInformation[]> resolveAsync(
@@ -27,9 +25,11 @@ public interface IAddressResolver {
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
-
-    Flux<List<OpenConnectionResponse>> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            String openConnectionsConcurrencyMode,
+            boolean isBackgroundFlow
+    );
 
     /***
      * Set the open connection handler so SDK can proactively create connections based on need.
@@ -38,5 +38,5 @@ public interface IAddressResolver {
      */
     void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler);
 
-    void setOpenConnectionsExecutor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
+    void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }
