@@ -42,8 +42,7 @@ class EntityServiceBusExceptionTestHelperTest {
         assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
         assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
 
-        final Long actualSize = Long.valueOf(actual.getMaxSizeInMegabytes());
-        assertEquals(expected.getMaxSizeInMegabytes(), actualSize);
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.getStatus(), actual.getStatus());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
         assertEquals(expected.isSupportOrdering(), actual.isSupportOrdering());

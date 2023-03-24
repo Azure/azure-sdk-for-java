@@ -784,8 +784,7 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
 
-        final Long actualLong = Long.valueOf(actual.getMaxSizeInMegabytes());
-        assertEquals(expected.getMaxSizeInMegabytes(), actualLong.intValue());
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
         assertEquals(expected.isSessionRequired(), actual.isRequiresSession());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
