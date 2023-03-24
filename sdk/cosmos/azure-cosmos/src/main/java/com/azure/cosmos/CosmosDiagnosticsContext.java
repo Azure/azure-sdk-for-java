@@ -401,10 +401,8 @@ public final class CosmosDiagnosticsContext {
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
             if (actualItemCount != null) {
-                if (this.actualItemCount.get() >= 0) {
+                if (!this.actualItemCount.compareAndSet(-1, actualItemCount)) {
                     this.actualItemCount.addAndGet(actualItemCount);
-                } else {
-                    this.actualItemCount.set(actualItemCount);
                 }
             }
             this.duration = Duration.between(this.startTime, Instant.now());
