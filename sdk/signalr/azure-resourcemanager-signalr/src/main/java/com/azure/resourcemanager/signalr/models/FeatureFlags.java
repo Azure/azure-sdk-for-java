@@ -33,6 +33,15 @@ public final class FeatureFlags extends ExpandableStringEnum<FeatureFlags> {
     public static final FeatureFlags ENABLE_LIVE_TRACE = fromString("EnableLiveTrace");
 
     /**
+     * Creates a new instance of FeatureFlags value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeatureFlags() {
+    }
+
+    /**
      * Creates or finds a FeatureFlags from its string representation.
      *
      * @param name a name to look for.

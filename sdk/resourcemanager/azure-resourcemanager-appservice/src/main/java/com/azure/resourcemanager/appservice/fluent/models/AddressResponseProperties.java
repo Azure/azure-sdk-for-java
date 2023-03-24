@@ -19,8 +19,7 @@ public final class AddressResponseProperties {
     private String serviceIpAddress;
 
     /*
-     * Virtual Network internal IP address of the App Service Environment if it
-     * is in internal load-balancing mode.
+     * Virtual Network internal IP address of the App Service Environment if it is in internal load-balancing mode.
      */
     @JsonProperty(value = "internalIpAddress")
     private String internalIpAddress;
@@ -36,6 +35,10 @@ public final class AddressResponseProperties {
      */
     @JsonProperty(value = "vipMappings")
     private List<VirtualIpMapping> vipMappings;
+
+    /** Creates an instance of AddressResponseProperties class. */
+    public AddressResponseProperties() {
+    }
 
     /**
      * Get the serviceIpAddress property: Main public virtual IP.

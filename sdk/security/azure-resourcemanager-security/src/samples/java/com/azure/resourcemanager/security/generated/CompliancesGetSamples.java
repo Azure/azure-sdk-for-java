@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Compliances Get. */
 public final class CompliancesGetSamples {
     /*
@@ -19,6 +17,7 @@ public final class CompliancesGetSamples {
     public static void getSecurityComplianceDataForADay(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .compliances()
-            .getWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "2018-01-01Z", Context.NONE);
+            .getWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "2018-01-01Z", com.azure.core.util.Context.NONE);
     }
 }

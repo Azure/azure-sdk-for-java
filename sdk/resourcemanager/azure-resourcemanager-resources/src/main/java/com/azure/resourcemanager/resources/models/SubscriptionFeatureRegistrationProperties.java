@@ -98,6 +98,10 @@ public final class SubscriptionFeatureRegistrationProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SubscriptionFeatureRegistrationProperties class. */
+    public SubscriptionFeatureRegistrationProperties() {
+    }
+
     /**
      * Get the tenantId property: The tenantId.
      *

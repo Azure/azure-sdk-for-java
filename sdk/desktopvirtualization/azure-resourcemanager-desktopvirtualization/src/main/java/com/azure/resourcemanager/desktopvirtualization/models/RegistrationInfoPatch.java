@@ -23,6 +23,10 @@ public final class RegistrationInfoPatch {
     @JsonProperty(value = "registrationTokenOperation")
     private RegistrationTokenOperation registrationTokenOperation;
 
+    /** Creates an instance of RegistrationInfoPatch class. */
+    public RegistrationInfoPatch() {
+    }
+
     /**
      * Get the expirationTime property: Expiration time of registration token.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubSharedPrivateLinkResources Delete. */
 public final class WebPubSubSharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubSharedPrivateLinkResources_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_Delete.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_Delete.
@@ -20,6 +18,6 @@ public final class WebPubSubSharedPrivateLinkResourcesDeleteSamples {
         com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
         manager
             .webPubSubSharedPrivateLinkResources()
-            .delete("upstream", "myResourceGroup", "myWebPubSubService", Context.NONE);
+            .delete("upstream", "myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

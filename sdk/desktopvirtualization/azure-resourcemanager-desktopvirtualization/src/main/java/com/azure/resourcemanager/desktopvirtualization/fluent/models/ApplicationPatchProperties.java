@@ -31,9 +31,8 @@ public final class ApplicationPatchProperties {
     private String filePath;
 
     /*
-     * Specifies whether this published application can be launched with
-     * command line arguments provided by the client, command line arguments
-     * specified at publish time, or no command line arguments at all.
+     * Specifies whether this published application can be launched with command line arguments provided by the client,
+     * command line arguments specified at publish time, or no command line arguments at all.
      */
     @JsonProperty(value = "commandLineSetting")
     private CommandLineSetting commandLineSetting;
@@ -45,8 +44,7 @@ public final class ApplicationPatchProperties {
     private String commandLineArguments;
 
     /*
-     * Specifies whether to show the RemoteApp program in the RD Web Access
-     * server.
+     * Specifies whether to show the RemoteApp program in the RD Web Access server.
      */
     @JsonProperty(value = "showInPortal")
     private Boolean showInPortal;
@@ -80,6 +78,10 @@ public final class ApplicationPatchProperties {
      */
     @JsonProperty(value = "applicationType")
     private RemoteApplicationType applicationType;
+
+    /** Creates an instance of ApplicationPatchProperties class. */
+    public ApplicationPatchProperties() {
+    }
 
     /**
      * Get the description property: Description of Application.

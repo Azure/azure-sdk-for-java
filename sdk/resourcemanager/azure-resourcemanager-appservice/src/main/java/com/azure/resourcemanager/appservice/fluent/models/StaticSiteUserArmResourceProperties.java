@@ -34,6 +34,10 @@ public final class StaticSiteUserArmResourceProperties {
     @JsonProperty(value = "roles")
     private String roles;
 
+    /** Creates an instance of StaticSiteUserArmResourceProperties class. */
+    public StaticSiteUserArmResourceProperties() {
+    }
+
     /**
      * Get the provider property: The identity provider for the static site user.
      *

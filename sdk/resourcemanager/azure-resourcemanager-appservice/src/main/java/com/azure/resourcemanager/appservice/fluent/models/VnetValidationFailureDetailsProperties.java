@@ -36,6 +36,10 @@ public final class VnetValidationFailureDetailsProperties {
     @JsonProperty(value = "warnings")
     private List<VnetValidationTestFailure> warnings;
 
+    /** Creates an instance of VnetValidationFailureDetailsProperties class. */
+    public VnetValidationFailureDetailsProperties() {
+    }
+
     /**
      * Get the message property: Text describing the validation outcome.
      *

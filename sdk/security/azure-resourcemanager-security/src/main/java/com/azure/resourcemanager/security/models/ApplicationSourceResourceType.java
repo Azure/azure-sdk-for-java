@@ -14,6 +14,15 @@ public final class ApplicationSourceResourceType extends ExpandableStringEnum<Ap
     public static final ApplicationSourceResourceType ASSESSMENTS = fromString("Assessments");
 
     /**
+     * Creates a new instance of ApplicationSourceResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationSourceResourceType() {
+    }
+
+    /**
      * Creates or finds a ApplicationSourceResourceType from its string representation.
      *
      * @param name a name to look for.

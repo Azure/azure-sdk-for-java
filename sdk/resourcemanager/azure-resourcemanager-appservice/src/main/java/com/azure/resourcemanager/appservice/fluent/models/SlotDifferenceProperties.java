@@ -23,8 +23,7 @@ public final class SlotDifferenceProperties {
     private String settingType;
 
     /*
-     * Rule that describes how to process the setting difference during a slot
-     * swap.
+     * Rule that describes how to process the setting difference during a slot swap.
      */
     @JsonProperty(value = "diffRule", access = JsonProperty.Access.WRITE_ONLY)
     private String diffRule;
@@ -52,6 +51,10 @@ public final class SlotDifferenceProperties {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /** Creates an instance of SlotDifferenceProperties class. */
+    public SlotDifferenceProperties() {
+    }
 
     /**
      * Get the level property: Level of the difference: Information, Warning or Error.

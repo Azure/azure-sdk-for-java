@@ -23,6 +23,12 @@ public final class DocumentKeyValuePair {
     private DocumentKeyValueElement value;
 
     /*
+     * Common name of the key-value pair.
+     */
+    @JsonProperty(value = "commonName")
+    private String commonName;
+
+    /*
      * Confidence of correctly extracting the key-value pair.
      */
     @JsonProperty(value = "confidence", required = true)
@@ -68,6 +74,26 @@ public final class DocumentKeyValuePair {
      */
     public DocumentKeyValuePair setValue(DocumentKeyValueElement value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the commonName property: Common name of the key-value pair.
+     *
+     * @return the commonName value.
+     */
+    public String getCommonName() {
+        return this.commonName;
+    }
+
+    /**
+     * Set the commonName property: Common name of the key-value pair.
+     *
+     * @param commonName the commonName value to set.
+     * @return the DocumentKeyValuePair object itself.
+     */
+    public DocumentKeyValuePair setCommonName(String commonName) {
+        this.commonName = commonName;
         return this;
     }
 

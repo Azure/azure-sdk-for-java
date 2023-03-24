@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
 
 import com.azure.spring.cloud.feature.manager.FeatureHandler;
-import com.azure.spring.cloud.feature.manager.FeatureManager;
 import com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
-import com.azure.spring.cloud.feature.manager.IDisabledFeaturesHandler;
+import com.azure.spring.cloud.feature.management.FeatureManager;
+import com.azure.spring.cloud.feature.manager.DisabledFeaturesHandler;
 
 /**
  * Configurations setting up FeatureManagerSnapshot, FeatureHandler, FeatureConfig
@@ -44,7 +44,7 @@ public class FeatureManagementWebConfiguration {
      */
     @Bean
     FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
-        @Autowired(required = false) IDisabledFeaturesHandler disabledFeaturesHandler) {
+        @Autowired(required = false) DisabledFeaturesHandler disabledFeaturesHandler) {
         return new FeatureHandler(featureManager, snapshot, disabledFeaturesHandler);
     }
 

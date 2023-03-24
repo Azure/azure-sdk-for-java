@@ -65,11 +65,10 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureOrbitalContactP")
-    private interface ContactProfilesService {
+    public interface ContactProfilesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital"
-                + "/contactProfiles/{contactProfileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactProfileInner>> getByResourceGroup(
@@ -83,8 +82,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital"
-                + "/contactProfiles/{contactProfileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -99,8 +97,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital"
-                + "/contactProfiles/{contactProfileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -114,8 +111,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital"
-                + "/contactProfiles/{contactProfileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateTags(
@@ -142,8 +138,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital"
-                + "/contactProfiles")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactProfileListResult>> listByResourceGroup(
@@ -295,21 +290,6 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified contact Profile in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContactProfileInner getByResourceGroup(String resourceGroupName, String contactProfileName) {
-        return getByResourceGroupAsync(resourceGroupName, contactProfileName).block();
-    }
-
-    /**
-     * Gets the specified contact Profile in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -320,6 +300,21 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     public Response<ContactProfileInner> getByResourceGroupWithResponse(
         String resourceGroupName, String contactProfileName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, contactProfileName, context).block();
+    }
+
+    /**
+     * Gets the specified contact Profile in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param contactProfileName Contact Profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified contact Profile in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContactProfileInner getByResourceGroup(String resourceGroupName, String contactProfileName) {
+        return getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE).getValue();
     }
 
     /**
@@ -501,7 +496,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
     }
 
     /**
@@ -520,7 +515,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -749,7 +746,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contactProfileName) {
-        return beginDeleteAsync(resourceGroupName, contactProfileName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, contactProfileName).getSyncPoller();
     }
 
     /**
@@ -766,7 +763,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String contactProfileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, contactProfileName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, contactProfileName, context).getSyncPoller();
     }
 
     /**
@@ -1012,7 +1009,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
         String resourceGroupName, String contactProfileName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
     }
 
     /**
@@ -1031,7 +1028,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
         String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters, context).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1505,7 +1502,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1542,7 +1540,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1580,7 +1579,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1616,7 +1616,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

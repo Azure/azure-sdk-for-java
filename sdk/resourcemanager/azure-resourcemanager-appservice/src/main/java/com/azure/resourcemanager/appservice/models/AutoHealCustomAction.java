@@ -22,6 +22,10 @@ public final class AutoHealCustomAction {
     @JsonProperty(value = "parameters")
     private String parameters;
 
+    /** Creates an instance of AutoHealCustomAction class. */
+    public AutoHealCustomAction() {
+    }
+
     /**
      * Get the exe property: Executable to be run.
      *

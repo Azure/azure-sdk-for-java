@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInner;
 import com.azure.resourcemanager.security.models.RuleState;
@@ -58,7 +57,7 @@ public final class AlertsSuppressionRulesUpdateSamples {
                                         new ScopeElement()
                                             .withField("entities.process.commandline")
                                             .withAdditionalProperties(mapOf("contains", "POWERSHELL.EXE"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -21,6 +21,10 @@ public final class AzureStoragePropertyDictionaryResourceInner extends ProxyOnly
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureStorageInfoValue> properties;
 
+    /** Creates an instance of AzureStoragePropertyDictionaryResourceInner class. */
+    public AzureStoragePropertyDictionaryResourceInner() {
+    }
+
     /**
      * Get the properties property: Azure storage accounts.
      *

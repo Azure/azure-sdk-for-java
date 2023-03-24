@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,68 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.4 (2023-03-20)
+
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-preview-2023-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.CommunicationServiceResource` was modified
+
+* `regenerateKey(models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
+
+#### `models.UpdateDomainRequestParameters` was modified
+
+* `withValidSenderUsernames(java.util.Map)` was removed
+* `validSenderUsernames()` was removed
+
+#### `models.DomainResource$Definition` was modified
+
+* `withValidSenderUsernames(java.util.Map)` was removed
+
+#### `models.DomainResource$Update` was modified
+
+* `withValidSenderUsernames(java.util.Map)` was removed
+
+#### `models.DomainResource` was modified
+
+* `validSenderUsernames()` was removed
+
+#### `models.CommunicationServices` was modified
+
+* `regenerateKey(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.SenderUsernameResource$DefinitionStages` was added
+
+* `models.ProvisioningState` was added
+
+* `models.SenderUsernameResourceCollection` was added
+
+* `models.SenderUsernameResource$Update` was added
+
+* `models.SenderUsernameResource$UpdateStages` was added
+
+* `models.SenderUsernameResource$Definition` was added
+
+* `models.SenderUsernames` was added
+
+* `models.SenderUsernameResource` was added
+
+#### `models.CommunicationServiceResource` was modified
+
+* `regenerateKeyWithResponse(models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
+* `systemData()` was added
+
+#### `CommunicationManager` was modified
+
+* `senderUsernames()` was added
+
+#### `models.CommunicationServices` was modified
+
+* `regenerateKeyWithResponse(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
 
 ## 1.1.0-beta.3 (2022-08-23)
 

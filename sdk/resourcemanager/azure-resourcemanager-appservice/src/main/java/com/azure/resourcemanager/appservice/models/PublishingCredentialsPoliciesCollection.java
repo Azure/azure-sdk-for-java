@@ -25,6 +25,10 @@ public final class PublishingCredentialsPoliciesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PublishingCredentialsPoliciesCollection class. */
+    public PublishingCredentialsPoliciesCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

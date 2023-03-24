@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
+import com.azure.resourcemanager.digitaltwins.models.CleanupConnectionArtifacts;
 
 /** An instance of this class provides access to all the operations defined in TimeSeriesDatabaseConnectionsClient. */
 public interface TimeSeriesDatabaseConnectionsClient {
@@ -177,6 +178,9 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
+     * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
+     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,7 +189,11 @@ public interface TimeSeriesDatabaseConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginDelete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context);
+        String resourceGroupName,
+        String resourceName,
+        String timeSeriesDatabaseConnectionName,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+        Context context);
 
     /**
      * Delete a time series database connection.
@@ -208,6 +216,9 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
+     * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
+     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,5 +227,9 @@ public interface TimeSeriesDatabaseConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TimeSeriesDatabaseConnectionInner delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context);
+        String resourceGroupName,
+        String resourceName,
+        String timeSeriesDatabaseConnectionName,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+        Context context);
 }

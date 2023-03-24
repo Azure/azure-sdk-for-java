@@ -7,18 +7,17 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.ManagedIdentitySettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentitySettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedIdentitySettings model =
             BinaryData.fromString("{\"resource\":\"zfq\"}").toObject(ManagedIdentitySettings.class);
         Assertions.assertEquals("zfq", model.resource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedIdentitySettings model = new ManagedIdentitySettings().withResource("zfq");
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySettings.class);
         Assertions.assertEquals("zfq", model.resource());

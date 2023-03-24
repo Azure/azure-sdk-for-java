@@ -7,6 +7,7 @@ package com.azure.resourcemanager.orbital.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.orbital.models.AvailableContactsSpacecraft;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * Customer retrieves list of Available Contacts for a spacecraft resource. Later, one of the available contact can be
@@ -31,6 +32,10 @@ public final class AvailableContactsInner {
      */
     @JsonProperty(value = "properties")
     private AvailableContactsProperties innerProperties;
+
+    /** Creates an instance of AvailableContactsInner class. */
+    public AvailableContactsInner() {
+    }
 
     /**
      * Get the spacecraft property: The reference to the spacecraft resource.
@@ -68,6 +73,87 @@ public final class AvailableContactsInner {
      */
     private AvailableContactsProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the maximumElevationDegrees property: Maximum elevation of the antenna during the contact in decimal degrees.
+     *
+     * @return the maximumElevationDegrees value.
+     */
+    public Float maximumElevationDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumElevationDegrees();
+    }
+
+    /**
+     * Get the txStartTime property: Time at which antenna transmit will be enabled (ISO 8601 UTC standard).
+     *
+     * @return the txStartTime value.
+     */
+    public OffsetDateTime txStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().txStartTime();
+    }
+
+    /**
+     * Get the txEndTime property: Time at which antenna transmit will be disabled (ISO 8601 UTC standard).
+     *
+     * @return the txEndTime value.
+     */
+    public OffsetDateTime txEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().txEndTime();
+    }
+
+    /**
+     * Get the rxStartTime property: Earliest time to receive a signal (ISO 8601 UTC standard).
+     *
+     * @return the rxStartTime value.
+     */
+    public OffsetDateTime rxStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().rxStartTime();
+    }
+
+    /**
+     * Get the rxEndTime property: Time to lost receiving a signal (ISO 8601 UTC standard).
+     *
+     * @return the rxEndTime value.
+     */
+    public OffsetDateTime rxEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().rxEndTime();
+    }
+
+    /**
+     * Get the startAzimuthDegrees property: Azimuth of the antenna at the start of the contact in decimal degrees.
+     *
+     * @return the startAzimuthDegrees value.
+     */
+    public Float startAzimuthDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().startAzimuthDegrees();
+    }
+
+    /**
+     * Get the endAzimuthDegrees property: Azimuth of the antenna at the end of the contact in decimal degrees.
+     *
+     * @return the endAzimuthDegrees value.
+     */
+    public Float endAzimuthDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().endAzimuthDegrees();
+    }
+
+    /**
+     * Get the startElevationDegrees property: Spacecraft elevation above the horizon at contact start.
+     *
+     * @return the startElevationDegrees value.
+     */
+    public Float startElevationDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().startElevationDegrees();
+    }
+
+    /**
+     * Get the endElevationDegrees property: Spacecraft elevation above the horizon at contact end.
+     *
+     * @return the endElevationDegrees value.
+     */
+    public Float endElevationDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().endElevationDegrees();
     }
 
     /**

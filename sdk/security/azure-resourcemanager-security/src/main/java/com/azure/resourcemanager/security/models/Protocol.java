@@ -20,6 +20,15 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
     public static final Protocol ASTERISK = fromString("*");
 
     /**
+     * Creates a new instance of Protocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Protocol() {
+    }
+
+    /**
      * Creates or finds a Protocol from its string representation.
      *
      * @param name a name to look for.
