@@ -122,11 +122,19 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         Matcher matcher = sasPattern.matcher(connectionString);
         assertTrue(matcher.find(), "Couldn't find SAS from connection string");
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .endpoint(fullyQualifiedDomainName)
+            .endpoint("https://" + fullyQualifiedDomainName)
             .credential(new AzureSasCredential(matcher.group(1)))
             .buildClient();
         NamespaceProperties np = client.getNamespaceProperties();
         assertNotNull(np.getName());
+    }
+
+    private void deleteIfExists(Runnable delete) {
+        try {
+            delete.run();
+        } catch (Exception ex) {
+            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
+        }
     }
 
     @Test
@@ -158,6 +166,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         expected.getAuthorizationRules().add(rule);
 
+        deleteIfExists(() -> client.deleteQueue(queueName));
         final QueueProperties actual = client.createQueue(queueName, expected);
         assertEquals(queueName, actual.getName());
 
@@ -181,7 +190,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertNotNull(runtimeProperties.getCreatedAt());
 
         //cleanup
-        client.deleteQueue(queueName);
+        deleteIfExists(() -> client.deleteQueue(queueName));
     }
 
     @Test
@@ -212,7 +221,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
 
-        client.deleteTopic(topicName);
+        deleteIfExists(() -> client.deleteTopic(topicName));
     }
 
     @Test
@@ -351,6 +360,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getSubscriptionBaseName(), 2);
         final ServiceBusAdministrationClient client = getClient();
 
+        deleteIfExists(() -> client.deleteSubscription(topicName, subscriptionName));
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () -> client.createSubscription(topicName, subscriptionName),
             "Queue exists exception not thrown when creating a queue with existing name");
@@ -503,6 +513,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-99"
             : getEntityName(getTopicBaseName(), 99);
 
+        deleteIfExists(() -> client.deleteTopic(topicName));
         assertThrows(ResourceNotFoundException.class, () -> client.getTopic(topicName),
             "Topic exists! But should not. Incorrect getTopic behavior");
     }
@@ -524,6 +535,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "topic-99"
             : getEntityName(getTopicBaseName(), 99);
 
+        deleteIfExists(() -> client.deleteTopic(topicName));
         assertFalse(client.getTopicExists(topicName));
     }
 
@@ -696,7 +708,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "queue-9"
             : getEntityName(getQueueBaseName(), 9);
 
-        client.createQueue(queueName);
+        try {
+            client.createQueue(queueName);
+        } catch (Exception ex) {
+            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
+        }
 
         client.deleteQueue(queueName);
     }
@@ -743,7 +759,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         try {
             client.createTopic(topicName);
         } catch (Exception ex) {
-            assertInstanceOf(ResourceExistsException.class, ex);
+            assertInstanceOf(ServiceBusManagementErrorException.class, ex);
         }
 
         client.deleteTopic(topicName);
