@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.implementation.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.springframework.aot.hint.MemberCategory;
@@ -9,7 +9,7 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegistrar;
 
-class PasswordlessHints implements RuntimeHintsRegistrar {
+class PasswordlessRuntimeHints implements RuntimeHintsRegistrar {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {

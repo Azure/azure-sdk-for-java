@@ -29,6 +29,10 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 #### Breaking Changes
 - Make the default partition behavior of Spring Cloud Azure EventHubs binder be a round-robin assignment to align with Event Hubs.[#32816](https://github.com/Azure/azure-sdk-for-java/pull/32816).
 
+### Spring Cloud Azure Native Reachability
+This library is deprecated, and all the reachability metadata have been incorporated into each Spring Cloud Azure library's source code directly.
+
+
 ## 5.0.0 (2023-01-17)
 - This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)

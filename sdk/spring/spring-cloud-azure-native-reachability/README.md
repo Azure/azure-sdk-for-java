@@ -2,7 +2,7 @@
 
 This library provides the reachability metadata for Spring Cloud Azure libraries when using with Spring Boot 3. To build a native executable, you can add this `spring-cloud-azure-native-reachability` to your dependencies. 
 
-**NOTE**: Please do note that this library is not GA ready, it is still in beta support, so please expect breaking changes in the future. And once the AOT support is ready, this library will be deprecated, and all the reachability metadata will be incorporated into each Spring Cloud Azure library's source code directly. 
+**NOTE**: This library is deprecated, and all the reachability metadata have been incorporated into each Spring Cloud Azure library's source code directly. 
 
 ## Getting started
 

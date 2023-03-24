@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.implementation.cloud.service;
+package com.azure.spring.cloud.service.implementation;
 
 import com.azure.spring.cloud.service.implementation.storage.common.StorageRetryProperties;
 import org.springframework.aot.hint.MemberCategory;
