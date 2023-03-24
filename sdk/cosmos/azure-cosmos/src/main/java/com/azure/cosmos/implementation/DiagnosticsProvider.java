@@ -124,7 +124,7 @@ public final class DiagnosticsProvider {
                     clientTelemetryConfig,
                     clientId,
                     userAgent,
-                    connectionMode.name().toLowerCase());
+                    connectionMode.name().toLowerCase(Locale.ROOT));
             }
         } else {
             this.cosmosTracer = null;
