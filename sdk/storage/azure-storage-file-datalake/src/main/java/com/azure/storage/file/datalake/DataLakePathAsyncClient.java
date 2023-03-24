@@ -882,7 +882,7 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response))));
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
     }
 
     /**

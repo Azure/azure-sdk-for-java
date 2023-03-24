@@ -50,9 +50,13 @@ public class PathProperties {
 
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext) -> {
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions) -> {
             properties.encryptionScope = encryptionScope;
             properties.encryptionContext = encryptionContext;
+            properties.owner = owner;
+            properties.group = group;
+            properties.permissions = permissions;
+
             return properties;
         });
     }
