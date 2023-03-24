@@ -12,7 +12,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
