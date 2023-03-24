@@ -69,7 +69,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @Tag("integration")
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientIntegrationTest.class);
 
     /**
      * Test to connect to the service bus with an azure sas credential.
@@ -153,7 +152,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-3"
-            : getEntityName(getTopicBaseName(), 3);
+            : testResourceNamer.randomName("test", 10);
         final CreateTopicOptions expected = new CreateTopicOptions()
             .setMaxSizeInMegabytes(2048L)
             .setDuplicateDetectionRequired(true)
@@ -246,7 +245,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
 
         final RuleProperties rule = client.createRule(topicName, subscriptionName, ruleName);
         assertEquals(ruleName, rule.getName());
@@ -310,7 +309,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final ServiceBusAdministrationClient client = getClient();
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
@@ -329,7 +328,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
         final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
 
@@ -557,7 +556,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -570,7 +569,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -758,7 +757,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
+            : getSubscriptionBaseName();
 
         PagedIterable<RuleProperties> ruleProperties = client.listRules(topicName, subscriptionName);
 
