@@ -819,8 +819,6 @@ public class CosmosTracerTest extends TestSuiteBase {
             mockTracer.context
         );
 
-
-
         Map<String, Object> attributes = mockTracer.attributes;
         if (databaseName != null) {
             assertThat(attributes.get("db.name")).isEqualTo(databaseName);
@@ -838,6 +836,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
         assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
+        assertThat(attributes.get("db.cosmosdb.connection_mode"))
+            .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
+        assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
+        assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
 
         verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
 
