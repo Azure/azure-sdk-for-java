@@ -240,7 +240,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-reference
+[product_documentation]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
