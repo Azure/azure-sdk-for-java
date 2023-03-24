@@ -24,6 +24,15 @@ public final class ConnectionPropertiesProvisioningState
     public static final ConnectionPropertiesProvisioningState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of ConnectionPropertiesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionPropertiesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ConnectionPropertiesProvisioningState from its string representation.
      *
      * @param name a name to look for.
