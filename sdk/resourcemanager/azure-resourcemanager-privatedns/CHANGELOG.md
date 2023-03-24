@@ -1,14 +1,12 @@
 # Release History
 
-## 2.25.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.25.0 (2023-03-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.24.0 (2023-02-17)
 
