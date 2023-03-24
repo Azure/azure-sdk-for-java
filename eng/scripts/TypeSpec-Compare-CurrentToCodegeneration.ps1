@@ -18,21 +18,16 @@ param(
   [string]$Directory
 )
 
-$path = ""
-if ($Directory) {
-  $path = $Directory
-}
-
 Write-Host "
 
-===================================
-Invoking Autorest code regeneration
-===================================
+===========================================
+Invoking TypeSpec Project Sync and Generate
+===========================================
 
 "
 
 
-foreach ($tspLocationPath in (Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse)) {
+foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
   ./eng/common/scripts/TypeSpec-Project-Sync.ps1 $sdkPath
@@ -48,7 +43,7 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String
@@ -56,5 +51,5 @@ if ($LastExitCode -ne 0) {
 The following files are out of date:
 $status
 "
-  exit 1
+  exit $LASTEXITCODE
 }
