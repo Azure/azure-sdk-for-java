@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 /**
  * Adds MT custom authentication headers to the requests.
  */
-class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
+public class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
 
     private static final String REGION_HEADER_NAME = "Ocp-Apim-Subscription-Region";
 

@@ -61,7 +61,7 @@ public class TextTranslationClientBase extends TestBase {
         return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_REGION", defaultRegion);
     }
 
-	private String getTokenURL() {
+    private String getTokenURL() {
         return Configuration.getGlobalConfiguration().get("AZURE_TEXT_TRANSLATION_TOKENURL", defaultTokenURL);
     }
 

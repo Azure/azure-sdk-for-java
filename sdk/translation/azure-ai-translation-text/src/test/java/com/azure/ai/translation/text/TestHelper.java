@@ -26,5 +26,5 @@ public class TestHelper {
 
         int[] nums = new int[] { distance(s1, s2, n1, n2 - 1), distance(s1, s2, n1 - 1, n2), distance(s1, s2, n1 - 1, n2 - 1) };
         return 1 + Arrays.stream(nums).min().getAsInt();
-    }		
+    }
 }
