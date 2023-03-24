@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformation;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"rcfbunrm\",\"requiredMembers\":[\"hhkxbp\",\"jy\"],\"requiredZoneNames\":[\"xxjyngudivkrtsw\"]},\"id\":\"qzvszjf\",\"name\":\"vjfdx\",\"type\":\"vetvt\"}";
+            "{\"properties\":{\"groupId\":\"zvszj\",\"requiredMembers\":[\"vjfdx\",\"ivetvtcq\",\"qtdo\"],\"requiredZoneNames\":[\"bxvwv\",\"yslqbhsfx\",\"blytk\",\"lmpewwwfbkr\"]},\"id\":\"nsvs\",\"name\":\"johxcrsb\",\"type\":\"vasrruvwb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +62,12 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         GroupIdInformation response =
             manager
                 .privateLinkResources()
-                .getWithResponse("rhhuaopppcqeqx", "lzdahzxctobgbkdm", "izpost", Context.NONE)
+                .getWithResponse("mjh", "xjyngudivk", "tswb", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rcfbunrm", response.properties().groupId());
-        Assertions.assertEquals("hhkxbp", response.properties().requiredMembers().get(0));
-        Assertions.assertEquals("xxjyngudivkrtsw", response.properties().requiredZoneNames().get(0));
-        Assertions.assertEquals("qzvszjf", response.id());
+        Assertions.assertEquals("zvszj", response.properties().groupId());
+        Assertions.assertEquals("vjfdx", response.properties().requiredMembers().get(0));
+        Assertions.assertEquals("bxvwv", response.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("nsvs", response.id());
     }
 }
