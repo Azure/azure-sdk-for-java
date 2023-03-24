@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
-    public List<ResponseTimeoutAndDelays> timeoutAndDelaysList = new ArrayList<>();
-
     final public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
 
         if (OperationType.QueryPlan.equals(request.getOperationType()) ||
