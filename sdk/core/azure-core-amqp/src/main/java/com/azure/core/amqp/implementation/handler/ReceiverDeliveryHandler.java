@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -39,6 +40,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 final class ReceiverDeliveryHandler {
     static final UUID DELIVERY_EMPTY_TAG = new UUID(0L, 0L);
     private static final int DELIVERY_TAG_SIZE = 16;
+    private static final Supplier<Integer> EMPTY_CREDIT_SUPPLIER = () -> 0;
 
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isEndpointTerminalState = new AtomicBoolean();
@@ -49,7 +51,7 @@ final class ReceiverDeliveryHandler {
     private final boolean includeDeliveryTagInMessage;
     private final ClientLogger logger;
     private final ReceiverUnsettledDeliveries unsettledDeliveries;
-    private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>(() -> 0);
+    private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>(EMPTY_CREDIT_SUPPLIER);
 
     /**
      * Creates DeliveryHandler.
@@ -113,8 +115,6 @@ final class ReceiverDeliveryHandler {
             return;
         }
 
-        final boolean wasSettled = delivery.isSettled();
-
         switch (settlingMode) {
             case SETTLE_ON_DELIVERY:
                 handleSettleOnDelivery(delivery);
@@ -131,20 +131,13 @@ final class ReceiverDeliveryHandler {
 
         final Link link = delivery.getLink();
         if (link != null) {
-            final ErrorCondition condition = link.getRemoteCondition();
-            addErrorCondition(logger.atVerbose(), condition)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue("updatedLinkCredit", link.getCredit())
-                .addKeyValue("remoteCredit", link.getRemoteCredit())
-                .addKeyValue("delivery.isPartial", delivery.isPartial())
-                .addKeyValue("delivery.isSettled", wasSettled)
-                .log("onDelivery.");
-
             final Receiver receiver = (Receiver) link;
             final int creditsLeft = receiver.getRemoteCredit();
             if (creditsLeft <= 0) {
                 final Supplier<Integer> supplier = creditSupplier.get();
+                if (supplier == EMPTY_CREDIT_SUPPLIER) {
+                    return;
+                }
                 final Integer credits = supplier.get();
                 if (credits != null && credits > 0) {
                     logger.atInfo()
@@ -286,6 +279,7 @@ final class ReceiverDeliveryHandler {
      * @param delivery the delivery.
      */
     private void handleSettleOnDelivery(Delivery delivery) {
+        final boolean wasSettled = delivery.isSettled();
         final Message message;
         try {
             message = readAndDecodeTransferDeliveryMessage(delivery, null);
@@ -294,6 +288,7 @@ final class ReceiverDeliveryHandler {
             handleDeliveryDecodeError(decodeError);
             return;
         }
+        logOnDelivery(delivery, null, wasSettled);
         emitMessage(message, delivery);
     }
 
@@ -303,6 +298,7 @@ final class ReceiverDeliveryHandler {
      * @param delivery the delivery.
      */
     private void handleAcceptAndSettleOnDelivery(Delivery delivery) {
+        final boolean wasSettled = delivery.isSettled();
         final Message message;
         try {
             message = readAndDecodeTransferDeliveryMessage(delivery, null);
@@ -312,6 +308,7 @@ final class ReceiverDeliveryHandler {
             handleDeliveryDecodeError(decodeError);
             return;
         }
+        logOnDelivery(delivery, null, wasSettled);
         emitMessage(message, delivery);
     }
 
@@ -321,6 +318,7 @@ final class ReceiverDeliveryHandler {
      * @param delivery the delivery.
      */
     private void handleSettleViaDisposition(Delivery delivery) {
+        final boolean wasSettled = delivery.isSettled();
         final UUID deliveryTag = decodeDeliveryTag(delivery);
         if (!unsettledDeliveries.containsDelivery(deliveryTag)) {
             final Message message;
@@ -332,6 +330,7 @@ final class ReceiverDeliveryHandler {
                 return;
             }
             if (unsettledDeliveries.onDelivery(deliveryTag, delivery)) {
+                logOnDelivery(delivery, deliveryTag, wasSettled);
                 emitMessage(message, delivery);
             } else {
                 // abandon the delivery as the 'unsettledDeliveries' is being closed.
@@ -437,6 +436,23 @@ final class ReceiverDeliveryHandler {
                 .log("Could not emit messages.error.", error);
             return false;
         });
+    }
+
+    private void logOnDelivery(Delivery delivery, UUID deliveryTag, boolean wasSettled) {
+        final Link link = delivery.getLink();
+        if (link != null) {
+            final ErrorCondition condition = link.getRemoteCondition();
+            final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, receiveLinkName);
+            if (deliveryTag != null) {
+                loggingEvent.addKeyValue("lockToken", deliveryTag);
+            }
+            loggingEvent.addKeyValue("updatedLinkCredit", link.getCredit())
+                .addKeyValue("remoteCredit", link.getRemoteCredit())
+                .addKeyValue("delivery.isSettled", wasSettled)
+                .log("onDelivery.");
+        }
     }
 
     private static UUID decodeDeliveryTag(Delivery delivery) {

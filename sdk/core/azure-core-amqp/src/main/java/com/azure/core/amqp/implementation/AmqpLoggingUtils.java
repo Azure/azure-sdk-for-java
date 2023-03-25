@@ -16,6 +16,7 @@ import java.util.Objects;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
@@ -55,7 +56,7 @@ public final class AmqpLoggingUtils {
      * and {@code getDescription()} under {@code errorDescription} keys.
      *
      * If errorCondition is {@code null} does not add properties.
-
+     *
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
@@ -65,7 +66,7 @@ public final class AmqpLoggingUtils {
             }
 
             if (errorCondition.getDescription() != null) {
-                logBuilder.addKeyValue(ERROR_CONDITION_KEY, errorCondition.getDescription());
+                logBuilder.addKeyValue(ERROR_DESCRIPTION_KEY, errorCondition.getDescription());
             }
         }
 

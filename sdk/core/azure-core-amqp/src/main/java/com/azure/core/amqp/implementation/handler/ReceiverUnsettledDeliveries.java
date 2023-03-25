@@ -209,7 +209,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         logger.atVerbose()
             .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
             .addKeyValue(DELIVERY_STATE_KEY, remoteState)
-            .log("Received update disposition delivery.");
+            .log("onDispositionAck");
 
         final Outcome remoteOutcome;
         if (remoteState instanceof Outcome) {
