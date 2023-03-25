@@ -782,7 +782,11 @@ public class ReactorSession implements AmqpSession {
 
             subscription.dispose();
 
-            if (link instanceof ReactorReceiver) {
+            if (link instanceof ReactorReceiver2) {
+                // To run new and old stack side by side for the short-term, the ReactorReceiver2 type was introduced.
+                // In the future, as part of old-stack removal, ReactorReceiver2 will become ReactorReceiver.
+                return ((ReactorReceiver2) link).closeAsync(errorMessage, errorCondition);
+            } else if (link instanceof ReactorReceiver) {
                 return ((ReactorReceiver) link).closeAsync(errorMessage, errorCondition);
             } else if (link instanceof ReactorSender) {
                 return ((ReactorSender) link).closeAsync(errorMessage, errorCondition);
