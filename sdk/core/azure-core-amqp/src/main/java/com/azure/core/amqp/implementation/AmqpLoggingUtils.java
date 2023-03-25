@@ -56,7 +56,7 @@ public final class AmqpLoggingUtils {
      * and {@code getDescription()} under {@code errorDescription} keys.
      *
      * If errorCondition is {@code null} does not add properties.
-
+     *
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
