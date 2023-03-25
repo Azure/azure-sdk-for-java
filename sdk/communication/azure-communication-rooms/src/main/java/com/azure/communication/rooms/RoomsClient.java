@@ -31,13 +31,12 @@ public final class RoomsClient {
      *
      * @param validFrom the validFrom value to set.
      * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
      * @param participants the participants value to set.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants) {
-        return roomsAsyncClient.createRoom(validFrom, validUntil, roomJoinPolicy, participants).block();
+    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, List<RoomParticipant> participants) {
+        return roomsAsyncClient.createRoom(validFrom, validUntil, participants).block();
     }
 
     /**
@@ -45,14 +44,13 @@ public final class RoomsClient {
      *
      * @param validFrom the validFrom value to set.
      * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
      * @param participants the participants value to set.
      * @param context The context of key value pairs for http request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, roomJoinPolicy, participants, context).block();
+    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, List<RoomParticipant> participants, Context context) {
+        return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, participants, context).block();
     }
 
     /**
@@ -61,13 +59,11 @@ public final class RoomsClient {
      * @param roomId The room id.
      * @param validFrom the validFrom value to set.
      * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants) {
-        return roomsAsyncClient.updateRoom(roomId, validFrom, validUntil, roomJoinPolicy, participants).block();
+    public CommunicationRoom updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil) {
+        return roomsAsyncClient.updateRoom(roomId, validFrom, validUntil).block();
     }
 
     /**
@@ -76,14 +72,12 @@ public final class RoomsClient {
      * @param roomId The room id.
      * @param validFrom the validFrom value to set.
      * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
      * @param context The context of key value pairs for http request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.updateRoomWithResponse(roomId, validFrom, validUntil, roomJoinPolicy, participants, context).block();
+    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Context context) {
+        return roomsAsyncClient.updateRoomWithResponse(roomId, validFrom, validUntil, context).block();
     }
 
     /**
@@ -133,78 +127,71 @@ public final class RoomsClient {
     }
 
     /**
-     * Add participants to an existing room.
+     * Lists all rooms.
      *
-     * @param roomId The room id.
-     * @param participants The participants to add.
-     * @return The existing room.
+     * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection addParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.addParticipants(roomId, participants).block();
+    public Response<RoomsCollection> listRoomsWithResponse() {
+        return roomsAsyncClient.listRoomsWithResponse().block();
     }
 
     /**
-     * Add participants to an existing room with response.
+     * Lists all rooms with response.
      *
-     * @param roomId The room id.
-     * @param participants The participants to add.
-     * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> addParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.addParticipantsWithResponse(roomId, participants, context).block();
+    public Response<RoomsCollection> listRooms() {
+        return roomsAsyncClient.listRooms().block();
     }
 
     /**
-     * Update participants to an existing room.
+     * Upsert participants to an existing Room.
      *
      * @param roomId The room id.
-     * @param participants The participants to add.
-     * @return The existing room.
+     * @param participants The participants list.
+     * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection updateParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.updateParticipants(roomId, participants).block();
+    public Response<Object> upsertParticipants(String roomId, List<RoomParticipant> participants) {
+        return roomsAsyncClient.upsertParticipants(roomId, participants).block();
     }
 
     /**
-     * Update participants to an existing room with response.
+     * Upsert participants to an existing Room with response
      *
      * @param roomId The room id.
-     * @param participants The participants to add.
-     * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @param participants The participants list.
+     * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> updateParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.updateParticipantsWithResponse(roomId, participants, context).block();
+    public Response<Object> upsertParticipantsWithResponse(String roomId, List<RoomParticipant> participants) {
+        return roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants).block();
     }
 
     /**
-     * Remove participants from an existing room.
+     * Remove participants to an existing Room.
      *
      * @param roomId The room id.
-     * @param participants The participants to remove.
-     * @return The existing room.
+     * @param identifiers The communication identifiers list.
+     * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection removeParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.removeParticipants(roomId, participants).block();
+    public Response<Object> removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
+        return roomsAsyncClient.removeParticipants(roomId, identifiers).block();
     }
 
     /**
-     * Remove participants from an existing room with response.
+     * Remove participants to an existing Room with response
      *
      * @param roomId The room id.
-     * @param participants The participants to remove.
-     * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @param identifiers The communication identifiers list.
+     * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> removeParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.removeParticipantsWithResponse(roomId, participants, context).block();
+    public Response<Object> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers) {
+        return roomsAsyncClient.removeParticipantsWithResponse(roomId, identifiers).block();
     }
 
     /**
@@ -219,7 +206,7 @@ public final class RoomsClient {
     }
 
     /**
-     * Update participants to an existing room with response.
+     * List participants to an existing room with response.
      *
      * @param roomId The room id.
      * @param context The context of key value pairs for http request.

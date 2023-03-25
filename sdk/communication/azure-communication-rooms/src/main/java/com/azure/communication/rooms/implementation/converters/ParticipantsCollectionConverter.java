@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.communication.chat.implementation.models.ParticipantsCollection} and
+ * A converter between {@link com.azure.communication.rooms.implementation.models.ParticipantsCollection} and
  * {@link ParticipantsCollection}.
  */
 public final class ParticipantsCollectionConverter {
@@ -19,7 +19,7 @@ public final class ParticipantsCollectionConverter {
     }
 
     /**
-     * Maps from {@link com.azure.communication.chat.implementation.models.ParticipantsCollection} to
+     * Maps from {@link com.azure.communication.rooms.implementation.models.ParticipantsCollection} to
      * {@link ParticipantsCollection}.
      */
     public static ParticipantsCollection convert(
@@ -43,8 +43,7 @@ public final class ParticipantsCollectionConverter {
     }
 
     /**
-     * Maps from {@link com.azure.communication.chat.implementation.models.ParticipantsCollection} to
-     * {@link ParticipantsCollection}.
+     * Maps from {@link ParticipantsCollection} to {@link com.azure.communication.rooms.implementation.models.ParticipantsCollection}.
      */
     public static com.azure.communication.rooms.implementation.models.ParticipantsCollection convert(
         ParticipantsCollection obj) {

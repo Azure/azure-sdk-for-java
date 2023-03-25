@@ -6,9 +6,11 @@ package com.azure.communication.rooms.implementation;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -17,6 +19,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -43,6 +46,7 @@ import java.util.stream.Collectors;
 public final class AzureCommunicationRoomServiceImplBuilder
         implements HttpTrait<AzureCommunicationRoomServiceImplBuilder>,
                 ConfigurationTrait<AzureCommunicationRoomServiceImplBuilder>,
+                AzureKeyCredentialTrait<AzureCommunicationRoomServiceImplBuilder>,
                 EndpointTrait<AzureCommunicationRoomServiceImplBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
@@ -147,6 +151,19 @@ public final class AzureCommunicationRoomServiceImplBuilder
     }
 
     /*
+     * The AzureKeyCredential used for authentication.
+     */
+    @Generated private AzureKeyCredential azureKeyCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureCommunicationRoomServiceImplBuilder credential(AzureKeyCredential azureKeyCredential) {
+        this.azureKeyCredential = azureKeyCredential;
+        return this;
+    }
+
+    /*
      * The service endpoint
      */
     @Generated private String endpoint;
@@ -222,7 +239,7 @@ public final class AzureCommunicationRoomServiceImplBuilder
             this.pipeline = createHttpPipeline();
         }
         if (apiVersion == null) {
-            this.apiVersion = "2022-02-01";
+            this.apiVersion = "2023-03-31-preview";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
@@ -262,6 +279,9 @@ public final class AzureCommunicationRoomServiceImplBuilder
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
+        if (azureKeyCredential != null) {
+            policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
+        }
         policies.addAll(
                 this.pipelinePolicies.stream()
                         .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

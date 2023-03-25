@@ -6,7 +6,7 @@ import com.azure.communication.rooms.models.RoomParticipant;
 
 /**
  * A converter between {@link com.azure.communication.rooms.implementation.models.RoomParticipant} and
- * {@link ChatParticipant}.
+ * {@link RoomParticipant}.
  */
 public final class RoomParticipantConverter {
     /**
@@ -18,14 +18,14 @@ public final class RoomParticipantConverter {
         }
 
         RoomParticipant roomParticipant = new RoomParticipant()
-            .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
+            .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getRawId()))
             .setRole(RoleTypeConverter.convert(obj.getRole()));
 
         return roomParticipant;
     }
 
     /**
-     * Maps from {RoomParticipant} to {@link com.azure.communication.chat.implementation.models.RoomParticipant}.
+     * Maps from {RoomParticipant} to {@link com.azure.communication.room.implementation.models.RoomParticipant}.
      */
     public static com.azure.communication.rooms.implementation.models.RoomParticipant convert(RoomParticipant obj) {
         if (obj == null) {
@@ -34,7 +34,7 @@ public final class RoomParticipantConverter {
 
         com.azure.communication.rooms.implementation.models.RoomParticipant roomParticipant
             = new com.azure.communication.rooms.implementation.models.RoomParticipant()
-                .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
+                .setRawId(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
                 .setRole(RoleTypeConverter.convert(obj.getRole()));
 
         return roomParticipant;

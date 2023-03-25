@@ -11,18 +11,19 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.net.URL;
 
 /** Initializes a new instance of the AzureCommunicationRoomService type. */
 public final class AzureCommunicationRoomServiceImpl {
     /** The endpoint of the Azure Communication resource. */
-    private final String endpoint;
+    private final URL endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
+    public URL getEndpoint() {
         return this.endpoint;
     }
 
@@ -74,13 +75,25 @@ public final class AzureCommunicationRoomServiceImpl {
         return this.rooms;
     }
 
+    /** The ParticipantsImpl object to access its operations. */
+    private final ParticipantsImpl participants;
+
+    /**
+     * Gets the ParticipantsImpl object to access its operations.
+     *
+     * @return the ParticipantsImpl object.
+     */
+    public ParticipantsImpl getParticipants() {
+        return this.participants;
+    }
+
     /**
      * Initializes an instance of AzureCommunicationRoomService client.
      *
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(String endpoint, String apiVersion) {
+    AzureCommunicationRoomServiceImpl(URL endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -97,7 +110,7 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, URL endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -110,11 +123,12 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationRoomServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, URL endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.rooms = new RoomsImpl(this);
+        this.participants = new ParticipantsImpl(this);
     }
 }

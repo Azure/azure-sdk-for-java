@@ -6,33 +6,33 @@ package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import java.util.Map;
 
-/** Participants to be updated in a room. */
+/** Participants to be updated in the room. */
 @Fluent
 public final class UpdateParticipantsRequest {
     /*
-     * Participants to update in a room.
+     * Participants to be updated.
      */
-    @JsonProperty(value = "participants", required = true)
-    private List<RoomParticipant> participants;
+    @JsonProperty(value = "participants")
+    private Map<String, ParticipantProperties> participants;
 
     /**
-     * Get the participants property: Participants to update in a room.
+     * Get the participants property: Participants to be updated.
      *
      * @return the participants value.
      */
-    public List<RoomParticipant> getParticipants() {
+    public Map<String, ParticipantProperties> getParticipants() {
         return this.participants;
     }
 
     /**
-     * Set the participants property: Participants to update in a room.
+     * Set the participants property: Participants to be updated.
      *
      * @param participants the participants value to set.
      * @return the UpdateParticipantsRequest object itself.
      */
-    public UpdateParticipantsRequest setParticipants(List<RoomParticipant> participants) {
+    public UpdateParticipantsRequest setParticipants(Map<String, ParticipantProperties> participants) {
         this.participants = participants;
         return this;
     }

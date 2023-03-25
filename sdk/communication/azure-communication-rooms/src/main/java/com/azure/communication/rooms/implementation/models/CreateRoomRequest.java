@@ -4,44 +4,39 @@
 
 package com.azure.communication.rooms.implementation.models;
 
-import com.azure.communication.rooms.models.RoomJoinPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
 
 /** Request payload for creating new room. */
 @Fluent
 public final class CreateRoomRequest {
     /*
      * The timestamp from when the room is open for joining. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the
+     * current date time.
      */
     @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
      * The timestamp from when the room can no longer be joined. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the
+     * current date time plus 180 days.
      */
     @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
 
     /*
-     * The Policy based on which Participants can join a room.
-     */
-    @JsonProperty(value = "roomJoinPolicy")
-    private RoomJoinPolicy roomJoinPolicy;
-
-    /*
-     * (Optional) Collection of participants invited to the room.
+     * (Optional) Participants to be invited to the room.
      */
     @JsonProperty(value = "participants")
-    private List<RoomParticipant> participants;
+    private Map<String, ParticipantProperties> participants;
 
     /**
      * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
-     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @return the validFrom value.
      */
@@ -51,7 +46,7 @@ public final class CreateRoomRequest {
 
     /**
      * Set the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
-     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @param validFrom the validFrom value to set.
      * @return the CreateRoomRequest object itself.
@@ -63,7 +58,7 @@ public final class CreateRoomRequest {
 
     /**
      * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @return the validUntil value.
      */
@@ -73,7 +68,7 @@ public final class CreateRoomRequest {
 
     /**
      * Set the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @param validUntil the validUntil value to set.
      * @return the CreateRoomRequest object itself.
@@ -84,41 +79,21 @@ public final class CreateRoomRequest {
     }
 
     /**
-     * Get the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @return the roomJoinPolicy value.
-     */
-    public RoomJoinPolicy getRoomJoinPolicy() {
-        return this.roomJoinPolicy;
-    }
-
-    /**
-     * Set the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @return the CreateRoomRequest object itself.
-     */
-    public CreateRoomRequest setRoomJoinPolicy(RoomJoinPolicy roomJoinPolicy) {
-        this.roomJoinPolicy = roomJoinPolicy;
-        return this;
-    }
-
-    /**
-     * Get the participants property: (Optional) Collection of participants invited to the room.
+     * Get the participants property: (Optional) Participants to be invited to the room.
      *
      * @return the participants value.
      */
-    public List<RoomParticipant> getParticipants() {
+    public Map<String, ParticipantProperties> getParticipants() {
         return this.participants;
     }
 
     /**
-     * Set the participants property: (Optional) Collection of participants invited to the room.
+     * Set the participants property: (Optional) Participants to be invited to the room.
      *
      * @param participants the participants value to set.
      * @return the CreateRoomRequest object itself.
      */
-    public CreateRoomRequest setParticipants(List<RoomParticipant> participants) {
+    public CreateRoomRequest setParticipants(Map<String, ParticipantProperties> participants) {
         this.participants = participants;
         return this;
     }

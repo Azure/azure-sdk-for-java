@@ -22,7 +22,7 @@ To update generated files for rooms service, run the following command
 ### Code generation settings
 ``` yaml
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e30976f6ccb058a36cd2f9d5160e1fd51f6c5d95/specification/communication/data-plane/Rooms/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a42a3d01a056f02e345685f311961a18d5862cd1/specification/communication/data-plane/Rooms/readme.md
 use: '@autorest/java@4.0.59'
 java: true
 title: AzureCommunicationRoomService

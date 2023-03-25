@@ -16,21 +16,13 @@ import java.util.Objects;
 
 public class CommunicationIdentifierConverter {
     /**
-     * Convert CommunicationIdentifierModel into CommunicationIdentifier
-     * @param identifier CommunicationIdentifierModel to be converted
+     * Convert rawId into CommunicationIdentifier
+     * @param rawId an acs rawID to be converted
      * @return CommunicationIdentifier
      */
-    public static CommunicationIdentifier convert(CommunicationIdentifierModel identifier) {
-        assertSingleType(identifier);
-        String rawId = identifier.getRawId();
-
-        if (identifier.getCommunicationUser() != null) {
-            Objects.requireNonNull(identifier.getCommunicationUser().getId());
-            return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
-        }
-
+    public static CommunicationIdentifier convert(String rawId) {
         Objects.requireNonNull(rawId);
-        return new UnknownIdentifier(rawId);
+        return new CommunicationUserIdentifier(rawId);
     }
 
     private static void assertSingleType(CommunicationIdentifierModel identifier) {
@@ -48,23 +40,20 @@ public class CommunicationIdentifierConverter {
     }
 
     /**
-     * Convert CommunicationIdentifier into CommunicationIdentifierModel
+     * Convert CommunicationIdentifier into rawId
      * @param identifier CommunicationIdentifier object to be converted
      * @return CommunicationIdentifierModel
      * @throws IllegalArgumentException when identifier is an unknown class derived from
      *          CommunicationIdentifier
      */
-    public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier) {
+    public static String convert(CommunicationIdentifier identifier) {
 
         if (identifier instanceof CommunicationUserIdentifier) {
-            return new CommunicationIdentifierModel()
-                .setCommunicationUser(
-                    new CommunicationUserIdentifierModel().setId(((CommunicationUserIdentifier) identifier).getId()));
+            return ((CommunicationUserIdentifier) identifier).getId();
         }
 
         if (identifier instanceof UnknownIdentifier) {
-            return new CommunicationIdentifierModel()
-                .setRawId(((UnknownIdentifier) identifier).getId());
+            return ((UnknownIdentifier) identifier).getId();
         }
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));

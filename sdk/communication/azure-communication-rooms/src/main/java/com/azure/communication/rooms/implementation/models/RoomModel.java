@@ -4,11 +4,9 @@
 
 package com.azure.communication.rooms.implementation.models;
 
-import com.azure.communication.rooms.models.RoomJoinPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The meeting room. */
 @Fluent
@@ -16,41 +14,29 @@ public final class RoomModel {
     /*
      * Unique identifier of a room. This id is server generated.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The timestamp when the room was created at the server. The timestamp is
      * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    @JsonProperty(value = "createdAt", required = true)
+    private OffsetDateTime createdAt;
 
     /*
      * The timestamp from when the room is open for joining. The timestamp is
      * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "validFrom")
+    @JsonProperty(value = "validFrom", required = true)
     private OffsetDateTime validFrom;
 
     /*
      * The timestamp from when the room can no longer be joined. The timestamp
      * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "validUntil")
+    @JsonProperty(value = "validUntil", required = true)
     private OffsetDateTime validUntil;
-
-    /*
-     * The Policy based on which Participants can join a room.
-     */
-    @JsonProperty(value = "roomJoinPolicy")
-    private RoomJoinPolicy roomJoinPolicy;
-
-    /*
-     * Collection of room participants.
-     */
-    @JsonProperty(value = "participants")
-    private List<RoomParticipant> participants;
 
     /**
      * Get the id property: Unique identifier of a room. This id is server generated.
@@ -73,24 +59,24 @@ public final class RoomModel {
     }
 
     /**
-     * Get the createdDateTime property: The timestamp when the room was created at the server. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return the createdDateTime value.
+     * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Set the createdDateTime property: The timestamp when the room was created at the server. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @param createdDateTime the createdDateTime value to set.
+     * @param createdAt the createdAt value to set.
      * @return the RoomModel object itself.
      */
-    public RoomModel setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public RoomModel setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 
@@ -135,46 +121,6 @@ public final class RoomModel {
      */
     public RoomModel setValidUntil(OffsetDateTime validUntil) {
         this.validUntil = validUntil;
-        return this;
-    }
-
-    /**
-     * Get the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @return the roomJoinPolicy value.
-     */
-    public RoomJoinPolicy getRoomJoinPolicy() {
-        return this.roomJoinPolicy;
-    }
-
-    /**
-     * Set the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @return the RoomModel object itself.
-     */
-    public RoomModel setRoomJoinPolicy(RoomJoinPolicy roomJoinPolicy) {
-        this.roomJoinPolicy = roomJoinPolicy;
-        return this;
-    }
-
-    /**
-     * Get the participants property: Collection of room participants.
-     *
-     * @return the participants value.
-     */
-    public List<RoomParticipant> getParticipants() {
-        return this.participants;
-    }
-
-    /**
-     * Set the participants property: Collection of room participants.
-     *
-     * @param participants the participants value to set.
-     * @return the RoomModel object itself.
-     */
-    public RoomModel setParticipants(List<RoomParticipant> participants) {
-        this.participants = participants;
         return this;
     }
 }

@@ -11,60 +11,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RoomParticipant {
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be
-     * interpreted as a union: Apart from rawId, at most one further property
-     * may be set.
+     * Raw ID representation of the communication identifier. Please refer to
+     * the following document for additional information on Raw ID. <br>
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation
      */
-    @JsonProperty(value = "communicationIdentifier", required = true)
-    private CommunicationIdentifierModel communicationIdentifier;
+    @JsonProperty(value = "rawId", required = true)
+    private String rawId;
 
     /*
-     * The Role of a room participant.
+     * The role of a room participant. The default value is Attendee.
      */
-    @JsonProperty(value = "role")
-    private RoleType role;
+    @JsonProperty(value = "role", required = true)
+    private Role role;
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
-     * most one further property may be set.
+     * Get the rawId property: Raw ID representation of the communication identifier. Please refer to the following
+     * document for additional information on Raw ID. &lt;br&gt;
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
      *
-     * @return the communicationIdentifier value.
+     * @return the rawId value.
      */
-    public CommunicationIdentifierModel getCommunicationIdentifier() {
-        return this.communicationIdentifier;
+    public String getRawId() {
+        return this.rawId;
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
-     * most one further property may be set.
+     * Set the rawId property: Raw ID representation of the communication identifier. Please refer to the following
+     * document for additional information on Raw ID. &lt;br&gt;
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
      *
-     * @param communicationIdentifier the communicationIdentifier value to set.
+     * @param rawId the rawId value to set.
      * @return the RoomParticipant object itself.
      */
-    public RoomParticipant setCommunicationIdentifier(CommunicationIdentifierModel communicationIdentifier) {
-        this.communicationIdentifier = communicationIdentifier;
+    public RoomParticipant setRawId(String rawId) {
+        this.rawId = rawId;
         return this;
     }
 
     /**
-     * Get the role property: The Role of a room participant.
+     * Get the role property: The role of a room participant. The default value is Attendee.
      *
      * @return the role value.
      */
-    public RoleType getRole() {
+    public Role getRole() {
         return this.role;
     }
 
     /**
-     * Set the role property: The Role of a room participant.
+     * Set the role property: The role of a room participant. The default value is Attendee.
      *
      * @param role the role value to set.
      * @return the RoomParticipant object itself.
      */
-    public RoomParticipant setRole(RoleType role) {
+    public RoomParticipant setRole(Role role) {
         this.role = role;
         return this;
     }
