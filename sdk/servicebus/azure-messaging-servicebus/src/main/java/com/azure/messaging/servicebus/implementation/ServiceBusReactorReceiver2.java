@@ -50,7 +50,7 @@ public class ServiceBusReactorReceiver2 extends ReactorReceiver2 implements Serv
         Map<String, Object> loggingContext = new HashMap<>(2);
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
-        this.logger = new ClientLogger(ServiceBusReactorReceiver.class, loggingContext);
+        this.logger = new ClientLogger(ServiceBusReactorReceiver2.class, loggingContext);
 
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
