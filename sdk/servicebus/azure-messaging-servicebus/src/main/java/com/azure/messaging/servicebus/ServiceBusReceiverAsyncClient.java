@@ -1440,7 +1440,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-            .log("Update started.");
+            .log("Disposition started.");
 
         // This operation is not kicked off until it is subscribed to.
         final Mono<Void> performOnManagement = connectionProcessor
@@ -1452,7 +1452,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                    .log("Management node Update completed.");
+                    .log("Disposition (via management node) completed.");
 
                 message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
@@ -1486,7 +1486,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                            .log("Update completed.");
+                            .log("Disposition completed.");
 
                         message.setIsSettled();
                         renewalContainer.remove(lockToken);
