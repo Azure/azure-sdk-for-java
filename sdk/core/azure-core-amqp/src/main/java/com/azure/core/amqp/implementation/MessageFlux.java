@@ -47,7 +47,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
     private static final String MESSAGE_FLUX_KEY = "messageFlux";
-    static final String TRACKING_ID_KEY = "trackingId";
     private final ClientLogger logger;
     private final int prefetch;
     private final CreditFlowMode creditFlowMode;
@@ -542,7 +541,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param mediatorHolder the mediator holder.
          */
         private void setTerminationSignalOrScheduleNextMediatorRequest(Throwable error,
-                                                                       CoreSubscriber<Message> downstream, MediatorHolder mediatorHolder) {
+            CoreSubscriber<Message> downstream, MediatorHolder mediatorHolder) {
             final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
             if (cancelled || done) {
                 // To terminate the operator, the downstream signaled cancellation Or upstream signaled error
@@ -553,20 +552,17 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 return;
             }
 
-            final long trackingId = System.nanoTime();
             final Duration delay;
             if (error == null) {
                 // Even if the broker sets no link error condition, it's good to back off before creating a new link.
                 delay = Duration.ofSeconds(1);
-                logBuilder.addKeyValue(TRACKING_ID_KEY, trackingId)
-                    .addKeyValue("retryAfter", delay.toMillis())
+                logBuilder.addKeyValue("retryAfter", delay.toMillis())
                     .log("Current mediator reached terminal completion-state (retriable:true).");
             } else {
                 final int attempt = retryAttempts.incrementAndGet();
                 delay = retryPolicy.calculateRetryDelay(error, attempt);
                 if (delay != null) {
-                    logBuilder.addKeyValue(TRACKING_ID_KEY, trackingId)
-                        .addKeyValue("attempt", attempt)
+                    logBuilder.addKeyValue("attempt", attempt)
                         .addKeyValue("retryAfter", delay.toMillis())
                         .log("Current mediator reached terminal error-state (retriable:true).", error);
                 } else {
@@ -584,7 +580,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             }
 
             try {
-                scheduleNextMediatorRequest(trackingId, delay, mediatorHolder);
+                scheduleNextMediatorRequest(delay, mediatorHolder);
             } catch (RejectedExecutionException ree) {
                 final RuntimeException e = Operators.onRejectedExecution(ree, downstream.currentContext());
                 mediatorHolder.updateLogWithReceiverId(logger.atWarning())
@@ -599,26 +595,22 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         /**
          * Schedule a task to request a new mediator.
          *
-         * @param trackingId an id to correlate the logs from the scheduled task with the relevant logs from the caller.
          * @param delay the backoff duration before requesting the next mediator.
          * @param mediatorHolder the mediator holder.
          * @throws RejectedExecutionException if the scheduler is unable to schedule the task.
          */
-        private void scheduleNextMediatorRequest(long trackingId, Duration delay, MediatorHolder mediatorHolder) {
-            final Runnable delayedTask = () -> {
-                final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning())
-                    .addKeyValue(TRACKING_ID_KEY, trackingId);
-
+        private void scheduleNextMediatorRequest(Duration delay, MediatorHolder mediatorHolder) {
+            final Runnable task = () -> {
+                final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
                 if (cancelled || done) {
                     logBuilder.log("During the backoff, MessageFlux reached terminal-state [done:{}, cancelled:{}].", done, cancelled);
                     return;
                 }
-
                 logBuilder.log("Requesting a new mediator.");
                 upstream.request(1);
             };
 
-            mediatorHolder.nextMediatorRequestDisposable = Schedulers.parallel().schedule(delayedTask,
+            mediatorHolder.nextMediatorRequestDisposable = Schedulers.parallel().schedule(task,
                 delay.toMillis(),
                 TimeUnit.MILLISECONDS);
         }
@@ -699,43 +691,35 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * {@link RecoverableReactorReceiver#onMediatorReady(BiFunction)}.
          */
         void onParentReady() {
-            final long trackingId = System.nanoTime();
-            updateLogWithReceiverId(logger.atWarning())
-                .addKeyValue(TRACKING_ID_KEY, trackingId)
-                .log("Setting next mediator.");
+            updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator.");
 
-            // Subscribe for the messages on the Receiver (AmqpReceiveLink).
+            // 1. Subscribe for the messages on the Receiver (AmqpReceiveLink).
             receiver.receive().subscribe(this);
 
-            // Subscribe for the Receiver (AmqpReceiveLink) terminal-state.
+            // 2. Subscribe for the Receiver (AmqpReceiveLink) terminal-state event.
             final Disposable taskOnTerminate =  receiver.getEndpointStates()
                 .ignoreElements()
                 .subscribe(__ -> { },
                     e -> {
-                        updateLogWithReceiverId(logger.atWarning())
-                            .addKeyValue(TRACKING_ID_KEY, trackingId)
-                            .log("Receiver emitted terminal error.", e);
+                        updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal error.", e);
                         onLinkError(e);
                     },
                     () -> {
-                        updateLogWithReceiverId(logger.atWarning())
-                            .addKeyValue(TRACKING_ID_KEY, trackingId)
-                            .log("Receiver emitted terminal completion.");
+                        updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal completion.");
                         onLinkComplete();
                     });
             this.endpointStateDisposables.add(taskOnTerminate);
 
+            // 3. Subscribe for the Receiver (AmqpReceiveLink) readiness event.
             final Disposable taskOnActive = receiver.getEndpointStates()
                 .publishOn(Schedulers.boundedElastic())
                 .subscribe(state -> {
                     if (state == AmqpEndpointState.ACTIVE) {
                         if (!ready) {
-                            updateLogWithReceiverId(logger.atWarning())
-                                .addKeyValue(TRACKING_ID_KEY, trackingId)
-                                .log("The mediator is active.");
+                            updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
                             // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the ACTIVE state.
                             // Once this flag is set, the drain-loop can request credit placement via 'RequestAccounting'
-                            // contract as needed, i.e., the flag ensures credit is placed only after the Link is ACTIVE.
+                            // contract as needed, i.e., the flag ensures credit is placed on the Link only after it is ready.
                             ready = true;
                             // notify the parent about the readiness.
                             parent.onMediatorReady(this::updateDisposition);
