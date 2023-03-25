@@ -89,7 +89,7 @@ public class ReactorReceiver2 implements AmqpReceiveLink, AsyncCloseable, AutoCl
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
 
-        this.logger = new ClientLogger(ReactorReceiver.class, loggingContext);
+        this.logger = new ClientLogger(ReactorReceiver2.class, loggingContext);
 
         this.messagesProcessor = this.handler.getMessages()
             .doOnNext(message -> {
