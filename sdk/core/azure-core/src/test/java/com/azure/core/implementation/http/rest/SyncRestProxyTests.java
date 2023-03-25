@@ -34,6 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +76,31 @@ public class SyncRestProxyTests {
         testInterface.testVoidMethod(Context.NONE);
 
         assertTrue(client.lastResponseClosed);
+    }
+
+    @Test
+    public void contextFlagDisablesSyncStack() {
+        AtomicBoolean asyncMethodCalled = new AtomicBoolean(false);
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                asyncMethodCalled.set(true);
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                throw new IllegalStateException("Sync send API was Invoked.");
+            }
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testVoidMethod(new Context("com.azure.core.http.restproxy.syncproxy.enable", false));
+        assertTrue(asyncMethodCalled.get());
     }
 
     @Test
