@@ -101,8 +101,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         String operationLocationHeaderName, Context context) {
         this(httpPipeline, endpoint, serializer,
             operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            null,
-            context);
+            null, context);
     }
 
     private OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
@@ -188,11 +187,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         String url = pollingContext.getData(operationLocationHeaderName
             .getCaseSensitiveName());
 
-        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
-            UrlBuilder urlBuilder = UrlBuilder.parse(url);
-            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
-            url = urlBuilder.toString();
-        }
+        url = setServiceVersionQueryParam(url);
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context))).flatMap(response -> response.getBodyAsByteArray()
@@ -213,6 +208,15 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                     return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
                         .map(value -> new PollResponse<>(status, value, retryAfter));
                 })));
+    }
+
+    private String setServiceVersionQueryParam(String url) {
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        return url;
     }
 
     @Override
@@ -239,11 +243,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
-            if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
-                UrlBuilder urlBuilder = UrlBuilder.parse(finalGetUrl);
-                urlBuilder.setQueryParameter("api-version", this.serviceVersion);
-                finalGetUrl = urlBuilder.toString();
-            }
+            finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                     CoreUtils.mergeContexts(context1, this.context)))

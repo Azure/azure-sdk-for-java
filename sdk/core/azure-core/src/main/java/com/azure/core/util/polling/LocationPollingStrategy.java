@@ -162,11 +162,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         String url = pollingContext.getData(PollingConstants.LOCATION);
-        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
-            UrlBuilder urlBuilder = UrlBuilder.parse(url);
-            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
-            url = urlBuilder.toString();
-        }
+        url = setServiceVersionQueryParam(url);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
@@ -195,6 +191,15 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             });
     }
 
+    private String setServiceVersionQueryParam(String url) {
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        return url;
+    }
+
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
@@ -218,11 +223,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
-            if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
-                UrlBuilder urlBuilder = UrlBuilder.parse(finalGetUrl);
-                urlBuilder.setQueryParameter("api-version", this.serviceVersion);
-                finalGetUrl = urlBuilder.toString();
-            }
+            finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
 
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil.withContext(context1 -> httpPipeline.send(request,
