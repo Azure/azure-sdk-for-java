@@ -17,6 +17,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollResult;
 import com.azure.core.util.polling.implementation.PollingConstants;
@@ -52,6 +53,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     private final String endpoint;
     private final HttpHeaderName operationLocationHeaderName;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the operation resource polling strategy using a JSON serializer and "Operation-Location"
@@ -60,7 +62,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, null, new DefaultJsonSerializer(), DEFAULT_OPERATION_LOCATION_HEADER, Context.NONE);
+        this(httpPipeline, null, new DefaultJsonSerializer(), DEFAULT_OPERATION_LOCATION_HEADER, null, Context.NONE);
     }
 
     /**
@@ -99,17 +101,40 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         String operationLocationHeaderName, Context context) {
         this(httpPipeline, endpoint, serializer,
             operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
+            null,
             context);
     }
 
     private OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
-        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, Context context) {
+        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, String serviceVersion, Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.endpoint = endpoint;
         this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
         this.operationLocationHeaderName = (operationLocationHeaderName == null)
             ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
+
+        this.serviceVersion = serviceVersion;
         this.context = context == null ? Context.NONE : context;
+    }
+
+    /**
+     * Creates an instance of the operation resource polling strategy.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with.
+     * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
+     * @param serializer a custom serializer for serializing and deserializing polling responses.
+     * @param operationLocationHeaderName a custom header for polling the long-running operation.
+     * @param serviceVersion the service version that will be added as query param to each polling
+     * request and final result request URL. If the request URL already contains a service version, it will be replaced
+     * by the service version set in this constructor.
+     * @param context an instance of {@link com.azure.core.util.Context}.
+     */
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
+                                            String operationLocationHeaderName, String serviceVersion, Context context) {
+        this(httpPipeline, endpoint, serializer,
+            operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
+            serviceVersion,
+            context);
     }
 
     @Override
@@ -160,8 +185,15 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName
-            .getCaseSensitiveName()));
+        String url = pollingContext.getData(operationLocationHeaderName
+            .getCaseSensitiveName());
+
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context))).flatMap(response -> response.getBodyAsByteArray()
             .map(BinaryData::fromBytes)
@@ -207,6 +239,11 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
+            if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+                UrlBuilder urlBuilder = UrlBuilder.parse(finalGetUrl);
+                urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+                finalGetUrl = urlBuilder.toString();
+            }
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                     CoreUtils.mergeContexts(context1, this.context)))

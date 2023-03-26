@@ -82,6 +82,27 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
             new StatusCheckPollingStrategy<>(serializer)));
     }
 
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with.
+     * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
+     * @param serializer a custom serializer for serializing and deserializing polling responses.
+     * @param serviceVersion the service version that will be added as query param to each polling
+     * request and final result request URL. If the request URL already contains a service version, it will be replaced
+     * by the service version set in this constructor.
+     * @param context an instance of {@link Context}.
+     * @throws NullPointerException If {@code httpPipeline} is null.
+     */
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, String serviceVersion, Context context) {
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
+            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, serviceVersion, context),
+            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, serviceVersion, context),
+            new StatusCheckPollingStrategy<>(serializer)));
+    }
+
     @Override
     public Mono<U> getResult(PollingContext<T> context, TypeReference<U> resultType) {
         return chainedPollingStrategy.getResult(context, resultType);

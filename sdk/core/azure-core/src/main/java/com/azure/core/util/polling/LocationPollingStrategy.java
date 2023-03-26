@@ -17,6 +17,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
@@ -48,6 +49,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the location polling strategy using a JSON serializer.
@@ -92,9 +94,26 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer, Context context) {
+        this(httpPipeline, endpoint, serializer, null, context);
+    }
+
+    /**
+     * Creates an instance of the location polling strategy.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
+     * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @param serviceVersion the service version that will be added as query param to each polling
+     * request and final result request URL. If the request URL already contains a service version, it will be replaced
+     * by the service version set in this constructor.
+     * @param context an instance of {@link Context}
+     * @throws NullPointerException If {@code httpPipeline} is null.
+     */
+    public LocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer, String serviceVersion, Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.endpoint = endpoint;
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
+        this.serviceVersion = serviceVersion;
         this.context = context == null ? Context.NONE : context;
     }
 
@@ -142,7 +161,14 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
+        String url = pollingContext.getData(PollingConstants.LOCATION);
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context)))
             .flatMap(response -> {
@@ -192,6 +218,12 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
+            if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+                UrlBuilder urlBuilder = UrlBuilder.parse(finalGetUrl);
+                urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+                finalGetUrl = urlBuilder.toString();
+            }
+
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                     CoreUtils.mergeContexts(context1, this.context)))
