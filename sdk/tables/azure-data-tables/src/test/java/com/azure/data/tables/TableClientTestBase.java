@@ -53,7 +53,7 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
         } else {
             tableClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
 
-            if (!interceptorManager.isLiveMode()) {
+            if (interceptorManager.isRecordMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
                 tableClientBuilder.addPolicy(recordPolicy);
             }
