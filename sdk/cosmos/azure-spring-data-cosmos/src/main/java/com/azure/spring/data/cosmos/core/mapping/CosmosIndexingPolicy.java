@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for cosmos indexing policy.
- * Using this annotation will overwrite the cosmos indexing policy currently in Azure Portal.
+ * Using this annotation will NOT overwrite the cosmos indexing policy currently in Azure Portal by default. See `overwritePolicy()` for more details. 
  * To prevent overwriting the Indexing Policy defined on Azure Portal, Indexing Policy defined on the SDK through this annotation should be identical or set overwritePolicy flag to false.
  */
 @Persistent
