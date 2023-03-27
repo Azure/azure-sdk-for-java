@@ -843,7 +843,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         testSubscriber.assertValueCount(1);
     }
 
-    private class TestRetryPolicy extends DocumentClientRetryPolicy {
+    private static class TestRetryPolicy extends DocumentClientRetryPolicy {
         boolean noRetry;
         RetryContext retryContext;
 

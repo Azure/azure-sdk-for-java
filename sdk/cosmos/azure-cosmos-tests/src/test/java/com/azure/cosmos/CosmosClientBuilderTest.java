@@ -8,18 +8,14 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosClientBuilderTest {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosClientBuilderTest.class);
     String hostName = "https://sample-account.documents.azure.com:443/";
 
     @Test(groups = "unit")

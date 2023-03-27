@@ -188,6 +188,7 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
             this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
             this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            this.gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
     }
@@ -295,6 +296,10 @@ public class ClientSideRequestStatistics {
 
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
+            if (this.gatewayStatistics != null) {
+                return this.gatewayStatistics.responsePayloadSizeInBytes;
+            }
+
             return 0;
         }
 
@@ -519,6 +524,8 @@ public class ClientSideRequestStatistics {
         private String exceptionMessage;
         private String exceptionResponseHeaders;
 
+        private int responsePayloadSizeInBytes;
+
         public String getSessionToken() {
             return sessionToken;
         }
@@ -558,6 +565,8 @@ public class ClientSideRequestStatistics {
         public String getExceptionResponseHeaders() {
             return exceptionResponseHeaders;
         }
+
+        public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
     }
 
     public static SystemInformation fetchSystemInformation() {

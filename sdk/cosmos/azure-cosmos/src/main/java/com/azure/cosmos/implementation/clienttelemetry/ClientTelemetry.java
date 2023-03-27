@@ -34,7 +34,6 @@ import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -91,7 +90,7 @@ public class ClientTelemetry {
     private final static AtomicLong instanceCount = new AtomicLong(0);
     private final static AtomicReference<AzureVMMetadata> azureVmMetaDataSingleton =
         new AtomicReference<>(null);
-    private ClientTelemetryInfo clientTelemetryInfo;
+    private final ClientTelemetryInfo clientTelemetryInfo;
     private final boolean clientTelemetryConfigEnabled;
     private final boolean clientMetricsEnabled;
     private final Configs configs;
@@ -274,8 +273,6 @@ public class ClientTelemetry {
                             BridgeInternal.serializeJsonToByteBuffer(this.clientTelemetryInfo,
                                 ClientTelemetry.OBJECT_MAPPER);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
-                        Flux<byte[]> fluxBytes = Flux.just(tempBuffer);
-
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();
                         headers.put(HttpConstants.HttpHeaders.X_DATE, date);

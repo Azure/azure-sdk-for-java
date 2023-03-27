@@ -40,7 +40,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public CosmosDiagnosticsE2ETest(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder.contentResponseOnWriteEnabled(true));
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = {"simple", "emulator"}, timeOut = SETUP_TIMEOUT)
@@ -52,6 +52,10 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
+    }
+
+    public String resolveTestNameSuffix(Object[] row) {
+        return "";
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
@@ -67,7 +71,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             );
         CosmosContainer container = this.getContainer(builder);
 
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
         assertThat(capturingHandler.getDiagnosticsContexts()).hasSize(1);
         CosmosDiagnosticsContext ctx = capturingHandler.getDiagnosticsContexts().get(0);
@@ -80,8 +84,11 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(ctx.getDuration()).isGreaterThan(Duration.ZERO);
         assertThat(ctx.getFinalError()).isNull();
         assertThat(ctx.getMaxItemCount()).isNull();
-        // @TODO fix bug in Gateway mode not populating response payload size
-        // assertThat(ctx.getMaxResponsePayloadSizeInBytes()).isGreaterThan(0);
+        if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            assertThat(ctx.getMaxResponsePayloadSizeInBytes()).isGreaterThan(0);
+        } else {
+            assertThat(ctx.getMaxResponsePayloadSizeInBytes()).isEqualTo(0);
+        }
         assertThat(ctx.getOperationType()).isEqualTo(OperationType.Create.toString());
         assertThat(ctx.getOperationTypeInternal()).isEqualTo(OperationType.Create);
         assertThat(ctx.getResourceType()).isEqualTo(ResourceType.Document.toString());
@@ -90,9 +97,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyDefaultLogger() {
-
-        CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
-
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
@@ -100,16 +104,15 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .diagnosticLogs()
             );
         CosmosContainer container = this.getContainer(builder);
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
-        // @TODO add validation
+        // no assertions here - invocations for diagnostics handler are validated above
+        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+        // with custom appender
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyLoggerWithCustomConfig() {
-
-        CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
-
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
@@ -122,15 +125,17 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .diagnosticLogs()
             );
         CosmosContainer container = this.getContainer(builder);
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
-        // @TODO add validation
+        // no assertions here - invocations for diagnostics handler are validated above
+        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+        // with custom appender
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomLoggerWithCustomConfig() {
 
-        CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
+        CapturingLogger capturingLogger = new CapturingLogger(new CosmosDiagnosticsLoggerConfig());
 
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -141,20 +146,17 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                             .configureLatencyThresholds(Duration.ofMillis(100), Duration.ofMillis(2000))
                             .setRequestChargeThreshold(100)
                     )
-                    .diagnosticsHandler(
-                        new ConsoleOutLogger(new CosmosDiagnosticsLoggerConfig())
-                    )
+                    .diagnosticsHandler(capturingLogger)
             );
         CosmosContainer container = this.getContainer(builder);
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
-        // @TODO add validation
+        assertThat(capturingLogger.getLoggedMessages()).isNotNull();
+        assertThat(capturingLogger.getLoggedMessages()).hasSize(1);
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerAndMetrics() {
-
-        CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
         CosmosClientBuilder builder = this
@@ -165,18 +167,18 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(meterRegistry))
             );
         CosmosContainer container = this.getContainer(builder);
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
         meterRegistry.clear();
         meterRegistry.close();
-        // @TODO add validation
+
+        // no assertions here - invocations for diagnostics handler are validated above
+        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+        // with custom appender
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerWithLegacyOpenTelemetryTraces() {
-
-        CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
-
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
@@ -185,12 +187,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .useLegacyOpenTelemetryTracing()
             );
         CosmosContainer container = this.getContainer(builder);
-        executeTestCase(builder, container);
+        executeTestCase(container);
 
-        // @TODO add validation
+        // no assertions here - invocations for diagnostics handler are validated above
+        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+        // with custom appender
     }
 
-    private void executeTestCase(CosmosClientBuilder builder, CosmosContainer container) {
+    private void executeTestCase(CosmosContainer container) {
         String id = UUID.randomUUID().toString();
         CosmosItemResponse<ObjectNode> response = container.createItem(
             getDocumentDefinition(id),
@@ -229,7 +233,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         return this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    private class CapturingDiagnosticsHandler implements CosmosDiagnosticsHandler {
+    private static class CapturingDiagnosticsHandler implements CosmosDiagnosticsHandler {
 
         private final ArrayList<CosmosDiagnosticsContext> diagnosticsContexts = new ArrayList<>();
 
@@ -243,19 +247,21 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         }
     }
 
-    private class ConsoleOutLogger extends CosmosDiagnosticsLogger {
-
-        public ConsoleOutLogger(CosmosDiagnosticsLoggerConfig config) {
+    private static class CapturingLogger extends CosmosDiagnosticsLogger {
+        private final List<String> loggedMessages = new ArrayList<>();
+        public CapturingLogger(CosmosDiagnosticsLoggerConfig config) {
             super(config);
         }
 
         @Override
         protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
-            return super.shouldLog(diagnosticsContext);
+            logger.info("--> should Log: ctx: {}", diagnosticsContext);
+            return true;
         }
 
         @Override
         protected void log(CosmosDiagnosticsContext ctx) {
+            logger.info("--> log - ctx: {}", ctx);
             String msg = String.format(
                     "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
                     ctx.getAccountName(),
@@ -263,9 +269,15 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     ctx.getContainerName(),
                     ctx.getStatusCode(),
                     ctx.getSubStatusCode(),
-                    ctx.toString());
+                    ctx);
 
-            System.out.println(msg);
+            this.loggedMessages.add(msg);
+
+            logger.info(msg);
+        }
+
+        public List<String> getLoggedMessages() {
+            return this.loggedMessages;
         }
     }
 }

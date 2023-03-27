@@ -63,7 +63,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -402,7 +401,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean enableRequestLevelTracing,
         boolean forceThresholdViolations) throws Exception {
 
-        ITEM_ID =  "tracerDoc_" + String.valueOf(testCaseCount.incrementAndGet());
+        ITEM_ID =  "tracerDoc_" + testCaseCount.incrementAndGet();
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
@@ -458,7 +457,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         for (int i = 0; i < 30; i++) {
             // inserting high enough number of documents to make sure we have at least 1 doc on each
             // of the two partitions
-            item = getDocumentDefinition(ITEM_ID + "_" + String.valueOf(i));
+            item = getDocumentDefinition(ITEM_ID + "_" + i);
             requestOptions = new CosmosItemRequestOptions();
             cosmosItemResponse = cosmosAsyncContainer
                 .createItem(item, requestOptions)

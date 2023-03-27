@@ -10,17 +10,17 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-cosmos</module>
-      <module>azure-cosmos-benchmark</module>
-      <module>azure-cosmos-dotnet-benchmark</module>
-      <module>azure-cosmos-encryption</module>
-      <module>azure-spring-data-cosmos</module>
-      <module>azure-spring-data-cosmos-test</module>
-      <module>azure-cosmos-spark_3_2-12</module>
-      <module>azure-cosmos-spark_3-1_2-12</module>
-      <module>azure-cosmos-spark_3-2_2-12</module>
-      <module>azure-cosmos-spark_3-3_2-12</module>
-      <module>azure-cosmos-test</module>
-      <module>azure-cosmos-tests</module>
+    <module>azure-cosmos</module>
+    <module>azure-cosmos-benchmark</module>
+    <module>azure-cosmos-dotnet-benchmark</module>
+    <module>azure-cosmos-encryption</module>
+    <module>azure-spring-data-cosmos</module>
+    <module>azure-spring-data-cosmos-test</module>
+    <module>azure-cosmos-spark_3_2-12</module>
+    <module>azure-cosmos-spark_3-1_2-12</module>
+    <module>azure-cosmos-spark_3-2_2-12</module>
+    <module>azure-cosmos-spark_3-3_2-12</module>
+    <module>azure-cosmos-test</module>
+    <module>azure-cosmos-tests</module>
   </modules>
 </project>
