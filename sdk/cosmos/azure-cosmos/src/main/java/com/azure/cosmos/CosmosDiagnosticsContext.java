@@ -240,6 +240,7 @@ public final class CosmosDiagnosticsContext {
             this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
             this.diagnostics.add(cosmosDiagnostics);
             this.cachedRequestDiagnostics = null;
+            cosmosDiagnostics.setDiagnosticsContext(this);
         }
     }
 
@@ -388,10 +389,14 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    synchronized void endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+    synchronized boolean endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
         synchronized (this.spanName) {
-            this.isCompleted.set(true);
-            this.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+            boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
+            if (hasCompletedOperation) {
+                this.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+            }
+
+            return hasCompletedOperation;
         }
     }
 
@@ -543,12 +548,12 @@ public final class CosmosDiagnosticsContext {
                     }
 
                     @Override
-                    public void endOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
+                    public boolean endOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
                                              Integer actualItemCount, Double requestCharge,
                                              CosmosDiagnostics diagnostics, Throwable finalError) {
 
                         validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
-                        ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
                     }
 
                     @Override

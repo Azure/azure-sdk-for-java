@@ -749,7 +749,7 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnostics diagnostics,
                 Throwable finalError);
 
-            void endOperation(
+            boolean endOperation(
                 CosmosDiagnosticsContext ctx,
                 int statusCode,
                 int subStatusCode,

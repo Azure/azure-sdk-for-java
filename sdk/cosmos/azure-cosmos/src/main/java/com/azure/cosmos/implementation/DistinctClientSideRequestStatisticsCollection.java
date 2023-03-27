@@ -86,8 +86,16 @@ public class DistinctClientSideRequestStatisticsCollection implements Queue<Clie
             return true;
         }
 
-        set.addAll(c);
-        return queue.addAll(c);
+        boolean hasAddedAll = true;
+        for (ClientSideRequestStatistics candidate: c) {
+            if (set.add(candidate)) {
+                hasAddedAll &= queue.add(candidate);
+            } else {
+                hasAddedAll = false;
+            }
+        }
+
+        return hasAddedAll;
     }
 
     @Override

@@ -1241,8 +1241,9 @@ public class CosmosAsyncDatabase {
                         return Mono.error(BridgeInternal
                             .createCosmosException(
                                 HttpConstants.StatusCodes.BADREQUEST,
-                                "No offers found for the " +
-                                    "resource " + this.getId()));
+                                "No offers found for the resource " + this.getId())
+                            .setDiagnostics(offerFeedResponse.getCosmosDiagnostics())
+                        );
                     }
                     return getDocClientWrapper()
                         .readOffer(offerFeedResponse.getResults()

@@ -43,6 +43,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -653,19 +654,22 @@ public final class DiagnosticsProvider {
         Context context) {
 
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
-        ctxAccessor.endOperation(
+
+        // endOperation can be called form two places in Reactor - making sure we process completion only once
+        if (ctxAccessor.endOperation(
             cosmosCtx,
             statusCode,
             subStatusCode,
             actualItemCount,
             requestCharge,
             diagnostics,
-            throwable);
+            throwable)) {
 
-        this.handleDiagnostics(context, cosmosCtx);
+            this.handleDiagnostics(context, cosmosCtx);
 
-        if (this.cosmosTracer != null) {
-            this.cosmosTracer.endSpan(cosmosCtx, context);
+            if (this.cosmosTracer != null) {
+                this.cosmosTracer.endSpan(cosmosCtx, context);
+            }
         }
     }
 
@@ -1247,7 +1251,6 @@ public final class DiagnosticsProvider {
 
             if (clientSideRequestStatistics != null) {
                 for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
-
                     recordStoreResponseStatistics(
                         requestStatistics.getResponseStatisticsList(),
                         context);
@@ -1261,19 +1264,24 @@ public final class DiagnosticsProvider {
         private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
             // HTTP calls are automatically captured as well
 
+            DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
+                new DistinctClientSideRequestStatisticsCollection();
             for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-                traceTransportLevelRequests(
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics),
-                    context);
+                combinedClientSideRequestStatistics.addAll(
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
 
                 FeedResponseDiagnostics feedResponseDiagnostics =
                     diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics);
                 if (feedResponseDiagnostics != null) {
-                    traceTransportLevelRequests(
-                        feedResponseDiagnostics.getClientSideRequestStatistics(),
-                        context);
+                    combinedClientSideRequestStatistics.addAll(
+                        feedResponseDiagnostics.getClientSideRequestStatistics());
                 }
             }
+
+
+            traceTransportLevelRequests(
+                combinedClientSideRequestStatistics,
+                context);
         }
     }
 

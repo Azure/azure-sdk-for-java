@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
@@ -36,6 +38,8 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
+
+    private CosmosDiagnosticsContext diagnosticsContext;
     private final AtomicBoolean diagnosticsCapturedInPagedFlux;
 
     static final String USER_AGENT = Utils.getUserAgent();
@@ -77,6 +81,19 @@ public final class CosmosDiagnostics {
         StringBuilder stringBuilder = new StringBuilder();
         fillCosmosDiagnostics(null, stringBuilder);
         return stringBuilder.toString();
+    }
+
+    /**
+     * Returns the associated CosmosDiagnosticsContext or null if not associated with any context yet.
+     * @return the associated CosmosDiagnosticsContext or null if not associated with any context yet.
+     */
+    public CosmosDiagnosticsContext getDiagnosticsContext() {
+        return this.diagnosticsContext;
+    }
+
+    void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+        checkNotNull("ctx", "Argument 'ctx' must not be null.");
+        this.diagnosticsContext = ctx;
     }
 
     /**
