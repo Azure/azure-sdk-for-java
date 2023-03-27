@@ -65,6 +65,8 @@ mysql:
   service: mysqlflexibleserver
 network:
   suffix: generated
+newrelic:
+  service: newrelicobservability
 operationalinsights:
   service: loganalytics
 postgresql:
