@@ -83,16 +83,20 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
-        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLED)
-            .orElse(GLOBAL_SYNC_PROXY_ENABLED);
 
-        if (methodParser.isReactive() || !syncRestProxyEnabled) {
+        if (methodParser.isReactive() || isSyncDisabled(context)) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, methodParser.isReactive(), args);
         } else {
             return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, false, args);
         }
+    }
+
+    private static boolean isSyncDisabled(Context context) {
+        return !(boolean) context
+            .getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLED)
+            .orElse(GLOBAL_SYNC_PROXY_ENABLED);
     }
 
     /**
