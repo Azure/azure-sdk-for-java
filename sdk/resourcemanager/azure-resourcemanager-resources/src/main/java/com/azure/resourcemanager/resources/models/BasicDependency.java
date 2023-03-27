@@ -28,6 +28,10 @@ public final class BasicDependency {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
+    /** Creates an instance of BasicDependency class. */
+    public BasicDependency() {
+    }
+
     /**
      * Get the id property: The ID of the dependency.
      *

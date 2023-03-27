@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.Operation;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ApplicationGroups CreateOrUpdate. */
 public final class ApplicationGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ApplicationGroup_Create.json
      */
     /**
      * Sample code: ApplicationGroup_Create.
@@ -33,11 +31,6 @@ public final class ApplicationGroupsCreateOrUpdateSamples {
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withDescription("des1")
             .withFriendlyName("friendly")
-            .withMigrationRequest(
-                new MigrationRequestProperties()
-                    .withOperation(Operation.START)
-                    .withMigrationPath(
-                        "TenantGroups/{defaultV1TenantGroup.Name}/Tenants/{defaultV1Tenant.Name}/HostPools/{sessionHostPool.Name}"))
             .create();
     }
 

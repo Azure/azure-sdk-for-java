@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.43.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -37,55 +37,6 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
-    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-    <javaModulesSurefireArgLine>
-      --add-exports java.base/sun.nio.ch=ALL-UNNAMED
-      --add-opens java.base/java.lang=ALL-UNNAMED
-      --add-opens java.base/java.lang.invoke=ALL-UNNAMED
-      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
-      --add-opens java.base/java.io=ALL-UNNAMED
-      --add-opens java.base/java.net=ALL-UNNAMED
-      --add-opens java.base/java.nio=ALL-UNNAMED
-      --add-opens java.base/java.util=ALL-UNNAMED
-      --add-opens java.base/java.util.concurrent=ALL-UNNAMED
-      --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
-      --add-opens java.base/sun.nio.ch=ALL-UNNAMED
-      --add-opens java.base/sun.nio.cs=ALL-UNNAMED
-      --add-opens java.base/sun.security.action=ALL-UNNAMED
-      --add-opens java.base/sun.util.calendar=ALL-UNNAMED
-
-      --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx=com.fasterxml.jackson.databind
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed.pkversion=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed.epkversion=ALL-UNNAMED
-
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.batch=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.batch=com.fasterxml.jackson.databind
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.cpu=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.clienttelemetry=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.rntbd=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd=com.fasterxml.jackson.databind
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.feedranges=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.patch=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.pkversion=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.epkversion=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
 
     <!-- Prevents Checkstyle validating implementation files. -->
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
@@ -97,14 +48,6 @@ Licensed under the MIT License.
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>test</scope>
-      <version>2.11.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
-    </dependency>
-
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
          Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
          which is used in @Nullable annotation in reactor core classes.
@@ -126,13 +69,6 @@ Licensed under the MIT License.
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
@@ -142,36 +78,22 @@ Licensed under the MIT License.
         </exclusion>
       </exclusions>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <version>2.13.5</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-collections4</artifactId>
-      <scope>test</scope>
-      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram -->
     <dependency>
       <groupId>org.hdrhistogram</groupId>
       <artifactId>HdrHistogram</artifactId>
       <version>2.1.12</version> <!-- {x-version-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
-      <scope>test</scope>
-      <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -193,34 +115,6 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>4.1.0</version> <!-- {x-version-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
@@ -230,33 +124,6 @@ Licensed under the MIT License.
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
       <version>1.9.8</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId>
-      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.reactivex.rxjava2</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>2.2.21</version> <!-- {x-version-update;io.reactivex.rxjava2:rxjava;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

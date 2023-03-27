@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSub Restart. */
 public final class WebPubSubRestartSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_Restart.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Restart.json
      */
     /**
      * Sample code: WebPubSub_Restart.
@@ -17,6 +15,6 @@ public final class WebPubSubRestartSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubRestart(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubs().restart("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager.webPubSubs().restart("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

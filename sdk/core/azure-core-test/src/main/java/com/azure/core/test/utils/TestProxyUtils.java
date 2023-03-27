@@ -20,9 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
+import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 
 /**
  * Utility functions for interaction with the test proxy.
@@ -39,13 +44,18 @@ public class TestProxyUtils {
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
             "connectionString", "url", "host", "password", "userName"));
 
+    private static final Map<String, String> BODY_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
+            put("Operation-Location", URL_REGEX);
+            }};
+
     private static final List<String> BODY_REGEX_TO_REDACT
         = new ArrayList<>(Arrays.asList("(?:<Value>)(?<secret>.*)(?:</Value>)", "(?:Password=)(?<secret>.*)(?:;)",
         "(?:User ID=)(?<secret>.*)(?:;)", "(?:<PrimaryKey>)(?<secret>.*)(?:</PrimaryKey>)",
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
+    private static final List<String>
+        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
@@ -132,11 +142,10 @@ public class TestProxyUtils {
      * @return the list of default sanitizers to be added.
      */
     public static List<TestProxySanitizer> loadSanitizers() {
-        List<TestProxySanitizer> sanitizers = new ArrayList<>();
-        sanitizers.addAll(addDefaultRegexSanitizers());
+        List<TestProxySanitizer> sanitizers = new ArrayList<>(addDefaultRegexSanitizers());
         sanitizers.add(addDefaultUrlSanitizer());
         sanitizers.addAll(addDefaultBodySanitizers());
-        sanitizers.addAll(addDefaultHeaderSanitizers());
+        sanitizers.addAll(addDefaultHeaderKeySanitizers());
         return sanitizers;
     }
 
@@ -158,21 +167,30 @@ public class TestProxyUtils {
             .collect(Collectors.joining(","));
     }
 
-    private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
+    private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
+        if (regex == null) {
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
+        } else {
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey, regex);
+        }
     }
 
-    private static String createBodyJsonKeyRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
-    }
-
-
-    private static String createBodyRegexRequestBody(String regexValue, String redactedValue, String groupForReplace) {
-        return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", redactedValue, regexValue, groupForReplace);
-    }
-
-    private static String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
+    private static String createRegexRequestBody(String key, String regex, String value, String groupForReplace) {
+        if (key == null) {
+            if (groupForReplace == null) {
+                // regex pattern and redaction value
+                return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
+            } else {
+                // regex pattern and redaction value with group replace
+                return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
+                    groupForReplace);
+            }
+        } else if (regex == null) {
+            // header key value
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
+        }
+        // header key with regex
+        return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key, value, regex, groupForReplace);
     }
 
     /**
@@ -188,34 +206,44 @@ public class TestProxyUtils {
             String sanitizerType;
             switch (testProxySanitizer.getType()) {
                 case URL:
-                    requestBody =
-                        createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
                     sanitizerType = TestProxySanitizerType.URL.getName();
-                    break;
+                    requestBody =
+                        createRegexRequestBody(null, testProxySanitizer.getRegex(),
+                            testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
+                    return createHttpRequest(requestBody, sanitizerType);
                 case BODY_REGEX:
-                    requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
-                    break;
+                    requestBody = createRegexRequestBody(null, testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
+                    return createHttpRequest(requestBody, sanitizerType);
                 case BODY_KEY:
-                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue());
                     sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
-                    break;
-                case HEADER:
-                    requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
+                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.HEADER.getName();
-                    break;
+                    return createHttpRequest(requestBody, sanitizerType);
+                case HEADER:
+                    sanitizerType = HEADER.getName();
+                    if (testProxySanitizer.getKey() == null && testProxySanitizer.getRegex() == null) {
+                        throw new RuntimeException(
+                            String.format("Missing regexKey and/or headerKey for sanitizer type {%s}", sanitizerType));
+                    }
+                    requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
+                        testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
+                    return createHttpRequest(requestBody, sanitizerType);
                 default:
-                    throw new RuntimeException(String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
+                    throw new RuntimeException(
+                        String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
             }
-            HttpRequest request
-                = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
-                .setBody(requestBody);
-            request.setHeader("x-abstraction-identifier", sanitizerType);
-            return request;
         }).collect(Collectors.toList());
+    }
+
+    private static HttpRequest createHttpRequest(String requestBody, String sanitizerType) {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
+        request.setHeader("x-abstraction-identifier", sanitizerType);
+        return request;
     }
 
     /**
@@ -262,27 +290,32 @@ public class TestProxyUtils {
     private static List<TestProxySanitizer> addDefaultBodySanitizers() {
         return JSON_PROPERTIES_TO_REDACT.stream()
             .map(jsonProperty ->
-                new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE,
+                new TestProxySanitizer(String.format("$..%s", jsonProperty), null, REDACTED_VALUE,
                     TestProxySanitizerType.BODY_KEY))
             .collect(Collectors.toList());
     }
 
     private static List<TestProxySanitizer> addDefaultRegexSanitizers() {
-        List<TestProxySanitizer> userDelegationSanitizers = getUserDelegationSanitizers();
+        List<TestProxySanitizer> regexSanitizers = getUserDelegationSanitizers();
 
-        userDelegationSanitizers.addAll(BODY_REGEX_TO_REDACT.stream()
+        regexSanitizers.addAll(BODY_REGEX_TO_REDACT.stream()
             .map(bodyRegex -> new TestProxySanitizer(bodyRegex, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"))
             .collect(Collectors.toList()));
 
-        // can add default url and header regex sanitizer same way
-        return userDelegationSanitizers;
+        // add body key with regex sanitizers
+        List<TestProxySanitizer> keyRegexSanitizers = new ArrayList<>();
+        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
+            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY)));
 
+        regexSanitizers.addAll(keyRegexSanitizers);
+
+        return regexSanitizers;
     }
 
-    private static List<TestProxySanitizer> addDefaultHeaderSanitizers() {
-        return HEADERS_TO_REDACT.stream()
-            .map(headerProperty ->
-                new TestProxySanitizer(headerProperty, REDACTED_VALUE, TestProxySanitizerType.HEADER))
+    private static List<TestProxySanitizer> addDefaultHeaderKeySanitizers() {
+        return HEADER_KEYS_TO_REDACT.stream()
+            .map(headerKey ->
+                new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
             .collect(Collectors.toList());
     }
 

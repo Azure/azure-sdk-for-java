@@ -28,6 +28,10 @@ public final class FunctionAppMinorVersion {
     @JsonProperty(value = "stackSettings", access = JsonProperty.Access.WRITE_ONLY)
     private FunctionAppRuntimes stackSettings;
 
+    /** Creates an instance of FunctionAppMinorVersion class. */
+    public FunctionAppMinorVersion() {
+    }
+
     /**
      * Get the displayText property: Function App stack (display only).
      *

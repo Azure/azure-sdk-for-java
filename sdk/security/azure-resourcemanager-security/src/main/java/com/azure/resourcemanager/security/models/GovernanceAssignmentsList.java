@@ -9,7 +9,7 @@ import com.azure.resourcemanager.security.fluent.models.GovernanceAssignmentInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Page of a security governance assignments list. */
+/** Page of a governance assignments list. */
 @Immutable
 public final class GovernanceAssignmentsList {
     /*

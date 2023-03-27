@@ -236,6 +236,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
+    private final boolean isSessionEnabled;
     private final Semaphore completionLock = new Semaphore(1);
     private final String identifier;
 
@@ -268,6 +269,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
+        this.sessionManager = null;
+        if (receiverOptions.getSessionId() != null || receiverOptions.getMaxConcurrentSessions() != null) {
+            // Assert the internal invariant for above 'sessionManager = null' i.e, session-unaware call-sites should not set these options.
+            throw new IllegalStateException("Session-specific options are not expected to be present on a client for session unaware entity.");
+        }
+        this.isSessionEnabled = false;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -278,7 +285,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             renewal.close();
         });
 
-        this.sessionManager = null;
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
         this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
@@ -298,6 +304,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
+        this.isSessionEnabled = true;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -865,7 +872,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
 
-        if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
+        if (!isSessionEnabled && receiverOptions.isAutoLockRenewEnabled()) {
             withAutoLockRenewal = new FluxAutoLockRenew(messageFluxWithTracing, receiverOptions,
                 renewalContainer, this::renewMessageLock);
         } else {
@@ -1032,15 +1039,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
+        } else if (isSessionEnabled) {
+            final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
+            return monoError(LOGGER, new IllegalStateException(errorMessage));
         } else if (Objects.isNull(message)) {
             return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         } else if (Objects.isNull(message.getLockToken())) {
             return monoError(LOGGER, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
-        } else if (receiverOptions.isSessionReceiver()) {
-            final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
-            return monoError(LOGGER, new IllegalStateException(errorMessage));
         }
 
         return tracer.traceMonoWithLink("ServiceBus.renewMessageLock", renewMessageLock(message.getLockToken()), message, message.getContext())
@@ -1088,15 +1095,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
+        } else if (isSessionEnabled) {
+            final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
+            return monoError(LOGGER, new IllegalStateException(errorMessage));
         } else if (Objects.isNull(message)) {
             return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         } else if (Objects.isNull(message.getLockToken())) {
             return monoError(LOGGER, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
-        } else if (receiverOptions.isSessionReceiver()) {
-            return monoError(LOGGER, new IllegalStateException(
-                String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
         } else if (maxLockRenewalDuration == null) {
             return monoError(LOGGER, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
         } else if (maxLockRenewalDuration.isNegative()) {
@@ -1485,6 +1492,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
+        if (isSessionEnabled) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("The ServiceBusAsyncConsumer is expected to work only with session unaware entity."));
+        }
         final ServiceBusAsyncConsumer existing = consumer.get();
         if (existing != null) {
             return existing;
@@ -1499,19 +1509,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
         //
         final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
-            if (receiverOptions.isSessionReceiver()) {
-                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                        null, entityType, identifier, receiverOptions.getSessionId());
-            } else {
-                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                    null, entityType, identifier);
-            }
+            return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                null, entityType, identifier);
         }).doOnNext(next -> {
             LOGGER.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                 .addKeyValue("mode", receiverOptions.getReceiveMode())
-                .addKeyValue("isSessionEnabled", receiverOptions.isSessionReceiver())
+                .addKeyValue("isSessionEnabled", false)
                 .addKeyValue(ENTITY_TYPE_KEY, entityType)
                 .log("Created consumer for Service Bus resource.");
         });
@@ -1576,10 +1581,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return The name of the receive link, or null of it has not connected via a receive link.
      */
     private String getLinkName(String sessionId) {
-        if (sessionManager != null && !CoreUtils.isNullOrEmpty(sessionId)) {
-            return sessionManager.getLinkName(sessionId);
-        } else if (!CoreUtils.isNullOrEmpty(sessionId) && !receiverOptions.isSessionReceiver()) {
-            return null;
+        if (!CoreUtils.isNullOrEmpty(sessionId)) {
+            return isSessionEnabled ? sessionManager.getLinkName(sessionId) : null;
         } else {
             final ServiceBusAsyncConsumer existing = consumer.get();
             return existing != null ? existing.getLinkName() : null;
@@ -1590,12 +1593,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
+        } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
         }
-        final String linkName = sessionManager != null
-            ? sessionManager.getLinkName(sessionId)
-            : null;
+        final String linkName = sessionManager.getLinkName(sessionId);
 
         return tracer.traceMono("ServiceBus.renewSessionLock", connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -1607,7 +1608,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
+        } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException(
                 "Cannot renew session lock on a non-session receiver."));
         } else if (maxLockRenewalDuration == null) {
@@ -1632,7 +1633,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
+        } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException("Cannot set session state on a non-session receiver."));
         }
         final String linkName = sessionManager != null
@@ -1649,7 +1650,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
+        } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException("Cannot get session state on a non-session receiver."));
         }
 

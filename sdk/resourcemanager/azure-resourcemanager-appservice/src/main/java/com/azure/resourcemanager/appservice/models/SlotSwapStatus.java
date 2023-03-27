@@ -29,6 +29,10 @@ public final class SlotSwapStatus {
     @JsonProperty(value = "destinationSlotName", access = JsonProperty.Access.WRITE_ONLY)
     private String destinationSlotName;
 
+    /** Creates an instance of SlotSwapStatus class. */
+    public SlotSwapStatus() {
+    }
+
     /**
      * Get the timestampUtc property: The time the last successful slot swap completed.
      *

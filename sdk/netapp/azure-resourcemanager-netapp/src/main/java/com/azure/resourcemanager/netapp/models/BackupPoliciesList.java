@@ -18,6 +18,10 @@ public final class BackupPoliciesList {
     @JsonProperty(value = "value")
     private List<BackupPolicyInner> value;
 
+    /** Creates an instance of BackupPoliciesList class. */
+    public BackupPoliciesList() {
+    }
+
     /**
      * Get the value property: A list of backup policies.
      *

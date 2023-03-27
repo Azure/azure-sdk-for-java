@@ -28,6 +28,10 @@ public final class VolumeBackups {
     @JsonProperty(value = "policyEnabled")
     private Boolean policyEnabled;
 
+    /** Creates an instance of VolumeBackups class. */
+    public VolumeBackups() {
+    }
+
     /**
      * Get the volumeName property: Volume name.
      *

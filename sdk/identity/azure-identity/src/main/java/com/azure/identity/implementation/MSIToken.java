@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -44,21 +45,28 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
+    @JsonProperty(value = "refresh_in")
+    private String refreshIn;
+
     /**
      * Creates an access token instance.
      *
-     * @param token the token string.
+     * @param token     the token string.
      * @param expiresOn the expiration time.
+     * @param expiresIn the number of seconds until expiration.
+     * @param refreshIn seconds until refresh.
      */
     @JsonCreator
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn) {
+        @JsonProperty(value = "expires_in") String expiresIn,
+        @JsonProperty(value = "refresh_in") String refreshIn) {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
+        this.refreshIn = refreshIn;
     }
 
     @Override
@@ -67,13 +75,20 @@ public final class MSIToken extends AccessToken {
     }
 
     private static Long parseToEpochSeconds(String expiresOn, String expiresIn) {
+
+        // expiresIn = number of seconds until refresh
+        // expiresOn = timestamp of refresh expressed as seconds since epoch.
+
+        // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
         String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
 
         try {
-            Long seconds = Long.parseLong(dateToParse);
+            long seconds = Long.parseLong(dateToParse);
+            // we have an expiresOn, so no parsing required.
             if (!CoreUtils.isNullOrEmpty(expiresOn)) {
                 return seconds;
             } else {
+                // otherwise we need the OffsetDateTime representing now plus the expiresIn duration.
                 return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(seconds).toEpochSecond();
             }
         } catch (NumberFormatException e) {
@@ -94,4 +109,25 @@ public final class MSIToken extends AccessToken {
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
     }
 
+    /**
+     * Returns the epoch time at which refresh should occur.
+     * If the service specified refresh_in, it is added to creation time.
+     * If it is not passed in, it is half the value to expiry, unless that is
+     * less than two hours, at which point it is the same as time to expiry.
+     * @return The number of seconds until refresh.
+     */
+    long getRefreshAtEpochSeconds() {
+        if (this.refreshIn != null) {
+            return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(Long.parseLong(refreshIn)).toEpochSecond();
+        }
+
+        OffsetDateTime expiresAt = EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn));
+        Duration duration = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresAt);
+        if (duration.toHours() >= 2) {
+            long halfDuration = duration.getSeconds() / 2;
+            return expiresAt.minusSeconds(halfDuration).toEpochSecond();
+        } else {
+            return expiresAt.toEpochSecond();
+        }
+    }
 }

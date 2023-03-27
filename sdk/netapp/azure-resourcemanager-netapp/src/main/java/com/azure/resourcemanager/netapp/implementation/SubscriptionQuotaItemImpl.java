@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
 
@@ -28,6 +29,10 @@ public final class SubscriptionQuotaItemImpl implements SubscriptionQuotaItem {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Integer current() {

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AuthorizationOperations List. */
 public final class AuthorizationOperationsListSamples {
     /*
@@ -17,6 +15,11 @@ public final class AuthorizationOperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listProviderOperations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.genericResources().manager().managementLockClient().getAuthorizationOperations().list(Context.NONE);
+        azure
+            .genericResources()
+            .manager()
+            .managementLockClient()
+            .getAuthorizationOperations()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

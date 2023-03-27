@@ -189,7 +189,13 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @return A synchronous {@link LogsIngestionClient}.
      */
     public LogsIngestionClient buildClient() {
-        return new LogsIngestionClient(buildAsyncClient());
+        if (endpoint == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("endpoint is required to build the client."));
+        }
+        if (tokenCredential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
+        }
+        return new LogsIngestionClient(innerLogBuilder.buildClient());
     }
 
     /**

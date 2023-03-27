@@ -127,21 +127,6 @@ public class KeyClientTest extends KeyClientTestBase {
         createRsaKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createRsaKey(keyToCreate)));
     }
 
-
-    /**
-     * Tests that an OKP key can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // OKP keys are currently only supported in Managed HSM.
-        Assumptions.assumeTrue(runManagedHsmTest);
-
-        createKeyClient(httpClient, serviceVersion);
-
-        createOkpKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createOkpKey(keyToCreate)));
-    }
-
     /**
      * Tests that an attempt to create a key with empty string name throws an error.
      */

@@ -54,8 +54,7 @@ public final class ApiCollectionOnboardingsClientImpl implements ApiCollectionOn
     public interface ApiCollectionOnboardingsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiCollectionId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiCollectionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiCollectionResponseInner>> create(

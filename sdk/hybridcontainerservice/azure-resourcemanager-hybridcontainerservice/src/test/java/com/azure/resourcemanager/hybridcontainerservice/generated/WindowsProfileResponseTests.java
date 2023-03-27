@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.LicenseType;
 import com.azure.resourcemanager.hybridcontainerservice.models.WindowsProfileResponse;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WindowsProfileResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WindowsProfileResponse model =
             BinaryData
                 .fromString("{\"adminUsername\":\"fmppe\",\"enableCsiProxy\":false,\"licenseType\":\"Windows_Server\"}")
@@ -22,8 +21,8 @@ public final class WindowsProfileResponseTests {
         Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.licenseType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WindowsProfileResponse model =
             new WindowsProfileResponse()
                 .withAdminUsername("fmppe")

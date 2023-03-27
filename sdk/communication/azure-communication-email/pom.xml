@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-email</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-email;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-communication-email;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Communications SDK for Email</name>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.6</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

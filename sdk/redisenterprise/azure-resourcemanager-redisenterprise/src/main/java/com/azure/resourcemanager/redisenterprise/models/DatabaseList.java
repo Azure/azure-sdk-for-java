@@ -24,6 +24,10 @@ public final class DatabaseList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DatabaseList class. */
+    public DatabaseList() {
+    }
+
     /**
      * Get the value property: List of databases.
      *

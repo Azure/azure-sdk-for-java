@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeviceSecurityGroups Get. */
 public final class DeviceSecurityGroupsGetSamples {
     /*
@@ -23,6 +21,6 @@ public final class DeviceSecurityGroupsGetSamples {
             .getWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
                 "samplesecuritygroup",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

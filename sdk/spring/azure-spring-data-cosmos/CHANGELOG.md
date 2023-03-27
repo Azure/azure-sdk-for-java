@@ -1,16 +1,24 @@
 ## Release History
 
-### 3.33.0-beta.1 (Unreleased)
+### 3.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Bug fixed in `ReactiveCosmosTemplate` where returning a Flux<JsonNode> was causing an error - See [PR 33730](https://github.com/Azure/azure-sdk-for-java/pull/33730)
 
 #### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+
+### 3.33.0 (2023-03-17)
+
+#### Bugs Fixed
+* Bug fixed in `ReactiveCosmosTemplate` where returning a Flux<JsonNode> was causing an error - See [PR 33730](https://github.com/Azure/azure-sdk-for-java/pull/33730)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.42.0`.
+* Updated `Spring Data Commons` to version `2.7.8`.
 
 ### 3.32.0 (2023-02-17)
 

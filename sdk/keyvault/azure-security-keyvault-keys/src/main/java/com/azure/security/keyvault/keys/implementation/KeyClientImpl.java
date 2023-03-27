@@ -44,7 +44,6 @@ import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
@@ -789,41 +788,6 @@ public class KeyClientImpl {
             .setKeyAttributes(new KeyRequestAttributes(createOctKeyOptions))
             .setTags(createOctKeyOptions.getTags())
             .setReleasePolicy(createOctKeyOptions.getReleasePolicy());
-    }
-
-    public Mono<Response<KeyVaultKey>> createOkpKeyWithResponseAsync(CreateOkpKeyOptions createOkpKeyOptions,
-                                                                     Context context) {
-        KeyRequestParameters parameters = validateAndCreateOkpKeyRequestParameters(createOkpKeyOptions);
-
-        return service.createKeyAsync(vaultUrl, createOkpKeyOptions.getName(), keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating EdDSA key - {}", createOkpKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created EdDSA key - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to create EdDSA key - {}", createOkpKeyOptions.getName(), error));
-    }
-
-    public Response<KeyVaultKey> createOkpKeyWithResponse(CreateOkpKeyOptions createOkpKeyOptions, Context context) {
-        KeyRequestParameters parameters = validateAndCreateOkpKeyRequestParameters(createOkpKeyOptions);
-        context = context == null ? Context.NONE : context;
-        context = enableSyncRestProxy(context);
-
-        return service.createKey(vaultUrl, createOkpKeyOptions.getName(), keyServiceVersion.getVersion(),
-            ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
-    }
-
-    private KeyRequestParameters validateAndCreateOkpKeyRequestParameters(CreateOkpKeyOptions createOkpKeyOptions) {
-        Objects.requireNonNull(createOkpKeyOptions, "The create key options cannot be null.");
-
-        return new KeyRequestParameters()
-            .setKty(createOkpKeyOptions.getKeyType())
-            .setCurve(createOkpKeyOptions.getCurveName())
-            .setKeyOps(createOkpKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createOkpKeyOptions))
-            .setTags(createOkpKeyOptions.getTags())
-            .setReleasePolicy(createOkpKeyOptions.getReleasePolicy());
     }
 
     public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(String name, JsonWebKey keyMaterial,

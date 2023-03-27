@@ -47,7 +47,7 @@ public interface AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,7 +61,7 @@ public interface AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,22 +76,7 @@ public interface AccountsClient {
      *
      * <p>Get the NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName);
-
-    /**
-     * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,11 +89,26 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the NetApp account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName);
+
+    /**
      * Create or update a NetApp account
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +125,7 @@ public interface AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -143,7 +143,7 @@ public interface AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +159,7 @@ public interface AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -177,7 +177,7 @@ public interface AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,7 +192,7 @@ public interface AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +208,7 @@ public interface AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,7 +222,7 @@ public interface AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +237,7 @@ public interface AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +254,7 @@ public interface AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -272,7 +272,7 @@ public interface AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,7 +288,7 @@ public interface AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -306,7 +306,7 @@ public interface AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -322,7 +322,7 @@ public interface AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +340,7 @@ public interface AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -355,7 +355,7 @@ public interface AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -14,26 +14,26 @@ public final class NamespaceJunctionTests {
         NamespaceJunction model =
             BinaryData
                 .fromString(
-                    "{\"namespacePath\":\"sflhhca\",\"targetPath\":\"n\",\"nfsExport\":\"xisxyawjoyaqcsl\",\"nfsAccessPolicy\":\"pkii\"}")
+                    "{\"namespacePath\":\"sgzvahapjyzhpv\",\"targetPath\":\"zcjrvxdjzlmwlx\",\"nfsExport\":\"ug\",\"nfsAccessPolicy\":\"zovawjvz\"}")
                 .toObject(NamespaceJunction.class);
-        Assertions.assertEquals("sflhhca", model.namespacePath());
-        Assertions.assertEquals("n", model.targetPath());
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.nfsExport());
-        Assertions.assertEquals("pkii", model.nfsAccessPolicy());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.namespacePath());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.targetPath());
+        Assertions.assertEquals("ug", model.nfsExport());
+        Assertions.assertEquals("zovawjvz", model.nfsAccessPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceJunction model =
             new NamespaceJunction()
-                .withNamespacePath("sflhhca")
-                .withTargetPath("n")
-                .withNfsExport("xisxyawjoyaqcsl")
-                .withNfsAccessPolicy("pkii");
+                .withNamespacePath("sgzvahapjyzhpv")
+                .withTargetPath("zcjrvxdjzlmwlx")
+                .withNfsExport("ug")
+                .withNfsAccessPolicy("zovawjvz");
         model = BinaryData.fromObject(model).toObject(NamespaceJunction.class);
-        Assertions.assertEquals("sflhhca", model.namespacePath());
-        Assertions.assertEquals("n", model.targetPath());
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.nfsExport());
-        Assertions.assertEquals("pkii", model.nfsAccessPolicy());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.namespacePath());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.targetPath());
+        Assertions.assertEquals("ug", model.nfsExport());
+        Assertions.assertEquals("zovawjvz", model.nfsAccessPolicy());
     }
 }

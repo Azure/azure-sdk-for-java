@@ -11,11 +11,10 @@ import com.azure.resourcemanager.digitaltwins.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DigitalTwinsIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DigitalTwinsIdentity model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class DigitalTwinsIdentityTests {
         Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DigitalTwinsIdentity model =
             new DigitalTwinsIdentity()
                 .withType(DigitalTwinsIdentityType.USER_ASSIGNED)

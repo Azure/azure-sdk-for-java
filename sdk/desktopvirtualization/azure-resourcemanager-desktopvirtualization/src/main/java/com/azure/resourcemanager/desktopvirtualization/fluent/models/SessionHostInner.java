@@ -29,6 +29,10 @@ public final class SessionHostInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SessionHostProperties innerProperties;
 
+    /** Creates an instance of SessionHostInner class. */
+    public SessionHostInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
@@ -186,6 +190,29 @@ public final class SessionHostInner extends ProxyResource {
             this.innerProperties = new SessionHostProperties();
         }
         this.innerProperties().withAssignedUser(assignedUser);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of SessionHost.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of SessionHost.
+     *
+     * @param friendlyName the friendlyName value to set.
+     * @return the SessionHostInner object itself.
+     */
+    public SessionHostInner withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 

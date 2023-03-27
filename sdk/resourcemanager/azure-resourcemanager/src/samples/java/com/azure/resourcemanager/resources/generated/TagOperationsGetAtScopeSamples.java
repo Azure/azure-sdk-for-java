@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TagOperations GetAtScope. */
 public final class TagOperationsGetAtScopeSamples {
     /*
@@ -24,7 +22,7 @@ public final class TagOperationsGetAtScopeSamples {
             .getTagOperations()
             .getAtScopeWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,6 +39,7 @@ public final class TagOperationsGetAtScopeSamples {
             .manager()
             .serviceClient()
             .getTagOperations()
-            .getAtScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", Context.NONE);
+            .getAtScopeWithResponse(
+                "subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }

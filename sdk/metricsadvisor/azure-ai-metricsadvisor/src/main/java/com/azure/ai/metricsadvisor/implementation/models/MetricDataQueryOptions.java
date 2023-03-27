@@ -14,17 +14,15 @@ import java.util.Map;
 @Fluent
 public final class MetricDataQueryOptions {
     /*
-     * start time of query a time series data, and format should be
-     * yyyy-MM-ddThh:mm:ssZ. The maximum number of data points (series number *
-     * time range) is 10000.
+     * start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The maximum number of data
+     * points (series number * time range) is 10000.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * start time of query a time series data, and format should be
-     * yyyy-MM-ddThh:mm:ssZ. The maximum number of data points (series number *
-     * time range) is 10000.
+     * start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The maximum number of data
+     * points (series number * time range) is 10000.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
@@ -34,6 +32,9 @@ public final class MetricDataQueryOptions {
      */
     @JsonProperty(value = "series", required = true)
     private List<Map<String, String>> series;
+
+    /** Creates an instance of MetricDataQueryOptions class. */
+    public MetricDataQueryOptions() {}
 
     /**
      * Get the startTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ.

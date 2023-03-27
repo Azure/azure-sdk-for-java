@@ -22,7 +22,7 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,7 +40,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.0</version>
+    <version>1.8.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -128,7 +128,7 @@ System.out.println("Logs uploaded successfully");
 ### Upload custom logs with max concurrency
 
 If the in input logs collection is too large, the client will split the input into multiple smaller requests. These 
-requests are sent serially, by default, but by configuring the max concurrency in `UploadLogsOptions`, these requests
+requests are sent serially, by default, but by configuring the max concurrency in `LogsUploadOptions`, these requests
 can be concurrently sent to the service as shown in the example below.
 
 ```java readme-sample-uploadLogsWithMaxConcurrency

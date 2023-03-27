@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.SignalRUsage;
 import java.nio.ByteBuffer;
@@ -61,7 +60,7 @@ public final class UsagesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SignalRUsage> response = manager.usages().list("byqunyow", Context.NONE);
+        PagedIterable<SignalRUsage> response = manager.usages().list("byqunyow", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lmdjrkvfgbvfvpdb", response.iterator().next().id());
         Assertions.assertEquals(4035946330951713229L, response.iterator().next().currentValue());

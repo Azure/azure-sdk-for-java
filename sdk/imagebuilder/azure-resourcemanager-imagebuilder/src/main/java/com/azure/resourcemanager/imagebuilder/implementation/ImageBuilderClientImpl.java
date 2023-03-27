@@ -24,6 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.imagebuilder.fluent.ImageBuilderClient;
 import com.azure.resourcemanager.imagebuilder.fluent.OperationsClient;
+import com.azure.resourcemanager.imagebuilder.fluent.TriggersClient;
 import com.azure.resourcemanager.imagebuilder.fluent.VirtualMachineImageTemplatesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -125,6 +126,18 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
         return this.virtualMachineImageTemplates;
     }
 
+    /** The TriggersClient object to access its operations. */
+    private final TriggersClient triggers;
+
+    /**
+     * Gets the TriggersClient object to access its operations.
+     *
+     * @return the TriggersClient object.
+     */
+    public TriggersClient getTriggers() {
+        return this.triggers;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -160,8 +173,9 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-02-14";
+        this.apiVersion = "2022-07-01";
         this.virtualMachineImageTemplates = new VirtualMachineImageTemplatesClientImpl(this);
+        this.triggers = new TriggersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 

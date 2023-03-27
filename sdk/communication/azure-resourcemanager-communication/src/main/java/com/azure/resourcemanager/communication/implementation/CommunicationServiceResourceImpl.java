@@ -6,6 +6,7 @@ package com.azure.resourcemanager.communication.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.communication.fluent.models.CommunicationServiceResourceInner;
 import com.azure.resourcemanager.communication.models.CommunicationServiceKeys;
@@ -50,6 +51,10 @@ public final class CommunicationServiceResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public CommunicationServicesProvisioningState provisioningState() {
@@ -151,7 +156,8 @@ public final class CommunicationServiceResourceImpl
             serviceManager
                 .serviceClient()
                 .getCommunicationServices()
-                .update(resourceGroupName, communicationServiceName, updateParameters, Context.NONE);
+                .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, Context.NONE)
+                .getValue();
         return this;
     }
 
@@ -160,7 +166,8 @@ public final class CommunicationServiceResourceImpl
             serviceManager
                 .serviceClient()
                 .getCommunicationServices()
-                .update(resourceGroupName, communicationServiceName, updateParameters, context);
+                .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, context)
+                .getValue();
         return this;
     }
 
@@ -193,10 +200,6 @@ public final class CommunicationServiceResourceImpl
         return this;
     }
 
-    public LinkedNotificationHub linkNotificationHub() {
-        return serviceManager.communicationServices().linkNotificationHub(resourceGroupName, communicationServiceName);
-    }
-
     public Response<LinkedNotificationHub> linkNotificationHubWithResponse(
         LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
         return serviceManager
@@ -205,8 +208,8 @@ public final class CommunicationServiceResourceImpl
                 resourceGroupName, communicationServiceName, linkNotificationHubParameters, context);
     }
 
-    public CommunicationServiceKeys listKeys() {
-        return serviceManager.communicationServices().listKeys(resourceGroupName, communicationServiceName);
+    public LinkedNotificationHub linkNotificationHub() {
+        return serviceManager.communicationServices().linkNotificationHub(resourceGroupName, communicationServiceName);
     }
 
     public Response<CommunicationServiceKeys> listKeysWithResponse(Context context) {
@@ -215,16 +218,21 @@ public final class CommunicationServiceResourceImpl
             .listKeysWithResponse(resourceGroupName, communicationServiceName, context);
     }
 
+    public CommunicationServiceKeys listKeys() {
+        return serviceManager.communicationServices().listKeys(resourceGroupName, communicationServiceName);
+    }
+
+    public Response<CommunicationServiceKeys> regenerateKeyWithResponse(
+        RegenerateKeyParameters parameters, Context context) {
+        return serviceManager
+            .communicationServices()
+            .regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, context);
+    }
+
     public CommunicationServiceKeys regenerateKey(RegenerateKeyParameters parameters) {
         return serviceManager
             .communicationServices()
             .regenerateKey(resourceGroupName, communicationServiceName, parameters);
-    }
-
-    public CommunicationServiceKeys regenerateKey(RegenerateKeyParameters parameters, Context context) {
-        return serviceManager
-            .communicationServices()
-            .regenerateKey(resourceGroupName, communicationServiceName, parameters, context);
     }
 
     public CommunicationServiceResourceImpl withRegion(Region location) {

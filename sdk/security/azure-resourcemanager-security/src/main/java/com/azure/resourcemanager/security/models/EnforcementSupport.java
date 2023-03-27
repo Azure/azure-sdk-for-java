@@ -20,6 +20,15 @@ public final class EnforcementSupport extends ExpandableStringEnum<EnforcementSu
     public static final EnforcementSupport UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of EnforcementSupport value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnforcementSupport() {
+    }
+
+    /**
      * Creates or finds a EnforcementSupport from its string representation.
      *
      * @param name a name to look for.

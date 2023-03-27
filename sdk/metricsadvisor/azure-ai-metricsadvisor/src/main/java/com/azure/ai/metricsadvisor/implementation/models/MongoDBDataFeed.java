@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The MongoDBDataFeed model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class MongoDBDataFeed extends DataFeedDetail {
      */
     @JsonProperty(value = "dataSourceParameter", required = true)
     private MongoDBParameter dataSourceParameter;
+
+    /** Creates an instance of MongoDBDataFeed class. */
+    public MongoDBDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -37,6 +42,174 @@ public final class MongoDBDataFeed extends DataFeedDetail {
      */
     public MongoDBDataFeed setDataSourceParameter(MongoDBParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setGranularityName(Granularity granularityName) {
+        super.setGranularityName(granularityName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setGranularityAmount(Integer granularityAmount) {
+        super.setGranularityAmount(granularityAmount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setMetrics(List<DataFeedMetric> metrics) {
+        super.setMetrics(metrics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setDimension(List<DataFeedDimension> dimension) {
+        super.setDimension(dimension);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDataFeed setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

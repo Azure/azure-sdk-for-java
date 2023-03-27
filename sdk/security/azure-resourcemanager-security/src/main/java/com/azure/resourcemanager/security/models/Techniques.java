@@ -332,6 +332,15 @@ public final class Techniques extends ExpandableStringEnum<Techniques> {
         fromString("File and Directory Permissions Modification");
 
     /**
+     * Creates a new instance of Techniques value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Techniques() {
+    }
+
+    /**
      * Creates or finds a Techniques from its string representation.
      *
      * @param name a name to look for.

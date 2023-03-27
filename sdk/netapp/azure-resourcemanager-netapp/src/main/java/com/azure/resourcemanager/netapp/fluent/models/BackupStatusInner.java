@@ -60,6 +60,10 @@ public final class BackupStatusInner {
     @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
 
+    /** Creates an instance of BackupStatusInner class. */
+    public BackupStatusInner() {
+    }
+
     /**
      * Get the healthy property: Backup health status.
      *

@@ -102,7 +102,7 @@ public interface Volume {
      * Gets the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -362,6 +362,14 @@ public interface Volume {
     Integer cloneProgress();
 
     /**
+     * Gets the fileAccessLogs property: Flag indicating whether file access logs are enabled for the volume, based on
+     * active diagnostic settings present on the volume.
+     *
+     * @return the fileAccessLogs value.
+     */
+    FileAccessLogs fileAccessLogs();
+
+    /**
      * Gets the avsDataStore property: avsDataStore
      *
      * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
@@ -369,6 +377,15 @@ public interface Volume {
      * @return the avsDataStore value.
      */
     AvsDataStore avsDataStore();
+
+    /**
+     * Gets the dataStoreResourceId property: dataStoreResourceId
+     *
+     * <p>Data store resource unique identifier.
+     *
+     * @return the dataStoreResourceId value.
+     */
+    List<String> dataStoreResourceId();
 
     /**
      * Gets the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
@@ -463,6 +480,25 @@ public interface Volume {
     EnableSubvolumes enableSubvolumes();
 
     /**
+     * Gets the provisionedAvailabilityZone property: Provisioned Availability Zone
+     *
+     * <p>The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * volume resides.
+     *
+     * @return the provisionedAvailabilityZone value.
+     */
+    String provisionedAvailabilityZone();
+
+    /**
+     * Gets the isLargeVolume property: Is Large Volume
+     *
+     * <p>Specifies whether volume is a Large Volume or Regular Volume.
+     *
+     * @return the isLargeVolume value.
+     */
+    Boolean isLargeVolume();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -528,7 +564,7 @@ public interface Volume {
             /**
              * Specifies resourceGroupName, accountName, poolName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @return the next definition stage.
@@ -554,11 +590,11 @@ public interface Volume {
              * Specifies the usageThreshold property: usageThreshold
              *
              * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
+             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
              *
              * @param usageThreshold usageThreshold
              *     <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting
-             *     only. Minimum size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -614,7 +650,8 @@ public interface Volume {
                 DefinitionStages.WithProximityPlacementGroup,
                 DefinitionStages.WithVolumeSpecName,
                 DefinitionStages.WithPlacementRules,
-                DefinitionStages.WithEnableSubvolumes {
+                DefinitionStages.WithEnableSubvolumes,
+                DefinitionStages.WithIsLargeVolume {
             /**
              * Executes the create request.
              *
@@ -1056,6 +1093,19 @@ public interface Volume {
              */
             WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
         }
+        /** The stage of the Volume definition allowing to specify isLargeVolume. */
+        interface WithIsLargeVolume {
+            /**
+             * Specifies the isLargeVolume property: Is Large Volume
+             *
+             * <p>Specifies whether volume is a Large Volume or Regular Volume..
+             *
+             * @param isLargeVolume Is Large Volume
+             *     <p>Specifies whether volume is a Large Volume or Regular Volume.
+             * @return the next definition stage.
+             */
+            WithCreate withIsLargeVolume(Boolean isLargeVolume);
+        }
     }
     /**
      * Begins update for the Volume resource.
@@ -1149,10 +1199,10 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * Specifies the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume
              * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             * @param throughputMibps Maximum throughput in MiB/s that can be achieved by this volume and this will be
              *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
@@ -1309,16 +1359,27 @@ public interface Volume {
     void resetCifsPassword(Context context);
 
     /**
-     * Break volume replication
+     * Break file locks
      *
-     * <p>Break the replication connection on the destination volume.
+     * <p>Break all the file locks on a volume.
      *
-     * @param body Optional body to force break the replication.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void breakFileLocks();
+
+    /**
+     * Break file locks
+     *
+     * <p>Break all the file locks on a volume.
+     *
+     * @param body Optional body to provide the ability to clear file locks with selected options.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void breakReplication(BreakReplicationRequest body);
+    void breakFileLocks(BreakFileLocksRequest body, Context context);
 
     /**
      * Break volume replication
@@ -1511,18 +1572,6 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void poolChange(PoolChangeRequest body, Context context);
-
-    /**
-     * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
-     * @param body Relocate volume request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void relocate(RelocateVolumeRequest body);
 
     /**
      * Relocate volume

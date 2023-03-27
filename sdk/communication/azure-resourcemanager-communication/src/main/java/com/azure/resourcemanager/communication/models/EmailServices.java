@@ -18,20 +18,6 @@ public interface EmailServices {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the EmailService and its properties.
-     */
-    EmailServiceResource getByResourceGroup(String resourceGroupName, String emailServiceName);
-
-    /**
-     * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,6 +26,20 @@ public interface EmailServices {
      */
     Response<EmailServiceResource> getByResourceGroupWithResponse(
         String resourceGroupName, String emailServiceName, Context context);
+
+    /**
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the EmailService and its properties.
+     */
+    EmailServiceResource getByResourceGroup(String resourceGroupName, String emailServiceName);
 
     /**
      * Delete
@@ -128,17 +128,6 @@ public interface EmailServices {
      *
      * <p>Get a list of domains that are fully verified in Exchange Online.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains that are fully verified in Exchange Online.
-     */
-    List<String> listVerifiedExchangeOnlineDomains();
-
-    /**
-     * List Verified Domains From Exchange Online
-     *
-     * <p>Get a list of domains that are fully verified in Exchange Online.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,6 +135,17 @@ public interface EmailServices {
      * @return a list of domains that are fully verified in Exchange Online along with {@link Response}.
      */
     Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context);
+
+    /**
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains that are fully verified in Exchange Online.
+     */
+    List<String> listVerifiedExchangeOnlineDomains();
 
     /**
      * Get

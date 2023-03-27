@@ -13,8 +13,7 @@ import java.util.List;
 @Immutable
 public final class TenantIdDescriptionInner {
     /*
-     * The fully qualified ID of the tenant. For example,
-     * /tenants/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -68,11 +67,14 @@ public final class TenantIdDescriptionInner {
     private String tenantType;
 
     /*
-     * The tenant's branding logo URL. Only available for 'Home' tenant
-     * category.
+     * The tenant's branding logo URL. Only available for 'Home' tenant category.
      */
     @JsonProperty(value = "tenantBrandingLogoUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantBrandingLogoUrl;
+
+    /** Creates an instance of TenantIdDescriptionInner class. */
+    public TenantIdDescriptionInner() {
+    }
 
     /**
      * Get the id property: The fully qualified ID of the tenant. For example,

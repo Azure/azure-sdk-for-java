@@ -14,20 +14,20 @@ public final class PointInTimeRangeTests {
     public void testDeserialize() throws Exception {
         PointInTimeRange model =
             BinaryData
-                .fromString("{\"startTime\":\"2021-08-15T17:15:42Z\",\"endTime\":\"2021-11-06T16:53:49Z\"}")
+                .fromString("{\"startTime\":\"2021-11-06T16:53:49Z\",\"endTime\":\"2021-05-17T21:24:33Z\"}")
                 .toObject(PointInTimeRange.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T17:15:42Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.endTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PointInTimeRange model =
             new PointInTimeRange()
-                .withStartTime(OffsetDateTime.parse("2021-08-15T17:15:42Z"))
-                .withEndTime(OffsetDateTime.parse("2021-11-06T16:53:49Z"));
+                .withStartTime(OffsetDateTime.parse("2021-11-06T16:53:49Z"))
+                .withEndTime(OffsetDateTime.parse("2021-05-17T21:24:33Z"));
         model = BinaryData.fromObject(model).toObject(PointInTimeRange.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T17:15:42Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.endTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.endTime());
     }
 }

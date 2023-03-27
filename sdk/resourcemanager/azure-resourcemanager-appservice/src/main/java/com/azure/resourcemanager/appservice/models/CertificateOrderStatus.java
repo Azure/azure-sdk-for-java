@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CertificateOrderStatus. */
+/** Current order status. */
 public enum CertificateOrderStatus {
     /** Enum value Pendingissuance. */
     PENDINGISSUANCE("Pendingissuance"),
@@ -54,6 +54,9 @@ public enum CertificateOrderStatus {
      */
     @JsonCreator
     public static CertificateOrderStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CertificateOrderStatus[] items = CertificateOrderStatus.values();
         for (CertificateOrderStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -63,6 +66,7 @@ public enum CertificateOrderStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

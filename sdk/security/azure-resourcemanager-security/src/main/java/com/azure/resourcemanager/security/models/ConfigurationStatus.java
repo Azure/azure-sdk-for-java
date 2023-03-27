@@ -26,6 +26,15 @@ public final class ConfigurationStatus extends ExpandableStringEnum<Configuratio
     public static final ConfigurationStatus NO_STATUS = fromString("NoStatus");
 
     /**
+     * Creates a new instance of ConfigurationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationStatus() {
+    }
+
+    /**
      * Creates or finds a ConfigurationStatus from its string representation.
      *
      * @param name a name to look for.

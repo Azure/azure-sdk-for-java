@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.ConnectionState;
 import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ConnectionStateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ConnectionState model =
             BinaryData
                 .fromString("{\"status\":\"Disconnected\",\"description\":\"tazak\",\"actionsRequired\":\"lahbcryff\"}")
@@ -22,8 +21,8 @@ public final class ConnectionStateTests {
         Assertions.assertEquals("lahbcryff", model.actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ConnectionState model =
             new ConnectionState()
                 .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)

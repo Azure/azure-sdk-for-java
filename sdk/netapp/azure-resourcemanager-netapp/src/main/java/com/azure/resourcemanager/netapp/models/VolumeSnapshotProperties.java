@@ -16,6 +16,10 @@ public final class VolumeSnapshotProperties {
     @JsonProperty(value = "snapshotPolicyId")
     private String snapshotPolicyId;
 
+    /** Creates an instance of VolumeSnapshotProperties class. */
+    public VolumeSnapshotProperties() {
+    }
+
     /**
      * Get the snapshotPolicyId property: Snapshot Policy ResourceId.
      *

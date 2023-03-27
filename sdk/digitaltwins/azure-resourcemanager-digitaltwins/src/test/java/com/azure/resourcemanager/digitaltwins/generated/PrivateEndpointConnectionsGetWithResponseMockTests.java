@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
@@ -33,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{\"id\":\"vjz\"},\"groupIds\":[\"ilzznfqqnvwp\",\"qtaruoujmkcjhwq\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"r\",\"actionsRequired\":\"n\"}},\"id\":\"ewgdrjervn\",\"name\":\"enq\",\"type\":\"eh\"}";
+            "{\"properties\":{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{\"id\":\"mmdnbbglzps\"},\"groupIds\":[\"d\",\"cwyhzdxssa\",\"bzmnvdfznud\",\"od\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bncblylpstdbhhx\",\"actionsRequired\":\"zdzucerscdntnevf\"}},\"id\":\"jmygtdsslswtmwer\",\"name\":\"ofz\",\"type\":\"yqsemwa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +61,20 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response =
-            manager.privateEndpointConnections().getWithResponse("rxbpyb", "rfbjf", "twss", Context.NONE).getValue();
+            manager
+                .privateEndpointConnections()
+                .getWithResponse("hqlkthumaqo", "bgycduiertgccym", "aolps", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("ilzznfqqnvwp", response.properties().groupIds().get(0));
+        Assertions.assertEquals("d", response.properties().groupIds().get(0));
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
+                PrivateLinkServiceConnectionStatus.PENDING,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("r", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("n", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions
+            .assertEquals("bncblylpstdbhhx", response.properties().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals(
+                "zdzucerscdntnevf", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

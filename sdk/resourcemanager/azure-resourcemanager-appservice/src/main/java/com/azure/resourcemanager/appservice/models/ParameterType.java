@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParameterType. */
+/** The parameter type. */
 public final class ParameterType extends ExpandableStringEnum<ParameterType> {
     /** Static value NotSpecified for ParameterType. */
     public static final ParameterType NOT_SPECIFIED = fromString("NotSpecified");
@@ -36,6 +36,15 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
 
     /** Static value SecureObject for ParameterType. */
     public static final ParameterType SECURE_OBJECT = fromString("SecureObject");
+
+    /**
+     * Creates a new instance of ParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParameterType() {
+    }
 
     /**
      * Creates or finds a ParameterType from its string representation.
