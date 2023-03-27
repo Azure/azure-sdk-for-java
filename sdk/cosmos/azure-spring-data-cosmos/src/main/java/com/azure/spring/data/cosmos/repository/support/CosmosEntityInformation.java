@@ -424,6 +424,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return ttl;
     }
 
+    /**
+     * Check if the indexing policy in the portal should be overwritten
+     * @param domainType The domain type of the entity
+     *
+     * @return boolean
+     */
     public Boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
         Boolean isOverwritePolicy = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY);
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
