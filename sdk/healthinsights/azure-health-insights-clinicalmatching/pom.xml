@@ -43,7 +43,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.1</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage> 
+    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
   </properties>
   <dependencies>
     <dependency>
@@ -84,12 +84,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

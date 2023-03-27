@@ -1,13 +1,14 @@
 # Azure Azure Health Insights Clinical Matching client library for Java
-<!--
-[Health Insights](https://review.learn.microsoft.com/en-us/azure/cognitive-services/health-decision-support/overview?branch=main) is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
-The [Clinical Matching model](https://review.learn.microsoft.com/en-us/azure/cognitive-services/health-decision-support/trial-matcher/overview?branch=main) receives patients data and clinical trials protocols, and provides relevant clinical trials based on eligibility criteria.
--->
+
+[Health Insights](https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/overview?branch=main) is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
+
+The [Clinical Matching model][clinical_matching_docs] receives patients data and clinical trials protocols, and provides relevant clinical trials based on eligibility criteria.
+
 ## Getting started
 
 ### Prerequisites
 
-- A [Java Development Kit (JDK)][jdk] with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - An existing Cognitive Services Health Insights instance.
 
@@ -46,16 +47,15 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter
 to authenticate the client:
 
-```Java Snippet:
-String endpoint = "endpoint";
-String apiKey = "apiKey";
+```Java com.azure.health.insights.cancerprofiling.clinicalmatching
+String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+
 ClinicalMatchingAsyncClient asyncClient = new ClinicalMatchingClientBuilder()
     .endpoint(endpoint)
     .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
-    .httpClient(HttpClient.createDefault(new HttpClientOptions()))
     .credential(new AzureKeyCredential(apiKey))
     .buildAsyncClient();
-
 ```
 
 ## Key concepts
@@ -70,37 +70,56 @@ Finding potential eligible trials for a patient.
 <!--
 - [SampleMatchTrialsSync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/samples/java/com/azure/health/insights/clinicalmatching/SampleMatchTrialsSync.java).
 -->
-```Java readme-sample-MatchTrialsSync
-ClinicalMatchingClient syncClient = new ClinicalMatchingClientBuilder()
-    .endpoint(endpoint)
-    .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
-    .httpClient(HttpClient.createDefault(new HttpClientOptions()))
-    .credential(new AzureKeyCredential(apiKey))
-    .buildClient();
+```Java com.azure.health.insights.clinicalmatching.findtrials
+// Construct Patient
+PatientRecord patient1 = new PatientRecord("patient_1");
+PatientInfo patientInfo = new PatientInfo();
+patientInfo.setBirthDate(LocalDate.parse("1965-12-26"));
+patientInfo.setSex(PatientInfoSex.MALE);
+final List<ClinicalCodedElement> clinicalInfo = new ArrayList<ClinicalCodedElement>();
+patientInfo.setClinicalInfo(clinicalInfo);
+patient1.setInfo(patientInfo);
 
-SyncPoller<BinaryData, BinaryData> syncPoller = syncClient.beginMatchTrials(BinaryData.fromObject(trialMatcherOptions), null);
-PollResponse<BinaryData> pollerResponse = syncPoller.waitForCompletion();
+final String system = "http://www.nlm.nih.gov/research/umls";
+// Attach clinical info to the patient
+clinicalInfo.add(createClinicalCodedElement(system, "C0006826", "Malignant Neoplasms", "true"));
+clinicalInfo.add(createClinicalCodedElement(system, "C1522449", "Therapeutic radiology procedure", "true"));
+clinicalInfo.add(createClinicalCodedElement(system, "C1512162", "Eastern Cooperative Oncology Group", "1"));
+clinicalInfo.add(createClinicalCodedElement(system, "C0019693", "HIV Infections", "false"));
+clinicalInfo.add(createClinicalCodedElement(system, "C1300072", "Tumor stage", "2"));
+clinicalInfo.add(createClinicalCodedElement(system, "METASTATIC", "metastatic", "true"));
+clinicalInfo.add(createClinicalCodedElement(system, "C0019163", "Hepatitis B", "false"));
+clinicalInfo.add(createClinicalCodedElement(system, "C0018802", "Congestive heart failure", "true"));
+clinicalInfo.add(createClinicalCodedElement(system, "C0019196", "Hepatitis C", "false"));
+clinicalInfo.add(createClinicalCodedElement(system, "C0220650", "Metastatic malignant neoplasm to brain", "true"));
 
-LongRunningOperationStatus status = pollerResponse.getStatus();
-System.out.println("Status " + status);
-TrialMatcherResult tmRespone = pollerResponse.getValue().toObject(TypeReference.createInstance(TrialMatcherResult.class));
-if (status == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    TrialMatcherResults tmResults = tmRespone.getResults();
-    tmResults.getPatients().forEach(patientResult -> {
-        System.out.println("Inferences of Patient " + patientResult.getId());
-        patientResult.getInferences().forEach(inference -> {
-            System.out.println("Trial Id " + inference.getId());
-            System.out.println("Type: " + inference.getType() + " Value: " + inference.getValue());
-            System.out.println("Description " + inference.getDescription());
-        });
-    });
-} else if (status == LongRunningOperationStatus.FAILED) {
-    List<ResponseError> errors = tmRespone.getErrors();
-    errors.forEach(error -> {
-        System.out.println(error.getCode() + " : " + error.getMessage());
-    });
-}
+// Create registry filter
+ClinicalTrialRegistryFilter registryFilters = new ClinicalTrialRegistryFilter();
+// Limit the trial to a specific patient condition ("Non-small cell lung cancer")
+registryFilters.setConditions(Arrays.asList("Non-small cell lung cancer"));
+// Limit the clinical trial to a certain phase, phase 1
+registryFilters.setPhases(Arrays.asList(ClinicalTrialPhase.PHASE1));
+// Specify the clinical trial registry source as ClinicalTrials.Gov
+registryFilters.setSources(Arrays.asList(ClinicalTrialSource.CLINICALTRIALS_GOV));
+// Limit the clinical trial to a certain location, in this case California, USA
 
+GeographicLocation location = new GeographicLocation("United States");
+location.setCity("Gilbert");
+location.setState("Arizona");
+registryFilters.setFacilityLocations(Arrays.asList(location));
+// Limit the trial to a specific study type, interventional
+registryFilters.setStudyTypes(Arrays.asList(ClinicalTrialStudyType.INTERVENTIONAL));
+
+// Construct ClinicalTrial instance and attach the registry filter to it.
+ClinicalTrials clinicalTrials = new ClinicalTrials();
+clinicalTrials.setRegistryFilters(Arrays.asList(registryFilters));
+
+// Create TrialMatcherData
+TrialMatcherModelConfiguration configuration = new TrialMatcherModelConfiguration(clinicalTrials);
+TrialMatcherData trialMatcherData = new TrialMatcherData(Arrays.asList(patient1));
+trialMatcherData.setConfiguration(configuration);
+
+PollerFlux<TrialMatcherResult, TrialMatcherResult> asyncPoller = asyncClient.beginMatchTrials(trialMatcherData);
 ```
 
 ## Troubleshooting
@@ -113,9 +132,8 @@ This code sample show common scenario operation with the Azure Health Insights C
 -->
 
 ### Additional documentation
-<!--
-For more extensive documentation on Azure Health Insights Clinical Matching, see the [Clinical Matching documentation](https://review.learn.microsoft.com/en-us/azure/cognitive-services/health-decision-support/trial-matcher/?branch=main) on docs.microsoft.com.
--->
+For more extensive documentation on Azure Health Insights Clinical Matching, see the [Clinical Matching documentation][clinical_matching_docs] on docs.microsoft.com.
+
 
 ## Contributing
 
@@ -132,8 +150,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_portal]: https://portal.azure.com
+[clinical_matching_docs]: https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/trial-matcher/overview?branch=main
 <!--
 [clinical_matching_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/main/java/com/azure/health/clinicalmatching/ClinicalMatchingClient.java
 -->
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_portal]: https://portal.azure.com

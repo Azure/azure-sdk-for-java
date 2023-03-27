@@ -3,13 +3,17 @@
 
 package com.azure.health.insights.cancerprofiling;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.cancerprofiling.models.PatientInfoSex;
 import com.azure.health.insights.cancerprofiling.models.ClinicalCodedElement;
@@ -26,15 +30,22 @@ import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeData;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 import com.azure.health.insights.cancerprofiling.models.ClinicalNoteEvidence;
 
+
 public class SampleInferCancerProfile {
-    public static void runSample(String endpoint, String apiKey) throws InterruptedException, IOException {
+     public static void main(final String[] args) throws InterruptedException {
+        // BEGIN: com.azure.health.insights.cancerprofiling.buildasyncclient
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+
         CancerProfilingAsyncClient asyncClient = new CancerProfilingClientBuilder()
             .endpoint(endpoint)
             .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
+        // END: com.azure.health.insights.cancerprofiling.buildasyncclient
 
-        // construct Patient
+        // BEGIN: com.azure.health.insights.cancerprofiling.infercancerprofile
+        // Construct Patient
         PatientRecord patient1 = new PatientRecord("patient_id");
         PatientInfo patientInfo = new PatientInfo();
         patientInfo.setBirthDate(LocalDate.parse("1965-12-26"));
@@ -146,11 +157,19 @@ public class SampleInferCancerProfile {
         oncoPhenotypeData.setConfiguration(configuration);
 
         PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> asyncPoller = asyncClient.beginInferCancerProfile(oncoPhenotypeData);
-        OncoPhenotypeResult result = asyncPoller.blockLast().getValue();
-        printResults(result);
+        // END: com.azure.health.insights.cancerprofiling.infercancerprofile
+        asyncPoller
+          .takeUntil(isComplete)
+          .subscribe(completedResult -> {
+            System.out.println("Completed poll response, status: " + completedResult.getStatus());
+            printResults(completedResult.getValue());
+            latch.countDown();
+        });
+
+        latch.await();
     }
 
-    private static void printResults(OncoPhenotypeResult result) {
+    private static final void printResults(OncoPhenotypeResult result) {
         OncoPhenotypeResults oncoResults = result.getResults();
         oncoResults.getPatients().forEach(patient_result -> {
             System.out.println("\n==== Inferences of Patient " + patient_result.getId() + " ====");
@@ -169,4 +188,11 @@ public class SampleInferCancerProfile {
             });
         });
     }
+
+    private static final Predicate<AsyncPollResponse<OncoPhenotypeResult, OncoPhenotypeResult>> isComplete = response -> {
+        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+            && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
+    };
+
+    private static final CountDownLatch latch = new CountDownLatch(1);
 }
