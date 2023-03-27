@@ -23,12 +23,15 @@ public class IndexPolicyCompareService {
      * @return Whether the policy needs updating.
      */
     public static boolean policyNeedsUpdate(IndexingPolicy existingPolicy, IndexingPolicy newPolicy, CosmosEntityInformation<?, ?> metadata) {
-        return ((!hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
-            || !hasSameExcludedPaths(existingPolicy.getExcludedPaths(), newPolicy.getExcludedPaths())
-            || !existingPolicy.getCompositeIndexes().equals(newPolicy.getCompositeIndexes())
-            || !existingPolicy.getIndexingMode().equals(newPolicy.getIndexingMode())
-            || !existingPolicy.isAutomatic().equals(newPolicy.isAutomatic()))
-            && metadata.getIndexingPolicyOverwritePolicy(newPolicy.getClass()));
+        if (metadata.getIndexingPolicyOverwritePolicy(newPolicy.getClass())) {
+            return false;
+        } else {
+            return (!hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
+                || !hasSameExcludedPaths(existingPolicy.getExcludedPaths(), newPolicy.getExcludedPaths())
+                || !existingPolicy.getCompositeIndexes().equals(newPolicy.getCompositeIndexes())
+                || !existingPolicy.getIndexingMode().equals(newPolicy.getIndexingMode())
+                || !existingPolicy.isAutomatic().equals(newPolicy.isAutomatic()));
+        }
     }
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain "/*"
