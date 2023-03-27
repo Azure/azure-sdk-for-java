@@ -221,7 +221,6 @@ public final class ConfigurationClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Multiple forms of authentication found. "
                 + "TokenCredential should be null if using connection string, vice versa."));
         } else if (tokenCredential == null) {
-            Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
             if (connectionString.isEmpty()) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'connectionString' cannot be an empty string."));

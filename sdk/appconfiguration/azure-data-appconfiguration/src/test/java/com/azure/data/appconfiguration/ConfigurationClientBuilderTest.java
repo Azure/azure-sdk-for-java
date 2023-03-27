@@ -3,6 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -20,7 +22,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +30,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
@@ -98,8 +100,9 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void multipleCredentialsExist() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
             builder.connectionString(FAKE_CONNECTION_STRING)
-                .credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+                .credential(credentials).buildClient();
         });
     }
 
