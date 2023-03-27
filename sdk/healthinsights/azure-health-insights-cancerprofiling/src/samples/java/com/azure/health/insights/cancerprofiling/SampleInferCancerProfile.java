@@ -32,7 +32,7 @@ import com.azure.health.insights.cancerprofiling.models.ClinicalNoteEvidence;
 
 
 public class SampleInferCancerProfile {
-     public static void main(final String[] args) throws InterruptedException {
+    public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.cancerprofiling.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
@@ -159,17 +159,17 @@ public class SampleInferCancerProfile {
         PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> asyncPoller = asyncClient.beginInferCancerProfile(oncoPhenotypeData);
         // END: com.azure.health.insights.cancerprofiling.infercancerprofile
         asyncPoller
-          .takeUntil(isComplete)
-          .subscribe(completedResult -> {
-            System.out.println("Completed poll response, status: " + completedResult.getStatus());
-            printResults(completedResult.getValue());
-            latch.countDown();
-        });
+            .takeUntil(isComplete)
+            .subscribe(completedResult -> {
+                System.out.println("Completed poll response, status: " + completedResult.getStatus());
+                printResults(completedResult.getValue());
+                latch.countDown();
+            });
 
         latch.await();
     }
 
-    private static final void printResults(OncoPhenotypeResult result) {
+    private static void printResults(OncoPhenotypeResult result) {
         OncoPhenotypeResults oncoResults = result.getResults();
         oncoResults.getPatients().forEach(patient_result -> {
             System.out.println("\n==== Inferences of Patient " + patient_result.getId() + " ====");
@@ -189,10 +189,10 @@ public class SampleInferCancerProfile {
         });
     }
 
-    private static final Predicate<AsyncPollResponse<OncoPhenotypeResult, OncoPhenotypeResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<OncoPhenotypeResult, OncoPhenotypeResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };
 
-    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static CountDownLatch latch = new CountDownLatch(1);
 }

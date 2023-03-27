@@ -31,7 +31,7 @@ For more information about creating the resource or how to get the location and 
 
 ### Authenticate the client
 
-In order to interact with the Health Insights Cancer Profiling service, you'll need to create an instance of the [`CancerProfilingClient`][cancer_profiling_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Health Insights Cancer Profiling service, you'll need to create an instance of the [`CancerProfilingClient`][cancer_profiling_client_class] class. You will need an **endpoint** and an **API key** to instantiate a client object.  
 
 #### Get API Key
 
@@ -45,8 +45,7 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 
 #### Create a CancerProfilingClient with an API Key Credential
 
-Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter
-to authenticate the client:
+Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter to authenticate the client:
 
 ```Java com.azure.health.insights.cancerprofiling.buildasyncclient
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");

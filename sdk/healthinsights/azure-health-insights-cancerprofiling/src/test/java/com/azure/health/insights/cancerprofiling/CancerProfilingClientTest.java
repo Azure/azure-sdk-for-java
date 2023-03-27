@@ -50,7 +50,5 @@ public class CancerProfilingClientTest extends CancerProfilingClientTestBase {
             Assertions.fail(message);
             return;
         }
-
-        System.out.println("Success");
     }
 }

@@ -107,12 +107,12 @@ public class SampleMatchTrialAsync {
         PollerFlux<TrialMatcherResult, TrialMatcherResult> asyncPoller = asyncClient.beginMatchTrials(trialMatcherData);
         // END: com.azure.health.insights.clinicalmatching.findtrials
         asyncPoller
-          .takeUntil(isComplete)
-          .subscribe(completedResult -> {
-            System.out.println("Completed poll response, status: " + completedResult.getStatus());
-            printResults(completedResult.getValue());
-            latch.countDown();
-        });
+            .takeUntil(isComplete)
+            .subscribe(completedResult -> {
+                System.out.println("Completed poll response, status: " + completedResult.getStatus());
+                printResults(completedResult.getValue());
+                latch.countDown();
+            });
 
         latch.await();
     }
@@ -130,17 +130,17 @@ public class SampleMatchTrialAsync {
         });
     }
 
-    private static final ClinicalCodedElement createClinicalCodedElement(String system, String code, String name, String value) {
+    private static ClinicalCodedElement createClinicalCodedElement(String system, String code, String name, String value) {
         ClinicalCodedElement element = new ClinicalCodedElement(system, code);
         element.setName(name);
         element.setValue(value);
         return element;
     }
 
-    private static final Predicate<AsyncPollResponse<TrialMatcherResult, TrialMatcherResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<TrialMatcherResult, TrialMatcherResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };
 
-    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static CountDownLatch latch = new CountDownLatch(1);
 }

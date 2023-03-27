@@ -52,7 +52,5 @@ public class ClinicalMatchingClientTest extends ClinicalMatchingClientTestBase {
             Assertions.fail(message);
             return;
         }
-
-        System.out.println("Success");
     }
 }
