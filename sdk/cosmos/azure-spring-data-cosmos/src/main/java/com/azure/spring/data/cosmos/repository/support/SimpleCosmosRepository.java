@@ -54,7 +54,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         CosmosContainerProperties currentProperties = getContainerProperties();
         if (currentProperties != null
             && information.isIndexingPolicySpecified()
-            && policyNeedsUpdate(currentProperties.getIndexingPolicy(), information.getIndexingPolicy(), metadata)) {
+            && metadata.getIndexingPolicyOverwritePolicy(information.getClass())
+            && policyNeedsUpdate(currentProperties.getIndexingPolicy(), information.getIndexingPolicy())) {
             currentProperties.setIndexingPolicy(information.getIndexingPolicy());
             replaceContainerProperties(currentProperties);
         }
