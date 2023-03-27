@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -184,6 +185,8 @@ public interface CdnEndpoint extends
      * @return list of quotas and usages of geo filters and custom domains under the current endpoint
      */
     PagedIterable<ResourceUsage> listResourceUsage();
+
+    Map<String, DeliveryRule> deliveryRules();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.
@@ -371,6 +374,15 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
+
+            /**
+             * Begins the definition of the delivery rule to be attached to the endpoint.
+             *
+             * @param name name of the delivery rule
+             * @param <T> the next stage of the endpoint definition
+             * @return the first stage of the delivery rule definition
+             */
+            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
         }
 
         /** The final stage of the CDN profile Premium Verizon endpoint definition.
@@ -652,6 +664,15 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
+
+            /**
+             * Begins the definition of the delivery rule to be attached to the endpoint.
+             *
+             * @param name name of the delivery rule
+             * @param <T> the next stage of the endpoint definition
+             * @return the first stage of the delivery rule definition
+             */
+            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
         }
 
         /**
@@ -719,6 +740,15 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withCustomDomain(String hostName);
+
+            /**
+             * Begins the definition of the delivery rule to be attached to the endpoint.
+             *
+             * @param name name of the delivery rule
+             * @param <T> the next stage of the endpoint definition
+             * @return the first stage of the delivery rule definition
+             */
+            <T extends WithPremiumAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
         }
 
         /**
@@ -907,6 +937,32 @@ public interface CdnEndpoint extends
          * @return the next stage of the endpoint update
          */
         UpdateStandardEndpoint withoutCustomDomain(String hostName);
+
+        /**
+         * Begins the update of the delivery rule.
+         *
+         * @param name name of the delivery rule
+         * @param <T> the next stage of the endpoint update
+         * @return the first stage of the delivery rule update
+         */
+        <T extends UpdateStandardEndpoint> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
+
+        /**
+         * Begins the update of the delivery rule.
+         *
+         * @param name name of the delivery rule to update
+         * @param <T> the next stage of the endpoint update
+         * @return the first stage of the delivery rule update
+         */
+        <T extends UpdateStandardEndpoint> CdnDeliveryRule.Update<T>  updateDeliveryRule(String name);
+
+        /**
+         * Removes the delivery rule from the endpoint.
+         *
+         * @param name name of the delivery rule to remove
+         * @return the next stage of the endpoint update
+         */
+        UpdateStandardEndpoint withoutDeliveryRule(String name);
     }
 
     /**

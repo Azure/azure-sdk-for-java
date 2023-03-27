@@ -6,7 +6,9 @@ package com.azure.resourcemanager.cdn.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
+import com.azure.resourcemanager.cdn.models.CdnDeliveryRule;
 import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
+import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -28,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
@@ -207,6 +210,12 @@ class CdnEndpointImpl
             this.parent().name(),
             this.name()),
             ResourceUsage::new);
+    }
+
+    @Override
+    public Map<String, DeliveryRule> deliveryRules() {
+        // TODO (xiaofeicao, 2023-03-28 1:40 PM)
+        throw new UnsupportedOperationException("method [deliveryRules] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
     }
 
     @Override
@@ -542,6 +551,24 @@ class CdnEndpointImpl
     public CdnEndpointImpl withCustomDomain(String hostName) {
         this.customDomainList.add(new CustomDomainInner().withHostname(hostName));
         return this;
+    }
+
+    @Override
+    public CdnDeliveryRuleImpl defineDeliveryRule(String name) {
+        // TODO (xiaofeicao, 2023-03-28 1:22 PM)
+        throw new UnsupportedOperationException("method [defineDeliveryRule] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
+    }
+
+    @Override
+    public CdnDeliveryRuleImpl updateDeliveryRule(String name) {
+        CdnDeliveryRuleImpl impl = null;
+        return impl;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutDeliveryRule(String name) {
+        // TODO (xiaofeicao, 2023-03-28 2:04 PM)
+        throw new UnsupportedOperationException("method [withoutDeliveryRule] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
     }
 
     @Override
