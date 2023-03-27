@@ -117,8 +117,6 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -1822,8 +1820,7 @@ public class BlobAsyncClientBase {
             containerName, blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey, context)
             .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
                 .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
     }
@@ -1966,7 +1963,7 @@ public class BlobAsyncClientBase {
             containerName, blobName, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -2712,8 +2709,7 @@ public class BlobAsyncClientBase {
 
         return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
             null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
-            finalImmutabilityPolicy.getPolicyMode(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            finalImmutabilityPolicy.getPolicyMode(), context)
             .map(response -> {
                 BlobsSetImmutabilityPolicyHeaders headers = response.getDeserializedHeaders();
                 BlobImmutabilityPolicy responsePolicy = new BlobImmutabilityPolicy()
@@ -2772,7 +2768,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> deleteImmutabilityPolicyWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().deleteImmutabilityPolicyWithResponseAsync(containerName, blobName,
-            null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -2827,8 +2823,7 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().setLegalHoldWithResponseAsync(containerName, blobName,
-            legalHold, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            legalHold, null, null, context)
             .map(response -> new SimpleResponse<>(response,
                 new InternalBlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
     }

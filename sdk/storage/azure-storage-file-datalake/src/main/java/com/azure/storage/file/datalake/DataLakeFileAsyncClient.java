@@ -77,8 +77,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -612,20 +610,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // if BinaryData is present, convert it to Flux Byte Buffer
             Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
-            // no specified length: use azure.core's converter
-            if (data == null && options.getOptionalLength() == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    validatedParallelTransferOptions.getBlockSizeLong());
-                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
-            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
-            } else if (data == null) {
-                // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
-                    validatedParallelTransferOptions.getBlockSizeLong());
-                data = Utility.convertStreamToByteBuffer(
-                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
-            }
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
+                validatedParallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
                 options.getMetadata(), validatedRequestConditions)
@@ -1365,7 +1351,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, flushOptions.isUncommittedDataRetained(),
                 flushOptions.isClose(), (long) 0, flushOptions.getLeaseAction(), leaseDuration, flushOptions.getProposedLeaseId(),
-                null, httpHeaders, lac, mac, getCpkInfo(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, httpHeaders, lac, mac, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
@@ -1774,8 +1760,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
         return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
             pathExpiryOptions, null,
-            null, expiresOn,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, expiresOn, context)
             .map(rb -> new SimpleResponse<>(rb, null));
     }
 
