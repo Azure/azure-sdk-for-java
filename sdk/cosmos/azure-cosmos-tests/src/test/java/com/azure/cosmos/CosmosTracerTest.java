@@ -532,6 +532,27 @@ public class CosmosTracerTest extends TestSuiteBase {
             enableRequestLevelTracing,
             forceThresholdViolations);
         mockTracer.reset();
+
+        CosmosQueryRequestOptions queryRequestOptionsWithCustomOpsId = new CosmosQueryRequestOptions()
+            .setQueryName("CustomQueryName");
+        query = "select * from c where c.id = '" + ITEM_ID + "'";
+        feedItemResponse = cosmosAsyncContainer
+            .queryItems(query, queryRequestOptionsWithCustomOpsId, ObjectNode.class)
+            .byPage()
+            .blockFirst();
+        assertThat(containerResponse).isNotNull();
+        verifyTracerAttributes(
+            mockTracer,
+            "queryItems." + cosmosAsyncContainer.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosAsyncContainer.getId(),
+            feedItemResponse.getCosmosDiagnostics(),
+            null,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations,
+            "CustomQueryName");
+        mockTracer.reset();
     }
 
     @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
@@ -876,6 +897,31 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean enableRequestLevelTracing,
         boolean forceThresholdViolation) throws JsonProcessingException {
 
+        verifyTracerAttributes(
+            mockTracer,
+            methodName,
+            databaseName,
+            containerName,
+            cosmosDiagnostics,
+            error,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolation,
+            null);
+    }
+
+    private void verifyTracerAttributes(
+        TracerUnderTest mockTracer,
+        String methodName,
+        String databaseName,
+        String containerName,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosException error,
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        boolean forceThresholdViolation,
+        String customOperationId) throws JsonProcessingException {
+
         if (useLegacyTracing) {
             verifyLegacyTracerAttributes(
                 mockTracer,
@@ -894,7 +940,8 @@ public class CosmosTracerTest extends TestSuiteBase {
             containerName,
             cosmosDiagnostics,
             error,
-            enableRequestLevelTracing);
+            enableRequestLevelTracing,
+            customOperationId);
     }
 
     private void verifyOTelTracerAttributes(
@@ -904,7 +951,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         String containerName,
         CosmosDiagnostics cosmosDiagnostics,
         CosmosException error,
-        boolean enableRequestLevelTracing) {
+        boolean enableRequestLevelTracing,
+        String customOperationId) {
 
         CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
             mockTracer.context
@@ -924,8 +972,16 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
         assertThat(attributes.get("db.operation")).isEqualTo(methodName);
         assertThat(attributes.get("net.peer.name")).isEqualTo("localhost");
+        assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
 
         assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
+        if (customOperationId != null) {
+            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
+            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(ctx.getOperationId());
+        } else {
+            assertThat(attributes.get("db.cosmosdb.operation_id")).isNull();
+        }
+
         assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
         assertThat(attributes.get("db.cosmosdb.connection_mode"))
             .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
