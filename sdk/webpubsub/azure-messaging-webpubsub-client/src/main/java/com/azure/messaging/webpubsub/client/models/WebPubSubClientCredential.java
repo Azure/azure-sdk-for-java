@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * The credential for WebPubSub client.
  */
 @Immutable
-public class WebPubSubClientCredential {
+public final class WebPubSubClientCredential {
 
     private final Mono<String> clientAccessUrlProvider;
 

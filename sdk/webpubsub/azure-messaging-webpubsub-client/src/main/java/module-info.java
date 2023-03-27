@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module azure.messaging.webpubsub.client {
+module com.azure.messaging.webpubsub.client {
     requires transitive com.azure.core;
 
     requires io.netty.common;
