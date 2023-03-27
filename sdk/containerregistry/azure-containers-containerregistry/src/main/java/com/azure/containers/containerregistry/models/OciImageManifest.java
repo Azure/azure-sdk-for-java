@@ -139,34 +139,27 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      */
     public static OciImageManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
-            reader -> {
-                int schemaVersion = 0;
-                OciDescriptor config = null;
-                List<OciDescriptor> layers = null;
-                OciAnnotations annotations = null;
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+                reader -> {
+                    OciImageManifest deserializedOciImageManifest = new OciImageManifest();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                    if ("schemaVersion".equals(fieldName)) {
-                        schemaVersion = reader.getInt();
-                    } else if ("config".equals(fieldName)) {
-                        config = OciDescriptor.fromJson(reader);
-                    } else if ("layers".equals(fieldName)) {
-                        layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                    } else if ("annotations".equals(fieldName)) {
-                        annotations = OciAnnotations.fromJson(reader);
-                    } else {
-                        reader.skipChildren();
+                        if ("schemaVersion".equals(fieldName)) {
+                            deserializedOciImageManifest.schemaVersion = reader.getInt();
+                        } else if ("config".equals(fieldName)) {
+                            deserializedOciImageManifest.config = OciDescriptor.fromJson(reader);
+                        } else if ("layers".equals(fieldName)) {
+                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                            deserializedOciImageManifest.layers = layers;
+                        } else if ("annotations".equals(fieldName)) {
+                            deserializedOciImageManifest.annotations = OciAnnotations.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                }
-                OciImageManifest deserializedValue = new OciImageManifest();
-                deserializedValue.schemaVersion = schemaVersion;
-                deserializedValue.config = config;
-                deserializedValue.layers = layers;
-                deserializedValue.annotations = annotations;
 
-                return deserializedValue;
-            });
+                    return deserializedOciImageManifest;
+                });
     }
 }

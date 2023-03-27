@@ -96,6 +96,15 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
+### Remove "Authentication_GetAcrAccessTokenFromLogin" operation as the service team discourage using username/password to authenticate.
+```yaml
+directive:
+  - from: swagger-document
+    where: $["paths"]["/oauth2/token"]
+    transform: >
+      delete $.get
+```
+
 ### Update the field names for RepositoryChangeableAttributes
 ```yaml
 directive:
