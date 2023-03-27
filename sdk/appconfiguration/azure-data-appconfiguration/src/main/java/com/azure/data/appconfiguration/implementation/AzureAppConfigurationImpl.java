@@ -30,6 +30,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -66,6 +67,7 @@ import com.azure.data.appconfiguration.implementation.models.KeyValueListResult;
 import com.azure.data.appconfiguration.implementation.models.Label;
 import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.implementation.models.LabelListResult;
+import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
 import com.azure.data.appconfiguration.implementation.models.Snapshot;
@@ -753,6 +755,26 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("After") String after,
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
                 @QueryParam("$Select") String select,
+                Context context);
+
+        @Get("/operations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<OperationDetails>> getOperationDetails(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("snapshot") String snapshot,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/operations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<OperationDetails> getOperationDetailsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("snapshot") String snapshot,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -4520,6 +4542,101 @@ public final class AzureAppConfigurationImpl {
     public void checkRevisions(
             String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
         checkRevisionsWithResponse(key, label, after, acceptDatetime, select, Context.NONE);
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<OperationDetails>> getOperationDetailsWithResponseAsync(String snapshot) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getOperationDetails(
+                                this.getEndpoint(), this.getApiVersion(), snapshot, accept, context));
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<OperationDetails>> getOperationDetailsWithResponseAsync(String snapshot, Context context) {
+        final String accept = "application/json";
+        return service.getOperationDetails(this.getEndpoint(), this.getApiVersion(), snapshot, accept, context);
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperationDetails> getOperationDetailsAsync(String snapshot) {
+        return getOperationDetailsWithResponseAsync(snapshot).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperationDetails> getOperationDetailsAsync(String snapshot, Context context) {
+        return getOperationDetailsWithResponseAsync(snapshot, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OperationDetails> getOperationDetailsWithResponse(String snapshot, Context context) {
+        final String accept = "application/json";
+        return service.getOperationDetailsSync(this.getEndpoint(), this.getApiVersion(), snapshot, accept, context);
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     *
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationDetails getOperationDetails(String snapshot) {
+        return getOperationDetailsWithResponse(snapshot, Context.NONE).getValue();
     }
 
     /**
