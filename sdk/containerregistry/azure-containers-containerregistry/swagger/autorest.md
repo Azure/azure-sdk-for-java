@@ -172,6 +172,9 @@ directive:
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -185,6 +188,9 @@ directive:
 ```
 
 ### Update the field names for TagChangeableAttributes
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -195,6 +201,7 @@ directive:
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
+
 # Add content-type parameter
 ```yaml
 directive:
@@ -242,6 +249,7 @@ directive:
           "type": "integer",
           "description": "Schema version"
         };
+    $.properties.config["x-ms-client-name"] = "configuration";
 ```
 
 # Take stream as manifest body
@@ -256,7 +264,10 @@ directive:
       }
 ```
 
-# Replace ManifestWrapper with stream response to calculate MD5
+# Replace ManifestWrapper with stream response to calculate SHA256
+
+<!-- Java specific -->
+
 ```yaml
 directive:
   from: swagger-document
