@@ -11,7 +11,6 @@ import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -82,8 +81,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     .setFilter(new ListMetricFeedbackFilter()
                         .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                         .setStartTime(firstFeedbackCreatedTime.minusDays(1))
-                        .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
-                Context.NONE).byPage().take(4))
+                        .setEndTime(firstFeedbackCreatedTime.plusDays(1))))
+                    .byPage().take(4))
                 .thenConsumeWhile(metricFeedbackPagedResponse -> {
                     metricFeedbackPagedResponse.getValue().forEach(actualMetricFeedbackList::add);
                     return true;
@@ -201,7 +200,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     // Get Feedback
 
     /**
-     * Verifies that an exception is thrown for null metric feedback  Id parameter.
+     * Verifies that an exception is thrown for null metric feedback Id parameter.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
