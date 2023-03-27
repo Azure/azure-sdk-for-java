@@ -79,9 +79,26 @@ Set target bytecode version for the project azure-cosmos in IntelliJ Preferences
 
 Setup Azure Cosmos DB Emulator by following [this instruction](https://docs.microsoft.com/azure/cosmos-db/local-emulator). Then please export the emulator's SSL certificates and install them in the JVM trust stores on your development machine following [this instruction](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates).
 
+For running the SDK unit tests use follogwing start options for the emulator:
+PS C:\Program Files\Azure Cosmos DB Emulator> .\CosmosDB.Emulator.exe /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong
+
+For installing the keys on windows following power shell script (running as administrator) can be used:
+```
+Push-Location -Path $env:JAVA_HOME
+
+gci -recurse cert:\LocalMachine\My | ? FriendlyName -eq DocumentDbEmulatorCertificate | Export-Certificate -Type cer -FilePath cosmos_emulator.cer
+keytool -cacerts -delete -alias cosmos_emulator -storepass changeit
+keytool -cacerts -importcert -alias cosmos_emulator -storepass changeit -file cosmos_emulator.cer
+del cosmos_emulator.cer
+
+Pop-Location
+```
+
 ### Running Unit Tests
 
 Unit tests are tests with group "unit" and can be run from IntelliJ directly without needing any Azure Cosmos DB Account or Emulator support. To run them, right click on any unit test class and run them. To test this, run `ClientConfigDiagnosticsTest` from IntelliJ IDE directly. 
+
+Note: When running the Azure Cosmos DB Emulator in a virtual machine you may receive timeouts. If that happens increase the number of cores and improve the I/O performance of the VM.
 
 ### Running Integration Tests
 

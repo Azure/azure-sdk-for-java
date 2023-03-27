@@ -14,7 +14,7 @@ n/a
 n/a
 
 ## Next steps
-n/a 
+n/a
 
 ## Contributing
 
