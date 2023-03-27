@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -86,7 +87,11 @@ public class AddressSelector {
         );
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
-        return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            OpenConnectionAggressivenessHint hint,
+            boolean isBackgroundFlow
+    ) {
+        return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
     }
 }

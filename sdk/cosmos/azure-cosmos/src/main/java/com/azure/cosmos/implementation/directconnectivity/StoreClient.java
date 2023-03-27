@@ -30,6 +30,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -137,8 +138,12 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            OpenConnectionAggressivenessHint hint,
+            boolean isBackgroundFlow
+    ) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -94,7 +95,7 @@ public class RntbdConnectionStateListener {
                 this.endpoint.serviceEndpoint(),
                 Arrays.asList(this.addressUris.stream().findFirst().get()),
                 this.endpoint.getMinChannelsRequired(),
-                "DEFENSIVE"
+                OpenConnectionAggressivenessHint.DEFENSIVE
         );
 
         for (int i = 0; i < endpoint.getMinChannelsRequired(); i++) {
@@ -103,7 +104,7 @@ public class RntbdConnectionStateListener {
                             openConnectionsCallable,
                             endpoint.serviceEndpoint(),
                             this.addressUris.stream().findFirst().get(),
-                            "DEFENSIVE"
+                            OpenConnectionAggressivenessHint.DEFENSIVE
                     )
             );
         }

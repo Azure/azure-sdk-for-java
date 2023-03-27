@@ -38,6 +38,7 @@ import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -679,7 +680,7 @@ public final class CosmosAsyncClient implements Closeable {
                                                                         cosmosAsyncContainer.getLinkWithoutTrailingSlash(),
                                                                         Configs.getMinConnectionPoolSizePerEndpoint()
                                                                 ),
-                                                        AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE,
+                                                        OpenConnectionAggressivenessHint.AGGRESSIVE,
                                                         false
                                                 )
                                 );
@@ -722,7 +723,7 @@ public final class CosmosAsyncClient implements Closeable {
 
         asyncDocumentClient.openConnectionsAndInitCaches(
                         proactiveContainerInitConfig,
-                        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE,
+                        OpenConnectionAggressivenessHint.DEFENSIVE,
                         true
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)

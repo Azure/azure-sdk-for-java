@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
@@ -1680,7 +1681,7 @@ public interface AsyncDocumentClient {
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     );
 

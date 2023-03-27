@@ -54,6 +54,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -490,7 +491,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    "AGGRESSIVE",
+                    OpenConnectionAggressivenessHint.AGGRESSIVE,
                     false
             )
                     .flatMap(openResult -> {
@@ -554,7 +555,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    "AGGRESSIVE",
+                    OpenConnectionAggressivenessHint.AGGRESSIVE,
                     false
             )
                     .flatMap(
@@ -582,12 +583,12 @@ public class CosmosAsyncContainer {
      */
     private Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-        String openConnectionsConcurrencyMode,
+        OpenConnectionAggressivenessHint hint,
         boolean isBackgroundFlow
     ) {
         return this.database.getDocClientWrapper().openConnectionsAndInitCaches(
                         proactiveContainerInitConfig,
-                        openConnectionsConcurrencyMode,
+                        hint,
                         isBackgroundFlow
                 )
                 .collectList()
@@ -618,7 +619,7 @@ public class CosmosAsyncContainer {
     Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
             int numProactiveConnectionRegions,
             int minConnectionsPerEndpointForContainer,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     ) {
 
@@ -649,7 +650,7 @@ public class CosmosAsyncContainer {
 
             return openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    openConnectionsConcurrencyMode,
+                    hint,
                     isBackgroundFlow
             );
         } else {

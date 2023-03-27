@@ -66,6 +66,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
@@ -4372,10 +4373,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     ) {
-        return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
+        return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
     }
 
     /***

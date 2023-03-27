@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +41,7 @@ public interface IStoreClient {
 
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     );
 }

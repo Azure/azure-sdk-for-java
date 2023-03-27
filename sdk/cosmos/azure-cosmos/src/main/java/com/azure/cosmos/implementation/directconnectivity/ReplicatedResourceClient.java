@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -194,10 +195,10 @@ public class ReplicatedResourceClient {
 
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     ) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig, openConnectionsConcurrencyMode, isBackgroundFlow);
+        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

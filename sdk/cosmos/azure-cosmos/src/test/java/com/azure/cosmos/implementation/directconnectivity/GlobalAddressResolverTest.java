@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -202,18 +203,18 @@ public class GlobalAddressResolverTest {
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.anyString()))
+                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.any()))
                         .thenReturn(Flux.fromIterable(collectionToAddresses));
 
         Mockito
-                .when(gatewayAddressCache.openConnections(addressInformation, documentCollection,  "AGGRESSIVE", Configs.getMinConnectionPoolSizePerEndpoint(), false))
+                .when(gatewayAddressCache.openConnections(addressInformation, documentCollection,  OpenConnectionAggressivenessHint.AGGRESSIVE, Configs.getMinConnectionPoolSizePerEndpoint(), false))
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
-        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, "AGGRESSIVE", false))
+        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, OpenConnectionAggressivenessHint.AGGRESSIVE, false))
                         .expectNext(response1)
                         .expectNext(response2)
                         .verifyComplete();
@@ -230,11 +231,11 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.anyString());
+                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.any());
 
 
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnections(addressInformation, documentCollection,  "AGGRESSIVE", Configs.getMinConnectionPoolSizePerEndpoint(), false);
+                .openConnections(addressInformation, documentCollection,  OpenConnectionAggressivenessHint.AGGRESSIVE, Configs.getMinConnectionPoolSizePerEndpoint(), false);
     }
 }

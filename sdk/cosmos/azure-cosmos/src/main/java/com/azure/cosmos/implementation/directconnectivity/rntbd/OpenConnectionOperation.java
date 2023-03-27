@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -15,14 +16,18 @@ public final class OpenConnectionOperation {
     private final Callable<Flux<OpenConnectionResponse>> openConnectionCallable;
     private final URI serviceEndpoint;
     private final Uri addressUri;
-    private final String openConnectionsConcurrencyMode;
+    private final OpenConnectionAggressivenessHint hint;
 
-
-    public OpenConnectionOperation(Callable<Flux<OpenConnectionResponse>> openConnectionCallable, URI serviceEndpoint, Uri addressUri, String openConnectionsConcurrencyMode) {
+    public OpenConnectionOperation(
+            Callable<Flux<OpenConnectionResponse>> openConnectionCallable,
+            URI serviceEndpoint,
+            Uri addressUri,
+            OpenConnectionAggressivenessHint hint
+    ) {
         this.openConnectionCallable = openConnectionCallable;
         this.serviceEndpoint = serviceEndpoint;
         this.addressUri = addressUri;
-        this.openConnectionsConcurrencyMode = openConnectionsConcurrencyMode;
+        this.hint = hint;
     }
 
     public Callable<Flux<OpenConnectionResponse>> getOpenConnectionCallable() {
@@ -37,7 +42,7 @@ public final class OpenConnectionOperation {
         return addressUri;
     }
 
-    public String getOpenConnectionsConcurrencyMode() {
-        return openConnectionsConcurrencyMode;
+    public OpenConnectionAggressivenessHint getHint() {
+        return hint;
     }
 }

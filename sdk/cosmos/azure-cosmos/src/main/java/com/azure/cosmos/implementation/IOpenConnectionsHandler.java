@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -15,7 +16,7 @@ public interface IOpenConnectionsHandler {
         URI serviceEndpoint,
         List<Uri> addresses,
         int minConnectionsRequiredForEndpoint,
-        String openConnectionsConcurrencySetting
+        OpenConnectionAggressivenessHint hint
     );
 
     Flux<OpenConnectionResponse> openConnections(

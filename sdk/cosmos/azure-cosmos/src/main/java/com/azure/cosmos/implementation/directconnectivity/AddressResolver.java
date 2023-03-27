@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -90,7 +91,11 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, String openConnectionsConcurrencyMode, boolean isBackgroundFlow) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
+            OpenConnectionAggressivenessHint hint,
+            boolean isBackgroundFlow
+    ) {
         return Flux.empty();
     }
 

@@ -50,6 +50,7 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.query.PentaFunction;
 import com.azure.cosmos.implementation.query.TriFunction;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -914,7 +915,7 @@ public class GatewayAddressCache implements IAddressCache {
                             this.serviceEndpoint,
                             addressesNeedToValidation,
                             Configs.getMinConnectionPoolSizePerEndpoint(),
-                            "AGGRESSIVE"
+                            OpenConnectionAggressivenessHint.AGGRESSIVE
                     )
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
@@ -947,14 +948,14 @@ public class GatewayAddressCache implements IAddressCache {
             String collectionLink,
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            String openConnectionsConcurrencyMode
+            OpenConnectionAggressivenessHint hint
     ) {
 
         checkNotNull(collection, "Argument 'collection' should not be null");
         checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
 
         OpenConnectionsConcurrencySetting connectionsConcurrencySetting = openConnectionsConcurrencySettings
-                .getOrDefault(openConnectionsConcurrencyMode, openConnectionsConcurrencySettings.get("AGGRESSIVE"));
+                .getOrDefault(hint, openConnectionsConcurrencySettings.get("AGGRESSIVE"));
 
         if (logger.isDebugEnabled()) {
             logger.debug(
@@ -1027,7 +1028,7 @@ public class GatewayAddressCache implements IAddressCache {
     public Flux<OpenConnectionResponse> openConnections(
             AddressInformation address,
             DocumentCollection documentCollection,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             int connectionsPerEndpointCount,
             boolean isBackgroundFlow
     ) {
@@ -1044,14 +1045,14 @@ public class GatewayAddressCache implements IAddressCache {
                                     serviceEndpoint,
                                     Arrays.asList(address.getPhysicalUri()),
                                     connectionsRequiredForEndpoint,
-                                    openConnectionsConcurrencyMode
+                                    hint
                             );
 
                     OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
                             openConnectionsFunc,
                             this.serviceEndpoint,
                             address.getPhysicalUri(),
-                            openConnectionsConcurrencyMode);
+                            hint);
 
                     this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
                 }
@@ -1063,7 +1064,7 @@ public class GatewayAddressCache implements IAddressCache {
                     this.serviceEndpoint,
                     Arrays.asList(address.getPhysicalUri()),
                     connectionsRequiredForEndpoint,
-                    openConnectionsConcurrencyMode
+                    hint
             ).repeat(connectionsRequiredForEndpoint - 1);
         }
 

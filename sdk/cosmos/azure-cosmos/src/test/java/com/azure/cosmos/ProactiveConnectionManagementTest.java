@@ -658,13 +658,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations.add(accountLocation.getName());
-            preferredLocations.add("EastUS");
         }
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint
         return new Object[][] {
-                new Object[]{preferredLocations, 1, 3, 3},
-                new Object[]{preferredLocations, 2, 1, 4}
+                new Object[]{preferredLocations, 1, 1, 6},
+                new Object[]{preferredLocations, 2, 1, 3}
 
         };
     }

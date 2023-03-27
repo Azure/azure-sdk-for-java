@@ -32,11 +32,13 @@ import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -313,7 +315,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 collectionLink,
                 createdCollection,
                 pkriList,
-                "AGGRESSIVE"
+                OpenConnectionAggressivenessHint.AGGRESSIVE
         ).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
@@ -379,7 +381,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, "AGGRESSIVE").blockLast();
+        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -449,7 +451,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, "AGGRESSIVE").blockLast();
+        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -952,7 +954,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (openConnectionAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList, "AGGRESSIVE").blockLast();
+            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
             Mockito.clearInvocations(openConnectionsHandlerMock);
             httpClientWrapper.capturedRequests.clear();
         }
@@ -1345,24 +1347,28 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         if (!isBackgroundFlow) {
 
             Mockito
-                    .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyString()))
+                    .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.any()))
                     .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, "AGGRESSIVE", connectionsPerEndpoint, isBackgroundFlow))
+            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, OpenConnectionAggressivenessHint.AGGRESSIVE, connectionsPerEndpoint, isBackgroundFlow))
                     .expectNextCount(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig))
                     .verifyComplete();
 
             Mockito
                     .verify(openConnectionsHandlerMock, Mockito.times(1))
-                    .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyString());
+                    .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.any());
 
         } else {
 
             Mockito.doNothing().when(proactiveOpenConnectionsProcessorMock).submitOpenConnectionsTask(Mockito.any(OpenConnectionOperation.class));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, "AGGRESSIVE", connectionsPerEndpoint, isBackgroundFlow))
+            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, OpenConnectionAggressivenessHint.AGGRESSIVE, connectionsPerEndpoint, isBackgroundFlow))
                     .expectNextCount(0)
                     .verifyComplete();
+
+            Mockito
+                    .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig)))
+                    .submitOpenConnectionsTask(Mockito.any(OpenConnectionOperation.class));
         }
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
     }

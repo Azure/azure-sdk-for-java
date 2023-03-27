@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -106,7 +107,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     ) {
 
@@ -167,7 +168,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                             collection,
                                                             pkRangeIdentities,
                                                             proactiveContainerInitConfig,
-                                                            openConnectionsConcurrencyMode
+                                                            hint
                                                     );
                                                         }
                                                 );
@@ -221,7 +222,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                         collection,
                                         proactiveContainerInitConfig,
                                         connectionsPerReplicaCountForContainer,
-                                        openConnectionsConcurrencyMode,
+                                        hint,
                                         isBackgroundFlow
                                 );
                     }
@@ -248,7 +249,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            String openConnectionsConcurrencyMode
+            OpenConnectionAggressivenessHint hint
     ) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
@@ -261,7 +262,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                             containerLink,
                                             collection,
                                             partitionKeyRangeIdentities,
-                                            openConnectionsConcurrencyMode
+                                            hint
                                     );
                         }
                         return Flux.empty();
@@ -276,7 +277,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             DocumentCollection documentCollection,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             int connectionPerEndpointCount,
-            String openConnectionsConcurrencyMode,
+            OpenConnectionAggressivenessHint hint,
             boolean isBackgroundFlow
     ) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
@@ -289,7 +290,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .openConnections(
                                             address,
                                             documentCollection,
-                                            openConnectionsConcurrencyMode,
+                                            hint,
                                             connectionPerEndpointCount,
                                             isBackgroundFlow
                                     );
