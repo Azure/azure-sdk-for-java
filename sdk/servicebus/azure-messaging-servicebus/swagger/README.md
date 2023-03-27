@@ -27,19 +27,19 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.0'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e9539003a0a7cde9a2dc9dd0ddd85f25fa7159a6/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
+use: ['@autorest/java@4.1.16', '@autorest/modelerfour@4.25.0']
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dfb3704f3b1d352bd4fa78a86588aaab3dc7b3a4/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.messaging.servicebus.administration
 generate-client-interfaces: false
 service-interface-as-public: true
-sync-methods: none
+sync-methods: essential
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku
+custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku,NamespaceType
 custom-types-subpackage: models
 context-client-method-parameter: true
 customization-class: src/main/java/AdministrationClientCustomization.java
