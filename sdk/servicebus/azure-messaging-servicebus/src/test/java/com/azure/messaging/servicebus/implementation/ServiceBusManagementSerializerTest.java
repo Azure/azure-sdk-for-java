@@ -69,8 +69,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ServiceBusManagementSerializerTest {
-    private static final String TITLE_KEY = "";
-
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
 
     /**
