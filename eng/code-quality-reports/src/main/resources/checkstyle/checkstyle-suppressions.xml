@@ -548,5 +548,5 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.policy.HttpLoggingPolicy" lines="47" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.policy.HttpLoggingPolicy" lines="48" />
 </suppressions>
