@@ -37,7 +37,6 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
-import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
 /**
  * Class to describe cosmosDb entity
@@ -436,23 +435,23 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return ttl;
     }
 
-    private Boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
-        Boolean isOverwritePolicy = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY);
+    private boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
+        boolean isOverwritePolicy = Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY;
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
-            isOverwritePolicy = Boolean.valueOf(annotation.overwritePolicy());
+            isOverwritePolicy = annotation.overwritePolicy();
         }
 
         return isOverwritePolicy;
     }
 
-    private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
-        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);
+    private boolean getIndexingPolicyAutomatic(Class<?> domainType) {
+        boolean isAutomatic = Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
-            isAutomatic = Boolean.valueOf(annotation.automatic());
+            isAutomatic = annotation.automatic();
         }
 
         return isAutomatic;
