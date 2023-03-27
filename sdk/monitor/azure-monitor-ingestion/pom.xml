@@ -48,6 +48,7 @@
         <javaModulesSurefireArgLine>
             --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
             --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+            --add-exports com.azure.monitor.ingestion/com.azure.monitor.ingestion.implementation=ALL-UNNAMED
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=ALL-UNNAMED
         </javaModulesSurefireArgLine>
     </properties>

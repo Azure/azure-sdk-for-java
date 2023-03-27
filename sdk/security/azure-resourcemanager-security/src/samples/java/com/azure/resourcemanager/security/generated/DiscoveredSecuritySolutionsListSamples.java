@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiscoveredSecuritySolutions List. */
 public final class DiscoveredSecuritySolutionsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiscoveredSecuritySolutionsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getDiscoveredSecuritySolutions(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.discoveredSecuritySolutions().list(Context.NONE);
+        manager.discoveredSecuritySolutions().list(com.azure.core.util.Context.NONE);
     }
 }

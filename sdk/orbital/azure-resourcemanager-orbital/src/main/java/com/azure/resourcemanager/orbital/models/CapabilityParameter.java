@@ -17,6 +17,15 @@ public final class CapabilityParameter extends ExpandableStringEnum<CapabilityPa
     public static final CapabilityParameter COMMUNICATION = fromString("Communication");
 
     /**
+     * Creates a new instance of CapabilityParameter value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapabilityParameter() {
+    }
+
+    /**
      * Creates or finds a CapabilityParameter from its string representation.
      *
      * @param name a name to look for.

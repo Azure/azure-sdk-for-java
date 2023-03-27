@@ -25,6 +25,15 @@ public final class PermissionProperty extends ExpandableStringEnum<PermissionPro
         fromString("GCP::Security Center Admin Viewer");
 
     /**
+     * Creates a new instance of PermissionProperty value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PermissionProperty() {
+    }
+
+    /**
      * Creates or finds a PermissionProperty from its string representation.
      *
      * @param name a name to look for.

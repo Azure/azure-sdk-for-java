@@ -17,6 +17,15 @@ public final class TransportProtocol extends ExpandableStringEnum<TransportProto
     public static final TransportProtocol UDP = fromString("UDP");
 
     /**
+     * Creates a new instance of TransportProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransportProtocol() {
+    }
+
+    /**
      * Creates or finds a TransportProtocol from its string representation.
      *
      * @param name a name to look for.

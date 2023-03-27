@@ -34,7 +34,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
-public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
+public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse> implements IRequestRecord {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestRecord.class);
 
@@ -86,6 +86,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this.args.activityId();
     }
 
+    @Override
     public RntbdRequestArgs args() {
         return this.args;
     }
@@ -238,8 +239,14 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this.args.transportRequestId();
     }
 
+    @Override
     public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
         return this.channelAcquisitionTimeline;
+    }
+
+    @Override
+    public long getRequestId() {
+        return this.args.transportRequestId();
     }
 
     // endregion

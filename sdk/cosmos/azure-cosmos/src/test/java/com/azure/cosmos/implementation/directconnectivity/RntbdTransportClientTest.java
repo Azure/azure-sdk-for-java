@@ -1131,8 +1131,8 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
-            throw new NotImplementedException("tryOpenConnection is not supported in FakeEndpoint.");
+        public OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs openConnectionRequestArgs) {
+            throw new NotImplementedException("openConnection is not supported in FakeEndpoint.");
         }
 
         // endregion

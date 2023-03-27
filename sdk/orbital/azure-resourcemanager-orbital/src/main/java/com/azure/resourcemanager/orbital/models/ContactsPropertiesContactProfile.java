@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The reference to the contact profile resource. */
 @Fluent
 public final class ContactsPropertiesContactProfile extends ResourceReference {
+    /** Creates an instance of ContactsPropertiesContactProfile class. */
+    public ContactsPropertiesContactProfile() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ContactsPropertiesContactProfile withId(String id) {

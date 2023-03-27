@@ -11,11 +11,10 @@ import com.azure.resourcemanager.signalr.models.OperationProperties;
 import com.azure.resourcemanager.signalr.models.ServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationProperties model =
             BinaryData
                 .fromString(
@@ -33,8 +32,8 @@ public final class OperationPropertiesTests {
         Assertions.assertEquals("pmqnja", model.serviceSpecification().logSpecifications().get(0).displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationProperties model =
             new OperationProperties()
                 .withServiceSpecification(

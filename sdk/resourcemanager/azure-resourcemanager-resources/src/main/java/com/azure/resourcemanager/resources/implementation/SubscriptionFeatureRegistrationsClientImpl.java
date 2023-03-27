@@ -66,11 +66,10 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClientSubscri")
-    private interface SubscriptionFeatureRegistrationsService {
+    public interface SubscriptionFeatureRegistrationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}"
-                + "/subscriptionFeatureRegistrations/{featureName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionFeatureRegistrationInner>> get(
@@ -84,8 +83,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}"
-                + "/subscriptionFeatureRegistrations/{featureName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionFeatureRegistrationInner>> createOrUpdate(
@@ -100,8 +98,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}"
-                + "/subscriptionFeatureRegistrations/{featureName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -115,8 +112,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}"
-                + "/subscriptionFeatureRegistrations")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionFeatureRegistrationList>> listBySubscription(
@@ -275,21 +271,6 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionFeatureRegistrationInner get(String providerNamespace, String featureName) {
-        return getAsync(providerNamespace, featureName).block();
-    }
-
-    /**
-     * Returns a feature registration.
-     *
-     * @param providerNamespace The provider namespace.
-     * @param featureName The feature name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,6 +281,21 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     public Response<SubscriptionFeatureRegistrationInner> getWithResponse(
         String providerNamespace, String featureName, Context context) {
         return getWithResponseAsync(providerNamespace, featureName, context).block();
+    }
+
+    /**
+     * Returns a feature registration.
+     *
+     * @param providerNamespace The provider namespace.
+     * @param featureName The feature name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription feature registration details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionFeatureRegistrationInner get(String providerNamespace, String featureName) {
+        return getWithResponse(providerNamespace, featureName, Context.NONE).getValue();
     }
 
     /**
@@ -418,26 +414,6 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @param subscriptionFeatureRegistrationType Subscription Feature Registration Type details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionFeatureRegistrationInner> createOrUpdateAsync(
-        String providerNamespace,
-        String featureName,
-        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
-        return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or update a feature registration.
-     *
-     * @param providerNamespace The provider namespace.
-     * @param featureName The feature name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -449,22 +425,6 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or update a feature registration.
-     *
-     * @param providerNamespace The provider namespace.
-     * @param featureName The feature name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionFeatureRegistrationInner createOrUpdate(String providerNamespace, String featureName) {
-        final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
-        return createOrUpdateAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType).block();
     }
 
     /**
@@ -488,6 +448,24 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         return createOrUpdateWithResponseAsync(
                 providerNamespace, featureName, subscriptionFeatureRegistrationType, context)
             .block();
+    }
+
+    /**
+     * Create or update a feature registration.
+     *
+     * @param providerNamespace The provider namespace.
+     * @param featureName The feature name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription feature registration details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionFeatureRegistrationInner createOrUpdate(String providerNamespace, String featureName) {
+        final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
+        return createOrUpdateWithResponse(
+                providerNamespace, featureName, subscriptionFeatureRegistrationType, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -603,20 +581,6 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String providerNamespace, String featureName) {
-        deleteAsync(providerNamespace, featureName).block();
-    }
-
-    /**
-     * Deletes a feature registration.
-     *
-     * @param providerNamespace The provider namespace.
-     * @param featureName The feature name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -626,6 +590,20 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String featureName, Context context) {
         return deleteWithResponseAsync(providerNamespace, featureName, context).block();
+    }
+
+    /**
+     * Deletes a feature registration.
+     *
+     * @param providerNamespace The provider namespace.
+     * @param featureName The feature name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String providerNamespace, String featureName) {
+        deleteWithResponse(providerNamespace, featureName, Context.NONE);
     }
 
     /**
@@ -943,7 +921,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -981,7 +960,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1019,7 +999,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1057,7 +1038,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

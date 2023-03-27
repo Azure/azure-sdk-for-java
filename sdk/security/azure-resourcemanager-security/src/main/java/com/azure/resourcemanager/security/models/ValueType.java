@@ -17,6 +17,15 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
     public static final ValueType STRING = fromString("String");
 
     /**
+     * Creates a new instance of ValueType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ValueType() {
+    }
+
+    /**
      * Creates or finds a ValueType from its string representation.
      *
      * @param name a name to look for.

@@ -294,6 +294,6 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     @Generated
     public IngestionUsingDataCollectionRulesClient buildClient() {
         return new IngestionUsingDataCollectionRulesClient(
-                new IngestionUsingDataCollectionRulesAsyncClient(buildInnerClient()));
+                buildInnerClient());
     }
 }

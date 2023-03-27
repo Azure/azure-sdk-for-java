@@ -100,8 +100,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertList>> listResourceGroupLevelByRegion(
@@ -128,8 +127,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts/{alertName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertInner>> getResourceGroupLevel(
@@ -144,8 +142,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
-                + "/dismiss")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateSubscriptionLevelStateToDismiss(
@@ -159,8 +156,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
-                + "/resolve")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateSubscriptionLevelStateToResolve(
@@ -174,8 +170,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
-                + "/activate")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateSubscriptionLevelStateToActivate(
@@ -189,8 +184,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
-                + "/inProgress")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateSubscriptionLevelStateToInProgress(
@@ -204,8 +198,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts/{alertName}/resolve")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateResourceGroupLevelStateToResolve(
@@ -220,8 +213,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts/{alertName}/dismiss")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateResourceGroupLevelStateToDismiss(
@@ -236,8 +228,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts/{alertName}/activate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateResourceGroupLevelStateToActivate(
@@ -252,8 +243,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/alerts/{alertName}/inProgress")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> updateResourceGroupLevelStateToInProgress(
@@ -268,8 +258,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default"
-                + "/simulate")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default/simulate")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> simulate(
@@ -2729,7 +2718,7 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSimulate(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody) {
-        return beginSimulateAsync(ascLocation, alertSimulatorRequestBody).getSyncPoller();
+        return this.beginSimulateAsync(ascLocation, alertSimulatorRequestBody).getSyncPoller();
     }
 
     /**
@@ -2747,7 +2736,7 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSimulate(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context) {
-        return beginSimulateAsync(ascLocation, alertSimulatorRequestBody, context).getSyncPoller();
+        return this.beginSimulateAsync(ascLocation, alertSimulatorRequestBody, context).getSyncPoller();
     }
 
     /**

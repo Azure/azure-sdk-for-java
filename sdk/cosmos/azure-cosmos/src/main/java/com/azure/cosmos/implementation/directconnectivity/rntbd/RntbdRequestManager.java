@@ -611,6 +611,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 if (this.serverErrorInjector != null) {
                     if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
+                        this.timestamps.channelWriteCompleted();
+                        this.timestamps.channelReadCompleted();
                         return;
                     }
 
@@ -662,6 +664,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         // But if the configured delay > networkRequestTimeout, then do not bother to send the request
         this.addPendingRequestRecord(context, rntbdRequestRecord);
         rntbdRequestRecord.stage(RntbdRequestRecord.Stage.SENT);
+        this.timestamps.channelWriteCompleted();
+
+        // Since this is to simulate a response delay, mark write completed
         this.timestamps.channelWriteCompleted();
 
         long effectiveDelayInNanos = Math.min(this.tcpNetworkRequestTimeoutInNanos, delay.toNanos());

@@ -17,6 +17,15 @@ public final class ResourceIdentifierType extends ExpandableStringEnum<ResourceI
     public static final ResourceIdentifierType LOG_ANALYTICS = fromString("LogAnalytics");
 
     /**
+     * Creates a new instance of ResourceIdentifierType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceIdentifierType() {
+    }
+
+    /**
      * Creates or finds a ResourceIdentifierType from its string representation.
      *
      * @param name a name to look for.
