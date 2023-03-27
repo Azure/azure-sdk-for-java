@@ -65,7 +65,7 @@ com.azure:azure-communication-common;1.2.6;2.0.0-beta.2
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.11;1.2.0-beta.1
 com.azure:azure-communication-identity;1.4.4;1.5.0-beta.1
-com.azure:azure-communication-phonenumbers;1.0.20;1.1.0-beta.16
+com.azure:azure-communication-phonenumbers;1.0.20;1.1.0
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-rooms;1.0.0-beta.2;1.0.0-beta.3
