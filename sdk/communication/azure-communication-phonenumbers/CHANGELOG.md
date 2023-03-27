@@ -1,14 +1,10 @@
 # Release History
 
-## 1.1.0-beta.16 (Unreleased)
+## 1.1.0 (2023-03-28)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- GA release of SIP routing client.
+- GA release of Phone Numbers Browse API Methods.
 
 ## 1.1.0-beta.15 (2023-03-15)
 
