@@ -192,6 +192,7 @@
     "sdk/videoanalyzer/azure-media-videoanalyzer-edge/**",
     "sdk/synapse/azure-analytics-synapse-artifacts/**",
     "sdk/webpubsub/azure-messaging-webpubsub/**",
+    "sdk/webpubsub/azure-messaging-webpubsub-client/**",
     "sdk/tables/azure-data-tables/**",
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
