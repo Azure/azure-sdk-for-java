@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.serializer.SerializerFactory;
@@ -39,7 +38,6 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -103,12 +101,6 @@ public class ManagedHsmTests extends SamplesTestBase {
         }
     }
 
-    @BeforeAll
-    // TODO(xiaofei) remove once core-management is released
-    public static void setup() {
-        AzureEnvironment.AZURE.getEndpoints().put("managedHsm", ".managedhsm.azure.net");
-    }
-
     /**
      * Note: Managed HSM instance is costly and it'll still cost you even if you delete the instance or the associated
      *       resource group, unless the instance is <string>purged</string>.
@@ -116,6 +108,7 @@ public class ManagedHsmTests extends SamplesTestBase {
      *       {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#purgeDeleted(String, String)} after the test. </p>
      *       <p>You can use {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#listDeleted()} to list all deleted instances
      *       that's not purged after deletion.</p>
+     * @see <a href="https://learn.microsoft.com/en-us/azure/key-vault/managed-hsm/soft-delete-overview">soft-delete-overview</a>
      */
     @Test
     @DoNotRecord(skipInPlayback = true)

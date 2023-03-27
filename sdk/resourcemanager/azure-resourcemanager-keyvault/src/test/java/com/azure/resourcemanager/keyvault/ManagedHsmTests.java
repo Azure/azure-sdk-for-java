@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
 import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -35,12 +33,6 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
         }
     }
 
-    @BeforeAll
-    // TODO(xiaofei) remove once core-management is released
-    public static void setup() {
-        AzureEnvironment.AZURE.getEndpoints().put("managedHsm", ".managedhsm.azure.net");
-    }
-
     /**
      * Note: Managed HSM instance is costly and it'll still cost you even if you delete the instance or the associated
      *       resource group, unless the instance is <string>purged</string>.
@@ -48,6 +40,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
      *       {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#purgeDeleted(String, String)} after the test. </p>
      *       <p>You can use {@link com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient#listDeleted()} to list all deleted instances
      *       that's not purged after deletion.</p>
+     * @see <a href="https://learn.microsoft.com/en-us/azure/key-vault/managed-hsm/soft-delete-overview">soft-delete-overview</a>
      */
     @Test
     public void canCrudManagedHsms() {
