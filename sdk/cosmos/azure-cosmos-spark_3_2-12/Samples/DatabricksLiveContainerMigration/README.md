@@ -19,7 +19,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 ## Install Azure Cosmos DB Spark Connector jar
 
-* Install the Azure Cosmos DB Spark Connector jar on the cluster by providing maven co-ordinates `com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.7.0`:
+* Install the Azure Cosmos DB Spark Connector jar on the cluster by providing maven co-ordinates `com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.17.2`:
 
     ![image](./media/jar.jpg)
 
