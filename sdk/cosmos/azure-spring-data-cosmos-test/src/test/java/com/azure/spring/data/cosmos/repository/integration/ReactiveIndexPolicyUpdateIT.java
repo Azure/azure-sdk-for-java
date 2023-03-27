@@ -82,7 +82,7 @@ public class ReactiveIndexPolicyUpdateIT {
         // apply new index policy
         CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(defaultIndexPolicyEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
-        Mockito.doReturn(false).when(spyEntityInformation).getIndexingPolicyOverwritePolicy(Mockito.any());
+        Mockito.doReturn(false).when(spyEntityInformation).isOverwriteIndexingPolicy();
         new SimpleReactiveCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy
@@ -120,7 +120,7 @@ public class ReactiveIndexPolicyUpdateIT {
         // apply new index policy
         CosmosEntityInformation<IndexPolicyOverwriteEntity, String> spyEntityInformation = Mockito.spy(indexPolicyOverwriteEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
-        Mockito.doReturn(true).when(spyEntityInformation).getIndexingPolicyOverwritePolicy(Mockito.any());
+        Mockito.doReturn(true).when(spyEntityInformation).isOverwriteIndexingPolicy();
         new SimpleReactiveCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy

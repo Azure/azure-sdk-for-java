@@ -37,6 +37,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
+import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
 /**
  * Class to describe cosmosDb entity
@@ -74,6 +75,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final boolean persitable;
     private final boolean autoScale;
     private final boolean isIndexingPolicySpecified;
+    private final boolean overwriteIndexingPolicy;
 
     /**
      * Initialization
@@ -109,6 +111,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.persitable = Persistable.class.isAssignableFrom(domainType);
         this.autoScale = getIsAutoScale(domainType);
         this.isIndexingPolicySpecified = isIndexingPolicySpecified(domainType);
+        this.overwriteIndexingPolicy = getIndexingPolicyOverwritePolicy(domainType);
     }
 
     @Override
@@ -284,6 +287,15 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Check if overwrite indexing policy is enabled
+     *
+     * @return boolean
+     */
+    public boolean isOverwriteIndexingPolicy() {
+        return overwriteIndexingPolicy;
+    }
+
+    /**
      * Check if container should use autoscale for resource units
      *
      * @return boolean
@@ -424,13 +436,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return ttl;
     }
 
-    /**
-     * Check if the indexing policy in the portal should be overwritten
-     * @param domainType The domain type of the entity
-     *
-     * @return boolean
-     */
-    public Boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
+    private Boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
         Boolean isOverwritePolicy = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY);
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 

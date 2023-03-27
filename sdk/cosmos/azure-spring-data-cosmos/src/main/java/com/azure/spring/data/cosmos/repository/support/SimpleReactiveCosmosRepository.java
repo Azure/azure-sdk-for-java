@@ -47,10 +47,14 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
             createContainerIfNotExists();
         }
 
+        if (this.entityInformation.isOverwriteIndexingPolicy()) {
+            overwriteIndexingPolicy();
+        }
+    }
+
+    private void overwriteIndexingPolicy() {
         CosmosContainerProperties currentProperties = getContainerProperties();
         if (currentProperties != null
-            && entityInformation.isIndexingPolicySpecified()
-            && metadata.getIndexingPolicyOverwritePolicy(entityInformation.getClass())
             && policyNeedsUpdate(currentProperties.getIndexingPolicy(), entityInformation.getIndexingPolicy())) {
             currentProperties.setIndexingPolicy(entityInformation.getIndexingPolicy());
             replaceContainerProperties(currentProperties);
