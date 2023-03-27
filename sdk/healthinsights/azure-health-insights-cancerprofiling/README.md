@@ -31,7 +31,7 @@ For more information about creating the resource or how to get the location and 
 
 ### Authenticate the client
 
-In order to interact with the Health Insighs Cancer Profiling service, you'll need to create an instance of the [`CancerProfilingClient`][cancer_profiling_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Health Insights Cancer Profiling service, you'll need to create an instance of the [`CancerProfilingClient`][cancer_profiling_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
 
 #### Get API Key
 
