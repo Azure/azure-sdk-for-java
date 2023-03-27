@@ -63,8 +63,9 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return Mono.defer(() -> {
             Context span = startSpan(context);
             return next.process()
-                .doOnSuccess(response -> endSpan(response, null, span))
-                .doOnError(exception -> endSpan(null, exception, span));
+                .doOnSuccess(response -> endSpan(response, span))
+                .doOnCancel(() -> tracer.end("cancel", null, span))
+                .doOnError(exception -> tracer.end(null, exception, span));
         });
     }
 
@@ -76,19 +77,16 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         Context span = startSpan(context);
-        Throwable exception = null;
-        HttpResponse response = null;
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
-            response = next.processSync();
+            HttpResponse response = next.processSync();
+            endSpan(response, span);
             return response;
         } catch (RuntimeException ex) {
-            exception = ex;
+            tracer.end(null, ex, span);
             throw ex;
         } catch (Exception ex) {
-            exception = ex;
+            tracer.end(null, ex, span);
             throw LOGGER.logExceptionAsWarning(new RuntimeException(ex));
-        } finally {
-            endSpan(response, exception, span);
         }
     }
 
@@ -120,7 +118,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private void endSpan(HttpResponse response, Throwable error, Context span) {
+    private void endSpan(HttpResponse response, Context span) {
         if (response != null) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
@@ -132,7 +130,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             tracer.end((statusCode >= 400) ? "error" : null, null, span);
         }
 
-        tracer.end(null, error, span);
+        tracer.end("", null, span);
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {

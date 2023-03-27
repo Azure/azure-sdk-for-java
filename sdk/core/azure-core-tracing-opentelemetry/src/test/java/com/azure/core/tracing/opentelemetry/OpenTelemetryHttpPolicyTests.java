@@ -44,6 +44,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -369,6 +370,36 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(1, events.size());
         assertEquals("exception", events.get(0).getName());
         assertEquals(TimeoutException.class.getName(), events.get(0).getAttributes().get(AttributeKey.stringKey("exception.type")));
+    }
+
+    @Test
+    public void cancelIsTraced() {
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request ->
+                Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200)))
+            .tracer(azTracer)
+            .build();
+
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
+                .toFuture()
+            .cancel(true);
+
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
+        assertEquals(1, exportedSpans.size());
+
+        SpanData cancelled = exportedSpans.get(0);
+        Map<String, Object> httpAttributesTimeout = getAttributes(cancelled);
+        assertNull(httpAttributesTimeout.get("http.status_code"));
+        assertEquals(StatusCode.ERROR, cancelled.getStatus().getStatusCode());
+        assertEquals("cancel", cancelled.getStatus().getDescription());
     }
 
     private Map<String, Object> getAttributes(SpanData span) {

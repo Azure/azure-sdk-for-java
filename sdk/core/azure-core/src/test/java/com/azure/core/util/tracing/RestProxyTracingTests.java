@@ -9,6 +9,7 @@ import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,26 @@ public class RestProxyTracingTests {
         assertTrue(restProxy.getName().startsWith("myService.testMethodReturnsMonoVoid"));
         assertNull(restProxy.getThrowable());
         assertNull(restProxy.getErrorMessage());
+    }
+
+    @Test
+    public void restProxyCancelAsync() {
+        testInterface.testMethodDelays()
+            .timeout(Duration.ofMillis(10))
+            .toFuture().cancel(true);
+
+        assertEquals(2, tracer.getSpans().size());
+        Span restProxy = tracer.getSpans().get(0);
+        Span http = tracer.getSpans().get(1);
+
+        assertEquals(getSpan(http.getStartContext()), restProxy);
+        assertTrue(restProxy.getName().startsWith("myService.testMethodDelays"));
+        assertNull(restProxy.getThrowable());
+        assertEquals("cancel", restProxy.getErrorMessage());
+
+        assertTrue(http.getName().startsWith("HTTP PUT"));
+        assertNull(http.getThrowable());
+        assertEquals("cancel", http.getErrorMessage());
     }
 
     @Test
@@ -198,6 +220,8 @@ public class RestProxyTracingTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {
                 return Mono.just(new MockHttpResponse(request, 200));
+            } else if (request.getHttpMethod() == HttpMethod.PUT) {
+                return Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200));
             } else {
                 throw new RuntimeException("error");
             }
@@ -231,5 +255,9 @@ public class RestProxyTracingTests {
         @Post("my/url/path")
         @ExpectedResponses({500})
         Response<Void> testMethodThrowsSync();
+
+        @Put("my/url/path")
+        @ExpectedResponses({200})
+        Mono<Void> testMethodDelays();
     }
 }
