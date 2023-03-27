@@ -319,7 +319,7 @@ public final class MetricsAdvisorAsyncClient {
     private Mono<PagedResponse<MetricSeriesData>> listMetricSeriesDataInternal(String metricId,
         List<DimensionKey> seriesKeys, OffsetDateTime startTime,
         OffsetDateTime endTime, Context context) {
-        validateMetricSeriesInputs(metricId, seriesKeys, startTime, endTime,logger);
+        validateMetricSeriesInputs(metricId, seriesKeys, startTime, endTime, logger);
 
         List<Map<String, String>> dimensionList =
             seriesKeys.stream().map(DimensionKey::asMap).collect(Collectors.toList());

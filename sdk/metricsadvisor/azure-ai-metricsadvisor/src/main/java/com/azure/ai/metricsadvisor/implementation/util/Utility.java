@@ -218,7 +218,7 @@ public final class Utility {
 
     public static void validateActiveSinceInput(OffsetDateTime activeSince, ClientLogger logger) {
         if (activeSince == null) {
-            throw logger.logExceptionAsError( new IllegalArgumentException("'activeSince' is required and cannot be null."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'activeSince' is required and cannot be null."));
         }
     }
 
