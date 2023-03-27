@@ -21,7 +21,6 @@ import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -152,9 +151,10 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
             try {
                 responseData = PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType);
             } catch (UncheckedIOException e) {
-                if (!(e.getCause() instanceof JsonProcessingException)) {
-                    throw LOGGER.logExceptionAsError(e);
-                }
+                LOGGER.info("Failed to convert response to type {}",
+                    pollResponseType.getJavaType().getTypeName(),
+                    e.getCause());
+                // ignore the error, let responseData be null
             }
 
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, responseData, retryAfter);

@@ -23,7 +23,6 @@ import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
@@ -152,8 +151,14 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
                 .onErrorResume(error ->
-                    error instanceof UncheckedIOException && error.getCause() instanceof JsonProcessingException,
-                    error -> Mono.empty())
+                    error instanceof UncheckedIOException,
+                    error -> {
+                        LOGGER.info("Failed to convert response to type {}",
+                            pollResponseType.getJavaType().getTypeName(),
+                            error.getCause());
+                        // ignore the error, let switchIfEmpty handle it
+                        return Mono.empty();
+                    })
                 .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
