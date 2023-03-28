@@ -91,7 +91,7 @@ public final class BlockBlobClient extends BlobClientBase {
     /**
      * Backing REST client for the blob client.
      */
-    protected final AzureBlobStorageImpl azureBlobStorage;
+    final AzureBlobStorageImpl azureBlobStorage;
 
     private final String snapshot;
     private final String versionId;
@@ -100,27 +100,27 @@ public final class BlockBlobClient extends BlobClientBase {
     /**
      * Encryption scope of the blob.
      */
-    protected final EncryptionScope encryptionScope;
+    final EncryptionScope encryptionScope;
 
     /**
      * Storage account name that contains the blob.
      */
-    protected final String accountName;
+    final String accountName;
 
     /**
      * Container name that contains the blob.
      */
-    protected final String containerName;
+    final String containerName;
 
     /**
      * Name of the blob.
      */
-    protected final String blobName;
+    final String blobName;
 
     /**
      * Storage REST API version used in requests to the Storage service.
      */
-    protected final BlobServiceVersion serviceVersion;
+    final BlobServiceVersion serviceVersion;
 
 
     /**
@@ -593,11 +593,10 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
+        StorageImplUtils.assertNotNull("options", options);
 
-        Supplier<Response<BlockBlobItem>> operation = () -> {
-            StorageImplUtils.assertNotNull("options", options);
-            return uploadWithResponseSync(options, enableSyncRestProxy(context));
-        };
+        Supplier<Response<BlockBlobItem>> operation = () ->
+            uploadWithResponseSync(options, enableSyncRestProxy(context));
 
         try {
             return timeout != null
@@ -753,7 +752,6 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     Response<BlockBlobItem> uploadFromUrlWithResponseSync(BlobUploadFromUrlOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
         BlobRequestConditions destinationRequestConditions =
             options.getDestinationRequestConditions() == null ? new BlobRequestConditions()
                 : options.getDestinationRequestConditions();
