@@ -45,28 +45,22 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
-    @JsonProperty(value = "refresh_in")
-    private String refreshIn;
-
     /**
      * Creates an access token instance.
      *
      * @param token     the token string.
      * @param expiresOn the expiration time.
      * @param expiresIn the number of seconds until expiration.
-     * @param refreshIn seconds until refresh.
      */
     @JsonCreator
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn,
-        @JsonProperty(value = "refresh_in") String refreshIn) {
+        @JsonProperty(value = "expires_in") String expiresIn) {
         super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
-        this.refreshIn = refreshIn;
     }
 
     @Override
@@ -111,8 +105,7 @@ public final class MSIToken extends AccessToken {
 
     /**
      * Returns the epoch time at which refresh should occur.
-     * If the service specified refresh_in, it is added to creation time.
-     * If it is not passed in, it is half the value to expiry, unless that is
+     * It is half the value to expiry, unless that is
      * less than two hours, at which point it is the same as time to expiry.
      * @return The number of seconds until refresh.
      */
