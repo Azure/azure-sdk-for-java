@@ -82,6 +82,9 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
         configuration = cfg;
 
+        logger.info(
+            "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE: {}",
+            System.getProperty("COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE"));
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
