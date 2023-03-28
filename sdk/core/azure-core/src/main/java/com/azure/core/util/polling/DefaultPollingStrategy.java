@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The default polling strategy to use with Azure data plane services. The default polling strategy will attempt 3
@@ -76,7 +77,11 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, Context context) {
-        this(httpPipeline, endpoint, serializer, null, context);
+        this(new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+
     }
 
     /**
@@ -84,20 +89,16 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
      * serializer.
      *
-     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with.
-     * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
-     * @param serializer a custom serializer for serializing and deserializing polling responses.
-     * @param serviceVersion the service version that will be added as query param to each polling
-     * request and final result request URL. If the request URL already contains a service version, it will be replaced
-     * by the service version set in this constructor.
-     * @param context an instance of {@link Context}.
-     * @throws NullPointerException If {@code httpPipeline} is null.
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null or
+     * {@link PollingStrategyOptions#getHttpPipeline()} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, String serviceVersion, Context context) {
+    public DefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, serviceVersion, context),
-            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, serviceVersion, context),
-            new StatusCheckPollingStrategy<>(serializer)));
+            new OperationResourcePollingStrategy<>(null, pollingStrategyOptions),
+            new LocationPollingStrategy<>(pollingStrategyOptions),
+            new StatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
     }
 
     @Override

@@ -374,8 +374,10 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
+        PollingStrategyOptions pollingStrategyOptions = new PollingStrategyOptions(createPipeline(httpClient))
+            .setServiceVersion("2023-03-22");
         PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient), null, null, null, "2023-03-22", Context.NONE),
+            activationOperation::get, new OperationResourcePollingStrategy<>(null, pollingStrategyOptions),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)

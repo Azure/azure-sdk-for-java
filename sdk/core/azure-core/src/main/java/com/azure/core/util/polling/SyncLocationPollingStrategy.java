@@ -46,6 +46,7 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the location polling strategy using a JSON serializer.
@@ -91,10 +92,25 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
      */
     public SyncLocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
-        this.context = context == null ? Context.NONE : context;
+        this(new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+    }
+
+    /**
+     * Creates an instance of the location polling strategy.
+     *
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code httpPipeline} is null.
+     */
+    public SyncLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
+        this.endpoint = pollingStrategyOptions.getEndpoint();
+        this.serializer = (pollingStrategyOptions.getSerializer() == null) ? DEFAULT_SERIALIZER : pollingStrategyOptions.getSerializer();
+        this.serviceVersion = pollingStrategyOptions.getServiceVersion();
+        this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
 
     @Override

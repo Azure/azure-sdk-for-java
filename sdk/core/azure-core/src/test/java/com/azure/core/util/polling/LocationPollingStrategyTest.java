@@ -193,8 +193,10 @@ public class LocationPollingStrategyTest {
             }
         };
 
+        PollingStrategyOptions pollingStrategyOptions = new PollingStrategyOptions(createPipeline(httpClient))
+            .setServiceVersion("2023-03-22");
         PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new LocationPollingStrategy<>(createPipeline(httpClient), null, null, "2023-03-22", Context.NONE),
+            activationOperation::get, new LocationPollingStrategy<>(pollingStrategyOptions),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)

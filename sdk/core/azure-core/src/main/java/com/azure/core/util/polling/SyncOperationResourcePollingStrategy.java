@@ -49,6 +49,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
     private final String endpoint;
     private final HttpHeaderName operationLocationHeaderName;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the operation resource polling strategy using a JSON serializer and "Operation-Location"
@@ -103,12 +104,28 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
 
     private SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
         ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
+        this(operationLocationHeaderName, new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+    }
+
+    /**
+     * Creates an instance of the operation resource polling strategy.
+     *
+     * @param operationLocationHeaderName a custom header for polling the long-running operation.
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     */
+    public SyncOperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName, PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
+        this.endpoint = pollingStrategyOptions.getEndpoint();
+        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer() : new DefaultJsonSerializer();
         this.operationLocationHeaderName = (operationLocationHeaderName == null)
             ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
-        this.context = context == null ? Context.NONE : context;
+
+        this.serviceVersion = pollingStrategyOptions.getServiceVersion();
+        this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
 
     @Override

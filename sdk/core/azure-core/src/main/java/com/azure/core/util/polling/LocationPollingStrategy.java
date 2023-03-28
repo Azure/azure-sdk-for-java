@@ -94,27 +94,25 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer, Context context) {
-        this(httpPipeline, endpoint, serializer, null, context);
+        this(new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
     }
 
     /**
      * Creates an instance of the location polling strategy.
      *
-     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
-     * @param serializer a custom serializer for serializing and deserializing polling responses
-     * @param serviceVersion the service version that will be added as query param to each polling
-     * request and final result request URL. If the request URL already contains a service version, it will be replaced
-     * by the service version set in this constructor.
-     * @param context an instance of {@link Context}
+     * @param pollingStrategyOptions options to configure this polling strategy.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public LocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer, String serviceVersion, Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
-        this.serviceVersion = serviceVersion;
-        this.context = context == null ? Context.NONE : context;
+    public LocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
+        this.endpoint = pollingStrategyOptions.getEndpoint();
+        this.serializer = (pollingStrategyOptions.getSerializer() == null) ? DEFAULT_SERIALIZER : pollingStrategyOptions.getSerializer();
+        this.serviceVersion = pollingStrategyOptions.getServiceVersion();
+        this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
 
     @Override
