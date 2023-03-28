@@ -243,16 +243,22 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
-        DocumentModelBuildMode buildMode, String modelId, String prefix, BuildDocumentModelOptions buildDocumentModelOptions) {
+                                                                         DocumentModelBuildMode buildMode, String modelId, String prefix, String jsonList, BuildDocumentModelOptions buildDocumentModelOptions) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
             .setModelId(modelId)
             .setBuildMode(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
                 .fromString(buildMode.toString()))
-            .setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource()
-                .setContainerUrl(blobContainerUrl)
-                .setPrefix(prefix))
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
+        if (jsonList == null) {
+            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource()
+                .setContainerUrl(blobContainerUrl)
+                .setPrefix(prefix));
+        } else {
+            buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListSource()
+                .setContainerUrl(blobContainerUrl)
+                .setFileList(jsonList));
+        }
         return buildDocumentModelRequest;
     }
 
@@ -279,14 +285,13 @@ public class Transforms {
     }
 
     public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
-        ErrorResponseException errorResponseException = throwable;
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-            error = (errorResponseException.getValue().getError());
+        if (throwable.getValue() != null && throwable.getValue().getError() != null) {
+            error = (throwable.getValue().getError());
         }
         return new HttpResponseException(
-            errorResponseException.getMessage(),
-            errorResponseException.getResponse(),
+            throwable.getMessage(),
+            throwable.getResponse(),
             toResponseError(error)
         );
     }
@@ -694,15 +699,13 @@ public class Transforms {
     }
 
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
-        CopyAuthorization copyRequest
-            = new CopyAuthorization()
-            .setTargetModelLocation(target.getTargetModelLocation())
-            .setTargetResourceId(target.getTargetResourceId())
-            .setTargetResourceRegion(target.getTargetResourceRegion())
-            .setTargetModelId(target.getTargetModelId())
-            .setAccessToken(target.getAccessToken())
-            .setExpirationDateTime(target.getExpiresOn());
-        return copyRequest;
+        return new CopyAuthorization()
+        .setTargetModelLocation(target.getTargetModelLocation())
+        .setTargetResourceId(target.getTargetResourceId())
+        .setTargetResourceRegion(target.getTargetResourceRegion())
+        .setTargetModelId(target.getTargetModelId())
+        .setAccessToken(target.getAccessToken())
+        .setExpirationDateTime(target.getExpiresOn());
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
