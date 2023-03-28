@@ -478,7 +478,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -571,7 +571,7 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {

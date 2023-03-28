@@ -11,6 +11,7 @@ import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -215,6 +216,16 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         this.additionallyAllowedTenants = IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants);
+        return this;
+    }
+
+    /**
+     * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI or IntelliJ).
+     * @param duration The {@link Duration} to wait.
+     * @return An updated instance of this builder with the timeout specified.
+     */
+    public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration duration) {
+        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
         return this;
     }
 
