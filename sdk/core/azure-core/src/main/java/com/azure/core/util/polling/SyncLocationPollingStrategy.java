@@ -15,6 +15,8 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
@@ -153,7 +155,9 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
 
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
+        String url = pollingContext.getData(PollingConstants.LOCATION);
+        url = setServiceVersionQueryParam(url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
 
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
@@ -206,10 +210,20 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
                 resultType);
         }
 
+        finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
         HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
             return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
         }
+    }
+
+    private String setServiceVersionQueryParam(String url) {
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        return url;
     }
 }
