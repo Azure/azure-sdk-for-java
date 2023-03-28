@@ -188,8 +188,9 @@ PollerFlux<OncoPhenotypeResult, OncoPhenotypeResult> asyncPoller = asyncClient.b
 
 ## Next steps
 <!--
-This code sample show common scenario operation with the Azure Health Insights Cancer Profiling library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/samples/java/com/azure/health/insights/) directory.
+This code sample show common scenario operation with the Azure Health Insights Cancer Profiling library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/samples/java/com/azure/health/insights/) directory.
 -->
+
 ### Additional documentation
 For more extensive documentation on Azure Health Insights Cancer Profiling, see the [Cancer Profiling documentation][cancer_profiling_docs] on docs.microsoft.com.
 ## Contributing

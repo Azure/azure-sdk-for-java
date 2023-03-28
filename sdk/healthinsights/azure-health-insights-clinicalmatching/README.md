@@ -128,7 +128,7 @@ PollerFlux<TrialMatcherResult, TrialMatcherResult> asyncPoller = asyncClient.beg
 
 To see the full example source files, see:
 <!--
-This code sample show common scenario operation with the Azure Health Insights Clinical Matching library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/samples/java/com/azure/health/insights/) directory.
+This code sample show common scenario operation with the Azure Health Insights Clinical Matching library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/samples/java/com/azure/health/insights/) directory.
 -->
 
 ### Additional documentation
