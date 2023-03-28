@@ -190,6 +190,7 @@
           </execution>
         </executions>
         <configuration>
+          <skipTests>${skipTestCompile}</skipTests>
           <testSources>
             <testSource>
               <directory>${project.basedir}/src/test</directory>
