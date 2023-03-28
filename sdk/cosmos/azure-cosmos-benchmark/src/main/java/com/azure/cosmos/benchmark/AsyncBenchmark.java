@@ -88,7 +88,7 @@ abstract class AsyncBenchmark<T> {
             "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE: {}",
             System.getProperty("COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE"));
 
-        DirectConnectionConfig directConfig = new DirectConnectionConfig()
+        DirectConnectionConfig directConfig = new DirectConnectionConfig();
         directConfig =
             // Duplicate the default number of I/O threads per core
             // We know that Spark often works with large payloads and we have seen
