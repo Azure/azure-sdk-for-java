@@ -112,8 +112,6 @@ public class Configuration {
     @Parameter(names = "-defaultLog4jLoggerEnabled", description = "Control switch to enable the default log4j logger in 4.42 and above")
     private String defaultLog4jLoggerEnabled = String.valueOf(false);
 
-    @Parameter(names = "-tracingDisabled", description = "Control switch to disable OpenTelemetry tracing")
-    private String tracingDisabled = String.valueOf(false);
 
     @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
     private int tupleSize = 1;
@@ -524,10 +522,6 @@ public class Configuration {
 
     public boolean isDefaultLog4jLoggerEnabled() {
         return Boolean.parseBoolean(defaultLog4jLoggerEnabled);
-    }
-
-    public boolean isTracingDisabled() {
-        return Boolean.parseBoolean(tracingDisabled);
     }
 
     public String getClientTelemetryEndpoint() {
