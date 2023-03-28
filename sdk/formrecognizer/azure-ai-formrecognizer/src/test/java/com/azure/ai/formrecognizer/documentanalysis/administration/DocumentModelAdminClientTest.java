@@ -5,8 +5,13 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
@@ -29,7 +34,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -397,6 +404,57 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             client.deleteDocumentModel(createdModel1.getModelId());
             client.deleteDocumentModel(createdModel2.getModelId());
             client.deleteDocumentModel(composedModel.getModelId());
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a classifier with a valid training data set.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void beginBuildClassifier(HttpClient httpClient,
+                                                  DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
+                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                client.beginBuildDocumentClassifier(documentTypeDetailsMap)
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+
+            validateClassifierModelData(buildModelPoller.getFinalResult());
+        });
+    }
+
+    /**
+     * Verifies the result of the training operation for a classifier with a valid training data set with jsonL files.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void beginBuildClassifierWithJsonL(HttpClient httpClient,
+                                     DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
+                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(trainingFilesUrl).setFileList("IRS-1040-A.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(trainingFilesUrl).setFileList("IRS-1040-B.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(trainingFilesUrl).setFileList("IRS-1040-C.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(trainingFilesUrl).setFileList("IRS-1040-D.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource().setContainerUrl(trainingFilesUrl).setFileList("IRS-1040-E.jsonl")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                client.beginBuildDocumentClassifier(documentTypeDetailsMap,
+                        new BuildDocumentClassifierOptions().setDescription("Json L classifier model"), Context.NONE)
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+
+            validateClassifierModelData(buildModelPoller.getFinalResult());
         });
     }
 }

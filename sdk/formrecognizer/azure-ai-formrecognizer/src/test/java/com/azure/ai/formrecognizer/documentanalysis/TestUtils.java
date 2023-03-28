@@ -92,6 +92,8 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+    public static final String FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_CLIENT_ID
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
     public static final String AZURE_TENANT_ID
@@ -166,6 +168,11 @@ public final class TestUtils {
         testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
     }
 
+    public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
+        testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
+    }
+
+
     /**
      * Get the testing data set SAS Url value based on the test running mode.
      *
@@ -226,6 +233,15 @@ public final class TestUtils {
     private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode" : FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url for classifiers
+     */
+    private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
