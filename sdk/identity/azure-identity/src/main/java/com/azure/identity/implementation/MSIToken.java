@@ -116,7 +116,7 @@ public final class MSIToken extends AccessToken {
         Duration duration = Duration.between(now, expiresAt);
         if (duration.toHours() > 2) {
             long halfDuration = duration.getSeconds() / 2;
-            return now.plusSeconds(Math.max(halfDuration, 2*60*60)).toEpochSecond();
+            return now.plusSeconds(Math.max(halfDuration, Duration.ofHours(2).getSeconds())).toEpochSecond();
         } else {
             return expiresAt.toEpochSecond();
         }
