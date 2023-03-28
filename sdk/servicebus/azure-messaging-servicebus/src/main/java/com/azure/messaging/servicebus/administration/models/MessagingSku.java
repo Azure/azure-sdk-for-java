@@ -7,7 +7,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MessagingSku. */
+/** The SKU for the messaging entity. */
 public enum MessagingSku {
     /** Enum value Basic. */
     BASIC("Basic"),
@@ -33,6 +33,9 @@ public enum MessagingSku {
      */
     @JsonCreator
     public static MessagingSku fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MessagingSku[] items = MessagingSku.values();
         for (MessagingSku item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum MessagingSku {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

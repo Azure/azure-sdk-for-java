@@ -5,9 +5,9 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespaceTypeImpl;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /** The metadata related to a Service Bus namespace. */
@@ -70,7 +70,10 @@ public final class NamespaceProperties {
     @JacksonXmlProperty(
             localName = "NamespaceType",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private NamespaceTypeImpl namespaceType;
+    private NamespaceType namespaceType;
+
+    /** Creates an instance of NamespaceProperties class. */
+    public NamespaceProperties() {}
 
     /**
      * Get the alias property: Alias for the geo-disaster recovery Service Bus namespace.
@@ -197,7 +200,7 @@ public final class NamespaceProperties {
      *
      * @return the namespaceType value.
      */
-    public NamespaceTypeImpl getNamespaceType() {
+    public NamespaceType getNamespaceType() {
         return this.namespaceType;
     }
 
@@ -207,7 +210,7 @@ public final class NamespaceProperties {
      * @param namespaceType the namespaceType value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setNamespaceType(NamespaceTypeImpl namespaceType) {
+    public NamespaceProperties setNamespaceType(NamespaceType namespaceType) {
         this.namespaceType = namespaceType;
         return this;
     }
