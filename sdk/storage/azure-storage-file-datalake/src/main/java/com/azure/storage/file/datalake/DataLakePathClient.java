@@ -1104,7 +1104,7 @@ public class DataLakePathClient {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
-            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response)));
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
 

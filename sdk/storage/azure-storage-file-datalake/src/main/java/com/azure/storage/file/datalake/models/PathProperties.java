@@ -44,11 +44,19 @@ public class PathProperties {
     private final OffsetDateTime expiresOn;
     private String encryptionScope;
     private String encryptionContext;
+    private String owner;
+    private String group;
+    private String permissions;
+
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext) -> {
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions) -> {
             properties.encryptionScope = encryptionScope;
             properties.encryptionContext = encryptionContext;
+            properties.owner = owner;
+            properties.group = group;
+            properties.permissions = permissions;
+
             return properties;
         });
     }
@@ -390,5 +398,32 @@ public class PathProperties {
      */
     public String getEncryptionContext() {
         return encryptionContext;
+    }
+
+    /**
+     * Get the owner property of the path: The owner property.
+     *
+     * @return the owner value.
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     * Get the group property of the path: The owner property.
+     *
+     * @return the group value.
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    /**
+     * Get the permissions property of the path: The permissions property.
+     *
+     * @return the permissions value.
+     */
+    public String getPermissions() {
+        return permissions;
     }
 }
