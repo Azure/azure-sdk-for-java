@@ -35,6 +35,7 @@ import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -45,6 +46,8 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpoints;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -317,7 +320,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = 10000000 * TIMEOUT)
-    public void cosmosAsyncContainerWithFaultInjection(
+    public void cosmosAsyncContainerWithFaultInjectionOnCreate(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
         boolean forceThresholdViolations) throws Exception {
@@ -393,6 +396,101 @@ public class CosmosTracerTest extends TestSuiteBase {
         finally {
             rule.disable();
         }
+    }
+
+    @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = 10000000 * TIMEOUT)
+    public void cosmosAsyncContainerWithFaultInjectionOnRead(
+        boolean useLegacyTracing,
+        boolean enableRequestLevelTracing,
+        boolean forceThresholdViolations) throws Exception {
+
+        if (client.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure ingestion is only supported for Direct mode currently.");
+        }
+
+        ITEM_ID =  "tracerDoc_" + testCaseCount.incrementAndGet();
+        TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
+
+        createAndInitializeDiagnosticsProvider(
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, forceThresholdViolations);
+
+        ObjectNode item = getDocumentDefinition(ITEM_ID);
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+
+        CosmosItemResponse<ObjectNode> cosmosItemResponse = cosmosAsyncContainer
+            .createItem(item, requestOptions)
+            .block();
+
+        assertThat(cosmosItemResponse).isNotNull();
+        verifyTracerAttributes(
+            mockTracer,
+            "createItem." + cosmosAsyncContainer.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosAsyncContainer.getId(),
+            cosmosItemResponse.getDiagnostics(),
+            null,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations);
+
+        IFaultInjectionResult result = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+            .times(2)
+            .build();
+
+        FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.READ_ITEM)
+            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(ITEM_ID)))
+                .replicaCount(4)
+                .includePrimary(true)
+                .build())
+            .build();
+
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("Injected410" + UUID.randomUUID())
+            .condition(condition)
+            .result(result)
+            //.hitLimit(2)
+            .build();
+
+        FaultInjectorProvider injectorProvider = (FaultInjectorProvider) cosmosAsyncContainer
+            .getOrConfigureFaultInjectorProvider(() -> new FaultInjectorProvider(cosmosAsyncContainer));
+
+        injectorProvider.configureFaultInjectionRules(Arrays.asList(rule)).block();
+
+        mockTracer.reset();
+
+        try {
+            cosmosItemResponse = cosmosAsyncContainer
+                .readItem(ITEM_ID, new PartitionKey(ITEM_ID), requestOptions, ObjectNode.class)
+                .block();
+            assertThat(cosmosItemResponse).isNotNull();
+            verifyTracerAttributes(
+                mockTracer,
+                "readItem." + cosmosAsyncContainer.getId(),
+                cosmosAsyncDatabase.getId(),
+                cosmosAsyncContainer.getId(),
+                cosmosItemResponse.getDiagnostics(),
+                null,
+                useLegacyTracing,
+                enableRequestLevelTracing,
+                forceThresholdViolations);
+
+            assertThat(cosmosItemResponse.getDiagnostics().toString().contains("Injected410")).isEqualTo(true);
+            assertThat(cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getRetryCount())
+                .isGreaterThanOrEqualTo(1);
+
+            mockTracer.reset();
+        }
+        finally {
+            rule.disable();
+        }
+
+       cosmosAsyncContainer
+            .deleteItem(item, requestOptions)
+            .block();
+        mockTracer.reset();
+
     }
 
     @Test(groups = {"simple", "emulator"}, dataProvider = "traceTestCaseProvider", timeOut = 10000000 * TIMEOUT)

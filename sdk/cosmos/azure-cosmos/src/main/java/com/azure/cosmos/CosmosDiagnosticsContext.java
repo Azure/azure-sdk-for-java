@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -244,6 +247,24 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
+        DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
+            new DistinctClientSideRequestStatisticsCollection();
+        for (CosmosDiagnostics diagnostics: this.getDiagnostics()) {
+            combinedClientSideRequestStatistics.addAll(
+                diagnostics.getClientSideRequestStatistics());
+
+            FeedResponseDiagnostics feedResponseDiagnostics =
+                diagnostics.getFeedResponseDiagnostics();
+            if (feedResponseDiagnostics != null) {
+                combinedClientSideRequestStatistics.addAll(
+                    feedResponseDiagnostics.getClientSideRequestStatistics());
+            }
+        }
+
+        return combinedClientSideRequestStatistics;
+    }
+
     /**
      * The final status code of the operation (possibly after retries)
      * @return the final status code of the operation (possibly after retries)
@@ -319,7 +340,20 @@ public final class CosmosDiagnosticsContext {
             return 0;
         }
 
-        return Math.max(0, this.diagnostics.size() - 1);
+        int totalRetryCount = 0;
+        for (ClientSideRequestStatistics c: this.getDistinctCombinedClientSideRequestStatistics()) {
+            totalRetryCount += getRetryCount(c);
+        }
+
+        return Math.max(0, totalRetryCount);
+    }
+
+    private int getRetryCount(ClientSideRequestStatistics c) {
+        if (c == null || c.getRetryContext() == null) {
+            return 0;
+        }
+
+        return c.getRetryContext().getRetryCount();
     }
 
     void addRequestCharge(float requestCharge) {
@@ -603,6 +637,12 @@ public final class CosmosDiagnosticsContext {
                     public String getEndpoint(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getEndpoint();
+                    }
+
+                    @Override
+                    public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getDistinctCombinedClientSideRequestStatistics();
                     }
                 });
     }

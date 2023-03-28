@@ -773,6 +773,8 @@ public class ImplementationBridgeHelpers {
             OperationType getOperationType(CosmosDiagnosticsContext ctx);
 
             String getEndpoint(CosmosDiagnosticsContext ctx);
+
+            Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx);
         }
     }
 

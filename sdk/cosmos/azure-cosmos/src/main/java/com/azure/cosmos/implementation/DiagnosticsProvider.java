@@ -43,7 +43,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1264,20 +1263,8 @@ public final class DiagnosticsProvider {
         private void traceTransportLevel(CosmosDiagnosticsContext diagnosticsContext, Context context) {
             // HTTP calls are automatically captured as well
 
-            DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
-                new DistinctClientSideRequestStatisticsCollection();
-            for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
-                combinedClientSideRequestStatistics.addAll(
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
-
-                FeedResponseDiagnostics feedResponseDiagnostics =
-                    diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics);
-                if (feedResponseDiagnostics != null) {
-                    combinedClientSideRequestStatistics.addAll(
-                        feedResponseDiagnostics.getClientSideRequestStatistics());
-                }
-            }
-
+            Collection<ClientSideRequestStatistics> combinedClientSideRequestStatistics =
+                ctxAccessor.getDistinctCombinedClientSideRequestStatistics(diagnosticsContext);
 
             traceTransportLevelRequests(
                 combinedClientSideRequestStatistics,
