@@ -3,6 +3,7 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -12,7 +13,8 @@ import java.util.Objects;
 /**
  * Options to configure polling strategy.
  */
-public class PollingStrategyOptions {
+@Fluent
+public final class PollingStrategyOptions {
 
     private final HttpPipeline httpPipeline;
     private String endpoint;
@@ -22,6 +24,7 @@ public class PollingStrategyOptions {
 
     /**
      * The {@link HttpPipeline} to use for polling and getting the final result of the long-running operation.
+     *
      * @param httpPipeline {@link HttpPipeline} to use for polling and getting the final result of the long-running operation.
      * @throws NullPointerException if {@code httpPipeline} is null.
      */
@@ -31,6 +34,7 @@ public class PollingStrategyOptions {
 
     /**
      * Returns {@link HttpPipeline} to use for polling and getting the final result of the long-running operation.
+     *
      * @return {@link HttpPipeline} to use for polling and getting the final result of the long-running operation.
      */
     public HttpPipeline getHttpPipeline() {
@@ -40,6 +44,7 @@ public class PollingStrategyOptions {
     /**
      * Returns the endpoint that will be used as prefix if the service response returns a relative path for getting the
      * long-running operation status and final result.
+     *
      * @return the endpoint that will be used as prefix if the service response returns a relative path for getting the
      * long-running operation status and final result.
      */
@@ -50,6 +55,7 @@ public class PollingStrategyOptions {
     /**
      * Sets the endpoint that will be used as prefix if the service response returns a relative path for getting the
      * long-running operation status and final result.
+     *
      * @param endpoint the endpoint that will be used as prefix if the service response returns a relative path for getting the
      * long-running operation status and final result.
      * @return the updated {@link PollingStrategyOptions} instance.
@@ -61,6 +67,7 @@ public class PollingStrategyOptions {
 
     /**
      * Returns the serializer to use for serializing and deserializing the request and response.
+     *
      * @return the serializer to use for serializing and deserializing the request and response.
      */
     public ObjectSerializer getSerializer() {
@@ -69,6 +76,7 @@ public class PollingStrategyOptions {
 
     /**
      * Set the serializer to use for serializing and deserializing the request and response.
+     *
      * @param serializer the serializer to use for serializing and deserializing the request and response.
      * @return the updated {@link PollingStrategyOptions} instance.
      */
@@ -79,6 +87,7 @@ public class PollingStrategyOptions {
 
     /**
      * Returns the context to use for sending the request using the {@link #getHttpPipeline()}.
+     *
      * @return the context to use for sending the request using the {@link #getHttpPipeline()}.
      */
     public Context getContext() {
@@ -87,6 +96,7 @@ public class PollingStrategyOptions {
 
     /**
      * Sets the context to use for sending the request using the {@link #getHttpPipeline()}.
+     *
      * @param context the context to use for sending the request using the {@link #getHttpPipeline()}.
      * @return the updated {@link PollingStrategyOptions} instance.
      */
@@ -99,6 +109,7 @@ public class PollingStrategyOptions {
      * Returns the service version that will be added as query param to each polling
      * request and final result request URL. If the request URL already contains a service version, it will be replaced
      * by the service version set in this constructor.
+     *
      * @return the service version to use for polling and getting the final result.
      */
     public String getServiceVersion() {
@@ -109,6 +120,7 @@ public class PollingStrategyOptions {
      * Sets the service version that will be added as query param to each polling
      * request and final result request URL. If the request URL already contains a service version, it will be replaced
      * by the service version set in this constructor.
+     *
      * @param serviceVersion the service version to use for polling and getting the final result.
      * @return the updated {@link PollingStrategyOptions} instance.
      */

@@ -62,7 +62,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, null, new DefaultJsonSerializer(), DEFAULT_OPERATION_LOCATION_HEADER, null, Context.NONE);
+        this(DEFAULT_OPERATION_LOCATION_HEADER, new PollingStrategyOptions(httpPipeline));
     }
 
     /**
@@ -99,21 +99,11 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
-        this(httpPipeline, endpoint, serializer,
-            operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            null, context);
-    }
-
-    private OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
-        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, String serviceVersion, Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
-        this.operationLocationHeaderName = (operationLocationHeaderName == null)
-            ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
-
-        this.serviceVersion = serviceVersion;
-        this.context = context == null ? Context.NONE : context;
+        this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
+            new PollingStrategyOptions(httpPipeline)
+                .setEndpoint(endpoint)
+                .setSerializer(serializer)
+                .setContext(context));
     }
 
     /**

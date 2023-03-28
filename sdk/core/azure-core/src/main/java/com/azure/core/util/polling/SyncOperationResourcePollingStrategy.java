@@ -60,7 +60,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      */
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, null, new DefaultJsonSerializer(), DEFAULT_OPERATION_LOCATION_HEADER, Context.NONE);
+        this(DEFAULT_OPERATION_LOCATION_HEADER, new PollingStrategyOptions(httpPipeline));
     }
 
     /**
@@ -99,14 +99,8 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      */
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
-        this(httpPipeline, endpoint, serializer,
-            operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            context);
-    }
-
-    private SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
-        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, Context context) {
-        this(operationLocationHeaderName, new PollingStrategyOptions(httpPipeline)
+        this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
+            new PollingStrategyOptions(httpPipeline)
             .setEndpoint(endpoint)
             .setSerializer(serializer)
             .setContext(context));
