@@ -97,8 +97,9 @@ abstract class AsyncBenchmark<T> {
             ImplementationBridgeHelpers
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
-                .setIoThreadCountPerCoreFactor(directConfig, 10);
+                .setIoThreadCountPerCoreFactor(directConfig, 2);
 
+        /*
         directConfig =
             // Spark workloads often result in very high CPU load
             // We have seen indicators that increasing Thread priority for I/O threads
@@ -106,7 +107,7 @@ abstract class AsyncBenchmark<T> {
             ImplementationBridgeHelpers
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
-                .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY);
+                .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY);*/
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .directMode(directConfig)
